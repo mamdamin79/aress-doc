@@ -2,10 +2,6 @@
   "name": "aress-frontend",
   "version": "1.0.0",
   "description": "",
-<<<<<<< HEAD
-  "main": "index.js",
-=======
->>>>>>> 4598d02 (initial commit)
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
