@@ -1,10 +1,11 @@
-<<<<<<< HEAD
-# .gitignore
 node_modules
 dist
 build
-=======
-node_modules
-dist
-build
->>>>>>> 4598d02 (initial commit)
+
+
+.nx/cache
+.nx/workspace-data
+
+# Next.js
+.next
+out
