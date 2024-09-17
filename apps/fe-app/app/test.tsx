@@ -1,2 +1,4 @@
-// change
-export const a: number = 'salam';
+// another change
+export const a = 'salam';
+
+export const b = 123;
