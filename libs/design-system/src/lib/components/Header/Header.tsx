@@ -1,3 +1,3 @@
 export function Header() {
-  return <header>This is header</header>;
+  return <header className="bg-indigo-200">This is header!</header>;
 }
