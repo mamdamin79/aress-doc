@@ -153,8 +153,19 @@
     --color-green-300: 252, 186, 186;
     --color-green-200: 255, 239, 239;
     --color-green-100: 255, 239, 239;
-    /* another green */
-
+    /* another (vivid)green */
+    /* dont use these colors for text */
+    --color-vivid-green-1000: 4, 42, 19;
+    --color-vivid-green-900: 10, 104, 48;
+    --color-vivid-green-800: 14, 146, 67;
+    --color-vivid-green-700: 17, 177, 82;
+    --color-vivid-green-600: 20, 208, 96;
+    --color-vivid-green-500: 67, 217, 128;
+    --color-vivid-green-400: 114, 227, 160;
+    --color-vivid-green-300: 161, 236, 191;
+    --color-vivid-green-200: 208, 246, 223;
+    --color-vivid-green-100: 231, 250, 239;
+    --color-vivid-green-50: 250, 254, 252;
     /* Red dark Colors in RGB */
     --color-red-1000: 122, 13, 13;
     --color-red-900: 122, 13, 13;
