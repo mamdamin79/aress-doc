@@ -1,2 +1,2 @@
 export * from './lib/design-system';
-export * from './components';
+export * from './lib/components';
