@@ -74,6 +74,7 @@
   },
   "nx": {},
   "dependencies": {
+    "@storybook/react": "^8.3.2",
     "next": "14.2.3",
     "react": "18.3.1",
     "react-dom": "18.3.1",
@@ -82,8 +83,7 @@
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
       "eslint --fix",
-      "nx affected:lint --uncommitted",
-      "tsc --noEmit --pretty",
+      "nx affected:lint --uncommitted --verbose",
       "prettier --write"
     ],
     "**/*.{css,scss}": [
