@@ -1,1 +1,1 @@
-export * from './icon-dialog';
+export * from './IconDialog';
