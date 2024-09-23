@@ -1,0 +1,77 @@
+import { Button, Dialog, DialogPanel, Transition } from '@headlessui/react';
+import { Fragment } from 'react';
+
+interface Prop {
+  title: string;
+  message: string;
+  onClose?: () => void;
+  isOpen: boolean;
+  mode: 'error' | 'success';
+}
+
+const colors = {
+  success: ['bg-[#E7FAEF]', 'bg-[#A1ECBF]', 'bg-[#14D060]'],
+  error: ['bg-[#FDE8E8]', 'bg-[#F6A4A4]', 'bg-[#DD1919]'],
+};
+
+export function IconDialog({ title, message, onClose, isOpen, mode }: Prop) {
+  return (
+    <Dialog
+      open={isOpen}
+      as="div"
+      className="relative z-10 focus:outline-none"
+      onClose={() => onClose}
+    >
+      <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div className="flex min-h-full items-center justify-center p-4">
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0 scale-95"
+            enterTo="opacity-100 scale-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100 scale-100"
+            leaveTo="opacity-0 scale-95"
+          >
+            <DialogPanel
+              transition
+              className="w-96 h-60 relative flex flex-col items-center shadow rounded-[20px] pt-16 px-6 pb-6"
+            >
+              <div
+                className={`absolute -top-12 w-24 h-24 flex items-center justify-center rounded-full ${colors[mode][0]}`}
+              >
+                <div
+                  className={`rounded-full flex items-center justify-center w-20 h-20 ${colors[mode][1]}`}
+                >
+                  <div
+                    className={`rounded-full px-4 w-16 flex justify-center items-center h-16 ${colors[mode][2]}`}
+                  >
+                    <img
+                      src={`${
+                        mode === 'error'
+                          ? 'icons/error.svg'
+                          : 'icons/success.svg'
+                      }`}
+                      className=""
+                      alt="vector icon"
+                    />
+                  </div>
+                </div>
+              </div>
+              <p className="text-xl text-center leading-9 font-semibold">
+                {title}
+              </p>
+              <p className="mt-4 text-center leading-[30px]">{message}</p>
+              <Button
+                onClick={onClose}
+                className="w-full mt-6 text-white py-2 rounded-lg font-semibold pt-0 transition-colors duration-300 h-[46px] hover:bg-[#008483] bg-[#009695]"
+              >
+                بستن
+              </Button>
+            </DialogPanel>
+          </Transition.Child>
+        </div>
+      </div>
+    </Dialog>
+  );
+}
