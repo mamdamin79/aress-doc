@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { SectionTitle } from './section-title';
+import { SectionTitle } from './SectionTitle';
 const meta: Meta<typeof SectionTitle> = {
   component: SectionTitle,
   tags: ['autodocs'],

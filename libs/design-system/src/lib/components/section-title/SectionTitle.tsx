@@ -1,5 +1,5 @@
 import React from 'react';
-import { sectionTitleProps } from './section-title.types';
+import { sectionTitleProps } from './SectionTitle.types';
 
 const alignClasses: Record<string, string> = {
   right: 'text-right',
