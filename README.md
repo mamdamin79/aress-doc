@@ -191,3 +191,16 @@ export * from './Card';
 ```
 
 ⚠️⚠️⚠️ Never use `export default` ⚠️⚠️⚠️: [Why](https://dev.to/phuocng/avoid-using-default-exports-a1c)? and [Read more](https://rajeshnaroth.medium.com/avoid-es6-default-exports-a24142978a7a)
+
+#### Example File
+
+```tsx
+interface Props {
+  title: string;
+  classNames?: string;
+}
+
+export function Header({ title, classNames }: Props) {
+  return <header className="bg-indigo-200">This is header!</header>;
+}
+```
