@@ -1,14 +1,16 @@
 import { Button, Dialog, DialogPanel, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 
+// type data prop for modal
 interface Prop {
   title: string;
   message: string;
-  onClose?: () => void;
+  onClose: () => void;
   isOpen: boolean;
   mode: 'error' | 'success';
 }
 
+// color variable for bg icon modal
 const colors = {
   success: ['bg-[#E7FAEF]', 'bg-[#A1ECBF]', 'bg-[#14D060]'],
   error: ['bg-[#FDE8E8]', 'bg-[#F6A4A4]', 'bg-[#DD1919]'],
@@ -20,7 +22,7 @@ export function IconDialog({ title, message, onClose, isOpen, mode }: Prop) {
       open={isOpen}
       as="div"
       className="relative z-10 focus:outline-none"
-      onClose={() => onClose}
+      onClose={onClose}
     >
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
         <div className="flex min-h-full items-center justify-center p-4">
@@ -49,8 +51,8 @@ export function IconDialog({ title, message, onClose, isOpen, mode }: Prop) {
                     <img
                       src={`${
                         mode === 'error'
-                          ? 'icons/error.svg'
-                          : 'icons/success.svg'
+                          ? 'icons/vectors/error.svg'
+                          : 'icons/vectors/success.svg'
                       }`}
                       className=""
                       alt="vector icon"
@@ -64,7 +66,7 @@ export function IconDialog({ title, message, onClose, isOpen, mode }: Prop) {
               <p className="mt-4 text-center leading-[30px]">{message}</p>
               <Button
                 onClick={onClose}
-                className="w-full mt-6 text-white py-2 rounded-lg font-semibold pt-0 transition-colors duration-300 h-[46px] hover:bg-[#008483] bg-[#009695]"
+                className="w-full mt-6 text-white py-2 rounded-lg font-semibold transition-colors duration-300 h-12 hover:bg-[#008483] bg-[#009695]"
               >
                 بستن
               </Button>
