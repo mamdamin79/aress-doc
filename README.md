@@ -86,7 +86,11 @@ Run `nx test design-system` to execute the unit tests via [Vitest](https://vites
 
     - Use the following naming convention for your branch: `{type}/{card-id}/{description}`
 
-      - **types**: feat for features, fix for bug fixes.
+      - **types**:
+
+        - **feat** for features
+        - **fix** for bug fixes.
+
       - **card-id**: Use the ID from the Trello card URL.
 
         - Example: For the URL `https://trello.com/c/HaAUwSZv/13-install-tailwindcss-in-design-system`, the ID is `HaAUwSZv`.
@@ -101,8 +105,11 @@ Run `nx test design-system` to execute the unit tests via [Vitest](https://vites
 
     - **Important** ⚠️: Please do not push directly to the main branch.
 
+1.  Do the task
 1.  Submit a Pull Request (PR)
 
     - Once the task is complete, push your branch and submit a PR.
     - Use the [PR template](./pull_request_template.md) provided in the repository.
     - Assign the PR to the team lead for review.
+
+1.  Move the card to the Code Review column on Trello
