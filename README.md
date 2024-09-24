@@ -113,3 +113,94 @@ Run `nx test design-system` to execute the unit tests via [Vitest](https://vites
     - Assign the PR to the team lead for review.
 
 1.  Move the card to the Code Review column on Trello
+
+## React Components Conventions
+
+### File Naming Conventions
+
+- **Component Files**: Use PascalCase for component file names and directories. Each component should live in its own folder.
+  - _Example_: `ComponentName.tsx`
+- **Test Files**: Test files should follow the naming convention `ComponentName.test.tsx` and be located in the same folder as the component.
+
+**Types**: If your component has multiple types/interfaces, define them in `ComponentName.types.ts`. For a single type, keep it inside the component file itself.
+
+- _Example_: `ComponentName.types.ts`
+
+- **Constants**: If the component has constants that are reused across the project/folder, define them in `ComponentName.constants.ts` to follow the DRY principle.
+
+  - _Example_: `ComponentName.constants.ts`
+
+- **Index File**: Each component folder should contain an index.ts file to manage and simplify imports.
+
+#### Folder Structure Example
+
+Below is an example of how to structure a React component folder:
+
+```bash
+components/
+└── ComponentName/
+    ├── ComponentName.tsx            # The main component file
+    ├── ComponentName.test.tsx       # Unit tests for the component
+    ├── ComponentName.types.ts       # (Optional) TypeScript types/interfaces
+    ├── ComponentName.constants.ts   # (Optional) Constants used in the component
+    └── index.ts                     # Exports the component, types, and constants
+```
+
+an overview of a component living beside other components:
+
+```bash
+src/
+└── components/
+    ├── Button/
+    │   ├── Button.tsx
+    │   ├── Button.test.tsx
+    │   ├── Button.types.ts          # If more than one type is defined
+    │   ├── Button.constants.ts      # If there are reusable constants
+    │   └── index.ts
+    ├── Card/
+    │   ├── Card.tsx
+    │   └── index.ts
+    └── index.ts
+```
+
+### Component File
+
+- **Props**: If the component has props, define the Props interface inside the component file (ComponentName.tsx).
+
+### Index File
+
+Each component folder should have an `index.ts` file that exports the component and, if necessary, other resources like types and constants.
+
+Example `Button/index.ts`:
+
+```ts
+export * from './Button';
+export * from './Button.types'; // Export types if needed
+export * from './Button.constants'; // Export constants if needed
+```
+
+### Main Components Export File
+
+When a new component is created, ensure it is exported from the main `components/index.ts` file so it can be easily imported throughout the project.
+
+Example components/index.ts:
+
+```ts
+export * from './Button';
+export * from './Card';
+```
+
+⚠️⚠️⚠️ Never use `export default` ⚠️⚠️⚠️: [Why](https://dev.to/phuocng/avoid-using-default-exports-a1c)? and [Read more](https://rajeshnaroth.medium.com/avoid-es6-default-exports-a24142978a7a)
+
+#### Example File
+
+```tsx
+interface Props {
+  title: string;
+  classNames?: string;
+}
+
+export function Header({ title, classNames }: Props) {
+  return <header className="bg-indigo-200">This is header!</header>;
+}
+```
