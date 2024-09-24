@@ -11,14 +11,32 @@ export default meta;
 
 type story = StoryObj<typeof IconDialog>;
 
-export const success: story = {
+export const Success: story = {
   args: {
     title: 'دیدگاه ثبت شد!',
     message: 'دیدگاه شما پس از بررسی منتشر خواهد شد.',
     isOpen: true,
     mode: 'success',
   },
-  render: function Render(args) {
+  render: function Success(args) {
+    const [{ isOpen }, updateArgs] = useArgs();
+
+    function onChange() {
+      updateArgs({ isOpen: !isOpen });
+    }
+
+    return <IconDialog {...args} onClose={onChange} isOpen={isOpen} />;
+  },
+};
+
+export const Error: story = {
+  args: {
+    title: 'دیدگاه ثبت نشد!',
+    message: 'دیدگاه شما پس از بررسی منتشر خواهد شد.',
+    isOpen: true,
+    mode: 'error',
+  },
+  render: function Success(args) {
     const [{ isOpen }, updateArgs] = useArgs();
 
     function onChange() {
