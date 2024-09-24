@@ -9,8 +9,8 @@ export function Breadcrumb({ items }: Props) {
     <div dir="rtl" className={`flex items-center gap-4`}>
       {items.map((item: BreadcrumbItem, index: number) => (
         <div
-          className={`hover:text-[#545962] font-semibold flex items-center ${
-            index + 1 === items.length ? 'text-[#05070C]' : 'text-[#72777E]'
+          className={`hover:text-gray-700 font-semibold flex items-center ${
+            index + 1 === items.length ? 'text-gray-1000' : 'text-gray-600'
           }`}
           key={item.title}
         >
