@@ -1,20 +1,15 @@
 import * as LucideIcons from 'lucide-react';
 import React from 'react';
+import { IconProps, IconSize } from './IconComponet.types';
 
 // this is a type of all valid icon names
 export type IconName = keyof typeof LucideIcons;
 
-// valid icon size you can pass to IconComponent
-type IconSize = 'sm' | 'md' | 'lg';
-
-interface IconProps {
-  name: IconName;
-  size?: IconSize;
-  color?: string;
-}
-
 // values that define in figma for each size(sm,md,lg)
-const sizeValues: Record<IconSize, { size: number; strokeWidth: number }> = {
+export const sizeValues: Record<
+  IconSize,
+  { size: number; strokeWidth: number }
+> = {
   sm: { size: 16, strokeWidth: 1.2 },
   md: { size: 20, strokeWidth: 1.5 },
   lg: { size: 24, strokeWidth: 1.8 },
