@@ -75,6 +75,7 @@
   "nx": {},
   "dependencies": {
     "@storybook/react": "^8.3.2",
+    "lucide-react": "^0.445.0",
     "next": "14.2.3",
     "react": "18.3.1",
     "react-dom": "18.3.1",
