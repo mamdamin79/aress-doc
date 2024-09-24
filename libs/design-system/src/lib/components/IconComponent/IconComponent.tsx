@@ -4,15 +4,25 @@ import React from 'react';
 // this is a type of all valid icon names
 export type IconName = keyof typeof LucideIcons;
 
+// valid icon size you can pass to IconComponent
+type IconSize = 'sm' | 'md' | 'lg';
+
 interface IconProps {
   name: IconName;
-  size?: number;
+  size?: IconSize;
   color?: string;
 }
 
+// values that define in figma for each size(sm,md,lg)
+const sizeValues: Record<IconSize, { size: number; strokeWidth: number }> = {
+  sm: { size: 16, strokeWidth: 1.2 },
+  md: { size: 20, strokeWidth: 1.5 },
+  lg: { size: 24, strokeWidth: 1.8 },
+};
+
 const Icon: React.FC<IconProps> = ({
   name,
-  size = 24,
+  size = 'lg',
   color = 'currentColor',
 }) => {
   // we do this because we want to say to TS that we know this is a react component dont be stricter that us :)
@@ -22,7 +32,13 @@ const Icon: React.FC<IconProps> = ({
     strokeWidth?: number;
   }>;
 
-  return <LucideIcon strokeWidth={8} size={size} color={color} />;
+  return (
+    <LucideIcon
+      strokeWidth={sizeValues[size].strokeWidth}
+      size={sizeValues[size].size}
+      color={color}
+    />
+  );
 };
 
 export default Icon;
