@@ -117,7 +117,7 @@ module.exports = {
         900: 'rgb(var(--color-purple-900))',
         1000: 'rgb(var(--color-purple-1000))',
       },
-      baseBackground: 'rgb(var(--color-base-background)',
+      baseBackground: 'rgb(var(--color-base-background))',
       vividGreen: {
         50: 'rgb(var(--color-vivid-green-50))',
         100: 'rgb(var(--color-vivid-green-100))',
@@ -131,6 +131,7 @@ module.exports = {
         900: 'rgb(var(--color-vivid-green-900))',
         1000: 'rgb(var(--color-vivid-green-1000))',
       },
+      white: 'rgb(var(--color-white))',
     },
   },
   plugins: [],

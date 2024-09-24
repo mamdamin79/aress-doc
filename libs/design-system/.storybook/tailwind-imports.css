@@ -11,7 +11,7 @@
     --color-brand-300: 153 213 213;
     --color-brand-400: 102 192 192;
     --color-brand-500: 51 171 171;
-    --color-brand-600: 0 150 150;
+    --color-brand-600: 0 150 149;
     --color-brand-700: 0 132 131;
     --color-brand-800: 0 113 112;
     --color-brand-900: 0 74 75;
@@ -40,8 +40,18 @@
     --color-green-800: 0 96 33;
     --color-green-900: 0 69 24;
     --color-green-1000: 0 27 9;
-    /* another green  */
-
+    /* vivid green  */
+    --color-vivid-green-1000: 4, 42, 19;
+    --color-vivid-green-900: 10, 104, 48;
+    --color-vivid-green-800: 14, 146, 67;
+    --color-vivid-green-700: 17, 177, 82;
+    --color-vivid-green-600: 20, 208, 96;
+    --color-vivid-green-500: 67, 217, 128;
+    --color-vivid-green-400: 114, 227, 160;
+    --color-vivid-green-300: 161, 236, 191;
+    --color-vivid-green-200: 208, 246, 223;
+    --color-vivid-green-100: 231, 250, 239;
+    --color-vivid-green-50: 250, 254, 252;
     /* blue */
     --color-blue-1000: 0 23 48; /* #001730 */
     --color-blue-900: 0 57 120; /* #003978 */
@@ -104,6 +114,8 @@
     --color-purple-050: 252 251 254; /* #FCFBFE */
     /* base background */
     --color-base-background: 255, 255, 255;
+    /* white */
+    --color-white: 255, 255, 255;
   }
   :root.dark {
     /* Brand Dark Colors  */
@@ -155,17 +167,17 @@
     --color-green-100: 255, 239, 239;
     /* another (vivid)green */
     /* dont use these colors for text */
-    --color-vivid-green-1000: 4, 42, 19;
-    --color-vivid-green-900: 10, 104, 48;
-    --color-vivid-green-800: 14, 146, 67;
-    --color-vivid-green-700: 17, 177, 82;
-    --color-vivid-green-600: 20, 208, 96;
-    --color-vivid-green-500: 67, 217, 128;
-    --color-vivid-green-400: 114, 227, 160;
-    --color-vivid-green-300: 161, 236, 191;
-    --color-vivid-green-200: 208, 246, 223;
-    --color-vivid-green-100: 231, 250, 239;
-    --color-vivid-green-50: 250, 254, 252;
+    --color-green-1000: 122, 13, 13;
+    --color-green-900: 122, 13, 13;
+    --color-green-800: 171, 18, 18;
+    --color-green-700: 233, 2, 38;
+    --color-green-600: 244, 26, 26;
+    --color-green-500: 245, 49, 49;
+    --color-green-400: 247, 95, 95;
+    --color-green-300: 249, 140, 140;
+    --color-green-200: 252, 186, 186;
+    --color-green-100: 255, 239, 239;
+    --color-green-50: 255, 239, 239;
     /* Red dark Colors in RGB */
     --color-red-1000: 122, 13, 13;
     --color-red-900: 122, 13, 13;
