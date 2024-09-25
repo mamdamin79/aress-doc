@@ -2,15 +2,17 @@ import { Meta, StoryObj } from '@storybook/react/*';
 import { IconDialog } from './IconDialog';
 import { useArgs } from '@storybook/preview-api';
 
+// Meta configuration for the IconDialog component in Storybook
 const meta: Meta<typeof IconDialog> = {
-  title: 'component/iconDialog',
-  component: IconDialog,
+  title: 'component/iconDialog', //Definde title component in storybook UI
+  component: IconDialog, //link actual component
 };
 
 export default meta;
 
 type story = StoryObj<typeof IconDialog>;
 
+// story for success mode
 export const Success: story = {
   args: {
     title: 'دیدگاه ثبت شد!',
@@ -21,6 +23,7 @@ export const Success: story = {
   render: function Success(args) {
     const [{ isOpen }, updateArgs] = useArgs();
 
+    // change boolean state for show dialog
     function onChange() {
       updateArgs({ isOpen: !isOpen });
     }
@@ -29,6 +32,7 @@ export const Success: story = {
   },
 };
 
+// story for error mode
 export const Error: story = {
   args: {
     title: 'دیدگاه ثبت نشد!',
@@ -39,6 +43,7 @@ export const Error: story = {
   render: function Success(args) {
     const [{ isOpen }, updateArgs] = useArgs();
 
+    // change boolean state for show dialog
     function onChange() {
       updateArgs({ isOpen: !isOpen });
     }

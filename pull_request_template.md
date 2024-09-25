@@ -1,4 +1,3 @@
-
 # Ticket URL
 
 Paste the Trello card URL here. (e.g.: https://trello.com/c/HaAUwSZv/13-install-tailwindcss-in-design-system)
