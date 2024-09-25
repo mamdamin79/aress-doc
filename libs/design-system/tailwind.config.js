@@ -38,6 +38,14 @@ module.exports = {
         '5xl': '28px',
         '6xl': '32px ',
       },
+      lineHeight: {
+        xs: '22px',
+        sm: '26px',
+        md: '28px',
+        lg: '32px',
+        xl: '34px',
+        '2xl': '36px',
+      },
     },
     colors: {
       brand: {
