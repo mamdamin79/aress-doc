@@ -11,7 +11,7 @@ type Story = StoryObj<typeof Icon>;
 
 export const icon: Story = {
   args: {
-    name: 'Upload',
+    name: 'upload',
     size: 'lg',
   },
 };
