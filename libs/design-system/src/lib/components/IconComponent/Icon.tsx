@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconName, IconSize } from './Icon.types';
-import { sizeValues } from './Icon.constance';
+import { sizeValues, strokeValues } from './Icon.constants';
 import dynamicIconImports from 'lucide-react/dynamicIconImports';
 import dynamic from 'next/dynamic';
 
@@ -18,9 +18,6 @@ export const Icon: React.FC<IconProps> = ({ name, size = 'md' }) => {
   }>;
 
   return (
-    <LucideIcon
-      strokeWidth={sizeValues[size].strokeWidth}
-      size={sizeValues[size].size}
-    />
+    <LucideIcon strokeWidth={strokeValues[size]} size={sizeValues[size]} />
   );
 };
