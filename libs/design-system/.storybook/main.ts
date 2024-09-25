@@ -4,7 +4,7 @@ const config: StorybookConfig = {
   stories: ['../src/lib/**/*.@(mdx|stories.@(js|jsx|ts|tsx))'],
   addons: ['@storybook/addon-essentials', '@storybook/addon-interactions'],
   framework: {
-    name: '@storybook/react-vite',
+    name: '@storybook/nextjs',
     options: {
       builder: {
         viteConfigPath: 'vite.config.ts',
