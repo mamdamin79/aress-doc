@@ -26,6 +26,18 @@ module.exports = {
         '7xl': '8px 8px 2px 0px rgba(0, 11, 23, 0.16)',
         '8xl': '12px 12px 2px 0px rgba(0, 11, 23, 0.16)',
       },
+      borderRadius: {
+        xs: '4px',
+        sm: '6px',
+        md: '8px',
+        lg: '10px',
+        xl: '12px',
+        '2xl': '16px',
+        '3xl': '20px',
+        '4xl': '24px',
+        '5xl': '28px',
+        '6xl': '32px ',
+      },
     },
     colors: {
       brand: {
