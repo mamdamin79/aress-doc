@@ -49,17 +49,20 @@ export function IconDialog({
             >
               <div
                 className={cn(
-                  `absolute -top-12 w-24 h-24 flex items-center justify-center rounded-full ${colors[mode][0]}`
+                  'absolute -top-12 w-24 h-24 flex items-center justify-center rounded-full',
+                  `${colors[mode][0]}`
                 )}
               >
                 <div
                   className={cn(
-                    `rounded-full flex items-center justify-center w-20 h-20 ${colors[mode][1]}`
+                    'rounded-full flex items-center justify-center w-20 h-20',
+                    `${colors[mode][1]}`
                   )}
                 >
                   <div
                     className={cn(
-                      `rounded-full text-white px-4 w-16 flex justify-center items-center h-16 ${colors[mode][2]}`
+                      'rounded-full text-white px-4 w-16 flex justify-center items-center h-16',
+                      `${colors[mode][2]}`
                     )}
                   >
                     {mode === 'error' ? (
