@@ -13,5 +13,6 @@ export const Default: Story = {
   args: {
     title: 'مصاحبات  با مدیر صندوق “سهم آشنا”',
     align: 'center',
+    level: 1,
   },
 };
