@@ -38,13 +38,49 @@ module.exports = {
         '5xl': '28px',
         '6xl': '32px ',
       },
-      lineHeight: {
-        xs: '22px',
-        sm: '26px',
-        md: '28px',
-        lg: '32px',
-        xl: '34px',
-        '2xl': '36px',
+      fontSize: {
+        xs: [
+          '12px',
+          {
+            lineHeight: '22px',
+          },
+        ],
+        sm: [
+          '14px',
+          {
+            lineHeight: '26',
+          },
+        ],
+        md: [
+          '16px',
+          {
+            lineHeight: '28px',
+          },
+        ],
+        lg: [
+          '18px',
+          {
+            lineHeight: '32px',
+          },
+        ],
+        xl: [
+          '20px',
+          {
+            lineHeight: '36px',
+          },
+        ],
+        '2xl': [
+          '22px',
+          {
+            lineHeight: '34px',
+          },
+        ],
+        '3xl': [
+          '24px',
+          {
+            lineHeight: '34px',
+          },
+        ],
       },
     },
     colors: {
