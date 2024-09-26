@@ -4,7 +4,7 @@ import { useArgs } from '@storybook/preview-api';
 
 // Meta configuration for the IconDialog component in Storybook
 const meta: Meta<typeof IconDialog> = {
-  title: 'component/iconDialog', //Definde title component in storybook UI
+  title: 'Component/IconDialog', //Definde title component in storybook UI
   component: IconDialog, //link actual component
 };
 
