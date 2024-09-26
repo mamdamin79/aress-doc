@@ -1,4 +1,5 @@
 import { Button, Dialog, DialogPanel, Transition } from '@headlessui/react';
+import { cn } from '../../../utils';
 import { Fragment } from 'react';
 
 // type data prop for modal
@@ -46,13 +47,19 @@ export function IconDialog({
               className="w-96 h-60 relative flex flex-col items-center shadow rounded-[20px] pt-16 px-6 pb-6"
             >
               <div
-                className={`absolute -top-12 w-24 h-24 flex items-center justify-center rounded-full ${colors[mode][0]}`}
+                className={cn(
+                  `absolute -top-12 w-24 h-24 flex items-center justify-center rounded-full ${colors[mode][0]}`
+                )}
               >
                 <div
-                  className={`rounded-full flex items-center justify-center w-20 h-20 ${colors[mode][1]}`}
+                  className={cn(
+                    `rounded-full flex items-center justify-center w-20 h-20 ${colors[mode][1]}`
+                  )}
                 >
                   <div
-                    className={`rounded-full px-4 w-16 flex justify-center items-center h-16 ${colors[mode][2]}`}
+                    className={cn(
+                      `rounded-full px-4 w-16 flex justify-center items-center h-16 ${colors[mode][2]}`
+                    )}
                   >
                     <img
                       src={`${
