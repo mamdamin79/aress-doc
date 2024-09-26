@@ -54,7 +54,7 @@ module.exports = {
         md: [
           '16px',
           {
-            lineHeight: '28px',
+            lineHeight: '30px',
           },
         ],
         lg: [
