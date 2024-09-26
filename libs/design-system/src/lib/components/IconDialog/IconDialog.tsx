@@ -4,7 +4,7 @@ import { Fragment } from 'react';
 import { Icon } from '../IconComponent';
 
 // type data prop for modal
-interface IconDialogItem {
+interface Props {
   title: string;
   message: string;
   onClose: () => void;
@@ -18,13 +18,7 @@ const colors = {
   error: ['bg-red-100', 'bg-red-300', 'bg-red-600'],
 };
 
-export function IconDialog({
-  title,
-  message,
-  onClose,
-  isOpen,
-  mode,
-}: IconDialogItem) {
+export function IconDialog({ title, message, onClose, isOpen, mode }: Props) {
   return (
     <Dialog
       open={isOpen}
