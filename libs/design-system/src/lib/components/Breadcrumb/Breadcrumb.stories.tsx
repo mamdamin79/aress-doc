@@ -17,7 +17,7 @@ export const Home: Story = {
     items: [
       { title: 'نوار مسیر یاب', icon: 'icons/vector.svg', link: '/' },
       { title: 'نوار مسیر یاب', icon: 'icons/vector.svg', link: '/' },
-      { title: 'نوار مسیر یاب', icon: 'icons/vector.svg', link: '/' },
+      { title: 'نوار مسیر یاب', icon: 'icons/vector.svg' },
     ],
   },
 };
