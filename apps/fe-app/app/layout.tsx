@@ -1,5 +1,5 @@
 import './global.css';
-import { Header } from 'design-system';
+import { cn, Header } from 'design-system';
 
 export const metadata = {
   title: 'Welcome to apps/fe-app',
@@ -13,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className={cn('sdfsdf', 'dfsdfs')}>
         <Header />
         {children}
       </body>
