@@ -44,19 +44,19 @@ export function IconDialog({ title, message, onClose, isOpen, mode }: Props) {
               <div
                 className={cn(
                   'absolute -top-12 w-24 h-24 flex items-center justify-center rounded-full',
-                  `${colors[mode][0]}`
+                  colors[mode][0]
                 )}
               >
                 <div
                   className={cn(
                     'rounded-full flex items-center justify-center w-20 h-20',
-                    `${colors[mode][1]}`
+                    colors[mode][1]
                   )}
                 >
                   <div
                     className={cn(
                       'rounded-full text-white px-4 w-16 flex justify-center items-center h-16',
-                      `${colors[mode][2]}`
+                      colors[mode][2]
                     )}
                   >
                     {mode === 'error' ? (
@@ -67,10 +67,8 @@ export function IconDialog({ title, message, onClose, isOpen, mode }: Props) {
                   </div>
                 </div>
               </div>
-              <p className="text-xl text-center leading-9 font-semibold">
-                {title}
-              </p>
-              <p className="mt-4 text-center leading-[30px]">{message}</p>
+              <p className="text-xl text-center font-semibold">{title}</p>
+              <p className="mt-4 text-center">{message}</p>
               <Button
                 onClick={onClose}
                 className="w-full mt-6 text-white py-2 rounded-lg font-semibold transition-colors duration-300 hover:bg-brand-700 bg-[#009695]"
