@@ -15,8 +15,9 @@ type Story = StoryObj<typeof Breadcrumb>;
 export const Home: Story = {
   args: {
     items: [
-      { title: 'نوار مسیر یاب', icon: 'download', link: '/' },
-      { title: 'نوار مسیر یاب', icon: 'house', link: '/' },
+      { icon: 'house', link: '/' },
+      { title: 'صندوق های من', link: '/' },
+      { title: 'صندوق سرمایه گذاری سهم آشنا', link: '/' },
     ],
   },
 };
