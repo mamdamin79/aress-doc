@@ -12,7 +12,7 @@ export default meta;
 type Story = StoryObj<typeof Breadcrumb>;
 
 // A default story for the Breadcrumb component
-export const Home: Story = {
+export const InvestorFund: Story = {
   args: {
     items: [
       { icon: 'house', link: '/' },
