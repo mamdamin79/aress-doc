@@ -24,7 +24,7 @@ export function Breadcrumb({ items }: Props) {
             key={index}
           >
             <Link href={item.link ?? ''} className="flex items-center">
-              <Icon name="house" size="sm" />
+              <Icon name={item?.icon} size="sm" />
               <span className="text-xs pb-0.5 mr-0.5 ml-0.5">{item.title}</span>
               {index + 1 !== items.length && (
                 <Icon name="chevron-left" size="sm" />
