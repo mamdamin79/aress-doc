@@ -1,6 +1,4 @@
-import dynamicIconImports from 'lucide-react/dynamicIconImports';
-
-export type IconName = keyof typeof dynamicIconImports;
+import { IconName } from '../IconComponent/Icon.types';
 
 // this type for BreadcrumbItem
 export interface BreadcrumbItem {
