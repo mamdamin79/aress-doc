@@ -4,4 +4,4 @@ import dynamicIconImports from 'lucide-react/dynamicIconImports';
 export type IconName = keyof typeof dynamicIconImports;
 
 // valid icon size you can pass to IconComponent
-export type IconSize = 'sm' | 'md' | 'lg';
+export type IconSize = 'sm' | 'md' | 'lg' | 'xl';
