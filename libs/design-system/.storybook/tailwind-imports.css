@@ -232,3 +232,15 @@
     --color-base-background: 10, 13, 13;
   }
 }
+
+.dir-rtl {
+  direction: rtl;
+}
+
+.dir-ltr {
+  direction: ltr;
+}
+
+html {
+  direction: rtl;
+}
