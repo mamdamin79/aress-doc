@@ -10,7 +10,7 @@ export const SectionTitle: React.FC<sectionTitleProps> = ({
   const Heading = `h${level}` as keyof JSX.IntrinsicElements;
   return (
     <Heading
-      className={`${alignClasses[align]} font-medium text-[22px] leading-[34px] text-[#05070C]`}
+      className={`${alignClasses[align]} font-medium text-2xl text-gray-1000`}
     >
       <span className="bg-[#33ABAA] inline-block mr-1 w-1 h-1 rounded-full"></span>
       <span className="bg-[#009695] inline-block mr-3 w-[6px] h-[6px] rounded-full"></span>
