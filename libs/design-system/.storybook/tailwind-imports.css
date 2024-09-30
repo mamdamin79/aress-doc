@@ -238,3 +238,9 @@
 html {
   direction: rtl;
 }
+/* برای Webkit مرورگرها (مثل Chrome, Safari, Edge) */
+input[type='password']::-ms-reveal,
+input[type='password']::-ms-clear,
+input[type='password']::-webkit-password-eye {
+  display: none;
+}

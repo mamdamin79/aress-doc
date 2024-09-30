@@ -1,6 +1,7 @@
+import { InputHTMLAttributes } from 'react';
 import { IconName } from '../IconComponent/Icon.types';
 
-export type textFieldPropsType = {
+export type textFieldPropsType = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   placeholder?: string;
   supportText?: string;

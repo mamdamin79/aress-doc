@@ -19,5 +19,6 @@ export const Default: Story = {
     mergeTitleAndPlaceholder: false,
     leadingIcon: 'user-round',
     trailingIcons: ['x', 'eye'],
+    type: 'password',
   },
 };
