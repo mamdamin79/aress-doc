@@ -30,6 +30,7 @@
     "@storybook/addon-interactions": "^8.2.8",
     "@storybook/core-server": "^8.2.8",
     "@storybook/jest": "^0.2.3",
+    "@storybook/nextjs": "^8.3.2",
     "@storybook/react-vite": "^8.2.8",
     "@storybook/test-runner": "^0.13.0",
     "@storybook/testing-library": "^0.2.2",
@@ -74,10 +75,14 @@
   },
   "nx": {},
   "dependencies": {
+    "@headlessui/react": "^2.1.8",
     "@storybook/react": "^8.3.2",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.445.0",
     "next": "14.2.3",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "tailwind-merge": "^2.5.2",
     "tslib": "^2.3.0"
   },
   "lint-staged": {
@@ -89,5 +94,6 @@
     "**/*.{css,scss}": [
       "prettier --write"
     ]
-  }
+  },
+  "packageManager": "pnpm@9.11.0+sha512.0a203ffaed5a3f63242cd064c8fb5892366c103e328079318f78062f24ea8c9d50bc6a47aa3567cabefd824d170e78fa2745ed1f16b132e16436146b7688f19b"
 }
