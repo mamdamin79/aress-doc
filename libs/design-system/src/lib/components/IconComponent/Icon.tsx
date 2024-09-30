@@ -25,8 +25,7 @@ export const Icon: React.FC<IconProps> = ({ name, size = 'md' }) => {
     return (
       <LucideIcon strokeWidth={strokeValues[size]} size={sizeValues[size]} />
     );
-  }
-  if (name in customIcons) {
+  } else {
     return (
       <Image
         src={customCalender}
