@@ -9,8 +9,8 @@
     --color-brand-100: 237 248 248;
     --color-brand-200: 204 234 234;
     --color-brand-300: 153 213 213;
-    --color-brand-400: 102 192 192;
-    --color-brand-500: 51 171 171;
+    --color-brand-400: 102 192 191;
+    --color-brand-500: 51 171 170;
     --color-brand-600: 0 150 149;
     --color-brand-700: 0 132 131;
     --color-brand-800: 0 113 112;
@@ -22,7 +22,7 @@
     --color-gray-200: 231 234 238;
     --color-gray-300: 216 219 225;
     --color-gray-400: 202 205 211;
-    --color-gray-500: 140 153 158;
+    --color-gray-500: 140 144 150;
     --color-gray-600: 114 119 126;
     --color-gray-700: 84 89 98;
     --color-gray-800: 57 60 66;
@@ -33,10 +33,10 @@
     --color-green-100: 229 243 234;
     --color-green-200: 204 231 213;
     --color-green-300: 153 208 172;
-    --color-green-400: 102 187 130;
+    --color-green-400: 102 184 130;
     --color-green-500: 51 161 89;
     --color-green-600: 0 130 45;
-    --color-green-700: 0 114 40;
+    --color-green-700: 0 116 40;
     --color-green-800: 0 96 33;
     --color-green-900: 0 69 24;
     --color-green-1000: 0 27 9;
@@ -225,4 +225,16 @@
     /* Base Background in RGB */
     --color-base-background: 10, 13, 13;
   }
+}
+
+.dir-rtl {
+  direction: rtl;
+}
+
+.dir-ltr {
+  direction: ltr;
+}
+
+html {
+  direction: rtl;
 }
