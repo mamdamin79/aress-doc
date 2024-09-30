@@ -48,13 +48,13 @@ module.exports = {
         sm: [
           '14px',
           {
-            lineHeight: '26',
+            lineHeight: '26px',
           },
         ],
         md: [
           '16px',
           {
-            lineHeight: '28px',
+            lineHeight: '30px',
           },
         ],
         lg: [
