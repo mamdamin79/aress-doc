@@ -8,5 +8,5 @@ export type textFieldPropsType = {
   mode: 'filled' | 'outline'; // default filled
   mergeTitleAndPlaceholder: boolean; // default false
   leadingIcon?: IconName;
-  trailingIcons: ['eye', 'x'];
+  trailingIcons: [] | ['x'] | ['x', 'eye'];
 };
