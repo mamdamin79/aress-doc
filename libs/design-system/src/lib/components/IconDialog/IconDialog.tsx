@@ -71,7 +71,7 @@ export function IconDialog({ title, message, onClose, isOpen, mode }: Props) {
               <p className="mt-4 text-center text-md">{message}</p>
               <Button
                 onClick={onClose}
-                className="w-full mt-6 text-white py-2 rounded-lg font-semibold transition-colors duration-300 hover:bg-brand-700 bg-[#009695]"
+                className="w-full mt-6 text-white py-2 rounded-lg font-semibold transition-colors duration-300 hover:bg-brand-700 bg-brand-600"
               >
                 بستن
               </Button>
