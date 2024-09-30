@@ -9,4 +9,5 @@ export type textFieldPropsType = {
   mergeTitleAndPlaceholder: boolean; // default false
   leadingIcon?: IconName;
   trailingIcons: [] | ['x'] | ['x', 'eye'];
+  isDisable: boolean; // default false
 };
