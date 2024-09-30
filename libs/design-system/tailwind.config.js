@@ -48,7 +48,7 @@ module.exports = {
         sm: [
           '14px',
           {
-            lineHeight: '26',
+            lineHeight: '26px',
           },
         ],
         md: [
