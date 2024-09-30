@@ -9,8 +9,8 @@
     --color-brand-100: 237 248 248;
     --color-brand-200: 204 234 234;
     --color-brand-300: 153 213 213;
-    --color-brand-400: 102 192 192;
-    --color-brand-500: 51 171 171;
+    --color-brand-400: 102 192 191;
+    --color-brand-500: 51 171 170;
     --color-brand-600: 0 150 149;
     --color-brand-700: 0 132 131;
     --color-brand-800: 0 113 112;
@@ -22,8 +22,7 @@
     --color-gray-200: 231 234 238;
     --color-gray-300: 216 219 225;
     --color-gray-400: 202 205 211;
-    --color-gray-500: 140 153 158;
-    --color-gray-600: 114 119 126;
+    --color-gray-500: 140 144 150;
     --color-gray-700: 84 89 98;
     --color-gray-800: 57 60 66;
     --color-gray-900: 25 27 30;
@@ -33,10 +32,10 @@
     --color-green-100: 229 243 234;
     --color-green-200: 204 231 213;
     --color-green-300: 153 208 172;
-    --color-green-400: 102 187 130;
+    --color-green-400: 102 184 130;
     --color-green-500: 51 161 89;
     --color-green-600: 0 130 45;
-    --color-green-700: 0 114 40;
+    --color-green-700: 0 116 40;
     --color-green-800: 0 96 33;
     --color-green-900: 0 69 24;
     --color-green-1000: 0 27 9;
@@ -119,109 +118,115 @@
   }
   :root.dark {
     /* Brand Dark Colors  */
-    --color-brand-1000: 13, 25, 130;
-    --color-brand-900: 13, 25, 130;
-    --color-brand-800: 22, 35, 158;
-    --color-brand-700: 33, 50, 206;
-    --color-brand-600: 55, 75, 255;
-    --color-brand-500: 91, 107, 255;
-    --color-brand-400: 165, 174, 255;
-    --color-brand-300: 215, 219, 255;
-    --color-brand-200: 243, 244, 255;
-    --color-brand-100: 249, 250, 255;
-    --color-brand-50: 249, 250, 255;
+    --color-brand-1000: 227 243 243; /* #E3F3F3 */
+    --color-brand-900: 138 207 206; /* #8ACFCE */
+    --color-brand-800: 33 164 163; /* #21A4A3 */
+    --color-brand-700: 0 144 143; /* #00908F */
+    --color-brand-600: 0 133 132; /* #008584 */
+    --color-brand-500: 0 107 106; /* #006B6A */
+    --color-brand-400: 0 88 87; /* #005857 */
+    --color-brand-300: 0 68 68; /* #004444 */
+    --color-brand-200: 0 50 50; /* #003232 */
+    --color-brand-100: 0 36 35; /* #002423 */
+    --color-brand-050: 0 30 30; /* #001E1E */
     /* Gray dark Colors in RGB */
-    --color-gray-1000: 28, 30, 34;
-    --color-gray-900: 28, 30, 34;
-    --color-gray-800: 60, 62, 65;
-    --color-gray-700: 84, 86, 91;
-    --color-gray-600: 120, 123, 130;
-    --color-gray-500: 173, 176, 182;
-    --color-gray-400: 197, 200, 207;
-    --color-gray-300: 232, 232, 234;
-    --color-gray-200: 238, 238, 240;
-    --color-gray-100: 247, 247, 248;
-    --color-gray-50: 247, 247, 248;
+    --color-gray-1000: 253 253 253; /* #FDFDFD */
+    --color-gray-900: 248 248 248; /* #F8F8F8 */
+    --color-gray-800: 208 209 209; /* #D0D1D1 */
+    --color-gray-700: 171 172 172; /* #ABACAC */
+    --color-gray-600: 134 135 135; /* #868787 */
+    --color-gray-500: 106 107 107; /* #6A6B6B */
+    --color-gray-400: 60 63 63; /* #3C3F3F */
+    --color-gray-300: 50 53 53; /* #323535 */
+    --color-gray-200: 43 46 46; /* #2B2E2E */
+    --color-gray-100: 35 37 37; /* #232525 */
+    --color-gray-050: 25 28 28; /* #191C1C */
     /* Blue dark Colors in RGB */
-    --color-blue-1000: 0, 67, 39;
-    --color-blue-900: 0, 67, 39;
-    --color-blue-800: 0, 105, 61;
-    --color-blue-700: 0, 146, 86;
-    --color-blue-600: 1, 171, 89;
-    --color-blue-500: 50, 206, 112;
-    --color-blue-400: 121, 223, 162;
-    --color-blue-300: 162, 237, 192;
-    --color-blue-200: 230, 247, 240;
-    --color-blue-100: 242, 251, 247;
-    --color-blue-50: 242, 251, 247;
+    --color-blue-1000: 242, 248, 254;
+    --color-blue-900: 157, 201, 249;
+    --color-blue-800: 95, 167, 246;
+    --color-blue-700: 50, 142, 243;
+    --color-blue-600: 6, 118, 240;
+    --color-blue-500: 0, 97, 204;
+    --color-blue-400: 0, 77, 163;
+    --color-blue-300: 0, 58, 123;
+    --color-blue-200: 0, 39, 82;
+    --color-blue-100: 0, 23, 48;
+    --color-blue-050: 0, 16, 34;
     /* Green dark Colors in RGB */
-    --color-green-1000: 122, 13, 13;
-    --color-green-900: 122, 13, 13;
-    --color-green-800: 233, 2, 38;
-    --color-green-700: 244, 26, 26;
-    --color-green-600: 245, 49, 49;
-    --color-green-500: 247, 95, 95;
-    --color-green-400: 249, 140, 140;
-    --color-green-300: 252, 186, 186;
-    --color-green-200: 255, 239, 239;
-    --color-green-100: 255, 239, 239;
+    --color-green-1000: 240, 248, 243;
+    --color-green-900: 158, 208, 175;
+    --color-green-800: 101, 179, 128;
+    --color-green-700: 61, 160, 95;
+    --color-green-600: 34, 147, 73;
+    --color-green-500: 0, 107, 37;
+    --color-green-400: 0, 93, 32;
+    --color-green-300: 0, 70, 24;
+    --color-green-200: 0, 47, 16;
+    --color-green-100: 0, 34, 12;
+    --color-green-050: 0, 19, 7;
     /* another (vivid)green */
     /* dont use these colors for text */
-    --color-green-1000: 122, 13, 13;
-    --color-green-900: 122, 13, 13;
-    --color-green-800: 171, 18, 18;
-    --color-green-700: 233, 2, 38;
-    --color-green-600: 244, 26, 26;
-    --color-green-500: 245, 49, 49;
-    --color-green-400: 247, 95, 95;
-    --color-green-300: 249, 140, 140;
-    --color-green-200: 252, 186, 186;
-    --color-green-100: 255, 239, 239;
-    --color-green-50: 255, 239, 239;
+    --color-vivid-green-1000: 213, 247, 227;
+    --color-vivid-green-900: 163, 237, 193;
+    --color-vivid-green-800: 111, 226, 157;
+    --color-vivid-green-700: 74, 219, 132;
+    --color-vivid-green-600: 47, 213, 114;
+    --color-vivid-green-500: 17, 174, 80;
+    --color-vivid-green-400: 15, 153, 71;
+    --color-vivid-green-300: 11, 119, 55;
+    --color-vivid-green-200: 8, 81, 37;
+    --color-vivid-green-100: 6, 60, 28;
+    --color-vivid-green-050: 4, 37, 17;
     /* Red dark Colors in RGB */
-    --color-red-1000: 122, 13, 13;
-    --color-red-900: 122, 13, 13;
-    --color-red-800: 171, 18, 18;
-    --color-red-700: 233, 2, 38;
-    --color-red-600: 244, 26, 26;
-    --color-red-500: 245, 49, 49;
-    --color-red-400: 247, 95, 95;
-    --color-red-300: 249, 140, 140;
-    --color-red-200: 252, 186, 186;
-    --color-red-100: 255, 239, 239;
+    --color-red-1000: 254, 246, 246;
+    --color-red-900: 245, 184, 184;
+    --color-red-800: 238, 137, 137;
+    --color-red-700: 232, 100, 100;
+    --color-red-600: 221, 25, 25;
+    --color-red-500: 197, 22, 22;
+    --color-red-400: 177, 20, 20;
+    --color-red-300: 135, 15, 15;
+    --color-red-200: 91, 10, 10;
+    --color-red-100: 65, 7, 7;
+    --color-red-050: 40, 5, 5;
     /* Yellow dark Colors in RGB */
-    --color-yellow-1000: 122, 13, 13;
-    --color-yellow-900: 122, 13, 13;
-    --color-yellow-800: 171, 18, 18;
-    --color-yellow-700: 233, 2, 38;
-    --color-yellow-600: 244, 26, 26;
-    --color-yellow-500: 245, 49, 49;
-    --color-yellow-400: 247, 95, 95;
-    --color-yellow-300: 249, 140, 140;
-    --color-yellow-200: 252, 186, 186;
-    --color-yellow-100: 255, 239, 239;
+    --color-yellow-1000: 255, 251, 240;
+    --color-yellow-900: 255, 226, 158;
+    --color-yellow-800: 255, 209, 101;
+    --color-yellow-700: 255, 197, 61;
+    --color-yellow-600: 255, 189, 34;
+    --color-yellow-500: 210, 148, 0;
+    --color-yellow-400: 182, 128, 0;
+    --color-yellow-300: 138, 97, 0;
+    --color-yellow-200: 92, 64, 0;
+    --color-yellow-100: 66, 47, 0;
+    --color-yellow-050: 38, 27, 0;
     /* Pink dark Colors in RGB */
-    --color-pink-1000: 122, 13, 13;
-    --color-pink-900: 122, 13, 13;
-    --color-pink-800: 171, 18, 18;
-    --color-pink-700: 233, 2, 38;
-    --color-pink-600: 244, 26, 26;
-    --color-pink-500: 245, 49, 49;
-    --color-pink-400: 247, 95, 95;
-    --color-pink-300: 249, 140, 140;
-    --color-pink-200: 252, 186, 186;
-    --color-pink-100: 255, 239, 239;
+    --color-pink-1000: 255, 225, 240;
+    --color-pink-900: 255, 190, 222;
+    --color-pink-800: 255, 152, 203;
+    --color-pink-700: 255, 126, 190;
+    --color-pink-600: 255, 107, 181;
+    --color-pink-500: 213, 73, 143;
+    --color-pink-400: 187, 65, 126;
+    --color-pink-300: 145, 50, 97;
+    --color-pink-200: 99, 34, 67;
+    --color-pink-100: 74, 26, 50;
+    --color-pink-050: 46, 16, 31;
     /* Purple dark Colors in RGB */
-    --color-purple-1000: 122, 13, 13;
-    --color-purple-900: 122, 13, 13;
-    --color-purple-800: 171, 18, 18;
-    --color-purple-700: 233, 2, 38;
-    --color-purple-600: 244, 26, 26;
-    --color-purple-500: 245, 49, 49;
-    --color-purple-400: 247, 95, 95;
-    --color-purple-300: 249, 140, 140;
-    --color-purple-200: 252, 186, 186;
-    --color-purple-100: 255, 239, 239;
+    --color-purple-1000: 249, 248, 254;
+    --color-purple-900: 214, 203, 247;
+    --color-purple-800: 188, 169, 242;
+    --color-purple-700: 169, 144, 238;
+    --color-purple-600: 150, 121, 235;
+    --color-purple-500: 122, 84, 229;
+    --color-purple-400: 94, 59, 194;
+    --color-purple-300: 70, 44, 143;
+    --color-purple-200: 46, 29, 95;
+    --color-purple-100: 32, 20, 66;
+    --color-purple-050: 19, 12, 39;
+
     /* Base Background in RGB */
     --color-base-background: 10, 13, 13;
   }
