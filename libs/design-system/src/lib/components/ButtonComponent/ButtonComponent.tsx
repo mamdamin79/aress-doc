@@ -21,7 +21,7 @@ function getButtonClasses(
   disable: boolean
 ) {
   const baseClasses =
-    'flex gap-2 group transition-all duration-300 items-center px-2';
+    'flex gap-2 group w-full justify-center transition-all duration-300 items-center px-2';
   const sizeClass = sizesButton[size];
   const modeClasses = disable
     ? modes[mode].disable
@@ -42,7 +42,7 @@ export function ButtonComponent({
   iconLeft,
   text,
   mode,
-  size = 'sm',
+  size,
   disable,
   loading,
 }: Props) {

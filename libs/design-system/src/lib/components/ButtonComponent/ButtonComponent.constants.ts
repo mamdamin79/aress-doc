@@ -20,7 +20,7 @@ export const modes = {
   text: {
     default:
       'text-brand-600 active:border-brand-800 hover:border hover:border-brand-600',
-    loading: 'text-brand-600',
+    loading: 'text-brand-600 border border-brand-600',
     disable: 'text-brand-300',
   },
   underline: {
