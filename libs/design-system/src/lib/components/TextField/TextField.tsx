@@ -113,7 +113,10 @@ export const TextField: React.FC<textFieldPropsType> = ({
               }
             }}
           >
-            <Icon name={icon} size="lg" />
+            <Icon
+              name={icon === 'x' ? icon : visibleCharacter ? icon : 'eye-off'}
+              size="lg"
+            />
           </button>
         ))}
       </div>
