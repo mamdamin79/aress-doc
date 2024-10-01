@@ -1,0 +1,62 @@
+@font-face {
+  font-family: 'vazirmatn';
+  src: url('Vazirmatn-FD-Thin.ttf');
+  font-weight: 100;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'vazirmatn';
+  src: url('Vazirmatn-FD-ExtraLight.ttf');
+  font-weight: 200;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'vazirmatn';
+  src: url('Vazirmatn-FD-Light.ttf');
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'vazirmatn';
+  src: url('Vazirmatn-FD-Regular.ttf');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'vazirmatn';
+  src: url('Vazirmatn-FD-Medium.ttf');
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'vazirmatn';
+  src: url('Vazirmatn-FD-SemiBold.ttf');
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'vazirmatn';
+  src: url('Vazirmatn-FD-Bold.ttf');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'vazirmatn';
+  src: url('Vazirmatn-FD-ExtraBold.ttf');
+  font-weight: 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'vazirmatn';
+  src: url('Vazirmatn-FD-Black.ttf');
+  font-weight: 900;
+  font-display: swap;
+}
