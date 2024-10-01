@@ -12,6 +12,15 @@ module.exports = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        toast: {
+          '0%': { transform: 'scale(0)' },
+          '100%': { transform: 'scale(1)' },
+        },
+      },
+      animation: {
+        toast: 'toast 0.3s ease-in-out',
+      },
       boxShadow: {
         xs: '0px 1px 1px 0px rgba(0, 11, 23, 0.06)',
         sm: '0px 3px 4px 0px rgba(0, 11, 23, 0.04)',
