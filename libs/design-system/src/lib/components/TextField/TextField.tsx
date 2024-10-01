@@ -77,11 +77,11 @@ export const TextField: React.FC<textFieldPropsType> = ({
         disabled={isDisable}
         onChange={(e) => setInputValue(e.target.value)}
         className={cn(
-          `placeholder:text-gray-500 ${
+          `placeholder:text-gray-500 transition-colors ${
             isDisable
               ? 'placeholder:text-gray-400'
               : 'placeholder:text-gray-500'
-          } font-normal rounded-xl p-2  w-full transition-all duration-150 outline-none  text-md ${
+          } font-normal rounded-xl p-2  w-full duration-150 outline-none  text-md ${
             leadingIcon && 'pr-12'
           } ${
             isError && isDisable === false
@@ -95,7 +95,11 @@ export const TextField: React.FC<textFieldPropsType> = ({
             'hover:bg-gray-300':
               mode === 'filled' && isDisable === false && !isFocused,
           },
-          { '!bg-gray-50 cursor-not-allowed': isDisable && mode === 'filled' }
+          { '!bg-gray-50 cursor-not-allowed': isDisable && mode === 'filled' },
+          {
+            'text-transparent':
+              mergeTitleAndPlaceholder && !isFocused && inputValue,
+          }
         )}
         placeholder={mergeTitleAndPlaceholder ? '' : placeholder}
       />
