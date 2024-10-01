@@ -16,9 +16,10 @@ export const Default: Story = {
     supportText: 'متن پشتیبان',
     isError: false,
     mode: 'filled',
-    mergeTitleAndPlaceholder: false,
+    mergeTitleAndPlaceholder: true,
     leadingIcon: 'user-round',
     trailingIcons: ['x', 'eye'],
+    isDisable: false,
     type: 'password',
   },
 };
