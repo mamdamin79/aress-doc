@@ -16,8 +16,6 @@ type Story = StoryObj<typeof ButtonComponent>;
 export const Primary: Story = {
   args: {
     text: 'دنبال کردن',
-    iconLeft: 'layout-grid',
-    iconRight: 'copy',
     mode: 'primary',
     size: 'sm',
     disable: false,
@@ -29,8 +27,6 @@ export const Primary: Story = {
 export const Secondary: Story = {
   args: {
     text: 'دنبال کردن',
-    iconLeft: 'layout-grid',
-    iconRight: 'copy',
     mode: 'secondary',
     size: 'sm',
     disable: false,
@@ -41,8 +37,6 @@ export const Secondary: Story = {
 export const Text: Story = {
   args: {
     text: 'دنبال کردن',
-    iconLeft: 'layout-grid',
-    iconRight: 'copy',
     mode: 'text',
     size: 'sm',
     disable: false,
@@ -53,8 +47,6 @@ export const Text: Story = {
 export const Underline: Story = {
   args: {
     text: 'دنبال کردن',
-    iconLeft: 'layout-grid',
-    iconRight: 'copy',
     mode: 'underline',
     size: 'sm',
     disable: false,
