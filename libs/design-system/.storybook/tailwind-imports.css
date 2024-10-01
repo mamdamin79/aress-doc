@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @layer base {
+  @import url('./../src/assets/fonts/vazirmant.css');
   :root {
     /* brand colors */
     --color-brand-050: 250 253 253;
@@ -225,9 +226,4 @@
     /* Base Background in RGB */
     --color-base-background: 10, 13, 13;
   }
-}
-
-@font-face {
-  font-family: 'vazirmatn';
-  src: url(../src/assets/fonts/Vazirmatn-FD-Medium.woff2);
 }
