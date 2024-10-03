@@ -21,13 +21,19 @@ export function Breadcrumb({ items }: Props) {
             )}
             key={index}
           >
-            <Link href={item.link ?? ''} className="flex items-center">
+            <div className="flex items-center">
               {item.icon && <Icon name={item?.icon} size="sm" />}
-              <span className="text-xs pb-0.5 mx-0.5">{item.title}</span>
+              {item.link ? (
+                <Link className="text-xs pb-0.5 mx-0.5" href={item.link}>
+                  {item.title}
+                </Link>
+              ) : (
+                <span className="text-xs pb-0.5 mx-0.5">{item.title}</span>
+              )}
               {index + 1 !== items.length && (
                 <Icon name="chevron-left" size="sm" />
               )}
-            </Link>
+            </div>
           </li>
         ))}
       </ul>
