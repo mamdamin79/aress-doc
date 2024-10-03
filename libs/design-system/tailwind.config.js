@@ -12,6 +12,15 @@ module.exports = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        progressBar: {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+      },
+      animation: {
+        progressBar: 'progressBar 1s ease-in-out',
+      },
       boxShadow: {
         xs: '0px 1px 1px 0px rgba(0, 11, 23, 0.06)',
         sm: '0px 3px 4px 0px rgba(0, 11, 23, 0.04)',
