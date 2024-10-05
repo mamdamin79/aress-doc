@@ -2,8 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('./../src/assets/fonts/vazirmant.css');
+
 @layer base {
-  @import url('./../src/assets/fonts/vazirmant.css');
   :root {
     /* brand colors */
     --color-brand-050: 250 253 253;
