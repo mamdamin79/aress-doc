@@ -122,7 +122,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
         ))}
       </div>
 
-      <p
+      <span
         className={cn('text-xs', {
           'text-red-600': isError,
           'text-gray-600': !isError,
@@ -130,7 +130,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
         })}
       >
         {supportText}
-      </p>
+      </span>
     </div>
   );
 };
