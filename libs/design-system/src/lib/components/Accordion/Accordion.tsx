@@ -22,7 +22,7 @@ export const Accordion: React.FC<accordionPropsType> = ({
     >
       {({ open }) => (
         <>
-          {open ? (
+          {singleOpen && open ? (
             <button className=" flex w-full items-center justify-between ">
               <span className="text-gray-1000 text-md">{item.title}</span>
               <span
@@ -45,7 +45,13 @@ export const Accordion: React.FC<accordionPropsType> = ({
               </span>
             </DisclosureButton>
           )}
-          {openIndex === index && (
+          {singleOpen ? (
+            openIndex === index && (
+              <DisclosurePanel className="border-t border-gray-300 text-sm text-gray-500 mt-4 pt-4">
+                {item.content}
+              </DisclosurePanel>
+            )
+          ) : (
             <DisclosurePanel className="border-t border-gray-300 text-sm text-gray-500 mt-4 pt-4">
               {item.content}
             </DisclosurePanel>
