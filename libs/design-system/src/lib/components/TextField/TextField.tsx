@@ -14,7 +14,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
   leadingIcon,
   trailingIcons,
   type,
-  isDisable,
+  disabled,
   ...rest
 }) => {
   const [inputValue, setInputValue] = useState('');
@@ -34,17 +34,17 @@ export const TextField: React.FC<textFieldPropsType> = ({
   return (
     <div
       data-twe-input-wrapper-init
-      className={`relative w-[480px] ${isDisable && 'pointer-events-none'}`}
+      className={`relative w-[480px] ${disabled && 'pointer-events-none'}`}
     >
       <div className="h-[26px]">
         {mergeTitleAndPlaceholder ? (
           isFocused && (
-            <label className={cn(`text-sm  `, { 'text-gray-400': isDisable })}>
+            <label className={cn(`text-sm  `, { 'text-gray-400': disabled })}>
               {label}
             </label>
           )
         ) : (
-          <label className={cn(`text-sm  `, { 'text-gray-400': isDisable })}>
+          <label className={cn(`text-sm  `, { 'text-gray-400': disabled })}>
             {label}
           </label>
         )}
@@ -53,7 +53,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
         <label
           className={cn(
             'text-sm hidden',
-            { 'text-gray-400': isDisable },
+            { 'text-gray-400': disabled },
             { 'block absolute top-9 right-12 ': mergeTitleAndPlaceholder }
           )}
         >
@@ -63,7 +63,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
       {leadingIcon && (
         <div
           className={cn('absolute top-10 right-4 pointer-events-none', {
-            'text-gray-400': isDisable,
+            'text-gray-400': disabled,
           })}
         >
           <Icon size="lg" name={leadingIcon as IconName} />
@@ -74,28 +74,26 @@ export const TextField: React.FC<textFieldPropsType> = ({
         onBlur={() => setIsFocused(false)}
         type={visibleCharacter ? 'text' : 'password'}
         value={inputValue}
-        disabled={isDisable}
+        disabled={disabled}
         onChange={(e) => setInputValue(e.target.value)}
         className={cn(
           `placeholder:text-gray-500 transition-colors ${
-            isDisable
-              ? 'placeholder:text-gray-400'
-              : 'placeholder:text-gray-500'
+            disabled ? 'placeholder:text-gray-400' : 'placeholder:text-gray-500'
           } font-normal rounded-xl p-2  w-full duration-150 outline-none  text-md ${
             leadingIcon && 'pr-12'
           } ${
-            isError && isDisable === false
+            isError && disabled === false
               ? 'border-red-600 focus:border-[2.5px]'
               : 'border-gray-300 focus:border-brand-600 focus:border-[2.5px]'
           } border-[1.5px] `,
           {
-            'bg-gray-100 ': mode === 'filled' && isDisable === false,
+            'bg-gray-100 ': mode === 'filled' && disabled === false,
           },
           {
             'hover:bg-gray-300':
-              mode === 'filled' && isDisable === false && !isFocused,
+              mode === 'filled' && disabled === false && !isFocused,
           },
-          { '!bg-gray-50 cursor-not-allowed': isDisable && mode === 'filled' },
+          { '!bg-gray-50 cursor-not-allowed': disabled && mode === 'filled' },
           {
             'text-transparent':
               mergeTitleAndPlaceholder && !isFocused && inputValue,
@@ -106,7 +104,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
       <div className="absolute z-20 left-4 top-10 flex justify-between gap-4 items-center">
         {trailingIcons.map((icon) => (
           <button
-            className={cn({ 'text-gray-400': isDisable })}
+            className={cn({ 'text-gray-400': disabled })}
             key={icon}
             onMouseDown={(e) => {
               e.preventDefault(); // we do this instead of onclick because it triggers sooner
@@ -126,7 +124,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
       </div>
       <p
         className={cn(`${isError ? 'text-red-600' : 'text-gray-600'} text-xs`, {
-          'text-gray-400': isDisable,
+          'text-gray-400': disabled,
         })}
       >
         {supportText}

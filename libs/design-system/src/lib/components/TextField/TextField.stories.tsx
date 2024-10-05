@@ -19,7 +19,7 @@ export const Default: Story = {
     mergeTitleAndPlaceholder: true,
     leadingIcon: 'user-round',
     trailingIcons: ['x', 'eye'],
-    isDisable: false,
+    disabled: false,
     type: 'password',
   },
 };
