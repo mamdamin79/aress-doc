@@ -5,7 +5,7 @@ import {
   DisclosurePanel,
 } from '@headlessui/react';
 import { accordionPropsType } from './Accordion.types';
-import { Icon } from '../IconComponent';
+import { Icon } from '../Icon';
 
 export const Accordion: React.FC<accordionPropsType> = ({
   items,
