@@ -75,7 +75,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
             'text-gray-400': disabled,
           })}
         >
-          <Icon size="lg" name={leadingIcon as IconName} />
+          {leadingIcon && <Icon size="lg" name={leadingIcon} />}
         </div>
       )}
 
