@@ -34,32 +34,36 @@ export const TextField: React.FC<textFieldPropsType> = ({
   return (
     <div
       data-twe-input-wrapper-init
-      className={`relative w-[480px] ${disabled && 'pointer-events-none'}`}
+      className={cn('relative w-[480px]', {
+        'pointer-events-none': disabled,
+      })}
     >
       <div className="h-[26px]">
         {mergeTitleAndPlaceholder ? (
           isFocused && (
-            <label className={cn(`text-sm  `, { 'text-gray-400': disabled })}>
+            <label className={cn('text-sm', { 'text-gray-400': disabled })}>
               {label}
             </label>
           )
         ) : (
-          <label className={cn(`text-sm  `, { 'text-gray-400': disabled })}>
+          <label className={cn('text-sm', { 'text-gray-400': disabled })}>
             {label}
           </label>
         )}
       </div>
+
       {!isFocused && (
         <label
           className={cn(
-            'text-sm hidden',
-            { 'text-gray-400': disabled },
-            { 'block absolute top-9 right-12 ': mergeTitleAndPlaceholder }
+            'text-sm hidden absolute top-9 right-12',
+            { block: mergeTitleAndPlaceholder },
+            { 'text-gray-400': disabled }
           )}
         >
           {label}
         </label>
       )}
+
       {leadingIcon && (
         <div
           className={cn('absolute top-10 right-4 pointer-events-none', {
@@ -69,6 +73,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
           <Icon size="lg" name={leadingIcon as IconName} />
         </div>
       )}
+
       <input
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
@@ -77,30 +82,24 @@ export const TextField: React.FC<textFieldPropsType> = ({
         disabled={disabled}
         onChange={(e) => setInputValue(e.target.value)}
         className={cn(
-          `placeholder:text-gray-500 transition-colors ${
-            disabled ? 'placeholder:text-gray-400' : 'placeholder:text-gray-500'
-          } font-normal rounded-xl p-2  w-full duration-150 outline-none  text-md ${
-            leadingIcon && 'pr-12'
-          } ${
-            isError && disabled === false
-              ? 'border-red-600 focus:border-[2.5px]'
-              : 'border-gray-300 focus:border-brand-600 focus:border-[2.5px]'
-          } border-[1.5px] `,
+          'font-normal rounded-xl p-2 w-full text-md outline-none border-[1.5px] transition-colors duration-150',
           {
-            'bg-gray-100 ': mode === 'filled' && disabled === false,
-          },
-          {
-            'hover:bg-gray-300':
-              mode === 'filled' && disabled === false && !isFocused,
-          },
-          { '!bg-gray-50 cursor-not-allowed': disabled && mode === 'filled' },
-          {
+            'placeholder:text-gray-400': disabled,
+            'placeholder:text-gray-500': !disabled,
+            'bg-gray-100': mode === 'filled' && !disabled,
+            'hover:bg-gray-300': mode === 'filled' && !disabled && !isFocused,
             'text-transparent':
               mergeTitleAndPlaceholder && !isFocused && inputValue,
+            'cursor-not-allowed !bg-gray-50': disabled && mode === 'filled',
+            'border-red-600 focus:border-[2.5px]': isError && !disabled,
+            'border-gray-300 focus:border-brand-600 focus:border-[2.5px]':
+              !isError && !disabled,
+            'pr-12': leadingIcon,
           }
         )}
         placeholder={mergeTitleAndPlaceholder ? '' : placeholder}
       />
+
       <div className="absolute z-20 left-4 top-10 flex justify-between gap-4 items-center">
         {trailingIcons.map((icon) => (
           <button
@@ -122,8 +121,11 @@ export const TextField: React.FC<textFieldPropsType> = ({
           </button>
         ))}
       </div>
+
       <p
-        className={cn(`${isError ? 'text-red-600' : 'text-gray-600'} text-xs`, {
+        className={cn('text-xs', {
+          'text-red-600': isError,
+          'text-gray-600': !isError,
           'text-gray-400': disabled,
         })}
       >
