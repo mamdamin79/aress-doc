@@ -1,5 +1,5 @@
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
-import { Icon } from '../IconComponent';
+import { Icon } from '../Icon';
 
 interface Props {
   title: string;
