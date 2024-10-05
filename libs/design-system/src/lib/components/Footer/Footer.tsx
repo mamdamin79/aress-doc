@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { Icon } from '../IconComponent';
 import Link from 'next/link';
 import { FooterSection, IconType, FooterLink } from './Footer.types';
 import {
@@ -11,53 +10,10 @@ import {
   mayket,
   playstore,
   telegram,
+  linksFooter,
 } from './Footer.constants';
 
 export function Footer() {
-  const linksFooter: FooterSection[] = [
-    {
-      title: 'انواع صندوق ها',
-      links: [
-        { title: 'صندوق های سهامی', link: '/' },
-        { title: 'صندوق های درآمد ثابت', link: '/' },
-        { title: 'صندوق های مختلط', link: '/' },
-      ],
-    },
-    {
-      title: 'فیلتر صندوق ها',
-      links: [
-        { title: 'پر بازده ترین', link: '/' },
-        { title: 'کم ریسک ترین', link: '/' },
-        { title: 'بهترین عملکرد', link: '/' },
-      ],
-    },
-    {
-      title: 'سایر',
-      links: [
-        { title: 'درباره ما', link: '/' },
-        { title: 'شرایط قرارداد' },
-        { title: 'سوالات متداول', link: '/' },
-      ],
-    },
-    {
-      title: 'ارتباط با ما',
-      links: [
-        { title: 'تــلفن پشتیبانــی:  ۸۰۹۱۶۰۷-۰۲۱' },
-        {
-          title:
-            'آدرس پستی: تهران. یوسف آباد. بین خیابان ۶۳ و ۶۵. پلاک ۴۸۵. واحد ۹۲',
-        },
-        {
-          icons: [
-            { icon: <Icon size="lg" name="send" />, link: '/' },
-            { icon: <Icon size="lg" name="linkedin" />, link: '/' },
-            { icon: <Icon size="lg" name="instagram" /> },
-          ],
-        },
-      ],
-    },
-  ];
-
   return (
     <div className="px-5 md:px-20">
       <div className="flex justify-center md:justify-start">
@@ -66,7 +22,7 @@ export function Footer() {
           height={0}
           src={logo}
           className="w-[70%] sm:w-24"
-          alt=""
+          alt="Logo image"
         />
       </div>
 
@@ -83,7 +39,7 @@ export function Footer() {
                 ) : (
                   <span className="text-gray-600 text-md m-2">{title}</span>
                 )}
-                <div className="flex gap-4 justify-center md:justify-start text-brand-600   ">
+                <div className="flex gap-4 justify-center md:justify-start text-brand-600">
                   {icons?.map(({ icon, link }: IconType) => (
                     <div>
                       {link ? (
