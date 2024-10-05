@@ -1,8 +1,7 @@
 import { cn } from '../../../utils';
-import { ProgressBarItem } from './ProgressBar.types';
 
 interface Props {
-  progressBarItems: ProgressBarItem[];
+  progressBarItems: string[];
   activeIndex: number;
 }
 
@@ -11,7 +10,7 @@ export function ProgressBar({ progressBarItems, activeIndex }: Props) {
     <div className="relative flex mx-auto items-start justify-between">
       {activeIndex < progressBarItems.length &&
         activeIndex >= 0 &&
-        progressBarItems.map((item: ProgressBarItem, index: number) => (
+        progressBarItems.map((item: string, index: number) => (
           <div
             className={cn(
               index === progressBarItems.length - 1 ? 'w-full' : 'w-full',
