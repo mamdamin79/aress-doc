@@ -1,5 +1,5 @@
 import { InputHTMLAttributes } from 'react';
-import { IconName } from '../IconComponent/Icon.types';
+import { IconName } from '../Icon/Icon.types';
 
 export type textFieldPropsType = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;

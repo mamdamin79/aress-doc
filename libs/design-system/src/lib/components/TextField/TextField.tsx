@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { textFieldPropsType } from './TextField.types';
 import { cn } from '../../../utils';
-import { Icon } from '../IconComponent';
-import { IconName } from '../IconComponent/Icon.types';
+import { Icon } from '../Icon';
+import { IconName } from '../Icon/Icon.types';
 
 export const TextField: React.FC<textFieldPropsType> = ({
   label,
