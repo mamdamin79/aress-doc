@@ -1,3 +1,4 @@
+import { cn } from '../../../utils';
 import { ProgressBarItem } from './ProgressBar.types';
 
 interface Props {
@@ -12,13 +13,14 @@ export function ProgressBar({ progressBarItems, activeIndex }: Props) {
         activeIndex >= 0 &&
         progressBarItems.map((item: ProgressBarItem, index: number) => (
           <div
-            className={`${
-              index === progressBarItems.length - 1 ? 'w-full' : 'w-full'
-            } relative flex flex-col justify-center items-center`}
+            className={cn(
+              index === progressBarItems.length - 1 ? 'w-full' : 'w-full',
+              'relative flex flex-col justify-center items-center'
+            )}
             key={index}
           >
             {/* render icon Progressbar */}
-            <div className="">
+            <div>
               {activeIndex === index ? (
                 <div className="w-8 h-8 absolute -top-3 bg-brand-300 flex items-center justify-center rounded-full">
                   <div className="rounded-full bg-white border-brand-600 flex items-center justify-center border-2 w-6 h-6">
@@ -36,18 +38,17 @@ export function ProgressBar({ progressBarItems, activeIndex }: Props) {
               )}
             </div>
             {index + 1 < progressBarItems.length && (
-              <div
-                className={`w-full -z-50 overflow-hidden relative h-2 mr-[100%] `}
-              >
-                <div className={`w-full h-full bg-gray-200 absolute`}></div>
+              <div className="w-full -z-50 overflow-hidden relative h-2 mr-[100%]">
+                <div className="w-full h-full bg-gray-200 absolute"></div>
                 <div
-                  className={`w-full h-full absolute ${
+                  className={cn(
+                    'w-full h-full absolute',
                     activeIndex > index && 'bg-brand-600 animate-progressBar'
-                  }`}
+                  )}
                 ></div>
               </div>
             )}
-            <p className="mt-3">{item}</p>
+            <span className="mt-3">{item}</span>
           </div>
         ))}
     </div>
