@@ -15,6 +15,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
   trailingIcons,
   type,
   disabled,
+  className,
   ...rest
 }) => {
   const [inputValue, setInputValue] = useState('');
@@ -34,9 +35,13 @@ export const TextField: React.FC<textFieldPropsType> = ({
   return (
     <div
       data-twe-input-wrapper-init
-      className={cn('relative w-[480px]', {
-        'pointer-events-none': disabled,
-      })}
+      className={cn(
+        'relative w-full',
+        {
+          'pointer-events-none': disabled,
+        },
+        className
+      )}
     >
       <div className="h-[26px]">
         {mergeTitleAndPlaceholder ? (

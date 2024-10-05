@@ -21,5 +21,6 @@ export const Default: Story = {
     trailingIcons: ['x', 'eye'],
     disabled: false,
     type: 'password',
+    className: 'w-[320px]',
   },
 };
