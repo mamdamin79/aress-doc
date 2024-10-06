@@ -1,5 +1,5 @@
 import { Toaster } from 'react-hot-toast';
-import CustomToast from './CustomToast';
+import { CustomToast } from './CustomToast/CustomToast';
 
 interface Props {
   message: string;
@@ -8,12 +8,14 @@ interface Props {
 export function ToastDemo({ message, type }: Props) {
   const { showToast } = CustomToast();
   return (
-    <div
-      className="cursor-pointer border p-2 rounded-md w-fit"
-      onClick={() => showToast({ message, type })}
-    >
+    <>
+      <div
+        className="cursor-pointer border p-2 rounded-md w-fit"
+        onClick={() => showToast({ message, type })}
+      >
+        show toast
+      </div>
       <Toaster />
-      show toast
-    </div>
+    </>
   );
 }

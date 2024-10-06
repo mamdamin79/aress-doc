@@ -1,13 +1,13 @@
 import { toast } from 'react-hot-toast';
-import { icons, styleToasts } from './/CustomToast.constants';
-import { cn } from '../../utils';
+import { icons, styleToasts } from '../CustomToast.constants';
+import { cn } from '../../../utils';
 
 interface Props {
   message: string;
   type: 'error' | 'success' | 'info' | 'warning';
 }
 
-export const ToastDemo = () => {
+export function CustomToast() {
   const showToast = ({ message, type }: Props) => {
     toast.custom((t) => (
       <div
@@ -26,6 +26,4 @@ export const ToastDemo = () => {
     ));
   };
   return { showToast };
-};
-
-export default ToastDemo;
+}
