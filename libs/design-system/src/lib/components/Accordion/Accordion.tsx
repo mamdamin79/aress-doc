@@ -18,7 +18,7 @@ export const Accordion: React.FC<accordionPropsType> = ({
       as="div"
       key={item.title}
       onClick={() => setOpenIndex((prev) => (prev === index ? null : index))}
-      className="w-full border p-6 rounded-lg border-gray-300 mb-2"
+      className="w-full border p-6 rounded-3xl border-gray-300 mb-2 font-vazirmatn"
     >
       {({ open }) => (
         <>
