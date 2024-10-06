@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { textFieldPropsType } from './TextField.types';
 import { cn } from '../../../utils';
 import { Icon } from '../Icon';
-import { IconName } from '../Icon/Icon.types';
 
 export const TextField: React.FC<textFieldPropsType> = ({
   label,
@@ -23,6 +22,14 @@ export const TextField: React.FC<textFieldPropsType> = ({
   const [visibleCharacter, setIsVisibleCharacter] = useState(
     type !== 'password'
   );
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleLabelClick = () => {
+    setIsFocused(true);
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
 
   const handleClearInput = () => {
     setInputValue('');
@@ -59,8 +66,10 @@ export const TextField: React.FC<textFieldPropsType> = ({
 
       {!isFocused && (
         <label
+          onClick={handleLabelClick}
           className={cn(
-            'text-sm hidden absolute top-9 right-12',
+            'text-sm hidden absolute top-9 pr-4 cursor-text',
+            { 'right-8': leadingIcon },
             { block: mergeTitleAndPlaceholder },
             { 'text-gray-400': disabled }
           )}
@@ -80,6 +89,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
       )}
 
       <input
+        ref={inputRef}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         type={visibleCharacter ? 'text' : 'password'}
@@ -120,7 +130,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
             }}
           >
             <Icon
-              name={icon === 'x' ? icon : visibleCharacter ? icon : 'eye-off'}
+              name={icon === 'x' ? icon : visibleCharacter ? 'eye-off' : icon}
               size="lg"
             />
           </button>
