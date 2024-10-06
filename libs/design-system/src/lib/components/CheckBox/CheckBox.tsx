@@ -1,5 +1,5 @@
 import { Checkbox } from '@headlessui/react';
-import { Icon } from '../IconComponent';
+import { Icon } from '../Icon';
 import { cn } from '../../../utils';
 
 interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -30,7 +30,8 @@ export function CheckBoxComponent(props: CheckboxProps) {
         className={cn(
           { 'text-gray-400': props.disabled },
           { 'text-gray-1000': props.checked },
-          { 'text-gray-600': !props.disabled && !props.checked }
+          { 'text-gray-600': !props.disabled && !props.checked },
+          'text-sm'
         )}
       >
         {props.content}
