@@ -98,7 +98,7 @@ export function Footer() {
               <div>
                 {link ? (
                   <Link
-                    className="text-gray-600 font-vazirmatn text-md mt-2"
+                    className="text-gray-600 hover:text-gray-700 font-vazirmatn text-md mt-2"
                     href={link}
                   >
                     {title}
