@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { MouseEvent, ReactEventHandler, useRef, useState } from 'react';
 import { textFieldPropsType } from './TextField.types';
 import { cn } from '../../../utils';
 import { Icon } from '../Icon';
@@ -31,11 +31,13 @@ export const TextField: React.FC<textFieldPropsType> = ({
     }
   };
 
-  const handleClearInput = () => {
+  const handleClearInput = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setInputValue('');
   };
 
-  const handleCharacterVisibility = () => {
+  const handleCharacterVisibility = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setIsVisibleCharacter(!visibleCharacter);
   };
 
@@ -43,7 +45,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
     <div
       data-twe-input-wrapper-init
       className={cn(
-        'relative w-full',
+        'relative w-full font-vazirmatn',
         {
           'pointer-events-none': disabled,
         },
@@ -116,27 +118,26 @@ export const TextField: React.FC<textFieldPropsType> = ({
       />
 
       <div className="absolute z-20 left-4 top-10 flex justify-between gap-4 items-center">
-        {trailingIcons.map((icon) => (
-          <button
-            className={cn({ 'text-gray-400': disabled })}
-            key={icon}
-            onMouseDown={(e) => {
-              e.preventDefault(); // we do this instead of onclick because it triggers sooner
-              if (icon === 'eye') {
-                handleCharacterVisibility();
-              } else {
-                handleClearInput();
-              }
-            }}
-          >
-            <Icon
-              name={icon === 'x' ? icon : visibleCharacter ? 'eye-off' : icon}
-              size="lg"
-            />
-          </button>
-        ))}
+        {trailingIcons.map((icon) =>
+          icon === 'eye' ? (
+            <button
+              className={cn({ 'text-gray-400': disabled })}
+              onMouseDown={(e) => handleCharacterVisibility(e)}
+            >
+              <Icon size="lg" name={visibleCharacter ? 'eye-off' : icon} />
+            </button>
+          ) : (
+            inputValue && (
+              <button
+                className={cn({ 'text-gray-400': disabled })}
+                onMouseDown={(e) => handleClearInput(e)}
+              >
+                <Icon size="lg" name={icon} />
+              </button>
+            )
+          )
+        )}
       </div>
-
       <span
         className={cn('text-xs', {
           'text-red-600': isError,
