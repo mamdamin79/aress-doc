@@ -1,0 +1,82 @@
+import { cn } from '../../../utils';
+import { Tab as TabItem } from './Tabs.types';
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
+import { Icon } from '../Icon';
+
+interface Props {
+  tabs: TabItem[];
+  style: 'button-shaped' | 'divided-buttons' | 'lined';
+  bgWhite?: boolean;
+}
+
+export function Tabs({ style, tabs, bgWhite }: Props) {
+  return (
+    <div className="flex w-full justify-center px-4">
+      <div className="w-full">
+        <TabGroup>
+          <TabList
+            className={cn(
+              'flex',
+              { 'gap-6': style === 'lined' },
+              { 'gap-4': style === 'button-shaped' }
+            )}
+          >
+            {tabs.map(({ title, iconLeft, iconRight, singleIcon }) => (
+              <Tab
+                key={title}
+                className={cn(
+                  'font-vazirmatn duration-300 outline-none text-md',
+                  {
+                    'data-[selected]:border-b-[2.5px] pb-2 text-gray-600 hover:text-gray-700 hover:border-gray-700 data-[selected]:text-black data-[selected]:font-semibold min-w-52 text-center border-gray-400 border-b data-[selected]:border-brand-600':
+                      style === 'lined',
+                  },
+                  {
+                    'py-2 px-4 font-semibold data-[selected]:bg-brand-600 border-white data-[selected]:border-brand-600 first:border-r-2 hover:border-brand-600 border-2 last:rounded-l-md data-[selected]:text-white first:rounded-r-md text-black':
+                      style === 'divided-buttons',
+                  },
+                  { 'bg-gray-100': !bgWhite && style !== 'lined' },
+                  {
+                    'border-gray-100 border-2':
+                      style === 'button-shaped' && !bgWhite,
+                  },
+                  {
+                    'border-gray-100': style === 'divided-buttons' && !bgWhite,
+                  },
+                  {
+                    'py-1 px-2 data-[selected]:border-brand-600 rounded-md border-2 border-white data-[selected]:bg-brand-600 data-[selected]:text-white hover:border-brand-600 text-black':
+                      style === 'button-shaped',
+                  }
+                )}
+              >
+                {style === 'button-shaped' ? (
+                  singleIcon ? (
+                    <Icon name={singleIcon} size="lg" />
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      {iconRight && <Icon name={iconRight} size="lg" />}
+                      {title}
+                      {iconLeft && <Icon name={iconLeft} size="lg" />}
+                    </div>
+                  )
+                ) : (
+                  <span className="font-vazirmatn">{title}</span>
+                )}
+              </Tab>
+            ))}
+          </TabList>
+          <TabPanels className="mt-3">
+            {tabs.map(({ title, content }) => (
+              <TabPanel key={title}>
+                {typeof content === 'string' ? (
+                  <span>{content}</span>
+                ) : (
+                  <div>{content}</div>
+                )}
+              </TabPanel>
+            ))}
+          </TabPanels>
+        </TabGroup>
+      </div>
+    </div>
+  );
+}
