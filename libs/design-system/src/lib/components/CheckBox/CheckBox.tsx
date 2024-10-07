@@ -15,12 +15,7 @@ export function CheckBoxComponent(props: CheckboxProps) {
         disabled={props.disabled}
         className="group"
       >
-        <div
-          className={cn(
-            `border group-data-[disabled]:cursor-default cursor-pointer group-data-[checked]:bg-brand-600 group-data-[disabled]:border-gray-400 group-data-[checked]:border-brand-600 rounded-sm w-fit border-gray-600 min-w-5 min-h-5`,
-            'group-data-[disable]:bg-red-90'
-          )}
-        >
+        <div className="border group-data-[disabled]:cursor-default flex items-center justify-center cursor-pointer group-data-[checked]:bg-brand-600 group-data-[disabled]:border-gray-400 group-data-[checked]:border-brand-600 rounded-sm w-fit border-gray-600 min-w-6 min-h-6">
           <div className="hidden text-white group-data-[checked]:block">
             <Icon name="check" />
           </div>
@@ -28,10 +23,10 @@ export function CheckBoxComponent(props: CheckboxProps) {
       </Checkbox>
       <p
         className={cn(
-          { 'text-gray-400': props.disabled },
-          { 'text-gray-1000': props.checked },
+          { 'text-gray-400 cursor-default': props.disabled },
+          { 'text-gray-1000': props.checked && !props.disabled },
           { 'text-gray-600': !props.disabled && !props.checked },
-          'text-sm'
+          'text-sm font-vazirmatn'
         )}
       >
         {props.content}
