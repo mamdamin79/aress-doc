@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ToastDemo } from '../../../hooks/CustomToast/ToastDemo';
+import { ToastDemo } from './ToastDemo';
 
 // Meta configuration for the Toast component in Storybook
 const meta: Meta<typeof ToastDemo> = {

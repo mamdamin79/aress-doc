@@ -1,6 +1,6 @@
 import { toast } from 'react-hot-toast';
-import { icons, styleToasts } from '../CustomToast.constants';
-import { cn } from '../../../utils';
+import { icons, styleToasts } from './CustomToast.constants';
+import { cn } from '../../utils';
 
 interface Props {
   message: string;
@@ -20,7 +20,7 @@ export function CustomToast() {
       >
         <div className="flex items-center gap-2">
           {icons[type]}
-          <span>{message}</span>
+          <span className="font-vazirmatn text-sm">{message}</span>
         </div>
       </div>
     ));
