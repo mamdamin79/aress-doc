@@ -20,10 +20,12 @@ export function InfoPopover({ title, message, button }: Props) {
       >
         {({ close }) => (
           <div className="max-w-md min-w-sm">
-            <span className="text-gray-1000 font-semibold text-lg text-right">
+            <span className="text-gray-1000 font-vazirmatn font-semibold text-lg text-right">
               {title}
             </span>
-            <p className="text-gray-600 pt-4 text-sm text-right">{message}</p>
+            <p className="text-gray-600 pt-4 text-sm font-vazirmatn text-right">
+              {message}
+            </p>
             <div
               onClick={() => close()}
               className="rounded-full absolute -top-2 -left-2 bg-brand-600 cursor-pointer flex items-center justify-center w-8 h-8"
