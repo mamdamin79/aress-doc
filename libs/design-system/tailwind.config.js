@@ -72,13 +72,13 @@ module.exports = {
         '2xl': [
           '22px',
           {
-            lineHeight: '34px',
+            lineHeight: '38px',
           },
         ],
         '3xl': [
           '24px',
           {
-            lineHeight: '34px',
+            lineHeight: '40px',
           },
         ],
       },
