@@ -1,6 +1,6 @@
 import { cn } from '../../../utils';
-import { Icon } from '../IconComponent';
-import { IconName } from '../IconComponent/Icon.types';
+import { Icon } from '../Icon';
+import { IconName } from '../Icon/Icon.types';
 import { ButtonMode, ButtonSize } from './Button.types';
 
 interface Props {
