@@ -1,5 +1,5 @@
 import { Toaster } from 'react-hot-toast';
-import { CustomToast } from './CustomToast/CustomToast';
+import { CustomToast } from './CustomToast';
 
 interface Props {
   message: string;
