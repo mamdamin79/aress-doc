@@ -20,6 +20,7 @@ export const Primary: Story = {
     size: 'sm',
     disable: false,
     loading: false,
+    align: 'center',
   },
 };
 
@@ -31,6 +32,7 @@ export const Secondary: Story = {
     size: 'sm',
     disable: false,
     loading: false,
+    align: 'left',
   },
 };
 // A text story for the ButtonComponent
@@ -51,5 +53,6 @@ export const Underline: Story = {
     size: 'sm',
     disable: false,
     loading: false,
+    align: 'right',
   },
 };

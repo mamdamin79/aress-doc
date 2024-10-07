@@ -11,9 +11,17 @@ interface Props {
   loading: boolean;
   size: ButtonSize;
   mode: ButtonMode;
+  align: 'center' | 'right' | 'left';
 }
+
+const alignButton = {
+  center: 'justify-center',
+  right: 'justify-start',
+  left: 'justify-end',
+};
+
 const baseClasses =
-  'flex gap-2 group w-full justify-center transition-all duration-300 items-center px-2';
+  'flex gap-2 group w-full transition-all duration-300 items-center px-2';
 
 export function ButtonComponent({
   iconRight,
@@ -22,12 +30,15 @@ export function ButtonComponent({
   mode,
   size,
   disable,
+  align,
   loading,
 }: Props) {
   return (
     <button
       className={cn(
         baseClasses,
+        alignButton[align],
+        { 'cursor-default': disable },
         { 'rounded-lg h-12': size === 'md' },
         { 'rounded-md h-[38px]': size === 'sm' },
         { 'bg-brand-300 text-white': mode === 'primary' && disable },
@@ -76,9 +87,10 @@ export function ButtonComponent({
           <span
             className={cn(
               'font-vazirmatn',
+              `text-${align}`,
               mode === 'underline' &&
                 !disable &&
-                'transition-all pb-0.5 group-hover:border-b group-hover:border-b-brand-600'
+                'transition-all pb-0.5 font-vazirmatn group-hover:border-b group-hover:border-b-brand-600'
             )}
           >
             {text}
