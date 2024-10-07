@@ -8,7 +8,7 @@ interface Props {
 
 export function ProgressBar({ progressBarItems, activeIndex }: Props) {
   return (
-    <div className="flex px-20 justify-between items-center">
+    <div className="flex px-20 py-10 justify-between items-center">
       <div className="w-full  flex items-center">
         {progressBarItems.map((item, index) => (
           <>
