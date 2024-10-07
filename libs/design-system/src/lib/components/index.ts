@@ -1,4 +1,4 @@
 export * from './Header';
-export * from './IconComponent';
+export * from './Icon';
 export * from './SectionTitle';
 export * from './ProgressBar';
