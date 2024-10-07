@@ -22,7 +22,7 @@ export function ProgressBar({ progressBarItems, activeIndex }: Props) {
               )}
               <div
                 className={cn(
-                  'absolute w-40 mr-4 font-vazirmatn text-md top-0 text-center mt-5 break-all',
+                  'absolute w-40 mr-4 font-vazirmatn font-medium text-md top-0 text-center mt-5 break-all',
                   activeIndex < index && 'text-gray-600 text-sm'
                 )}
               >
