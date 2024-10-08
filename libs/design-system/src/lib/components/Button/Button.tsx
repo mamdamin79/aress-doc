@@ -11,13 +11,12 @@ interface Props {
   loading: boolean;
   size: ButtonSize;
   mode: ButtonMode;
-  align: 'center' | 'right' | 'left';
+  align: 'center' | 'right';
 }
 
 const alignButton = {
   center: 'justify-center',
   right: 'justify-start',
-  left: 'justify-end',
 };
 
 const baseClasses =
@@ -90,7 +89,7 @@ export function ButtonComponent({
               `text-${align}`,
               mode === 'underline' &&
                 !disable &&
-                'transition-all pb-0.5 font-vazirmatn group-hover:border-b group-hover:border-b-brand-600'
+                'transition-all pb-1  font-vazirmatn group-hover:underline underline-offset-8 group-hover:border-b-brand-600'
             )}
           >
             {text}
