@@ -21,7 +21,7 @@ export function Tabs({ style, tabs, bgWhite }: Props) {
               { 'gap-4': style === 'button-shaped' }
             )}
           >
-            {tabs.map(({ title, iconLeft, iconRight, singleIcon }) => (
+            {tabs.map(({ title, icons }) => (
               <Tab
                 key={title}
                 className={cn(
@@ -49,17 +49,15 @@ export function Tabs({ style, tabs, bgWhite }: Props) {
                 )}
               >
                 {style === 'button-shaped' ? (
-                  singleIcon ? (
-                    <Icon name={singleIcon} size="lg" />
-                  ) : (
-                    <div className="flex items-center gap-2">
-                      {iconRight && <Icon name={iconRight} size="lg" />}
-                      {title}
-                      {iconLeft && <Icon name={iconLeft} size="lg" />}
-                    </div>
-                  )
+                  <div className="flex items-center gap-2">
+                    {icons?.length && <Icon name={icons[0]} size="lg" />}
+                    {title}
+                    {icons?.length && title && (
+                      <Icon name={icons[1]} size="lg" />
+                    )}
+                  </div>
                 ) : (
-                  <span className="font-vazirmatn">{title}</span>
+                  <span>{title}</span>
                 )}
               </Tab>
             ))}

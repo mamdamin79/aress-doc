@@ -30,13 +30,10 @@ export const Lined: Story = {
       {
         content: 'تحلیل بازدهی',
         title: 'تحلیل بازدهی',
-        iconLeft: 'a-arrow-down',
-        iconRight: 'alarm-clock-off',
       },
       {
         content: 'ارزیابی ریسک',
         title: 'سلام',
-        singleIcon: 'align-horizontal-justify-start',
       },
       { content: 'تحلیل عملکرد', title: 'تحلیل عملکرد' },
       { content: 'پرتفوی صندوق', title: 'پرتفوی صندوق' },
@@ -54,11 +51,14 @@ export const Shaped: Story = {
       { content: 'بسته سه ماهه', title: 'سه ماهه' },
       { content: 'بسته شش ماهه', title: 'شش ماهه' },
       { content: 'بسته یک ساله', title: 'یک ساله' },
-      { content: 'بسته بدون سال', singleIcon: 'calendar-range' },
+      {
+        content: 'بسته بدون سال',
+        icons: ['a-arrow-down', 'alarm-clock-off', 'a-arrow-down'],
+        title: 'title',
+      },
       {
         content: 'بسته بدون سال',
         title: 'باز زمانی',
-        iconRight: 'calendar-range',
       },
     ],
     bgWhite: true,
