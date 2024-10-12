@@ -16,7 +16,7 @@ export function InfoPopover({ title, message, button }: Props) {
       <PopoverPanel
         transition
         anchor="bottom"
-        className="shadow-lg mt-4 !overflow-visible relative max-w-96 p-6 rounded-2xl transition duration-300 ease-in-out data-[closed]:-translate-y-1 data-[closed]:opacity-0"
+        className="shadow-lg mt-4 !overflow-visible relative max-w-96 p-6 rounded-2xl transition bg-white duration-300 ease-in-out data-[closed]:-translate-y-1 data-[closed]:opacity-0"
       >
         {({ close }) => (
           <div className="max-w-md min-w-sm">
