@@ -77,3 +77,14 @@ export const Divided: Story = {
     style: 'divided-buttons',
   },
 };
+export const Rounded: Story = {
+  args: {
+    tabs: [
+      { content: 'نمودار ریال', title: 'ریال' },
+      { content: 'نمودار دلار', title: 'دلار' },
+      { content: 'نمودار یورو', title: 'یورو' },
+    ],
+    bgWhite: true,
+    style: 'rounded',
+  },
+};
