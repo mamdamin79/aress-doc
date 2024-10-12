@@ -5,7 +5,7 @@ import { Icon } from '../Icon';
 
 interface Props {
   tabs: TabItem[];
-  style: 'button-shaped' | 'divided-buttons' | 'lined';
+  style: 'button-shaped' | 'divided-buttons' | 'lined' | 'rounded';
   bgWhite?: boolean;
 }
 
@@ -18,7 +18,7 @@ export function Tabs({ style, tabs, bgWhite }: Props) {
             className={cn(
               'flex',
               { 'gap-6': style === 'lined' },
-              { 'gap-4': style === 'button-shaped' }
+              { 'gap-4': style !== 'lined' }
             )}
           >
             {tabs.map(({ title, icons }) => (
@@ -34,7 +34,14 @@ export function Tabs({ style, tabs, bgWhite }: Props) {
                     'py-2 px-4 font-semibold data-[selected]:bg-brand-600 border-white data-[selected]:border-brand-600 first:border-r-2 hover:border-brand-600 border-2 last:rounded-l-md data-[selected]:text-white first:rounded-r-md text-black':
                       style === 'divided-buttons',
                   },
-                  { 'bg-gray-100': !bgWhite && style !== 'lined' },
+                  {
+                    'bg-gray-100':
+                      !bgWhite && style !== 'lined' && style !== 'rounded',
+                  },
+                  {
+                    'hover:bg-gray-100 data-[selected]:bg-brand-200 data-[selected]:text-brand-900 font-medium text-gray-600 hover:text-gray-700 px-3 text-sm rounded-sm':
+                      style === 'rounded',
+                  },
                   {
                     'border-gray-100 border-2':
                       style === 'button-shaped' && !bgWhite,
