@@ -187,7 +187,7 @@ export function DatePicker() {
             <div className="relative flex items-center justify-center rounded-md overflow-hidden w-full">
               <Select
                 onChange={(e) => {
-                  changeMonth(+e.target.value);
+                  changeYear(+e.target.value);
                 }}
                 className={cn(
                   'w-full appearance-none border-none font-vazirmatn',
