@@ -18,7 +18,6 @@ export function PercentageLabel({ value, tooltip, size }: Props) {
 
   return (
     <div
-      dir="rtl"
       className={cn(
         'rounded-sm w-fit py-1 font-medium font-vazirmatn',
         { 'px-3 text-xs': size === 'normal' },
@@ -36,8 +35,10 @@ export function PercentageLabel({ value, tooltip, size }: Props) {
       >
         {tooltip}
       </Tooltip>
-      %{positiveNumber}
-      <span className="pr-0.5">{value > 0 ? '+' : '-'}</span>
+      <div className="flex items-center">
+        %{positiveNumber}
+        <span className="mr-0.5 mb-0.5">{value > 0 ? '+' : '-'} </span>
+      </div>
     </div>
   );
 }
