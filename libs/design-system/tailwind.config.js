@@ -28,7 +28,7 @@ module.exports = {
         xs: '0px 1px 1px 0px rgba(0, 11, 23, 0.06)',
         sm: '0px 3px 4px 0px rgba(0, 11, 23, 0.04)',
         md: '0px 2px 8px 0px rgba(0, 11, 23, 0.04)',
-        lg: '0px 1px 100px 0px rgba(0, 11, 23, 0.06)',
+        lg: '0px 1px 100px 0px rgba(0, 11, 23, 0.12)',
         xl: '0px 0.8px 0.5px 0px rgba(0, 11, 23, 0.34)',
         '2xl': '1px 3px 4px 0px rgba(0, 11, 23, 0.12)',
         '3xl': '0px 4px 8px 0px rgba(0, 11, 23, 0.09)',
