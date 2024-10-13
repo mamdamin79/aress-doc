@@ -110,7 +110,7 @@ export function Footer() {
                 )}
                 <div className="flex gap-4 mt-2 justify-center md:justify-start text-brand-600">
                   {icons?.map(({ icon, link }) => (
-                    <div>
+                    <div className="text-brand-600 hover:text-brand-700 transition">
                       {link ? (
                         <Link href={link}>{icon}</Link>
                       ) : (
@@ -142,7 +142,8 @@ export function Footer() {
                 >
                   <Image src={item.icon} width={0} height={0} alt="Android" />
                   <Tooltip
-                    className="tooltip text-xs"
+                    noArrow
+                    className="tooltip text-xs -mt-1"
                     place="bottom"
                     anchorSelect={`.${item.idTooltip}`}
                   >
