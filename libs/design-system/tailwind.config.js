@@ -12,6 +12,15 @@ module.exports = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        toast: {
+          '0%': { transform: 'scale(0)' },
+          '100%': { transform: 'scale(1)' },
+        },
+      },
+      animation: {
+        toast: 'toast 0.3s ease-in-out',
+      },
       fontFamily: {
         vazirmatn: 'vazirmatn',
       },
