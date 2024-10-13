@@ -12,10 +12,11 @@ module.exports = {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        vazirmatn: 'vazirmatn',
-      },
       keyframes: {
+        toast: {
+          '0%': { transform: 'scale(0)' },
+          '100%': { transform: 'scale(1)' },
+        },
         moveCircle: {
           '0%': { cx: '12.9564', cy: '13.3321' },
           '100%': { cx: '20.0', cy: '20.0' },
@@ -38,9 +39,13 @@ module.exports = {
         },
       },
       animation: {
+        toast: 'toast 0.3s ease-in-out',
         moveCircle: 'moveCircle 1s ease-in-out forwards',
         mm: 'mm 1s ease-in-out forwards',
         dd: 'dd 1s ease-in-out forwards',
+      },
+      fontFamily: {
+        vazirmatn: 'vazirmatn',
       },
       boxShadow: {
         xs: '0px 1px 1px 0px rgba(0, 11, 23, 0.06)',
