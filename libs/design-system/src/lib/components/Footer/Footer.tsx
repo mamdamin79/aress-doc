@@ -143,7 +143,7 @@ export function Footer() {
                   <Image src={item.icon} width={0} height={0} alt="Android" />
                   <Tooltip
                     noArrow
-                    className="tooltip text-xs -mt-1"
+                    className="tooltip text-xs"
                     place="bottom"
                     anchorSelect={`.${item.idTooltip}`}
                   >
