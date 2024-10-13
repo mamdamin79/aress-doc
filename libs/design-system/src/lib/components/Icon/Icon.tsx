@@ -3,7 +3,7 @@ import { IconName, IconSize } from './Icon.types';
 import { sizeValues } from './Icon.constants';
 import dynamicIconImports from 'lucide-react/dynamicIconImports';
 import dynamic from 'next/dynamic';
-import { CostumIcon } from '../IconComponent/CostumIcon/CostumIcon';
+import { CostumIcon } from './CostumIcon/CostumIcon';
 export interface IconProps {
   name: IconName;
   size?: IconSize;
