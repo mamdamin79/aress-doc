@@ -50,9 +50,9 @@ export function IconDialog({ title, message, onClose, isOpen, mode }: Props) {
                   )}
                 >
                   {mode === 'error' ? (
-                    <Icon name="x" size="lg" />
+                    <Icon name="x" size="xl" />
                   ) : (
-                    <Icon name="check" size="lg" />
+                    <Icon name="check" size="xl" />
                   )}
                 </div>
               </div>
