@@ -66,7 +66,7 @@ export function ButtonComponent({
             mode === 'text' && loading && !disable,
         },
         {
-          'text-brand-600 active:border-brand-800 hover:border hover:border-brand-600':
+          'text-brand-600 active:text-brand-800 active:border-brand-800 hover:border hover:border-brand-600':
             mode === 'text' && !loading && !disable,
         },
         { 'text-brand-300': mode === 'underline' && disable },
