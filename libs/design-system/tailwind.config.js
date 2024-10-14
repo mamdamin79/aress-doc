@@ -12,11 +12,23 @@ module.exports = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        toast: {
+          '0%': { transform: 'scale(0)' },
+          '100%': { transform: 'scale(1)' },
+        },
+      },
+      animation: {
+        toast: 'toast 0.3s ease-in-out',
+      },
+      fontFamily: {
+        vazirmatn: 'vazirmatn',
+      },
       boxShadow: {
         xs: '0px 1px 1px 0px rgba(0, 11, 23, 0.06)',
         sm: '0px 3px 4px 0px rgba(0, 11, 23, 0.04)',
         md: '0px 2px 8px 0px rgba(0, 11, 23, 0.04)',
-        lg: '0px 1px 100px 0px rgba(0, 11, 23, 0.06)',
+        lg: '0px 1px 100px 0px rgba(0, 11, 23, 0.12)',
         xl: '0px 0.8px 0.5px 0px rgba(0, 11, 23, 0.34)',
         '2xl': '1px 3px 4px 0px rgba(0, 11, 23, 0.12)',
         '3xl': '0px 4px 8px 0px rgba(0, 11, 23, 0.09)',
@@ -72,13 +84,13 @@ module.exports = {
         '2xl': [
           '22px',
           {
-            lineHeight: '34px',
+            lineHeight: '38px',
           },
         ],
         '3xl': [
           '24px',
           {
-            lineHeight: '34px',
+            lineHeight: '40px',
           },
         ],
       },
