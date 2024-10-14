@@ -57,7 +57,7 @@ export function ButtonComponent({
             mode === 'secondary' && loading && !disable,
         },
         {
-          'bg-white active:bg-brand-800 border border-brand-600 text-brand-600 hover:bg-brand-700 hover:text-whit':
+          'bg-white active:bg-brand-800 border border-brand-600 text-brand-600 hover:bg-brand-700 hover:text-white':
             mode === 'secondary' && !loading && !disable,
         },
         { 'text-brand-300': mode === 'text' && disable },
