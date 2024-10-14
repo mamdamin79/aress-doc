@@ -71,7 +71,10 @@ export function ButtonComponent({
         },
         { 'text-brand-300': mode === 'underline' && disable },
         { 'text-brand-600': mode === 'underline' && loading && !disable },
-        { 'text-brand-600': mode === 'underline' && !loading && !disable }
+        {
+          'text-brand-600 active:text-brand-800 active:border-brand-800':
+            mode === 'underline' && !loading && !disable,
+        }
       )}
     >
       {loading ? (
@@ -89,7 +92,7 @@ export function ButtonComponent({
               `text-${align}`,
               mode === 'underline' &&
                 !disable &&
-                'transition-all pb-1  font-vazirmatn group-hover:underline underline-offset-8 group-hover:border-b-brand-600'
+                'transition-transform pb-1 font-vazirmatn group-hover:underline underline-offset-8 group-hover:border-b-brand-600'
             )}
           >
             {text}
