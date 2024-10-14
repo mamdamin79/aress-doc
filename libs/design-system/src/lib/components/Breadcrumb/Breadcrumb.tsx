@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { cn } from '../../../utils';
-import { Icon } from '../IconComponent';
+import { Icon } from '../Icon';
 import { BreadcrumbItem } from './Breadcrumb.types';
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 export function Breadcrumb({ items }: Props) {
   return (
     <nav aria-label="Breadcrumbs" dir="rtl">
-      <ul className="flex items-center gap-1">
+      <ul className="flex items-center gap-1 font-vazirmatn">
         {items.map((item: BreadcrumbItem, index: number) => (
           <li
             className={cn(
