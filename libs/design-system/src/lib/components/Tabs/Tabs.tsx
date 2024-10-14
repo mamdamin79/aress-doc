@@ -18,7 +18,7 @@ export function Tabs({ style, tabs, bgWhite }: Props) {
             className={cn(
               'flex',
               { 'gap-6': style === 'lined' },
-              { 'gap-4': style !== 'lined' }
+              { 'gap-4': style !== 'lined' && style !== 'divided-buttons' }
             )}
           >
             {tabs.map(({ title, icons }) => (
