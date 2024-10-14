@@ -9,6 +9,7 @@ import { ReactComponent as CustomScalesOfJustice } from '../src/icons/CustomScal
 import { ReactComponent as CustomClock } from '../src/icons/CustomClock.svg';
 import { ReactComponent as CustomcircularUser } from '../src/icons/CustomcircularUser.svg';
 import { ReactComponent as CustomAlpha } from '../src/icons/CustomAlpha.svg';
+import { ReactComponent as CustomClose } from '../src/icons/CustomClose.svg';
 
 export const customIcons: Record<string, React.FC<SVGProps<SVGSVGElement>>> = {
   CustomCalendar,
@@ -21,6 +22,7 @@ export const customIcons: Record<string, React.FC<SVGProps<SVGSVGElement>>> = {
   CustomClock,
   CustomcircularUser,
   CustomAlpha,
+  CustomClose,
 };
 
 export const hoverClasses: Record<string, string> = {
@@ -34,4 +36,5 @@ export const hoverClasses: Record<string, string> = {
   CustomClock: 'hover:text-brand-600 hover:rotate-90',
   CustomcircularUser: 'hover:text-brand-600',
   CustomAlpha: 'hover:text-brand-600',
+  CustomClose: 'text-brand-600',
 };
