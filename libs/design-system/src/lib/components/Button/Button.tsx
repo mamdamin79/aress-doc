@@ -1,6 +1,5 @@
 import { cn } from '../../../utils';
 import { Icon, IconProps } from '../Icon';
-import { IconName } from '../Icon/Icon.types';
 import { ButtonMode, ButtonSize } from './Button.types';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -10,18 +9,17 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size: ButtonSize;
   mode: ButtonMode;
   align: 'center' | 'right';
-  Icon: IconName[];
 }
 
 export const Button: React.FC<ButtonProps> = ({
   mode,
   size,
+  value,
   disabled,
   align,
   iconRight,
   isLoading,
   iconLeft,
-  children,
   ...props
 }) => {
   return (
@@ -90,9 +88,8 @@ export const Button: React.FC<ButtonProps> = ({
                 'transition-transform pb-1 group-hover:underline underline-offset-8 group-hover:border-b-brand-600'
             )}
           >
-            {children}
+            {value}
           </span>
-
           {iconLeft && <Icon {...iconLeft} />}
         </>
       )}
