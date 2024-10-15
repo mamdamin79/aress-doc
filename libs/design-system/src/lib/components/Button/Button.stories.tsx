@@ -14,7 +14,7 @@ type Story = StoryObj<typeof Button>;
 
 export const Primary: Story = {
   args: {
-    value: 'دنبال کردن',
+    children: 'دنبال کردن',
     mode: 'primary',
     size: 'sm',
     disabled: false,
@@ -25,7 +25,7 @@ export const Primary: Story = {
 
 export const Secondary: Story = {
   args: {
-    value: 'دنبال کردن',
+    children: 'دنبال کردن',
     mode: 'secondary',
     size: 'sm',
     iconLeft: { name: 'a-arrow-down', size: 'lg' },
@@ -35,7 +35,7 @@ export const Secondary: Story = {
 };
 export const Text: Story = {
   args: {
-    value: 'دنبال کردن',
+    children: 'دنبال کردن',
     mode: 'text',
     size: 'sm',
     disabled: false,
@@ -45,7 +45,7 @@ export const Text: Story = {
 
 export const Underline: Story = {
   args: {
-    value: 'دنبال کردن',
+    children: 'دنبال کردن',
     mode: 'underline',
     size: 'sm',
     disabled: false,

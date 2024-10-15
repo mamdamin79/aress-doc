@@ -14,12 +14,12 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 export const Button: React.FC<ButtonProps> = ({
   mode,
   size,
-  value,
   disabled,
   align,
   iconRight,
   isLoading,
   iconLeft,
+  children,
   ...props
 }) => {
   return (
@@ -88,7 +88,7 @@ export const Button: React.FC<ButtonProps> = ({
                 'transition-transform pb-1 group-hover:underline underline-offset-8 group-hover:border-b-brand-600'
             )}
           >
-            {value}
+            {children}
           </span>
           {iconLeft && <Icon {...iconLeft} />}
         </>
