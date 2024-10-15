@@ -12,7 +12,6 @@ export default meta;
 
 type Story = StoryObj<typeof PercentageLabel>;
 
-// A positive story for the PercentageLabel component
 export const positive: Story = {
   args: {
     size: 'normal',
@@ -21,7 +20,6 @@ export const positive: Story = {
   },
 };
 
-// A negative story for the PercentageLabel component
 export const negative: Story = {
   args: {
     size: 'normal',

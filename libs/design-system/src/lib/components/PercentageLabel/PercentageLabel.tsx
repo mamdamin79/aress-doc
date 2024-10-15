@@ -29,14 +29,14 @@ export function PercentageLabel({ value, tooltip, size }: Props) {
     >
       <Tooltip
         noArrow
-        className="tooltip x text-xs"
+        className="tooltip text-xs"
         place="bottom"
         anchorSelect={`.${tooltipId}`}
       >
         {tooltip}
       </Tooltip>
       <div className="flex items-center">
-        %{positiveNumber}
+        %<span>{positiveNumber}</span>
         <span className="mr-0.5 mb-0.5">{value > 0 ? '+' : '-'} </span>
       </div>
     </div>
