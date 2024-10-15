@@ -12,46 +12,44 @@ const meta: Meta<typeof ButtonComponent> = {
 export default meta;
 type Story = StoryObj<typeof ButtonComponent>;
 
-// A Primary story for the ButtonComponent
 export const Primary: Story = {
   args: {
-    text: 'دنبال کردن',
+    children: 'دنبال کردن',
     mode: 'primary',
     size: 'sm',
-    disable: false,
-    loading: false,
+    disabled: false,
+    isLoading: false,
     align: 'center',
   },
 };
 
-// A Secondary story for the ButtonComponent
 export const Secondary: Story = {
   args: {
-    text: 'دنبال کردن',
+    children: 'دنبال کردن',
     mode: 'secondary',
     size: 'sm',
-    disable: false,
-    loading: false,
+    iconLeft: { name: 'a-arrow-down', size: 'lg' },
+    disabled: false,
+    isLoading: false,
   },
 };
-// A text story for the ButtonComponent
 export const Text: Story = {
   args: {
-    text: 'دنبال کردن',
+    children: 'دنبال کردن',
     mode: 'text',
     size: 'sm',
-    disable: false,
-    loading: false,
+    disabled: false,
+    isLoading: false,
   },
 };
-// A default story for the ButtonComponent component
+
 export const Underline: Story = {
   args: {
-    text: 'دنبال کردن',
+    children: 'دنبال کردن',
     mode: 'underline',
     size: 'sm',
-    disable: false,
-    loading: false,
+    disabled: false,
+    isLoading: false,
     align: 'right',
   },
 };

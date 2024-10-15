@@ -1,106 +1,101 @@
 import { cn } from '../../../utils';
-import { Icon } from '../Icon';
+import { Icon, IconProps } from '../Icon';
 import { IconName } from '../Icon/Icon.types';
 import { ButtonMode, ButtonSize } from './Button.types';
 
-interface Props {
-  iconRight?: IconName;
-  iconLeft?: IconName;
-  text: string;
-  disable: boolean;
-  loading: boolean;
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  isLoading: boolean;
+  iconLeft?: IconProps;
+  iconRight?: IconProps;
   size: ButtonSize;
   mode: ButtonMode;
   align: 'center' | 'right';
+  Icon: IconName[];
 }
 
-const alignButton = {
-  center: 'justify-center',
-  right: 'justify-start',
-};
-
-const baseClasses =
-  'flex gap-2 group w-full transition-all duration-300 items-center px-2';
-
-export function ButtonComponent({
-  iconRight,
-  iconLeft,
-  text,
+export const ButtonComponent: React.FC<ButtonProps> = ({
   mode,
   size,
-  disable,
+  disabled,
   align,
-  loading,
-}: Props) {
+  iconRight,
+  isLoading,
+  iconLeft,
+  children,
+  ...props
+}) => {
   return (
     <button
+      {...props}
       className={cn(
-        baseClasses,
-        alignButton[align],
-        { 'cursor-default': disable },
+        'flex gap-2 group w-full transition-all duration-300 items-center px-2',
+        { 'justify-center': align === 'center' },
+        { 'justify-start': align === 'right' },
+        { 'cursor-default': disabled },
         { 'rounded-lg h-12': size === 'md' },
         { 'rounded-md h-[38px]': size === 'sm' },
-        { 'bg-brand-300 text-white': mode === 'primary' && disable },
+        { 'bg-brand-300 text-white': mode === 'primary' && disabled },
         {
-          'bg-brand-600 text-white': mode === 'primary' && loading && !disable,
+          'bg-brand-600 text-white':
+            mode === 'primary' && isLoading && !disabled,
         },
         {
           'bg-brand-600 active:bg-brand-800 text-white hover:bg-brand-700':
-            mode === 'primary' && !loading && !disable,
+            mode === 'primary' && !isLoading && !disabled,
         },
         {
           'border-brand-300 border text-brand-300':
-            mode === 'secondary' && disable,
+            mode === 'secondary' && disabled,
         },
         {
           'border border-brand-600 text-brand-600':
-            mode === 'secondary' && loading && !disable,
+            mode === 'secondary' && isLoading && !disabled,
         },
         {
           'bg-white active:bg-brand-800 border border-brand-600 text-brand-600 hover:bg-brand-700 hover:text-white':
-            mode === 'secondary' && !loading && !disable,
+            mode === 'secondary' && !isLoading && !disabled,
         },
-        { 'text-brand-300': mode === 'text' && disable },
+        { 'text-brand-300': mode === 'text' && disabled },
         {
           'text-brand-600 border border-brand-600':
-            mode === 'text' && loading && !disable,
+            mode === 'text' && isLoading && !disabled,
         },
         {
           'text-brand-600 active:text-brand-800 active:border-brand-800 hover:border hover:border-brand-600':
-            mode === 'text' && !loading && !disable,
+            mode === 'text' && !isLoading && !disabled,
         },
-        { 'text-brand-300': mode === 'underline' && disable },
-        { 'text-brand-600': mode === 'underline' && loading && !disable },
+        { 'text-brand-300': mode === 'underline' && disabled },
+        { 'text-brand-600': mode === 'underline' && isLoading && !disabled },
         {
           'text-brand-600 active:text-brand-800 active:border-brand-800':
-            mode === 'underline' && !loading && !disable,
+            mode === 'underline' && !isLoading && !disabled,
         }
       )}
     >
-      {loading ? (
-        <div className="min-w-[130px]">
+      {isLoading ? (
+        <div>
           <div className="animate-spin w-fit mx-auto">
             <Icon name="loader-circle" />
           </div>
         </div>
       ) : (
         <>
-          {iconRight && <Icon size="lg" name={iconRight} />}
+          {iconRight && <Icon {...iconRight} />}
           <span
             className={cn(
-              'font-vazirmatn',
-              `text-${align}`,
+              { 'text-right': align === 'right' },
+              { 'text-center': align === 'center' },
               mode === 'underline' &&
-                !disable &&
-                'transition-transform pb-1 font-vazirmatn group-hover:underline underline-offset-8 group-hover:border-b-brand-600'
+                !disabled &&
+                'transition-transform pb-1 group-hover:underline underline-offset-8 group-hover:border-b-brand-600'
             )}
           >
-            {text}
+            {children}
           </span>
 
-          {iconLeft && <Icon size="lg" name={iconLeft} />}
+          {iconLeft && <Icon {...iconLeft} />}
         </>
       )}
     </button>
   );
-}
+};
