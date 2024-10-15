@@ -1,16 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { ButtonComponent } from './Button';
+import { Button } from './Button';
 
-// Meta configuration for the ButtonComponent component in Storybook
-const meta: Meta<typeof ButtonComponent> = {
-  title: 'Components/ButtonComponent', // Defines the title in Storybook's UI
-  component: ButtonComponent, // Links to the actual component
+// Meta configuration for the Button component in Storybook
+const meta: Meta<typeof Button> = {
+  title: 'Components/Button', // Defines the title in Storybook's UI
+  component: Button, // Links to the actual component
   tags: ['autodocs'], // Optional: Add any additional tags for better categorization
 };
 
 export default meta;
-type Story = StoryObj<typeof ButtonComponent>;
+type Story = StoryObj<typeof Button>;
 
 export const Primary: Story = {
   args: {
