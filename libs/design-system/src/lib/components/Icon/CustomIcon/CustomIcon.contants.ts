@@ -11,7 +11,7 @@ import { ReactComponent as CustomCircularUser } from '../src/icons/CustomCircula
 import { ReactComponent as CustomAlpha } from '../src/icons/CustomAlpha.svg';
 import { ReactComponent as CustomClose } from '../src/icons/CustomClose.svg';
 
-export const customIcons: Record<string, React.FC<SVGProps<SVGSVGElement>>> = {
+export const CUSTOM_ICONS: Record<string, React.FC<SVGProps<SVGSVGElement>>> = {
   CustomCalendar,
   CustomBag,
   CustomBadge,

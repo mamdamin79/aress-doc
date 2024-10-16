@@ -1,11 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { Icon } from './Icon';
-import { customIcons } from './CustomIcon/CustomIcon.contants';
+import { CUSTOM_ICONS } from './CustomIcon/CustomIcon.contants';
 import dynamicIconImports from 'lucide-react/dynamicIconImports';
 
 const iconNames = [
   ...Object.keys(dynamicIconImports),
-  ...Object.keys(customIcons),
+  ...Object.keys(CUSTOM_ICONS),
 ];
 
 const meta: Meta<typeof Icon> = {
