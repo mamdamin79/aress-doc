@@ -101,7 +101,8 @@ export const TextField: React.FC<textFieldPropsType> = ({
         className={cn(
           'font-normal rounded-xl p-2 w-full text-md outline-none border-[1.5px] transition-colors duration-150',
           {
-            'placeholder:text-gray-400': disabled,
+            'bg-transparent border-inherit opacity-100 placeholder:text-gray-400':
+              disabled,
             'placeholder:text-gray-500': !disabled,
             'bg-gray-100': mode === 'filled' && !disabled,
             'hover:bg-gray-300': mode === 'filled' && !disabled && !isFocused,

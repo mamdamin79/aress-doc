@@ -251,10 +251,10 @@ input[type='password']::-ms-clear,
 input[type='password']::-webkit-password-eye {
   display: none;
 }
-input:disabled {
+/* input:disabled {
   background-color: transparent;
   opacity: 1;
   cursor: not-allowed;
   pointer-events: none;
   border-color: inherit;
-}
+} */
