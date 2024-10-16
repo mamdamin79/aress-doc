@@ -1,6 +1,6 @@
 import dynamicIconImports from 'lucide-react/dynamicIconImports';
 
-// test of type custom icons
+// custom icon valid name
 export type CustomIconName =
   | 'customCalender'
   | 'CustomBag'

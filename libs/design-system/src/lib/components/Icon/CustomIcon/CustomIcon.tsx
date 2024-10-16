@@ -1,9 +1,9 @@
 import React from 'react';
 import { IconProps } from '../Icon';
 import { sizeValues, strokeValues } from '../Icon.constants';
-import { customIcons, hoverClasses } from './CostumIcon.contants';
+import { customIcons, hoverClasses } from './CustomIcon.contants';
 
-export const CostumIcon: React.FC<IconProps> = ({ name, size = 'md' }) => {
+export const CustomIcon: React.FC<IconProps> = ({ name, size = 'md' }) => {
   const CustomIconComponent = customIcons[name as keyof typeof customIcons];
   return (
     <div className="relative hover:text-brand-600 group inline-block">
