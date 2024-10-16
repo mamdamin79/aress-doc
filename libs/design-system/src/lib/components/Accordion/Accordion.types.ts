@@ -5,7 +5,7 @@ export type accordionPropsType = {
   singleOpen: boolean;
 };
 
-type AccordionItem = {
+export type AccordionItem = {
   title: string;
   content: ReactNode;
 };

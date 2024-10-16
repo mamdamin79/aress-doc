@@ -4,13 +4,15 @@ import {
   DisclosureButton,
   DisclosurePanel,
 } from '@headlessui/react';
-import { accordionPropsType } from './Accordion.types';
 import { Icon } from '../Icon';
+import { AccordionItem } from './Accordion.types';
 
-export const Accordion: React.FC<accordionPropsType> = ({
-  items,
-  singleOpen,
-}) => {
+type props = {
+  items: AccordionItem[];
+  singleOpen: boolean;
+};
+
+export const Accordion: React.FC<props> = ({ items, singleOpen }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return items.map((item, index) => (
