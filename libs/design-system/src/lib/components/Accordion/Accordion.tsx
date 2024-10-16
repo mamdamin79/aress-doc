@@ -26,9 +26,11 @@ export const Accordion: React.FC<props> = ({ items, singleOpen }) => {
         <>
           {singleOpen && open ? (
             <button className=" flex w-full items-center justify-between ">
-              <span className="text-gray-1000 text-md">{item.title}</span>
+              <span className="text-gray-1000 text-md font-medium">
+                {item.title}
+              </span>
               <span
-                className={`bg-brand-600  text-white rounded-full flex items-center justify-center p-1 transition-transform duration-300 ${
+                className={`bg-brand-600  text-white rounded-full flex items-center justify-center w-10 h-10  transition-transform duration-300 ${
                   open && openIndex === index ? 'rotate-180' : 'rotate-0'
                 }`}
               >
@@ -39,7 +41,7 @@ export const Accordion: React.FC<props> = ({ items, singleOpen }) => {
             <DisclosureButton className=" flex w-full items-center justify-between ">
               <span className="text-gray-1000 text-md">{item.title}</span>
               <span
-                className={`bg-brand-600 text-white rounded-full flex items-center justify-center p-1 transition-transform duration-300 ${
+                className={`bg-brand-600 text-white  rounded-full flex items-center justify-center w-10 h-10 transition-transform duration-300 ${
                   open ? 'rotate-180' : 'rotate-0'
                 }`}
               >
