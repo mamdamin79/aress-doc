@@ -7,7 +7,11 @@ import { cn } from '../../../../utils/classNames.utils';
 export const CustomIcon: React.FC<IconProps> = ({ name, size = 'md' }) => {
   const CustomIconComponent = CUSTOM_ICONS[name as keyof typeof CUSTOM_ICONS];
   return (
-    <div className="relative hover:text-brand-600 group inline-block">
+    <div
+      className={cn('relative hover:text-brand-600 group inline-block', {
+        'text-brand-600': name === 'CustomCirlcleX',
+      })}
+    >
       <CustomIconComponent
         width={SIZE_VALUES[size]}
         height={SIZE_VALUES[size]}
@@ -27,7 +31,7 @@ export const CustomIcon: React.FC<IconProps> = ({ name, size = 'md' }) => {
           { 'hover:text-brand-600': name === 'CustomcircularUser' },
           { 'hover:text-brand-600': name === 'CustomAlpha' },
           { 'hover:text-brand-600': name === 'CustomCalendar' },
-          { 'text-brand-600': name === 'CustomClose' }
+          { '': name === 'CustomCirlcleX' }
         )}
       />
     </div>

@@ -11,7 +11,7 @@ export type CustomIconName =
   | 'CustomScalesOfJustice'
   | 'CustomClock'
   | 'CustomcircularUser'
-  | 'CustomClose'
+  | 'CustomCirlcleX'
   | 'CustomAlpha';
 
 // this is a type of all valid icon names

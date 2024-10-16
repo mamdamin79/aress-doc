@@ -9,7 +9,7 @@ import { ReactComponent as CustomScalesOfJustice } from './src/icons/CustomScale
 import { ReactComponent as CustomClock } from './src/icons/CustomClock.svg';
 import { ReactComponent as CustomCircularUser } from './src/icons/CustomCircularUser.svg';
 import { ReactComponent as CustomAlpha } from './src/icons/CustomAlpha.svg';
-import { ReactComponent as CustomClose } from './src/icons/CustomClose.svg';
+import { ReactComponent as CustomCirlcleX } from './src/icons/CustomCirlcleX.svg';
 
 export const CUSTOM_ICONS: Record<string, React.FC<SVGProps<SVGSVGElement>>> = {
   CustomCalendar,
@@ -22,5 +22,5 @@ export const CUSTOM_ICONS: Record<string, React.FC<SVGProps<SVGSVGElement>>> = {
   CustomClock,
   CustomCircularUser,
   CustomAlpha,
-  CustomClose,
+  CustomCirlcleX,
 };
