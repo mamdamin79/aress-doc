@@ -1,5 +1,5 @@
 import { SVGProps } from 'react';
-import { ReactComponent as CustomCalendar } from '../src/icons/CustomCalender.svg';
+import { ReactComponent as CustomCalendar } from '../src/icons/CustomCalendar.svg';
 import { ReactComponent as CustomBag } from '../src/icons/CustomBag.svg';
 import { ReactComponent as CustomBadge } from '../src/icons/CustomBadge.svg';
 import { ReactComponent as CustomBeta } from '../src/icons/CustomBeta.svg';
@@ -23,18 +23,4 @@ export const customIcons: Record<string, React.FC<SVGProps<SVGSVGElement>>> = {
   CustomCircularUser,
   CustomAlpha,
   CustomClose,
-};
-
-export const hoverClasses: Record<string, string> = {
-  CustomCalendar: 'hover:text-brand-600',
-  CustomBag: 'hover:text-brand-600',
-  CustomBadge: 'hover:text-brand-600 hover:-rotate-6',
-  CustomBeta: 'hover:text-brand-600 hover:-rotate-6',
-  CustomCircleSlice: 'hover:text-brand-600 hover:scale-105 ',
-  CustomWallet: 'hover:text-brand-600 group',
-  CustomScalesOfJustice: 'hover:text-brand-600 ',
-  CustomClock: 'hover:text-brand-600 hover:rotate-90',
-  CustomcircularUser: 'hover:text-brand-600',
-  CustomAlpha: 'hover:text-brand-600',
-  CustomClose: 'text-brand-600',
 };

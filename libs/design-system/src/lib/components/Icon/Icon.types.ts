@@ -2,7 +2,7 @@ import dynamicIconImports from 'lucide-react/dynamicIconImports';
 
 // custom icon valid name
 export type CustomIconName =
-  | 'customCalender'
+  | 'CustomCalendar'
   | 'CustomBag'
   | 'CustomBadge'
   | 'CustomBeta'
@@ -11,6 +11,7 @@ export type CustomIconName =
   | 'CustomScalesOfJustice'
   | 'CustomClock'
   | 'CustomcircularUser'
+  | 'CustomClose'
   | 'CustomAlpha';
 
 // this is a type of all valid icon names
