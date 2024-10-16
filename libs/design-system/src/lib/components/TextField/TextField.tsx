@@ -1,4 +1,4 @@
-import React, { MouseEvent, ReactEventHandler, useRef, useState } from 'react';
+import React, { MouseEvent, useRef, useState } from 'react';
 import { textFieldPropsType } from './TextField.types';
 import { cn } from '../../../utils';
 import { Icon } from '../Icon';
@@ -54,7 +54,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
     >
       <div className="h-[26px]">
         {mergeTitleAndPlaceholder ? (
-          isFocused && (
+          (isFocused || inputValue) && (
             <label className={cn('text-sm', { 'text-gray-400': disabled })}>
               {label}
             </label>
@@ -66,7 +66,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
         )}
       </div>
 
-      {!isFocused && (
+      {!isFocused && !inputValue && (
         <label
           onClick={handleLabelClick}
           className={cn(
@@ -105,8 +105,6 @@ export const TextField: React.FC<textFieldPropsType> = ({
             'placeholder:text-gray-500': !disabled,
             'bg-gray-100': mode === 'filled' && !disabled,
             'hover:bg-gray-300': mode === 'filled' && !disabled && !isFocused,
-            'text-transparent':
-              mergeTitleAndPlaceholder && !isFocused && inputValue,
             'cursor-not-allowed !bg-gray-50': disabled && mode === 'filled',
             'border-red-600 focus:border-[2.5px]': isError && !disabled,
             'border-gray-300 focus:border-brand-600 focus:border-[2.5px]':
