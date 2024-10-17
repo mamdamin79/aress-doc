@@ -12,7 +12,7 @@ export default meta;
 
 type Story = StoryObj<typeof Footer>;
 
-// A default story for the Header component
+// A default story for the Footer component
 export const Default: Story = {
   render: () => <Footer />, // Rendering the Footer component
 };

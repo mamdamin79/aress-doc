@@ -91,20 +91,20 @@ export function Footer() {
       <div className="grid mt-10 grid-cols-1 grid-rows-4 sm:grid-rows-2 lg:grid-rows-1 items-center mx-auto text-center md:text-start sm:grid-cols-2 lg:grid-cols-4">
         {linksFooter.map(({ title, links }) => (
           <div className="mt-8 self-start lg:mt-0">
-            <span className="text-gray-1000 mb-6 font-medium font-vazirmatn text-2xl block">
+            <span className="text-gray-1000 mb-6 font-medium text-2xl block">
               {title}
             </span>
             {links.map(({ title, icons, link }) => (
               <div>
                 {link ? (
                   <Link
-                    className="text-gray-600 hover:text-gray-700 font-vazirmatn text-md mt-2"
+                    className="text-gray-600 hover:text-gray-700 text-md mt-2"
                     href={link}
                   >
                     {title}
                   </Link>
                 ) : (
-                  <span className="text-gray-600 font-vazirmatn text-md block mt-2">
+                  <span className="text-gray-600 text-md block mt-2">
                     {title}
                   </span>
                 )}
@@ -128,7 +128,7 @@ export function Footer() {
       <div className="mt-16 flex items-center flex-col lg:flex-row justify-between">
         <div className="flex flex-col md:flex-row items-center gap-20">
           <div className="flex flex-col items-center md:items-start">
-            <span className="text-2xl font-semibold font-vazirmatn text-center md:text-right">
+            <span className="text-2xl font-semibold text-center md:text-right">
               دانلود اپلیکیشن
             </span>
             <div className="flex items-center gap-3 mt-6">
@@ -136,7 +136,7 @@ export function Footer() {
                 <Link
                   href={item.link}
                   className={cn(
-                    'rounded-lg font-vazirmatn bg-gray-100 py-2.5 px-4',
+                    'rounded-lg bg-gray-100 py-2.5 px-4',
                     item.idTooltip
                   )}
                 >
@@ -159,9 +159,7 @@ export function Footer() {
             </span>
             <div className="rounded-lg bg-gray-100 py-2.5 mt-6 w-fit px-4 flex items-center gap-2">
               <Image src={telegram} width={0} height={0} alt="Telegram" />
-              <span className="font-vazirmatn font-medium text-xs">
-                ورود به ربات
-              </span>
+              <span className="font-medium text-xs">ورود به ربات</span>
             </div>
           </div>
         </div>
@@ -187,7 +185,7 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="mt-10 text-xs flex-col sm:flex-row font-vazirmatn flex items-center justify-between">
+      <div className="mt-10 text-xs flex-col sm:flex-row flex items-center justify-between">
         <p className="font-medium">
           © تمامی حقوق اینترنتی برای پردازش اطلاعات مالی آرسس محفوظ است.
         </p>
