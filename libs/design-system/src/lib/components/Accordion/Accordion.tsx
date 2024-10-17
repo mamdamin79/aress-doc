@@ -51,12 +51,18 @@ export const Accordion: React.FC<props> = ({ items, singleOpen }) => {
           )}
           {singleOpen ? (
             openIndex === index && (
-              <DisclosurePanel className="border-t border-gray-300 text-sm text-gray-500 mt-4 pt-4">
+              <DisclosurePanel
+                transition
+                className="border-t data-[closed]:-translate-y-6 data-[closed]:opacity-0 duration-300 border-gray-300 text-sm text-gray-500 mt-4 pt-4"
+              >
                 {item.content}
               </DisclosurePanel>
             )
           ) : (
-            <DisclosurePanel className="border-t border-gray-300 text-sm text-gray-500 mt-4 pt-4">
+            <DisclosurePanel
+              transition
+              className="border-t duration-300 data-[closed]:-translate-y-6 data-[closed]:opacity-0 border-gray-300 text-sm text-gray-500 mt-4 pt-4"
+            >
               {item.content}
             </DisclosurePanel>
           )}
