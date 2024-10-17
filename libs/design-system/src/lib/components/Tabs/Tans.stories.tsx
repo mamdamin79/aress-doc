@@ -53,7 +53,10 @@ export const Shaped: Story = {
       { content: 'بسته یک ساله', title: 'یک ساله' },
       {
         content: 'بسته بدون سال',
-        icons: ['a-arrow-down', 'alarm-clock-off', 'a-arrow-down'],
+        icons: [
+          { name: 'wallet-minimal' },
+          { name: 'alarm-clock-off', size: 'sm' },
+        ],
         title: 'title',
       },
       {
@@ -77,6 +80,7 @@ export const Divided: Story = {
     style: 'divided-buttons',
   },
 };
+
 export const Rounded: Story = {
   args: {
     tabs: [

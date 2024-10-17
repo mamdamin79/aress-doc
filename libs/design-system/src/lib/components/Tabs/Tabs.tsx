@@ -57,11 +57,9 @@ export function Tabs({ style, tabs, bgWhite }: Props) {
               >
                 {style === 'button-shaped' ? (
                   <div className="flex items-center gap-2">
-                    {icons?.length && <Icon name={icons[0]} size="lg" />}
+                    {icons?.length && <Icon {...icons[0]} size="lg" />}
                     {title}
-                    {icons?.length && title && (
-                      <Icon name={icons[1]} size="lg" />
-                    )}
+                    {icons?.length && title && <Icon {...icons[1]} size="lg" />}
                   </div>
                 ) : (
                   <span>{title}</span>
@@ -71,13 +69,7 @@ export function Tabs({ style, tabs, bgWhite }: Props) {
           </TabList>
           <TabPanels className="mt-3">
             {tabs.map(({ title, content }) => (
-              <TabPanel key={title}>
-                {typeof content === 'string' ? (
-                  <span>{content}</span>
-                ) : (
-                  <div>{content}</div>
-                )}
-              </TabPanel>
+              <TabPanel key={title}>{content}</TabPanel>
             ))}
           </TabPanels>
         </TabGroup>

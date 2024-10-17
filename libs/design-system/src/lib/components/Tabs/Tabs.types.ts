@@ -1,7 +1,7 @@
-import { IconName } from '../Icon/Icon.types';
+import { IconProps } from '../Icon';
 
 export interface Tab {
   title?: string;
   content: React.ReactNode | string;
-  icons?: IconName[];
+  icons?: IconProps[];
 }
