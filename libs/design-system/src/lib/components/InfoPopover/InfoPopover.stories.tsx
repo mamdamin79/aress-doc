@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { InfoPopover } from './InfoPopover';
 
-// Meta configuration for the Header component in Storybook
+// Meta configuration for the InfoPopover component in Storybook
 const meta: Meta<typeof InfoPopover> = {
   title: 'Components/InfoPopover', // Defines the title in Storybook's UI
   component: InfoPopover, // Links to the actual component
