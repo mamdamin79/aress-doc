@@ -13,12 +13,15 @@ export default meta;
 
 type Story = StoryObj<typeof ProgressBar>;
 
-// A default story for the Header component
+// A default story for the ProgressBar component
 export const Default: Story = {
   args: {
     progressBarItems: [
       'کد ملی و شماره همراه',
       'رمز یک‌بار مصرف',
+      'رمز عبور جدید',
+      'رمز عبور جدید',
+      'رمز عبور جدید',
       'رمز عبور جدید',
     ],
     activeIndex: 0,

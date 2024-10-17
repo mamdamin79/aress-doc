@@ -8,11 +8,28 @@ interface Props {
 
 export function ProgressBar({ progressBarItems, activeIndex }: Props) {
   return (
-    <div className="flex px-10 py-10 justify-between items-center">
-      <div className="w-full flex items-center">
+    <div className="flex relative py-10 justify-between items-center">
+      <div className="w-full flex justify-center items-start">
         {progressBarItems.map((item, index) => (
-          <>
-            <div className="relative flex flex-col items-center justify-center">
+          <div
+            className={cn(
+              'grid grid-cols-12 w-96',
+              index + 1 < progressBarItems.length ? 'w-full' : 'w-fit'
+            )}
+            key={index}
+          >
+            {index + 1 < progressBarItems.length && (
+              <div className="w-full col-span-12 mr-[50%] -z-50 overflow-hidden relative -ml-1 h-2">
+                <div className="w-full -ml-1 h-full bg-gray-200 absolute"></div>
+                <div
+                  className={cn(
+                    'w-full h-full absolute',
+                    activeIndex > index && 'bg-brand-600 animate-progressBar'
+                  )}
+                ></div>
+              </div>
+            )}
+            <div className="relative w-full col-start-1 col-span-10 flex flex-col items-center justify-center">
               {activeIndex === index ? (
                 <ProgressCircle mode="active" />
               ) : activeIndex > index ? (
@@ -22,25 +39,14 @@ export function ProgressBar({ progressBarItems, activeIndex }: Props) {
               )}
               <div
                 className={cn(
-                  'absolute w-max mr-6 font-vazirmatn font-medium text-md top-0 text-center mt-5 break-all',
+                  'mr-6 w-full break-keep font-medium  text-md top-0 text-center mt-5',
                   activeIndex < index && 'text-gray-600 text-sm'
                 )}
               >
                 {item}
               </div>
             </div>
-            {index + 1 < progressBarItems.length && (
-              <div className="w-full -z-50 overflow-hidden relative h-2">
-                <div className="w-full h-full bg-gray-200 absolute"></div>
-                <div
-                  className={cn(
-                    'w-full h-full absolute',
-                    activeIndex > index && 'bg-brand-600 animate-progressBar'
-                  )}
-                ></div>
-              </div>
-            )}
-          </>
+          </div>
         ))}
       </div>
     </div>
