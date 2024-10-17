@@ -29,6 +29,7 @@ export const Secondary: Story = {
     mode: 'secondary',
     size: 'sm',
     iconLeft: { name: 'a-arrow-down', size: 'lg' },
+    iconRight: { name: 'wifi', size: 'lg' },
     disabled: false,
     isLoading: false,
   },
@@ -40,6 +41,7 @@ export const Text: Story = {
     size: 'sm',
     disabled: false,
     isLoading: false,
+    align: 'right',
   },
 };
 
@@ -47,9 +49,10 @@ export const Underline: Story = {
   args: {
     children: 'دنبال کردن',
     mode: 'underline',
+    iconRight: { name: 'webcam', size: 'md' },
     size: 'sm',
     disabled: false,
     isLoading: false,
-    align: 'right',
+    align: 'center',
   },
 };
