@@ -11,8 +11,6 @@ import mayket from './../../../public/icons/mayket.svg';
 import playstore from './../../../public/icons/playstore.svg';
 import { Icon } from '../Icon';
 import { cn } from '../../../utils';
-import { Tooltip } from 'react-tooltip';
-import 'react-tooltip/dist/react-tooltip.css';
 export function Footer() {
   const linksFooter: FooterSection[] = [
     {
@@ -64,16 +62,14 @@ export function Footer() {
       title: 'دانلود مستقیم نسخه اندروید',
       icon: android,
       link: '/',
-      idTooltip: 'a',
     },
     {
       title: 'دانلود از پلی استور',
       icon: playstore,
       link: '/',
-      idTooltip: 'b',
     },
-    { title: 'دانلود از مایکت', icon: mayket, link: '/', idTooltip: 'c' },
-    { title: 'دانلود از بازار', icon: bazar, link: '/', idTooltip: 'd' },
+    { title: 'دانلود از مایکت', icon: mayket, link: '/' },
+    { title: 'دانلود از بازار', icon: bazar, link: '/' },
   ];
 
   return (
@@ -135,20 +131,9 @@ export function Footer() {
               {applications.map((item) => (
                 <Link
                   href={item.link}
-                  className={cn(
-                    'rounded-lg bg-gray-100 py-2.5 px-4',
-                    item.idTooltip
-                  )}
+                  className={cn('rounded-lg bg-gray-100 py-2.5 px-4')}
                 >
                   <Image src={item.icon} width={0} height={0} alt="Android" />
-                  <Tooltip
-                    noArrow
-                    className="tooltip text-xs"
-                    place="bottom"
-                    anchorSelect={`.${item.idTooltip}`}
-                  >
-                    {item.title}
-                  </Tooltip>
                 </Link>
               ))}
             </div>
