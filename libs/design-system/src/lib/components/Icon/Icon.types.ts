@@ -10,11 +10,11 @@ export type CustomIconName =
   | 'CustomWallet'
   | 'CustomScalesOfJustice'
   | 'CustomClock'
-  | 'CustomcircularUser'
+  | 'CustomCircularUser'
   | 'CustomCirlcleX'
   | 'CustomAlpha';
 
-// this is a type of all valid icon names
+// this is a type of all valid icon names from lucide
 export type IconName = keyof typeof dynamicIconImports | CustomIconName;
 
 // valid icon size you can pass to IconComponent
