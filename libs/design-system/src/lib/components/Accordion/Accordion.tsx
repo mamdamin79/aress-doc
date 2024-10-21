@@ -7,12 +7,12 @@ import {
 import { Icon } from '../Icon';
 import { AccordionItem } from './Accordion.types';
 
-type props = {
+type Props = {
   items: AccordionItem[];
   singleOpen: boolean;
 };
 
-export const Accordion: React.FC<props> = ({ items, singleOpen }) => {
+export const Accordion: React.FC<Props> = ({ items, singleOpen }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return items.map((item, index) => (
