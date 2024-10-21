@@ -1,5 +1,6 @@
 const { createGlobPatternsForDependencies } = require('@nx/react/tailwind');
 const { join } = require('path');
+const defaultTheme = require('tailwindcss/defaultTheme');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -23,6 +24,7 @@ module.exports = {
       },
       fontFamily: {
         vazirmatn: 'vazirmatn',
+        sans: ['"vazirmatn"', ...defaultTheme.fontFamily.sans],
       },
       boxShadow: {
         xs: '0px 1px 1px 0px rgba(0, 11, 23, 0.06)',
