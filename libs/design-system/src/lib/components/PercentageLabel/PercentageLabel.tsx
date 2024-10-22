@@ -10,6 +10,8 @@ export function PercentageLabel({ value, tooltip, size }: Props) {
   // Convert negative number to positive to remove -
   const positiveNumber: number = Math.abs(value);
 
+  if (positiveNumber === 0) return null;
+
   return (
     <div
       className={cn(
