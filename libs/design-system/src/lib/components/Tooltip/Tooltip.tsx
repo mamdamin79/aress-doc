@@ -7,23 +7,26 @@ type Props = {
   children: React.ReactNode;
   title: string;
   position?: 'top' | 'right' | 'bottom' | 'left';
+  className?: string;
 };
 
 export const Tooltip: React.FC<Props> = ({
   children,
   title,
+  className,
   position = 'top',
 }) => {
   const id = useId();
   return (
     <>
-      <span
+      {/* wrapper */}
+      <div
         data-tooltip-id={id}
         className="relative inline-block cursor-pointer"
       >
         {/* here is the component that need a tooltip */}
         {children}
-      </span>
+      </div>
       <ReactTooltip
         id={id}
         noArrow
@@ -32,7 +35,8 @@ export const Tooltip: React.FC<Props> = ({
         offset={4}
         content={title}
         className={cn(
-          'bg-gray-1000 shadow-5xl rounded-xs text-white font-medium font-vazirmatn  text-sm'
+          'bg-gray-1000 shadow-5xl rounded-xs text-white font-medium font-vazirmatn  text-sm',
+          className
         )}
       ></ReactTooltip>
     </>
