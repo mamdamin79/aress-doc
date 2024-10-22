@@ -18,7 +18,6 @@ export const Default: Story = {
     );
   },
   args: {
-    id: '5',
     content: 'سلام علیکم و رحمته الله',
     position: 'top',
   },
