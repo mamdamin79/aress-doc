@@ -35,7 +35,7 @@ export const Tooltip: React.FC<Props> = ({
         offset={4}
         content={title}
         className={cn(
-          'bg-gray-1000 shadow-5xl rounded-xs text-white font-medium font-vazirmatn  text-sm',
+          'bg-gray-1000 shadow-5xl rounded-xs text-white font-medium font-vazirmatn text-sm',
           className
         )}
       ></ReactTooltip>
