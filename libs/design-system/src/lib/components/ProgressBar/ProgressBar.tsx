@@ -14,12 +14,12 @@ export function ProgressBar({ progressBarItems, activeIndex }: Props) {
           <div
             className={cn(
               'grid grid-cols-12 w-96',
-              index + 1 < progressBarItems.length ? 'w-full' : 'w-fit'
+              index + 1 < progressBarItems.length ? 'w-full' : 'w-full'
             )}
             key={index}
           >
             {index + 1 < progressBarItems.length && (
-              <div className="w-full col-span-12 mr-[50%] -z-50 overflow-hidden relative -ml-1 h-2">
+              <div className="w-full col-span-12 mr-[51%] -mt-2 -z-50 overflow-hidden relative -ml-1 h-2">
                 <div className="w-full -ml-1 h-full bg-gray-200 absolute"></div>
                 <div
                   className={cn(
@@ -29,7 +29,7 @@ export function ProgressBar({ progressBarItems, activeIndex }: Props) {
                 ></div>
               </div>
             )}
-            <div className="relative w-full col-start-1 col-span-10 flex flex-col items-center justify-center">
+            <div className="relative w-full col-start-1 col-span-12 flex flex-col items-center justify-center">
               {activeIndex === index ? (
                 <ProgressCircle mode="active" />
               ) : activeIndex > index ? (
@@ -39,7 +39,7 @@ export function ProgressBar({ progressBarItems, activeIndex }: Props) {
               )}
               <div
                 className={cn(
-                  'mr-6 w-full break-keep font-medium  text-md top-0 text-center mt-5',
+                  'mr-6 w-full col-span-12 break-keep font-medium  text-md top-0 text-center mt-5',
                   activeIndex < index && 'text-gray-600 text-sm'
                 )}
               >
