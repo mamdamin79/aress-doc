@@ -19,9 +19,9 @@ export function CheckBoxComponent(props: CheckboxProps) {
         className="group"
         id={props.id ?? unikId}
       >
-        <div className="border group-data-[disabled]:cursor-default flex items-center justify-center cursor-pointer group-data-[checked]:bg-brand-600 group-data-[disabled]:border-gray-400 group-data-[checked]:border-brand-600 rounded-[3px] h-[19px] border-gray-600 w-[18px]">
+        <div className="group-data-[disabled]:cursor-default flex items-center border-2 justify-center cursor-pointer group-data-[checked]:bg-brand-600 group-data-[disabled]:border-gray-400 group-data-[checked]:border-brand-600 rounded-[3px] h-5 border-gray-600 w-5">
           <div className="hidden text-white group-data-[checked]:block">
-            <Check strokeWidth={4} width={9} height={9} />
+            <Check strokeWidth={4} width={10} height={10} />
           </div>
         </div>
       </Checkbox>
