@@ -1,7 +1,7 @@
 import { Checkbox, Field, Label } from '@headlessui/react';
-import { Icon } from '../Icon';
 import { cn } from '../../../utils';
 import { useId } from 'react';
+import { Check } from 'lucide-react';
 
 interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onChange: () => void;
@@ -19,9 +19,9 @@ export function CheckBoxComponent(props: CheckboxProps) {
         className="group"
         id={props.id ?? unikId}
       >
-        <div className="border group-data-[disabled]:cursor-default flex items-center justify-center cursor-pointer group-data-[checked]:bg-brand-600 group-data-[disabled]:border-gray-400 group-data-[checked]:border-brand-600 rounded-sm w-fit border-gray-600 min-w-6 min-h-6">
+        <div className="border group-data-[disabled]:cursor-default flex items-center justify-center cursor-pointer group-data-[checked]:bg-brand-600 group-data-[disabled]:border-gray-400 group-data-[checked]:border-brand-600 rounded-[3px] h-[19px] border-gray-600 w-[18px]">
           <div className="hidden text-white group-data-[checked]:block">
-            <Icon name="check" />
+            <Check strokeWidth={4} width={9} height={9} />
           </div>
         </div>
       </Checkbox>
@@ -29,9 +29,9 @@ export function CheckBoxComponent(props: CheckboxProps) {
         htmlFor={props.id ?? unikId}
         className={cn(
           { 'text-gray-400 cursor-default': props.disabled },
-          { 'text-gray-1000': props.checked && !props.disabled },
-          { 'text-gray-600': !props.disabled && !props.checked },
-          'text-sm font-vazirmatn'
+          { 'text-gray-1000 cursor-pointer': props.checked && !props.disabled },
+          { 'text-gray-600 cursor-pointer': !props.disabled && !props.checked },
+          'text-sm'
         )}
       >
         {props.content}
