@@ -5,16 +5,14 @@ import 'react-tooltip/dist/react-tooltip.css';
 
 type Props = {
   children: React.ReactNode;
-  content: React.ReactNode;
+  title: string;
   position?: 'top' | 'right' | 'bottom' | 'left';
-  className?: string;
 };
 
 export const Tooltip: React.FC<Props> = ({
   children,
-  content,
+  title,
   position = 'top',
-  className,
 }) => {
   const id = useId();
   return (
@@ -32,14 +30,11 @@ export const Tooltip: React.FC<Props> = ({
         place={position}
         positionStrategy="fixed"
         offset={4}
+        content={title}
         className={cn(
-          'bg-gray-1000 shadow-5xl rounded-xs text-white font-medium font-vazirmatn  text-sm',
-          className
+          'bg-gray-1000 shadow-5xl rounded-xs text-white font-medium font-vazirmatn  text-sm'
         )}
-      >
-        {/* here is the tooltip content - it can be a component also */}
-        {content}
-      </ReactTooltip>
+      ></ReactTooltip>
     </>
   );
 };

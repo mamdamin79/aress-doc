@@ -13,12 +13,14 @@ export const Default: Story = {
   render: (args) => {
     return (
       <div className="my-10 flex items-center justify-center">
-        <Tooltip {...args}>سلام</Tooltip>
+        <Tooltip {...args}>
+          <div>سلام</div>
+        </Tooltip>
       </div>
     );
   },
   args: {
-    content: 'سلام علیکم و رحمته الله',
+    title: 'سلام علیکم و رحمته الله',
     position: 'top',
   },
 };
