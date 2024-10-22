@@ -10,6 +10,11 @@ export default meta;
 type Story = StoryObj<typeof ContextMenu>;
 
 export const Default: Story = {
+  render: (args) => (
+    <div className="fiexd flex items-center justify-center">
+      <ContextMenu {...args} />
+    </div>
+  ),
   args: {
     items: [
       {
@@ -18,12 +23,12 @@ export const Default: Story = {
         onClick: () => console.log('تنظیمات گزارش'),
       },
       {
-        icon: 'share',
+        icon: 'share-2',
         title: 'اشتراک گذاری',
         onClick: () => console.log('اشتراک گذاری'),
       },
       {
-        icon: 'square-arrow-up-right',
+        icon: 'square-arrow-out-up-right',
         title: 'هدایت به نسخه مادر',
         onClick: () => console.log('تنظیمات گزارش'),
       },
@@ -38,7 +43,7 @@ export const Default: Story = {
         onClick: () => console.log('جایگزینی گزارش'),
       },
       {
-        icon: 'trash',
+        icon: 'trash-2',
         title: 'حذف گزارش از این فضا',
         onClick: () => console.log('حذف گزارش از این فضا'),
       },

@@ -1,13 +1,7 @@
 import React from 'react';
 import { ContextMenuItem } from './ContextMenu.types';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
-import {
-  Archive,
-  ChevronDownIcon,
-  PencilIcon,
-  Square,
-  Trash,
-} from 'lucide-react';
+import { Icon } from '../Icon';
 
 type Props = {
   items: ContextMenuItem[];
@@ -16,53 +10,26 @@ type Props = {
 export const ContextMenu: React.FC<Props> = ({ items }) => {
   return (
     <Menu>
-      <MenuButton className="inline-flex items-center gap-2 rounded-md bg-gray-800 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-700 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white">
-        Options
-        <ChevronDownIcon className="size-4 fill-white/60" />
+      <MenuButton className="inline-flex items-center gap-2 rounded-sm w-40 p-2 text-sm hover:bg-brand-100 bg-white font-medium text-gray-1000 shadow-md">
+        <Icon name={items[0].icon} size="md" />
+        {items[0].title}
       </MenuButton>
-
       <MenuItems
         transition
-        anchor="bottom end"
-        className="w-52 origin-top-right rounded-xl border border-white/5 bg-white/5 p-1 text-sm/6 text-white transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
+        anchor="bottom start"
+        className="w-48 mt-2 shadow-7xl border-[1.5px]  rounded-xl border-gray-300 bg-white p-1 text-sm  transition duration-200 ease-out focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
       >
-        <MenuItem>
-          <button className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-white/10">
-            <PencilIcon className="size-4 fill-white/30" />
-            Edit
-            <kbd className="ml-auto hidden font-sans text-xs text-white/50 group-data-[focus]:inline">
-              ⌘E
-            </kbd>
-          </button>
-        </MenuItem>
-        <MenuItem>
-          <button className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-white/10">
-            <Square className="size-4 fill-white/30" />
-            Duplicate
-            <kbd className="ml-auto hidden font-sans text-xs text-white/50 group-data-[focus]:inline">
-              ⌘D
-            </kbd>
-          </button>
-        </MenuItem>
-        <div className="my-1 h-px bg-white/5" />
-        <MenuItem>
-          <button className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-white/10">
-            <Archive className="size-4 fill-white/30" />
-            Archive
-            <kbd className="ml-auto hidden font-sans text-xs text-white/50 group-data-[focus]:inline">
-              ⌘A
-            </kbd>
-          </button>
-        </MenuItem>
-        <MenuItem>
-          <button className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-white/10">
-            <Trash className="size-4 fill-white/30" />
-            Delete
-            <kbd className="ml-auto hidden font-sans text-xs text-white/50 group-data-[focus]:inline">
-              ⌘D
-            </kbd>
-          </button>
-        </MenuItem>
+        {items.map((item) => (
+          <MenuItem>
+            <button
+              onClick={item.onClick}
+              className="group text-sm text-gray-1000 font-medium flex w-full items-center gap-2 p-2 data-[focus]:bg-white/10"
+            >
+              <Icon name={item.icon} size="md" />
+              {item.title}
+            </button>
+          </MenuItem>
+        ))}
       </MenuItems>
     </Menu>
   );
