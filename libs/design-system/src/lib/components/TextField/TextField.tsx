@@ -1,4 +1,4 @@
-import React, { MouseEvent, useRef, useState } from 'react';
+import React, { MouseEvent, useId, useState } from 'react';
 import { textFieldPropsType } from './TextField.types';
 import { cn } from '../../../utils';
 import { Icon } from '../Icon';
@@ -22,14 +22,8 @@ export const TextField: React.FC<textFieldPropsType> = ({
   const [visibleCharacter, setIsVisibleCharacter] = useState(
     type !== 'password'
   );
-  const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleLabelClick = () => {
-    setIsFocused(true);
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  };
+  const id = useId();
 
   const handleClearInput = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -68,7 +62,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
 
       {!isFocused && !inputValue && (
         <label
-          onClick={handleLabelClick}
+          htmlFor={id}
           className={cn(
             'text-sm hidden absolute top-9 pr-4 cursor-text',
             { 'right-8': leadingIcon },
@@ -91,7 +85,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
       )}
 
       <input
-        ref={inputRef}
+        id={id}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         type={visibleCharacter ? 'text' : 'password'}
