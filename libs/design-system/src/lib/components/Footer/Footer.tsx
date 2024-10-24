@@ -10,7 +10,7 @@ import bazar from './../../../public/icons/bazar.svg';
 import mayket from './../../../public/icons/mayket.svg';
 import playstore from './../../../public/icons/playstore.svg';
 import { Icon } from '../Icon';
-import { cn } from '../../../utils';
+import { Tooltip } from '../Tooltip';
 export function Footer() {
   const linksFooter: FooterSection[] = [
     {
@@ -128,12 +128,22 @@ export function Footer() {
               دانلود اپلیکیشن
             </span>
             <div className="flex items-center gap-3 mt-6">
-              {applications.map((item) => (
-                <Link
-                  href={item.link}
-                  className={cn('rounded-lg bg-gray-100 py-2.5 px-4')}
-                >
-                  <Image src={item.icon} width={0} height={0} alt="Android" />
+              {applications.map((item, index) => (
+                <Link key={index} href={item.link}>
+                  <Tooltip
+                    position="bottom"
+                    className="!rounded-xs !text-sm !py-0 !px-2"
+                    title={item.title}
+                  >
+                    <div className="rounded-lg bg-gray-100 py-2.5 px-4">
+                      <Image
+                        src={item.icon}
+                        width={0}
+                        height={0}
+                        alt="Android"
+                      />
+                    </div>
+                  </Tooltip>
                 </Link>
               ))}
             </div>
@@ -142,7 +152,7 @@ export function Footer() {
             <span className="text-2xl font-semibold text-center md:text-right">
               ربات هوشمند تلگرام
             </span>
-            <div className="rounded-lg bg-gray-100 py-2.5 mt-6 w-fit px-4 flex items-center gap-2">
+            <div className="rounded-lg cursor-pointer bg-gray-100 py-2.5 mt-6 w-fit px-4 flex items-center gap-2">
               <Image src={telegram} width={0} height={0} alt="Telegram" />
               <span className="font-medium text-xs">ورود به ربات</span>
             </div>
