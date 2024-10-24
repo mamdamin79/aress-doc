@@ -1,35 +1,45 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Icon } from '../Icon';
 import { FileUploader } from 'react-drag-drop-files';
+import { formatFileSize } from './FileUpload.utils';
 
 type FileUploadProps = {
   types: string[];
+  maxSize: number;
 };
 
-const formatFileSize = (file: File): string => {
-  const sizeInBytes = file.size;
-  const sizeInKB = sizeInBytes / 1024;
-  const sizeInMB = sizeInKB / 1024;
-
-  if (sizeInKB < 1) return `${sizeInBytes} bytes`;
-  if (sizeInKB < 1024) return `${sizeInKB.toFixed(2)} KB`;
-  return `${sizeInMB.toFixed(2)} MB`;
-};
-
-export const FileUpload: React.FC<FileUploadProps> = ({ types }) => {
+export const FileUpload: React.FC<FileUploadProps> = ({ types, maxSize }) => {
   const [file, setFile] = useState<File | null>(null);
+  const [isValidTypes, setIsValidTypes] = useState(true);
+  const [isFileSizeValid, setIsFileSizeValid] = useState(true);
 
-  const handleFileChange = (selectedFile: File) => setFile(selectedFile);
+  useEffect(() => {
+    if (!Array.isArray(types) || types.length === 0) {
+      setIsValidTypes(false);
+    } else {
+      setIsValidTypes(true);
+    }
+  }, [types]);
+
+  const handleFileChange = (selectedFile: File) => {
+    if (selectedFile.size > maxSize) {
+      setIsFileSizeValid(false);
+    } else {
+      setIsFileSizeValid(true);
+    }
+    setFile(selectedFile);
+  };
 
   const clearFile = (e: React.MouseEvent) => {
     setFile(null);
   };
+
   return (
     <>
       {file && (
-        <div onClick={clearFile} className="cursor-pointer z-10 ml-[-40px]">
+        <button onClick={clearFile} className="cursor-pointer z-10 ml-[-40px]">
           <Icon name="trash-2" size="lg" />
-        </div>
+        </button>
       )}
 
       <FileUploader handleChange={handleFileChange} name="file" types={types}>

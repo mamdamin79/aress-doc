@@ -19,5 +19,6 @@ export const fileUpload: Story = {
   },
   args: {
     types: ['xls', 'xlsx'],
+    maxSize: 1000000000,
   },
 };

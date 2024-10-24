@@ -3,3 +3,4 @@ export * from './Breadcrumb';
 export * from './Icon';
 export * from './SectionTitle';
 export * from './Tooltip';
+export * from './FileUpload';
