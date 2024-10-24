@@ -15,7 +15,6 @@ type Story = StoryObj<typeof PercentageLabel>;
 export const positive: Story = {
   args: {
     size: 'normal',
-    tooltip: 'moooo',
     value: 8,
   },
 };
