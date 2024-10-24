@@ -3,11 +3,18 @@ import { ContextMenuItem } from './ContextMenu.types';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { Icon } from '../Icon';
 
+// this pulls out types of menuItem
+type MenuItemsProps = React.ComponentProps<typeof MenuItems>;
+
 type Props = {
   items: ContextMenuItem[];
+  anchor?: MenuItemsProps['anchor']; // using of anchor type of menuItem
 };
 
-export const ContextMenu: React.FC<Props> = ({ items }) => {
+export const ContextMenu: React.FC<Props> = ({
+  items,
+  anchor = 'bottom start',
+}) => {
   return (
     <Menu>
       <MenuButton className="inline-flex items-center gap-2 rounded-sm w-40 p-2 text-sm  bg-white font-medium text-gray-1000 shadow-md">
@@ -16,7 +23,7 @@ export const ContextMenu: React.FC<Props> = ({ items }) => {
       </MenuButton>
       <MenuItems
         transition
-        anchor="bottom start"
+        anchor={anchor}
         className="w-48 mt-2 shadow-7xl border-[1.5px]  rounded-xl border-gray-300 bg-white  text-sm  transition duration-200 ease-out focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
       >
         {items.map((item) => (
