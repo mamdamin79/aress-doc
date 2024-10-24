@@ -2,7 +2,8 @@ import { cn } from '../../../utils';
 import { Icon, IconProps } from '../Icon';
 import { ButtonMode, ButtonSize } from './Button.types';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading: boolean;
   iconLeft?: IconProps;
   iconRight?: IconProps;
