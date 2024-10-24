@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { IconName } from '../Icon/Icon.types';
+import { IconProps } from '../Icon';
 export type ProgressToastProps = {
   title: string;
   timeout: number;
@@ -9,7 +9,7 @@ export type ProgressToastProps = {
     onClick: () => void;
   };
   leadingAction: {
-    iconProps: IconName;
+    iconProps: IconProps;
     onClick: () => void;
   };
 };

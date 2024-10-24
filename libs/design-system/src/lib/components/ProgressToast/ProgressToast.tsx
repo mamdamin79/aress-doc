@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ProgressToastProps } from './ProgressToast.types';
-import { Icon } from '../Icon/Icon';
+import { Icon } from '../Icon';
+import { Button } from '../Button';
 export const ProgressToast: React.FC<ProgressToastProps> = ({
   title,
   trailingAction,
@@ -29,9 +30,8 @@ export const ProgressToast: React.FC<ProgressToastProps> = ({
         {leadingAction ? (
           <span className="ml-2 h-[32px] flex items-center justify-center text-yellow-500">
             <Icon
-              key={leadingAction.iconProps}
-              name={leadingAction.iconProps}
-              size="md"
+              name={leadingAction.iconProps.name}
+              size={leadingAction.iconProps.size}
             />
           </span>
         ) : (
