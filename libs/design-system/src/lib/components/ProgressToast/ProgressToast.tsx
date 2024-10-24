@@ -21,7 +21,7 @@ export const ProgressToast: React.FC<ProgressToastProps> = ({
   }, []);
   return (
     <div
-      className="bg-[#05070CD9] w-fit rounded-lg relative h-[50px] flex items-center justify-center overflow-hidden"
+      className="bg-brand-1000 w-fit rounded-lg relative h-[50px] flex items-center justify-center overflow-hidden"
       onClick={handleProgress}
     >
       <div className="px-2 gap-2 w-full flex items-center">
@@ -40,7 +40,7 @@ export const ProgressToast: React.FC<ProgressToastProps> = ({
         <span className="text-white font-vazirmatn text-[16px]">{title}</span>
         {/* handling the left side button */}
         {trailingAction ? (
-          <span className="bg-[#009695] rounded-sm gap-1 leading-6 h-[32px] flex items-center justify-center p-2 text-white">
+          <span className="bg-brand-600 rounded-sm gap-1 leading-6 h-[32px] flex items-center justify-center p-2 text-white">
             {trailingAction.ButtonProps}
           </span>
         ) : (
@@ -48,9 +48,9 @@ export const ProgressToast: React.FC<ProgressToastProps> = ({
         )}
       </div>
 
-      <div className="w-full bg-gray-200 h-1 absolute bottom-0 rounded-lg">
+      <div className="w-full h-1 absolute bottom-0 rounded-lg">
         <div
-          className="bg-[#66C0BF] h-1"
+          className="bg-brand-400 h-1"
           style={{
             width: progressWidth,
             transition: `width ${
