@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Icon } from '../Icon';
-// import { FileUploader } from 'react-drag-drop-files';
+import { FileUploader } from 'react-drag-drop-files';
 
 type FileUploadProps = {
   types: string[];
@@ -32,9 +32,9 @@ export const FileUpload: React.FC<FileUploadProps> = ({ types }) => {
         </div>
       )}
 
-      {/* <FileUploader handleChange={handleFileChange} name="file" types={types}>
+      <FileUploader handleChange={handleFileChange} name="file" types={types}>
         <div
-          className={`group border-2 rounded-md p-[15px_16px] flex items-center gap-2 relative w-max transition-all hover:border-brand-600 text-right ${
+          className={`group border-2 rounded-md p-[15px_16px] flex items-center gap-2 relative w-max transition-all hover:border-brand-600 text- ${
             file
               ? 'border-[1px] border-gray-200 pr-12'
               : 'border-dashed border-gray-300'
@@ -54,7 +54,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ types }) => {
               : 'انتخاب فایل اکسل (.xls یا .xlsx) تا حداکثر حجم ۲ مگابایت'}
           </span>
         </div>
-      </FileUploader> */}
+      </FileUploader>
     </>
   );
 };
