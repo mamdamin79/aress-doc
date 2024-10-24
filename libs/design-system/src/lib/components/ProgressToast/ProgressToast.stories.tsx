@@ -20,7 +20,13 @@ export const trailing: Story = {
   args: {
     title: 'گزارش جایگذاری شد.',
     trailingAction: {
-      ButtonProps: 'برو به داشبورد',
+      ButtonProps: {
+        align: 'center',
+        isLoading: false,
+        mode: 'primary',
+        size: 'sm',
+        children: 'برو به داشبورد',
+      },
       onClick: () => console.log('hello'),
     },
     timeout: 8000,
@@ -37,7 +43,10 @@ export const leading: Story = {
   args: {
     title: 'گزارش حذف شد.',
     leadingAction: {
-      iconProps: 'undo-2',
+      iconProps: {
+        name: 'undo-2',
+        size: 'lg',
+      },
       onClick: () => console.log('hello'),
     },
     timeout: 8000,

@@ -29,10 +29,7 @@ export const ProgressToast: React.FC<ProgressToastProps> = ({
         {/* handling the right side button */}
         {leadingAction ? (
           <span className="ml-2 h-[32px] flex items-center justify-center text-yellow-500">
-            <Icon
-              name={leadingAction.iconProps.name}
-              size={leadingAction.iconProps.size}
-            />
+            <Icon {...leadingAction.iconProps} />{' '}
           </span>
         ) : (
           false
@@ -40,9 +37,9 @@ export const ProgressToast: React.FC<ProgressToastProps> = ({
         <span className="text-white font-vazirmatn text-[16px]">{title}</span>
         {/* handling the left side button */}
         {trailingAction ? (
-          <span className="bg-brand-600 rounded-sm gap-1 leading-6 h-[32px] flex items-center justify-center p-2 text-white">
-            {trailingAction.ButtonProps}
-          </span>
+          <div className="inline-block">
+            <Button {...trailingAction.ButtonProps}></Button>
+          </div>
         ) : (
           false
         )}
