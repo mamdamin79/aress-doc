@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Icon } from '../Icon';
-import { FileUploader } from 'react-drag-drop-files';
+// import { FileUploader } from 'react-drag-drop-files';
 
 type FileUploadProps = {
   types: string[];
@@ -24,7 +24,6 @@ export const FileUpload: React.FC<FileUploadProps> = ({ types }) => {
   const clearFile = (e: React.MouseEvent) => {
     setFile(null);
   };
-
   return (
     <>
       {file && (
@@ -33,22 +32,29 @@ export const FileUpload: React.FC<FileUploadProps> = ({ types }) => {
         </div>
       )}
 
-      <FileUploader handleChange={handleFileChange} name="file" types={types}>
+      {/* <FileUploader handleChange={handleFileChange} name="file" types={types}>
         <div
-          className={`border-2 rounded-md p-[15px_16px] flex items-center gap-2 relative w-max hover:border-brand-600 transition-all ${
+          className={`group border-2 rounded-md p-[15px_16px] flex items-center gap-2 relative w-max transition-all hover:border-brand-600 text-right ${
             file
               ? 'border-[1px] border-gray-200 pr-12'
               : 'border-dashed border-gray-300'
           }`}
         >
-          {!file && <Icon name="paperclip" size="lg" />}
-          <span className="text-gray-500 text-sm font-vazirmatn font-medium text-right shrink-0">
+          {!file && (
+            <div className="text-gray-500 group-hover:text-brand-700">
+              <Icon name="paperclip" size="lg" />
+            </div>
+          )}
+          <span
+            className={`text-gray-500 group-hover:text-brand-700 text-sm font-vazirmatn font-medium text-right shrink-0`}
+          >
+            {' '}
             {file
               ? `${file.name} (${formatFileSize(file)})`
               : 'انتخاب فایل اکسل (.xls یا .xlsx) تا حداکثر حجم ۲ مگابایت'}
           </span>
         </div>
-      </FileUploader>
+      </FileUploader> */}
     </>
   );
 };
