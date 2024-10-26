@@ -1,4 +1,8 @@
-import { Checkbox, Field, Label } from '@headlessui/react';
+import {
+  Checkbox as CheckboxHeadlessUIProps,
+  Field,
+  Label,
+} from '@headlessui/react';
 import { cn } from '../../../utils';
 import { useId } from 'react';
 import { Check } from 'lucide-react';
@@ -7,15 +11,13 @@ interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onChange: () => void;
 }
 
-export function CheckBoxComponent(props: CheckboxProps) {
+export function Checkbox(props: CheckboxProps) {
   const unikId = useId();
 
   return (
     <Field className="flex items-center gap-2">
-      <Checkbox
-        checked={props.checked}
-        onChange={props.onChange}
-        disabled={props.disabled}
+      <CheckboxHeadlessUIProps
+        {...props}
         className="group"
         id={props.id ?? unikId}
       >
@@ -24,7 +26,7 @@ export function CheckBoxComponent(props: CheckboxProps) {
             <Check strokeWidth={4} width={10} height={10} />
           </div>
         </div>
-      </Checkbox>
+      </CheckboxHeadlessUIProps>
       <Label
         htmlFor={props.id ?? unikId}
         className={cn(
