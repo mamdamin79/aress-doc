@@ -26,7 +26,11 @@ const CustomComponent: React.FC<ConfirmModalProps> = ({
   const [checked, setChecked] = useState(false);
 
   const handleConfirm = useCallback(() => {
-    onConfirm({ input: inputValue, checked });
+    if (!input?.placeholder) {
+      onConfirm({ checked: true });
+    } else {
+      onConfirm({ checked, input: inputValue });
+    }
     setIsOpen(false);
   }, [inputValue, checked, onConfirm]);
 
@@ -109,7 +113,12 @@ const CustomComponent: React.FC<ConfirmModalProps> = ({
             </button>
             <button
               onClick={handleConfirm}
-              className="flex justify-center items-center bg-brand-600 py-2 px-4 gap-2 border-2 border-brand-600 rounded-md text-white text-base leading-6 text-center hover:bg-brand-700 transition-colors"
+              disabled={Boolean(!inputValue && input?.placeholder)}
+              className={`${
+                !inputValue && input?.placeholder
+                  ? 'bg-brand-300 cursor-not-allowed'
+                  : 'bg-brand-600 hover:bg-brand-700'
+              } flex justify-center items-center py-2 px-4 gap-2 rounded-md text-white text-base leading-6 text-center transition-colors`}
             >
               {ConfirmButtonText}
             </button>
