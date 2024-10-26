@@ -31,6 +31,8 @@
     "@storybook/core-server": "^8.2.8",
     "@storybook/jest": "^0.2.3",
     "@storybook/nextjs": "^8.3.2",
+    "@storybook/preview-api": "^8.3.2",
+    "@storybook/react": "^8.3.2",
     "@storybook/react-vite": "^8.2.8",
     "@storybook/test-runner": "^0.13.0",
     "@storybook/testing-library": "^0.2.2",
@@ -76,15 +78,15 @@
   "nx": {},
   "dependencies": {
     "@headlessui/react": "^2.1.8",
-    "@storybook/react": "^8.3.2",
     "clsx": "^2.1.1",
     "lucide-react": "^0.445.0",
     "next": "14.2.3",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-hot-toast": "^2.4.1",
+    "react-tooltip": "^5.20.0",
     "tailwind-merge": "^2.5.2",
-    "tslib": "^2.3.0",
-    "react-hot-toast": "^2.4.1"
+    "tslib": "^2.3.0"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
