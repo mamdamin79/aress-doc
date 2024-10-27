@@ -34,7 +34,7 @@ export const ContextMenu: React.FC<Props> = ({
       <MenuItems
         transition
         anchor={anchor}
-        className="w-48 [--anchor-gap:8px] shadow-7xl border-[1.5px]  rounded-xl border-gray-300 bg-white  text-sm  transition duration-200 ease-out focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
+        className="w-[180px] [--anchor-gap:8px] shadow-7xl border-[1.5px]  rounded-xl border-gray-300 bg-white  text-sm  transition duration-200 ease-out focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
       >
         {items.map((item) => (
           <MenuItem>
