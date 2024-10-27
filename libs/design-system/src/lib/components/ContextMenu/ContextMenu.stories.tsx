@@ -12,7 +12,7 @@ type Story = StoryObj<typeof ContextMenu>;
 
 export const Default: Story = {
   render: (args) => (
-    <div className="fiexd flex items-center justify-center">
+    <div className="fixed flex items-center justify-center">
       <ContextMenu {...args} />
     </div>
   ),
@@ -54,7 +54,7 @@ export const Default: Story = {
 
 export const withIcon: Story = {
   render: (args) => (
-    <div className="fiexd flex items-center justify-center">
+    <div className="fixed flex items-center justify-center">
       <ContextMenu {...args}>
         <Icon name="ellipsis" />
       </ContextMenu>
@@ -98,7 +98,7 @@ export const withIcon: Story = {
 
 export const DifferentPosition: Story = {
   render: (args) => (
-    <div className="fiexd flex items-center justify-center">
+    <div className="fixed flex items-center justify-center">
       <ContextMenu anchor="bottom start" {...args}>
         <Icon name="ellipsis" />
       </ContextMenu>

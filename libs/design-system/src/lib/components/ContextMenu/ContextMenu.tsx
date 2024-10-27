@@ -19,7 +19,8 @@ export const ContextMenu: React.FC<Props> = ({
 }) => {
   return (
     <Menu>
-      <MenuButton className="">
+      <MenuButton>
+        {/* if user provide a children we use it else we use the first item */}
         {children ? (
           <div className="bg-gray-100  p-2 rounded-full shadow-md">
             {children}
