@@ -93,11 +93,13 @@ export const TextField: React.FC<textFieldPropsType> = ({
         disabled={disabled}
         onChange={(e) => setInputValue(e.target.value)}
         className={cn(
-          'font-normal rounded-xl p-2 w-full text-md outline-none border-[1.5px] transition-colors duration-150',
+          'font-normal  w-full rounded-xl p-2 text-md outline-none border-[1.5px] transition-colors duration-150',
           {
             'bg-transparent border-inherit opacity-100 placeholder:text-gray-400':
               disabled,
             'placeholder:text-gray-500': !disabled,
+            'pl-20': trailingIcons.length === 2,
+            'pl-10': trailingIcons.length === 1,
             'bg-gray-100': mode === 'filled' && !disabled,
             'hover:bg-gray-300': mode === 'filled' && !disabled && !isFocused,
             'cursor-not-allowed !bg-gray-50': disabled && mode === 'filled',
