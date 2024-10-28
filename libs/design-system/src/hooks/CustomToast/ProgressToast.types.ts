@@ -1,15 +1,14 @@
 import { ReactNode } from 'react';
-import { ButtonProps } from '../Button';
-import { IconProps } from '../Icon/Icon';
+import { ButtonProps } from '../../lib/components/Button';
+import { IconProps } from '../../lib/components/Icon/Icon';
 export type ProgressToastProps = {
   title: string;
   timeout?: number;
-  progressWidth: string;
-  trailingAction: {
+  trailingAction?: {
     ButtonProps: ButtonProps;
     onClick: () => void;
   };
-  leadingAction: {
+  leadingAction?: {
     iconProps: IconProps;
     onClick: () => void;
   };
