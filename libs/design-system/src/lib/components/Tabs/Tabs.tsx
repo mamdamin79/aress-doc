@@ -78,20 +78,19 @@ export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite }) => {
                               'hidden top-0 w-4 z-30 h-full bg-white left-[100%] rounded-bl-3xl ':
                                 style === 'lined',
                             },
-                            { 'absolute block': selected && index !== 0 },
+                            { 'absolute block': selected && index },
                             {
-                              'absolute block':
-                                !selected && hover && index !== 0,
+                              'absolute block': !selected && hover && index,
                             }
                           )}
                         ></div>
                         <div
                           className={cn(
                             'w-4 bg-brand-600 top-0 left-[100%] hidden z-10 h-full',
-                            { 'absolute block': selected && index !== 0 },
+                            { 'absolute block': selected && index },
                             {
                               'absolute block bg-gray-100':
-                                !selected && hover && index !== 0,
+                                !selected && hover && index,
                             }
                           )}
                         ></div>
