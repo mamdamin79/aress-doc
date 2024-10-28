@@ -1,4 +1,4 @@
-// import { Footer } from './(layout)/Footer';
+import { Footer } from './(layout)/(footer)';
 import './global.css';
 import { cn, Header } from 'design-system';
 
@@ -17,7 +17,7 @@ export default function RootLayout({
       <body className={cn('sdfsdf', 'dfsdfs')}>
         <Header />
         {children}
-        {/* <Footer /> */}
+        <Footer />
       </body>
     </html>
   );
