@@ -28,7 +28,7 @@ export const ProgressToast: React.FC<ProgressToastProps> = ({
       <div className="px-2 gap-2 w-full flex items-center">
         {/* handling the right side button */}
         {leadingAction ? (
-          <span className="ml-2 h-[32px] flex items-center justify-center text-yellow-500">
+          <span className="h-[32px] flex items-center justify-center text-yellow-500">
             <Icon {...leadingAction.iconProps} />{' '}
           </span>
         ) : (
