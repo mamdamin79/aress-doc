@@ -14,6 +14,10 @@ module.exports = {
   theme: {
     extend: {
       keyframes: {
+        progressBar: {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
         toast: {
           '0%': { transform: 'scale(0)' },
           '100%': { transform: 'scale(1)' },
@@ -21,6 +25,7 @@ module.exports = {
       },
       animation: {
         toast: 'toast 0.3s ease-in-out',
+        progressBar: 'progressBar 1s ease-in-out',
       },
       fontFamily: {
         vazirmatn: 'vazirmatn',
