@@ -12,17 +12,25 @@ export default meta;
 
 type Story = StoryObj<typeof PercentageLabel>;
 
-export const positive: Story = {
+export const Positive: Story = {
   args: {
     size: 'normal',
     value: 8,
   },
 };
 
-export const negative: Story = {
+export const Negative: Story = {
   args: {
     size: 'normal',
-    tooltip: 'moooo',
+    tooltip: 'negative number',
     value: -8,
+  },
+};
+
+export const Zero: Story = {
+  args: {
+    size: 'normal',
+    tooltip: 'zero number',
+    value: 0,
   },
 };

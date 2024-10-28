@@ -7,11 +7,9 @@ interface Props {
   size: 'normal' | 'small';
 }
 
-export function PercentageLabel({ value, tooltip, size }: Props) {
+export const PercentageLabel: React.FC<Props> = ({ value, tooltip, size }) => {
   // Convert negative number to positive to remove -
-  const positiveNumber: number = Math.abs(value);
-
-  if (positiveNumber === 0) return null;
+  const absoluteValue: number = Math.abs(value);
 
   return (
     <Tooltip
@@ -25,14 +23,17 @@ export function PercentageLabel({ value, tooltip, size }: Props) {
           { 'px-5 text-sm': size === 'normal' },
           { 'px-3 text-xs': size === 'small' },
           { 'bg-green-100 text-green-700': value > 0 },
-          { 'bg-red-100 text-red-700': value < 0 }
+          { 'bg-red-100 text-red-700': value < 0 },
+          { 'bg-gray-100 text-gray-1000': value === 0 }
         )}
       >
         <div className="flex items-center">
-          <span>{positiveNumber}</span>%
-          <span className="mr-0.5 mb-0.5">{value > 0 ? '+' : '-'} </span>
+          <span>{absoluteValue}</span>%
+          <span className="mr-0.5 mb-0.5">
+            {value > 0 ? '+' : value < 0 && '-'}{' '}
+          </span>
         </div>
       </div>
     </Tooltip>
   );
-}
+};
