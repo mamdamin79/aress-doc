@@ -1,14 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { FooterSection } from './Footer.types';
-import logo from './../../../public/icons/logo.svg';
-import enamad from './../../../public/icons/enamad.png';
-import digitalUnion from './../../../public/icons/digital-union.png';
-import telegram from './../../../public/icons/telegram.svg';
-import android from './../../../public/icons/android.svg';
-import bazar from './../../../public/icons/bazar.svg';
-import mayket from './../../../public/icons/mayket.svg';
-import playstore from './../../../public/icons/playstore.svg';
+import Logo from '../../../assets/icons/logo.svg';
+import Enamad from './../../assets/icons/enamad.png';
+import DigitalUnion from './../../assets/icons/digital-union.png';
+import TELEGRAM_ICON from './../../assets/icons/telegram.svg';
+import ANDROID_ICON from './../../assets/icons/android.svg';
+import BAZAR_ICON from './../../assets/icons/bazar.svg';
+import MAYKET_ICON from './../../assets/icons/mayket.svg';
+import PLAYSTORE_ICON from './../../assets/icons/playstore.svg';
 import { Icon } from '../Icon';
 import { Tooltip } from '../Tooltip';
 export function Footer() {
@@ -60,16 +60,16 @@ export function Footer() {
   const applications = [
     {
       title: 'دانلود مستقیم نسخه اندروید',
-      icon: android,
+      icon: ANDROID_ICON,
       link: '/',
     },
     {
       title: 'دانلود از پلی استور',
-      icon: playstore,
+      icon: PLAYSTORE_ICON,
       link: '/',
     },
-    { title: 'دانلود از مایکت', icon: mayket, link: '/' },
-    { title: 'دانلود از بازار', icon: bazar, link: '/' },
+    { title: 'دانلود از مایکت', icon: MAYKET_ICON, link: '/' },
+    { title: 'دانلود از بازار', icon: BAZAR_ICON, link: '/' },
   ];
 
   return (
@@ -78,7 +78,7 @@ export function Footer() {
         <Image
           width={0}
           height={0}
-          src={logo}
+          src={Logo}
           className="sm:w-24"
           alt="Logo image"
         />
@@ -138,8 +138,8 @@ export function Footer() {
                     <div className="rounded-lg bg-gray-100 py-2.5 px-4">
                       <Image
                         src={item.icon}
-                        width={0}
-                        height={0}
+                        width={24}
+                        height={24}
                         alt="Android"
                       />
                     </div>
@@ -153,7 +153,12 @@ export function Footer() {
               ربات هوشمند تلگرام
             </span>
             <div className="rounded-lg cursor-pointer bg-gray-100 py-2.5 mt-6 w-fit px-4 flex items-center gap-2">
-              <Image src={telegram} width={0} height={0} alt="Telegram" />
+              <Image
+                src={TELEGRAM_ICON}
+                width={24}
+                height={24}
+                alt="Telegram"
+              />
               <span className="font-medium text-xs">ورود به ربات</span>
             </div>
           </div>
@@ -164,7 +169,7 @@ export function Footer() {
               width={0}
               height={0}
               className="w-16 h-16"
-              src={enamad}
+              src={Enamad}
               alt="enamad"
             />
           </Link>
@@ -173,7 +178,7 @@ export function Footer() {
               width={0}
               height={0}
               className="w-16 h-16"
-              src={digitalUnion}
+              src={DigitalUnion}
               alt="digitalUnion"
             />
           </Link>
