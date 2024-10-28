@@ -92,3 +92,16 @@ export const Rounded: Story = {
     style: 'rounded',
   },
 };
+
+export const ButtonRounded: Story = {
+  args: {
+    tabs: [
+      { content: 'نمایش ویدیو برای برسی', title: 'بررسی ویدیو' },
+      { content: 'نمایش اطلاعات بیشتر', title: 'اطلاعات بیشتر' },
+      { content: 'نمایش گزارش های مرتبط', title: 'گزارش های مرتبط' },
+      { content: 'نمایش  دیدگاه ها و سوالات', title: 'دیدگاه ها و سوالات' },
+    ],
+    bgWhite: true,
+    style: 'button-rounded',
+  },
+};
