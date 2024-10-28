@@ -18,15 +18,13 @@ module.exports = {
           '0%': { transform: 'translateX(100%)' },
           '100%': { transform: 'translateX(0)' },
         },
-      },
-      animation: {
-        progressBar: 'progressBar 1s ease-in-out',
         toast: {
           '0%': { transform: 'scale(0)' },
           '100%': { transform: 'scale(1)' },
         },
       },
       animation: {
+        progressBar: 'progressBar 1s ease-in-out',
         toast: 'toast 0.3s ease-in-out',
       },
       fontFamily: {
