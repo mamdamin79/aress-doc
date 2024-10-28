@@ -3,7 +3,6 @@ export * from './IconDialog';
 export * from './Breadcrumb';
 export * from './Icon';
 export * from './SectionTitle';
-export * from './Footer';
 export * from './Tooltip';
 export * from './CircleXIcon';
 export * from './RemovableLabel';

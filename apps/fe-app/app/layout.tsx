@@ -1,5 +1,6 @@
+// import { Footer } from './(layout)/Footer';
 import './global.css';
-import { cn, Footer, Header } from 'design-system';
+import { cn, Header } from 'design-system';
 
 export const metadata = {
   title: 'Welcome to apps/fe-app',
@@ -16,7 +17,7 @@ export default function RootLayout({
       <body className={cn('sdfsdf', 'dfsdfs')}>
         <Header />
         {children}
-        <Footer />
+        {/* <Footer /> */}
       </body>
     </html>
   );

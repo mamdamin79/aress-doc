@@ -1,16 +1,16 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { FooterSection } from './Footer.types';
-import Logo from '../../../assets/icons/logo.svg';
-import Enamad from './../../assets/icons/enamad.png';
-import DigitalUnion from './../../assets/icons/digital-union.png';
-import TELEGRAM_ICON from './../../assets/icons/telegram.svg';
-import ANDROID_ICON from './../../assets/icons/android.svg';
-import BAZAR_ICON from './../../assets/icons/bazar.svg';
-import MAYKET_ICON from './../../assets/icons/mayket.svg';
-import PLAYSTORE_ICON from './../../assets/icons/playstore.svg';
-import { Icon } from '../Icon';
-import { Tooltip } from '../Tooltip';
+import Logo from '@aress-assets/icons/logo.svg';
+import Enamad from '@aress-assets/icons/enamad.png';
+import DigitalUnion from '@aress-assets/icons/digital-union.png';
+import TELEGRAM_ICON from '@aress-assets/icons/telegram.svg';
+import ANDROID_ICON from '@aress-assets/icons/android.svg';
+import BAZAR_ICON from '@aress-assets/icons/bazar.svg';
+import MAYKET_ICON from '@aress-assets/icons/mayket.svg';
+import PLAYSTORE_ICON from '@aress-assets/icons/playstore.svg';
+import { Tooltip } from 'design-system';
+import { Icon } from 'design-system';
 export function Footer() {
   const linksFooter: FooterSection[] = [
     {
@@ -86,12 +86,12 @@ export function Footer() {
 
       <div className="grid mt-10 grid-cols-1 grid-rows-4 sm:grid-rows-2 lg:grid-rows-1 items-center mx-auto text-center md:text-start sm:grid-cols-2 lg:grid-cols-4">
         {linksFooter.map(({ title, links }) => (
-          <div className="mt-8 self-start lg:mt-0">
+          <div key={title} className="mt-8 self-start lg:mt-0">
             <span className="text-gray-1000 mb-6 font-medium text-2xl block">
               {title}
             </span>
             {links.map(({ title, icons, link }) => (
-              <div>
+              <div key={link}>
                 {link ? (
                   <Link
                     className="text-gray-600 hover:text-gray-700 text-md mt-2"
@@ -106,7 +106,7 @@ export function Footer() {
                 )}
                 <div className="flex gap-4 mt-2 justify-center md:justify-start text-brand-600">
                   {icons?.map(({ icon, link }) => (
-                    <div className="text-brand-600 hover:text-brand-700 transition">
+                    <div key={link} className="text-brand-600 hover:text-brand-700 transition">
                       {link ? (
                         <Link href={link}>{icon}</Link>
                       ) : (
