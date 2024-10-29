@@ -2,6 +2,7 @@ import ReactPaginate from "react-paginate";
 
 type PaginationProps = {
     pageCount: number;
+    pageSize:number,
     onPageChange: (selectedItem: { selected: number }) => void;
   };
 
@@ -16,12 +17,12 @@ export const Pagination : React.FC<PaginationProps> = ({
       breakLabel="..."
       pageCount={pageCount}
       marginPagesDisplayed={2}
-      pageRangeDisplayed={5}
+      pageRangeDisplayed={3}
       onPageChange={onPageChange}
-      containerClassName="flex text-gray-1000 items-center space-x-2 mt-4"
+      containerClassName="flex text-gray-1000 items-center justify-center space-x-2 mt-4"
       pageClassName="bg-gray-100 rounded-md w-12 h-12 flex items-center justify-center hover:bg-gray-200 duration-150 transition-colors cursor-pointer block"
       pageLinkClassName="w-12 h-12 flex items-center justify-center"
-      activeClassName="border-[2.5px] border-brand-600 hover:bg-gray-100"
+      activeClassName="border-[2.5px] border-brand-600 pointer-events-none cursor-pointer "
       previousLinkClassName="flex items-center justify-center w-16 h-12"
       nextLinkClassName="flex items-center justify-center w-16 h-12"
       previousClassName="bg-brand-600 w-16 h-12 ml-2 rounded-md text-white flex items-center justify-center hover:bg-brand-700 duration-150 transition-colors cursor-pointer block"

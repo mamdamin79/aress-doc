@@ -10,6 +10,7 @@ const meta: Meta<typeof Pagination> = {
   },
   args: {
     pageCount: 10,
+    pageSize:5
   },
 };
 
