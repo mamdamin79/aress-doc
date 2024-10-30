@@ -1,3 +1,5 @@
+import { useEffect, useReducer, useRef } from "react";
+
 interface videoState {
   isPlaying: boolean;
   currentTime: number;
@@ -76,3 +78,28 @@ const videoReducer = (state: videoState, action: videoAction): videoState => {
       break;
   }
 };
+
+
+const useVideo = (src:string)=>{
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [state,dispatch] = useReducer(videoReducer,{
+    isPlaying: false,
+    currentTime:0,
+    duration: 0,
+    isFinished: false,
+    progress: 0,
+    isVideoLoaded: false,
+    isVideoWaited:false, //buffering
+  })
+  useEffect(()=>{
+    const video = videoRef.current!;
+    video.src = src;
+    const handlePLay = ()=>{
+      dispatch({type:"PLAY"})
+    }
+    video.addEventListener("play",handlePlay)
+    return ()=>{
+      video.removeEventListener("play",handlePlay)
+    }
+  },[src])
+} 
