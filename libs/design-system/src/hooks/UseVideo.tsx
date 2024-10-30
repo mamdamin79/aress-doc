@@ -79,7 +79,7 @@ const videoReducer = (state: videoState, action: videoAction): videoState => {
   }
 };
 
-const useVideo = (src: string) => {
+export const useVideo = (src: string) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [state, dispatch] = useReducer(videoReducer, {
     isPlaying: false,
