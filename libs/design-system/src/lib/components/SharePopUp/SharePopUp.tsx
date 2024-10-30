@@ -65,7 +65,7 @@ export const SharePopUp = ({ url, message }: SharePopUpProps) => {
                 rel="noreferrer"
               >
                 <div>
-                  <img src={platform.icon.src} alt={platform.name} />
+                  <img src={platform.icon} alt={platform.name} />
                 </div>
                 <span className="font-semibold">{platform.name}</span>
               </a>
