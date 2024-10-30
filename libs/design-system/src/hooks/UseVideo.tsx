@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef } from "react";
+import { useEffect, useReducer, useRef } from 'react';
 
 interface videoState {
   isPlaying: boolean;
@@ -79,27 +79,105 @@ const videoReducer = (state: videoState, action: videoAction): videoState => {
   }
 };
 
-
-const useVideo = (src:string)=>{
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const [state,dispatch] = useReducer(videoReducer,{
+const useVideo = (src: string) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [state, dispatch] = useReducer(videoReducer, {
     isPlaying: false,
-    currentTime:0,
+    currentTime: 0,
     duration: 0,
     isFinished: false,
     progress: 0,
     isVideoLoaded: false,
-    isVideoWaited:false, //buffering
-  })
-  useEffect(()=>{
+    isVideoWaited: false, //buffering
+  });
+  useEffect(() => {
     const video = videoRef.current!;
     video.src = src;
-    const handlePLay = ()=>{
-      dispatch({type:"PLAY"})
-    }
-    video.addEventListener("play",handlePlay)
-    return ()=>{
-      video.removeEventListener("play",handlePlay)
-    }
-  },[src])
-} 
+
+    // dispatcher functions - these are update our states and used as a callback function in our listeners
+
+    const updateProgress = () => {
+      // first of all we should calculate progress form duration and current time - it used in handle time update and handle durationchange
+      const { currentTime, duration } = videoRef.current!;
+      const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
+      dispatch({ type: 'SET_PROGRESS', progress });
+    };
+
+    const handlePlay = () => {
+      dispatch({ type: 'PLAY' });
+    };
+
+    const handlePause = () => {
+      dispatch({ type: 'PAUSE' });
+    };
+
+    const handleTimeUpdate = () => {
+      dispatch({
+        type: 'TIME_UPDATE',
+        currentTime: videoRef.current!.currentTime,
+      });
+      updateProgress();
+    };
+
+    const handleDurationChange = () => {
+      dispatch({
+        type: 'DURATION_CHANGE',
+        duration: videoRef.current!.duration,
+      });
+      updateProgress();
+    };
+
+    const handleLoadedData = () => {
+      dispatch({ type: 'SET_VIDEO_LOADED', isVideoLoaded: true });
+    };
+
+    const handlePlaying = () => {
+      dispatch({ type: 'SET_VIDEO_WAITED', isVideoWaited: false });
+    };
+
+    const handleEnded = () => {
+      dispatch({ type: 'SET_FINISHED', isFinished: true });
+    };
+
+    const handleWaiting = () => {
+      dispatch({ type: 'SET_VIDEO_WAITED', isVideoWaited: true });
+    };
+
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('pause', handlePause);
+    // it raises every moment
+    video.addEventListener('timeupdate', handleTimeUpdate);
+    // it raise just one time when the video loaded for the first time
+    video.addEventListener('durationchange', handleDurationChange);
+    // when the video finished
+    video.addEventListener('ended', handleEnded);
+    // when the first frame of video loaded
+    video.addEventListener('loadeddata', handleLoadedData);
+    // when the streamed goes to end and video is waiting for new chunks
+    video.addEventListener('waiting', handleWaiting);
+    // after waiting (when the new chunks loaded) playing event raises
+    video.addEventListener('playing', handlePlaying);
+
+    return () => {
+      // clean up listeners
+      video.removeEventListener('play', handlePlay);
+      video.addEventListener('pause', handlePause);
+      video.addEventListener('timeupdate', handleTimeUpdate);
+      video.addEventListener('durationchange', handleDurationChange);
+      video.addEventListener('ended', handleEnded);
+      video.addEventListener('loadeddata', handleLoadedData);
+      video.addEventListener('playing', handlePlaying);
+      video.addEventListener('waiting', handleWaiting);
+    };
+  }, [src]);
+  const play = () => videoRef.current!.play();
+  const pause = () => videoRef.current!.pause();
+  const fullScreen = () => videoRef.current!.requestFullscreen();
+  return {
+    ...state,
+    videoRef,
+    play,
+    pause,
+    fullScreen,
+  };
+};
