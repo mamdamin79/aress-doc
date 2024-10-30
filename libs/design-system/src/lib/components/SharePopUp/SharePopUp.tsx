@@ -6,6 +6,7 @@ import telegramIcon from '../../../assets/icons/telegram.svg';
 import linkedinIcon from '../../../assets/icons/linkedin.svg';
 import emailIcon from '../../../assets/icons/email.svg';
 import { Button } from '../Button';
+import { CustomIcon } from '../Icon/CustomIcon';
 
 export interface SharePopUpProps {
   url: string;
@@ -41,15 +42,9 @@ export const SharePopUp: React.FC<SharePopUpProps> = ({ url, message }) => {
   return (
     <div className="relative rounded-3xl p-6 flex justify-center items-center gap-4 flex-col w-[440px] h-fit shadow-lg">
       {/* Close button */}
-      <div className="absolute top-0 left-0 -mt-2 -ml-2 w-8 h-8 bg-brand-600 rounded-full flex justify-center items-center shadow-sm">
-        <button
-          className="bg-white rounded-full shadow-lg w-6 h-6 flex justify-center items-center"
-          aria-label="Close"
-        >
-          <Icon name="x" key="x" size="md" />
-        </button>
+      <div className="absolute top-0 left-0 -mt-2 -ml-2 rounded-full flex justify-center items-center shadow-sm">
+        <CustomIcon name="CustomCirlcleX" key={`CustomCirlcleX`} size="xl" />
       </div>
-
       <h2 className="text-xl font-semibold">اشتراک گذاری</h2>
       <div className="flex flex-col gap-3 w-full">
         <p className="text-right text-sm text-gray-600 font-semibold">
