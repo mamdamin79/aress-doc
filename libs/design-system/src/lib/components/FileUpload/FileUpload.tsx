@@ -44,10 +44,8 @@ export const FileUpload: React.FC<FileUploadProps> = ({ types, maxSize }) => {
 
       <FileUploader handleChange={handleFileChange} name="file" types={types}>
         <div
-          className={`group border-2 rounded-md p-[15px_16px] flex items-center gap-2 relative w-max transition-all text- ${
-            file
-              ? 'border-[1px] border-gray-200 pr-12'
-              : 'border-dashed border-gray-300 hover:border-brand-600'
+          className={`group border-2 hover:border-brand-600 hover rounded-md p-[15px_16px] flex items-center gap-2 relative w-max transition-all text- ${
+            file ? 'border-gray-200 pr-12' : 'border-dashed border-gray-300'
           }`}
         >
           {!file && (
