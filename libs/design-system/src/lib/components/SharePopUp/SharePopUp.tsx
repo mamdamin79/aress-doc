@@ -43,7 +43,11 @@ export const SharePopUp: React.FC<SharePopUpProps> = ({ url, message }) => {
     <div className="relative rounded-3xl p-6 flex justify-center items-center gap-4 flex-col w-[440px] h-fit shadow-lg">
       {/* Close button */}
       <div className="absolute top-0 left-0 -mt-2 -ml-2 rounded-full flex justify-center items-center shadow-sm">
-        <CustomIcon name="CustomCirlcleX" key={`CustomCirlcleX`} size="lg" />
+        <CustomIcon
+          name="CustomCirlcleX"
+          key={`CustomCirlcleX`}
+          size="lg_plus"
+        />
       </div>
       <h2 className="text-xl font-semibold">اشتراک گذاری</h2>
       <div className="flex flex-col gap-3 w-full">
