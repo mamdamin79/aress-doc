@@ -15,6 +15,6 @@ export const trailing: Story = {
   },
   args: {
     message: 'لینک ویدیوی آموزشی',
-    url: 'https://www.example.com/video/example',
+    url: 'https://www.example.com/video/example/thishasmoretoit/wetypeandwetype',
   },
 };
