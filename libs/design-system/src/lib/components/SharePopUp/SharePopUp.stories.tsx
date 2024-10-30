@@ -9,7 +9,7 @@ export default meta;
 
 type Story = StoryObj<typeof SharePopUp>;
 
-export const trailing: Story = {
+export const Default: Story = {
   render: (args) => {
     return <SharePopUp {...args} />;
   },
