@@ -12,7 +12,7 @@ export interface SharePopUpProps {
   message: string;
 }
 
-export const SharePopUp = ({ url, message }: SharePopUpProps) => {
+export const SharePopUp: React.FC<SharePopUpProps> = ({ url, message }) => {
   const platforms = [
     { name: 'Instagram', icon: instagramIcon, link: 'https://google.com' },
     { name: 'Telegram', icon: telegramIcon, link: 'https://google.com' },
@@ -23,11 +23,20 @@ export const SharePopUp = ({ url, message }: SharePopUpProps) => {
     { name: 'Sample 2', icon: emailIcon, link: 'https://google.com' },
   ];
 
+  const visibleItems = 5;
   const [currentIndex, setCurrentIndex] = useState(0);
-  const visiblePlatforms = platforms.slice(currentIndex, currentIndex + 5);
 
-  const goRight = () => setCurrentIndex(0); // Scroll all the way right
-  const goLeft = () => setCurrentIndex(platforms.length - 2); // Scroll all the way left
+  const goLeft = () => {
+    setCurrentIndex(
+      (prevIndex) =>
+        Math.min(prevIndex + visibleItems, platforms.length - visibleItems) +
+        0.75
+    );
+  };
+
+  const goRight = () => {
+    setCurrentIndex((prevIndex) => Math.max(prevIndex - visibleItems, 0));
+  };
 
   return (
     <div className="relative rounded-3xl p-6 flex justify-center items-center gap-4 flex-col w-[440px] h-fit shadow-lg">
@@ -46,41 +55,48 @@ export const SharePopUp = ({ url, message }: SharePopUpProps) => {
         <p className="text-right text-sm text-gray-600 font-semibold">
           ارسال لینک به:
         </p>
-        <div className="flex items-center gap-2">
-          {currentIndex > 0 && (
-            <button
-              onClick={goRight}
-              className="z-10 bg-baseBackground p-1 text-brand-600 border-2 border-brand-600 rounded-full shadow-3xl absolute top-1/2 transform -translate-y-1/2 -mt-2 right-2"
-            >
-              <Icon name="chevron-right" size="md" />
-            </button>
-          )}
-          <div className="flex justify-center gap-6 p-2">
-            {visiblePlatforms.map((platform, index) => (
-              <a
-                className="flex flex-col items-center text-xs gap-2"
-                key={index}
-                href={platform.link}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <div>
-                  <img src={platform.icon} alt={platform.name} />
-                </div>
-                <span className="font-semibold">{platform.name}</span>
-              </a>
-            ))}
+        {currentIndex + visibleItems < platforms.length && (
+          <button
+            onClick={goLeft}
+            className="z-10 bg-baseBackground p-1 text-brand-600 border-2 border-brand-600 rounded-full shadow-3xl absolute top-1/2 transform -translate-y-1/2 -mt-2 left-2"
+          >
+            <Icon name="chevron-left" size="md" />
+          </button>
+        )}
+        <div className="relative flex items-center w-full overflow-hidden">
+          {/* Left arrow button */}
+
+          <div
+            className="flex transition-transform duration-500 ease-in-out"
+            style={{ transform: `translateX(${currentIndex * 88}px)` }} // 88px is the approximate width of each icon with gap
+          >
+            {platforms
+              .slice(currentIndex, currentIndex + visibleItems)
+              .map((platform, index) => (
+                <a
+                  className="flex flex-col items-center text-xs gap-2 w-16 mx-2"
+                  key={index}
+                  href={platform.link}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <div>
+                    <img src={platform.icon} alt={platform.name} />
+                  </div>
+                  <span className="font-semibold">{platform.name}</span>
+                </a>
+              ))}
           </div>
-          {/*Left arrow button, only visible if there's more to the Left */}
-          {currentIndex + 5 < platforms.length && (
-            <button
-              onClick={goLeft}
-              className="z-10 bg-baseBackground p-1 text-brand-600 border-2 border-brand-600 rounded-full shadow-3xl absolute top-1/2 transform -translate-y-1/2 -mt-2 left-2"
-            >
-              <Icon name="chevron-left" size="md" />
-            </button>
-          )}
         </div>
+        {/* Right arrow button */}
+        {currentIndex > 0 && (
+          <button
+            onClick={goRight}
+            className="z-10 bg-baseBackground p-1 text-brand-600 border-2 border-brand-600 rounded-full shadow-3xl absolute top-1/2 transform -translate-y-1/2 right-2 -mt-2"
+          >
+            <Icon name="chevron-right" size="md" />
+          </button>
+        )}
       </div>
 
       <div className="w-full h-fit rounded-xl p-2 gap-2 flex flex-row justify-between border-[2px] border-gray-300">
@@ -92,7 +108,6 @@ export const SharePopUp = ({ url, message }: SharePopUpProps) => {
             mode="primary"
             size="md"
           >
-            {' '}
             کپی لینک
           </Button>
         </div>
