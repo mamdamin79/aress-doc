@@ -6,6 +6,8 @@ export interface MenuTilesProps {
   badgeColor?: string;
   expandable?: boolean;
   leadingAction: () => void;
-  isDashboard: boolean;
-  isActive: boolean;
+  isDashboard?: boolean;
+  isActive?: boolean;
+  isDisabled?: boolean;
+  prefix?: string;
 }
