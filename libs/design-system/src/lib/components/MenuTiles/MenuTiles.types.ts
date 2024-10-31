@@ -5,7 +5,7 @@ export interface MenuTilesProps {
   icon?: IconProps;
   badgeColor?: string;
   expandable?: boolean;
-  onClick: () => void;
+  leadingAction: () => void;
   isDashboard: boolean;
   isActive: boolean;
 }

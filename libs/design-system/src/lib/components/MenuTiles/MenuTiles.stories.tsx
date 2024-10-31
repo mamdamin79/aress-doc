@@ -29,6 +29,9 @@ export const WithIconAndBadge: Story = {
 
     isDashboard: false,
     isActive: true,
+    leadingAction: () => {
+      console.log('clicked');
+    },
   },
 };
 export const WithIconOnly: Story = {
@@ -49,6 +52,9 @@ export const WithIconOnly: Story = {
     isDashboard: false,
     expandable: false,
     isActive: false,
+    leadingAction: () => {
+      console.log('clicked');
+    },
   },
 };
 export const NoSubText: Story = {
@@ -68,6 +74,9 @@ export const NoSubText: Story = {
     isDashboard: false,
     expandable: false,
     isActive: false,
+    leadingAction: () => {
+      console.log('clicked');
+    },
   },
 };
 export const justText: Story = {
@@ -80,6 +89,9 @@ export const justText: Story = {
     text: 'صندوق سهم آشنا',
     isDashboard: false,
     isActive: false,
+    leadingAction: () => {
+      console.log('clicked');
+    },
   },
 };
 export const dashBoard: Story = {
@@ -92,6 +104,9 @@ export const dashBoard: Story = {
     text: '1. تحلیل صنعت پتروشیمی',
     isDashboard: true,
     isActive: false,
+    leadingAction: () => {
+      console.log('clicked');
+    },
   },
 };
 export const dashBoardActive: Story = {
@@ -104,5 +119,8 @@ export const dashBoardActive: Story = {
     text: '2. صندوق‌های پربازده',
     isDashboard: true,
     isActive: true,
+    leadingAction: () => {
+      console.log('clicked');
+    },
   },
 };

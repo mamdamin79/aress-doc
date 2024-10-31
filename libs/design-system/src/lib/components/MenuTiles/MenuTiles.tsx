@@ -10,9 +10,10 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
   expandable = false,
   isDashboard,
   isActive = false,
+  leadingAction,
 }) => {
   const handleClick = () => {
-    console.log('hi');
+    leadingAction();
   };
 
   return !isDashboard ? (
