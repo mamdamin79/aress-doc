@@ -2,6 +2,7 @@ import { useVideo } from "../../../hooks/UseVideo"
 import React from "react"
 import { Button } from "../Button"
 import { Icon } from "../Icon"
+import { secondsToHHMMSS } from "../../../utils/time"
 
 type Prosp = {
     src:string,
@@ -28,6 +29,7 @@ export const VideoPlayer : React.FC<Prosp> = ({
                         {isPlaying ? <Button onClick={pause} mode="primary" size="sm" isLoading={false} align="center"><Icon name="pause"/></Button>: <Button onClick={play} mode="primary" size="sm" isLoading={false} align="center"><Icon name="play"/></Button>}
                         <Button mode="primary" size="sm" isLoading={false} align="center"><Icon name="skip-forward"/></Button>
                         <Button mode="primary" size="sm" isLoading={false} align="center"><Icon name="volume-2"/></Button>
+                        <span className="text-white">{secondsToHHMMSS(currentTime)}/{secondsToHHMMSS(duration)}</span>
                     </div>
                 </div>
             </div>
