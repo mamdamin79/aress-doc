@@ -1,5 +1,5 @@
 import { useVideo } from '../../../hooks/UseVideo';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from '../Button';
 import { Icon } from '../Icon';
 import { secondsToHHMMSS } from '../../../utils/time';
@@ -24,6 +24,25 @@ export const VideoPlayer: React.FC<Prosp> = ({ src, poster = '' }) => {
     isPlaying,
   } = useVideo(src);
   console.log(isPlaying);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'f') {
+        fullScreen();
+      }
+
+      if (e.key === ' ') {
+        e.preventDefault();
+        isPlaying ? pause() : play();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [fullScreen, pause, play, isPlaying]);
   return (
     <div className="relative">
       <video src={src} className="w-full" poster={poster} ref={videoRef} />
@@ -102,7 +121,7 @@ export const VideoPlayer: React.FC<Prosp> = ({ src, poster = '' }) => {
               <button className="text-white flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all">
                 <Icon name="picture-in-picture-2" />
               </button>
-              <button className="text-white flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all">
+              <button onClick={fullScreen} className="text-white flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all">
                 <Icon name="fullscreen" />
               </button>
             </div>
