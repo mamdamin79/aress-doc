@@ -1,38 +1,102 @@
-import { useVideo } from "../../../hooks/UseVideo"
-import React from "react"
-import { Button } from "../Button"
-import { Icon } from "../Icon"
-import { secondsToHHMMSS } from "../../../utils/time"
+import { useVideo } from '../../../hooks/UseVideo';
+import React from 'react';
+import { Button } from '../Button';
+import { Icon } from '../Icon';
+import { secondsToHHMMSS } from '../../../utils/time';
 
 type Prosp = {
-    src:string,
-    poster?:string,
-    className?:string
-}
+  src: string;
+  poster?: string;
+  className?: string;
+};
 
-export const VideoPlayer : React.FC<Prosp> = ({
-    src,
-    poster=""
-})=>{
-    const {play,videoRef,pause,currentTime,isVideoLoaded,isVideoWaited,fullScreen,duration,progress,isPlaying} = useVideo(src)
-    return(
-        <div className="relative">
-            <video src={src} className="w-full" poster={poster} ref={videoRef} />
-            <div className="absolute w-full bg-red-200 h-20 flex flex-col gap-4 bottom-4 px-8 ">
-                {/* progress bar */}
-                    {/* <progress value={progress}></progress> */}
-                    <div className="w-full bg-blue-200 h-5"></div>
-                {/* controls */}
-                <div className="flex items-center justify-between " dir="ltr">
-                    <div className="flex items-center gap-4">
-                        <Button mode="primary" size="sm" isLoading={false} align="center"><Icon name="skip-back"/></Button>
-                        {isPlaying ? <Button onClick={pause} mode="primary" size="sm" isLoading={false} align="center"><Icon name="pause"/></Button>: <Button onClick={play} mode="primary" size="sm" isLoading={false} align="center"><Icon name="play"/></Button>}
-                        <Button mode="primary" size="sm" isLoading={false} align="center"><Icon name="skip-forward"/></Button>
-                        <Button mode="primary" size="sm" isLoading={false} align="center"><Icon name="volume-2"/></Button>
-                        <span className="text-white">{secondsToHHMMSS(currentTime)}/{secondsToHHMMSS(duration)}</span>
-                    </div>
-                </div>
+export const VideoPlayer: React.FC<Prosp> = ({ src, poster = '' }) => {
+  const {
+    play,
+    videoRef,
+    pause,
+    currentTime,
+    isVideoLoaded,
+    isVideoWaited,
+    fullScreen,
+    duration,
+    progress,
+    isPlaying,
+  } = useVideo(src);
+  return (
+    <div className="relative">
+      <video src={src} className="w-full" poster={poster} ref={videoRef} />
+      <div className="absolute w-full h-20 bottom-4  ">
+        <div className="relative mx-auto w-11/12">
+         <div className='mb-1'>
+             {/* progress bar */}
+          <progress
+            dir="ltr"
+            max="100"
+            className="w-full h-1.5 relative -top-[10px] rounded-full bg-gray-200 appearance-none [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-bar]:bg-gray-200 [&::-webkit-progress-value]:bg-brand-600 [&::-webkit-progress-value]:rounded-full"
+            value={progress}
+          ></progress>
+          <div className=" w-full h-1.5 absolute top-0 -left-[3px]">
+            <div
+              style={{ left: `${progress}%`}}
+              className="bg-brand-600 w-[20px] -top-1.5 absolute  h-[20px] rounded-[100%]"
+            ></div>
+          </div>
+         </div>
+          {/* controls */}
+          <div className="flex items-center justify-between" dir="ltr">
+            <div className="flex items-center gap-4">
+              <button className="text-white flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all">
+                <Icon name="skip-back" />
+              </button>
+              {isPlaying ? (
+                <Button
+                  onClick={pause}
+                  mode="primary"
+                  size="sm"
+                  isLoading={false}
+                  align="center"
+                >
+                  <Icon name="pause" />
+                </Button>
+              ) : (
+                <Button
+                  onClick={play}
+                  mode="primary"
+                  size="sm"
+                  isLoading={false}
+                  align="center"
+                >
+                  <Icon name="play" />
+                </Button>
+              )}
+              <button className="text-white flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all">
+                <Icon name="skip-forward" />
+              </button>
+              <button className="text-white flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all">
+                <Icon name="volume-2" />
+              </button>
+              <span className="text-white">
+                {secondsToHHMMSS(currentTime)}/{secondsToHHMMSS(duration)}
+              </span>
             </div>
+            <div className="flex items-center gap-4">
+              <button className="text-white flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all">
+                <Icon name="share-2" />
+              </button>
+              <button className="text-white flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all">
+                <Icon name="settings" />
+              </button>
+              <button className="text-white flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all">
+                <Icon name="picture-in-picture-2" />
+              </button>
+              <button className="text-white flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all">
+                <Icon name="fullscreen" />
+              </button>
+            </div>
+          </div>
         </div>
-    )
-}
+      </div>
+    </div>
+  );
+};
