@@ -23,26 +23,28 @@ export const VideoPlayer: React.FC<Prosp> = ({ src, poster = '' }) => {
     progress,
     isPlaying,
   } = useVideo(src);
+  console.log(isPlaying);
   return (
     <div className="relative">
       <video src={src} className="w-full" poster={poster} ref={videoRef} />
-      <div className="absolute w-full h-20 bottom-4  ">
+      <div className="absolute inset-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+      <div className="absolute w-full h-20 z-10 bottom-0">
         <div className="relative mx-auto w-11/12">
-         <div className='mb-1'>
-             {/* progress bar */}
-          <progress
-            dir="ltr"
-            max="100"
-            className="w-full h-1.5 relative -top-[10px] rounded-full bg-gray-200 appearance-none [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-bar]:bg-gray-200 [&::-webkit-progress-value]:bg-brand-600 [&::-webkit-progress-value]:rounded-full"
-            value={progress}
-          ></progress>
-          <div className=" w-full h-1.5 absolute top-0 -left-[3px]">
-            <div
-              style={{ left: `${progress}%`}}
-              className="bg-brand-600 w-[20px] -top-1.5 absolute  h-[20px] rounded-[100%]"
-            ></div>
+          <div className="mb-1">
+            {/* progress bar */}
+            <progress
+              dir="ltr"
+              max="100"
+              className="w-full h-1.5 relative -top-[10px] rounded-full bg-gray-200 appearance-none [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-bar]:bg-gray-200 [&::-webkit-progress-value]:bg-brand-600 [&::-webkit-progress-value]:rounded-full"
+              value={progress}
+            ></progress>
+            <div className=" w-full h-1.5 absolute top-0 -left-[3px]">
+              <div
+                style={{ left: `${progress}%` }}
+                className="bg-brand-600 w-[20px] -top-1.5 absolute  h-[20px] rounded-[100%]"
+              ></div>
+            </div>
           </div>
-         </div>
           {/* controls */}
           <div className="flex items-center justify-between" dir="ltr">
             <div className="flex items-center gap-4">
@@ -51,7 +53,12 @@ export const VideoPlayer: React.FC<Prosp> = ({ src, poster = '' }) => {
               </button>
               {isPlaying ? (
                 <Button
-                  onClick={pause}
+                  onMouseDown={pause}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      pause();
+                    }
+                  }}
                   mode="primary"
                   size="sm"
                   isLoading={false}
@@ -61,7 +68,12 @@ export const VideoPlayer: React.FC<Prosp> = ({ src, poster = '' }) => {
                 </Button>
               ) : (
                 <Button
-                  onClick={play}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      play();
+                    }
+                  }}
+                  onMouseDown={play}
                   mode="primary"
                   size="sm"
                   isLoading={false}

@@ -161,13 +161,13 @@ export const useVideo = (src: string) => {
     return () => {
       // clean up listeners
       video.removeEventListener('play', handlePlay);
-      video.addEventListener('pause', handlePause);
-      video.addEventListener('timeupdate', handleTimeUpdate);
-      video.addEventListener('durationchange', handleDurationChange);
-      video.addEventListener('ended', handleEnded);
-      video.addEventListener('loadeddata', handleLoadedData);
-      video.addEventListener('playing', handlePlaying);
-      video.addEventListener('waiting', handleWaiting);
+      video.removeEventListener('pause', handlePause);
+      video.removeEventListener('timeupdate', handleTimeUpdate);
+      video.removeEventListener('durationchange', handleDurationChange);
+      video.removeEventListener('ended', handleEnded);
+      video.removeEventListener('loadeddata', handleLoadedData);
+      video.removeEventListener('playing', handlePlaying);
+      video.removeEventListener('waiting', handleWaiting);
     };
   }, [src]);
   const play = () => videoRef.current!.play();
