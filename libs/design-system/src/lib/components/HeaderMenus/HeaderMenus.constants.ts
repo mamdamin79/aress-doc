@@ -94,7 +94,7 @@ export const menu = [
     link: '#',
   },
   {
-    name: 'صندوق های من',
+    name: 'صندوق من',
 
     subMenu: [
       {
