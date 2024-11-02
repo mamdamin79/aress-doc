@@ -19,16 +19,20 @@ const MenuTilesWrapper = ({
   isDisabled?: boolean;
   onClick?: () => void;
   className: string;
-}) =>
-  link ? (
+}) => {
+  const handleClick = () => {
+    if (!isDisabled && onClick) onClick();
+  };
+  return link ? (
     <a href={link} className={className}>
       {children}
     </a>
   ) : (
-    <button className={className} onClick={onClick} disabled={isDisabled}>
+    <button className={className} onClick={handleClick} disabled={isDisabled}>
       {children}
     </button>
   );
+};
 
 // In this part we handle icon and logos, also some logos in the menu
 // have a colorful badge that we define it using the badgeColor prop
@@ -36,11 +40,18 @@ const MenuTilesWrapper = ({
 const IconWithBadge = ({
   icon,
   badgeColor,
+  isDisabled = false,
 }: {
   icon?: any;
   badgeColor?: string;
+  isDisabled: boolean;
 }) => (
-  <div className="flex flex-col items-start gap-2 pt-[3px] h-fit relative">
+  <div
+    className={cn(
+      'flex flex-col items-start gap-2 pt-[3px] h-fit relative',
+      isDisabled ? 'text-gray-400' : 'text-gray-1000'
+    )}
+  >
     {icon && (
       <div className={cn(icon.color)}>
         <Icon {...icon} />
@@ -67,26 +78,33 @@ const TextContainer = ({
   subText,
   isActive,
   prefix = '',
+  isDashboard = false,
+  isDisabled = false,
 }: {
   text: string;
   subText?: string;
   isActive: boolean;
   prefix?: string;
+  isDashboard: boolean;
+  isDisabled?: boolean;
 }) => (
   <div className="text-right">
     <p
-      className={`font-semibold text-sm ${
-        isActive ? 'text-brand-700' : 'text-gray-1000'
-      }`}
+      className={cn(
+        'font-semibold text-sm',
+        isActive && !isDashboard ? 'text-brand-700' : 'text-gray-1000',
+        isDisabled ? 'text-gray-400' : 'text-gray-1000'
+      )}
     >
       {prefix}
       {text}
     </p>
     {subText && (
       <p
-        className={`font-semibold text-xs ${
-          isActive ? 'text-brand-700' : 'text-gray-600'
-        }`}
+        className={cn(
+          'font-semibold text-xs',
+          isActive && !isDashboard ? 'text-brand-700' : 'text-gray-600'
+        )}
       >
         {subText}
       </p>
@@ -108,9 +126,9 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
   link,
 }) => {
   const wrapperClasses = `w-full min-w-[240px] max-w-[272px] flex items-center justify-between py-2 pr-3 pl-5 transition-all 
-    bg-baseBackground hover:bg-brand-100 ${
-      isActive ? 'text-brand-700' : 'text-gray-1000'
-    }`;
+    bg-baseBackground ${!isDisabled && 'hover:bg-brand-100'} ${
+    isActive ? 'text-brand-700' : 'text-gray-1000'
+  }`;
 
   const dashboardClasses = `flex items-center justify-between gap-2 transition-all 
     bg-baseBackground min-w-52 w-[208px] h-10 rounded-md relative group
@@ -131,8 +149,18 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
       on the value of the isDashboard prop */}
       {!isDashboard ? (
         <div className="flex justify-start gap-2">
-          <IconWithBadge icon={icon} badgeColor={badgeColor} />
-          <TextContainer text={text} subText={subText} isActive={isActive} />
+          <IconWithBadge
+            icon={icon}
+            badgeColor={badgeColor}
+            isDisabled={isDisabled}
+          />
+          <TextContainer
+            text={text}
+            subText={subText}
+            isActive={isActive}
+            isDashboard={false}
+            isDisabled={isDisabled}
+          />
         </div>
       ) : (
         <>
@@ -144,7 +172,12 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
             }`}
           />
           <div className="flex justify-start pr-2">
-            <TextContainer text={text} isActive={isActive} prefix={prefix} />
+            <TextContainer
+              text={text}
+              isActive={isActive}
+              prefix={prefix}
+              isDashboard={true}
+            />
           </div>
         </>
       )}

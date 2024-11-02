@@ -25,7 +25,6 @@ export const menu = [
           },
           {
             text: 'حذف داشبورد',
-
             icon: {
               name: 'trash-2',
               size: 'md',
