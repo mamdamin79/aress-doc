@@ -9,6 +9,10 @@ interface MenuProps {
   menuItems: MenuItem[];
 }
 
+// Each button on the menu header is now a component
+// isActive and onClick props are only used to change the active tab
+// If a tab has a link prop, it means that when user clicks on it naviagtes
+// to corrosponding page and if not it means that it is a tab with dropdown
 const TabButton = ({
   name,
   link,

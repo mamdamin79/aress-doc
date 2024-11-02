@@ -13,7 +13,7 @@ type Story = StoryObj<typeof HeaderMenus>;
 export const Default: Story = {
   render: (args) => {
     return (
-      <div className="p-5">
+      <div className="p-5 h-[200vw]">
         <HeaderMenus {...args} />
       </div>
     );

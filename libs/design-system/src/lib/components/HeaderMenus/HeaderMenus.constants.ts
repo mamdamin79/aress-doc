@@ -76,6 +76,11 @@ export const menu = [
             text: 'مقایسه صندوق من',
             isDashboard: true,
           },
+          {
+            link: '#',
+            text: 'داشبورد نمونه 1',
+            isDashboard: true,
+          },
         ],
       },
     ],

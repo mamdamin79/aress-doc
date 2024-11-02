@@ -3,6 +3,10 @@ import { Icon } from '../Icon';
 import { MenuTilesProps } from './MenuTiles.types';
 import { cn } from '../../../utils/classNames.utils';
 
+// We define a wrapper around each item in the menu to have
+// the correct semantic. for example for links and user dashboards wrap
+// all elements inside an a tag. and for a element that modified dashboard
+// and has a leading action instead of a link we wrap it inside a button
 const MenuTilesWrapper = ({
   children,
   link,
@@ -26,6 +30,9 @@ const MenuTilesWrapper = ({
     </button>
   );
 
+// In this part we handle icon and logos, also some logos in the menu
+// have a colorful badge that we define it using the badgeColor prop
+// All logos and Icons should be implemented inside Our custom icon component
 const IconWithBadge = ({
   icon,
   badgeColor,
@@ -41,12 +48,20 @@ const IconWithBadge = ({
     )}
     {icon && badgeColor && (
       <div
-        className={`w-2 h-2 rounded-full mr-1 ${badgeColor} absolute bottom-0 -right-1`}
+        className={cn(
+          'w-2 h-2 rounded-full mr-1 absolute bottom-0 -right-1',
+          badgeColor
+        )}
       />
     )}
   </div>
 );
 
+// Based on the design text elements in the menu tiles contain
+// title only or title with subTexts that are under out main title(optional)
+// Also there is a prefix which can be used to add to each tile title
+// eg: counter of the number of dashboards
+// note: we only render the prefix if the type of tile is dashboard
 const TextContainer = ({
   text,
   subText,
@@ -112,6 +127,8 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
       onClick={leadingAction}
       className={isDashboard ? dashboardClasses : wrapperClasses}
     >
+      {/* Elements of dashboard are limited and we conditionally render two type of components based
+      on the value of the isDashboard prop */}
       {!isDashboard ? (
         <div className="flex justify-start gap-2">
           <IconWithBadge icon={icon} badgeColor={badgeColor} />
