@@ -2,7 +2,7 @@ import { MenuTilesProps } from '../MenuTiles/MenuTiles.types';
 
 export interface MenuItem {
   name: string;
-  link: string;
+  link?: string;
   subMenu?: {
     groupLabel: string;
     border?: boolean;

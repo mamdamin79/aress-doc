@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon } from '../Icon';
 import { MenuTilesProps } from './MenuTiles.types';
+import { cn } from '../../../utils/classNames.utils';
 
 export const MenuTiles: React.FC<MenuTilesProps> = ({
   text,
@@ -13,24 +14,62 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
   leadingAction,
   isDisabled = false,
   prefix = '',
+  link,
 }) => {
-  const handleClick = () => {
-    leadingAction();
-  };
-
+  const wrapperSharedClasses = `w-full min-w-[240px] max-w-[272px] flex items-center justify-between py-2 pr-3 pl-5 transition-all 
+    bg-baseBackground hover:bg-brand-100 ${
+      isActive ? 'text-brand-700' : 'text-gray-1000'
+    }`;
+  const DashboardWrapperSharedClasses = `flex items-center justify-between gap-2 transition-all 
+            bg-baseBackground min-w-52 w-full h-10 rounded-md relative group
+            ${
+              isActive
+                ? 'border-2 border-brand-600 cursor-default'
+                : 'border-0 cursor-pointer'
+            }`;
+  const MainWrapper = ({ children }: { children: React.ReactNode }) =>
+    link ? (
+      <a href={link} className={wrapperSharedClasses}>
+        {children}
+      </a>
+    ) : (
+      <button
+        className={wrapperSharedClasses}
+        onClick={leadingAction}
+        disabled={isDisabled}
+      >
+        {children}
+      </button>
+    );
+  const DashboardWrapper = ({ children }: { children: React.ReactNode }) =>
+    link ? (
+      <div className="w-52 flex justify-center items-center">
+        <a href={link} className={DashboardWrapperSharedClasses}>
+          {children}
+        </a>
+      </div>
+    ) : (
+      <div className="w-52 flex justify-center items-center">
+        <button
+          className={DashboardWrapperSharedClasses}
+          onClick={leadingAction}
+        >
+          {children}
+        </button>
+      </div>
+    );
   return !isDashboard ? (
-    <button
-      className={`flex items-center justify-between w-60 py-2 px-3 transition-colors 
-        bg-baseBackground hover:bg-brand-100
-        ${isActive ? 'text-brand-700' : 'text-gray-1000'} ${
-        isDisabled && 'opacity-30 cursor-not-allowed'
-      }`}
-      onClick={handleClick}
-    >
+    <MainWrapper>
       {/* Icon with conditional color on active and hover */}
       <div className="flex justify-start gap-2">
-        <div className="flex flex-col items-start gap-2 pt-[3px] h-fit relative">
-          {icon && <Icon {...icon} />}
+        <div
+          className={`flex flex-col items-start gap-2 pt-[3px] h-fit relative`}
+        >
+          {icon && (
+            <div className={cn(icon.color && icon.color)}>
+              <Icon {...icon} />
+            </div>
+          )}
           {/* Badge */}
           {icon && badgeColor && (
             <div
@@ -59,18 +98,9 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
           )}
         </div>
       </div>
-    </button>
+    </MainWrapper>
   ) : (
-    <button
-      className={`flex items-center justify-between w-fit p-2 gap-2 transition-all 
-    bg-baseBackground min-w-52 h-10 rounded-md relative group mr-4
-    ${
-      isActive
-        ? 'border-2 border-brand-600 cursor-default'
-        : 'border-0 cursor-pointer'
-    }`}
-      onClick={handleClick}
-    >
+    <DashboardWrapper>
       <div
         className={`absolute  my-auto -right-[1.5px] top-0 bottom-0 transition-all ${
           isActive
@@ -78,8 +108,7 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
             : 'bg-brand-400 rounded-lg w-[2px] h-4 group-hover:bg-brand-600 group-hover:h-5'
         }`}
       ></div>
-      {/* Icon with conditional color on active and hover */}
-      <div className="flex justify-start gap-2">
+      <div className="flex justify-start pr-2">
         {/* Text container */}
         <div className="text-right">
           <p className={`font-semibold text-sm text-gray-1000`}>
@@ -88,6 +117,6 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
           </p>
         </div>
       </div>
-    </button>
+    </DashboardWrapper>
   );
 };

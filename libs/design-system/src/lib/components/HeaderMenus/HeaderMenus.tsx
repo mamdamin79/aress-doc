@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Icon } from '../Icon';
 import { MenuTiles } from '../MenuTiles';
 import { MenuItem } from './HeaderMenus.types';
+import { cn } from '../../../../src/utils/classNames.utils';
 interface MenuProps {
   menuItems: MenuItem[];
 }
@@ -24,21 +25,26 @@ export const HeaderMenus: React.FC<MenuProps> = ({ menuItems }: MenuProps) => {
           - If tab is not active, text is gray-600
           - If tab has a submenu, text turns brand-600 on hover */}
           <PopoverButton
-            className={`flex items-center gap-2 py-1 outline-none transition-colors ${
+            className={cn(
+              'flex items-center gap-2 py-1 outline-none transition-colors',
               item.subMenu
                 ? 'hover:text-brand-600'
                 : activeTab === index
                 ? 'hover:text-gray-1000'
-                : 'hover:text-gray-700'
-            } ${
+                : 'hover:text-gray-700',
               activeTab === index
                 ? 'text-gray-1000 font-bold '
                 : 'text-gray-600'
-            } `}
+            )}
             onClick={() => handleTabClick(index)}
           >
             <div className="relative">
-              {item.name}
+              {item.link ? (
+                <a href={item.link}>{item.name}</a>
+              ) : (
+                <span>{item.name}</span>
+              )}
+
               {activeTab === index && (
                 <div className="absolute bottom-0 left-0  right-0 mx-auto w-6 h-[6px] bg-brand-600 rounded-full -mb-2" />
               )}
@@ -53,21 +59,25 @@ export const HeaderMenus: React.FC<MenuProps> = ({ menuItems }: MenuProps) => {
           {item.subMenu && (
             <PopoverPanel
               anchor="bottom start"
-              className="overflow-hidden text-right shadow-md bg-baseBackground w-60 h-fit rounded-xl border-2 border-gray-300 z-10 py-4 gap-2 flex flex-col mt-2 shadow-offset-y-10"
+              className="text-right shadow-md bg-baseBackground w-fit max-w-[272px] h-fit rounded-xl border-2 border-gray-300 z-10 py-4 gap-2 flex flex-col mt-2 shadow-offset-y-10"
             >
-              {item.subMenu.map((subMenuItem) => (
+              {item.subMenu.map((subMenuItem, subMenuItemIndex) => (
                 <div
-                  className={`flex flex-col overflow-hidden ${
+                  className={cn(
+                    'flex flex-col',
                     subMenuItem.border
                       ? 'border-t-2 border-b-2 border-gray-200'
-                      : ''
-                  } ${subMenuItem.children[0]?.isDashboard ? 'gap-2' : ''}`}
+                      : '',
+                    subMenuItem.children[0]?.isDashboard ? 'gap-2' : ''
+                  )}
+                  key={subMenuItemIndex}
                 >
                   <div className="text-gray-600 text-sm pr-4 font-normal flex flex-row gap-2 items-center">
                     {subMenuItem.groupLabel}
                     {subMenuItem.counter && (
                       <>
                         <span> ({subMenuItem.children.length}/8) </span>
+
                         <Icon
                           name="info"
                           key={subMenuItem.groupLabel}
@@ -78,7 +88,10 @@ export const HeaderMenus: React.FC<MenuProps> = ({ menuItems }: MenuProps) => {
                   </div>
                   {subMenuItem.children.map(
                     (subItemChildren, subItemChildrenIndex) => (
-                      <div className="relative">
+                      <div
+                        className="flex relative justify-center"
+                        key={subItemChildrenIndex}
+                      >
                         <MenuTiles
                           {...subItemChildren}
                           prefix={`${subItemChildrenIndex + 1}. `}
