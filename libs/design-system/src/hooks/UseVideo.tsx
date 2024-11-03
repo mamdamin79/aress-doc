@@ -94,7 +94,7 @@ export const useVideo = (src: string) => {
     const video = videoRef.current!;
     video.src = src;
 
-    // dispatcher functions - these are update our states and used as a callback function in our listeners
+    // dispatcher functions - these are update our states and used as a callback function in our listener
 
     const updateProgress = () => {
       // first of all we should calculate progress form duration and current time - it used in handle time update and handle durationchange
@@ -173,11 +173,20 @@ export const useVideo = (src: string) => {
   const play = () => videoRef.current!.play();
   const pause = () => videoRef.current!.pause();
   const fullScreen = () => videoRef.current!.requestFullscreen();
+  const seek = (newProgress: number) => {
+    if (videoRef.current) {
+      const newTime = (newProgress / 100) * videoRef.current.duration;
+      videoRef.current.currentTime = newTime;
+      dispatch({ type: 'SET_PROGRESS', progress: newProgress });
+      dispatch({ type: 'TIME_UPDATE', currentTime: newTime });
+    }
+  };
   return {
     ...state,
     videoRef,
     play,
     pause,
     fullScreen,
+    seek
   };
 };

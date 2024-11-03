@@ -4,13 +4,13 @@ import { Button } from '../Button';
 import { Icon } from '../Icon';
 import { secondsToHHMMSS } from '../../../utils/time';
 
-type Prosp = {
+type Props = {
   src: string;
   poster?: string;
   className?: string;
 };
 
-export const VideoPlayer: React.FC<Prosp> = ({ src, poster = '' }) => {
+export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
   const {
     play,
     videoRef,
@@ -22,6 +22,7 @@ export const VideoPlayer: React.FC<Prosp> = ({ src, poster = '' }) => {
     duration,
     progress,
     isPlaying,
+    seek
   } = useVideo(src);
   console.log(isPlaying);
 
@@ -43,6 +44,16 @@ export const VideoPlayer: React.FC<Prosp> = ({ src, poster = '' }) => {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [fullScreen, pause, play, isPlaying]);
+
+
+  const handleSeek = (event: React.MouseEvent<HTMLProgressElement>) => {
+    const progressElement = event.currentTarget;
+    const rect = progressElement.getBoundingClientRect();
+    const offsetX = event.clientX - rect.left;
+    const newProgress = (offsetX / progressElement.offsetWidth) * 100;
+    seek(newProgress);
+  };
+  
   return (
     <div className="relative">
       <video src={src} className="w-full" poster={poster} ref={videoRef} />
@@ -54,13 +65,14 @@ export const VideoPlayer: React.FC<Prosp> = ({ src, poster = '' }) => {
             <progress
               dir="ltr"
               max="100"
-              className="w-full h-1.5 relative -top-[10px] rounded-full bg-gray-200 appearance-none [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-bar]:bg-gray-200 [&::-webkit-progress-value]:bg-brand-600 [&::-webkit-progress-value]:rounded-full"
+              className="w-full z-10 h-1.5 relative -top-[10px] rounded-full bg-gray-200 appearance-none [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-bar]:bg-gray-200 [&::-webkit-progress-value]:bg-brand-600 [&::-webkit-progress-value]:rounded-full"
               value={progress}
+              onClick={handleSeek}
             ></progress>
-            <div className=" w-full h-1.5 absolute top-0 -left-[3px]">
+            <div className=" w-full h-1.5 absolute  top-0 -left-[3px]">
               <div
                 style={{ left: `${progress}%` }}
-                className="bg-brand-600 w-[20px] -top-1.5 absolute  h-[20px] rounded-[100%]"
+                className="bg-brand-600 w-[20px] -top-1.5 absolute z-10  h-[20px] rounded-[100%]"
               ></div>
             </div>
           </div>
