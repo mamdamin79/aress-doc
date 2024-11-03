@@ -23,7 +23,7 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
     progress,
     isPlaying,
     seek,
-    bufferedTime
+    bufferedTime,
   } = useVideo(src);
   console.log(isPlaying);
 
@@ -46,7 +46,6 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
     };
   }, [fullScreen, pause, play, isPlaying]);
 
-
   const handleSeek = (event: React.MouseEvent<HTMLProgressElement>) => {
     const progressElement = event.currentTarget;
     const rect = progressElement.getBoundingClientRect();
@@ -54,10 +53,18 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
     const newProgress = (offsetX / progressElement.offsetWidth) * 100;
     seek(newProgress);
   };
-  
+
   return (
     <div className="relative">
-      <video src={src} className="w-full" poster={poster} ref={videoRef} />
+      {/* loading displays when video is not loaded yet(even first frame) and when buffered time is finished and we are waiting for new chunks */}
+      {isVideoWaited && (
+        <div className="absolute flex items-center justify-center inset-0 m-auto">
+          <div className="animate-spin text-gray-600 w-fit mx-auto">
+            <Icon name="loader-circle" size='xl' />
+          </div>
+        </div>
+      )}
+      <video src={src} className="w-full" poster={"https://api.classbon.com/api/picture/20219"} ref={videoRef} />
       <div className="absolute inset-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
       <div className="absolute w-full h-20 z-10 bottom-0">
         <div className="relative mx-auto w-11/12">
@@ -140,7 +147,10 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
               <button className="text-white flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all">
                 <Icon name="picture-in-picture-2" />
               </button>
-              <button onClick={fullScreen} className="text-white flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all">
+              <button
+                onClick={fullScreen}
+                className="text-white flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all"
+              >
                 <Icon name="fullscreen" />
               </button>
             </div>
