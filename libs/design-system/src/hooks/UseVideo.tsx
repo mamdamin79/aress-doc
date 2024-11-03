@@ -8,6 +8,7 @@ interface videoState {
   progress: number;
   isVideoLoaded: boolean;
   isVideoWaited: boolean; //buffering
+  bufferedTime:number
 }
 
 type videoAction =
@@ -18,7 +19,8 @@ type videoAction =
   | { type: 'SET_FINISHED'; isFinished: boolean }
   | { type: 'SET_PROGRESS'; progress: number }
   | { type: 'SET_VIDEO_LOADED'; isVideoLoaded: boolean }
-  | { type: 'SET_VIDEO_WAITED'; isVideoWaited: boolean };
+  | { type: 'SET_VIDEO_WAITED'; isVideoWaited: boolean }
+  | { type: 'SET_BUFFERED_TIME'; bufferedTime: number };
 
 const videoReducer = (state: videoState, action: videoAction): videoState => {
   switch (action.type) {
@@ -72,7 +74,11 @@ const videoReducer = (state: videoState, action: videoAction): videoState => {
         isVideoWaited: action.isVideoWaited,
       };
       break;
-
+      case 'SET_BUFFERED_TIME':
+      return {
+        ...state,
+        bufferedTime: action.bufferedTime,
+      };
     default:
       return state;
       break;
@@ -89,12 +95,23 @@ export const useVideo = (src: string) => {
     progress: 0,
     isVideoLoaded: false,
     isVideoWaited: false, //buffering
+    bufferedTime:0,
   });
   useEffect(() => {
     const video = videoRef.current!;
     video.src = src;
 
     // dispatcher functions - these are update our states and used as a callback function in our listener
+
+    
+    const updateBufferedTime = () => {
+      const buffered = video.buffered;
+      const duration = video.duration;
+      if (buffered.length > 0) {
+        const bufferedTime = (buffered.end(buffered.length - 1) / duration) * 100;
+        dispatch({ type: 'SET_BUFFERED_TIME', bufferedTime });
+      }
+    };
 
     const updateProgress = () => {
       // first of all we should calculate progress form duration and current time - it used in handle time update and handle durationchange
@@ -157,6 +174,8 @@ export const useVideo = (src: string) => {
     video.addEventListener('waiting', handleWaiting);
     // after waiting (when the new chunks loaded) playing event raises
     video.addEventListener('playing', handlePlaying);
+    video.addEventListener('progress', updateBufferedTime);
+
 
     return () => {
       // clean up listeners
@@ -168,6 +187,7 @@ export const useVideo = (src: string) => {
       video.removeEventListener('loadeddata', handleLoadedData);
       video.removeEventListener('playing', handlePlaying);
       video.removeEventListener('waiting', handleWaiting);
+      video.removeEventListener('progress', updateBufferedTime);
     };
   }, [src]);
   const play = () => videoRef.current!.play();

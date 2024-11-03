@@ -22,7 +22,8 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
     duration,
     progress,
     isPlaying,
-    seek
+    seek,
+    bufferedTime
   } = useVideo(src);
   console.log(isPlaying);
 
@@ -65,14 +66,20 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
             <progress
               dir="ltr"
               max="100"
-              className="w-full z-10 h-1.5 relative -top-[10px] rounded-full bg-gray-200 appearance-none [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-bar]:bg-gray-200 [&::-webkit-progress-value]:bg-brand-600 [&::-webkit-progress-value]:rounded-full"
+              className="w-full z-20 cursor-pointer h-1.5 relative -top-[10px] rounded-full  appearance-none [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-bar]:bg-transparent [&::-webkit-progress-value]:bg-brand-600 [&::-webkit-progress-value]:rounded-full"
               value={progress}
               onClick={handleSeek}
+            ></progress>
+            <progress
+              dir="ltr"
+              max="100"
+              className="w-full  h-1.5 z-10 absolute mx-auto left-0 top-0  rounded-full  appearance-none [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-bar]:bg-gray-300/50 [&::-webkit-progress-value]:bg-white [&::-webkit-progress-value]:rounded-full"
+              value={bufferedTime}
             ></progress>
             <div className=" w-full h-1.5 absolute  top-0 -left-[3px]">
               <div
                 style={{ left: `${progress}%` }}
-                className="bg-brand-600 w-[20px] -top-1.5 absolute z-10  h-[20px] rounded-[100%]"
+                className="bg-brand-600 w-[20px] -top-1.5 absolute z-20  h-[20px] rounded-[100%]"
               ></div>
             </div>
           </div>
