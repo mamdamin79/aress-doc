@@ -1,4 +1,5 @@
 import { useEffect, useReducer, useRef } from 'react';
+import Hls from 'hls.js'; // Import HLS.js
 
 interface videoState {
   isPlaying: boolean;
@@ -99,8 +100,27 @@ export const useVideo = (src: string) => {
   });
   useEffect(() => {
     const video = videoRef.current!;
-    video.src = src;
-
+    // Check if the source is M3U8
+    if (src.endsWith('.m3u8')) {
+      // Initialize HLS if the video format is M3U8
+      if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(src); // Load the M3U8 source
+        hls.attachMedia(video); // Attach the media element
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          video.play(); // Start playing when manifest is parsed
+        });
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        // For browsers that support HLS natively (like Safari)
+        video.src = src;
+        video.addEventListener('loadedmetadata', () => {
+          video.play();
+        });
+      }
+    } else {
+      // If it's not M3U8, set the video source directly
+      video.src = src;
+    }
     // dispatcher functions - these are update our states and used as a callback function in our listener
 
     
