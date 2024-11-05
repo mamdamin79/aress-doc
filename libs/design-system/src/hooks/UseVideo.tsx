@@ -107,9 +107,10 @@ export const useVideo = (src: string) => {
         const hls = new Hls();
         hls.loadSource(src); // Load the M3U8 source
         hls.attachMedia(video); // Attach the media element
-        hls.on(Hls.Events.MANIFEST_PARSED, () => {
-          video.play(); // Start playing when manifest is parsed
-        });
+        // hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        //   video.muted=true
+        //   video.play(); // Start playing when manifest is parsed
+        // });
       } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
         // For browsers that support HLS natively (like Safari)
         video.src = src;
