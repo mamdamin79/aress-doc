@@ -21,7 +21,7 @@ export const Like: Story = {
   args: {
     initialValue: 0,
     onReact: () => console.log('reacted'),
-    Reaction: 'like',
+    reaction: 'like',
     reactedBefore: false,
   } as LikeDislikeProps,
 };
@@ -36,7 +36,7 @@ export const Dislike: Story = {
   args: {
     initialValue: 0,
     onReact: () => console.log('reacted'),
-    Reaction: 'dislike',
+    reaction: 'dislike',
     reactedBefore: false,
   } as LikeDislikeProps,
 };
@@ -51,7 +51,7 @@ export const ReactedWithInitialValue: Story = {
   args: {
     initialValue: 34,
     onReact: () => console.log('reacted'),
-    Reaction: 'like',
+    reaction: 'like',
     reactedBefore: true,
   } as LikeDislikeProps,
 };

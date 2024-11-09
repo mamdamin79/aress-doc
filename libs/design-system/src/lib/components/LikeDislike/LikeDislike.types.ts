@@ -1,7 +1,7 @@
-type Reaction = 'like' | 'dislike';
+export type reaction = 'like' | 'dislike';
 export type LikeDislikeProps = {
   initialValue: number;
-  Reaction: Reaction;
+  reaction: reaction;
   reactedBefore: boolean;
-  onReact: (reaction: Reaction) => void;
+  onReact: (reaction: reaction) => void;
 };

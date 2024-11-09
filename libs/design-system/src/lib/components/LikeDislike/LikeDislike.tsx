@@ -1,14 +1,12 @@
 import React, { useState, useCallback } from 'react';
-import { ThumbsUp, ThumbsDown } from 'lucide-react';
 import { LikeDislikeProps } from './LikeDislike.types';
 import { Icon } from '../Icon';
-
-export type Reaction = 'like' | 'dislike';
+import { cn } from '../../../utils/classNames.utils';
 
 // LikeDislike component receives an initial value, a reaction type, a flag to specify if the user has already reacted, and a function to call when the reaction is clicked.
 const LikeDislike: React.FC<LikeDislikeProps> = ({
   initialValue,
-  Reaction,
+  reaction,
   reactedBefore,
   onReact,
 }) => {
@@ -21,18 +19,8 @@ const LikeDislike: React.FC<LikeDislikeProps> = ({
   const handleReaction = useCallback(() => {
     setValue((prevValue) => (reacted ? prevValue - 1 : prevValue + 1));
     setReacted((prevReacted) => !prevReacted);
-    onReact(Reaction);
-  }, [reacted, onReact, Reaction]);
-
-  // Function to get the appropriate background color class based on reaction type and user state
-  const getBackgroundColor = useCallback(() => {
-    if (reacted) {
-      return Reaction === 'like'
-        ? 'text-green-600 [&>*]:fill-green-600'
-        : 'text-red-600 [&>*]:fill-red-600';
-    }
-    return 'text-gray-700 hover:text-gray-1000';
-  }, [reacted, Reaction]);
+    onReact(reaction);
+  }, [reacted, onReact, reaction]);
 
   return (
     <button
@@ -42,11 +30,19 @@ const LikeDislike: React.FC<LikeDislikeProps> = ({
       <div className="font-vazirmatn w-[40px] h-[26px] bg-baseBackground flex justify-center items-center rounded-sm gap-8 group-hover:bg-gray-200 transition-all text-[14px]">
         {value}
       </div>
-      <div className={getBackgroundColor()}>
+      <div
+        className={cn(
+          reacted
+            ? reaction === 'like'
+              ? 'text-green-600 [&>*]:fill-green-600'
+              : 'text-red-600 [&>*]:fill-red-600'
+            : 'text-gray-700 hover:text-gray-1000'
+        )}
+      >
         {/* Displaying the appropriate reaction icon based on the Reaction prop */}
         <Icon
-          name={Reaction === 'like' ? 'thumbs-up' : 'thumbs-down'}
-          key={Reaction}
+          name={reaction === 'like' ? 'thumbs-up' : 'thumbs-down'}
+          key={reaction}
           size="sm"
         />
       </div>
