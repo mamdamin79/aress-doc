@@ -6,28 +6,34 @@ import { formatFileSize } from './FileUpload.utils';
 type FileUploadProps = {
   types: string[];
   maxSize: number;
+  onError?: () => void;
 };
 
-export const FileUpload: React.FC<FileUploadProps> = ({ types, maxSize }) => {
+export const FileUpload: React.FC<FileUploadProps> = ({
+  types,
+  maxSize,
+  onError,
+}) => {
   const [file, setFile] = useState<File | null>(null);
-  const [isValidTypes, setIsValidTypes] = useState(true);
-  const [isFileSizeValid, setIsFileSizeValid] = useState(true);
 
   useEffect(() => {
     if (!Array.isArray(types) || types.length === 0) {
-      setIsValidTypes(false);
+      onError?.();
+      return;
     } else {
-      setIsValidTypes(true);
+      return;
     }
-  }, [types]);
+  }, [types, onE]);
 
   const handleFileChange = (selectedFile: File) => {
     if (selectedFile.size > maxSize) {
-      setIsFileSizeValid(false);
+      onError?.();
+      return;
     } else {
-      setIsFileSizeValid(true);
+      setFile(selectedFile);
+
+      return;
     }
-    setFile(selectedFile);
   };
 
   const clearFile = (e: React.MouseEvent) => {
