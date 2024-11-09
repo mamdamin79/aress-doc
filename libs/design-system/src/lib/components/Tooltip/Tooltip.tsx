@@ -1,3 +1,4 @@
+'use client'
 import { cn } from '../../../utils/classNames.utils';
 import React, { useId } from 'react';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
