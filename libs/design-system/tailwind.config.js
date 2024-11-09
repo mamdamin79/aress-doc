@@ -24,8 +24,8 @@ module.exports = {
         },
       },
       animation: {
-        toast: 'toast 0.3s ease-in-out',
         progressBar: 'progressBar 1s ease-in-out',
+        toast: 'toast 0.3s ease-in-out',
       },
       fontFamily: {
         vazirmatn: 'vazirmatn',

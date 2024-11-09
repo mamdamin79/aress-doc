@@ -5,6 +5,7 @@ export const SIZE_VALUES: Record<IconSize, number> = {
   sm: 16,
   md: 20,
   lg: 24,
+  lg_plus: 32,
   xl: 48,
 };
 
@@ -12,5 +13,6 @@ export const STROKE_VALUES: Record<IconSize, number> = {
   sm: 1.2,
   md: 1.5,
   lg: 1.8,
+  lg_plus: 2,
   xl: 5.5,
 };
