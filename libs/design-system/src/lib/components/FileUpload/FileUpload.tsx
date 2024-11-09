@@ -59,12 +59,21 @@ export const FileUpload: React.FC<FileUploadProps> = ({ types, maxSize }) => {
             } text-gray-500 text-sm font-vazirmatn font-medium text-right shrink-0 flex flex-row gap-2`}
           >
             {' '}
-            <span style={{ direction: 'ltr' }}>
-              {' '}
-              {file
-                ? `${file.name} (${formatFileSize(file)})`
-                : 'انتخاب فایل اکسل (.xls یا .xlsx) تا حداکثر حجم ۲ مگابایت'}
-            </span>
+            {file ? (
+              <span
+                style={{ direction: 'ltr' }}
+                className="text-gray-1000 font-medium"
+              >
+                {file.name}
+                <span className="text-gray-600 text-xs ml-2">
+                  {formatFileSize(file)}
+                </span>
+              </span>
+            ) : (
+              <span>
+                انتخاب فایل اکسل (.xls یا .xlsx) تا حداکثر حجم ۲ مگابایت
+              </span>
+            )}
             {/* excel icon */}
             {file ? (
               <svg
