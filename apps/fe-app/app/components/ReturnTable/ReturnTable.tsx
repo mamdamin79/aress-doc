@@ -1,40 +1,37 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { cn } from 'design-system';
 import { FourlevelIndicatorProps } from './FourlevelIndicator';
+import { withTableHOC, WithTableHOCProps } from 'design-system';
 
-export interface ReturnTableProps {
+export interface ReturnTableProps extends WithTableHOCProps {
   rows: string[];
   columns: string[];
   data: (number | null)[][];
 }
 
-export interface ReturnTableProps {
-  rows: string[];
-  columns: string[];
-  data: (number | null)[][];
-}
-
-export const ReturnTable: React.FC<ReturnTableProps> = ({
+const ReturnTableWrapped: React.FC<ReturnTableProps> = ({
   rows,
   columns,
   data,
+  hoveredRow,
+  setHoveredRow,
+  hoveredCol,
+  setHoveredCol,
+  matchingRow,
+  setMatchingRow,
+  matchingCol,
+  setMatchingCol,
+  renderHeadersOnHover,
 }) => {
-  const [matchingRow, setMatchingRow] = useState<number | null>(null);
-  const [matchingCol, setMatchingCol] = useState<number | null>(null);
-  const [hoveredRow, setHoveredRow] = useState<number | null>(null);
-  const [hoveredCol, setHoveredCol] = useState<number | null>(null);
-
   const renderCellValue = (value: number | null, row: number, col: number) => {
-    const Wrapper = (props: { children: React.ReactNode }) => {
-      return (
-        <div
-          onMouseEnter={() => setMatchingRow(row)}
-          onMouseLeave={() => setMatchingRow(null)}
-        >
-          {props.children}
-        </div>
-      );
-    };
+    const Wrapper = (props: { children: React.ReactNode }) => (
+      <div
+        onMouseEnter={() => setMatchingRow(row)}
+        onMouseLeave={() => setMatchingRow(null)}
+      >
+        {props.children}
+      </div>
+    );
 
     if (row === 3) {
       return (
@@ -62,23 +59,7 @@ export const ReturnTable: React.FC<ReturnTableProps> = ({
 
     return <Wrapper>{value !== null ? `%${value}` : <span>-</span>}</Wrapper>;
   };
-  const renderHeadersOnHover = (row?: number, col?: number) => {
-    if (row !== undefined) {
-      if (hoveredRow !== null && hoveredRow !== row) return 'text-gray-600';
-      else if (
-        hoveredRow !== null ||
-        (matchingRow !== null && matchingRow === row)
-      )
-        return 'bg-blue-600  text-baseBackground ';
-    } else {
-      if (hoveredCol !== null && hoveredCol !== col) return 'text-gray-600';
-      else if (
-        hoveredCol !== null ||
-        (matchingCol !== null && matchingCol === col)
-      )
-        return 'bg-blue-600 text-baseBackground ';
-    }
-  };
+
   const renderRowLabel = (rowLabel: string, rowIndex: number) => (
     <div
       onMouseEnter={() => setHoveredRow(rowIndex)}
@@ -93,10 +74,9 @@ export const ReturnTable: React.FC<ReturnTableProps> = ({
       <div
         className={cn(
           'flex items-center w-fit rounded-sm px-[6px] gap-[10px] text-nowrap',
-          renderHeadersOnHover(rowIndex, undefined)
+          renderHeadersOnHover?.(rowIndex, undefined)
         )}
       >
-        {' '}
         {rowLabel}
       </div>
     </div>
@@ -165,15 +145,15 @@ export const ReturnTable: React.FC<ReturnTableProps> = ({
         <div
           className={cn(
             'w-fit px-[6px] text-md rounded-sm text-nowrap',
-            renderHeadersOnHover(undefined, index)
+            renderHeadersOnHover?.(undefined, index)
           )}
         >
-          {' '}
           {columnLabel}
         </div>
       </div>
     ));
   };
+
   return (
     <div className="relative">
       <div className="overflow-x-auto">
@@ -203,3 +183,5 @@ export const ReturnTable: React.FC<ReturnTableProps> = ({
     </div>
   );
 };
+
+export const ReturnTable = withTableHOC(ReturnTableWrapped);
