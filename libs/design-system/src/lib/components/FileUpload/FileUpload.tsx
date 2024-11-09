@@ -23,7 +23,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
     } else {
       return;
     }
-  }, [types, onE]);
+  }, [types, onError]);
 
   const handleFileChange = (selectedFile: File) => {
     if (selectedFile.size > maxSize) {
