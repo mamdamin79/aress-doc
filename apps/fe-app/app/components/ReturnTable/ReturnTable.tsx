@@ -85,7 +85,7 @@ export const ReturnTable: React.FC<ReturnTableProps> = ({
       onMouseLeave={() => setHoveredRow(null)}
       key={`label-${rowIndex}`}
       className={cn(
-        'font-semibold text-right flex items-center p-2 pr-3 h-full relative',
+        'font-semibold text-right flex items-center p-2 pr-3 h-full relative cursor-pointer',
         rowIndex === 1 || rowIndex === 2 ? 'text-gray-1000' : 'text-blue-700',
         rowIndex % 2 === 1 && 'bg-gray-50'
       )}
@@ -151,7 +151,7 @@ export const ReturnTable: React.FC<ReturnTableProps> = ({
       <div
         key={index}
         className={cn(
-          'text-center flex justify-center items-center text-gray-1000 relative w-full'
+          'text-center flex justify-center items-center text-gray-1000 relative w-full cursor-pointer'
         )}
         onMouseEnter={() => setHoveredCol(index)}
         onMouseLeave={() => setHoveredCol(null)}
