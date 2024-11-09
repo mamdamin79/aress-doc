@@ -59,7 +59,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ types, maxSize }) => {
             } text-gray-500 text-sm font-vazirmatn font-medium text-right shrink-0 flex flex-row gap-2`}
           >
             {' '}
-            <span>
+            <span style={{ direction: 'ltr' }}>
               {' '}
               {file
                 ? `${file.name} (${formatFileSize(file)})`
