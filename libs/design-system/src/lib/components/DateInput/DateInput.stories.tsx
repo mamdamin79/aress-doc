@@ -42,11 +42,12 @@ export const Jalali: Story = {
         mode: 'jalali',
         min: '',
         max: '',
-        defaultValue: {
-            day: 12,
-            month: 5,
-            year: 1395
-        },
+        defaultValue :'1400-12-05',
+        // defaultValue: {
+        //     day: 12,
+        //     month: 5,
+        //     year: 1395
+        // },
     },
     render: function Success(args) {
         const [{ value }, updateArgs] = useArgs();
