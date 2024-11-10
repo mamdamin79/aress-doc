@@ -1,8 +1,9 @@
 import { useVideo } from '../../../hooks/UseVideo';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '../Button';
 import { Icon } from '../Icon';
 import { secondsToHHMMSS } from '../../../utils/time';
+import Draggable from 'react-draggable';
 
 type Props = {
   src: string;
@@ -11,8 +12,8 @@ type Props = {
 };
 
 export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
-  const [isDragging, setIsDragging] = useState(false);
-    console.log(isDragging)
+  const progressBarRef = useRef<HTMLProgressElement>(null);
+
   const {
     play,
     videoRef,
@@ -48,7 +49,6 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
   }, [fullScreen, pause, play, isPlaying]);
 
   const handleSeek = (event: React.MouseEvent<HTMLProgressElement>) => {
-    setIsDragging(false)
     const progressElement = event.currentTarget;
     const rect = progressElement.getBoundingClientRect();
     const offsetX = event.clientX - rect.left;
@@ -56,27 +56,20 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
     seek(newProgress);
   };
 
-  const handleDragStart = () => {
-    setIsDragging(true);
-  };
-
-  const handleDrag = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (isDragging) {
-      const progressElement = event.currentTarget
-        .parentElement as HTMLDivElement;
-      const rect = progressElement.getBoundingClientRect();
-      const offsetX = event.clientX - rect.left;
-      const newProgress = Math.min(
-        100,
-        Math.max(0, (offsetX / progressElement.offsetWidth) * 100)
-      );
-      seek(newProgress);
+  const handleDrag = (e: any, data: any) => {
+    if (progressBarRef.current) {
+      const progressBarWidth = progressBarRef.current.offsetWidth;
+      const newProgress = (data.x / progressBarWidth) * 100;
+      seek(newProgress); // Update progress bar as you drag
     }
   };
 
-  const handleDragEnd = () => {
-    setIsDragging(false);
-    console.log('UP');
+  const handleDragStop = (e: any, data: any) => {
+    if (progressBarRef.current) {
+      const progressBarWidth = progressBarRef.current.offsetWidth;
+      const finalProgress = (data.x / progressBarWidth) * 100;
+      seek(finalProgress); // Set final position on release
+    }
   };
 
   return (
@@ -96,23 +89,17 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
         ref={videoRef}
       />
       <div className="absolute inset-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-      <div
-        onMouseLeave={handleDragEnd}
-        onMouseUp={handleDragEnd}
-        onMouseMove={handleDrag}
-        className="absolute w-full h-20 z-10 bottom-0"
-      >
+      <div className="absolute w-full h-20 z-10 bottom-0">
         <div className="relative mx-auto w-11/12">
           <div className="mb-1">
             {/* progress bar */}
             <progress
+              ref={progressBarRef}
               dir="ltr"
               max="100"
               className="w-full z-20 cursor-pointer h-1.5 relative -top-[10px] rounded-full  appearance-none [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-bar]:bg-transparent [&::-webkit-progress-value]:bg-brand-600 [&::-webkit-progress-value]:rounded-full"
               value={progress}
               onClick={handleSeek}
-              onMouseDown={handleDragStart}
-              onMouseUp={handleDragEnd}
             ></progress>
             <progress
               dir="ltr"
@@ -121,12 +108,20 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
               value={bufferedTime}
             ></progress>
             <div className=" w-full h-1.5 absolute  top-0 -left-[3px]">
-              <div
-                onMouseDown={handleDragStart}
-                onMouseUp={handleDragEnd}
-                style={{ left: `${progress}%` }}
-                className="bg-brand-600 w-[20px] cursor-pointer -top-1.5 absolute z-20  h-[20px] rounded-[100%]"
-              ></div>
+              <Draggable
+                axis="x"
+                bounds="parent"
+                position={{
+                  x:
+                    (progress / 100) *
+                    (progressBarRef.current?.offsetWidth || 0),
+                  y: 0,
+                }}
+                onDrag={handleDrag} // Updates while dragging
+                onStop={handleDragStop} // Ensures position on release
+              >
+                <div className="bg-brand-600 left-0 z-10 cursor-pointer w-[20px] h-[20px] rounded-full absolute -top-[8px]"></div>
+              </Draggable>
             </div>
           </div>
           {/* controls */}
