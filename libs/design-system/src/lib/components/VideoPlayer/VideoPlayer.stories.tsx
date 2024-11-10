@@ -11,6 +11,6 @@ type Story = StoryObj<typeof VideoPlayer>;
 
 export const Default: Story = {
   args: {
-    src:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+    src:"https://classbon.arvanvod.ir/0q36Dx65Pj/5q0AvBAQKk/origin_d3plBgkPEaUzlSbwtzk1Sc1N6z9RhQDdzYAgMXEC.mp4"
   },
 };

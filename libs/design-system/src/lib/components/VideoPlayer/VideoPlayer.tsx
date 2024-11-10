@@ -5,6 +5,19 @@ import { Icon } from '../Icon';
 import { secondsToHHMMSS } from '../../../utils/time';
 import Draggable from 'react-draggable';
 import { cn } from '../../../utils/classNames.utils';
+import {
+  Description,
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+} from '@headlessui/react';
 
 type Props = {
   src: string;
@@ -15,6 +28,7 @@ type Props = {
 export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
   const progressBarRef = useRef<HTMLProgressElement>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const {
     play,
@@ -187,9 +201,44 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
               <button className="text-white flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all">
                 <Icon name="share-2" />
               </button>
-              <button className="text-white flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all">
-                <Icon name="settings" />
-              </button>
+              <Menu>
+                <MenuButton className="text-white relative flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all">
+                  <Icon name="settings" />
+                </MenuButton>
+                <MenuItems
+                  className="w-60 bg-gray-900/90 border-gray-200 rounded-md border-[1.5px]"
+                  anchor={{ to: 'top', gap: '48px' }}
+                >
+                  <Disclosure as="div" className="p-6" defaultOpen={true}>
+                    <DisclosureButton className="group flex w-full items-center justify-between">
+                      <span className="flex-row-reverse gap-2 items-center font-medium text-white flex justify-between ">
+                        سرعت پخش <Icon name="circle-gauge" />
+                      </span>
+                      <span className="text-white">
+                        <Icon name="chevron-left" />
+                      </span>
+                    </DisclosureButton>
+                    <DisclosurePanel className="">
+                      If you're unhappy with your purchase, we'll refund you in
+                      full.
+                    </DisclosurePanel>
+                  </Disclosure>
+                  <Disclosure as="div" className="p-6">
+                    <DisclosureButton className=" flex w-full items-center justify-between">
+                      <span className=" font-medium flex flex-row-reverse text-white">
+                        کیفیت
+                        <span className='text-white'>
+                          <Icon name="sliders-horizontal" />
+                        </span>
+                      </span>
+                      <span className="text-white">
+                        <Icon name="chevron-left" />
+                      </span>
+                    </DisclosureButton>
+                    <DisclosurePanel className="mt-2 text-sm/5 text-white/50"></DisclosurePanel>
+                  </Disclosure>
+                </MenuItems>
+              </Menu>
               <button
                 onClick={pictureInPicture}
                 className="text-white flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all"
