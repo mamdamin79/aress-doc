@@ -214,6 +214,7 @@ export const useVideo = (src: string) => {
   const play = () => videoRef.current!.play();
   const pause = () => videoRef.current!.pause();
   const fullScreen = () => videoRef.current!.requestFullscreen();
+  const pictureInPicture = () => videoRef.current!.requestPictureInPicture();
   const seek = (newProgress: number) => {
     if (videoRef.current) {
       const newTime = (newProgress / 100) * videoRef.current.duration;
@@ -228,6 +229,7 @@ export const useVideo = (src: string) => {
     play,
     pause,
     fullScreen,
-    seek
+    seek,
+    pictureInPicture
   };
 };

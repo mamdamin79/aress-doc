@@ -4,6 +4,7 @@ import { Button } from '../Button';
 import { Icon } from '../Icon';
 import { secondsToHHMMSS } from '../../../utils/time';
 import Draggable from 'react-draggable';
+import { cn } from '../../../utils/classNames.utils';
 
 type Props = {
   src: string;
@@ -13,6 +14,7 @@ type Props = {
 
 export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
   const progressBarRef = useRef<HTMLProgressElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   const {
     play,
@@ -27,6 +29,7 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
     isPlaying,
     seek,
     bufferedTime,
+    pictureInPicture,
   } = useVideo(src);
 
   useEffect(() => {
@@ -56,6 +59,9 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
     seek(newProgress);
   };
 
+  const handleDragStart = () => {
+    setIsDragging(true);
+  };
   const handleDrag = (e: any, data: any) => {
     if (progressBarRef.current) {
       const progressBarWidth = progressBarRef.current.offsetWidth;
@@ -65,6 +71,7 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
   };
 
   const handleDragStop = (e: any, data: any) => {
+    setIsDragging(false);
     if (progressBarRef.current) {
       const progressBarWidth = progressBarRef.current.offsetWidth;
       const finalProgress = (data.x / progressBarWidth) * 100;
@@ -117,10 +124,15 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
                     (progressBarRef.current?.offsetWidth || 0),
                   y: 0,
                 }}
+                onStart={handleDragStart}
                 onDrag={handleDrag} // Updates while dragging
                 onStop={handleDragStop} // Ensures position on release
               >
-                <div className="bg-brand-600 left-0 z-30 cursor-pointer w-[20px] h-[20px] rounded-full absolute -top-[8px]"></div>
+                <div
+                  className={`bg-brand-600 left-0 z-30 cursor-pointer w-[20px] h-[20px] rounded-full absolute -top-[8px] transition-colors duration-250 ${
+                    isDragging && 'bg-brand-800'
+                  }`}
+                ></div>
               </Draggable>
             </div>
           </div>
@@ -178,7 +190,10 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
               <button className="text-white flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all">
                 <Icon name="settings" />
               </button>
-              <button className="text-white flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all">
+              <button
+                onClick={pictureInPicture}
+                className="text-white flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all"
+              >
                 <Icon name="picture-in-picture-2" />
               </button>
               <button
