@@ -29,7 +29,6 @@ export const Miladi: Story = {
         function setError(e: {
             minError: boolean,
             maxError: boolean,
-            validError: boolean
         }) {
             updateError({error: e})
         }
@@ -43,11 +42,6 @@ export const Jalali: Story = {
         min: '',
         max: '',
         defaultValue :'1400-12-05',
-        // defaultValue: {
-        //     day: 12,
-        //     month: 5,
-        //     year: 1395
-        // },
     },
     render: function Success(args) {
         const [{ value }, updateArgs] = useArgs();
@@ -59,7 +53,6 @@ export const Jalali: Story = {
         function setError(e: {
             minError: boolean,
             maxError: boolean,
-            validError: boolean
         }) {
             updateError({error: e})
         }

@@ -532,7 +532,6 @@ export const DateInput: React.FC<Props> = ({
         setIsArrowKeyPressed(false);
         if (activeIndex === 2) {
           dayRef?.current?.focus();
-          dayRef?.current?.setSelectionRange(dayRef?.current?.value, dayRef?.current?.value)
           monthRef?.current?.blur();
         }
         if (activeIndex === 3) {
@@ -661,7 +660,6 @@ export const DateInput: React.FC<Props> = ({
         />
       </div>
       <span>
-        {errors?.validError && 'سال وارد شده معتبر نمیباشد'}
         {errors?.minError && 'سال وارد شده کوچیک تر از محدوده ورودی است. '}
         {errors?.maxError && 'سال وارد شده بزرگ تر از محدوده ورودی است. '}
       </span>
