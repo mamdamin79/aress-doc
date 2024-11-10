@@ -120,7 +120,7 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
                 onDrag={handleDrag} // Updates while dragging
                 onStop={handleDragStop} // Ensures position on release
               >
-                <div className="bg-brand-600 left-0 z-10 cursor-pointer w-[20px] h-[20px] rounded-full absolute -top-[8px]"></div>
+                <div className="bg-brand-600 left-0 z-30 cursor-pointer w-[20px] h-[20px] rounded-full absolute -top-[8px]"></div>
               </Draggable>
             </div>
           </div>
