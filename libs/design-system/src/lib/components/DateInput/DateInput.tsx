@@ -105,7 +105,6 @@ export const DateInput: React.FC<Props> = ({
   useEffect(() => {
     if (!day) {
       dayRef?.current?.focus();
-      setActiveIndex(null);
     }
   }, [day, defaultValue]);
 
@@ -532,15 +531,13 @@ export const DateInput: React.FC<Props> = ({
         setIsArrowKeyPressed(false);
         if (activeIndex === 2) {
           dayRef?.current?.focus();
+          dayRef?.current?.setSelectionRange(2, 2);
           monthRef?.current?.blur();
         }
         if (activeIndex === 3) {
           monthRef?.current?.focus();
+          monthRef?.current?.setSelectionRange(2, 2);
           yearRef?.current?.blur();
-        }
-        if (activeIndex === 2) {
-          monthRef?.current?.blur();
-          dayRef?.current?.focus();
         }
         if (activeIndex > 1) {
           setActiveIndex(activeIndex - 1);
@@ -603,10 +600,7 @@ export const DateInput: React.FC<Props> = ({
           dir="rtl"
           onClick={() => {
             setActiveIndex(1);
-            dayRef?.current?.setSelectionRange(
-              dayRef?.current?.value.length,
-              dayRef?.current?.value.length
-            );
+            dayRef?.current?.setSelectionRange(2, 2);
           }}
           ref={dayRef}
           value={formatDay(day)}
@@ -623,10 +617,7 @@ export const DateInput: React.FC<Props> = ({
           dir="rtl"
           onClick={() => {
             setActiveIndex(2);
-            monthRef?.current?.setSelectionRange(
-              monthRef?.current?.value.length,
-              monthRef?.current?.value.length
-            );
+            monthRef?.current?.setSelectionRange(2, 2);
           }}
           ref={monthRef}
           value={formatMonth(month)}
