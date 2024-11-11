@@ -11,9 +11,10 @@ type Props = {
   src: string;
   poster?: string;
   className?: string;
+  title: string;
 };
 
-export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
+export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
   const progressBarRef = useRef<HTMLProgressElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const {
@@ -31,9 +32,9 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
     bufferedTime,
     pictureInPicture,
     setPlaybackRate,
-    playBackRate
+    playBackRate,
   } = useVideo(src);
-  console.log(isVideoLoaded)
+  console.log(isVideoLoaded);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -85,13 +86,20 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
   return (
     <div className="relative">
       {/* loading displays when video is not loaded yet(even first frame) and when buffered time is finished and we are waiting for new chunks */}
-      {!isVideoLoaded || isVideoWaited && (
-        <div className="absolute z-30 flex items-center justify-center inset-0 m-auto">
-          <div className="animate-spin text-gray-600 w-fit mx-auto">
-            <Icon name="loader-circle" size="xl" />
+      {!isVideoLoaded ||
+        (isVideoWaited && (
+          <div className="absolute z-30 flex items-center justify-center inset-0 m-auto">
+            <div className="animate-spin text-gray-600 w-fit mx-auto">
+              <Icon name="loader-circle" size="xl" />
+            </div>
           </div>
-        </div>
-      )}
+        ))}
+      <h2 className="absolute text-white text-xl font-semibold mt-8 flex gap-1 items-center">
+        <span className='mr-8'>
+          <Icon name="list-video" size="lg" />
+        </span>
+        {title}
+      </h2>
       <video
         src={src}
         className="w-full"
@@ -99,7 +107,11 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
         ref={videoRef}
       />
       <div className="absolute inset-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-      <div className={cn("absolute w-full h-20 z-10 bottom-0",{"opacity-50 pointer-events-none" : !isVideoLoaded})}>
+      <div
+        className={cn('absolute w-full h-20 z-10 bottom-0', {
+          'opacity-50 pointer-events-none': !isVideoLoaded,
+        })}
+      >
         <div className="relative mx-auto w-11/12">
           <div className="mb-1">
             {/* progress bar */}
@@ -140,13 +152,9 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
             </div>
           </div>
           {/* controls */}
-          <div className={cn("flex items-center justify-between")} dir="ltr">
+          <div className={cn('flex items-center justify-between')} dir="ltr">
             <div className="flex justify-between items-center gap-4 ">
-              <PlayerActions
-                isPlaying={isPlaying}
-                pause={pause}
-                play={play}
-              />
+              <PlayerActions isPlaying={isPlaying} pause={pause} play={play} />
               <VideoTimer duration={duration} currentTime={currentTime} />
             </div>
             <PlayerOptions
