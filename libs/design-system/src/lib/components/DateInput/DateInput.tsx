@@ -102,7 +102,7 @@ export const DateInput: React.FC<Props> = ({
     if (!day) {
       dayRef?.current?.focus();
     }
-  }, [day, defaultValue]);
+  }, [day]);
 
   useEffect(() => {
     if (min && mode === 'miladi') {
@@ -198,6 +198,8 @@ export const DateInput: React.FC<Props> = ({
         tempMaxError = true;
       }
 
+      if (year && year > maxDate.year) tempMaxError = true;
+
       if (year === maxDate.year && e < maxDate.month + 1) tempMaxError = false;
     }
 
@@ -213,7 +215,8 @@ export const DateInput: React.FC<Props> = ({
         tempMinError = true;
       }
 
-      if (year && year > minDate.year) tempMinError = false;
+      // if (year && year > minDate.year) tempMinError = false;
+      if (year && year < minDate.year) tempMinError = true;
       if (year && year === minDate.year && e > minDate.month + 1)
         tempMinError = false;
       if (
@@ -239,7 +242,7 @@ export const DateInput: React.FC<Props> = ({
       }`
     );
 
-    if (String(e).length === 2 && !arrowChange) {
+    if (String(e).length === 2 && arrowChange) {
       if (!day) {
         setActiveIndex(1);
         dayRef.current?.focus();
@@ -303,14 +306,13 @@ export const DateInput: React.FC<Props> = ({
     }
 
     if (minDate.year && minDate.month && minDate.day) {
+      if (year && year < minDate.year) tempMinError = true;
       if (
         year === minDate.year &&
         month === minDate.month + 1 &&
         e < minDate.day
       ) {
         tempMinError = true;
-      } else {
-        tempMinError = false;
       }
     }
 
@@ -321,9 +323,9 @@ export const DateInput: React.FC<Props> = ({
         e > maxDate.day
       ) {
         tempMaxError = true;
-      } else {
-        tempMaxError = false;
       }
+
+      if (year && year > maxDate.year) tempMaxError = true;
     }
 
     if (mode === 'jalali') {
@@ -362,7 +364,7 @@ export const DateInput: React.FC<Props> = ({
       )
         setDay(30);
     }
-    if (String(e).length === 2 && !arrowChange) {
+    if (String(e).length === 2 && arrowChange) {
       if (!month) {
         setActiveIndex(2);
         monthRef.current?.focus();
@@ -456,15 +458,22 @@ export const DateInput: React.FC<Props> = ({
       }-${day < 10 ? `0${day}` : day}`
     );
 
-    if (String(e).length === 4 && !arrowChangg) {
-      if (!month) {
-        setActiveIndex(2);
-        monthRef.current?.focus();
-        yearRef.current?.blur();
-      } else if (!day) {
-        setActiveIndex(1);
-        dayRef.current?.focus();
-        yearRef.current?.blur();
+    if (String(e).length === 4 && arrowChangg) {
+      if (
+        minDate.year &&
+        maxDate.year &&
+        e >= minDate.year + 1 &&
+        e <= maxDate.year + 1
+      ) {
+        if (!month) {
+          setActiveIndex(2);
+          monthRef.current?.focus();
+          yearRef.current?.blur();
+        } else if (!day) {
+          setActiveIndex(1);
+          dayRef.current?.focus();
+          yearRef.current?.blur();
+        }
       }
     }
 
@@ -626,7 +635,7 @@ export const DateInput: React.FC<Props> = ({
           }}
           ref={dayRef}
           value={formatDay(day)}
-          onChange={(e) => changeDayInput(+e.target.value, false)}
+          onChange={(e) => changeDayInput(+e.target.value, true)}
           type="text"
           placeholder="روز"
           className={cn(
@@ -643,7 +652,7 @@ export const DateInput: React.FC<Props> = ({
           }}
           ref={monthRef}
           value={formatMonth(month)}
-          onChange={(e) => changeMonthInput(+e.target.value, false)}
+          onChange={(e) => changeMonthInput(+e.target.value, true)}
           type="text"
           placeholder="ماه"
           className={cn(
@@ -663,7 +672,7 @@ export const DateInput: React.FC<Props> = ({
           }}
           ref={yearRef}
           value={year ?? ''}
-          onChange={(e) => changeYearInput(+e.target.value, false)}
+          onChange={(e) => changeYearInput(+e.target.value, true)}
           type="text"
           placeholder="سال"
           className={cn(
