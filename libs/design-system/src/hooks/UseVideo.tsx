@@ -9,7 +9,8 @@ interface videoState {
   progress: number;
   isVideoLoaded: boolean;
   isVideoWaited: boolean; //buffering
-  bufferedTime:number
+  bufferedTime:number,
+  playBackRate:number
 }
 
 type videoAction =
@@ -21,7 +22,8 @@ type videoAction =
   | { type: 'SET_PROGRESS'; progress: number }
   | { type: 'SET_VIDEO_LOADED'; isVideoLoaded: boolean }
   | { type: 'SET_VIDEO_WAITED'; isVideoWaited: boolean }
-  | { type: 'SET_BUFFERED_TIME'; bufferedTime: number };
+  | { type: 'SET_BUFFERED_TIME'; bufferedTime: number }
+  | { type: 'SET_PLAYBACK_RATE'; playBackRate: number };
 
 const videoReducer = (state: videoState, action: videoAction): videoState => {
   switch (action.type) {
@@ -80,6 +82,12 @@ const videoReducer = (state: videoState, action: videoAction): videoState => {
         ...state,
         bufferedTime: action.bufferedTime,
       };
+      case 'SET_PLAYBACK_RATE':
+      return {
+        ...state,
+        playBackRate : action.playBackRate,
+      };
+      break;
     default:
       return state;
       break;
@@ -97,6 +105,7 @@ export const useVideo = (src: string) => {
     isVideoLoaded: false,
     isVideoWaited: false, //buffering
     bufferedTime:0,
+    playBackRate:1,
   });
   useEffect(() => {
     const video = videoRef.current!;
@@ -223,6 +232,12 @@ export const useVideo = (src: string) => {
       dispatch({ type: 'TIME_UPDATE', currentTime: newTime });
     }
   };
+  const setPlaybackRate = useCallback((rate: number) => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = rate;
+      dispatch({ type: 'SET_PLAYBACK_RATE', playBackRate: rate });
+    }
+  }, []);  
   return {
     ...state,
     videoRef,
@@ -230,6 +245,7 @@ export const useVideo = (src: string) => {
     pause,
     fullScreen,
     seek,
-    pictureInPicture
+    pictureInPicture,
+    setPlaybackRate
   };
 };

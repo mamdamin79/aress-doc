@@ -30,6 +30,8 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
     seek,
     bufferedTime,
     pictureInPicture,
+    setPlaybackRate,
+    playBackRate
   } = useVideo(src);
   console.log(isVideoLoaded)
 
@@ -148,6 +150,8 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
               <VideoTimer duration={duration} currentTime={currentTime} />
             </div>
             <PlayerOptions
+              playBackRate={playBackRate}
+              setPlaybackRate={setPlaybackRate}
               fullScreen={fullScreen}
               pictureInPicture={pictureInPicture}
             />

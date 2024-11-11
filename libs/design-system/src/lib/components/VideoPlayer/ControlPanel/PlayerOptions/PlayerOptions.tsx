@@ -13,11 +13,12 @@ import { cn } from '../../../../../utils/classNames.utils';
 type Props = {
   fullScreen: () => void;
   pictureInPicture: () => void;
+  setPlaybackRate:(rate:number)=>void,
+  playBackRate:number
 };
 
 export const PlayerOptions: React.FC<Props> = React.memo(
-  ({ pictureInPicture, fullScreen }) => {
-    const [playBackSpeed, setPlayBackSpeed] = useState(1);
+  ({ pictureInPicture, fullScreen,playBackRate,setPlaybackRate }) => {
 
     return (
       <div className="flex items-center gap-4">
@@ -38,23 +39,23 @@ export const PlayerOptions: React.FC<Props> = React.memo(
                   سرعت پخش <Icon name="circle-gauge" />
                 </span>
                 <span className="text-white flex items-center gap-1">
-                  {playBackSpeed}
+                  {playBackRate}
                   <Icon name="chevron-left" />
                 </span>
               </DisclosureButton>
               <DisclosurePanel className="text-white">
                 <ul>
-                  <li onClick={()=>setPlayBackSpeed(0.5)} className={cn("hover:bg-gray-800/80 transition-colors duration-200 py-2 cursor-pointer flex gap-2 pr-10",{"pr-3":playBackSpeed === 0.5})}>
-                    {playBackSpeed === 0.5 && <span><Icon name="check" /></span>} 0.5
+                  <li onClick={()=>setPlaybackRate(0.5)} className={cn("hover:bg-gray-800/80 transition-colors duration-200 py-2 cursor-pointer flex gap-2 pr-10",{"pr-3":playBackRate === 0.5})}>
+                    {playBackRate === 0.5 && <span><Icon name="check" /></span>} 0.5
                   </li>
-                  <li onClick={()=>setPlayBackSpeed(1)} className={cn("hover:bg-gray-800/80 py-2 cursor-pointer flex gap-2 pr-10",{"pr-3":playBackSpeed === 1})}>
-                    {playBackSpeed === 1 && <span><Icon name="check" /></span>} 1
+                  <li onClick={()=>setPlaybackRate(1)} className={cn("hover:bg-gray-800/80 py-2 cursor-pointer flex gap-2 pr-10",{"pr-3":playBackRate === 1})}>
+                    {playBackRate === 1 && <span><Icon name="check" /></span>} 1
                   </li>
-                  <li onClick={()=>setPlayBackSpeed(1.5)} className={cn("hover:bg-gray-800/80 py-2 cursor-pointer flex gap-2 pr-10",{"pr-3":playBackSpeed === 1.5})}>
-                    {playBackSpeed === 1.5 && <span><Icon name="check" /></span>} 1.5
+                  <li onClick={()=>setPlaybackRate(1.5)} className={cn("hover:bg-gray-800/80 py-2 cursor-pointer flex gap-2 pr-10",{"pr-3":playBackRate === 1.5})}>
+                    {playBackRate === 1.5 && <span><Icon name="check" /></span>} 1.5
                   </li>
-                  <li onClick={()=>setPlayBackSpeed(2)} className={cn("hover:bg-gray-800/80 py-2 cursor-pointer flex gap-2 pr-10",{"pr-3":playBackSpeed === 2})}>
-                    {playBackSpeed === 2 && <span ><Icon name="check" /></span>} 2
+                  <li onClick={()=>setPlaybackRate(2)} className={cn("hover:bg-gray-800/80 py-2 cursor-pointer flex gap-2 pr-10",{"pr-3":playBackRate === 2})}>
+                    {playBackRate === 2 && <span ><Icon name="check" /></span>} 2
                   </li>
                 </ul>
               </DisclosurePanel>
