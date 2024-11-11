@@ -1,5 +1,6 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItems } from "@headlessui/react"
 import { Icon } from "../../../Icon"
+import React from "react"
 
 type Props = {
     fullScreen:()=>void,
@@ -7,7 +8,7 @@ type Props = {
 
 }
 
-export const PlayerOptions : React.FC<Props> = ({
+export const PlayerOptions : React.FC<Props> = React.memo(({
     pictureInPicture,
     fullScreen
 })=>{
@@ -68,4 +69,4 @@ export const PlayerOptions : React.FC<Props> = ({
               </button>
             </div>
     )
-}
+})

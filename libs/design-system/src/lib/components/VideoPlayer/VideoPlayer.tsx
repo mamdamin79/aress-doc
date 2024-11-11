@@ -5,6 +5,7 @@ import Draggable from 'react-draggable';
 import { VideoTimer } from './ControlPanel/VideoTimer/VideoTimer';
 import { PlayerActions } from './ControlPanel/PlayerActions/PlayerActions';
 import { PlayerOptions } from './ControlPanel/PlayerOptions/PlayerOptions';
+import { cn } from '../../../utils/classNames.utils';
 
 type Props = {
   src: string;
@@ -30,8 +31,7 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
     bufferedTime,
     pictureInPicture,
   } = useVideo(src);
-  console.log(currentTime,progress,isPlaying)
-  
+  console.log(isVideoLoaded)
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -83,8 +83,8 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
   return (
     <div className="relative">
       {/* loading displays when video is not loaded yet(even first frame) and when buffered time is finished and we are waiting for new chunks */}
-      {isVideoWaited && (
-        <div className="absolute flex items-center justify-center inset-0 m-auto">
+      {!isVideoLoaded || isVideoWaited && (
+        <div className="absolute z-30 flex items-center justify-center inset-0 m-auto">
           <div className="animate-spin text-gray-600 w-fit mx-auto">
             <Icon name="loader-circle" size="xl" />
           </div>
@@ -97,7 +97,7 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
         ref={videoRef}
       />
       <div className="absolute inset-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-      <div className="absolute w-full h-20 z-10 bottom-0">
+      <div className={cn("absolute w-full h-20 z-10 bottom-0",{"opacity-50 pointer-events-none" : !isVideoLoaded})}>
         <div className="relative mx-auto w-11/12">
           <div className="mb-1">
             {/* progress bar */}
@@ -138,12 +138,19 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
             </div>
           </div>
           {/* controls */}
-          <div className="flex items-center justify-between" dir="ltr">
-            <div className="flex justify-between items-center gap-4">
-              <PlayerActions isPlaying={isPlaying} pause={pause} play={play}/>
-              <VideoTimer duration={duration} currentTime={currentTime}/>
+          <div className={cn("flex items-center justify-between")} dir="ltr">
+            <div className="flex justify-between items-center gap-4 ">
+              <PlayerActions
+                isPlaying={isPlaying}
+                pause={pause}
+                play={play}
+              />
+              <VideoTimer duration={duration} currentTime={currentTime} />
             </div>
-            <PlayerOptions fullScreen={fullScreen} pictureInPicture={pictureInPicture}/>
+            <PlayerOptions
+              fullScreen={fullScreen}
+              pictureInPicture={pictureInPicture}
+            />
           </div>
         </div>
       </div>
