@@ -65,6 +65,7 @@ export const Shaped: Story = {
       },
     ],
     bgWhite: true,
+    tag: true,
     style: 'button-shaped',
   },
 };

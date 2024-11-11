@@ -12,9 +12,10 @@ interface Props {
     | 'rounded'
     | 'button-rounded';
   bgWhite?: boolean;
+  tag?: boolean;
 }
 
-export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite }) => {
+export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite, tag }) => {
   return (
     <div
       className={cn('flex w-full justify-center px-4', {
@@ -118,6 +119,15 @@ export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite }) => {
                     )}
                     {style === 'button-shaped' ? (
                       <div className="flex items-center gap-2">
+                        {tag && (
+                          <div
+                            className={cn(
+                              'rounded-full w-3 h-3 border-2 flex items-center justify-center',
+                              { 'border-white bg-vividGreen-600': bgWhite },
+                              { 'border-white bg-vividGreen-600': !bgWhite }
+                            )}
+                          ></div>
+                        )}
                         {props.icons?.length && (
                           <Icon {...props.icons[0]} size="lg" />
                         )}
