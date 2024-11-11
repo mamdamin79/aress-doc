@@ -90,7 +90,8 @@ const CustomComponent: React.FC<ConfirmModalProps> = ({
           )}
           {/* Handle Submit or Cancel */}
           <div className="flex justify-end gap-2">
-            <div className="min-w-[80px]">
+            <div className="min-w-[55px]">
+              {' '}
               <Button
                 align="center"
                 isLoading={false}
@@ -101,7 +102,8 @@ const CustomComponent: React.FC<ConfirmModalProps> = ({
                 {CancelButtonText}
               </Button>
             </div>
-            <div className="min-w-[80px]">
+            <div className="min-w-[55px]">
+              {' '}
               <Button
                 align="center"
                 isLoading={false}
