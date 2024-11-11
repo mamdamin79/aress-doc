@@ -28,11 +28,9 @@ export function InfoPopover({ title, message, button }: Props) {
             </p>
             <div
               onClick={() => close()}
-              className="rounded-full absolute -top-2 -left-2 bg-brand-600 cursor-pointer flex items-center justify-center w-8 h-8"
+              className="absolute -top-2 -left-2 cursor-pointer"
             >
-              <div className="rounded-full flex items-center justify-center w-6 h-6 bg-white">
-                <Icon name="x" size="sm" />
-              </div>
+              <Icon name="CustomCirlcleX" size="lg_plus" />
             </div>
           </div>
         )}
