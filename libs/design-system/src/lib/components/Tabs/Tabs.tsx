@@ -16,7 +16,11 @@ interface Props {
 
 export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite }) => {
   return (
-    <div className="flex w-full justify-center px-4">
+    <div
+      className={cn('flex w-full justify-center px-4', {
+        'bg-gray-100': !bgWhite,
+      })}
+    >
       <div className="w-full">
         <TabGroup>
           <TabList
@@ -32,7 +36,7 @@ export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite }) => {
                 className={cn(
                   'font-vazirmatn relative outline-none text-md',
                   {
-                    'py-2 hover:bg-gray-100 text-gray-600 data-[selected]:text-white hover:text-gray-700 data-[selected]:font-semibold min-w-52 text-center':
+                    'py-2 data-[selected]:bg-brand-600 relative rounded-t-xl text-gray-600 data-[selected]:text-white hover:text-gray-700 data-[selected]:font-semibold min-w-52 text-center':
                       style === 'lined',
                   },
                   {
@@ -48,23 +52,33 @@ export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite }) => {
                       style === 'rounded',
                   },
                   {
-                    'border-gray-100 border-2':
+                    'border-gray-100 border-2 bg-white':
                       style === 'button-shaped' && !bgWhite,
+                    'border-gray-100 border-2 bg-gray-100':
+                      style === 'button-shaped' && bgWhite,
                   },
                   {
-                    'border-gray-100': style === 'divided-buttons' && !bgWhite,
+                    'border-white bg-white':
+                      style === 'divided-buttons' && !bgWhite,
+                    'border-gray-100 bg-gray-100':
+                      style === 'divided-buttons' && bgWhite,
                   },
                   {
-                    'data-[selected]:bg-brand-600 relative rounded-t-xl':
-                      style === 'lined',
+                    'relative hover:bg-white': style === 'lined' && !bgWhite,
+                  },
+                  {
+                    'bg-white relative hover:bg-gray-100':
+                      style === 'lined' && bgWhite,
                   },
                   {
                     'py-1 px-2 data-[selected]:border-brand-600 rounded-md border-2 border-white data-[selected]:bg-brand-600 data-[selected]:text-white hover:border-brand-600 text-black':
                       style === 'button-shaped',
                   },
                   {
-                    'py-2 px-4 text-sm data-[selected]:bg-brand-600 bg-gray-100 font-medium data-[selected]:border-spacing-2 rounded-full border-2 border-gray-100 data-[selected]:border-brand-600 data-[selected]:text-white hover:border-brand-600 text-black':
+                    'py-2 px-4 text-sm data-[selected]:bg-brand-600 font-medium data-[selected]:border-spacing-2 rounded-full border-2 border-gray-100 data-[selected]:border-brand-600 data-[selected]:text-white hover:border-brand-600 text-black':
                       style === 'button-rounded',
+                    'bg-gray-100': style === 'button-rounded' && bgWhite,
+                    'bg-white': style === 'button-rounded' && !bgWhite,
                   }
                 )}
               >
@@ -75,8 +89,10 @@ export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite }) => {
                         <div
                           className={cn(
                             {
-                              'hidden top-0 w-4 z-30 h-full bg-white left-[100%] rounded-bl-3xl ':
+                              'hidden top-0 w-4 z-30 h-full left-[100%] rounded-bl-3xl ':
                                 style === 'lined',
+                              'bg-white': style === 'lined' && bgWhite,
+                              'bg-gray-100': style === 'lined' && !bgWhite,
                             },
                             { 'absolute block': selected && index },
                             {
@@ -89,8 +105,12 @@ export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite }) => {
                             'w-4 bg-brand-600 top-0 left-[100%] hidden z-10 h-full',
                             { 'absolute block': selected && index },
                             {
+                              'absolute block bg-white':
+                                !selected && hover && index && !bgWhite,
+                            },
+                            {
                               'absolute block bg-gray-100':
-                                !selected && hover && index,
+                                !selected && hover && index && bgWhite,
                             }
                           )}
                         ></div>
@@ -116,7 +136,10 @@ export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite }) => {
                             {
                               'hidden top-0 w-4 z-30 h-full bg-white right-[100%] rounded-br-3xl ':
                                 style === 'lined',
+                              'bg-white': style === 'lined' && bgWhite,
+                              'bg-gray-100': style === 'lined' && !bgWhite,
                             },
+
                             {
                               'absolute block':
                                 selected && index + 1 < tabs.length,
@@ -134,9 +157,20 @@ export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite }) => {
                               'absolute block':
                                 selected && index + 1 !== tabs.length,
                             },
+
+                            {
+                              'absolute block bg-white':
+                                !selected &&
+                                hover &&
+                                index + 1 !== tabs.length &&
+                                !bgWhite,
+                            },
                             {
                               'absolute block bg-gray-100':
-                                !selected && hover && index + 1 !== tabs.length,
+                                !selected &&
+                                hover &&
+                                index + 1 !== tabs.length &&
+                                bgWhite,
                             }
                           )}
                         ></div>

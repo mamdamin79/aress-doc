@@ -39,7 +39,7 @@ export const Lined: Story = {
       { content: 'پرتفوی صندوق', title: 'پرتفوی صندوق' },
       { content: 'نمودار صندوق', title: 'نمودار صندوق' },
     ],
-    bgWhite: true,
+    bgWhite: false,
     style: 'lined',
   },
 };
