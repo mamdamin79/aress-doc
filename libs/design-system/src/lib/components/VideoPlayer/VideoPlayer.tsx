@@ -1,23 +1,7 @@
 import { useVideo } from '../../../hooks/UseVideo';
 import React, { useEffect, useRef, useState } from 'react';
-import { Button } from '../Button';
 import { Icon } from '../Icon';
-import { secondsToHHMMSS } from '../../../utils/time';
 import Draggable from 'react-draggable';
-import { cn } from '../../../utils/classNames.utils';
-import {
-  Description,
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-} from '@headlessui/react';
 import { VideoTimer } from './ControlPanel/VideoTimer/VideoTimer';
 import { PlayerActions } from './ControlPanel/PlayerActions/PlayerActions';
 import { PlayerOptions } from './ControlPanel/PlayerOptions/PlayerOptions';
@@ -31,8 +15,6 @@ type Props = {
 export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
   const progressBarRef = useRef<HTMLProgressElement>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-
   const {
     play,
     videoRef,
@@ -48,6 +30,8 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
     bufferedTime,
     pictureInPicture,
   } = useVideo(src);
+  console.log(currentTime,progress,isPlaying)
+  
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -155,7 +139,7 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '' }) => {
           </div>
           {/* controls */}
           <div className="flex items-center justify-between" dir="ltr">
-            <div className="flex items-center gap-4">
+            <div className="flex justify-between items-center gap-4">
               <PlayerActions isPlaying={isPlaying} pause={pause} play={play}/>
               <VideoTimer duration={duration} currentTime={currentTime}/>
             </div>

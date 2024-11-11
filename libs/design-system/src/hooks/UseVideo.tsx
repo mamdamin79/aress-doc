@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef } from 'react';
+import { useCallback, useEffect, useReducer, useRef } from 'react';
 import Hls from 'hls.js'; // Import HLS.js
 
 interface videoState {
@@ -211,10 +211,10 @@ export const useVideo = (src: string) => {
       video.removeEventListener('progress', updateBufferedTime);
     };
   }, [src]);
-  const play = () => videoRef.current!.play();
-  const pause = () => videoRef.current!.pause();
-  const fullScreen = () => videoRef.current!.requestFullscreen();
-  const pictureInPicture = () => videoRef.current!.requestPictureInPicture();
+  const play = useCallback(() => videoRef.current?.play(), []);
+  const pause = useCallback(() => videoRef.current?.pause(), []);
+  const fullScreen = useCallback(() => videoRef.current?.requestFullscreen(), []);
+  const pictureInPicture = useCallback(() => videoRef.current?.requestPictureInPicture(), []);
   const seek = (newProgress: number) => {
     if (videoRef.current) {
       const newTime = (newProgress / 100) * videoRef.current.duration;
