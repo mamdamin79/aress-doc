@@ -86,6 +86,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
 
       <input
         id={id}
+        {...rest}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         type={visibleCharacter ? 'text' : 'password'}
