@@ -9,6 +9,7 @@ import {
 import { Icon } from '../../../Icon';
 import React, { useState } from 'react';
 import { cn } from '../../../../../utils/classNames.utils';
+import { PLAYBACK_RATES } from './PlayerOptions.constants';
 
 type Props = {
   fullScreen: () => void;
@@ -45,18 +46,11 @@ export const PlayerOptions: React.FC<Props> = React.memo(
               </DisclosureButton>
               <DisclosurePanel className="text-white">
                 <ul>
-                  <li onClick={()=>setPlaybackRate(0.5)} className={cn("hover:bg-gray-800/80 transition-colors duration-200 py-2 cursor-pointer flex gap-2 pr-10",{"pr-3":playBackRate === 0.5})}>
-                    {playBackRate === 0.5 && <span><Icon name="check" /></span>} 0.5
-                  </li>
-                  <li onClick={()=>setPlaybackRate(1)} className={cn("hover:bg-gray-800/80 py-2 cursor-pointer flex gap-2 pr-10",{"pr-3":playBackRate === 1})}>
-                    {playBackRate === 1 && <span><Icon name="check" /></span>} 1
-                  </li>
-                  <li onClick={()=>setPlaybackRate(1.5)} className={cn("hover:bg-gray-800/80 py-2 cursor-pointer flex gap-2 pr-10",{"pr-3":playBackRate === 1.5})}>
-                    {playBackRate === 1.5 && <span><Icon name="check" /></span>} 1.5
-                  </li>
-                  <li onClick={()=>setPlaybackRate(2)} className={cn("hover:bg-gray-800/80 py-2 cursor-pointer flex gap-2 pr-10",{"pr-3":playBackRate === 2})}>
-                    {playBackRate === 2 && <span ><Icon name="check" /></span>} 2
-                  </li>
+                  {
+                    PLAYBACK_RATES.map(item=><li onClick={()=>setPlaybackRate(item)} className={cn("hover:bg-gray-800/80 transition-colors duration-200 py-2 cursor-pointer flex gap-2 pr-10",{"pr-3":playBackRate === item})}>
+                    {playBackRate === item && <span><Icon name="check" /></span>} {item}
+                  </li>)
+                  }
                 </ul>
               </DisclosurePanel>
             </Disclosure>
