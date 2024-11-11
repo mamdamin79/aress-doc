@@ -7,9 +7,10 @@ import {
   MenuItems,
 } from '@headlessui/react';
 import { Icon } from '../../../Icon';
-import React, { useState } from 'react';
+import React from 'react';
 import { cn } from '../../../../../utils/classNames.utils';
 import { PLAYBACK_RATES } from './PlayerOptions.constants';
+import { Tooltip } from '../../../Tooltip';
 
 type Props = {
   fullScreen: () => void;
@@ -23,13 +24,17 @@ export const PlayerOptions: React.FC<Props> = React.memo(
 
     return (
       <div className="flex items-center gap-4">
-        <button className="text-white flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all">
+        <Tooltip className='!z-20' title='اشتراک گذاری'>
+        <button className="text-white flex items-center justify-center p-1  duration-300 transition-all">
           <Icon name="share-2" />
         </button>
+        </Tooltip>
         <Menu>
-          <MenuButton className="text-white relative flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all">
-            <Icon name="settings" />
-          </MenuButton>
+          <Tooltip className='!z-20' title='تنظیمات'>
+            <MenuButton className="text-white relative flex items-center justify-center p-1  duration-300 transition-all">
+              <Icon name="settings" />
+            </MenuButton>
+          </Tooltip>
           <MenuItems
             className="w-60 bg-gray-900/90 border-gray-700 rounded-md border-[1.5px]"
             anchor={{ to: 'top', gap: '48px' }}
@@ -70,18 +75,22 @@ export const PlayerOptions: React.FC<Props> = React.memo(
             </Disclosure>
           </MenuItems>
         </Menu>
+        <Tooltip className='!z-20' title='حالت picture-in-picture (i)'>
         <button
           onClick={pictureInPicture}
-          className="text-white flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all"
+          className="text-white flex items-center justify-center p-1  duration-300 transition-all"
         >
           <Icon name="picture-in-picture-2" />
         </button>
-        <button
-          onClick={fullScreen}
-          className="text-white flex items-center justify-center p-1 hover:text-brand-600 duration-300 transition-all"
-        >
-          <Icon name="fullscreen" />
-        </button>
+        </Tooltip>
+        <Tooltip className='!z-20' title='حالت تمام صفحه (f)'>
+          <button
+            onClick={fullScreen}
+            className="text-white flex items-center justify-center p-1  duration-300 transition-all"
+          >
+            <Icon name="fullscreen" />
+          </button>
+        </Tooltip>
       </div>
     );
   }
