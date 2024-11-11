@@ -2,7 +2,6 @@ node_modules
 dist
 build
 ./libs/design-system/storybook-static
-pnpm-lock.yaml
 
 .nx/cache
 .nx/workspace-data
