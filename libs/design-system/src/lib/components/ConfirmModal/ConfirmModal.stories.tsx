@@ -22,7 +22,7 @@ export const withInput: Story = {
   args: {
     title: 'تغییر نام داشبورد',
     input: {
-      label: 'نام',
+      label: 'نام جدید را وارد کنید',
       placeholder: 'نام مد نظر خود را وارد کنید ...',
     },
     CheckboxText: 'باز کردن در تب جدید',
@@ -52,8 +52,8 @@ export const withoutInput: Story = {
     input: {
       label: 'آیا مطمئن هستید که می‌خواهید «اسلاید ۱» را حذف کنید؟',
     },
-    ConfirmButtonText: 'ذخیره',
-    CancelButtonText: 'انصراف',
+    ConfirmButtonText: 'بله',
+    CancelButtonText: 'خیر',
     onConfirm: ({ checked, input }) => {
       console.log(checked);
       console.log(input);

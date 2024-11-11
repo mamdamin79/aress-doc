@@ -6,13 +6,13 @@ import {
   Label,
   Field,
   Input,
-  Checkbox,
   Description,
 } from '@headlessui/react';
 import { Icon } from '../Icon';
 import { ConfirmModalProps } from './ConfirmModal.types';
 import { CustomIcon } from '../Icon/CustomIcon/CustomIcon';
 import { Button } from '../Button';
+import { Checkbox } from '../Checkbox';
 
 const CustomComponent: React.FC<ConfirmModalProps> = ({
   title,
@@ -62,7 +62,7 @@ const CustomComponent: React.FC<ConfirmModalProps> = ({
           {/* Input Field */}
           {input && (
             <div className="flex flex-col gap-1">
-              <Description className="block text-sm font-medium text-gray-700">
+              <Description className="block text-sm font-medium text-gray-1000">
                 {input.label}
               </Description>
               {input.placeholder && (
@@ -70,7 +70,7 @@ const CustomComponent: React.FC<ConfirmModalProps> = ({
                   <Input
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
-                    className="h-14 w-full outline-none border-2 rounded-xl py-2 px-4 focus:border-brand-600 focus:outline-none"
+                    className="h-14 w-full outline-none border-2 rounded-xl py-2 px-4 focus:border-[2.5px] focus:border-brand-600 focus:outline-none"
                     autoFocus
                     placeholder={input.placeholder}
                   />
@@ -80,26 +80,11 @@ const CustomComponent: React.FC<ConfirmModalProps> = ({
           )}
           {/* Checkbox */}
           {CheckboxText && (
-            <Field className="flex items-center text-sm font-medium text-gray-700 gap-2">
+            <Field className="flex items-center text-sm font-medium">
               <Checkbox
                 checked={checked}
-                onChange={setChecked}
-                className="group block size-4 rounded border bg-white data-[checked]:bg-blue-500"
-              >
-                {/* Checkmark icon */}
-                <svg
-                  className="stroke-white opacity-0 group-data-[checked]:opacity-100"
-                  viewBox="0 0 14 14"
-                  fill="none"
-                >
-                  <path
-                    d="M3 8L6 11L11 3.5"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </Checkbox>
+                onChange={() => setChecked(!checked)}
+              ></Checkbox>
               <Label>{CheckboxText}</Label>
             </Field>
           )}
