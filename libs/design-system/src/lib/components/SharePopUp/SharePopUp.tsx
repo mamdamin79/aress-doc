@@ -15,13 +15,41 @@ export interface SharePopUpProps {
 
 export const SharePopUp: React.FC<SharePopUpProps> = ({ url, message }) => {
   const platforms = [
-    { name: 'Instagram', icon: instagramIcon, link: 'https://google.com' },
-    { name: 'Telegram', icon: telegramIcon, link: 'https://google.com' },
-    { name: 'WhatsApp', icon: whatsappIcon, link: 'https://google.com' },
-    { name: 'Linkedin', icon: linkedinIcon, link: 'https://google.com' },
-    { name: 'Email', icon: emailIcon, link: 'https://google.com' },
-    { name: 'Sample 1', icon: emailIcon, link: 'https://google.com' },
-    { name: 'Sample 2', icon: emailIcon, link: 'https://google.com' },
+    {
+      name: 'Instagram',
+      icon: instagramIcon,
+      link: `https://www.instagram.com/direct/new/?text=${message}&url=${url}`,
+    },
+    {
+      name: 'Telegram',
+      icon: telegramIcon,
+      link: `https://t.me/share/url?url=${url}&text=${message}`,
+    },
+    {
+      name: 'WhatsApp',
+      icon: whatsappIcon,
+      link: `https://wa.me/?text=${message} ${url}`,
+    },
+    {
+      name: 'Linkedin',
+      icon: linkedinIcon,
+      link: `https://www.linkedin.com/sharing/share?url=${url}&title=${message}`,
+    },
+    {
+      name: 'Email',
+      icon: emailIcon,
+      link: `mailto:?subject=${message}&body=${url}`,
+    },
+    {
+      name: 'Sample 1',
+      icon: emailIcon,
+      link: `https://example.com/share?url=${url}&text=${message}`,
+    },
+    {
+      name: 'Sample 2',
+      icon: emailIcon,
+      link: `https://example.com/share?url=${url}&text=${message}`,
+    },
   ];
 
   const visibleItems = 5;
