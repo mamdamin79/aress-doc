@@ -1,18 +1,18 @@
 import { secondsToHHMMSS } from "../../../../../utils/time";
-import React from "react";
+import React, { useMemo } from "react";
 
 type Props = {
     duration:number,
     currentTime:number
 }
 
-export const VideoTimer : React.FC<Props> = ({
+export const VideoTimer : React.FC<Props> = React.memo(({
     duration,
     currentTime
 })=>{
     return (
         <span className="text-white">
-                {secondsToHHMMSS(currentTime)}/{secondsToHHMMSS(duration)}
+                {secondsToHHMMSS(currentTime)}/{useMemo(() => secondsToHHMMSS(duration), [duration])}
         </span>
     )
-} 
+})
