@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Icon } from '../Icon';
 import { FileUploader } from 'react-drag-drop-files';
 import { formatFileSize } from './FileUpload.utils';
+import { FileUploadErrorType } from './FileUpload.constants';
 
 type FileUploadProps = {
   types: string[];
   maxSize: number;
-  onError?: () => void;
+  onError?: (errorType: FileUploadErrorType) => void;
 };
 
 export const FileUpload: React.FC<FileUploadProps> = ({
@@ -18,7 +19,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 
   useEffect(() => {
     if (!Array.isArray(types) || types.length === 0) {
-      onError?.();
+      onError?.('INVALID_FILE_TYPE');
       return;
     } else {
       return;
@@ -26,14 +27,18 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   }, [types, onError]);
 
   const handleFileChange = (selectedFile: File) => {
-    if (selectedFile.size > maxSize) {
-      onError?.();
-      return;
-    } else {
-      setFile(selectedFile);
-
+    const fileExtension = selectedFile.name.split('.').pop();
+    if (!!fileExtension && !types.includes(fileExtension)) {
+      onError?.('INVALID_FILE_TYPE');
       return;
     }
+
+    if (selectedFile.size > maxSize) {
+      onError?.('FILE_TOO_LARGE');
+      return;
+    }
+    console.log('valid');
+    setFile(selectedFile);
   };
 
   const clearFile = (e: React.MouseEvent) => {
@@ -50,7 +55,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 
       <FileUploader handleChange={handleFileChange} name="file" types={types}>
         <div
-          className={`group border-2 hover:border-brand-600 hover rounded-md p-[15px_16px] flex items-center gap-2 relative w-max transition-all text- ${
+          className={`group border-2 hover:border-brand-600 hover rounded-md p-[15px_16px] flex items-center gap-2 relative w-full max-w-[385px] transition-all text- ${
             file ? 'border-gray-200 pr-12' : 'border-dashed border-gray-300'
           }`}
         >
@@ -62,13 +67,13 @@ export const FileUpload: React.FC<FileUploadProps> = ({
           <div
             className={`${
               file ? '' : 'group-hover:text-brand-700'
-            } text-gray-500 text-sm font-vazirmatn font-medium text-right shrink-0 flex flex-row gap-2`}
+            } text-gray-500 text-sm font-vazirmatn font-medium text-right shrink-0 flex flex-row gap-2 w-full`}
           >
             {' '}
             {file ? (
               <span
                 style={{ direction: 'ltr' }}
-                className="text-gray-1000 font-medium"
+                className="text-gray-1000 font-medium truncate"
               >
                 {file.name}
                 <span className="text-gray-600 text-xs ml-2">
