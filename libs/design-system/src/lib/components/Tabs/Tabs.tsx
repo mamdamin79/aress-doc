@@ -78,7 +78,11 @@ export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite, tag }) => {
                   {
                     'py-2 px-4 text-sm data-[selected]:bg-brand-600 font-medium data-[selected]:border-spacing-2 rounded-full border-2 border-gray-100 data-[selected]:border-brand-600 data-[selected]:text-white hover:border-brand-600 text-black':
                       style === 'button-rounded',
+                  },
+                  {
                     'bg-gray-100': style === 'button-rounded' && bgWhite,
+                  },
+                  {
                     'bg-white': style === 'button-rounded' && !bgWhite,
                   }
                 )}
@@ -92,7 +96,11 @@ export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite, tag }) => {
                             {
                               'hidden top-0 w-4 z-30 h-full left-[100%] rounded-bl-3xl ':
                                 style === 'lined',
+                            },
+                            {
                               'bg-white': style === 'lined' && bgWhite,
+                            },
+                            {
                               'bg-gray-100': style === 'lined' && !bgWhite,
                             },
                             { 'absolute block': selected && index },
@@ -120,13 +128,7 @@ export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite, tag }) => {
                     {style === 'button-shaped' ? (
                       <div className="flex items-center gap-2">
                         {tag && (
-                          <div
-                            className={cn(
-                              'rounded-full w-3 h-3 border-2 flex items-center justify-center',
-                              { 'border-white bg-vividGreen-600': bgWhite },
-                              { 'border-white bg-vividGreen-600': !bgWhite }
-                            )}
-                          ></div>
+                          <div className="rounded-full w-3 border-white bg-vividGreen-600 h-3 border-2 flex items-center justify-center"></div>
                         )}
                         {props.icons?.length && (
                           <Icon {...props.icons[0]} size="lg" />
@@ -146,10 +148,13 @@ export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite, tag }) => {
                             {
                               'hidden top-0 w-4 z-30 h-full bg-white right-[100%] rounded-br-3xl ':
                                 style === 'lined',
+                            },
+                            {
                               'bg-white': style === 'lined' && bgWhite,
+                            },
+                            {
                               'bg-gray-100': style === 'lined' && !bgWhite,
                             },
-
                             {
                               'absolute block':
                                 selected && index + 1 < tabs.length,
