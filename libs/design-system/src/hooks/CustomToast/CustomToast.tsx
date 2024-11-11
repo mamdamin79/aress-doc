@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { ProgressToastProps } from './ProgressToast.types';
 import { Icon } from '../../lib/components/Icon';
 import { Button } from '../../lib/components/Button';
+import { LucideUndo2 } from 'lucide-react';
 
 interface Props {
   message: string;
@@ -49,7 +50,10 @@ export function CustomToast() {
         <div className="px-2 gap-2 w-full flex items-center">
           {leadingAction && (
             <span className="h-[32px] flex items-center justify-center text-yellow-500">
-              <Icon {...leadingAction.iconProps} />
+              {/* we temporary use a fixed icon here
+              The problem with our icon component was that it caused the browser a crash
+              when clicking on leading action. This needs to be resolved later. */}
+              <LucideUndo2 />
             </span>
           )}
           <span className="text-white font-vazirmatn text-[16px]">{title}</span>
