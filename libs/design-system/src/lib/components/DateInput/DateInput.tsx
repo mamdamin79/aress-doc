@@ -14,11 +14,7 @@ interface Props {
     validError: boolean;
   };
   max?: string;
-  errorHandler: (e: {
-    minError: boolean;
-    maxError: boolean;
-    validError: boolean;
-  }) => void;
+  errorHandler: (e: { minError: boolean; maxError: boolean }) => void;
 }
 
 const isCustomDate = (value: unknown): value is CustomDate => {
@@ -64,42 +60,42 @@ export const DateInput: React.FC<Props> = ({
   const [isArrowKeyPressed, setIsArrowKeyPressed] = useState(false);
 
   const isMiladi = (date: string) => moment(date, 'YYYY-MM-DD', true);
-  const isShamsi = (date: string) => moment(date, 'jYYYY/jM/jD');
+  const isJalali = (date: string) => moment(date, 'jYYYY/jM/jD');
 
   useEffect(() => {
     if (defaultValue instanceof Date) {
       const regex = /^(?:[1-9]|[12][0-9]|3[01])?$/;
       if (regex.test(String(defaultValue.getDate()))) {
-        setDay(defaultValue.getDate());
-        setMonth(+defaultValue.getMonth() + 1);
-        setYear(+defaultValue.getFullYear());
+        changeDayInput(defaultValue.getDate());
+        changeMonthInput(+defaultValue.getMonth() + 1);
+        changeYearInput(+defaultValue.getFullYear());
         setActiveIndex(null);
       }
     } else if (isCustomDate(defaultValue)) {
-      setDay(defaultValue.day);
-      setMonth(defaultValue.month);
-      setYear(defaultValue.year);
+      changeDayInput(defaultValue.day);
+      changeMonthInput(defaultValue.month);
+      changeYearInput(defaultValue.year);
       setActiveIndex(null);
+      dayRef.current?.blur();
     } else if (typeof defaultValue === 'string') {
       if (mode === 'miladi' && isMiladi(defaultValue).isValid()) {
         const dateMiladi = isMiladi(defaultValue);
-        setDay(dateMiladi.date());
-        setMonth(dateMiladi.month());
-        setYear(dateMiladi.year());
+        changeDayInput(dateMiladi.date());
+        changeMonthInput(dateMiladi.month() + 1);
+        changeYearInput(dateMiladi.year());
+        setActiveIndex(null);
+        dayRef.current?.blur();
       }
-      if (mode === 'jalali' && isShamsi(defaultValue).isValid()) {
-        const dateJalali = isShamsi(defaultValue);
-        if (dateJalali.month() > 6 && dateJalali.date() === 31) {
-          setDay(31);
-          setMonth(dateJalali.month());
-          setYear(dateJalali.year());
-        } else {
-          setDay(dateJalali.date());
-          setMonth(dateJalali.month());
-          setYear(dateJalali.year());
-        }
+      if (mode === 'jalali' && isJalali(defaultValue).isValid()) {
+        const dateJalali = isJalali(defaultValue);
+        changeDayInput(dateJalali.date());
+        changeMonthInput(dateJalali.month() + 1);
+        changeYearInput(dateJalali.year());
+        setActiveIndex(null);
+        dayRef.current?.blur();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, defaultValue]);
 
   useEffect(() => {
@@ -119,19 +115,19 @@ export const DateInput: React.FC<Props> = ({
       }
     }
     if (min && mode === 'jalali') {
-      if (isShamsi(min).isValid()) {
-        if (isShamsi(min).month() + 1 > 6) {
-          if (isShamsi(min).date() > 31) {
+      if (isJalali(min).isValid()) {
+        if (isJalali(min).month() + 1 > 6) {
+          if (isJalali(min).date() > 31) {
             setMinDate({
               day: 31,
-              month: isShamsi(min).month(),
-              year: isShamsi(min).year(),
+              month: isJalali(min).month(),
+              year: isJalali(min).year(),
             });
           } else
             setMinDate({
-              day: isShamsi(min).date(),
-              month: isShamsi(min).month(),
-              year: isShamsi(min).year(),
+              day: isJalali(min).date(),
+              month: isJalali(min).month(),
+              year: isJalali(min).year(),
             });
         }
         setMinDate({
@@ -154,7 +150,7 @@ export const DateInput: React.FC<Props> = ({
         });
       }
       if (mode === 'jalali') {
-        const shamsiDate = isShamsi(max);
+        const shamsiDate = isJalali(max);
         if (shamsiDate.isValid()) {
           if (shamsiDate.month() + 1 > 6) {
             if (shamsiDate.date() > 31) {
@@ -235,8 +231,13 @@ export const DateInput: React.FC<Props> = ({
     errorHandler({
       minError: tempMinError,
       maxError: tempMaxError,
-      validError: false,
     });
+
+    onChange(
+      `${String(year).length === 4 && year}-${e < 10 ? `0${e}` : e}-${
+        day < 10 ? `0${day}` : day
+      }`
+    );
 
     if (String(e).length === 2 && !arrowChange) {
       if (!day) {
@@ -374,9 +375,13 @@ export const DateInput: React.FC<Props> = ({
     errorHandler({
       minError: tempMinError,
       maxError: tempMaxError,
-      validError: false,
     });
 
+    onChange(
+      `${String(year).length === 4 && year}-${
+        month && month < 10 ? `0${month}` : month
+      }-${e < 10 ? `0${e}` : e}`
+    );
     if (!e) {
       setDay(0);
     }
@@ -439,11 +444,28 @@ export const DateInput: React.FC<Props> = ({
     errorHandler({
       minError: tempMinError,
       maxError: tempMaxError,
-      validError: false,
     });
 
     if (!e) {
       setYear(null);
+    }
+
+    onChange(
+      `${String(e).length === 4 && e}-${
+        month && month < 10 ? `0${month}` : month
+      }-${day < 10 ? `0${day}` : day}`
+    );
+
+    if (String(e).length === 4 && !arrowChangg) {
+      if (!month) {
+        setActiveIndex(2);
+        monthRef.current?.focus();
+        yearRef.current?.blur();
+      } else if (!day) {
+        setActiveIndex(1);
+        dayRef.current?.focus();
+        yearRef.current?.blur();
+      }
     }
 
     if (mode === 'miladi') {
