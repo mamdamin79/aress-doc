@@ -17,9 +17,9 @@ export const PlayerActions: React.FC<Props> = React.memo(
           <Icon name="skip-back" />
         </button>
         {isPlaying ? (
-          <Tooltip className="!z-20" title="مکث (space)">
+          <Tooltip className="!z-30" title="مکث (space)">
             <Button
-              onMouseDown={pause}
+              onClick={pause}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   pause();
@@ -34,14 +34,14 @@ export const PlayerActions: React.FC<Props> = React.memo(
             </Button>
           </Tooltip>
         ) : (
-          <Tooltip className="!z-20" title="پخش (space)">
+          <Tooltip className="!z-30" title="پخش (space)">
             <Button
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   play();
                 }
               }}
-              onMouseDown={play}
+              onClick={play}
               mode="primary"
               size="sm"
               isLoading={false}
@@ -54,7 +54,7 @@ export const PlayerActions: React.FC<Props> = React.memo(
         <button className="text-white flex items-center justify-center p-1  duration-300 transition-all">
           <Icon name="skip-forward" />
         </button>
-        <Tooltip title='صدا' className='!z-20'>
+        <Tooltip title='صدا' className='!z-30'>
           <button className="text-white flex items-center justify-center p-1  duration-300 transition-all">
             <Icon name="volume-2" />
           </button>

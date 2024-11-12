@@ -24,13 +24,13 @@ export const PlayerOptions: React.FC<Props> = React.memo(
 
     return (
       <div className="flex items-center gap-4">
-        <Tooltip className='!z-20' title='اشتراک گذاری'>
+        <Tooltip className='!z-30' title='اشتراک گذاری'>
         <button className="text-white flex items-center justify-center p-1  duration-300 transition-all">
           <Icon name="share-2" />
         </button>
         </Tooltip>
         <Menu>
-          <Tooltip className='!z-20' title='تنظیمات'>
+          <Tooltip className='!z-30' title='تنظیمات'>
             <MenuButton className="text-white relative flex items-center justify-center p-1  duration-300 transition-all">
               <Icon name="settings" />
             </MenuButton>
@@ -75,7 +75,7 @@ export const PlayerOptions: React.FC<Props> = React.memo(
             </Disclosure>
           </MenuItems>
         </Menu>
-        <Tooltip className='!z-20' title='حالت picture-in-picture (i)'>
+        <Tooltip className='!z-30' title='حالت picture-in-picture (i)'>
         <button
           onClick={pictureInPicture}
           className="text-white flex items-center justify-center p-1  duration-300 transition-all"
@@ -83,7 +83,7 @@ export const PlayerOptions: React.FC<Props> = React.memo(
           <Icon name="picture-in-picture-2" />
         </button>
         </Tooltip>
-        <Tooltip className='!z-20' title='حالت تمام صفحه (f)'>
+        <Tooltip className='!z-30' title='حالت تمام صفحه (f)'>
           <button
             onClick={fullScreen}
             className="text-white flex items-center justify-center p-1  duration-300 transition-all"

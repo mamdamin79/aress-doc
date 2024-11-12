@@ -86,16 +86,15 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
   return (
     <div className="relative">
       {/* loading displays when video is not loaded yet(even first frame) and when buffered time is finished and we are waiting for new chunks */}
-      {!isVideoLoaded ||
-        (isVideoWaited && (
-          <div className="absolute z-30 flex items-center justify-center inset-0 m-auto">
-            <div className="animate-spin text-gray-600 w-fit mx-auto">
-              <Icon name="loader-circle" size="xl" />
-            </div>
+      {isVideoWaited && (
+        <div className="absolute z-30 flex items-center justify-center inset-0 m-auto">
+          <div className="animate-spin text-gray-600 w-fit mx-auto">
+            <Icon name="loader-circle" size="xl" />
           </div>
-        ))}
+        </div>
+      )}
       <h2 className="absolute text-white text-xl font-semibold mt-8 flex gap-1 items-center">
-        <span className='mr-8'>
+        <span className="mr-8">
           <Icon name="list-video" size="lg" />
         </span>
         {title}
@@ -109,7 +108,7 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
       <div className="absolute inset-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
       <div
         className={cn('absolute w-full h-20 z-10 bottom-0', {
-          'opacity-50 pointer-events-none': !isVideoLoaded,
+          // 'opacity-50 pointer-events-none': !isVideoLoaded,
         })}
       >
         <div className="relative mx-auto w-11/12">
