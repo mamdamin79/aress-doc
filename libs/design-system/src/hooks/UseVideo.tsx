@@ -121,7 +121,7 @@ export const useVideo = (src: string) => {
     bufferedTime:0,
     playBackRate:1,
     volume:1,
-    muted:false
+    muted:true
   });
   useEffect(() => {
     const video = videoRef.current!;
@@ -263,6 +263,7 @@ export const useVideo = (src: string) => {
   }, []);
 
   const toggleMute = useCallback(() => {
+    console.log("clicked")
     if (videoRef.current) {
       const newMutedState = !videoRef.current.muted;
       videoRef.current.muted = newMutedState;

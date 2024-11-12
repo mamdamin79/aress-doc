@@ -33,8 +33,11 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
     pictureInPicture,
     setPlaybackRate,
     playBackRate,
+    muted,
+    setVolume,
+    volume,
+    toggleMute
   } = useVideo(src);
-  console.log(isVideoLoaded);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -153,7 +156,7 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
           {/* controls */}
           <div className={cn('flex items-center justify-between')} dir="ltr">
             <div className="flex justify-between items-center gap-4 ">
-              <PlayerActions isPlaying={isPlaying} pause={pause} play={play} />
+              <PlayerActions toggleMute={toggleMute} muted={muted} isPlaying={isPlaying} pause={pause} play={play} />
               <VideoTimer duration={duration} currentTime={currentTime} />
             </div>
             <PlayerOptions

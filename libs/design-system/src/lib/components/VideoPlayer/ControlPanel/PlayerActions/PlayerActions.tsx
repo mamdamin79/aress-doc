@@ -7,10 +7,12 @@ type Props = {
   isPlaying: boolean;
   pause: () => void;
   play: () => void;
+  muted: boolean;
+  toggleMute:()=>void
 };
 
 export const PlayerActions: React.FC<Props> = React.memo(
-  ({ isPlaying, pause, play }) => {
+  ({ isPlaying, pause, play, muted,toggleMute }) => {
     return (
       <>
         <button className="text-white flex items-center justify-center p-1  duration-300 transition-all">
@@ -54,11 +56,19 @@ export const PlayerActions: React.FC<Props> = React.memo(
         <button className="text-white flex items-center justify-center p-1  duration-300 transition-all">
           <Icon name="skip-forward" />
         </button>
-        <Tooltip title='صدا' className='!z-30'>
-          <button className="text-white flex items-center justify-center p-1  duration-300 transition-all">
-            <Icon name="volume-2" />
-          </button>
-        </Tooltip>
+        {muted ? (
+          <Tooltip title="فعال کردن صدا" className="!z-30">
+            <button onClick={toggleMute} className="text-white flex items-center justify-center p-1  duration-300 transition-all">
+              <Icon name="volume-x" />
+            </button>
+          </Tooltip>
+        ) : (
+          <Tooltip title="قطع صدا" className="!z-30">
+            <button onClick={toggleMute} className="text-white flex items-center justify-center p-1  duration-300 transition-all">
+              <Icon name="volume-2" />
+            </button>
+          </Tooltip>
+        )}
       </>
     );
   }
