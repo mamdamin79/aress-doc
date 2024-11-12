@@ -10,7 +10,9 @@ interface videoState {
   isVideoLoaded: boolean;
   isVideoWaited: boolean; //buffering
   bufferedTime:number,
-  playBackRate:number
+  playBackRate:number,
+  volume:number,
+  muted:boolean
 }
 
 type videoAction =
@@ -23,7 +25,9 @@ type videoAction =
   | { type: 'SET_VIDEO_LOADED'; isVideoLoaded: boolean }
   | { type: 'SET_VIDEO_WAITED'; isVideoWaited: boolean }
   | { type: 'SET_BUFFERED_TIME'; bufferedTime: number }
-  | { type: 'SET_PLAYBACK_RATE'; playBackRate: number };
+  | { type: 'SET_PLAYBACK_RATE'; playBackRate: number }
+  | { type: 'SET_VOLUME'; volume: number }
+  | { type: 'SET_MUTED'; muted: boolean };
 
 const videoReducer = (state: videoState, action: videoAction): videoState => {
   switch (action.type) {
@@ -87,6 +91,16 @@ const videoReducer = (state: videoState, action: videoAction): videoState => {
         ...state,
         playBackRate : action.playBackRate,
       };
+      case 'SET_VOLUME':
+      return {
+        ...state,
+        volume : action.volume,
+      };
+      case 'SET_MUTED':
+      return {
+        ...state,
+        muted : action.muted,
+      };
       break;
     default:
       return state;
@@ -106,6 +120,8 @@ export const useVideo = (src: string) => {
     isVideoWaited: false, //buffering
     bufferedTime:0,
     playBackRate:1,
+    volume:1,
+    muted:false
   });
   useEffect(() => {
     const video = videoRef.current!;
@@ -238,6 +254,22 @@ export const useVideo = (src: string) => {
       dispatch({ type: 'SET_PLAYBACK_RATE', playBackRate: rate });
     }
   }, []);  
+
+  const setVolume = useCallback((volume: number) => {
+    if (videoRef.current) {
+      videoRef.current.volume = volume;
+      dispatch({ type: 'SET_VOLUME', volume });
+    }
+  }, []);
+
+  const toggleMute = useCallback(() => {
+    if (videoRef.current) {
+      const newMutedState = !videoRef.current.muted;
+      videoRef.current.muted = newMutedState;
+      dispatch({ type: 'SET_MUTED', muted: newMutedState });
+    }
+  }, []);
+
   return {
     ...state,
     videoRef,
@@ -246,6 +278,8 @@ export const useVideo = (src: string) => {
     fullScreen,
     seek,
     pictureInPicture,
-    setPlaybackRate
+    setPlaybackRate,
+    setVolume,
+    toggleMute,
   };
 };
