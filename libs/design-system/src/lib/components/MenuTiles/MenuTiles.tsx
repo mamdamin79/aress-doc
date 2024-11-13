@@ -2,6 +2,7 @@ import React from 'react';
 import { Icon } from '../Icon';
 import { MenuTilesProps } from './MenuTiles.types';
 import { cn } from '../../../utils/classNames.utils';
+import Link from 'next/link';
 
 // We define a wrapper around each item in the menu to have
 // the correct semantic. for example for links and user dashboards wrap
@@ -24,9 +25,9 @@ const MenuTilesWrapper = ({
     if (!isDisabled && onClick) onClick();
   };
   return link ? (
-    <a href={link} className={className}>
+    <Link href={link} className={className}>
       {children}
-    </a>
+    </Link>
   ) : (
     <button className={className} onClick={handleClick} disabled={isDisabled}>
       {children}

@@ -9,6 +9,7 @@ import { Icon } from '../Icon';
 import { MenuTiles } from '../MenuTiles';
 import { MenuItem } from './HeaderMenus.types';
 import { cn } from '../../../../src/utils/classNames.utils';
+import Link from 'next/link';
 
 interface MenuProps {
   menuItems: MenuItem[];
@@ -40,7 +41,7 @@ export const HeaderMenus: React.FC<MenuProps> = ({ menuItems }) => {
                 </span>
               )}
               {item.link ? (
-                <a href={item.link}>{item.name}</a>
+                <Link href={item.link}>{item.name}</Link>
               ) : (
                 <span>{item.name}</span>
               )}
