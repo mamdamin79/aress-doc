@@ -28,17 +28,22 @@ const TabButton = ({
 }) => (
   <PopoverButton
     className={cn(
-      'flex items-center gap-2 py-1 outline-none transition-colors',
+      'flex items-center gap-2 py-1 outline-none transition-colors text-shadow-sm font-normal',
       hasSubMenu
         ? 'hover:text-brand-600'
         : isActive
         ? 'hover:text-gray-1000'
         : 'hover:text-gray-700',
-      isActive ? 'text-gray-1000 font-bold' : 'text-gray-600'
+      isActive ? 'text-gray-1000 font-medium' : 'text-gray-600'
     )}
     onClick={onClick}
   >
     <div className="relative">
+      {/* we add a hidden span to maintain the bold width and stop
+      the screen from getting a glitch on hover */}
+      <span className="absolute block font-medium h-0 overflow-hidden invisible">
+        {name}
+      </span>
       {link ? <a href={link}>{name}</a> : <span>{name}</span>}
       {isActive && (
         <div className="absolute bottom-0 left-0 right-0 mx-auto w-6 h-[6px] bg-brand-600 rounded-full -mb-2" />
