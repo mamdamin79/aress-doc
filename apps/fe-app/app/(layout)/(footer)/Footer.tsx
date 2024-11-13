@@ -76,10 +76,9 @@ export function Footer() {
     <div className="px-5 md:px-20">
       <div className="flex justify-center md:justify-start">
         <Image
-          width={0}
-          height={0}
+          width={104}
+          height={104}
           src={Logo}
-          className="sm:w-24"
           alt="Logo image"
         />
       </div>
@@ -185,11 +184,11 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="mt-10 text-xs flex-col sm:flex-row flex items-center justify-between">
+      <div className="mt-10 text-xs text-gray-600 flex-col sm:flex-row flex items-center justify-between">
         <p className="font-medium">
           © تمامی حقوق اینترنتی برای پردازش اطلاعات مالی آرسس محفوظ است.
         </p>
-        <Link href="/" className="border-b font-semibold">
+        <Link href="/" className="font-semibold">
           قوانین و مقررات
         </Link>
       </div>
