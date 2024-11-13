@@ -93,7 +93,7 @@ const TextContainer = ({
       className={cn(
         'font-semibold text-sm',
         isActive && !isDashboard ? 'text-brand-700' : 'text-gray-1000',
-        isDisabled ? 'text-gray-400' : 'text-gray-1000'
+        !isActive && (isDisabled ? 'text-gray-400' : 'text-gray-1000')
       )}
     >
       {prefix}

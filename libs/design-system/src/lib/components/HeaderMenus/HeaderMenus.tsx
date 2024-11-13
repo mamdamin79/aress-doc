@@ -1,5 +1,10 @@
-import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
-import React, { useState } from 'react';
+import {
+  Popover,
+  PopoverButton,
+  PopoverPanel,
+  Transition,
+} from '@headlessui/react';
+import React from 'react';
 import { Icon } from '../Icon';
 import { MenuTiles } from '../MenuTiles';
 import { MenuItem } from './HeaderMenus.types';
@@ -9,110 +14,89 @@ interface MenuProps {
   menuItems: MenuItem[];
 }
 
-// Each button on the menu header is now a component
-// isActive and onClick props are only used to change the active tab
-// If a tab has a link prop, it means that when user clicks on it naviagtes
-// to corrosponding page and if not it means that it is a tab with dropdown
-const TabButton = ({
-  name,
-  link,
-  isActive,
-  hasSubMenu,
-  onClick,
-}: {
-  name: string;
-  link?: string;
-  isActive: boolean;
-  hasSubMenu: boolean;
-  onClick: () => void;
-}) => (
-  <PopoverButton
-    className={cn(
-      'flex items-center gap-2 py-1 outline-none transition-colors text-shadow-sm font-normal',
-      hasSubMenu
-        ? 'hover:text-brand-600'
-        : isActive
-        ? 'hover:text-gray-1000'
-        : 'hover:text-gray-700',
-      isActive ? 'text-gray-1000 font-medium' : 'text-gray-600'
-    )}
-    onClick={onClick}
-  >
-    <div className="relative">
-      {/* we add a hidden span to maintain the bold width and stop
-      the screen from getting a glitch on hover */}
-      <span className="absolute block font-medium h-0 overflow-hidden invisible">
-        {name}
-      </span>
-      {link ? <a href={link}>{name}</a> : <span>{name}</span>}
-      {isActive && (
-        <div className="absolute bottom-0 left-0 right-0 mx-auto w-6 h-[6px] bg-brand-600 rounded-full -mb-2" />
-      )}
-    </div>
-    {hasSubMenu && (
-      <div className="transition-transform duration-200 group-hover:rotate-180">
-        <Icon name="chevron-down" size="lg" />
-      </div>
-    )}
-  </PopoverButton>
-);
-
-const SubMenuPanel = ({ subMenu }: { subMenu: MenuItem['subMenu'] }) => (
-  <PopoverPanel
-    anchor="bottom start"
-    className="text-right shadow-md bg-baseBackground w-fit max-w-[272px] h-fit rounded-xl border-2 border-gray-300 z-10 py-4 gap-2 flex flex-col mt-2 shadow-offset-y-10"
-  >
-    {subMenu?.map((subMenuItem, subMenuItemIndex) => (
-      <div
-        key={subMenuItemIndex}
-        className={cn(
-          'flex flex-col',
-          subMenuItem.border ? 'border-t-2 border-b-2 border-gray-200' : '',
-          subMenuItem.children[0]?.isDashboard ? 'gap-2' : ''
-        )}
-      >
-        <div className="text-gray-600 text-sm pr-4 font-normal flex flex-row gap-2 items-center">
-          {subMenuItem.groupLabel}
-          {subMenuItem.counter && (
-            <>
-              <span> ({subMenuItem.children.length}/8) </span>
-              <Icon name="info" size="md" />
-            </>
-          )}
-        </div>
-        {subMenuItem.children.map((subItemChildren, subItemChildrenIndex) => (
-          <div
-            key={subItemChildrenIndex}
-            className="flex relative justify-center"
-          >
-            <MenuTiles
-              {...subItemChildren}
-              prefix={`${subItemChildrenIndex + 1}. `}
-            />
-          </div>
-        ))}
-      </div>
-    ))}
-  </PopoverPanel>
-);
-
 export const HeaderMenus: React.FC<MenuProps> = ({ menuItems }) => {
-  const [activeTab, setActiveTab] = useState<number>(0);
-
-  const handleTabClick = (index: number) => setActiveTab(index);
-
+  const activeTab = 0;
   return (
     <div className="flex items-center gap-6 text-nowrap">
       {menuItems.map((item, index) => (
-        <Popover key={index} className="relative group">
-          <TabButton
-            name={item.name}
-            link={item.link}
-            isActive={activeTab === index}
-            hasSubMenu={!!item.subMenu}
-            onClick={() => handleTabClick(index)}
-          />
-          {item.subMenu && <SubMenuPanel subMenu={item.subMenu} />}
+        <Popover key={index} className="relative group h-[40px]">
+          <PopoverButton
+            className={cn(
+              'flex items-center gap-2 py-1 outline-none transition-colors text-shadow-sm font-normal',
+              item.subMenu
+                ? 'group-hover:text-brand-600'
+                : activeTab === index
+                ? 'group-hover:text-gray-1000'
+                : 'group-hover:text-gray-700',
+              activeTab === index
+                ? 'text-gray-1000 font-medium'
+                : 'text-gray-600'
+            )}
+          >
+            <div className="relative">
+              {item.subMenu && (
+                <span className="absolute block font-medium h-0 overflow-hidden transition-all">
+                  {item.name}
+                </span>
+              )}
+              {item.link ? (
+                <a href={item.link}>{item.name}</a>
+              ) : (
+                <span>{item.name}</span>
+              )}
+              <div
+                className={`absolute bottom-0 left-0 right-0 mx-auto w-6 h-[6px] bg-brand-600 rounded-full -mb-2 ${
+                  activeTab === index ? 'group-hover:block' : 'hidden'
+                }`}
+              />
+            </div>
+            {item.subMenu && (
+              <div className="transition-transform duration-200 transform group-hover:rotate-180">
+                <Icon name="chevron-down" size="lg" />
+              </div>
+            )}
+          </PopoverButton>
+
+          {/* Dropdown panel */}
+          {item.subMenu && (
+            <div className="absolute hidden group-hover:block text-right shadow-md bg-baseBackground w-fit max-w-[272px] h-fit rounded-xl border-2 border-gray-300 z-10 py-4 gap-2 flex flex-col mt-2 shadow-offset-y-10">
+              {item.subMenu?.map((subMenuItem, subMenuItemIndex) => (
+                <div
+                  key={subMenuItemIndex}
+                  className={cn(
+                    'flex flex-col',
+                    subMenuItem.border
+                      ? 'border-t-2 border-b-2 border-gray-200 mb-2'
+                      : '',
+                    subMenuItem.children[0]?.isDashboard ? 'gap-2' : ''
+                  )}
+                >
+                  <div className="text-gray-600 text-sm pr-4 font-normal flex flex-row gap-2 items-center">
+                    {subMenuItem.groupLabel}
+                    {subMenuItem.counter && (
+                      <>
+                        <span> ({subMenuItem.children.length}/8) </span>
+                        <Icon name="info" size="md" />
+                      </>
+                    )}
+                  </div>
+                  {subMenuItem.children.map(
+                    (subItemChildren, subItemChildrenIndex) => (
+                      <div
+                        key={subItemChildrenIndex}
+                        className="flex relative justify-center"
+                      >
+                        <MenuTiles
+                          {...subItemChildren}
+                          prefix={`${subItemChildrenIndex + 1}. `}
+                        />
+                      </div>
+                    )
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </Popover>
       ))}
     </div>
