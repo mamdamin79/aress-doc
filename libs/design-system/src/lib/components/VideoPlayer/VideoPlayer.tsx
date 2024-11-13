@@ -37,7 +37,8 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
     setVolume,
     volume,
     toggleMute,
-    videoContainerRef
+    videoContainerRef,
+    isFullscreen,
   } = useVideo(src);
 
   useEffect(() => {
@@ -157,10 +158,19 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
           {/* controls */}
           <div className={cn('flex items-center justify-between')} dir="ltr">
             <div className="flex justify-between items-center gap-4 ">
-              <PlayerActions setVolume={setVolume} volume={volume} toggleMute={toggleMute} muted={muted} isPlaying={isPlaying} pause={pause} play={play} />
+              <PlayerActions
+                setVolume={setVolume}
+                volume={volume}
+                toggleMute={toggleMute}
+                muted={muted}
+                isPlaying={isPlaying}
+                pause={pause}
+                play={play}
+              />
               <VideoTimer duration={duration} currentTime={currentTime} />
             </div>
             <PlayerOptions
+              isFullscreen={isFullscreen}
               playBackRate={playBackRate}
               setPlaybackRate={setPlaybackRate}
               fullScreen={fullScreen}
