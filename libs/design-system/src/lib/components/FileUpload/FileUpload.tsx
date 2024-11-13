@@ -55,7 +55,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 
       <FileUploader handleChange={handleFileChange} name="file" types={types}>
         <div
-          className={`group border-2 hover:border-brand-600 hover rounded-md p-[15px_16px] flex items-center gap-2 relative w-full max-w-[385px] transition-all text- ${
+          className={`group border-2 hover:border-brand-600 hover rounded-md p-[15px_16px] flex items-center gap-2 relative w-full max-w-[384px] transition-all text- ${
             file ? 'border-gray-200 pr-12' : 'border-dashed border-gray-300'
           }`}
         >
@@ -73,7 +73,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
             {file ? (
               <span
                 style={{ direction: 'ltr' }}
-                className="text-gray-1000 font-medium truncate"
+                className="max-w-[235px] text-gray-1000 font-medium truncate"
               >
                 {file.name}
                 <span className="text-gray-600 text-xs ml-2">
