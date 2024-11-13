@@ -37,14 +37,19 @@ export const PlayerOptions: React.FC<Props> = React.memo(
           </button>
         </Tooltip>
         <div className="relative">
-          <button
-            onClick={() => setOpen(!open)}
-            className="text-white relative flex items-center justify-center p-1  duration-300 transition-all"
-          >
-            <Icon name="settings" />
-          </button>
+          <Tooltip title='تنظیمات' className='!z-30'>
+            <button
+              onClick={() => setOpen(!open)}
+              className="text-white relative flex items-center justify-center p-1  duration-300 transition-all"
+            >
+              <Icon name="settings" />
+            </button>
+          </Tooltip>
           {open && (
-            <div dir='rtl' className="w-60 bg-gray-900/90 z-20 border-gray-700 rounded-md border-[1.5px] absolute bottom-20 -right-24">
+            <div
+              dir="rtl"
+              className="w-60 bg-gray-900/90 z-20 border-gray-700 rounded-md border-[1.5px] absolute bottom-20 -right-24"
+            >
               <Disclosure as="div" className="" defaultOpen={true}>
                 <DisclosureButton className="p-3 group flex w-full items-center justify-between">
                   <span className="flex-row-reverse gap-2 items-center font-medium text-white text-sm flex justify-between ">
@@ -93,7 +98,7 @@ export const PlayerOptions: React.FC<Props> = React.memo(
             </div>
           )}
         </div>
-        <Tooltip className="!z-30" title="حالت picture-in-picture (i)">
+        <Tooltip className="!z-30" title="(i) picture-in-picture حالت">
           <button
             onClick={pictureInPicture}
             className="text-white flex items-center justify-center p-1  duration-300 transition-all"
@@ -101,7 +106,7 @@ export const PlayerOptions: React.FC<Props> = React.memo(
             <Icon name="picture-in-picture-2" />
           </button>
         </Tooltip>
-        <Tooltip className="!z-30" title="حالت تمام صفحه (f)">
+        <Tooltip className="!z-30" title="(f) حالت تمام صفحه ">
           <button
             onClick={fullScreen}
             className="text-white flex items-center justify-center p-1  duration-300 transition-all"

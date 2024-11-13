@@ -18,9 +18,9 @@ export const PlayerActions: React.FC<Props> = React.memo(
 
     const handleVolumeClick = (e: React.MouseEvent<HTMLProgressElement, MouseEvent>) => {
       const progressBar = e.currentTarget;
-      const clickPosition = e.clientX - progressBar.getBoundingClientRect().left; // موقعیت کلیک نسبت به پروگرس بار
-      const newVolume = Math.min(Math.max(clickPosition / progressBar.offsetWidth, 0), 1); // محاسبه درصد
-      setVolume(newVolume); // تنظیم ولوم جدید
+      const clickPosition = e.clientX - progressBar.getBoundingClientRect().left;    
+      const newVolume = Math.min(Math.max(clickPosition / progressBar.offsetWidth, 0), 1);  
+      setVolume(newVolume); 
     };
     return (
       <>
@@ -28,7 +28,7 @@ export const PlayerActions: React.FC<Props> = React.memo(
           <Icon name="skip-back" />
         </button>
         {isPlaying ? (
-          <Tooltip className="!z-30" title="مکث (space)">
+          <Tooltip className="!z-30" title="(space) مکث ">
             <Button
               onClick={pause}
               onKeyDown={(e) => {
@@ -45,7 +45,7 @@ export const PlayerActions: React.FC<Props> = React.memo(
             </Button>
           </Tooltip>
         ) : (
-          <Tooltip className="!z-30" title="پخش (space)">
+          <Tooltip className="!z-30" title="(space) پخش ">
             <Button
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
