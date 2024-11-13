@@ -18,7 +18,7 @@ const meta: Meta<typeof Icon> = {
     },
     size: {
       control: { type: 'radio' },
-      options: ['sm', 'md', 'lg', 'xl'],
+      options: ['sm', 'md', 'lg', 'lg_plus', 'xl'],
     },
   },
 };
