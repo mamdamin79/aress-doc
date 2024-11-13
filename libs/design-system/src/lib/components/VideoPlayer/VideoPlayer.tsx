@@ -36,7 +36,8 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
     muted,
     setVolume,
     volume,
-    toggleMute
+    toggleMute,
+    videoContainerRef
   } = useVideo(src);
 
   useEffect(() => {
@@ -87,7 +88,7 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative" ref={videoContainerRef}>
       {/* loading displays when video is not loaded yet(even first frame) and when buffered time is finished and we are waiting for new chunks */}
       {isVideoWaited && (
         <div className="absolute z-30 flex items-center justify-center inset-0 m-auto">

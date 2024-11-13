@@ -12,7 +12,8 @@ interface videoState {
   bufferedTime:number,
   playBackRate:number,
   volume:number,
-  muted:boolean
+  muted:boolean,
+  isFullscreen:boolean
 }
 
 type videoAction =
@@ -27,7 +28,8 @@ type videoAction =
   | { type: 'SET_BUFFERED_TIME'; bufferedTime: number }
   | { type: 'SET_PLAYBACK_RATE'; playBackRate: number }
   | { type: 'SET_VOLUME'; volume: number }
-  | { type: 'SET_MUTED'; muted: boolean };
+  | { type: 'SET_MUTED'; muted: boolean }
+  | { type: 'SET_FULLSCREEN',isFullscreen:boolean};
 
 const videoReducer = (state: videoState, action: videoAction): videoState => {
   switch (action.type) {
@@ -102,6 +104,12 @@ const videoReducer = (state: videoState, action: videoAction): videoState => {
         muted : action.muted,
       };
       break;
+      case 'SET_FULLSCREEN':
+      return {
+        ...state,
+        isFullscreen : action.isFullscreen,
+      };
+      break;
     default:
       return state;
       break;
@@ -110,6 +118,7 @@ const videoReducer = (state: videoState, action: videoAction): videoState => {
 
 export const useVideo = (src: string) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const videoContainerRef = useRef<HTMLDivElement>(null);  
   const [state, dispatch] = useReducer(videoReducer, {
     isPlaying: false,
     currentTime: 0,
@@ -121,7 +130,8 @@ export const useVideo = (src: string) => {
     bufferedTime:0,
     playBackRate:1,
     volume:1,
-    muted:false
+    muted:false,
+    isFullscreen:false
   });
   useEffect(() => {
     const video = videoRef.current!;
@@ -149,7 +159,12 @@ export const useVideo = (src: string) => {
     }
     // dispatcher functions - these are update our states and used as a callback function in our listener
 
-    
+    const handleFullScreenChange = () => {
+      const isFullscreen =
+        document.fullscreenElement === videoContainerRef.current;
+      dispatch({ type: 'SET_FULLSCREEN', isFullscreen });
+    };
+
     const updateBufferedTime = () => {
       const buffered = video.buffered;
       const duration = video.duration;
@@ -221,6 +236,8 @@ export const useVideo = (src: string) => {
     // after waiting (when the new chunks loaded) playing event raises
     video.addEventListener('playing', handlePlaying);
     video.addEventListener('progress', updateBufferedTime);
+    document.addEventListener('fullscreenchange', handleFullScreenChange);
+
 
 
     return () => {
@@ -238,7 +255,6 @@ export const useVideo = (src: string) => {
   }, [src]);
   const play = useCallback(() => videoRef.current?.play(), []);
   const pause = useCallback(() => videoRef.current?.pause(), []);
-  const fullScreen = useCallback(() => videoRef.current?.requestFullscreen(), []);
   const pictureInPicture = useCallback(() => videoRef.current?.requestPictureInPicture(), []);
   const seek = (newProgress: number) => {
     if (videoRef.current) {
@@ -270,6 +286,17 @@ export const useVideo = (src: string) => {
     }
   }, []);
 
+  const fullScreen = useCallback(() => {
+    if (videoContainerRef.current) {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        videoContainerRef.current.requestFullscreen();
+      }
+    }
+  }, []);
+  
+
   return {
     ...state,
     videoRef,
@@ -281,5 +308,6 @@ export const useVideo = (src: string) => {
     setPlaybackRate,
     setVolume,
     toggleMute,
+    videoContainerRef
   };
 };
