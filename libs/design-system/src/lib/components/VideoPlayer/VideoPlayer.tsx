@@ -168,6 +168,12 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
                 play={play}
               />
               <VideoTimer duration={duration} currentTime={currentTime} />
+              <div
+                style={{
+                  backgroundImage: `url('https://i.ytimg.com/sb/IUN664s7N-c/storyboard3_L2/M0.jpg?sqp=-oaymwENSDfyq4qpAwVwAcABBqLzl_8DBgj1q72HBg==&sigh=rs%24AOn4CLBhd7rnvFipMzPBtjexgttEKWrSKA')`,
+                }}
+                className="w-40 h-40 bg-red-300"
+              ></div>
             </div>
             <PlayerOptions
               isFullscreen={isFullscreen}
