@@ -105,7 +105,11 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
 
   const handleMouseLeave = () => setHoverTime(null);
 
-  const spriteSrc = 'https://i.ytimg.com/sb/IUN664s7N-c/storyboard3_L2/M0.jpg?sqp=-oaymwENSDfyq4qpAwVwAcABBqLzl_8DBgj1q72HBg==&sigh=rs%24AOn4CLBhd7rnvFipMzPBtjexgttEKWrSKA'; // مسیر اسپرایت
+  const getSpriteSrc = (time: number) => {
+    const spriteIndex = Math.floor(time / 50); 
+    return `https://i.ytimg.com/sb/IUN664s7N-c/storyboard3_L2/M${spriteIndex}.jpg?sqp=-oaymwENSDfyq4qpAwVwAcABBqLzl_8DBgj1q72HBg==&sigh=rs%24AOn4CLBhd7rnvFipMzPBtjexgttEKWrSKA`;
+  };
+
   const frameWidth = 160;
   const frameHeight = 90;
   const totalFrames = 25;
@@ -113,8 +117,8 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
 
   const currentFrame = hoverTime
   ? Math.min(
-      Math.floor((hoverTime / 50) * totalFrames),
-      totalFrames - 1 
+      Math.floor((hoverTime % 50 / 50) * totalFrames),
+      totalFrames - 1
     )
   : null;
 
@@ -166,7 +170,7 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
                 style={{
                   width: frameWidth,
                   height: frameHeight,
-                  backgroundImage: `url(${spriteSrc})`,
+                  backgroundImage: `url(${getSpriteSrc(hoverTime)})`,
                   backgroundPosition: `${
                     -(currentFrame % rowFrames) * frameWidth
                   }px ${-Math.floor(currentFrame / rowFrames) * frameHeight}px`,
