@@ -16,7 +16,9 @@ type Props = {
 
 export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
   const progressBarRef = useRef<HTMLProgressElement>(null);
+  const thumbnailPreviewRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [hoverTime, setHoverTime] = useState<number | null>(null);
   const {
     play,
     videoRef,
@@ -40,6 +42,7 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
     videoContainerRef,
     isFullscreen,
   } = useVideo(src);
+
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -71,6 +74,7 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
   const handleDragStart = () => {
     setIsDragging(true);
   };
+
   const handleDrag = (e: any, data: any) => {
     if (progressBarRef.current) {
       const progressBarWidth = progressBarRef.current.offsetWidth;
@@ -87,6 +91,29 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
       seek(finalProgress); // Set final position on release
     }
   };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLProgressElement>) => {
+    if (!progressBarRef.current || !videoRef.current) return;
+
+    const rect = progressBarRef.current.getBoundingClientRect();
+    const hoverPosition = e.clientX - rect.left;
+    const videoDuration = videoRef.current.duration;
+
+    const time = (hoverPosition / rect.width) * videoDuration;
+    setHoverTime(time);
+  };
+
+  const handleMouseLeave = () => setHoverTime(null);
+
+  const spriteSrc = 'https://i.ytimg.com/sb/IUN664s7N-c/storyboard3_L2/M0.jpg?sqp=-oaymwENSDfyq4qpAwVwAcABBqLzl_8DBgj1q72HBg==&sigh=rs%24AOn4CLBhd7rnvFipMzPBtjexgttEKWrSKA'; // مسیر اسپرایت
+  const frameWidth = 160; // عرض هر فریم
+  const frameHeight = 90; // ارتفاع هر فریم
+  const totalFrames = 25; // تعداد کل فریم‌ها
+  const rowFrames = 5; // تعداد فریم‌ها در هر ردیف
+
+  const currentFrame = hoverTime
+    ? Math.floor((hoverTime / duration) * totalFrames)
+    : null;
 
   return (
     <div className="relative" ref={videoContainerRef}>
@@ -126,7 +153,24 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
               className="w-full z-20 cursor-pointer h-1.5 relative -top-[10px] rounded-full  appearance-none [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-bar]:bg-transparent [&::-webkit-progress-value]:bg-brand-600 [&::-webkit-progress-value]:rounded-full"
               value={progress}
               onClick={handleSeek}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
             ></progress>
+            {hoverTime !== null && currentFrame !== null && (
+              <div
+                ref={thumbnailPreviewRef}
+                className="absolute -top-24 translate-x-[-50%] bg-black border border-gray-300"
+                style={{
+                  width: frameWidth,
+                  height: frameHeight,
+                  backgroundImage: `url(${spriteSrc})`,
+                  backgroundPosition: `${
+                    -(currentFrame % rowFrames) * frameWidth
+                  }px ${-Math.floor(currentFrame / rowFrames) * frameHeight}px`,
+                  left: `${(hoverTime / duration) * 100}%`,
+                }}
+              ></div>
+            )}
             <progress
               dir="ltr"
               max="100"
@@ -168,12 +212,6 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
                 play={play}
               />
               <VideoTimer duration={duration} currentTime={currentTime} />
-              <div
-                style={{
-                  backgroundImage: `url('https://i.ytimg.com/sb/IUN664s7N-c/storyboard3_L2/M0.jpg?sqp=-oaymwENSDfyq4qpAwVwAcABBqLzl_8DBgj1q72HBg==&sigh=rs%24AOn4CLBhd7rnvFipMzPBtjexgttEKWrSKA')`,
-                }}
-                className="w-40 h-40 bg-red-300"
-              ></div>
             </div>
             <PlayerOptions
               isFullscreen={isFullscreen}
