@@ -106,14 +106,17 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
   const handleMouseLeave = () => setHoverTime(null);
 
   const spriteSrc = 'https://i.ytimg.com/sb/IUN664s7N-c/storyboard3_L2/M0.jpg?sqp=-oaymwENSDfyq4qpAwVwAcABBqLzl_8DBgj1q72HBg==&sigh=rs%24AOn4CLBhd7rnvFipMzPBtjexgttEKWrSKA'; // مسیر اسپرایت
-  const frameWidth = 160; // عرض هر فریم
-  const frameHeight = 90; // ارتفاع هر فریم
-  const totalFrames = 25; // تعداد کل فریم‌ها
-  const rowFrames = 5; // تعداد فریم‌ها در هر ردیف
+  const frameWidth = 160;
+  const frameHeight = 90;
+  const totalFrames = 25;
+  const rowFrames = 5; 
 
   const currentFrame = hoverTime
-    ? Math.floor((hoverTime / duration) * totalFrames)
-    : null;
+  ? Math.min(
+      Math.floor((hoverTime / 50) * totalFrames),
+      totalFrames - 1 
+    )
+  : null;
 
   return (
     <div className="relative" ref={videoContainerRef}>
