@@ -104,7 +104,7 @@ const TextContainer = ({
       <p
         className={cn(
           'font-semibold text-xs',
-          isActive && !isDashboard ? 'text-brand-700' : 'text-gray-600'
+          isActive && !isDashboard ? 'text-brand-600' : 'text-gray-600'
         )}
       >
         {subText}
