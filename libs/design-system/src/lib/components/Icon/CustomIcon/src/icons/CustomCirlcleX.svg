@@ -2,7 +2,7 @@
   <g transform="translate(0, 1)">
     <path d="M0 16C0 7.16344 7.16344 0 16 0C24.8366 0 32 7.16344 32 16C32 24.8366 24.8366 32 16 32C7.16344 32 0 24.8366 0 16Z" fill="#009695"/>
     <path d="M0 16C0 7.16344 7.16344 0 16 0C24.8366 0 32 7.16344 32 16C32 24.8366 24.8366 32 16 32C7.16344 32 0 24.8366 0 16Z" fill="url(#paint0_radial_1691_36196)"/>
-    <circle cx="16" cy="16" r="12" fill="white"/>
+    <circle cx="16" cy="16" r="13" fill="white"/>
     <path d="M20.6668 11.3333L11.3335 20.6666M11.3335 11.3333L20.6668 20.6666" stroke="#05070C" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
   <!-- <defs>
