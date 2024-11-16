@@ -14,6 +14,8 @@ import {
 import { cn } from '../../../utils';
 import { Field, Select } from '@headlessui/react';
 import { Icon } from '../Icon';
+import { DateInput } from '../DateInput';
+import moment from 'moment';
 
 const locale: PickerLocale = (year) => ({
   months: {
@@ -50,6 +52,27 @@ export function DatePicker({ min, max }: Props) {
   const yearWrapperRef = useRef<HTMLDivElement>(null);
   const selectedMonthRef = useRef<HTMLDivElement>(null);
   const selectedYearRef = useRef<HTMLDivElement>(null);
+  const [valueDateInput, setValueDateInput] = useState<string | Date>();
+
+  const [errors, setErrors] = useState<{
+    minError: boolean;
+    maxError: boolean;
+  }>({
+    minError: false,
+    maxError: false,
+  });
+
+  const errorHandler = (e: { minError: boolean; maxError: boolean }) => {
+    setErrors(e);
+  };
+
+  const isJalali = (date: string) => moment(date, 'jYYYY/jM/jD');
+
+  const changeDateInputValue = (e: string | Date) => {
+    setValueDateInput(e);
+    // if (typeof e === 'string') {
+    setDate(moment('1350/12/05', 'jYYYY/jM/JD').toDate());
+  };
 
   function formatter(date: string) {
     const formattedDate = new Intl.DateTimeFormat('FA', {
@@ -95,7 +118,6 @@ export function DatePicker({ min, max }: Props) {
     getRenderedNextMonthName,
     getRenderedNextDateYear,
     onCellHover,
-    getEndDate,
     isDateInRange,
     isSelecting,
     isEndDate,
@@ -146,54 +168,8 @@ export function DatePicker({ min, max }: Props) {
 
   const RenderTitle = ({ year, month }: { year: number; month: string }) => (
     <div className="flex w-full items-center justify-center gap-2">
-      <button className="w-1/2">
-        <div className="w-full bg-white rounded-md overflow-hidden border-none">
-          <Field>
-            <div className="relative flex items-center justify-center rounded-md overflow-hidden w-full">
-              <Select
-                onChange={(e) => {
-                  changeMonth(+e.target.value);
-                }}
-                className={cn(
-                  'w-full appearance-none border-none font-vazirmatn',
-                  ' data-[focus]:outline-[1.5px] data-[focus]:bg-white outline-brand-600 py-2 rounded-md pr-6 cursor-pointer'
-                )}
-              >
-                {getMonthList().map((item) =>
-                  month === item.name ? (
-                    <option
-                      className={cn(
-                        'shadow-none !cursor-pointer hover:bg-brand-600',
-                        item.name === month && 'text-brand-600'
-                      )}
-                      value={getRenderedMonthName()}
-                      selected
-                    >
-                      {month}
-                    </option>
-                  ) : (
-                    <option
-                      className={cn(
-                        'shadow-none !cursor-pointer !hover:bg-brand-600',
-                        item.name === month && 'text-brand-600'
-                      )}
-                      key={item.name}
-                      value={item.monthNumber}
-                    >
-                      {item.name}
-                    </option>
-                  )
-                )}
-              </Select>
-              <div className="absolute left-6 text-brand-600">
-                <Icon name="chevron-down" size="lg" />
-              </div>
-            </div>
-          </Field>
-        </div>
-      </button>
-      <button className="w-1/2">
-        <div className="w-full bg-white rounded-md overflow-hidden border-none">
+      <button>
+        <div className="w-20 bg-white rounded-md overflow-hidden border-none">
           <Field>
             <div className="relative flex items-center justify-center rounded-md overflow-hidden w-full">
               <Select
@@ -202,7 +178,7 @@ export function DatePicker({ min, max }: Props) {
                 }}
                 className={cn(
                   'w-full appearance-none border-none font-vazirmatn',
-                  ' data-[focus]:outline-[1.5px] data-[focus]:bg-white outline-brand-600 py-2 rounded-md pr-6 cursor-pointer'
+                  ' data-[focus]:outline-[1.5px] data-[focus]:bg-white outline-brand-600 py-2 rounded-md pr-2 cursor-pointer'
                 )}
               >
                 {getYearsList(+minDate.slice(0, 4), +maxDate.slice(0, 4)).map(
@@ -221,7 +197,7 @@ export function DatePicker({ min, max }: Props) {
                     ) : (
                       <option
                         className={cn(
-                          'shadow-none !cursor-pointer !hover:bg-brand-600',
+                          'shadow-none !cursor-pointer !py-2 pr-7 !hover:bg-brand-600',
                           item === year && 'text-brand-600'
                         )}
                         key={item}
@@ -232,7 +208,53 @@ export function DatePicker({ min, max }: Props) {
                     )
                 )}
               </Select>
-              <div className="absolute left-6 text-brand-600">
+              <div className="absolute left-2 text-gray-1000">
+                <Icon name="chevron-down" size="lg" />
+              </div>
+            </div>
+          </Field>
+        </div>
+      </button>
+      <button>
+        <div className="w-full bg-white rounded-md overflow-hidden border-none">
+          <Field>
+            <div className="relative flex items-center justify-center rounded-md overflow-hidden w-full">
+              <Select
+                onChange={(e) => {
+                  changeMonth(+e.target.value);
+                }}
+                className={cn(
+                  'w-24 appearance-none cursor-pointer border-none font-vazirmatn',
+                  ' data-[focus]:outline-[1.5px] data-[focus]:bg-white outline-brand-600 py-2 rounded-md pr-2 cursor-pointer'
+                )}
+              >
+                {getMonthList().map((item) =>
+                  month === item.name ? (
+                    <option
+                      className={cn(
+                        'shadow-none cursor-pointer hover:bg-brand-600',
+                        item.name === month && 'bg-brand-100'
+                      )}
+                      value={getRenderedMonthName()}
+                      selected
+                    >
+                      {month}
+                    </option>
+                  ) : (
+                    <option
+                      className={cn(
+                        'shadow-none cursor-pointer !pr-7 !py-2 !hover:bg-brand-600',
+                        item.name === month && 'text-brand-600'
+                      )}
+                      key={item.name}
+                      value={item.monthNumber}
+                    >
+                      {item.name}
+                    </option>
+                  )
+                )}
+              </Select>
+              <div className="absolute left-2 text-gray-1000">
                 <Icon name="chevron-down" size="lg" />
               </div>
             </div>
@@ -254,22 +276,37 @@ export function DatePicker({ min, max }: Props) {
               width: 800,
             }}
           >
+            <div className="flex gap-2 text-md items-center font-vazirmatn justify-center">
+              <div className="flex flex-col gap-1 items-start">
+                <span>تاریخ شروع بازه:</span>
+                <DateInput
+                  onChange={changeDateInputValue}
+                  errors={errors}
+                  errorHandler={errorHandler}
+                  mode="jalali"
+                  min={min}
+                  max={max}
+                />
+              </div>
+              <div className="w-2.5 h-0.5 mt-7 bg-gray-500"></div>
+              <div className="gap-1 flex-col flex items-start">
+                <span>تاریخ پایان بازه:</span>
+                <DateInput
+                  onChange={changeDateInputValue}
+                  errors={errors}
+                  errorHandler={errorHandler}
+                  mode="jalali"
+                  min={min}
+                  max={max}
+                />
+              </div>
+            </div>
             <div
               onClick={() => setOpen(false)}
               className="w-8 h-8 rounded-full cursor-pointer bg-brand-600 absolute -left-2 -top-2 flex items-center justify-center"
             >
               <div className="rounded-full flex items-center bg-white justify-center w-6 h-6">
                 <Icon name="x" size="sm" />
-              </div>
-            </div>
-            <div className="flex text-md items-center font-vazirmatn justify-center">
-              <div className="flex gap-4 w-1/2 items-center">
-                <span>تاریخ شروع بازه:</span>
-                <span dir="ltr">{getDate()}</span>
-              </div>
-              <div className="gap-4 w-1/2 pr-6 flex items-center">
-                <span>تاریخ پایان بازه:</span>
-                <span>{getEndDate()}</span>
               </div>
             </div>
             <div className="flex gap-12">
@@ -331,81 +368,6 @@ export function DatePicker({ min, max }: Props) {
                   </div>
                 </div>
               )}
-
-              {getMode() === 'year' && (
-                <div style={{ flex: 1 }}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      flexDirection: 'row-reverse',
-                    }}
-                  >
-                    <div style={{ flex: 1 }}></div>
-                    <div>
-                      {/* <RenderTitle
-                        year={getRenderedYear()}
-                        month={getRenderedMonthName()}
-                      /> */}
-                    </div>
-                    <div style={{ flex: 1 }}>
-                      <button onClick={() => setMode('day')}>back</button>
-                    </div>
-                  </div>
-
-                  <div style={{ width: '100%', margin: '0 auto' }}>
-                    <div
-                      ref={yearWrapperRef}
-                      style={{
-                        display: 'flex',
-                        height: datepickerHeight,
-                        overflow: 'auto',
-                        flexWrap: 'wrap',
-                      }}
-                    >
-                      {getYearsList(
-                        +minDate.slice(0, 4),
-                        +maxDate.slice(0, 4)
-                      ).map((year) => (
-                        <div
-                          key={year}
-                          ref={
-                            getRenderedYear() === year
-                              ? selectedYearRef
-                              : undefined
-                          }
-                          className="font-vazirmatn h-fit"
-                          style={{
-                            backgroundColor:
-                              getRenderedYear() === year
-                                ? '#cacaca'
-                                : '#fafafa',
-                            padding: '5px 0px',
-                            textAlign: 'center',
-                            width: '19%',
-                          }}
-                        >
-                          <button
-                            onClick={() => changeYear(year)}
-                            style={{
-                              backgroundColor: 'transparent',
-                              border: 'none',
-                              color:
-                                getRenderedYear() === year
-                                  ? 'black'
-                                  : '#808080',
-                            }}
-                          >
-                            {year}
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
               {getMode() === 'day' && (
                 <>
                   <div className="w-1/2">
@@ -421,7 +383,6 @@ export function DatePicker({ min, max }: Props) {
                           year={getRenderedNextDateYear()}
                           month={getRenderedNextMonthName()}
                         />
-                        <div></div>
                       </div>
 
                       <div
@@ -464,7 +425,7 @@ export function DatePicker({ min, max }: Props) {
                               >
                                 <button
                                   className={cn(
-                                    'w-full text-lg font-vazirmatn rounded-sm m-0.5',
+                                    'w-10 h-10 text-lg hover:border-brand-600 hover:border-2 rounded-full m-0.5',
                                     {
                                       'text-gray-400': day.state !== 'current',
                                     },
@@ -473,7 +434,7 @@ export function DatePicker({ min, max }: Props) {
                                         day.state === 'current',
                                     },
                                     {
-                                      'bg-brand-600 shadow-sm shadow-brand-600 rounded-sm w-full text-white':
+                                      'bg-brand-600 w-full shadow-sm shadow-brand-600 text-white':
                                         isSelectedDay(day.date) &&
                                         day.state === 'current',
                                     },
@@ -482,14 +443,14 @@ export function DatePicker({ min, max }: Props) {
                                         isSelectedDay(day.date),
                                     },
                                     {
-                                      'bg-brand-600 w-full rounded-sm text-white':
+                                      'bg-brand-600 w-full text-white':
                                         isSelecting() &&
                                         isDateInRange(day.date) &&
                                         isEndDate(day.date) &&
                                         day.state === 'current',
                                     },
                                     {
-                                      'bg-brand-300 rounded-none text-brand-700 w-full':
+                                      'rounded-none w-full border-brand-600 border-t border-b':
                                         !isSelectedDay(day.date) &&
                                         isSelecting() &&
                                         isDateInRange(day.date) &&

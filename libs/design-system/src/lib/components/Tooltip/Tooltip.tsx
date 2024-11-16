@@ -1,3 +1,4 @@
+'use client';
 import { cn } from '../../../utils/classNames.utils';
 import React, { useId } from 'react';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
@@ -20,7 +21,10 @@ export const Tooltip: React.FC<Props> = ({
   return (
     <>
       {/* wrapper */}
-      <div data-tooltip-id={id} className="relative cursor-pointer">
+      <div
+        data-tooltip-id={id}
+        className="relative inline-block cursor-pointer"
+      >
         {/* here is the component that need a tooltip */}
         {children}
       </div>
