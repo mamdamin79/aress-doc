@@ -4,6 +4,7 @@ export * from './Breadcrumb';
 export * from './Icon';
 export * from './SectionTitle';
 export * from './Tooltip';
+export * from './FileUpload';
 export * from './Checkbox';
 export * from './Accordion';
 export * from './RemovableLabel';
