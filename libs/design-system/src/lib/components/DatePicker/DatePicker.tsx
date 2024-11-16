@@ -35,11 +35,17 @@ const weeksTitle = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
 
 const datepickerHeight = 300;
 
-export function DatePicker() {
+interface Props {
+  min: string;
+  max: string;
+}
+
+export function DatePicker({ min, max }: Props) {
   const [isPending, startTransition] = useTransition();
   const [date, setDate] = useState<Date>(createDate()); // create date based on timezone
   const containerRef = useRef<HTMLDivElement>(null);
-
+  const [minDate, setMinDate] = useState(min);
+  const [maxDate, setMaxDate] = useState(max);
   const monthWrapperRef = useRef<HTMLDivElement>(null);
   const yearWrapperRef = useRef<HTMLDivElement>(null);
   const selectedMonthRef = useRef<HTMLDivElement>(null);
@@ -61,6 +67,11 @@ export function DatePicker() {
 
     return `${year}-${month}-${day}`;
   }
+
+  useEffect(() => {
+    setMinDate(min);
+    setMaxDate(max);
+  }, [min, max]);
 
   const {
     onChangeDate,
@@ -194,30 +205,31 @@ export function DatePicker() {
                   ' data-[focus]:outline-[1.5px] data-[focus]:bg-white outline-brand-600 py-2 rounded-md pr-6 cursor-pointer'
                 )}
               >
-                {getYearsList(1385, 1403).map((item) =>
-                  year === item ? (
-                    <option
-                      className={cn(
-                        'shadow-none !cursor-pointer hover:bg-brand-600',
-                        item === year && 'text-brand-600'
-                      )}
-                      value={getRenderedYear()}
-                      selected
-                    >
-                      {year}
-                    </option>
-                  ) : (
-                    <option
-                      className={cn(
-                        'shadow-none !cursor-pointer !hover:bg-brand-600',
-                        item === year && 'text-brand-600'
-                      )}
-                      key={item}
-                      value={item}
-                    >
-                      {item}
-                    </option>
-                  )
+                {getYearsList(+minDate.slice(0, 4), +maxDate.slice(0, 4)).map(
+                  (item) =>
+                    year === item ? (
+                      <option
+                        className={cn(
+                          'shadow-none !cursor-pointer hover:bg-brand-600',
+                          item === year && 'text-brand-600'
+                        )}
+                        value={getRenderedYear()}
+                        selected
+                      >
+                        {year}
+                      </option>
+                    ) : (
+                      <option
+                        className={cn(
+                          'shadow-none !cursor-pointer !hover:bg-brand-600',
+                          item === year && 'text-brand-600'
+                        )}
+                        key={item}
+                        value={item}
+                      >
+                        {item}
+                      </option>
+                    )
                 )}
               </Select>
               <div className="absolute left-6 text-brand-600">
@@ -352,7 +364,10 @@ export function DatePicker() {
                         flexWrap: 'wrap',
                       }}
                     >
-                      {getYearsList(1385, 1403).map((year) => (
+                      {getYearsList(
+                        +minDate.slice(0, 4),
+                        +maxDate.slice(0, 4)
+                      ).map((year) => (
                         <div
                           key={year}
                           ref={
@@ -502,7 +517,7 @@ export function DatePicker() {
                                   disabled={day.day === 0}
                                   onClick={() => changeDay(day.date, day.state)}
                                 >
-                                  {day.day}
+                                  {day.state === 'current' && day.day}
                                 </button>
                               </div>
                             </div>
@@ -556,7 +571,7 @@ export function DatePicker() {
 
                           <div className="w-full bg-gray-200 h-0.5 mb-3"></div>
 
-                          <div className="grid grid-cols-7 gap-y-0.5">
+                          <div className="grid grid-cols-7 last:rounded-l-full gap-y-0.5">
                             {daysListNext.map((day, index) => (
                               <div
                                 key={index}
@@ -572,7 +587,7 @@ export function DatePicker() {
                                 >
                                   <button
                                     className={cn(
-                                      'w-full text-lg font-vazirmatn rounded-sm m-0.5',
+                                      'w-10 h-10 text-lg hover:border-brand-600 hover:border-2 rounded-full m-0.5',
                                       {
                                         'text-gray-400':
                                           day.state !== 'current',
@@ -582,7 +597,7 @@ export function DatePicker() {
                                           day.state === 'current',
                                       },
                                       {
-                                        'bg-brand-600 rounded-sm w-full shadow-sm shadow-brand-600 text-white':
+                                        'bg-brand-600 w-full shadow-sm shadow-brand-600 text-white':
                                           isSelectedDay(day.date) &&
                                           day.state === 'current',
                                       },
@@ -591,14 +606,14 @@ export function DatePicker() {
                                           isSelectedDay(day.date),
                                       },
                                       {
-                                        'bg-brand-600 w-full rounded-sm text-white':
+                                        'bg-brand-600 w-full text-white':
                                           isSelecting() &&
                                           isDateInRange(day.date) &&
                                           isEndDate(day.date) &&
                                           day.state === 'current',
                                       },
                                       {
-                                        'bg-brand-300 rounded-none text-brand-700 w-full':
+                                        'rounded-none w-full border-brand-600 border-t border-b':
                                           !isSelectedDay(day.date) &&
                                           isSelecting() &&
                                           isDateInRange(day.date) &&
@@ -628,7 +643,7 @@ export function DatePicker() {
                                       changeDay(day.date, day.state)
                                     }
                                   >
-                                    {day.day}
+                                    {day.state === 'current' && day.day}
                                   </button>
                                 </div>
                               </div>
