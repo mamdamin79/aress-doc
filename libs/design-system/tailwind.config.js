@@ -22,10 +22,28 @@ module.exports = {
           '0%': { transform: 'scale(0)' },
           '100%': { transform: 'scale(1)' },
         },
+        gradientExpand: {
+          '0%': {
+            'background-size': '100% 300%',
+          },
+          '100%': {
+            'background-size': '100% 100%',
+          },
+        },
+        gradientShrink: {
+          '0%': {
+            'background-size': '100% 100%',
+          },
+          '100%': {
+            'background-size': '100% 300%',
+          },
+        },
       },
       animation: {
         progressBar: 'progressBar 1s ease-in-out',
         toast: 'toast 0.3s ease-in-out',
+        gradientExpand: 'gradientExpand 0.5s ease-in-out forwards',
+        gradientShrink: 'gradientShrink 0.5s ease-in-out forwards',
       },
       fontFamily: {
         vazirmatn: 'vazirmatn',

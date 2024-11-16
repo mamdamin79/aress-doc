@@ -1,1 +1,2 @@
-export * from './RemovableLabel';
+export * from './ReportCard';
+export * from './Badges';
