@@ -8,6 +8,7 @@ interface Props {
   onChange: (value: string | Date) => void;
   mode: 'jalali' | 'miladi';
   min?: string;
+  active: boolean;
   errors: {
     minError: boolean;
     maxError: boolean;
@@ -36,6 +37,7 @@ export const DateInput: React.FC<Props> = ({
   mode,
   min,
   max,
+  active,
 }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(1);
   const [day, setDay] = useState<number>(0);
@@ -76,7 +78,7 @@ export const DateInput: React.FC<Props> = ({
       changeYearInput(defaultValue.year);
       setActiveIndex(null);
       dayRef.current?.blur();
-    } else if (typeof defaultValue === 'string') {
+    } else if (typeof defaultValue?.trim() === 'string') {
       if (mode === 'miladi' && isMiladi(defaultValue).isValid()) {
         const dateMiladi = isMiladi(defaultValue);
         changeDayInput(dateMiladi.date());
@@ -92,16 +94,20 @@ export const DateInput: React.FC<Props> = ({
         changeYearInput(dateJalali.year());
         setActiveIndex(null);
         dayRef.current?.blur();
+      } else {
+        setDay(0);
+        setMonth(0);
+        setYear(null);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, defaultValue]);
 
   useEffect(() => {
-    if (!day) {
+    if (!day && active) {
       dayRef?.current?.focus();
     }
-  }, [day]);
+  }, [day, active]);
 
   useEffect(() => {
     if (min && mode === 'miladi') {
@@ -543,7 +549,7 @@ export const DateInput: React.FC<Props> = ({
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const keydownHandler = (e: KeyboardEvent) => {
-    if (activeIndex) {
+    if (activeIndex && active) {
       if (e.key === 'ArrowLeft') {
         setIsArrowKeyPressed(false);
         if (activeIndex === 1) {
@@ -619,9 +625,10 @@ export const DateInput: React.FC<Props> = ({
     <div>
       <div
         className={cn(
-          'w-40 rounded-md bg-white border-2 flex items-center gap-1 border-brand-600 py-2 px-4',
+          'w-40 rounded-md bg-white border-2 flex items-center border-gray-500 gap-1 py-2 px-4',
           {
             'border-red-600': errors?.maxError || errors?.minError,
+            'border-brand-600': active && !errors.maxError && !errors.minError,
           }
         )}
       >
@@ -631,6 +638,7 @@ export const DateInput: React.FC<Props> = ({
             setActiveIndex(1);
             dayRef?.current?.setSelectionRange(2, 2);
           }}
+          disabled={!active}
           ref={dayRef}
           value={formatDay(day)}
           onChange={(e) => changeDayInput(+e.target.value, true)}
@@ -638,12 +646,13 @@ export const DateInput: React.FC<Props> = ({
           placeholder="روز"
           className={cn(
             'w-5 outline-none pb-0.5 -mx-1 placeholder:text-black block',
-            activeIndex === 1 && 'bg-blue-200'
+            activeIndex === 1 && active && 'bg-blue-200'
           )}
         />
         /
         <input
           dir="rtl"
+          disabled={!active}
           onClick={() => {
             setActiveIndex(2);
             monthRef?.current?.setSelectionRange(2, 2);
@@ -655,12 +664,13 @@ export const DateInput: React.FC<Props> = ({
           placeholder="ماه"
           className={cn(
             'w-5 outline-none pb-0.5 px-0 -mx-1 placeholder:text-black block',
-            activeIndex === 2 && 'bg-blue-200'
+            activeIndex === 2 && active && 'bg-blue-200'
           )}
         />
         /
         <input
           dir="rtl"
+          disabled={!active}
           onClick={() => {
             setActiveIndex(3);
             yearRef?.current?.setSelectionRange(
@@ -675,13 +685,13 @@ export const DateInput: React.FC<Props> = ({
           placeholder="سال"
           className={cn(
             'w-10 outline-none -mx-1 pb-0.5 placeholder:text-black block',
-            activeIndex === 3 && 'bg-blue-200'
+            activeIndex === 3 && active && 'bg-blue-200'
           )}
         />
       </div>
       <span className="text-red-600 font-medium text-sm">
-        {errors?.minError && 'سال وارد شده کوچیک تر از محدوده ورودی است. '}
-        {errors?.maxError && 'سال وارد شده بزرگ تر از محدوده ورودی است. '}
+        {errors?.minError && 'متن نمونه برای نمایش خطا.'}
+        {errors?.maxError && 'متن نمونه برای نمایش خطا.'}
       </span>
     </div>
   );

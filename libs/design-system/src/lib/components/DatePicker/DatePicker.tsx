@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-  useTransition,
-} from 'react';
+import { useState, useEffect, useRef, useMemo, useTransition } from 'react';
 import {
   RangePicker,
   PickerLocale,
@@ -35,8 +29,6 @@ const locale: PickerLocale = (year) => ({
 });
 const weeksTitle = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
 
-const datepickerHeight = 300;
-
 interface Props {
   min: string;
   max: string;
@@ -48,13 +40,20 @@ export function DatePicker({ min, max }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [minDate, setMinDate] = useState(min);
   const [maxDate, setMaxDate] = useState(max);
-  const monthWrapperRef = useRef<HTMLDivElement>(null);
-  const yearWrapperRef = useRef<HTMLDivElement>(null);
-  const selectedMonthRef = useRef<HTMLDivElement>(null);
-  const selectedYearRef = useRef<HTMLDivElement>(null);
-  const [valueDateInput, setValueDateInput] = useState<string | Date>();
+  const [startDate, setStartDate] = useState<string | Date>();
+  const [endDate, setEndDate] = useState<string | Date>();
+  const [activeStartInput, setActiveStartInput] = useState(true);
+  const [activeEndInput, setActiveEndInput] = useState(false);
 
-  const [errors, setErrors] = useState<{
+  const [startErrors, setStartErrors] = useState<{
+    minError: boolean;
+    maxError: boolean;
+  }>({
+    minError: false,
+    maxError: false,
+  });
+
+  const [endErrors, setEndErrors] = useState<{
     minError: boolean;
     maxError: boolean;
   }>({
@@ -63,15 +62,18 @@ export function DatePicker({ min, max }: Props) {
   });
 
   const errorHandler = (e: { minError: boolean; maxError: boolean }) => {
-    setErrors(e);
+    setStartErrors(e);
+  };
+  const endErrorHandler = (e: { minError: boolean; maxError: boolean }) => {
+    setEndErrors(e);
   };
 
-  const isJalali = (date: string) => moment(date, 'jYYYY/jM/jD');
+  const updateStartInput = (e: string | Date) => {
+    setStartDate(e);
+  };
 
-  const changeDateInputValue = (e: string | Date) => {
-    setValueDateInput(e);
-    // if (typeof e === 'string') {
-    setDate(moment('1350/12/05', 'jYYYY/jM/JD').toDate());
+  const updateEndInput = (e: string | Date) => {
+    setEndDate(e);
   };
 
   function formatter(date: string) {
@@ -91,6 +93,12 @@ export function DatePicker({ min, max }: Props) {
     return `${year}-${month}-${day}`;
   }
 
+  console.log(endDate);
+
+  useEffect(() => {
+    console.log(startDate);
+  }, [startDate]);
+
   useEffect(() => {
     setMinDate(min);
     setMaxDate(max);
@@ -99,9 +107,10 @@ export function DatePicker({ min, max }: Props) {
   const {
     onChangeDate,
     isOpen,
+    handleShowNextMonth,
+    handleShowPrevMonth,
     setOpen,
     getMode,
-    setMode,
     getDate,
     isSelectedDay,
     changeDay,
@@ -111,9 +120,9 @@ export function DatePicker({ min, max }: Props) {
     changeMonth,
     getYearsList,
     changeYear,
-    getRenderedMonth,
     isLoading,
     goToToday,
+    getEndDate,
     getDays,
     getRenderedNextMonthName,
     getRenderedNextDateYear,
@@ -157,7 +166,20 @@ export function DatePicker({ min, max }: Props) {
     return () => {
       document.removeEventListener('click', handleClickOutside, true);
     };
-  }, []);
+  }, [getDate, isPending, onChangeDate, setOpen]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    setEndDate(getEndDate());
+    if (getDate()) {
+      setActiveEndInput(true);
+      setActiveStartInput(false);
+    }
+    if (getDate() && getEndDate()) {
+      setActiveEndInput(false);
+      setActiveStartInput(false);
+    }
+  }, [getEndDate, getDate]);
 
   const daysList = getDays();
   const daysListNext = getDays('next');
@@ -279,26 +301,48 @@ export function DatePicker({ min, max }: Props) {
             <div className="flex gap-2 text-md items-center font-vazirmatn justify-center">
               <div className="flex flex-col gap-1 items-start">
                 <span>تاریخ شروع بازه:</span>
-                <DateInput
-                  onChange={changeDateInputValue}
-                  errors={errors}
-                  errorHandler={errorHandler}
-                  mode="jalali"
-                  min={min}
-                  max={max}
-                />
+                <div
+                  onClick={() => {
+                    if (!activeStartInput) {
+                      setActiveStartInput(true);
+                      setActiveEndInput(false);
+                    }
+                  }}
+                >
+                  <DateInput
+                    active={activeStartInput}
+                    onChange={updateStartInput}
+                    errors={startErrors}
+                    errorHandler={errorHandler}
+                    mode="jalali"
+                    min={min}
+                    max={max}
+                    defaultValue={getDate()}
+                  />
+                </div>
               </div>
               <div className="w-2.5 h-0.5 mt-7 bg-gray-500"></div>
               <div className="gap-1 flex-col flex items-start">
                 <span>تاریخ پایان بازه:</span>
-                <DateInput
-                  onChange={changeDateInputValue}
-                  errors={errors}
-                  errorHandler={errorHandler}
-                  mode="jalali"
-                  min={min}
-                  max={max}
-                />
+                <div
+                  onClick={() => {
+                    if (!activeEndInput) {
+                      setActiveEndInput(true);
+                      setActiveStartInput(false);
+                    }
+                  }}
+                >
+                  <DateInput
+                    active={activeEndInput}
+                    onChange={updateEndInput}
+                    errors={endErrors}
+                    errorHandler={endErrorHandler}
+                    mode="jalali"
+                    min={min}
+                    max={max}
+                    defaultValue={getEndDate()}
+                  />
+                </div>
               </div>
             </div>
             <div
@@ -310,64 +354,6 @@ export function DatePicker({ min, max }: Props) {
               </div>
             </div>
             <div className="flex gap-12">
-              {getMode() === 'month' && (
-                <div style={{ flex: 1 }}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      flexDirection: 'row-reverse',
-                    }}
-                  >
-                    <div style={{ flex: 1 }}></div>
-                    <div>
-                      <RenderTitle
-                        year={getRenderedYear()}
-                        month={getRenderedMonthName()}
-                      />
-                    </div>
-                  </div>
-
-                  <div style={{ width: '100%', margin: '0 auto' }}>
-                    <div
-                      ref={monthWrapperRef}
-                      style={{ height: datepickerHeight, overflow: 'auto' }}
-                    >
-                      {getMonthList().map((month) => (
-                        <div
-                          key={month.name}
-                          ref={
-                            getRenderedMonth() === month.monthNumber
-                              ? selectedMonthRef
-                              : undefined
-                          }
-                          style={{
-                            backgroundColor:
-                              getRenderedMonth() === month.monthNumber
-                                ? '#cacaca'
-                                : '#fff',
-                            padding: '5px 0',
-                          }}
-                        >
-                          <button
-                            style={{
-                              width: '100%',
-                              padding: 0,
-                              margin: 0,
-                              backgroundColor: 'transparent',
-                              border: 'none',
-                            }}
-                            onClick={() => changeMonth(month.monthNumber)}
-                          >
-                            <span>{month.name}</span>
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
               {getMode() === 'day' && (
                 <>
                   <div className="w-1/2">
@@ -379,9 +365,15 @@ export function DatePicker({ min, max }: Props) {
                           alignItems: 'center',
                         }}
                       >
+                        <div
+                          onClick={() => handleShowPrevMonth()}
+                          className="rounded-full bg-white cursor-pointer flex items-center justify-center p-2 border-[1.5px] border-white duration-300 hover:border-brand-600 hover:border-[1.5px]"
+                        >
+                          <Icon name="arrow-right" size="lg" />
+                        </div>
                         <RenderTitle
                           year={getRenderedNextDateYear()}
-                          month={getRenderedNextMonthName()}
+                          month={getRenderedMonthName()}
                         />
                       </div>
 
@@ -415,129 +407,7 @@ export function DatePicker({ min, max }: Props) {
                               className="w-full"
                               onMouseEnter={handleHoverCell(day.date)}
                             >
-                              <div
-                                className={cn(
-                                  isDateInRange(day.date) &&
-                                    day.state === 'current'
-                                    ? 'px-0'
-                                    : 'px-0.5'
-                                )}
-                              >
-                                <button
-                                  className={cn(
-                                    'w-10 h-10 text-lg hover:border-brand-600 hover:border-2 rounded-full m-0.5',
-                                    {
-                                      'text-gray-400': day.state !== 'current',
-                                    },
-                                    {
-                                      'bg-white shadow-xs':
-                                        day.state === 'current',
-                                    },
-                                    {
-                                      'bg-brand-600 w-full shadow-sm shadow-brand-600 text-white':
-                                        isSelectedDay(day.date) &&
-                                        day.state === 'current',
-                                    },
-                                    {
-                                      'bg-brand-600 shadow-sm shadow-brand-600':
-                                        isSelectedDay(day.date),
-                                    },
-                                    {
-                                      'bg-brand-600 w-full text-white':
-                                        isSelecting() &&
-                                        isDateInRange(day.date) &&
-                                        isEndDate(day.date) &&
-                                        day.state === 'current',
-                                    },
-                                    {
-                                      'rounded-none w-full border-brand-600 border-t border-b':
-                                        !isSelectedDay(day.date) &&
-                                        isSelecting() &&
-                                        isDateInRange(day.date) &&
-                                        day.state === 'current',
-                                    },
-                                    {
-                                      'bg-brand-300 rounded-none text-brand-700 w-full':
-                                        !isSelectedDay(day.date) &&
-                                        !isSelecting() &&
-                                        isDateInRange(day.date),
-                                    },
-                                    {
-                                      'bg-brand-100 rounded-none text-brand-600 w-full':
-                                        isSelecting() &&
-                                        isDateInRange(day.date) &&
-                                        day.state !== 'current',
-                                    },
-                                    {
-                                      'bg-brand-100 rounded-none text-brand-600 w-full':
-                                        !isSelecting() &&
-                                        isDateInRange(day.date) &&
-                                        day.state !== 'current',
-                                    }
-                                  )}
-                                  disabled={day.day === 0}
-                                  onClick={() => changeDay(day.date, day.state)}
-                                >
-                                  {day.state === 'current' && day.day}
-                                </button>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="w-1/2">
-                    {daysListNext.length > 0 && (
-                      <div
-                        style={{
-                          flex: 1,
-                        }}
-                      >
-                        <div>
-                          <div
-                            style={{
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              alignItems: 'center',
-                            }}
-                          >
-                            <div></div>
-                            <RenderTitle
-                              year={getRenderedYear()}
-                              month={getRenderedMonthName()}
-                            />
-                          </div>
-
-                          <div
-                            style={{
-                              display: 'flex',
-                              padding: '7px 0 5px',
-                              flexWrap: 'wrap',
-                            }}
-                          >
-                            {weeksTitle.map((week) => (
-                              <div
-                                className="font-vazirmatn"
-                                key={week}
-                                style={{
-                                  textAlign: 'center',
-                                  width: `${100 / 7}%`,
-                                }}
-                              >
-                                <span>{week}</span>
-                              </div>
-                            ))}
-                          </div>
-
-                          <div className="w-full bg-gray-200 h-0.5 mb-3"></div>
-
-                          <div className="grid grid-cols-7 last:rounded-l-full gap-y-0.5">
-                            {daysListNext.map((day, index) => (
-                              <div
-                                key={index}
-                                onMouseEnter={handleHoverCell(day.date)}
-                              >
+                              {day.state === 'current' && (
                                 <div
                                   className={cn(
                                     isDateInRange(day.date) &&
@@ -604,9 +474,144 @@ export function DatePicker({ min, max }: Props) {
                                       changeDay(day.date, day.state)
                                     }
                                   >
-                                    {day.state === 'current' && day.day}
+                                    {day.day}
                                   </button>
                                 </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-1/2">
+                    {daysListNext.length > 0 && (
+                      <div
+                        style={{
+                          flex: 1,
+                        }}
+                      >
+                        <div>
+                          <div
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <div></div>
+                            <RenderTitle
+                              year={getRenderedYear()}
+                              month={getRenderedNextMonthName()}
+                            />
+                            <div
+                              onClick={() => handleShowNextMonth()}
+                              className="rounded-full bg-white cursor-pointer flex items-center justify-center p-2 border-[1.5px] border-white duration-300 hover:border-brand-600 hover:border-[1.5px]"
+                            >
+                              <Icon name="arrow-left" size="lg" />
+                            </div>
+                          </div>
+
+                          <div
+                            style={{
+                              display: 'flex',
+                              padding: '7px 0 5px',
+                              flexWrap: 'wrap',
+                            }}
+                          >
+                            {weeksTitle.map((week) => (
+                              <div
+                                className="font-vazirmatn"
+                                key={week}
+                                style={{
+                                  textAlign: 'center',
+                                  width: `${100 / 7}%`,
+                                }}
+                              >
+                                <span>{week}</span>
+                              </div>
+                            ))}
+                          </div>
+
+                          <div className="w-full bg-gray-200 h-0.5 mb-3"></div>
+
+                          <div className="grid grid-cols-7 last:rounded-l-full gap-y-0.5">
+                            {daysListNext.map((day, index) => (
+                              <div
+                                key={index}
+                                onMouseEnter={handleHoverCell(day.date)}
+                              >
+                                {day.state === 'current' && (
+                                  <div
+                                    className={cn(
+                                      isDateInRange(day.date) &&
+                                        day.state === 'current'
+                                        ? 'px-0'
+                                        : 'px-0.5'
+                                    )}
+                                  >
+                                    <button
+                                      className={cn(
+                                        'w-10 h-10 text-lg hover:border-brand-600 hover:border-2 rounded-full m-0.5',
+                                        {
+                                          'text-gray-400':
+                                            day.state !== 'current',
+                                        },
+                                        {
+                                          'bg-white shadow-xs':
+                                            day.state === 'current',
+                                        },
+                                        {
+                                          'bg-brand-600 w-full shadow-sm shadow-brand-600 text-white':
+                                            isSelectedDay(day.date) &&
+                                            day.state === 'current',
+                                        },
+                                        {
+                                          'bg-brand-600 shadow-sm shadow-brand-600':
+                                            isSelectedDay(day.date),
+                                        },
+                                        {
+                                          'bg-brand-600 w-full text-white':
+                                            isSelecting() &&
+                                            isDateInRange(day.date) &&
+                                            isEndDate(day.date) &&
+                                            day.state === 'current',
+                                        },
+                                        {
+                                          'rounded-none w-full border-brand-600 border-t border-b':
+                                            !isSelectedDay(day.date) &&
+                                            isSelecting() &&
+                                            isDateInRange(day.date) &&
+                                            day.state === 'current',
+                                        },
+                                        {
+                                          'bg-brand-300 rounded-none text-brand-700 w-full':
+                                            !isSelectedDay(day.date) &&
+                                            !isSelecting() &&
+                                            isDateInRange(day.date),
+                                        },
+                                        {
+                                          'bg-brand-100 rounded-none text-brand-600 w-full':
+                                            isSelecting() &&
+                                            isDateInRange(day.date) &&
+                                            day.state !== 'current',
+                                        },
+                                        {
+                                          'bg-brand-100 rounded-none text-brand-600 w-full':
+                                            !isSelecting() &&
+                                            isDateInRange(day.date) &&
+                                            day.state !== 'current',
+                                        }
+                                      )}
+                                      disabled={day.day === 0}
+                                      onClick={() =>
+                                        changeDay(day.date, day.state)
+                                      }
+                                    >
+                                      {day.day}
+                                    </button>
+                                  </div>
+                                )}
                               </div>
                             ))}
                           </div>
