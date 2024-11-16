@@ -5,30 +5,21 @@ import { Icon } from '../Icon';
 
 interface Props {
   tabs: TabItem[];
-  style:
-    | 'button-shaped'
-    | 'divided-buttons'
-    | 'lined'
-    | 'rounded'
-    | 'button-rounded';
+  style: 'shaped' | 'divided' | 'lined' | 'rounded' | 'rounded-full';
   bgWhite?: boolean;
   tag?: boolean;
 }
 
 export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite, tag }) => {
   return (
-    <div
-      className={cn('flex w-full justify-center px-4', {
-        'bg-gray-100': !bgWhite,
-      })}
-    >
+    <div className="flex w-full justify-center px-4">
       <div className="w-full">
         <TabGroup>
           <TabList
             className={cn(
               'flex',
               { 'gap-10 w-max pl-5': style === 'lined' },
-              { 'gap-4': style !== 'lined' && style !== 'divided-buttons' }
+              { 'gap-4': style !== 'lined' && style !== 'divided' }
             )}
           >
             {tabs.map((props, index) => (
@@ -42,7 +33,7 @@ export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite, tag }) => {
                   },
                   {
                     'py-2 px-4 font-semibold data-[selected]:bg-brand-600 border-white data-[selected]:border-brand-600 first:border-r-2 hover:border-brand-600 border-2 last:rounded-l-md data-[selected]:text-white first:rounded-r-md text-black':
-                      style === 'divided-buttons',
+                      style === 'divided',
                   },
                   {
                     'bg-gray-100':
@@ -54,15 +45,14 @@ export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite, tag }) => {
                   },
                   {
                     'border-gray-100 border-2 bg-white':
-                      style === 'button-shaped' && !bgWhite,
+                      style === 'shaped' && !bgWhite,
                     'border-gray-100 border-2 bg-gray-100':
-                      style === 'button-shaped' && bgWhite,
+                      style === 'shaped' && bgWhite,
                   },
                   {
-                    'border-white bg-white':
-                      style === 'divided-buttons' && !bgWhite,
+                    'border-white bg-white': style === 'divided' && !bgWhite,
                     'border-gray-100 bg-gray-100':
-                      style === 'divided-buttons' && bgWhite,
+                      style === 'divided' && bgWhite,
                   },
                   {
                     'relative hover:bg-white': style === 'lined' && !bgWhite,
@@ -73,17 +63,17 @@ export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite, tag }) => {
                   },
                   {
                     'py-1 px-2 data-[selected]:border-brand-600 rounded-md border-2 border-white data-[selected]:bg-brand-600 data-[selected]:text-white hover:border-brand-600 text-black':
-                      style === 'button-shaped',
+                      style === 'shaped',
                   },
                   {
                     'py-2 px-4 text-sm data-[selected]:bg-brand-600 font-medium data-[selected]:border-spacing-2 rounded-full border-2 border-gray-100 data-[selected]:border-brand-600 data-[selected]:text-white hover:border-brand-600 text-black':
-                      style === 'button-rounded',
+                      style === 'rounded-full',
                   },
                   {
-                    'bg-gray-100': style === 'button-rounded' && bgWhite,
+                    'bg-gray-100': style === 'rounded-full' && bgWhite,
                   },
                   {
-                    'bg-white': style === 'button-rounded' && !bgWhite,
+                    'bg-white': style === 'rounded-full' && !bgWhite,
                   }
                 )}
               >
@@ -125,7 +115,7 @@ export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite, tag }) => {
                         ></div>
                       </>
                     )}
-                    {style === 'button-shaped' ? (
+                    {style === 'shaped' ? (
                       <div className="flex items-center gap-2">
                         {tag && (
                           <div className="rounded-full w-3 border-white bg-vividGreen-600 h-3 border-2 flex items-center justify-center"></div>

@@ -1,11 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Tabs } from './Tabs';
+import { cn } from '../../../utils/classNames.utils';
 
 // Meta configuration for the Tabs component in Storybook
 const meta: Meta<typeof Tabs> = {
   title: 'Components/Tabs', // Defines the title in Storybook's UI
   component: Tabs, // Links to the actual component
   tags: ['autodocs'], // Optional: Add any additional tags for better categorization
+  argTypes: {
+    style: {
+      control: 'radio',
+      options: ['shaped', 'lined', 'divided', 'rounded', 'rounded-full'],
+    },
+  },
 };
 
 export default meta;
@@ -13,7 +20,12 @@ export default meta;
 type Story = StoryObj<typeof Tabs>;
 
 // examples story for the Tabs component
-export const Lined: Story = {
+export const Default: Story = {
+  render: (args) => (
+    <div className={cn({ 'bg-gray-100 py-10 w-full': !args.bgWhite })}>
+      <Tabs {...args} />
+    </div>
+  ),
   args: {
     tabs: [
       {
@@ -36,73 +48,8 @@ export const Lined: Story = {
         title: 'سلام',
       },
       { content: 'تحلیل عملکرد', title: 'تحلیل عملکرد' },
-      { content: 'پرتفوی صندوق', title: 'پرتفوی صندوق' },
-      { content: 'نمودار صندوق', title: 'نمودار صندوق' },
     ],
     bgWhite: false,
     style: 'lined',
-  },
-};
-
-export const Shaped: Story = {
-  args: {
-    tabs: [
-      { content: 'بسته یک ماهه', title: 'یک ماهه' },
-      { content: 'بسته سه ماهه', title: 'سه ماهه' },
-      { content: 'بسته شش ماهه', title: 'شش ماهه' },
-      { content: 'بسته یک ساله', title: 'یک ساله' },
-      {
-        content: 'بسته بدون سال',
-        icons: [
-          { name: 'wallet-minimal' },
-          { name: 'alarm-clock-off', size: 'sm' },
-        ],
-        title: 'title',
-      },
-      {
-        content: 'بسته بدون سال',
-        title: 'باز زمانی',
-      },
-    ],
-    bgWhite: true,
-    tag: true,
-    style: 'button-shaped',
-  },
-};
-
-export const Divided: Story = {
-  args: {
-    tabs: [
-      { content: 'نمودار ریال', title: 'ریال' },
-      { content: 'نمودار دلار', title: 'دلار' },
-      { content: 'نمودار یورو', title: 'یورو' },
-    ],
-    bgWhite: true,
-    style: 'divided-buttons',
-  },
-};
-
-export const Rounded: Story = {
-  args: {
-    tabs: [
-      { content: 'نمودار ریال', title: 'ریال' },
-      { content: 'نمودار دلار', title: 'دلار' },
-      { content: 'نمودار یورو', title: 'یورو' },
-    ],
-    bgWhite: true,
-    style: 'rounded',
-  },
-};
-
-export const ButtonRounded: Story = {
-  args: {
-    tabs: [
-      { content: 'نمایش ویدیو برای برسی', title: 'بررسی ویدیو' },
-      { content: 'نمایش اطلاعات بیشتر', title: 'اطلاعات بیشتر' },
-      { content: 'نمایش گزارش های مرتبط', title: 'گزارش های مرتبط' },
-      { content: 'نمایش  دیدگاه ها و سوالات', title: 'دیدگاه ها و سوالات' },
-    ],
-    bgWhite: true,
-    style: 'button-rounded',
   },
 };
