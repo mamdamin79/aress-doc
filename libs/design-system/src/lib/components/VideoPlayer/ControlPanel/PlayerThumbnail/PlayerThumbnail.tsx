@@ -45,7 +45,6 @@ export const PlayerThumbnail: React.FC<Props> = React.memo(
             backgroundPosition: `${
               -(currentFrame % rowFrames) * frameWidth
             }px ${-Math.floor(currentFrame / rowFrames) * frameHeight}px`,
-            // left: `${(hoverTime / duration) * 100}%`,
           }}
         ></div>
         <div className="relative mx-auto text-center text-sm font-medium mt-2  text-white">{secondsToHHMMSS(hoverTime)}</div>
