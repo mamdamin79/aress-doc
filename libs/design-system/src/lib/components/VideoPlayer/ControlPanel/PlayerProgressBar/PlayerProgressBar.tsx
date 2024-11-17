@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import Draggable from 'react-draggable';
+import { PlayerThumbnail } from '../PlayerThumbnail/PlayerThumbnail';
 
 type Props = {
   duration: number;
@@ -13,14 +14,12 @@ type Props = {
 export const PlayerProgressBar: React.FC<Props> = ({
   seek,
   progress,
-  currentTime,
   duration,
   videoRef,
   bufferedTime,
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const progressBarRef = useRef<HTMLProgressElement>(null);
-  const thumbnailPreviewRef = useRef<HTMLDivElement>(null);
   const [hoverTime, setHoverTime] = useState<number | null>(null);
   const handleMouseMove = (e: React.MouseEvent<HTMLProgressElement>) => {
     if (!progressBarRef.current || !videoRef.current) return;
@@ -34,23 +33,6 @@ export const PlayerProgressBar: React.FC<Props> = ({
   };
 
   const handleMouseLeave = () => setHoverTime(null);
-
-  const getSpriteSrc = (time: number) => {
-    const spriteIndex = Math.floor(time / 50);
-    return `https://i.ytimg.com/sb/IUN664s7N-c/storyboard3_L2/M${spriteIndex}.jpg?sqp=-oaymwENSDfyq4qpAwVwAcABBqLzl_8DBgj1q72HBg==&sigh=rs%24AOn4CLBhd7rnvFipMzPBtjexgttEKWrSKA`;
-  };
-
-  const frameWidth = 160;
-  const frameHeight = 90;
-  const totalFrames = 25;
-  const rowFrames = 5;
-
-  const currentFrame = hoverTime
-    ? Math.min(
-        Math.floor(((hoverTime % 50) / 50) * totalFrames),
-        totalFrames - 1
-      )
-    : null;
 
   const handleSeek = (event: React.MouseEvent<HTMLProgressElement>) => {
     const progressElement = event.currentTarget;
@@ -93,21 +75,7 @@ export const PlayerProgressBar: React.FC<Props> = ({
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       ></progress>
-      {hoverTime !== null && currentFrame !== null && (
-        <div
-          ref={thumbnailPreviewRef}
-          className="absolute -top-24 translate-x-[-50%] bg-black border border-gray-300"
-          style={{
-            width: frameWidth,
-            height: frameHeight,
-            backgroundImage: `url(${getSpriteSrc(hoverTime)})`,
-            backgroundPosition: `${
-              -(currentFrame % rowFrames) * frameWidth
-            }px ${-Math.floor(currentFrame / rowFrames) * frameHeight}px`,
-            left: `${(hoverTime / duration) * 100}%`,
-          }}
-        ></div>
-      )}
+      <PlayerThumbnail duration={duration} hoverTime={hoverTime} videoRef={videoRef}/>
       <progress
         dir="ltr"
         max="100"

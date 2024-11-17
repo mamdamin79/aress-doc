@@ -59,7 +59,7 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
   }, [fullScreen, pause, play, isPlaying]);
 
   return (
-    <div className="relative" ref={videoContainerRef}>
+    <div className="relative rounded-md shadow-md overflow-hidden" ref={videoContainerRef}>
       {/* loading displays when video is not loaded yet(even first frame) and when buffered time is finished and we are waiting for new chunks */}
       {isVideoWaited && (
         <div className="absolute z-30 flex items-center justify-center inset-0 m-auto">
