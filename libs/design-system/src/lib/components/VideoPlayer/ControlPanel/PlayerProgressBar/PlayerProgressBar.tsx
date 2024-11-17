@@ -17,6 +17,7 @@ export const PlayerProgressBar: React.FC<Props> = ({
   duration,
   videoRef,
   bufferedTime,
+  currentTime
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const progressBarRef = useRef<HTMLProgressElement>(null);
@@ -75,7 +76,7 @@ export const PlayerProgressBar: React.FC<Props> = ({
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       ></progress>
-      <PlayerThumbnail duration={duration} hoverTime={hoverTime} videoRef={videoRef}/>
+      <PlayerThumbnail  duration={duration} hoverTime={hoverTime} videoRef={videoRef}/>
       <progress
         dir="ltr"
         max="100"
