@@ -12,6 +12,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      borderWidth: {
+        1.5: '1.5px',
+      },
       boxShadow: {
         xs: '0px 1px 1px 0px rgba(0, 11, 23, 0.06)',
         sm: '0px 3px 4px 0px rgba(0, 11, 23, 0.04)',
