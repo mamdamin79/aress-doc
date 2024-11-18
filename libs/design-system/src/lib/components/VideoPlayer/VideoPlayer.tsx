@@ -15,7 +15,7 @@ type Props = {
 };
 
 export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
-  const [showControlPanel,setShowControlPanel] = useState(true)
+  const [showControlPanel, setShowControlPanel] = useState(true);
   const {
     play,
     videoRef,
@@ -42,26 +42,29 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
-  
+
     const showControls = () => {
       setShowControlPanel(true);
       clearTimeout(timeout);
       timeout = setTimeout(() => setShowControlPanel(false), 5000);
     };
-  
+
     videoContainerRef.current?.addEventListener('mousemove', showControls);
     videoContainerRef.current?.addEventListener('touchstart', showControls);
-  
+
     return () => {
       videoContainerRef.current?.removeEventListener('mousemove', showControls);
-      videoContainerRef.current?.removeEventListener('touchstart', showControls);
+      videoContainerRef.current?.removeEventListener(
+        'touchstart',
+        showControls
+      );
       clearTimeout(timeout);
     };
   }, []);
-  
 
   return (
     <div
+      onContextMenu={(e) => e.preventDefault()}
       onClick={isPlaying ? pause : play}
       className="relative rounded-md shadow-md overflow-hidden"
       ref={videoContainerRef}
@@ -82,9 +85,7 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
           {title}
         </h2>
       ) : (
-        <span className='absolute'>
-          logo
-        </span>
+        <span className="absolute">logo</span>
       )}
       <video
         src={src}
@@ -95,9 +96,12 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
       <div className="absolute inset-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
       {/* control panel container */}
       <div
-        className={cn('absolute w-full h-20 z-10 bottom-0 duration-700 ease-in-out transition-all', {
-          '-bottom-28': !showControlPanel && isPlaying,
-        })}
+        className={cn(
+          'absolute w-full h-20 z-10 bottom-0 duration-700 ease-in-out transition-all',
+          {
+            '-bottom-28': !showControlPanel && isPlaying,
+          }
+        )}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="relative mx-auto w-11/12">
