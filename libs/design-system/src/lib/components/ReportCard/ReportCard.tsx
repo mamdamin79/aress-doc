@@ -5,7 +5,7 @@ import { NewBadge, VideoBadge, LikeBadge } from './Badges';
 import { cn } from '../../../utils/classNames.utils';
 import { Button } from '../Button';
 
-interface CardComponentProps {
+export interface CardComponentProps {
   title: string;
   brief: string;
   reportSubscription: string;
@@ -62,7 +62,7 @@ export const ReportCard: React.FC<CardComponentProps> = ({
         className={cn(
           `w-full`,
           !fixedBrief &&
-            'opacity-0 group-hover:opacity-100 transition-opacity duration-500 group-hover:duration-700 ease-in-out absolute bottom-0 left-0 group-hover:h-full overflow-hidden bg-gradient-to-b from-[rgba(255,255,255,0)] via-white to-[rgba(255,255,255,1)]'
+            'opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:duration-500 h-full ease-in-out absolute bottom-0 left-0 overflow-hidden bg-gradient-to-b from-[rgba(255,255,255,0)] via-white to-[rgba(255,255,255,1)]'
         )}
       ></div>
       <div
