@@ -39,27 +39,12 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
     isFullscreen,
   } = useVideo(src);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'f') {
-        fullScreen();
-      }
-
-      if (e.key === ' ') {
-        e.preventDefault();
-        isPlaying ? pause() : play();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [fullScreen, pause, play, isPlaying]);
-
   return (
-    <div className="relative rounded-md shadow-md overflow-hidden" ref={videoContainerRef}>
+    <div
+      onClick={isPlaying ? pause : play}
+      className="relative rounded-md shadow-md overflow-hidden"
+      ref={videoContainerRef}
+    >
       {/* loading displays when video is not loaded yet(even first frame) and when buffered time is finished and we are waiting for new chunks */}
       {isVideoWaited && (
         <div className="absolute z-30 flex items-center justify-center inset-0 m-auto">
@@ -68,12 +53,16 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
           </div>
         </div>
       )}
-      <h2 className="absolute text-white text-xl font-semibold mt-8 flex gap-1 items-center">
-        <span className="mr-8">
-          <Icon name="list-video" size="lg" />
-        </span>
-        {title}
-      </h2>
+      {isFullscreen ? (
+        <h2 className="absolute text-white text-xl font-semibold mt-8 flex gap-1 items-center">
+          <span className="mr-8">
+            <Icon name="list-video" size="lg" />
+          </span>
+          {title}
+        </h2>
+      ) : (
+        'logo'
+      )}
       <video
         src={src}
         className="w-full"
@@ -86,6 +75,7 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
         className={cn('absolute w-full h-20 z-10 bottom-0', {
           // 'opacity-50 pointer-events-none': !isVideoLoaded,
         })}
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="relative mx-auto w-11/12">
           {/* progress bar */}

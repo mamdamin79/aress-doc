@@ -64,11 +64,11 @@ export const PlayerOptions: React.FC<Props> = React.memo(
               <Icon name="settings" />
             </button>
           </Tooltip>
-          {open && (
+          {(
             <div
               ref={optionsRef}
               dir="rtl"
-              className="w-60 bg-gray-900/90 z-20 border-gray-700 rounded-md border-[1.5px] absolute bottom-20 -right-24"
+              className={cn("w-60 bg-gray-900/90 z-20 border-gray-700 rounded-md duration-300 ease-in-out border-[1.5px] absolute bottom-20 -right-24",{"bottom-56 opacity-0":!open})}
             >
               <Disclosure as="div" className="" defaultOpen={true}>
                 <DisclosureButton className="p-3 group flex w-full items-center justify-between">

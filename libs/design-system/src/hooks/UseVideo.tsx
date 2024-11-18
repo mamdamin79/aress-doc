@@ -253,6 +253,43 @@ export const useVideo = (src: string) => {
       video.removeEventListener('progress', updateBufferedTime);
     };
   }, [src]);
+
+      // Keyboard controls
+      useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+
+
+            switch (e.code) {
+                case "Space": {
+                    e.preventDefault();
+                    return state.isPlaying ? pause() : play();
+                }
+                case "KeyF": {
+                    return fullScreen();
+                }
+                case "ArrowRight": {
+                    return videoRef.current!.currentTime = Math.min(videoRef.current!.currentTime + 10, videoRef.current!.duration);
+
+                }
+                case "ArrowLeft": {
+                    return videoRef.current!.currentTime = Math.max(videoRef.current!.currentTime - 10, 0);
+
+                }
+                case "KeyM": {
+                    return toggleMute()
+                }
+
+
+                default:
+                    break;
+            }
+
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [state.isPlaying]);
+
   const play = useCallback(() => videoRef.current?.play(), []);
   const pause = useCallback(() => videoRef.current?.pause(), []);
   const pictureInPicture = useCallback(() => videoRef.current?.requestPictureInPicture(), []);
