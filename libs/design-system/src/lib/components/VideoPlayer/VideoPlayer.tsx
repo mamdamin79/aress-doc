@@ -1,5 +1,5 @@
 import { useVideo } from '../../../hooks/UseVideo';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Icon } from '../Icon';
 import { VideoTimer } from './ControlPanel/VideoTimer/VideoTimer';
 import { PlayerActions } from './ControlPanel/PlayerActions/PlayerActions';
@@ -15,6 +15,7 @@ type Props = {
 };
 
 export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
+  const [showControlPanel,setShowControlPanel] = useState(true)
   const {
     play,
     videoRef,
@@ -39,6 +40,26 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
     isFullscreen,
   } = useVideo(src);
 
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+  
+    const showControls = () => {
+      setShowControlPanel(true);
+      clearTimeout(timeout);
+      timeout = setTimeout(() => setShowControlPanel(false), 5000);
+    };
+  
+    videoContainerRef.current?.addEventListener('mousemove', showControls);
+    videoContainerRef.current?.addEventListener('touchstart', showControls);
+  
+    return () => {
+      videoContainerRef.current?.removeEventListener('mousemove', showControls);
+      videoContainerRef.current?.removeEventListener('touchstart', showControls);
+      clearTimeout(timeout);
+    };
+  }, []);
+  
+
   return (
     <div
       onClick={isPlaying ? pause : play}
@@ -61,7 +82,9 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
           {title}
         </h2>
       ) : (
-        'logo'
+        <span className='absolute'>
+          logo
+        </span>
       )}
       <video
         src={src}
@@ -72,8 +95,8 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
       <div className="absolute inset-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
       {/* control panel container */}
       <div
-        className={cn('absolute w-full h-20 z-10 bottom-0', {
-          // 'opacity-50 pointer-events-none': !isVideoLoaded,
+        className={cn('absolute w-full h-20 z-10 bottom-0 duration-700 ease-in-out transition-all', {
+          '-bottom-28': !showControlPanel && isPlaying,
         })}
         onClick={(e) => e.stopPropagation()}
       >
