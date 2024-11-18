@@ -36,6 +36,7 @@ export const Tooltip: React.FC<Props> = ({
         positionStrategy="fixed"
         offset={offset}
         content={title}
+        style={{padding:"0 8px"}}
         className={cn(
           'bg-gray-1000 shadow-5xl rounded-xs text-white font-medium font-vazirmatn text-sm',
           className
