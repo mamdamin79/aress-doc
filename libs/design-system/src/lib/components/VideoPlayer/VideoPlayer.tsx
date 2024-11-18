@@ -6,7 +6,7 @@ import { PlayerActions } from './ControlPanel/PlayerActions';
 import { PlayerOptions } from './ControlPanel/PlayerOptions';
 import { cn } from '../../../utils/classNames.utils';
 import { PlayerProgressBar } from './ControlPanel/PlayerProgressBar';
-import videoLogo from "../../../assets/images/videoLogo.svg"
+import videoLogo from '../../../assets/images/videoLogo.svg';
 import Image from 'next/image';
 
 type Props = {
@@ -68,7 +68,7 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
     <div
       onContextMenu={(e) => e.preventDefault()}
       onClick={isPlaying ? pause : play}
-      className="relative rounded-md shadow-md overflow-hidden"
+      className={cn("relative rounded-md shadow-md overflow-hidden",{"cursor-none":!showControlPanel})}
       ref={videoContainerRef}
     >
       {/* loading displays when video is not loaded yet(even first frame) and when buffered time is finished and we are waiting for new chunks */}
@@ -88,17 +88,10 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
         </h2>
       ) : (
         <span className="absolute right-8 text-white">
-          {
-            <Image src={videoLogo} width={100} height={100} alt='logo'/>
-          }
+          {<Image src={videoLogo} width={100} height={100} alt="logo" />}
         </span>
       )}
-      <video
-        src={src}
-        className="w-full"
-        poster={poster}
-        ref={videoRef}
-      />
+      <video src={src} className="w-full" poster={poster} ref={videoRef} />
       <div className="absolute inset-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
       {/* control panel container */}
       <div

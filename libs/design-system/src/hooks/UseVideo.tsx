@@ -9,11 +9,11 @@ interface videoState {
   progress: number;
   isVideoLoaded: boolean;
   isVideoWaited: boolean; //buffering
-  bufferedTime:number,
-  playBackRate:number,
-  volume:number,
-  muted:boolean,
-  isFullscreen:boolean
+  bufferedTime: number;
+  playBackRate: number;
+  volume: number;
+  muted: boolean;
+  isFullscreen: boolean;
 }
 
 type videoAction =
@@ -29,7 +29,7 @@ type videoAction =
   | { type: 'SET_PLAYBACK_RATE'; playBackRate: number }
   | { type: 'SET_VOLUME'; volume: number }
   | { type: 'SET_MUTED'; muted: boolean }
-  | { type: 'SET_FULLSCREEN',isFullscreen:boolean};
+  | { type: 'SET_FULLSCREEN'; isFullscreen: boolean };
 
 const videoReducer = (state: videoState, action: videoAction): videoState => {
   switch (action.type) {
@@ -83,31 +83,31 @@ const videoReducer = (state: videoState, action: videoAction): videoState => {
         isVideoWaited: action.isVideoWaited,
       };
       break;
-      case 'SET_BUFFERED_TIME':
+    case 'SET_BUFFERED_TIME':
       return {
         ...state,
         bufferedTime: action.bufferedTime,
       };
-      case 'SET_PLAYBACK_RATE':
+    case 'SET_PLAYBACK_RATE':
       return {
         ...state,
-        playBackRate : action.playBackRate,
+        playBackRate: action.playBackRate,
       };
-      case 'SET_VOLUME':
+    case 'SET_VOLUME':
       return {
         ...state,
-        volume : action.volume,
+        volume: action.volume,
       };
-      case 'SET_MUTED':
+    case 'SET_MUTED':
       return {
         ...state,
-        muted : action.muted,
+        muted: action.muted,
       };
       break;
-      case 'SET_FULLSCREEN':
+    case 'SET_FULLSCREEN':
       return {
         ...state,
-        isFullscreen : action.isFullscreen,
+        isFullscreen: action.isFullscreen,
       };
       break;
     default:
@@ -118,7 +118,7 @@ const videoReducer = (state: videoState, action: videoAction): videoState => {
 
 export const useVideo = (src: string) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const videoContainerRef = useRef<HTMLDivElement>(null);  
+  const videoContainerRef = useRef<HTMLDivElement>(null);
   const [state, dispatch] = useReducer(videoReducer, {
     isPlaying: false,
     currentTime: 0,
@@ -127,11 +127,11 @@ export const useVideo = (src: string) => {
     progress: 0,
     isVideoLoaded: false,
     isVideoWaited: false, //buffering
-    bufferedTime:0,
-    playBackRate:1,
-    volume:1,
-    muted:false,
-    isFullscreen:false
+    bufferedTime: 0,
+    playBackRate: 1,
+    volume: 1,
+    muted: false,
+    isFullscreen: false,
   });
   useEffect(() => {
     const video = videoRef.current!;
@@ -169,7 +169,8 @@ export const useVideo = (src: string) => {
       const buffered = video.buffered;
       const duration = video.duration;
       if (buffered.length > 0) {
-        const bufferedTime = (buffered.end(buffered.length - 1) / duration) * 100;
+        const bufferedTime =
+          (buffered.end(buffered.length - 1) / duration) * 100;
         dispatch({ type: 'SET_BUFFERED_TIME', bufferedTime });
       }
     };
@@ -238,8 +239,6 @@ export const useVideo = (src: string) => {
     video.addEventListener('progress', updateBufferedTime);
     document.addEventListener('fullscreenchange', handleFullScreenChange);
 
-
-
     return () => {
       // clean up listeners
       video.removeEventListener('play', handlePlay);
@@ -254,45 +253,50 @@ export const useVideo = (src: string) => {
     };
   }, [src]);
 
-      // Keyboard controls
-      useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
+  // Keyboard controls
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      switch (e.code) {
+        case 'Space': {
+          e.preventDefault();
+          return state.isPlaying ? pause() : play();
+        }
+        case 'KeyF': {
+          return fullScreen();
+        }
+        case 'ArrowRight': {
+          return (videoRef.current!.currentTime = Math.min(
+            videoRef.current!.currentTime + 10,
+            videoRef.current!.duration
+          ));
+        }
+        case 'ArrowLeft': {
+          return (videoRef.current!.currentTime = Math.max(
+            videoRef.current!.currentTime - 10,
+            0
+          ));
+        }
+        case 'KeyM': {
+          return toggleMute();
+        }
+        case 'KeyI': {
+          return pictureInPicture();
+        }
+        default:
+          break;
+      }
+    };
 
-
-            switch (e.code) {
-                case "Space": {
-                    e.preventDefault();
-                    return state.isPlaying ? pause() : play();
-                }
-                case "KeyF": {
-                    return fullScreen();
-                }
-                case "ArrowRight": {
-                    return videoRef.current!.currentTime = Math.min(videoRef.current!.currentTime + 10, videoRef.current!.duration);
-
-                }
-                case "ArrowLeft": {
-                    return videoRef.current!.currentTime = Math.max(videoRef.current!.currentTime - 10, 0);
-
-                }
-                case "KeyM": {
-                    return toggleMute()
-                }
-
-
-                default:
-                    break;
-            }
-
-        };
-
-        window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [state.isPlaying]);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [state.isPlaying]);
 
   const play = useCallback(() => videoRef.current?.play(), []);
   const pause = useCallback(() => videoRef.current?.pause(), []);
-  const pictureInPicture = useCallback(() => videoRef.current?.requestPictureInPicture(), []);
+  const pictureInPicture = useCallback(
+    () => videoRef.current?.requestPictureInPicture(),
+    []
+  );
   const seek = (newProgress: number) => {
     if (videoRef.current) {
       const newTime = (newProgress / 100) * videoRef.current.duration;
@@ -306,7 +310,7 @@ export const useVideo = (src: string) => {
       videoRef.current.playbackRate = rate;
       dispatch({ type: 'SET_PLAYBACK_RATE', playBackRate: rate });
     }
-  }, []);  
+  }, []);
 
   const setVolume = useCallback((volume: number) => {
     if (videoRef.current) {
@@ -332,7 +336,6 @@ export const useVideo = (src: string) => {
       }
     }
   }, []);
-  
 
   return {
     ...state,
@@ -345,6 +348,6 @@ export const useVideo = (src: string) => {
     setPlaybackRate,
     setVolume,
     toggleMute,
-    videoContainerRef
+    videoContainerRef,
   };
 };
