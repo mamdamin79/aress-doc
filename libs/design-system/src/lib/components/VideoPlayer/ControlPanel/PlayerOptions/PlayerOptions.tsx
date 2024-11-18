@@ -7,7 +7,7 @@ import {
   MenuItems,
 } from '@headlessui/react';
 import { Icon } from '../../../Icon';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { cn } from '../../../../../utils/classNames.utils';
 import { PLAYBACK_RATES } from './PlayerOptions.constants';
 import { Tooltip } from '../../../Tooltip';
@@ -29,6 +29,25 @@ export const PlayerOptions: React.FC<Props> = React.memo(
     isFullscreen,
   }) => {
     const [open, setOpen] = useState(false);
+
+    const optionsRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (
+          optionsRef.current &&
+          !optionsRef.current.contains(event.target as Node)
+        ) {
+          setOpen(false);
+        }
+      };
+
+      document.addEventListener('mousedown', handleClickOutside);
+
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, []);
     return (
       <div className="flex items-center gap-4">
         <Tooltip className="!z-30" title="اشتراک گذاری">
@@ -37,7 +56,7 @@ export const PlayerOptions: React.FC<Props> = React.memo(
           </button>
         </Tooltip>
         <div className="relative">
-          <Tooltip title='تنظیمات' className='!z-30'>
+          <Tooltip title="تنظیمات" className="!z-30">
             <button
               onClick={() => setOpen(!open)}
               className="text-white relative flex items-center justify-center p-1  duration-300 transition-all"
@@ -47,6 +66,7 @@ export const PlayerOptions: React.FC<Props> = React.memo(
           </Tooltip>
           {open && (
             <div
+              ref={optionsRef}
               dir="rtl"
               className="w-60 bg-gray-900/90 z-20 border-gray-700 rounded-md border-[1.5px] absolute bottom-20 -right-24"
             >
