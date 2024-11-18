@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import Draggable from 'react-draggable';
-import { PlayerThumbnail } from '../PlayerThumbnail/PlayerThumbnail';
+import { PlayerThumbnail } from '../PlayerThumbnail';
 
 type Props = {
   duration: number;

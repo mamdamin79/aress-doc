@@ -59,7 +59,7 @@ export const PlayerOptions: React.FC<Props> = React.memo(
           <Tooltip title="تنظیمات" className="!z-30">
             <button
               onClick={() => setOpen(!open)}
-              className="text-white relative flex items-center justify-center p-1  duration-300 transition-all"
+              className="text-white relative flex items-center justify-center p-1 mt-1  duration-300 transition-all"
             >
               <Icon name="settings" />
             </button>

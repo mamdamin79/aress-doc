@@ -1,11 +1,13 @@
 import { useVideo } from '../../../hooks/UseVideo';
 import React, { useEffect, useState } from 'react';
 import { Icon } from '../Icon';
-import { VideoTimer } from './ControlPanel/VideoTimer/VideoTimer';
-import { PlayerActions } from './ControlPanel/PlayerActions/PlayerActions';
-import { PlayerOptions } from './ControlPanel/PlayerOptions/PlayerOptions';
+import { VideoTimer } from './ControlPanel/VideoTimer';
+import { PlayerActions } from './ControlPanel/PlayerActions';
+import { PlayerOptions } from './ControlPanel/PlayerOptions';
 import { cn } from '../../../utils/classNames.utils';
-import { PlayerProgressBar } from './ControlPanel/PlayerProgressBar/PlayerProgressBar';
+import { PlayerProgressBar } from './ControlPanel/PlayerProgressBar';
+import videoLogo from "../../../assets/images/videoLogo.svg"
+import Image from 'next/image';
 
 type Props = {
   src: string;
@@ -85,12 +87,16 @@ export const VideoPlayer: React.FC<Props> = ({ src, poster = '', title }) => {
           {title}
         </h2>
       ) : (
-        <span className="absolute">logo</span>
+        <span className="absolute right-8 text-white">
+          {
+            <Image src={videoLogo} width={100} height={100} alt='logo'/>
+          }
+        </span>
       )}
       <video
         src={src}
         className="w-full"
-        poster={'https://api.classbon.com/api/picture/20219'}
+        poster={poster}
         ref={videoRef}
       />
       <div className="absolute inset-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
