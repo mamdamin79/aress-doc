@@ -24,7 +24,7 @@ export const PlayerActions: React.FC<Props> = React.memo(
     };
     return (
       <>
-        <button className="text-white flex items-center justify-center p-1  duration-300 transition-all">
+        <button className="text-white  items-center justify-center p-1 sm:flex hidden  duration-300 transition-all">
           <Icon name="skip-back" />
         </button>
         {isPlaying ? (
@@ -62,7 +62,7 @@ export const PlayerActions: React.FC<Props> = React.memo(
             </Button>
           </Tooltip>
         )}
-        <button className="text-white flex items-center justify-center p-1  duration-300 transition-all">
+        <button className="text-white  items-center justify-center p-1 sm:flex hidden  duration-300 transition-all">
           <Icon name="skip-forward" />
         </button>
         <div className="group relative flex items-center space-x-2">
