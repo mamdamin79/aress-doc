@@ -21,10 +21,7 @@ export const Tooltip: React.FC<Props> = ({
   return (
     <>
       {/* wrapper */}
-      <div
-        data-tooltip-id={id}
-        className="relative inline-block cursor-pointer"
-      >
+      <div data-tooltip-id={id} className="relative cursor-pointer">
         {/* here is the component that need a tooltip */}
         {children}
       </div>

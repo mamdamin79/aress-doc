@@ -13,6 +13,7 @@ interface Props {
     minError: boolean;
     maxError: boolean;
   };
+  placeholder: string;
   max?: string;
   errorHandler: (e: { minError: boolean; maxError: boolean }) => void;
 }
@@ -32,6 +33,7 @@ const isCustomDate = (value: unknown): value is CustomDate => {
 export const DateInput: React.FC<Props> = ({
   defaultValue,
   errorHandler,
+  placeholder,
   errors,
   onChange,
   mode,
@@ -103,11 +105,11 @@ export const DateInput: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, defaultValue]);
 
-  useEffect(() => {
-    if (!day && active) {
-      dayRef?.current?.focus();
-    }
-  }, [day, active]);
+  // useEffect(() => {
+  //   if (!day && active) {
+  //     dayRef?.current?.focus();
+  //   }
+  // }, [day, active]);
 
   useEffect(() => {
     if (min && mode === 'miladi') {
@@ -625,69 +627,76 @@ export const DateInput: React.FC<Props> = ({
     <div>
       <div
         className={cn(
-          'w-40 rounded-md bg-white border-2 flex items-center border-gray-500 gap-1 py-2 px-4',
+          'w-40 rounded-md bg-white border-2 flex items-center gap-1 py-2 px-4',
           {
             'border-red-600': errors?.maxError || errors?.minError,
             'border-brand-600': active && !errors.maxError && !errors.minError,
+            'border-gray-500': year && day && month,
           }
         )}
       >
-        <input
-          dir="rtl"
-          onClick={() => {
-            setActiveIndex(1);
-            dayRef?.current?.setSelectionRange(2, 2);
-          }}
-          disabled={!active}
-          ref={dayRef}
-          value={formatDay(day)}
-          onChange={(e) => changeDayInput(+e.target.value, true)}
-          type="text"
-          placeholder="روز"
-          className={cn(
-            'w-5 outline-none pb-0.5 -mx-1 placeholder:text-black block',
-            activeIndex === 1 && active && 'bg-blue-200'
-          )}
-        />
-        /
-        <input
-          dir="rtl"
-          disabled={!active}
-          onClick={() => {
-            setActiveIndex(2);
-            monthRef?.current?.setSelectionRange(2, 2);
-          }}
-          ref={monthRef}
-          value={formatMonth(month)}
-          onChange={(e) => changeMonthInput(+e.target.value, true)}
-          type="text"
-          placeholder="ماه"
-          className={cn(
-            'w-5 outline-none pb-0.5 px-0 -mx-1 placeholder:text-black block',
-            activeIndex === 2 && active && 'bg-blue-200'
-          )}
-        />
-        /
-        <input
-          dir="rtl"
-          disabled={!active}
-          onClick={() => {
-            setActiveIndex(3);
-            yearRef?.current?.setSelectionRange(
-              yearRef?.current?.value.length,
-              yearRef?.current?.value.length
-            );
-          }}
-          ref={yearRef}
-          value={year ?? ''}
-          onChange={(e) => changeYearInput(+e.target.value, true)}
-          type="text"
-          placeholder="سال"
-          className={cn(
-            'w-10 outline-none -mx-1 pb-0.5 placeholder:text-black block',
-            activeIndex === 3 && active && 'bg-blue-200'
-          )}
-        />
+        {active ? (
+          <>
+            <input
+              dir="rtl"
+              onClick={() => {
+                setActiveIndex(1);
+                dayRef?.current?.setSelectionRange(2, 2);
+              }}
+              disabled={!active}
+              ref={dayRef}
+              value={formatDay(day)}
+              onChange={(e) => changeDayInput(+e.target.value, true)}
+              type="text"
+              placeholder="روز"
+              className={cn(
+                'w-5 outline-none pb-0.5 -mx-1 placeholder:text-black block',
+                activeIndex === 1 && active && 'bg-blue-200'
+              )}
+            />
+            /
+            <input
+              dir="rtl"
+              disabled={!active}
+              onClick={() => {
+                setActiveIndex(2);
+                monthRef?.current?.setSelectionRange(2, 2);
+              }}
+              ref={monthRef}
+              value={formatMonth(month)}
+              onChange={(e) => changeMonthInput(+e.target.value, true)}
+              type="text"
+              placeholder="ماه"
+              className={cn(
+                'w-5 outline-none pb-0.5 px-0 -mx-1 placeholder:text-black block',
+                activeIndex === 2 && active && 'bg-blue-200'
+              )}
+            />
+            /
+            <input
+              dir="rtl"
+              disabled={!active}
+              onClick={() => {
+                setActiveIndex(3);
+                yearRef?.current?.setSelectionRange(
+                  yearRef?.current?.value.length,
+                  yearRef?.current?.value.length
+                );
+              }}
+              ref={yearRef}
+              value={year ?? ''}
+              onChange={(e) => changeYearInput(+e.target.value, true)}
+              type="text"
+              placeholder="سال"
+              className={cn(
+                'w-10 outline-none -mx-1 pb-0.5 placeholder:text-black block',
+                activeIndex === 3 && active && 'bg-blue-200'
+              )}
+            />
+          </>
+        ) : (
+          <span className="text-md text-gray-700">{placeholder}</span>
+        )}
       </div>
       <span className="text-red-600 font-medium text-sm">
         {errors?.minError && 'متن نمونه برای نمایش خطا.'}
