@@ -36,23 +36,20 @@ export const Button: React.FC<ButtonProps> = ({
         { 'cursor-default': disabled },
         { 'rounded-lg h-12': size === 'md' },
         { 'rounded-md h-[38px]': size === 'sm' },
+        mode === 'primary' && 'text-white',
         mode === 'primary' &&
           disabled &&
-          (theme === 'brand'
-            ? 'bg-brand-300 text-white'
-            : 'text-white bg-red-300'),
+          (theme === 'brand' ? 'bg-brand-300' : 'bg-red-300'),
         mode === 'primary' &&
           isLoading &&
           !disabled &&
-          (theme === 'brand'
-            ? 'bg-brand-600 text-white cursor-default'
-            : 'bg-red-600 cursor-default text-white'),
+          (theme === 'brand' ? 'bg-brand-600' : 'bg-red-600'),
         mode === 'primary' &&
           !isLoading &&
           !disabled &&
           (theme === 'brand'
-            ? 'bg-brand-600 active:bg-brand-800 text-white hover:bg-brand-700'
-            : 'bg-red-600 active:bg-red-800 text-white hover:bg-red-700'),
+            ? 'bg-brand-600 active:bg-brand-800 hover:bg-brand-700'
+            : 'bg-red-600 active:bg-red-800 hover:bg-red-700'),
         mode === 'secondary' &&
           disabled &&
           (theme === 'brand'
