@@ -2,9 +2,6 @@ import {
   Disclosure,
   DisclosureButton,
   DisclosurePanel,
-  Menu,
-  MenuButton,
-  MenuItems,
 } from '@headlessui/react';
 import { Icon } from '../../../Icon';
 import React, { useEffect, useRef, useState } from 'react';
@@ -18,6 +15,10 @@ type Props = {
   setPlaybackRate: (rate: number) => void;
   playBackRate: number;
   isFullscreen: boolean;
+  qualities: {
+    src: string;
+    label: string;
+  }[];
 };
 
 export const PlayerOptions: React.FC<Props> = React.memo(
@@ -27,6 +28,7 @@ export const PlayerOptions: React.FC<Props> = React.memo(
     playBackRate,
     setPlaybackRate,
     isFullscreen,
+    qualities
   }) => {
     const [open, setOpen] = useState(false);
 
@@ -64,11 +66,14 @@ export const PlayerOptions: React.FC<Props> = React.memo(
               <Icon name="settings" />
             </button>
           </Tooltip>
-          {(
+          {
             <div
               ref={optionsRef}
               dir="rtl"
-              className={cn("w-60 bg-gray-900/90 z-20 border-gray-700 rounded-md duration-300 ease-in-out border-[1.5px] absolute bottom-20 -right-24",{"bottom-56 opacity-0":!open})}
+              className={cn(
+                'w-60 bg-gray-900/90 z-20 border-gray-700 rounded-md duration-300 ease-in-out border-[1.5px] absolute bottom-20 -right-24',
+                { 'bottom-56 opacity-0': !open }
+              )}
             >
               <Disclosure as="div" className="" defaultOpen={true}>
                 <DisclosureButton className="p-3 group flex w-full items-center justify-between">
@@ -113,10 +118,29 @@ export const PlayerOptions: React.FC<Props> = React.memo(
                     <Icon name="chevron-left" />
                   </span>
                 </DisclosureButton>
-                <DisclosurePanel className="mt-2 text-sm/5 text-white/50"></DisclosurePanel>
+                <DisclosurePanel className="mt-2 text-sm/5 text-white/50">
+                <ul>
+                    {qualities.map((item) => (
+                      <li
+                        // onClick={() => setPlaybackRate(item)}
+                        className={cn(
+                          'hover:bg-gray-800/80 transition-colors duration-200 py-2 cursor-pointer flex gap-2 pr-10',
+                          // { 'pr-3': playBackRate === item }
+                        )}
+                      >
+                        {/* {playBackRate === item && (
+                          <span>
+                            <Icon name="check" />
+                          </span>
+                        )}{' '} */}
+                        {item.label}
+                      </li>
+                    ))}
+                  </ul>
+                </DisclosurePanel>
               </Disclosure>
             </div>
-          )}
+          }
         </div>
         <Tooltip className="!z-30" title="(i) picture-in-picture حالت">
           <button
