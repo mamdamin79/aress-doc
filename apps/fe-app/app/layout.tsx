@@ -13,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={cn('sdfsdf py-2 absolute pb-1', 'dfsdfs')}>
+      <body className={cn('sdfsdf', 'dfsdfs')}>
         <Header />
         {children}
       </body>
