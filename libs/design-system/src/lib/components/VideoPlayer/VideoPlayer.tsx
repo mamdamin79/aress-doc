@@ -25,7 +25,7 @@ export const VideoPlayer: React.FC<Props> = ({
   title,
 }) => {
   const [showControlPanel, setShowControlPanel] = useState(true);
-  const [selectedQuality, setSelectedQuality] = useState(qualities[2]);
+  // const [selectedQuality, setSelectedQuality] = useState(qualities[2]);
   const {
     play,
     videoRef,
@@ -48,7 +48,9 @@ export const VideoPlayer: React.FC<Props> = ({
     toggleMute,
     videoContainerRef,
     isFullscreen,
-  } = useVideo(selectedQuality.src);
+    quality,
+    changeQuality
+  } = useVideo(qualities[0].src,qualities);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -101,7 +103,7 @@ export const VideoPlayer: React.FC<Props> = ({
           {<Image src={videoLogo} width={100} height={100} alt="logo" />}
         </span>
       )}
-      <video src={selectedQuality.src} className="w-full" poster={poster} ref={videoRef} />
+      <video  className="w-full" poster={poster} ref={videoRef} />
       <div className="absolute inset-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
       {/* control panel container */}
       <div
@@ -146,6 +148,8 @@ export const VideoPlayer: React.FC<Props> = ({
               fullScreen={fullScreen}
               pictureInPicture={pictureInPicture}
               qualities={qualities}
+              quality={quality}
+              changeQuality={changeQuality}
             />
           </div>
         </div>

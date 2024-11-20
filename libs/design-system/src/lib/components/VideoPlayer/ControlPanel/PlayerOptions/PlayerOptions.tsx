@@ -10,6 +10,11 @@ import { PLAYBACK_RATES } from './PlayerOptions.constants';
 import { Tooltip } from '../../../Tooltip';
 
 type Props = {
+  quality: {
+    src: string;
+    label: string;
+  };
+  changeQuality: (quality: { src: string; label: string }) => void;
   fullScreen: () => void;
   pictureInPicture: () => void;
   setPlaybackRate: (rate: number) => void;
@@ -28,7 +33,9 @@ export const PlayerOptions: React.FC<Props> = React.memo(
     playBackRate,
     setPlaybackRate,
     isFullscreen,
-    qualities
+    qualities,
+    quality,
+    changeQuality,
   }) => {
     const [open, setOpen] = useState(false);
 
@@ -119,20 +126,20 @@ export const PlayerOptions: React.FC<Props> = React.memo(
                   </span>
                 </DisclosureButton>
                 <DisclosurePanel className="mt-2 text-sm/5 text-white/50">
-                <ul>
+                  <ul>
                     {qualities.map((item) => (
                       <li
-                        // onClick={() => setPlaybackRate(item)}
+                        onClick={() => changeQuality(item)}
                         className={cn(
                           'hover:bg-gray-800/80 transition-colors duration-200 py-2 cursor-pointer flex gap-2 pr-10',
-                          // { 'pr-3': playBackRate === item }
+                          { 'pr-3': quality.label === item.label }
                         )}
                       >
-                        {/* {playBackRate === item && (
+                        {quality.label === item.label && (
                           <span>
                             <Icon name="check" />
                           </span>
-                        )}{' '} */}
+                        )}{' '}
                         {item.label}
                       </li>
                     ))}

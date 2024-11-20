@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useReducer, useRef } from 'react';
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import Hls from 'hls.js'; // Import HLS.js
 
 interface videoState {
@@ -14,6 +14,10 @@ interface videoState {
   volume: number;
   muted: boolean;
   isFullscreen: boolean;
+  quality: {
+    src: string;
+    label: string;
+  };
 }
 
 type videoAction =
@@ -29,7 +33,14 @@ type videoAction =
   | { type: 'SET_PLAYBACK_RATE'; playBackRate: number }
   | { type: 'SET_VOLUME'; volume: number }
   | { type: 'SET_MUTED'; muted: boolean }
-  | { type: 'SET_FULLSCREEN'; isFullscreen: boolean };
+  | { type: 'SET_FULLSCREEN'; isFullscreen: boolean }
+  | {
+      type: 'SET_QUALITY';
+      quality: {
+        src: string;
+        label: string;
+      };
+    };
 
 const videoReducer = (state: videoState, action: videoAction): videoState => {
   switch (action.type) {
@@ -109,6 +120,11 @@ const videoReducer = (state: videoState, action: videoAction): videoState => {
         ...state,
         isFullscreen: action.isFullscreen,
       };
+    case 'SET_QUALITY':
+      return {
+        ...state,
+        quality: action.quality,
+      };
       break;
     default:
       return state;
@@ -116,9 +132,17 @@ const videoReducer = (state: videoState, action: videoAction): videoState => {
   }
 };
 
-export const useVideo = (src: string) => {
+export const useVideo = (
+  src: string,
+  qualities: {
+    src: string;
+    label: string;
+  }[]
+) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
+  const [lastTime, setLastTime] = useState<number>(0);
+
   const [state, dispatch] = useReducer(videoReducer, {
     isPlaying: false,
     currentTime: 0,
@@ -132,7 +156,10 @@ export const useVideo = (src: string) => {
     volume: 1,
     muted: false,
     isFullscreen: false,
+    quality: qualities[0],
   });
+  console.log(state);
+
   useEffect(() => {
     const video = videoRef.current!;
     // Check if the source is M3U8
@@ -155,7 +182,21 @@ export const useVideo = (src: string) => {
       }
     } else {
       // If it's not M3U8, set the video source directly
-      video.src = src;
+      let currentSrc = state.quality.src;
+      let shouldPlay = state.isPlaying;
+      const currentPlaybackTime = state.currentTime;
+      video.src = currentSrc;
+
+      const handleLoadedMetadata = () => {
+        video.currentTime = currentPlaybackTime; // بازگرداندن currentTime
+        if (shouldPlay) {
+          play();
+        } else {
+          pause();
+        }
+      };
+
+      video.addEventListener('loadeddata', handleLoadedMetadata);
     }
     // dispatcher functions - these are update our states and used as a callback function in our listener
 
@@ -251,7 +292,18 @@ export const useVideo = (src: string) => {
       video.removeEventListener('waiting', handleWaiting);
       video.removeEventListener('progress', updateBufferedTime);
     };
-  }, [src]);
+  }, [state.quality]);
+
+  // useEffect(()=>{
+  //   const video = videoRef.current!;
+  //   video.src = state.quality.src
+  //   video.addEventListener('loadedmetadata', ()=>{
+  //     video.currentTime = state.currentTime
+  //   });
+
+  //   state.isPlaying ? play() : pause()
+
+  // },[state.quality])
 
   // Keyboard controls
   useEffect(() => {
@@ -293,6 +345,13 @@ export const useVideo = (src: string) => {
 
   const play = useCallback(() => videoRef.current?.play(), []);
   const pause = useCallback(() => videoRef.current?.pause(), []);
+  const changeQuality = useCallback(
+    (quality: { src: string; label: string }) => {
+      dispatch({ type: 'SET_QUALITY', quality });
+    },
+    []
+  );
+
   const pictureInPicture = useCallback(
     () => videoRef.current?.requestPictureInPicture(),
     []
@@ -349,5 +408,6 @@ export const useVideo = (src: string) => {
     setVolume,
     toggleMute,
     videoContainerRef,
+    changeQuality,
   };
 };
