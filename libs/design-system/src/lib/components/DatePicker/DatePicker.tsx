@@ -9,7 +9,7 @@ import { cn } from '../../../utils';
 import { Field, Select } from '@headlessui/react';
 import { Icon } from '../Icon';
 import { DateInput } from '../DateInput';
-import moment from 'jalali-moment';
+import moment, { months } from 'jalali-moment';
 import momenMiladi from 'moment';
 // import momentJalali from 'moment-jalali';
 import { Tooltip } from '../Tooltip';
@@ -49,6 +49,9 @@ export function DatePicker({ min, max }: Props) {
   const [endDate, setEndDateS] = useState<string | Date>();
   const [activeStartInput, setActiveStartInput] = useState(true);
   const [activeEndInput, setActiveEndInput] = useState(false);
+  const [invalidStartDate, setInvalidStartDate] = useState('');
+  const [invalidEndDate, setInvalidEndDate] = useState('');
+  const [mosvaiDate, setMosaviDate] = useState('');
 
   const [focuseStartInput, setFocuseStartInput] = useState(true);
   const [focuseEndInput, setFocuseEndInput] = useState(false);
@@ -111,7 +114,6 @@ export function DatePicker({ min, max }: Props) {
     handleShowNextMonth,
     handleShowPrevMonth,
     setOpen,
-    isStartDate,
     getMode,
     getDate,
     isSelectedDay,
@@ -123,7 +125,6 @@ export function DatePicker({ min, max }: Props) {
     getYearsList,
     changeYear,
     isLoading,
-    setEndDate,
     goToToday,
     getEndDate,
     getDays,
@@ -154,17 +155,32 @@ export function DatePicker({ min, max }: Props) {
   //   }
   // }, [startDate]);
 
+  console.log(getDays());
+
   useEffect(() => {
     if (typeof startDate === 'string' && typeof endDate === 'string') {
-      console.log(startDate.replace(/-/g, ''), endDate.replace(/-/g, ''));
-
-      if (startDate.replace(/-/g, '') > endDate.replace(/-/g, '')) {
-        setStartErrors({ maxError: true, minError: true });
+      if (
+        startDate.replace(/-/g, '') > endDate.replace(/-/g, '') &&
+        focuseStartInput
+      ) {
+        setInvalidStartDate('تاریخ شروع نباید بیشتر از تاریخ پایان باشد.');
+      } else if (
+        endDate.replace(/-/g, '') < startDate.replace(/-/g, '') &&
+        focuseEndInput
+      ) {
+        setInvalidEndDate('تاریخ پایان نباید کمتر از تاریخ شروع باشد.');
       } else {
-        setStartErrors({ maxError: false, minError: false });
+        setInvalidEndDate('');
+        setInvalidStartDate('');
+      }
+
+      if (startDate.replace(/-/g, '') === endDate.replace(/-/g, '')) {
+        setMosaviDate('تاریخ شروع و پایان نباید تو یک روز باشد.');
+      } else {
+        setMosaviDate('');
       }
     }
-  }, [startDate, endDate]);
+  }, [startDate, endDate, focuseStartInput, focuseEndInput]);
 
   useEffect(() => {
     // change date listener
@@ -232,8 +248,8 @@ export function DatePicker({ min, max }: Props) {
                             'shadow-none !cursor-pointer hover:bg-brand-600',
                             item === year && 'text-brand-600'
                           )}
-                          value={'1400'}
-                          // selected
+                          value={year}
+                          selected
                         >
                           {year}
                         </option>
@@ -286,6 +302,10 @@ export function DatePicker({ min, max }: Props) {
                     </option>
                   ) : (
                     <option
+                      disabled={
+                        +min.slice(0, 4) === year &&
+                        item.monthNumber < +min.slice(5, 7)
+                      }
                       className={cn(
                         'shadow-none cursor-pointer !pr-7 !py-2 !hover:bg-brand-600',
                         item.name === month && 'text-brand-600'
@@ -307,6 +327,8 @@ export function DatePicker({ min, max }: Props) {
       </button>
     </div>
   );
+
+  console.log(getRenderedMonthName());
 
   const renderTooltip = () => {
     // if (!getDate() && !getEndDate()) {
@@ -340,64 +362,99 @@ export function DatePicker({ min, max }: Props) {
               width: 800,
             }}
           >
-            <div className="flex gap-2 text-md items-center font-vazirmatn justify-center">
-              <div className="flex flex-col gap-1 items-start">
-                <span className={cn({ invisible: !activeStartInput })}>
-                  تاریخ شروع بازه:
-                </span>
-                <div
-                  onClick={() => {
-                    setActiveStartInput(true);
-                    setFocuseStartInput(true);
-                    setFocuseEndInput(false);
-                    if (getDate() && !getEndDate()) {
-                      setActiveEndInput(false);
-                    }
-                  }}
-                >
-                  <DateInput
-                    placeholder="تاریخ شروع"
-                    active={activeStartInput}
-                    focus={focuseStartInput}
-                    onChange={updateStartInput}
-                    errors={startErrors}
-                    errorHandler={errorHandler}
-                    mode="jalali"
-                    min={min}
-                    max={max}
-                    defaultValue={getDate()}
-                  />
+            <div className="flex flex-col gap-1">
+              <div className="flex gap-2 text-md items-center font-vazirmatn justify-center">
+                <div className="flex flex-col gap-1 items-start">
+                  <span className={cn({ invisible: !activeStartInput })}>
+                    تاریخ شروع بازه:
+                  </span>
+                  <div
+                    onClick={() => {
+                      setActiveStartInput(true);
+                      setFocuseStartInput(true);
+                      setFocuseEndInput(false);
+                      if (getDate() && !getEndDate()) {
+                        setActiveEndInput(false);
+                      }
+                    }}
+                  >
+                    <DateInput
+                      placeholder="تاریخ شروع"
+                      active={activeStartInput}
+                      focus={focuseStartInput}
+                      onChange={updateStartInput}
+                      errors={startErrors}
+                      errorHandler={errorHandler}
+                      mode="jalali"
+                      min={min}
+                      max={max}
+                      defaultValue={getDate()}
+                    />
+                  </div>
+                </div>
+                <div className="w-2.5 h-0.5 mt-7 bg-gray-500"></div>
+                <div className="gap-1 flex-col flex items-start">
+                  <span className={cn({ invisible: !activeEndInput })}>
+                    تاریخ پایان بازه:
+                  </span>
+                  <div
+                    onClick={() => {
+                      if (getDate()) {
+                        setActiveEndInput(true);
+                        setFocuseEndInput(true);
+                        setFocuseStartInput(false);
+                      }
+                    }}
+                  >
+                    <DateInput
+                      placeholder="تاریخ پایان"
+                      active={activeEndInput}
+                      focus={focuseEndInput}
+                      onChange={updateEndInput}
+                      errors={endErrors}
+                      errorHandler={endErrorHandler}
+                      mode="jalali"
+                      min={min}
+                      max={max}
+                      defaultValue={getEndDate()}
+                    />
+                  </div>
                 </div>
               </div>
-              <div className="w-2.5 h-0.5 mt-7 bg-gray-500"></div>
-              <div className="gap-1 flex-col flex items-start">
-                <span className={cn({ invisible: !activeEndInput })}>
-                  تاریخ پایان بازه:
+              <div className="mr-56 visible h-4">
+                <span className="text-red-600 font-medium text-xs">
+                  {!startErrors.minError &&
+                    !startErrors.maxError &&
+                    focuseStartInput &&
+                    invalidStartDate}
+                  {startErrors.minError &&
+                    focuseStartInput &&
+                    'تاریخ شروع وارد شده کمتر از حداقل تاریخ مجاز است.'}
+                  {startErrors.maxError &&
+                    focuseStartInput &&
+                    'تاریخ شروع وارد شده بیشتر از حداکثر تاریخ مجاز است.'}
                 </span>
-                <div
-                  onClick={() => {
-                    if (getDate()) {
-                      setActiveEndInput(true);
-                      setFocuseEndInput(true);
-                      setFocuseStartInput(false);
-                    }
-                  }}
-                >
-                  <DateInput
-                    placeholder="تاریخ پایان"
-                    active={activeEndInput}
-                    focus={focuseEndInput}
-                    onChange={updateEndInput}
-                    errors={endErrors}
-                    errorHandler={endErrorHandler}
-                    mode="jalali"
-                    min={min}
-                    max={max}
-                    defaultValue={getEndDate()}
-                  />
-                </div>
+                <span className="text-red-600 font-medium text-xs">
+                  {!endErrors.minError &&
+                    !endErrors.maxError &&
+                    focuseEndInput &&
+                    invalidEndDate}
+                  {endErrors.minError &&
+                    focuseEndInput &&
+                    'تاریخ پایان وارد شده کمتر از حداقل تاریخ مجاز است.'}
+                  {endErrors.maxError &&
+                    focuseEndInput &&
+                    'تاریخ پایان وارد شده بیشتر از حداکثر تاریخ مجاز است.'}
+                  {!endErrors.maxError &&
+                    !endErrors.minError &&
+                    !startErrors.minError &&
+                    !startErrors.maxError &&
+                    !invalidEndDate &&
+                    mosvaiDate}
+                </span>
               </div>
             </div>
+
             <div
               onClick={() => setOpen(false)}
               className="w-8 h-8 rounded-full cursor-pointer bg-brand-600 absolute -left-2 -top-2 flex items-center justify-center"
@@ -453,92 +510,115 @@ export function DatePicker({ min, max }: Props) {
                       <div className="w-full bg-gray-200 h-0.5 mb-3"></div>
 
                       <div className="w-full grid grid-cols-7">
-                        {daysList.map((day, index) => {
-                          return (
-                            <div
-                              key={index}
-                              className="w-full"
-                              onMouseEnter={handleHoverCell(day.date)}
-                            >
-                              {day.state === 'current' && (
-                                <Tooltip title={renderTooltip}>
-                                  <div
-                                    className={cn(
-                                      isDateInRange(day.date) &&
-                                        day.state === 'current'
-                                        ? 'px-0'
-                                        : 'px-0.5'
-                                    )}
-                                  >
-                                    <button
+                        {daysList.map(
+                          (day, index) =>
+                            index && (
+                              <div
+                                key={index}
+                                className="w-full"
+                                onMouseEnter={handleHoverCell(day.date)}
+                              >
+                                {day.state === 'current' && (
+                                  <Tooltip title={renderTooltip}>
+                                    <div
                                       className={cn(
-                                        'w-10 h-10 text-lg hover:border-brand-600 hover:border-2 rounded-full m-0.5',
-                                        {
-                                          'text-gray-400':
-                                            day.state !== 'current',
-                                        },
-                                        {
-                                          'bg-white shadow-xs':
-                                            day.state === 'current',
-                                        },
-                                        {
-                                          'bg-brand-600 w-full shadow-sm shadow-brand-600 text-white':
-                                            isSelectedDay(day.date) &&
-                                            day.state === 'current',
-                                        },
-                                        {
-                                          'bg-brand-600 shadow-sm shadow-brand-600':
-                                            isSelectedDay(day.date),
-                                        },
-                                        {
-                                          'bg-brand-600 w-full text-white':
-                                            isSelecting() &&
-                                            isDateInRange(day.date) &&
-                                            isEndDate(day.date) &&
-                                            day.state === 'current',
-                                        },
-                                        {
-                                          'rounded-none w-full border-brand-600 border-t border-b':
-                                            !isSelectedDay(day.date) &&
-                                            isSelecting() &&
-                                            isDateInRange(day.date) &&
-                                            day.state === 'current',
-                                        },
-                                        {
-                                          'bg-brand-300 rounded-none text-brand-700 w-full':
-                                            !isSelectedDay(day.date) &&
-                                            !isSelecting() &&
-                                            isDateInRange(day.date),
-                                        },
-                                        {
-                                          'bg-brand-100 rounded-none text-brand-600 w-full':
-                                            isSelecting() &&
-                                            isDateInRange(day.date) &&
-                                            day.state !== 'current',
-                                        },
-                                        {
-                                          'bg-brand-100 rounded-none text-brand-600 w-full':
-                                            !isSelecting() &&
-                                            isDateInRange(day.date) &&
-                                            day.state !== 'current',
-                                        }
+                                        isDateInRange(day.date) &&
+                                          day.state === 'current'
+                                          ? 'px-0'
+                                          : 'px-0.5'
                                       )}
-                                      disabled={day.day === 0}
-                                      onClick={() => {
-                                        setFocuseStartInput(false);
-                                        setFocuseEndInput(true);
-                                        setActiveEndInput(true);
-                                        changeDay(day.date, day.state);
-                                      }}
                                     >
-                                      {day.day}
-                                    </button>
-                                  </div>
-                                </Tooltip>
-                              )}
-                            </div>
-                          );
-                        })}
+                                      <button
+                                        className={cn(
+                                          'w-10 h-10 text-lg hover:border-brand-600 hover:border-2 rounded-full m-0.5',
+                                          {
+                                            'text-gray-400':
+                                              day.state !== 'current',
+                                          },
+                                          {
+                                            'bg-white shadow-xs':
+                                              day.state === 'current',
+                                          },
+                                          {
+                                            'bg-brand-600 w-full shadow-sm shadow-brand-600 text-white':
+                                              isSelectedDay(day.date) &&
+                                              day.state === 'current',
+                                          },
+                                          {
+                                            'bg-brand-600 shadow-sm shadow-brand-600':
+                                              isSelectedDay(day.date),
+                                          },
+                                          {
+                                            'bg-brand-600 w-full text-white':
+                                              isSelecting() &&
+                                              isDateInRange(day.date) &&
+                                              isEndDate(day.date) &&
+                                              day.state === 'current',
+                                          },
+                                          {
+                                            'rounded-none w-full border-brand-600 border-t border-b':
+                                              !isSelectedDay(day.date) &&
+                                              isSelecting() &&
+                                              isDateInRange(day.date) &&
+                                              day.state === 'current',
+                                          },
+                                          {
+                                            'bg-brand-300 rounded-none text-brand-700 w-full':
+                                              !isSelectedDay(day.date) &&
+                                              !isSelecting() &&
+                                              isDateInRange(day.date),
+                                          },
+                                          {
+                                            'bg-brand-100 rounded-none text-brand-600 w-full':
+                                              isSelecting() &&
+                                              isDateInRange(day.date) &&
+                                              day.state !== 'current',
+                                          },
+                                          {
+                                            'bg-brand-100 rounded-none text-brand-600 w-full':
+                                              !isSelecting() &&
+                                              isDateInRange(day.date) &&
+                                              day.state !== 'current',
+                                          },
+                                          {
+                                            'bg-gray-200 cursor-default hover:border-none':
+                                              getRenderedYear() ===
+                                                +min.slice(0, 4) &&
+                                              getMonthList().findIndex(
+                                                (month) =>
+                                                  month.name ===
+                                                  getRenderedMonthName()
+                                              ) < +min.slice(5, 7),
+                                          }
+                                        )}
+                                        disabled={day.day === 0}
+                                        onClick={() => {
+                                          if (
+                                            !(
+                                              getRenderedYear() ===
+                                                +min.slice(0, 4) &&
+                                              getMonthList().findIndex(
+                                                (month) =>
+                                                  month.name ===
+                                                  getRenderedMonthName()
+                                              ) < +min.slice(5, 7)
+                                            )
+                                          ) {
+                                            setFocuseStartInput(false);
+                                            setFocuseEndInput(true);
+                                            setActiveEndInput(true);
+                                            changeDay(day.date, day.state);
+                                          }
+                                        }}
+                                      >
+                                        {day.day}
+                                      </button>
+                                    </div>
+                                  </Tooltip>
+                                )}
+                              </div>
+                            )
+                        )}
                       </div>
                     </div>
                   </div>

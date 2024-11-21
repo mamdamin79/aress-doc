@@ -117,11 +117,11 @@ export const DateInput: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, defaultValue]);
 
-  // useEffect(() => {
-  //   if (!day && active) {
-  //     dayRef?.current?.focus();
-  //   }
-  // }, [day, active]);
+  useEffect(() => {
+    if (!day && active) {
+      dayRef?.current?.focus();
+    }
+  }, [day, active]);
 
   useEffect(() => {
     if (min && mode === 'miladi') {
@@ -139,19 +139,19 @@ export const DateInput: React.FC<Props> = ({
           if (isJalali(min).date() > 31) {
             setMinDate({
               day: 31,
-              month: isJalali(min).month(),
+              month: isJalali(min).month() + 1,
               year: isJalali(min).year(),
             });
           } else
             setMinDate({
               day: isJalali(min).date(),
-              month: isJalali(min).month(),
+              month: isJalali(min).month() + 1,
               year: isJalali(min).year(),
             });
         }
         setMinDate({
           day: isMiladi(min).date(),
-          month: isMiladi(min).month(),
+          month: isMiladi(min).month() + 1,
           year: isMiladi(min).year(),
         });
       }
@@ -175,19 +175,20 @@ export const DateInput: React.FC<Props> = ({
             if (shamsiDate.date() > 31) {
               setMaxDate({
                 day: 31,
-                month: shamsiDate.month(),
+                month: shamsiDate.month() + 1,
                 year: shamsiDate.year(),
               });
-            } else
+            } else {
               setMaxDate({
                 day: shamsiDate.date(),
-                month: shamsiDate.month(),
+                month: shamsiDate.month() + 1,
                 year: shamsiDate.year(),
               });
+            }
           }
           setMaxDate({
             day: shamsiDate.date(),
-            month: shamsiDate.month(),
+            month: shamsiDate.month() + 1,
             year: shamsiDate.year(),
           });
         }
@@ -206,20 +207,16 @@ export const DateInput: React.FC<Props> = ({
     }
 
     if (maxDate.month && maxDate.year && maxDate.day) {
-      if (
-        maxDate.month + 1 === e &&
-        year === maxDate.year &&
-        day > maxDate.day
-      ) {
+      if (maxDate.month === e && year === maxDate.year && day > maxDate.day) {
         tempMaxError = true;
       }
-      if (e > maxDate.month + 1 && year === maxDate.year) {
+      if (e > maxDate.month && year === maxDate.year) {
         tempMaxError = true;
       }
 
       if (year && year > maxDate.year) tempMaxError = true;
 
-      if (year === maxDate.year && e < maxDate.month + 1) tempMaxError = false;
+      if (year === maxDate.year && e < maxDate.month) tempMaxError = false;
     }
 
     if (minDate.month && minDate.year && minDate.day) {
@@ -336,11 +333,7 @@ export const DateInput: React.FC<Props> = ({
     }
 
     if (maxDate.year && maxDate.month && maxDate.day) {
-      if (
-        year === maxDate.year &&
-        month === maxDate.month + 1 &&
-        e > maxDate.day
-      ) {
+      if (year === maxDate.year && month === maxDate.month && e > maxDate.day) {
         tempMaxError = true;
       }
 
@@ -442,11 +435,7 @@ export const DateInput: React.FC<Props> = ({
     }
 
     if (maxDate.year && maxDate.month && maxDate.day) {
-      if (
-        e === maxDate.year &&
-        month === maxDate.month + 1 &&
-        day > maxDate.day
-      ) {
+      if (e === maxDate.year && month === maxDate.month && day > maxDate.day) {
         tempMaxError = true;
       }
 
@@ -454,7 +443,7 @@ export const DateInput: React.FC<Props> = ({
         e === maxDate.year &&
         day <= maxDate.day &&
         month &&
-        month > maxDate.month + 1
+        month > maxDate.month
       ) {
         tempMaxError = true;
       }
@@ -715,10 +704,6 @@ export const DateInput: React.FC<Props> = ({
           <span className="text-md text-gray-700">{placeholder}</span>
         )}
       </div>
-      <span className="text-red-600 font-medium text-sm">
-        {errors?.minError && 'متن نمونه برای نمایش خطا.'}
-        {errors?.maxError && 'متن نمونه برای نمایش خطا.'}
-      </span>
     </div>
   );
 };
