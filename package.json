@@ -14,6 +14,7 @@
     "@babel/preset-react": "^7.14.5",
     "@commitlint/cli": "^19.5.0",
     "@commitlint/config-conventional": "^19.5.0",
+    "@iconify/react": "^5.0.2",
     "@newhighsco/storybook-addon-svgr": "^2.0.29",
     "@nx/devkit": "19.6.5",
     "@nx/eslint": "19.6.5",
@@ -80,6 +81,7 @@
   "nx": {},
   "dependencies": {
     "@headlessui/react": "^2.1.8",
+    "@iconify/tools": "^4.0.7",
     "@storybook/preview-api": "^8.3.2",
     "@storybook/react": "^8.3.2",
     "@svgr/webpack": "^8.1.0",
@@ -88,8 +90,8 @@
     "next": "14.2.3",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-hot-toast": "^2.4.1",
     "react-drag-drop-files": "^2.4.0",
+    "react-hot-toast": "^2.4.1",
     "react-tooltip": "^5.20.0",
     "tailwind-merge": "^2.5.2",
     "tslib": "^2.3.0"

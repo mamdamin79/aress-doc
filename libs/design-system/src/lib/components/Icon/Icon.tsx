@@ -1,28 +1,39 @@
-import React from 'react';
+'use client'
+import React, { useEffect, useState } from 'react';
 import { IconName, IconSize } from './Icon.types';
 import { SIZE_VALUES } from './Icon.constants';
-import dynamicIconImports from 'lucide-react/dynamicIconImports';
-import dynamic from 'next/dynamic';
+import { Icon as Iconify } from '@iconify/react';
+import { iconExists } from '@iconify/react';
+import { listIcons } from '@iconify/react';
 import { CustomIcon } from './CustomIcon/CustomIcon';
 export interface IconProps {
   name: IconName;
   size?: IconSize;
 }
 
-export const Icon: React.FC<IconProps> = ({ name, size = 'md' }) => {
-  // is it a lucide icon or custom icon ?
-  if (name in dynamicIconImports) {
-    // we do this because we want to say to TS that we know this is a react component dont be stricter than us :)
-    const LucideIcon = dynamic(
-      dynamicIconImports[name as keyof typeof dynamicIconImports]
-    ) as React.ComponentType<{
-      size?: number;
-      stroke?: string;
-      strokeWidth?: number;
-    }>;
 
-    return <LucideIcon size={SIZE_VALUES[size]} />;
+export const Icon: React.FC<IconProps> = ({ name, size = 'md' }) => {
+  const [isLucidIcon, setIsLucidIcon] = useState<boolean | null>(null);
+  const modifiedName = `lucide:${name}`;
+
+  useEffect(() => {
+    setIsLucidIcon(iconExists(modifiedName));
+  }, [modifiedName]);
+  if (isLucidIcon === null) {
+    // While determining icon existence, render a placeholder
+    return <span style={{ width: SIZE_VALUES[size], height: SIZE_VALUES[size] }} />;
+  }
+  // is it a lucide icon or custom icon ?
+  if (isLucidIcon) {
+    return (
+      <Iconify
+        icon={modifiedName}
+        width={SIZE_VALUES[size]}
+        height={SIZE_VALUES[size]}
+      />
+    );
   } else {
-    return <CustomIcon name={name} size={size} />;
+    return <p>hi</p>;
+    ;
   }
 };
