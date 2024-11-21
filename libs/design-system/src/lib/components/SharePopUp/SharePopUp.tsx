@@ -1,57 +1,22 @@
 import React, { useState } from 'react';
 import { Icon } from '../Icon';
-import instagramIcon from '../../../assets/icons/instagram.svg';
-import whatsappIcon from '../../../assets/icons/whatsapp.svg';
-import telegramIcon from '../../../assets/icons/telegram.svg';
-import linkedinIcon from '../../../assets/icons/linkedin.svg';
-import emailIcon from '../../../assets/icons/email.svg';
+
 import { Button } from '../Button';
 import { CustomIcon } from '../Icon/CustomIcon';
-
+import { platformMappings } from './SharePopUp.constants';
+import { PlatformName } from './SharePopUp.constants';
 export interface SharePopUpProps {
   url: string;
   message: string;
+  platformNames: PlatformName[];
 }
 
-export const SharePopUp: React.FC<SharePopUpProps> = ({ url, message }) => {
-  const platforms = [
-    {
-      name: 'Instagram',
-      icon: instagramIcon,
-      link: `https://www.instagram.com/direct/new/?text=${message}&url=${url}`,
-    },
-    {
-      name: 'Telegram',
-      icon: telegramIcon,
-      link: `https://t.me/share/url?url=${url}&text=${message}`,
-    },
-    {
-      name: 'WhatsApp',
-      icon: whatsappIcon,
-      link: `https://wa.me/?text=${message} ${url}`,
-    },
-    {
-      name: 'Linkedin',
-      icon: linkedinIcon,
-      link: `https://www.linkedin.com/sharing/share?url=${url}&title=${message}`,
-    },
-    {
-      name: 'Email',
-      icon: emailIcon,
-      link: `mailto:?subject=${message}&body=${url}`,
-    },
-    {
-      name: 'Sample 1',
-      icon: emailIcon,
-      link: `https://example.com/share?url=${url}&text=${message}`,
-    },
-    {
-      name: 'Sample 2',
-      icon: emailIcon,
-      link: `https://example.com/share?url=${url}&text=${message}`,
-    },
-  ];
-
+export const SharePopUp: React.FC<SharePopUpProps> = ({
+  url,
+  message,
+  platformNames = ['Instagram', 'Telegram', 'WhatsApp', 'Linkedin'],
+}) => {
+  const platforms = platformMappings(platformNames, message, url);
   const visibleItems = 5;
   const [currentIndex, setCurrentIndex] = useState(0);
 

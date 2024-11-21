@@ -16,5 +16,14 @@ export const Default: Story = {
   args: {
     message: 'لینک ویدیوی آموزشی',
     url: 'https://www.example.com/video/example/thishasmoretoit/wetypeandwetype',
+    platformNames: [
+      'Email',
+      'Linkedin',
+      'Instagram',
+      'Telegram',
+      'WhatsApp',
+      'Sample 1',
+      'Sample 2',
+    ],
   },
 };
