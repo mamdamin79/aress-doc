@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { cn } from '../../../utils';
-import { act, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CustomDate } from './DateInput.types';
 
 interface Props {
@@ -10,6 +10,7 @@ interface Props {
   min?: string;
   active: boolean;
   focus: boolean;
+  mosaviDate: string;
   errors: {
     minError: boolean;
     maxError: boolean;
@@ -33,6 +34,7 @@ const isCustomDate = (value: unknown): value is CustomDate => {
 };
 export const DateInput: React.FC<Props> = ({
   defaultValue,
+  mosaviDate,
   errorHandler,
   focus,
   placeholder,
@@ -88,7 +90,7 @@ export const DateInput: React.FC<Props> = ({
         changeDayInput(dateMiladi.date());
         changeMonthInput(dateMiladi.month() + 1);
         changeYearInput(dateMiladi.year());
-        setActiveIndex(null);
+        // setActiveIndex(null);
         dayRef.current?.blur();
       }
 
@@ -97,16 +99,30 @@ export const DateInput: React.FC<Props> = ({
         changeDayInput(dateJalali.date());
         changeMonthInput(dateJalali.month() + 1);
         changeYearInput(dateJalali.year());
-        onChange(
-          `${dateJalali.year()}-${
-            dateJalali.month() + 1 < 10
-              ? `0${dateJalali.month() + 1}`
-              : dateJalali.month() + 1
-          }-${
-            dateJalali.date() < 10 ? `0${dateJalali.date()}` : dateJalali.date()
-          }`
-        );
-        setActiveIndex(null);
+        if (day && month && year) {
+          console.log('min =>', min);
+          console.log('max =>', max);
+          console.log('defult value =>', defaultValue);
+          if (max && defaultValue.replace(/-/g, '') > max?.replace(/-/g, '')) {
+            errorHandler({ minError: false, maxError: true });
+          }
+          if (min && defaultValue.replace(/-/g, '') < min?.replace(/-/g, '')) {
+            errorHandler({ minError: true, maxError: false });
+          }
+
+          onChange(
+            `${dateJalali.year()}-${
+              dateJalali.month() + 1 < 10
+                ? `0${dateJalali.month() + 1}`
+                : dateJalali.month() + 1
+            }-${
+              dateJalali.date() < 10
+                ? `0${dateJalali.date()}`
+                : dateJalali.date()
+            }`
+          );
+        }
+        // setActiveIndex(null);
         dayRef.current?.blur();
       } else {
         setDay(0);
@@ -252,11 +268,13 @@ export const DateInput: React.FC<Props> = ({
       maxError: tempMaxError,
     });
 
-    onChange(
-      `${String(year).length === 4 && year}-${e < 10 ? `0${e}` : e}-${
-        day < 10 ? `0${day}` : day
-      }`
-    );
+    if (year && e && day) {
+      onChange(
+        `${String(year).length === 4 && year}-${e < 10 ? `0${e}` : e}-${
+          day < 10 ? `0${day}` : day
+        }`
+      );
+    }
 
     if (String(e).length === 2 && arrowChange) {
       if (!day) {
@@ -391,11 +409,13 @@ export const DateInput: React.FC<Props> = ({
       maxError: tempMaxError,
     });
 
-    onChange(
-      `${String(year).length === 4 && year}-${
-        month && month < 10 ? `0${month}` : month
-      }-${e < 10 ? `0${e}` : e}`
-    );
+    if (year && month && e) {
+      onChange(
+        `${String(year).length === 4 && year}-${
+          month < 10 ? `0${month}` : month
+        }-${e < 10 ? `0${e}` : e}`
+      );
+    }
     if (!e) {
       setDay(0);
     }
@@ -460,11 +480,13 @@ export const DateInput: React.FC<Props> = ({
       setYear(null);
     }
 
-    onChange(
-      `${String(e).length === 4 && e}-${
-        month && month < 10 ? `0${month}` : month
-      }-${day < 10 ? `0${day}` : day}`
-    );
+    if (String(e).length === 4 && month && day) {
+      onChange(
+        `${String(e).length === 4 && e}-${
+          month && month < 10 ? `0${month}` : month
+        }-${day < 10 ? `0${day}` : day}`
+      );
+    }
 
     if (String(e).length === 4 && arrowChangg) {
       if (
@@ -583,6 +605,7 @@ export const DateInput: React.FC<Props> = ({
         }
       }
       if (e.key === 'ArrowUp') {
+        document.body.style.overflow = 'hidden';
         if (activeIndex === 3) {
           changeYearInput(year ? year + 1 : 1);
         }
@@ -621,7 +644,10 @@ export const DateInput: React.FC<Props> = ({
     }
     window.addEventListener('keydown', keydownHandler);
 
-    return () => window.removeEventListener('keydown', keydownHandler);
+    return () => {
+      window.removeEventListener('keydown', keydownHandler);
+      document.body.style.overflow = 'scroll';
+    };
   }, [isArrowKeyPressed, activeIndex, day, month, year, keydownHandler]);
 
   useEffect(() => {
@@ -634,9 +660,14 @@ export const DateInput: React.FC<Props> = ({
         className={cn(
           'w-40 rounded-md bg-white border-2 flex items-center gap-1 py-2 px-4',
           {
-            'border-red-600': errors?.maxError || errors?.minError,
+            'border-red-600':
+              errors?.maxError || errors?.minError || mosaviDate,
             'border-brand-600':
-              active && focus && !errors.maxError && !errors.minError,
+              active &&
+              focus &&
+              !errors.maxError &&
+              !errors.minError &&
+              !mosaviDate,
             'border-gray-500': year && day && month && !focus,
           }
         )}

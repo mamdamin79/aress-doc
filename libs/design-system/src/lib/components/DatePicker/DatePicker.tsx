@@ -9,12 +9,8 @@ import { cn } from '../../../utils';
 import { Field, Select } from '@headlessui/react';
 import { Icon } from '../Icon';
 import { DateInput } from '../DateInput';
-import moment, { months } from 'jalali-moment';
-import momenMiladi from 'moment';
-// import momentJalali from 'moment-jalali';
+import moment from 'jalali-moment';
 import { Tooltip } from '../Tooltip';
-
-const isJalali = (date: string) => momenMiladi(date, 'jYYYY/jM/jD');
 
 const locale: PickerLocale = (year) => ({
   months: {
@@ -46,7 +42,7 @@ export function DatePicker({ min, max }: Props) {
   const [minDate, setMinDate] = useState(min);
   const [maxDate, setMaxDate] = useState(max);
   const [startDate, setStartDate] = useState<string | Date>();
-  const [endDate, setEndDateS] = useState<string | Date>();
+  const [endDate, setEndDateS] = useState<string | Date | null>();
   const [activeStartInput, setActiveStartInput] = useState(true);
   const [activeEndInput, setActiveEndInput] = useState(false);
   const [invalidStartDate, setInvalidStartDate] = useState('');
@@ -117,9 +113,11 @@ export function DatePicker({ min, max }: Props) {
     getMode,
     getDate,
     isSelectedDay,
-    changeDay,
     getRenderedMonthName,
+    setDate,
+    setEndDate,
     getRenderedYear,
+    changeDay,
     getMonthList,
     changeMonth,
     getYearsList,
@@ -148,17 +146,32 @@ export function DatePicker({ min, max }: Props) {
     []
   );
 
-  // useEffect(() => {
-  //   if (typeof startDate === 'string') {
-  //     if (moment(startDate).isValid()) {
-  //     }
-  //   }
-  // }, [startDate]);
-
-  console.log(getDays());
-
   useEffect(() => {
+    if (typeof startDate === 'string') {
+      setDate(
+        moment
+          .from(startDate, 'fa', 'YYYY/MM/DD')
+          .locale('en')
+          .format('YYYY-MM-DD')
+      );
+    }
+    if (typeof endDate === 'string') {
+      setEndDate(
+        moment
+          .from(endDate, 'fa', 'YYYY/MM/DD')
+          .locale('en')
+          .format('YYYY-MM-DD')
+      );
+    }
     if (typeof startDate === 'string' && typeof endDate === 'string') {
+      if (startDate.replace(/-/g, '') < endDate.replace(/-/g, '')) {
+        setDate(
+          moment
+            .from(startDate, 'fa', 'YYYY/MM/DD')
+            .locale('en')
+            .format('YYYY-MM-DD')
+        );
+      }
       if (
         startDate.replace(/-/g, '') > endDate.replace(/-/g, '') &&
         focuseStartInput
@@ -180,7 +193,16 @@ export function DatePicker({ min, max }: Props) {
         setMosaviDate('');
       }
     }
-  }, [startDate, endDate, focuseStartInput, focuseEndInput]);
+  }, [
+    startDate,
+    endDate,
+    focuseStartInput,
+    focuseEndInput,
+    setDate,
+    setEndDate,
+    endErrors.maxError,
+    endErrors.minError,
+  ]);
 
   useEffect(() => {
     // change date listener
@@ -208,6 +230,13 @@ export function DatePicker({ min, max }: Props) {
 
   const daysList = getDays();
   const daysListNext = getDays('next');
+  const startCurrentDay = daysList.find((item) => item.state === 'prev');
+  const addDayList = [
+    startCurrentDay && { ...startCurrentDay, day: startCurrentDay.day - 1 },
+    ...daysList,
+  ];
+
+  // const firstCurrentDay = dayLists.find(day => day.status === 'current').day;
 
   const handleHoverCell = (date: string) => () => {
     onCellHover(date);
@@ -328,9 +357,7 @@ export function DatePicker({ min, max }: Props) {
     </div>
   );
 
-  console.log(getRenderedMonthName());
-
-  const renderTooltip = () => {
+  const renderTooltip = (): string => {
     // if (!getDate() && !getEndDate()) {
     //   return 'تاریخ شروع';
     // }
@@ -347,8 +374,10 @@ export function DatePicker({ min, max }: Props) {
 
     if (focuseStartInput) {
       return 'تاریخ شروع';
-    }
+    } else return 'f';
   };
+
+  console.log(getDays());
 
   return (
     <div style={{ display: 'inline-block', width: 'auto' }}>
@@ -379,6 +408,7 @@ export function DatePicker({ min, max }: Props) {
                     }}
                   >
                     <DateInput
+                      mosaviDate={mosvaiDate}
                       placeholder="تاریخ شروع"
                       active={activeStartInput}
                       focus={focuseStartInput}
@@ -399,7 +429,7 @@ export function DatePicker({ min, max }: Props) {
                   </span>
                   <div
                     onClick={() => {
-                      if (getDate()) {
+                      if (startDate) {
                         setActiveEndInput(true);
                         setFocuseEndInput(true);
                         setFocuseStartInput(false);
@@ -407,6 +437,7 @@ export function DatePicker({ min, max }: Props) {
                     }}
                   >
                     <DateInput
+                      mosaviDate={mosvaiDate}
                       placeholder="تاریخ پایان"
                       active={activeEndInput}
                       focus={focuseEndInput}
@@ -421,7 +452,7 @@ export function DatePicker({ min, max }: Props) {
                   </div>
                 </div>
               </div>
-              <div className="mr-56 visible h-4">
+              <div className="mr-52 visible h-4">
                 <span className="text-red-600 font-medium text-xs">
                   {!startErrors.minError &&
                     !startErrors.maxError &&
@@ -507,118 +538,175 @@ export function DatePicker({ min, max }: Props) {
                           </div>
                         ))}
                       </div>
-                      <div className="w-full bg-gray-200 h-0.5 mb-3"></div>
-
                       <div className="w-full grid grid-cols-7">
-                        {daysList.map(
-                          (day, index) =>
-                            index && (
-                              <div
-                                key={index}
-                                className="w-full"
-                                onMouseEnter={handleHoverCell(day.date)}
-                              >
-                                {day.state === 'current' && (
-                                  <Tooltip title={renderTooltip}>
-                                    <div
-                                      className={cn(
-                                        isDateInRange(day.date) &&
-                                          day.state === 'current'
-                                          ? 'px-0'
-                                          : 'px-0.5'
-                                      )}
-                                    >
-                                      <button
-                                        className={cn(
-                                          'w-10 h-10 text-lg hover:border-brand-600 hover:border-2 rounded-full m-0.5',
-                                          {
-                                            'text-gray-400':
-                                              day.state !== 'current',
-                                          },
-                                          {
-                                            'bg-white shadow-xs':
-                                              day.state === 'current',
-                                          },
-                                          {
-                                            'bg-brand-600 w-full shadow-sm shadow-brand-600 text-white':
-                                              isSelectedDay(day.date) &&
-                                              day.state === 'current',
-                                          },
-                                          {
-                                            'bg-brand-600 shadow-sm shadow-brand-600':
-                                              isSelectedDay(day.date),
-                                          },
-                                          {
-                                            'bg-brand-600 w-full text-white':
-                                              isSelecting() &&
-                                              isDateInRange(day.date) &&
-                                              isEndDate(day.date) &&
-                                              day.state === 'current',
-                                          },
-                                          {
-                                            'rounded-none w-full border-brand-600 border-t border-b':
-                                              !isSelectedDay(day.date) &&
-                                              isSelecting() &&
-                                              isDateInRange(day.date) &&
-                                              day.state === 'current',
-                                          },
-                                          {
-                                            'bg-brand-300 rounded-none text-brand-700 w-full':
-                                              !isSelectedDay(day.date) &&
-                                              !isSelecting() &&
-                                              isDateInRange(day.date),
-                                          },
-                                          {
-                                            'bg-brand-100 rounded-none text-brand-600 w-full':
-                                              isSelecting() &&
-                                              isDateInRange(day.date) &&
-                                              day.state !== 'current',
-                                          },
-                                          {
-                                            'bg-brand-100 rounded-none text-brand-600 w-full':
-                                              !isSelecting() &&
-                                              isDateInRange(day.date) &&
-                                              day.state !== 'current',
-                                          },
-                                          {
-                                            'bg-gray-200 cursor-default hover:border-none':
-                                              getRenderedYear() ===
-                                                +min.slice(0, 4) &&
-                                              getMonthList().findIndex(
-                                                (month) =>
-                                                  month.name ===
-                                                  getRenderedMonthName()
-                                              ) < +min.slice(5, 7),
-                                          }
-                                        )}
-                                        disabled={day.day === 0}
-                                        onClick={() => {
+                        {daysList.map((day, index) => (
+                          <div
+                            key={index}
+                            className="w-full"
+                            onMouseEnter={handleHoverCell(day.date)}
+                          >
+                            {day.state === 'current' && (
+                              <Tooltip title={renderTooltip()}>
+                                <div
+                                  className={cn(
+                                    isDateInRange(day.date) &&
+                                      day.state === 'current'
+                                      ? 'px-0'
+                                      : 'px-0.5'
+                                  )}
+                                >
+                                  <button
+                                    className={cn(
+                                      'w-10 h-10 text-lg hover:border-brand-600 hover:border-2 rounded-full m-0.5',
+                                      {
+                                        'text-gray-400':
+                                          day.state !== 'current',
+                                      },
+                                      {
+                                        'bg-white shadow-xs':
+                                          day.state === 'current',
+                                      },
+                                      {
+                                        'bg-brand-600 w-full shadow-sm shadow-brand-600 text-white':
+                                          isSelectedDay(day.date) &&
+                                          day.state === 'current',
+                                      },
+                                      {
+                                        'bg-brand-600 shadow-sm shadow-brand-600':
+                                          isSelectedDay(day.date),
+                                      },
+                                      {
+                                        'bg-brand-600 w-full text-white':
+                                          isSelecting() &&
+                                          isDateInRange(day.date) &&
+                                          isEndDate(day.date) &&
+                                          day.state === 'current',
+                                      },
+                                      {
+                                        'rounded-none w-full border-brand-600 border-t border-b':
+                                          !isSelectedDay(day.date) &&
+                                          isSelecting() &&
+                                          isDateInRange(day.date) &&
+                                          day.state === 'current',
+                                      },
+                                      {
+                                        'bg-brand-300 rounded-none text-brand-700 w-full':
+                                          !isSelectedDay(day.date) &&
+                                          !isSelecting() &&
+                                          isDateInRange(day.date),
+                                      },
+                                      {
+                                        'bg-brand-100 rounded-none text-brand-600 w-full':
+                                          isSelecting() &&
+                                          isDateInRange(day.date) &&
+                                          day.state !== 'current',
+                                      },
+                                      {
+                                        'bg-brand-100 rounded-none text-brand-600 w-full':
+                                          !isSelecting() &&
+                                          isDateInRange(day.date) &&
+                                          day.state !== 'current',
+                                      },
+                                      {
+                                        'bg-gray-200 cursor-default hover:border-none':
+                                          getRenderedYear() ===
+                                            +min.slice(0, 4) &&
+                                          getMonthList().findIndex(
+                                            (month) =>
+                                              month.name ===
+                                              getRenderedMonthName()
+                                          ) < +min.slice(5, 7),
+                                      }
+                                    )}
+                                    disabled={day.day === 0}
+                                    onClick={() => {
+                                      if (
+                                        getDate() !==
+                                        moment(day.date, 'YYYY/MM/DD')
+                                          .locale('fa')
+                                          .format('YYYY-MM-DD')
+                                      ) {
+                                        setFocuseEndInput(true);
+                                        setActiveEndInput(true);
+
+                                        if (
+                                          !endDate &&
+                                          !getEndDate() &&
+                                          focuseStartInput
+                                        ) {
+                                          setStartDate(
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                          );
+                                        }
+
+                                        if (
+                                          (startDate || getDate()) &&
+                                          typeof startDate === 'string' &&
+                                          focuseEndInput
+                                        ) {
                                           if (
-                                            !(
-                                              getRenderedYear() ===
-                                                +min.slice(0, 4) &&
-                                              getMonthList().findIndex(
-                                                (month) =>
-                                                  month.name ===
-                                                  getRenderedMonthName()
-                                              ) < +min.slice(5, 7)
-                                            )
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') >
+                                            startDate.replace(/-/g, '')
                                           ) {
-                                            setFocuseStartInput(false);
-                                            setFocuseEndInput(true);
-                                            setActiveEndInput(true);
-                                            changeDay(day.date, day.state);
+                                            setEndDateS(
+                                              moment(day.date, 'YYYY/MM/DD')
+                                                .locale('fa')
+                                                .format('YYYY-MM-DD')
+                                            );
+                                          } else {
+                                            setEndDateS(null);
+                                            setEndDate('');
+                                            setStartDate(
+                                              moment(day.date, 'YYYY/MM/DD')
+                                                .locale('fa')
+                                                .format('YYYY-MM-DD')
+                                            );
                                           }
-                                        }}
-                                      >
-                                        {day.day}
-                                      </button>
-                                    </div>
-                                  </Tooltip>
-                                )}
-                              </div>
-                            )
-                        )}
+                                        }
+
+                                        if (
+                                          (endDate || getEndDate()) &&
+                                          typeof endDate === 'string' &&
+                                          focuseStartInput
+                                        ) {
+                                          if (
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') <
+                                            endDate.replace(/-/g, '')
+                                          ) {
+                                            setStartDate(
+                                              moment(day.date, 'YYYY/MM/DD')
+                                                .locale('fa')
+                                                .format('YYYY-MM-DD')
+                                            );
+                                          } else {
+                                            setEndDateS(null);
+                                            setEndDate('');
+                                            setStartDate(
+                                              moment(day.date, 'YYYY/MM/DD')
+                                                .locale('fa')
+                                                .format('YYYY-MM-DD')
+                                            );
+                                          }
+                                        }
+                                      }
+                                      setFocuseStartInput(false);
+                                    }}
+                                  >
+                                    {day.day}
+                                  </button>
+                                </div>
+                              </Tooltip>
+                            )}
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -680,7 +768,7 @@ export function DatePicker({ min, max }: Props) {
                                 onMouseEnter={handleHoverCell(day.date)}
                               >
                                 {day.state === 'current' && (
-                                  <Tooltip title={renderTooltip}>
+                                  <Tooltip title={renderTooltip()}>
                                     <div
                                       className={cn(
                                         isDateInRange(day.date) &&
@@ -744,10 +832,92 @@ export function DatePicker({ min, max }: Props) {
                                         )}
                                         disabled={day.day === 0}
                                         onClick={() => {
-                                          setFocuseStartInput(false);
-                                          setFocuseEndInput(true);
-                                          setActiveEndInput(true);
-                                          changeDay(day.date, day.state);
+                                          if (
+                                            getDate() !==
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                          ) {
+                                            setFocuseStartInput(false);
+                                            setFocuseEndInput(true);
+                                            setActiveEndInput(true);
+
+                                            if (
+                                              !endDate &&
+                                              !getEndDate() &&
+                                              focuseStartInput
+                                            ) {
+                                              setStartDate(
+                                                moment(day.date, 'YYYY/MM/DD')
+                                                  .locale('fa')
+                                                  .format('YYYY-MM-DD')
+                                              );
+                                            }
+
+                                            if (
+                                              (startDate || getDate()) &&
+                                              typeof startDate === 'string' &&
+                                              focuseEndInput
+                                            ) {
+                                              if (
+                                                moment(day.date, 'YYYY/MM/DD')
+                                                  .locale('fa')
+                                                  .format('YYYY-MM-DD')
+                                                  .replace(/-/g, '') >
+                                                startDate.replace(/-/g, '')
+                                              ) {
+                                                setEndDateS(
+                                                  moment(day.date, 'YYYY/MM/DD')
+                                                    .locale('fa')
+                                                    .format('YYYY-MM-DD')
+                                                );
+                                              } else {
+                                                setEndDateS(null);
+                                                setEndDate('');
+                                                setStartDate(
+                                                  moment(day.date, 'YYYY/MM/DD')
+                                                    .locale('fa')
+                                                    .format('YYYY-MM-DD')
+                                                );
+                                              }
+                                            }
+
+                                            if (
+                                              (endDate || getEndDate()) &&
+                                              typeof endDate === 'string' &&
+                                              focuseStartInput
+                                            ) {
+                                              if (
+                                                moment(day.date, 'YYYY/MM/DD')
+                                                  .locale('fa')
+                                                  .format('YYYY-MM-DD')
+                                                  .replace(/-/g, '') <
+                                                endDate.replace(/-/g, '')
+                                              ) {
+                                                setStartDate(
+                                                  moment(day.date, 'YYYY/MM/DD')
+                                                    .locale('fa')
+                                                    .format('YYYY-MM-DD')
+                                                );
+                                              } else {
+                                                setEndDateS(null);
+                                                setEndDate('');
+                                                setStartDate(
+                                                  moment(day.date, 'YYYY/MM/DD')
+                                                    .locale('fa')
+                                                    .format('YYYY-MM-DD')
+                                                );
+                                              }
+                                            }
+                                            // if (!endDate && !getEndDate() && focuseStartInput) {
+                                            //   setStartDate(moment(day.date, 'YYYY/MM/DD').locale('fa').format('YYYY-MM-DD'));
+                                            // }
+                                            // if ((startDate || getDate()) && focuseEndInput) {
+                                            //   setEndDate(day.date)
+                                            // } else if (focuseStartInput) {
+                                            //   setDate(moment(day.date, 'YYYY/MM/DD').locale('fa').format('YYYY-MM-DD'))
+                                            // }
+                                          }
                                         }}
                                       >
                                         {day.day}
