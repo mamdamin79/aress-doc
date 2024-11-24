@@ -141,7 +141,6 @@ export const useVideo = (
 ) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
-  const [lastTime, setLastTime] = useState<number>(0);
 
   const [state, dispatch] = useReducer(videoReducer, {
     isPlaying: false,
@@ -158,7 +157,8 @@ export const useVideo = (
     isFullscreen: false,
     quality: qualities[0],
   });
-  console.log(state);
+  console.log(state)
+
 
   useEffect(() => {
     const video = videoRef.current!;
@@ -182,21 +182,12 @@ export const useVideo = (
       }
     } else {
       // If it's not M3U8, set the video source directly
-      let currentSrc = state.quality.src;
-      let shouldPlay = state.isPlaying;
-      const currentPlaybackTime = state.currentTime;
+      const currentSrc = state.quality.src;
       video.src = currentSrc;
-
-      const handleLoadedMetadata = () => {
-        video.currentTime = currentPlaybackTime; // بازگرداندن currentTime
-        if (shouldPlay) {
-          play();
-        } else {
-          pause();
-        }
-      };
-
-      video.addEventListener('loadeddata', handleLoadedMetadata);
+      video.addEventListener("loadedmetadata",()=>{
+          video.currentTime = state.currentTime
+      })
+      state.isPlaying ? play() : pause()
     }
     // dispatcher functions - these are update our states and used as a callback function in our listener
 
@@ -219,7 +210,9 @@ export const useVideo = (
     const updateProgress = () => {
       // first of all we should calculate progress form duration and current time - it used in handle time update and handle durationchange
       const { currentTime, duration } = videoRef.current!;
-      const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
+      console.log({state:state.currentTime,video:currentTime})
+      const progress = duration > 0 ? ((currentTime === 0 && state.currentTime !== 0 ? state.currentTime : currentTime)/ duration) * 100 : state.progress;
+      console.log(progress)
       dispatch({ type: 'SET_PROGRESS', progress });
     };
 
@@ -232,14 +225,16 @@ export const useVideo = (
     };
 
     const handleTimeUpdate = () => {
+      console.log({state:state.currentTime,video:videoRef.current!.currentTime})
       dispatch({
         type: 'TIME_UPDATE',
-        currentTime: videoRef.current!.currentTime,
+        currentTime: videoRef.current!.currentTime === 0 && state.currentTime !== 0 ? state.currentTime : videoRef.current!.currentTime,
       });
       updateProgress();
     };
 
     const handleDurationChange = () => {
+      console.log({state:state.currentTime,video:videoRef.current!.currentTime})
       dispatch({
         type: 'DURATION_CHANGE',
         duration: videoRef.current!.duration,

@@ -103,7 +103,7 @@ export const VideoPlayer: React.FC<Props> = ({
           {<Image src={videoLogo} width={100} height={100} alt="logo" />}
         </span>
       )}
-      <video  className="w-full" poster={poster} ref={videoRef} />
+      <video  className="w-full" poster={""} ref={videoRef} />
       <div className="absolute inset-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
       {/* control panel container */}
       <div
