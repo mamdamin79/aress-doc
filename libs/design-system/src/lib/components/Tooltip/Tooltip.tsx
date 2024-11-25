@@ -8,7 +8,7 @@ type Props = {
   title: string;
   position?: 'top' | 'right' | 'bottom' | 'left';
   className?: string;
-  offset:number
+  offset?:number
 };
 
 export const Tooltip: React.FC<Props> = ({
