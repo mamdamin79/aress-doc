@@ -157,8 +157,7 @@ export const useVideo = (
     isFullscreen: false,
     quality: qualities[0],
   });
-  console.log(state)
-
+  console.log(state);
 
   useEffect(() => {
     const video = videoRef.current!;
@@ -184,10 +183,10 @@ export const useVideo = (
       // If it's not M3U8, set the video source directly
       const currentSrc = state.quality.src;
       video.src = currentSrc;
-      video.addEventListener("loadedmetadata",()=>{
-          video.currentTime = state.currentTime
-      })
-      state.isPlaying ? play() : pause()
+      video.addEventListener('loadedmetadata', () => {
+        video.currentTime = state.currentTime;
+      });
+      state.isPlaying ? play() : pause();
     }
     // dispatcher functions - these are update our states and used as a callback function in our listener
 
@@ -210,9 +209,16 @@ export const useVideo = (
     const updateProgress = () => {
       // first of all we should calculate progress form duration and current time - it used in handle time update and handle durationchange
       const { currentTime, duration } = videoRef.current!;
-      console.log({state:state.currentTime,video:currentTime})
-      const progress = duration > 0 ? ((currentTime === 0 && state.currentTime !== 0 ? state.currentTime : currentTime)/ duration) * 100 : state.progress;
-      console.log(progress)
+      console.log({ state: state.currentTime, video: currentTime });
+      const progress =
+        duration > 0
+          ? ((currentTime === 0 && state.currentTime !== 0
+              ? state.currentTime
+              : currentTime) /
+              duration) *
+            100
+          : state.progress;
+      console.log(progress);
       dispatch({ type: 'SET_PROGRESS', progress });
     };
 
@@ -225,16 +231,25 @@ export const useVideo = (
     };
 
     const handleTimeUpdate = () => {
-      console.log({state:state.currentTime,video:videoRef.current!.currentTime})
+      console.log({
+        state: state.currentTime,
+        video: videoRef.current!.currentTime,
+      });
       dispatch({
         type: 'TIME_UPDATE',
-        currentTime: videoRef.current!.currentTime === 0 && state.currentTime !== 0 ? state.currentTime : videoRef.current!.currentTime,
+        currentTime:
+          videoRef.current!.currentTime === 0 && state.currentTime !== 0
+            ? state.currentTime
+            : videoRef.current!.currentTime,
       });
       updateProgress();
     };
 
     const handleDurationChange = () => {
-      console.log({state:state.currentTime,video:videoRef.current!.currentTime})
+      console.log({
+        state: state.currentTime,
+        video: videoRef.current!.currentTime,
+      });
       dispatch({
         type: 'DURATION_CHANGE',
         duration: videoRef.current!.duration,
@@ -318,10 +333,9 @@ export const useVideo = (
           ));
         }
         case 'ArrowLeft': {
-          return (videoRef.current!.currentTime = Math.max(
-            videoRef.current!.currentTime - 10,
-            0
-          ));
+          const newTime = videoRef.current!.currentTime - 10;
+          videoRef.current!.currentTime = newTime < 0 ? 0 : newTime;
+          return;
         }
         case 'KeyM': {
           return toggleMute();

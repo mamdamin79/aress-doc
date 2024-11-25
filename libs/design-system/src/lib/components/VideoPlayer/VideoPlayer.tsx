@@ -49,8 +49,8 @@ export const VideoPlayer: React.FC<Props> = ({
     videoContainerRef,
     isFullscreen,
     quality,
-    changeQuality
-  } = useVideo(qualities[0].src,qualities);
+    changeQuality,
+  } = useVideo(qualities[0].src, qualities);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -77,12 +77,15 @@ export const VideoPlayer: React.FC<Props> = ({
   return (
     <div
       onContextMenu={(e) => e.preventDefault()}
-      onClick={isPlaying ? pause : play}
       className={cn('relative rounded-md shadow-md overflow-hidden', {
         'cursor-none': !showControlPanel,
       })}
       ref={videoContainerRef}
     >
+      <div
+        onClick={isPlaying ? pause : play}
+        className="w-full h-full absolute z-20"
+      ></div>
       {/* loading displays when video is not loaded yet(even first frame) and when buffered time is finished and we are waiting for new chunks */}
       {isVideoWaited && (
         <div className="absolute z-30 flex items-center justify-center inset-0 m-auto">
@@ -103,12 +106,12 @@ export const VideoPlayer: React.FC<Props> = ({
           {<Image src={videoLogo} width={100} height={100} alt="logo" />}
         </span>
       )}
-      <video  className="w-full" poster={""} ref={videoRef} />
+      <video className="w-full" poster={''} ref={videoRef} />
       <div className="absolute inset-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
       {/* control panel container */}
       <div
         className={cn(
-          'absolute w-full h-20 z-10 bottom-0 duration-700 ease-in-out transition-all',
+          'absolute w-full h-20 z-20 bottom-0 duration-700 ease-in-out transition-all',
           {
             '-bottom-28': !showControlPanel && isPlaying,
           }
