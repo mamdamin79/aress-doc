@@ -12,4 +12,4 @@ export * from './ProgressBar';
 export * from './SummaryCell';
 export * from './Button';
 export * from './Tooltip';
-export * from './withTablesHOC';
+export * from './GeneralTable'

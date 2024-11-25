@@ -1,16 +1,19 @@
+import { cn } from "libs/design-system/src/utils/classNames.utils";
+
 interface FourlevelIndicatorProps {
-  level: number;
-  max: number;
+  value: number;
+  max?: number;
+  grayMode:boolean
 }
-import { cn } from 'design-system';
 
 export const FourlevelIndicatorProps = ({
-  level,
-  max,
+  value,
+  max = 4,
+  grayMode=false
 }: FourlevelIndicatorProps) => {
   const tempArr = Array(max).fill(null);
   return (
-    <div className="mx-auto w-6 h-8 border border-gray-900 rounded-xs overflow-hidden flex flex-col-reverse">
+    <div className="mx-auto w-6 h-8 border border-gray-900 rounded-xs overflow-hidden flex flex-col-reverse transition-all">
       {tempArr.map((_, valueIndex: number) => {
         const currentLevel = valueIndex + 1 || 0;
         return (
@@ -19,11 +22,12 @@ export const FourlevelIndicatorProps = ({
             className={cn(
               'w-full h-2 border-gray-700',
               currentLevel !== max && 'border-t-[0.5px]',
-              currentLevel < level
-                ? 'bg-blue-200'
-                : currentLevel > level
+              currentLevel < value
+                ? grayMode ? 'bg-gray-200' : 'bg-blue-200'
+                : currentLevel > value
                 ? 'bg-white'
-                : 'bg-blue-700'
+                :                  grayMode ? 'bg-gray-500':'bg-blue-700',
+
             )}
           ></div>
         );
