@@ -25,7 +25,7 @@ const locale: PickerLocale = (year) => ({
     9: { name: 'آذر', numberOfDays: 30 },
     10: { name: 'دی', numberOfDays: 30 },
     11: { name: 'بهمن', numberOfDays: 30 },
-    12: { name: 'اسفند', numberOfDays: year % 4 === 3 ? 30 : 29 },
+    12: { name: 'اسفند', numberOfDays: 30 },
   },
 });
 const weeksTitle = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
@@ -48,6 +48,12 @@ export function DatePicker({ min, max }: Props) {
   const [invalidStartDate, setInvalidStartDate] = useState('');
   const [invalidEndDate, setInvalidEndDate] = useState('');
   const [mosvaiDate, setMosaviDate] = useState('');
+  const [titleTooltip, setTitleTooltip] = useState('');
+  const [endEnterCell, setEndEnterCell] = useState<{
+    date: string;
+    day: number;
+    state: string;
+  }>();
 
   const [focuseStartInput, setFocuseStartInput] = useState(true);
   const [focuseEndInput, setFocuseEndInput] = useState(false);
@@ -116,19 +122,20 @@ export function DatePicker({ min, max }: Props) {
     getRenderedMonthName,
     setDate,
     setEndDate,
+    getRenderedMonth,
     getRenderedYear,
-    changeDay,
     getMonthList,
     changeMonth,
     getYearsList,
     changeYear,
     isLoading,
+    getRenderedDateOriginal,
     goToToday,
+    getRenderedNextMonth,
     getEndDate,
     getDays,
     getRenderedNextMonthName,
     getRenderedNextDateYear,
-    onCellHover,
     isDateInRange,
     isSelecting,
     isEndDate,
@@ -138,6 +145,7 @@ export function DatePicker({ min, max }: Props) {
       new RangePicker({
         date: formatDate(date), // convert date to iso format YYYY-MM-DD
         locale,
+        weekOffset: 1,
         dayRenderType: 'fill',
         twoSide: true,
         normalized: true,
@@ -230,17 +238,6 @@ export function DatePicker({ min, max }: Props) {
 
   const daysList = getDays();
   const daysListNext = getDays('next');
-  const startCurrentDay = daysList.find((item) => item.state === 'prev');
-  const addDayList = [
-    startCurrentDay && { ...startCurrentDay, day: startCurrentDay.day - 1 },
-    ...daysList,
-  ];
-
-  // const firstCurrentDay = dayLists.find(day => day.status === 'current').day;
-
-  const handleHoverCell = (date: string) => () => {
-    onCellHover(date);
-  };
 
   const RenderTitle = ({ year, month }: { year: number; month: string }) => (
     <div className="flex w-full items-center justify-center gap-2">
@@ -262,6 +259,7 @@ export function DatePicker({ min, max }: Props) {
                     year === item ? (
                       !getEndDate() ? (
                         <option
+                          key={item}
                           className={cn(
                             'shadow-none !cursor-pointer hover:bg-brand-600',
                             item === year && 'text-brand-600'
@@ -317,9 +315,10 @@ export function DatePicker({ min, max }: Props) {
                   ' data-[focus]:outline-[1.5px] data-[focus]:bg-white outline-brand-600 py-2 rounded-md pr-2 cursor-pointer'
                 )}
               >
-                {getMonthList().map((item) =>
+                {getMonthList().map((item, index) =>
                   month === item.name ? (
                     <option
+                      key={index}
                       className={cn(
                         'shadow-none cursor-pointer hover:bg-brand-600',
                         item.name === month && 'bg-brand-100'
@@ -357,27 +356,98 @@ export function DatePicker({ min, max }: Props) {
     </div>
   );
 
-  const renderTooltip = (): string => {
-    // if (!getDate() && !getEndDate()) {
-    //   return 'تاریخ شروع';
-    // }
-    // if (getDate() && !getEndDate()) {
-    //   return 'تاریخ پایان';
-    // }
-    // if (getDate() && getEndDate()) {
-    //   return 'تاریخ شروع';
-    // }
-
-    if (focuseEndInput) {
-      return 'تاریخ پایان';
+  const moseEnterCell = (date: {
+    day: number;
+    date: string;
+    state: string;
+  }) => {
+    if (date.state === 'current' && startDate) {
+      setEndEnterCell(date);
     }
 
-    if (focuseStartInput) {
-      return 'تاریخ شروع';
-    } else return 'f';
+    if (!startDate && focuseStartInput) {
+      setTitleTooltip('تاریخ شروع');
+    }
+    if (
+      typeof startDate === 'string' &&
+      focuseStartInput &&
+      startDate.replace(/-/g, '') ===
+        moment(date.date, 'YYYY/MM/DD')
+          .locale('fa')
+          .format('YYYY-MM-DD')
+          .replace(/-/g, '')
+    ) {
+      setTitleTooltip('');
+    }
+    if (endDate && focuseStartInput && typeof endDate === 'string') {
+      if (
+        endDate.replace(/-/g, '') ===
+        moment(date.date, 'YYYY/MM/DD')
+          .locale('fa')
+          .format('YYYY-MM-DD')
+          .replace(/-/g, '')
+      ) {
+        setTitleTooltip('');
+      } else if (
+        typeof startDate === 'string' &&
+        startDate.replace(/-/g, '') ===
+          moment(date.date, 'YYYY/MM/DD')
+            .locale('fa')
+            .format('YYYY-MM-DD')
+            .replace(/-/g, '')
+      ) {
+        setTitleTooltip('');
+      } else {
+        setTitleTooltip('تاریخ شروع');
+      }
+    }
+    if (focuseEndInput && typeof startDate === 'string') {
+      if (
+        moment(date.date, 'YYYY/MM/DD')
+          .locale('fa')
+          .format('YYYY-MM-DD')
+          .replace(/-/g, '') > startDate.replace(/-/g, '')
+      ) {
+        setTitleTooltip('تاریخ پایان');
+      } else {
+        setTitleTooltip('تاریخ شروع');
+      }
+
+      if (
+        moment(date.date, 'YYYY/MM/DD')
+          .locale('fa')
+          .format('YYYY-MM-DD')
+          .replace(/-/g, '') === startDate.replace(/-/g, '')
+      ) {
+        setTitleTooltip('');
+      }
+
+      if (
+        moment(date.date, 'YYYY/MM/DD')
+          .locale('fa')
+          .format('YYYY-MM-DD')
+          .replace(/-/g, '') ===
+        (typeof endDate === 'string' && endDate.replace(/-/g, ''))
+      ) {
+        setTitleTooltip('');
+      }
+    }
   };
 
-  console.log(getDays());
+  useEffect(() => {
+    if (
+      typeof startDate === 'string' &&
+      startDate.replace(/-/g, '') < min.replace(/-/g, '')
+    ) {
+      errorHandler({ minError: true, maxError: false });
+    }
+  }, [min, startDate]);
+
+  const hoverCell = (date: string) => {
+    return 'ff';
+  };
+
+  console.log(+min.slice(5, 7), getRenderedMonth());
 
   return (
     <div style={{ display: 'inline-block', width: 'auto' }}>
@@ -408,6 +478,8 @@ export function DatePicker({ min, max }: Props) {
                     }}
                   >
                     <DateInput
+                      invalidStartDate={invalidStartDate}
+                      invalidEndDate={invalidEndDate}
                       mosaviDate={mosvaiDate}
                       placeholder="تاریخ شروع"
                       active={activeStartInput}
@@ -437,6 +509,8 @@ export function DatePicker({ min, max }: Props) {
                     }}
                   >
                     <DateInput
+                      invalidStartDate={invalidStartDate}
+                      invalidEndDate={invalidEndDate}
                       mosaviDate={mosvaiDate}
                       placeholder="تاریخ پایان"
                       active={activeEndInput}
@@ -507,7 +581,30 @@ export function DatePicker({ min, max }: Props) {
                         }}
                       >
                         <div
-                          onClick={() => handleShowPrevMonth()}
+                          onClick={() => {
+                            const activeMonth = moment(
+                              getRenderedDateOriginal(),
+                              'YYYY/MM/DD'
+                            )
+                              .locale('fa')
+                              .format('YYYY-MM-DD');
+                            if (+activeMonth.slice(0, 4) === +min.slice(0, 4)) {
+                              if (+min.slice(5, 7) % 2 === 0) {
+                                if (
+                                  +min.slice(5, 7) - 1 <
+                                  +activeMonth.slice(5, 7)
+                                ) {
+                                  handleShowPrevMonth();
+                                }
+                              } else if (
+                                +min.slice(5, 7) < +activeMonth.slice(5, 7)
+                              ) {
+                                handleShowPrevMonth();
+                              }
+                            } else {
+                              handleShowPrevMonth();
+                            }
+                          }}
                           className="rounded-full bg-white cursor-pointer flex items-center justify-center p-2 border-[1.5px] border-white duration-300 hover:border-brand-600 hover:border-[1.5px]"
                         >
                           <Icon name="arrow-right" size="lg" />
@@ -538,15 +635,18 @@ export function DatePicker({ min, max }: Props) {
                           </div>
                         ))}
                       </div>
+                      <div className="w-full bg-gray-200 h-0.5 mb-3"></div>
                       <div className="w-full grid grid-cols-7">
                         {daysList.map((day, index) => (
                           <div
                             key={index}
                             className="w-full"
-                            onMouseEnter={handleHoverCell(day.date)}
+                            onMouseEnter={() => {
+                              moseEnterCell(day);
+                            }}
                           >
                             {day.state === 'current' && (
-                              <Tooltip title={renderTooltip()}>
+                              <Tooltip title={titleTooltip}>
                                 <div
                                   className={cn(
                                     isDateInRange(day.date) &&
@@ -557,7 +657,8 @@ export function DatePicker({ min, max }: Props) {
                                 >
                                   <button
                                     className={cn(
-                                      'w-10 h-10 text-lg hover:border-brand-600 hover:border-2 rounded-full m-0.5',
+                                      hoverCell(day.date),
+                                      'w-10 h-10 text-lg hover:border-brand-600 rounded-full hover:border-2 m-0.5',
                                       {
                                         'text-gray-400':
                                           day.state !== 'current',
@@ -595,6 +696,7 @@ export function DatePicker({ min, max }: Props) {
                                           !isSelecting() &&
                                           isDateInRange(day.date),
                                       },
+
                                       {
                                         'bg-brand-100 rounded-none text-brand-600 w-full':
                                           isSelecting() &&
@@ -611,11 +713,7 @@ export function DatePicker({ min, max }: Props) {
                                         'bg-gray-200 cursor-default hover:border-none':
                                           getRenderedYear() ===
                                             +min.slice(0, 4) &&
-                                          getMonthList().findIndex(
-                                            (month) =>
-                                              month.name ===
-                                              getRenderedMonthName()
-                                          ) < +min.slice(5, 7),
+                                          getRenderedMonth() < +min.slice(5, 7),
                                       }
                                     )}
                                     disabled={day.day === 0}
@@ -731,7 +829,33 @@ export function DatePicker({ min, max }: Props) {
                               month={getRenderedNextMonthName()}
                             />
                             <div
-                              onClick={() => handleShowNextMonth()}
+                              onClick={() => {
+                                console.log(
+                                  getRenderedNextDateYear(),
+                                  max.slice(5, 7)
+                                );
+
+                                if (
+                                  +getRenderedNextDateYear() ===
+                                  +max.slice(0, 4)
+                                ) {
+                                  if (+max.slice(5, 7) % 2 === 1) {
+                                    if (
+                                      +max.slice(5, 7) > getRenderedNextMonth()
+                                    ) {
+                                      handleShowNextMonth();
+                                    }
+                                  } else if (
+                                    +max.slice(5, 7) > getRenderedNextMonth()
+                                  ) {
+                                    handleShowNextMonth();
+                                  }
+                                } else if (
+                                  +getRenderedNextDateYear() < +max.slice(0, 4)
+                                ) {
+                                  handleShowNextMonth();
+                                }
+                              }}
                               className="rounded-full bg-white cursor-pointer flex items-center justify-center p-2 border-[1.5px] border-white duration-300 hover:border-brand-600 hover:border-[1.5px]"
                             >
                               <Icon name="arrow-left" size="lg" />
@@ -765,10 +889,12 @@ export function DatePicker({ min, max }: Props) {
                             {daysListNext.map((day, index) => (
                               <div
                                 key={index}
-                                onMouseEnter={handleHoverCell(day.date)}
+                                onMouseEnter={() => {
+                                  moseEnterCell(day);
+                                }}
                               >
                                 {day.state === 'current' && (
-                                  <Tooltip title={renderTooltip()}>
+                                  <Tooltip title={titleTooltip}>
                                     <div
                                       className={cn(
                                         isDateInRange(day.date) &&
@@ -779,6 +905,7 @@ export function DatePicker({ min, max }: Props) {
                                     >
                                       <button
                                         className={cn(
+                                          hoverCell(day.date),
                                           'w-10 h-10 text-lg hover:border-brand-600 hover:border-2 rounded-full m-0.5',
                                           {
                                             'text-gray-400':
@@ -838,8 +965,13 @@ export function DatePicker({ min, max }: Props) {
                                               .locale('fa')
                                               .format('YYYY-MM-DD')
                                           ) {
-                                            setFocuseStartInput(false);
-                                            setFocuseEndInput(true);
+                                            if (startDate) {
+                                              setFocuseStartInput(false);
+                                              setFocuseEndInput(true);
+                                            } else {
+                                              setFocuseStartInput(true);
+                                              setFocuseEndInput(false);
+                                            }
                                             setActiveEndInput(true);
 
                                             if (
@@ -909,14 +1041,6 @@ export function DatePicker({ min, max }: Props) {
                                                 );
                                               }
                                             }
-                                            // if (!endDate && !getEndDate() && focuseStartInput) {
-                                            //   setStartDate(moment(day.date, 'YYYY/MM/DD').locale('fa').format('YYYY-MM-DD'));
-                                            // }
-                                            // if ((startDate || getDate()) && focuseEndInput) {
-                                            //   setEndDate(day.date)
-                                            // } else if (focuseStartInput) {
-                                            //   setDate(moment(day.date, 'YYYY/MM/DD').locale('fa').format('YYYY-MM-DD'))
-                                            // }
                                           }
                                         }}
                                       >

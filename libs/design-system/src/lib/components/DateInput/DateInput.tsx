@@ -10,6 +10,8 @@ interface Props {
   min?: string;
   active: boolean;
   focus: boolean;
+  invalidStartDate: string;
+  invalidEndDate: string;
   mosaviDate: string;
   errors: {
     minError: boolean;
@@ -34,6 +36,8 @@ const isCustomDate = (value: unknown): value is CustomDate => {
 };
 export const DateInput: React.FC<Props> = ({
   defaultValue,
+  invalidEndDate,
+  invalidStartDate,
   mosaviDate,
   errorHandler,
   focus,
@@ -100,9 +104,6 @@ export const DateInput: React.FC<Props> = ({
         changeMonthInput(dateJalali.month() + 1);
         changeYearInput(dateJalali.year());
         if (day && month && year) {
-          console.log('min =>', min);
-          console.log('max =>', max);
-          console.log('defult value =>', defaultValue);
           if (max && defaultValue.replace(/-/g, '') > max?.replace(/-/g, '')) {
             errorHandler({ minError: false, maxError: true });
           }
@@ -661,13 +662,19 @@ export const DateInput: React.FC<Props> = ({
           'w-40 rounded-md bg-white border-2 flex items-center gap-1 py-2 px-4',
           {
             'border-red-600':
-              errors?.maxError || errors?.minError || mosaviDate,
+              errors?.maxError ||
+              errors?.minError ||
+              mosaviDate ||
+              invalidEndDate ||
+              invalidStartDate,
             'border-brand-600':
               active &&
               focus &&
               !errors.maxError &&
               !errors.minError &&
-              !mosaviDate,
+              !mosaviDate &&
+              !invalidEndDate &&
+              !invalidStartDate,
             'border-gray-500': year && day && month && !focus,
           }
         )}
