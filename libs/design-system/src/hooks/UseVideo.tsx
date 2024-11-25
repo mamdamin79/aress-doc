@@ -157,7 +157,6 @@ export const useVideo = (
     isFullscreen: false,
     quality: qualities[0],
   });
-  console.log(state);
 
   useEffect(() => {
     const video = videoRef.current!;
@@ -209,7 +208,6 @@ export const useVideo = (
     const updateProgress = () => {
       // first of all we should calculate progress form duration and current time - it used in handle time update and handle durationchange
       const { currentTime, duration } = videoRef.current!;
-      console.log({ state: state.currentTime, video: currentTime });
       const progress =
         duration > 0
           ? ((currentTime === 0 && state.currentTime !== 0
@@ -218,7 +216,6 @@ export const useVideo = (
               duration) *
             100
           : state.progress;
-      console.log(progress);
       dispatch({ type: 'SET_PROGRESS', progress });
     };
 
@@ -231,10 +228,6 @@ export const useVideo = (
     };
 
     const handleTimeUpdate = () => {
-      console.log({
-        state: state.currentTime,
-        video: videoRef.current!.currentTime,
-      });
       dispatch({
         type: 'TIME_UPDATE',
         currentTime:
@@ -246,10 +239,6 @@ export const useVideo = (
     };
 
     const handleDurationChange = () => {
-      console.log({
-        state: state.currentTime,
-        video: videoRef.current!.currentTime,
-      });
       dispatch({
         type: 'DURATION_CHANGE',
         duration: videoRef.current!.duration,

@@ -32,7 +32,6 @@ export const PlayerOptions: React.FC<Props> = React.memo(
     fullScreen,
     playBackRate,
     setPlaybackRate,
-    isFullscreen,
     qualities,
     quality,
     changeQuality,
@@ -79,10 +78,10 @@ export const PlayerOptions: React.FC<Props> = React.memo(
               dir="rtl"
               className={cn(
                 'w-60 bg-gray-900/90 z-20 border-gray-700 rounded-md duration-300 ease-in-out border-[1.5px] absolute bottom-20 -right-24',
-                { 'bottom-56 opacity-0': !open }
+                { 'bottom-56 opacity-0 hidden': !open }
               )}
             >
-              <Disclosure as="div" className="" defaultOpen={true}>
+              <Disclosure as="div" className="">
                 <DisclosureButton className="p-3 group flex w-full items-center justify-between">
                   <span className="flex-row-reverse gap-2 items-center font-medium text-white text-sm flex justify-between ">
                     سرعت پخش <Icon name="circle-gauge" />
@@ -125,7 +124,7 @@ export const PlayerOptions: React.FC<Props> = React.memo(
                     <Icon name="chevron-left" />
                   </span>
                 </DisclosureButton>
-                <DisclosurePanel className="mt-2 text-sm/5 text-white/50">
+                <DisclosurePanel className="text-white">
                   <ul>
                     {qualities.map((item) => (
                       <li
