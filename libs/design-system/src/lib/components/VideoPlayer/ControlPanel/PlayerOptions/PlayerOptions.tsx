@@ -113,17 +113,15 @@ export const PlayerOptions: React.FC<Props> = React.memo(
                 </DisclosurePanel>
               </Disclosure>
               <Disclosure as="div" className=" text-sm font-medium">
-                <DisclosureButton className="p-3 flex w-full items-center justify-between">
-                  <span className=" font-medium text-sm flex flex-row-reverse gap-2 text-white">
-                    کیفیت
-                    <span className="text-white">
-                      <Icon name="sliders-horizontal" />
+                  <DisclosureButton className="p-3 group flex w-full items-center justify-between">
+                    <span className="flex-row-reverse gap-2 items-center font-medium text-white text-sm flex justify-between ">
+                      کیفیت <Icon name="sliders-horizontal" />
                     </span>
-                  </span>
-                  <span className="text-white">
-                    <Icon name="chevron-left" />
-                  </span>
-                </DisclosureButton>
+                    <span className="text-white flex items-center gap-1">
+                      {quality.label}
+                      <Icon name="chevron-left" />
+                    </span>
+                  </DisclosureButton>
                 <DisclosurePanel className="text-white">
                   <ul>
                     {qualities.map((item) => (
@@ -148,7 +146,7 @@ export const PlayerOptions: React.FC<Props> = React.memo(
             </div>
           }
         </div>
-        <Tooltip className="!z-30" title="(i) picture-in-picture حالت">
+        <Tooltip className="!z-30 !right-12" title="(i) picture-in-picture حالت">
           <button
             onClick={pictureInPicture}
             className="text-white flex items-center justify-center p-1  duration-300 transition-all"
@@ -156,7 +154,7 @@ export const PlayerOptions: React.FC<Props> = React.memo(
             <Icon name="picture-in-picture-2" />
           </button>
         </Tooltip>
-        <Tooltip className="!z-30" title="(f) حالت تمام صفحه ">
+        <Tooltip className="!z-30 !right-12" title="(f) حالت تمام صفحه ">
           <button
             onClick={fullScreen}
             className="text-white flex items-center justify-center p-1  duration-300 transition-all"

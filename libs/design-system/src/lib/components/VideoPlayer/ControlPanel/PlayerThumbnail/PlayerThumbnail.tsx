@@ -1,3 +1,4 @@
+import { cn } from '../../../../../utils/classNames.utils';
 import { secondsToHHMMSS } from '../../../../../utils/time';
 import React, { useRef } from 'react';
 
@@ -33,7 +34,7 @@ export const PlayerThumbnail: React.FC<Props> = React.memo(
         style={{
           left: `${(hoverTime / duration) * 100}%`,
         }}
-        className='absolute -top-32 translate-x-[-50%]'
+        className={cn("absolute -top-32 translate-x-[-50%] ",{"translate-x-[-100%]":hoverTime/duration*100 > 90},{"translate-x-[0%]":hoverTime/duration*100 < 10})}
       >
         <div
           ref={thumbnailPreviewRef}
@@ -47,7 +48,9 @@ export const PlayerThumbnail: React.FC<Props> = React.memo(
             }px ${-Math.floor(currentFrame / rowFrames) * frameHeight}px`,
           }}
         ></div>
-        <div className="relative mx-auto text-center text-sm font-medium mt-2  text-white">{secondsToHHMMSS(hoverTime)}</div>
+        <div className="relative mx-auto text-center text-sm font-medium mt-2  text-white">
+          {secondsToHHMMSS(hoverTime)}
+        </div>
       </div>
     ) : null;
   }
