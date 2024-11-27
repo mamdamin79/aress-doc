@@ -19,6 +19,15 @@ type Props = {
   title: string;
 };
 
+const MemoizedTitle = React.memo(({ title }: { title: string }) => (
+  <h2 className="absolute text-white text-xl font-semibold mt-8 flex gap-1 items-center">
+    <span className="mr-8">
+      <Icon name="list-video" size="lg" />
+    </span>
+    {title}
+  </h2>
+));
+
 export const VideoPlayer: React.FC<Props> = ({
   qualities,
   poster = '',
@@ -95,12 +104,7 @@ export const VideoPlayer: React.FC<Props> = ({
         </div>
       )}
       {isFullscreen ? (
-        <h2 className="absolute text-white text-xl font-semibold mt-8 flex gap-1 items-center">
-          <span className="mr-8">
-            <Icon name="list-video" size="lg" />
-          </span>
-          {title}
-        </h2>
+        <MemoizedTitle title={title} />
       ) : (
         <span className="absolute right-8 text-white">
           {<Image src={videoLogo} width={100} height={100} alt="logo" />}
