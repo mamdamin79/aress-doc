@@ -23,5 +23,6 @@ export const Default: Story = {
     title: 'سلام علیکم و رحمته الله',
     position: 'top',
     className: '!text-red-600 !bg-red-100 !border-2 !border-red-900',
+    offset:16
   },
 };
