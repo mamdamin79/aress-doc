@@ -118,7 +118,7 @@ const rawData: RowData<TableRow>[] = [
     {
       key: 'average',
       header: 'میانگین',
-      headerDivider: 'right',
+      headerDivider: 'both',
       render: (value, rowIndex, colIndex,hoveredCol,hoveredRow, matchingCol,matchingRow ,rowFormat) =>
         renderCell(
           value,
@@ -131,14 +131,13 @@ const rawData: RowData<TableRow>[] = [
             signed: true,
             type: 'percent',
           },
-          cn('justify-center',            hoveredCol !== null ? hoveredCol === colIndex ? 'opacity-100' : 'opacity-60 text-gray-1000' : '',
+          cn('justify-center w-[100px]',            hoveredCol !== null ? hoveredCol === colIndex ? 'opacity-100' : 'opacity-60 text-gray-1000' : '',
             hoveredRow !== null ? hoveredRow === rowIndex ? 'opacity-100' : 'opacity-60 text-gray-1000' : '',sharedStyle)
         ), 
     },
     {
       key: 'stdDev',
       header: 'انحراف معیار از میانگین',
-      headerDivider: 'right',
       render: (value, rowIndex, colIndex ,hoveredCol,hoveredRow, matchingCol,matchingRow ,rowFormat) =>
         renderCell(
           value as string,
@@ -151,8 +150,8 @@ const rawData: RowData<TableRow>[] = [
             signed: false,
             type: 'percent',
           },
-          cn('justify-center',            hoveredCol !== null ? hoveredCol === colIndex ? 'opacity-100' : 'opacity-60 text-gray-1000' : '',
-            hoveredRow !== null ? hoveredRow === rowIndex ? 'opacity-100' : 'opacity-60 text-gray-1000' : '',sharedStyle)
+          cn(sharedStyle, 'justify-center w-[180px]',            hoveredCol !== null ? hoveredCol === colIndex ? 'opacity-100' : 'opacity-60 text-gray-1000' : '',
+            hoveredRow !== null ? hoveredRow === rowIndex ? 'opacity-100' : 'opacity-60 text-gray-1000' : '')
         ),
     },
   ];

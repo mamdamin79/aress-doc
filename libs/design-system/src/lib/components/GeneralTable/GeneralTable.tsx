@@ -1,19 +1,26 @@
-import React, { useState } from 'react';
+'use client'
+import React, { useEffect, useState } from 'react';
 import { TableRow, TableProps } from './GeneralTable.types';
 import { cn } from 'libs/design-system/src/utils';
+import { findExtremes, getCellBackgroundColor } from './GeneralTable.utils';
 
 export const GeneralTable: React.FC<TableProps<TableRow>> = ({
   data,
   schema,
+  tableDataStyleClasses,
+  border = false,
+  hasValueBasedBg,
+  striped
 }) => {
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const [hoveredCol, setHoveredCol] = useState<number | null>(null);
   const [matchingRow, setMatchingRow] = useState<number | null>(null);
   const [matchingCol, setMatchingCol] = useState<number | null>(null);
-  const setMatchings = (col:number|null, row:number|null)=>{
-    setMatchingCol(col)
-    setMatchingRow(row)
-  }
+
+  const setMatchings = (col: number | null, row: number | null) => {
+    setMatchingCol(col);
+    setMatchingRow(row);
+  };
 
   const renderRows = () =>
     data.map((row, rowIndex) => {
@@ -22,8 +29,9 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
           <tr key={`separator-${rowIndex}`}>
             <td
               colSpan={schema.length}
-              className="font-semibold bg-gray-200 p-2"
+              className="font-semibold"
             >
+              <div className=' bg-gray-200 h-[1px] mt-3 '></div>
               {row.label || ''}
             </td>
           </tr>
@@ -31,25 +39,53 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
       }
 
       return (
-        <tr key={rowIndex} className={rowIndex % 2 === 1 ? 'bg-gray-50' : ''}>
+        <tr key={rowIndex} className={cn(striped && rowIndex % 2 === 1 ? 'bg-gray-50' : '', )}>
           {schema.map((column, cellIndex) => {
             const cellValue = row[column.key as keyof TableRow];
             return (
               <td
                 key={cellIndex}
-                className="w-fit"
-                onMouseEnter={() => cellIndex === 0 ? setHoveredRow(rowIndex): setMatchings(cellIndex, rowIndex)}
-                onMouseLeave={() => cellIndex === 0 ? setHoveredRow(null) : setMatchings(null, null)}
-
-
+                className={cn('w-fit', tableDataStyleClasses)}
+                onMouseEnter={() =>
+                  cellIndex === 0
+                    ? setHoveredRow(rowIndex)
+                    : setMatchings(cellIndex, rowIndex)
+                }
+                onMouseLeave={() =>
+                  cellIndex === 0
+                    ? setHoveredRow(null)
+                    : setMatchings(null, null)
+                }
               >
-                {cellIndex === 0 ? (<div  
-                className={cn('w-fit pr-[6px] pl-[6px] h-[30px] rounded-sm flex items-center',
-                    matchingRow === rowIndex || hoveredRow === rowIndex
-                      ? 'bg-blue-600 text-white'
-                      : '')}>
-{column.render
-                  ? column.render(
+                {cellIndex === 0 ? (
+                  <div
+                    className={cn(
+                      'w-fit pr-[6px] pl-[6px] h-[30px] rounded-sm flex items-center',
+                      matchingRow === rowIndex || hoveredRow === rowIndex
+                        ? 'bg-blue-600 text-white'
+                        : ''
+                    )}
+                  >
+                    {
+                    
+                    column.render
+                      ? column.render(
+                          cellValue as number | string | null,
+                          rowIndex,
+                          cellIndex,
+                          hoveredCol,
+                          hoveredRow,
+                          matchingCol,
+                          matchingRow,
+                          row.format,
+
+
+                        )
+                      : cellValue}
+                  </div>
+                ) : 
+                  column.render ? (
+                    column.render(
                       cellValue as number | string | null,
                       rowIndex,
                       cellIndex,
@@ -57,22 +93,13 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
                       hoveredRow,
                       matchingCol,
                       matchingRow,
-                      row.format
+                      row.format,
+                      getCellBackgroundColor(cellValue,35,-35)
                     )
-                  : cellValue}
-                      </div>) : column.render
-                  ? column.render(
-                      cellValue as number | string | null,
-                      rowIndex,
-                      cellIndex,
-                      hoveredCol,
-                      hoveredRow,
-                      matchingCol,
-                      matchingRow,
-                      row.format
-                    )
-                  : cellValue}
-      
+                  ) : (
+                    cellValue
+                  )
+                }
               </td>
             );
           })}
@@ -81,28 +108,35 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
     });
 
   return (
-    <div className="relative overflow-x-auto w-[1280px]">
-      <table className="min-w-full rounded-t-xl overflow-hidden">
-        <thead className="bg-gray-100 text-md font-medium h-12">
+    <div className="relative w-[1280px]">
+      <table className="min-w-full rounded-t-xl">
+        <thead className="bg-transparent text-md font-medium h-16 after:content-[''] after:block after:h-4">
           <tr>
             {schema.map((column, index) => (
               <th
                 onMouseEnter={() => index !== 0 && setHoveredCol(index)}
                 onMouseLeave={() => index !== 0 && setHoveredCol(null)}
                 key={index}
-                className={cn('relative', index === 0 ? 'text-right pr-6' : '')}
+                className={cn(
+                  'relative bg-gray-100',
+                  column.key === 'name' ? 'text-right' : ''
+                )}
               >
                 <div className="w-full flex justify-center items-center">
-                <div
-                  className={cn('w-fit pr-[6px] pl-[6px] h-[30px] rounded-sm',
-                    matchingCol === index || hoveredCol === index
-                      ? 'bg-blue-600 text-white'
-                      : ''
-                  )}
-                >       {column.header}</div>
+                  <div
+                    className={cn(
+                      'w-fit pr-[6px] pl-[6px] h-[30px] rounded-sm',
+                      matchingCol === index || hoveredCol === index
+                        ? 'bg-blue-600 text-white'
+                        : '',
+                      column.key === 'name' && ' pr-6 w-[144px]'
+                    )}
+                  >
+                    {' '}
+                    {column.header}
+                  </div>
                 </div>
-         
-         
+
                 {column.headerDivider && (
                   <div
                     className={cn(

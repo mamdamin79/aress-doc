@@ -6,5 +6,6 @@ export interface NumberCellProps {
   value: number | null;
   format: TableCellFormat;
   cellStyle: string;
-  grayMode: boolean 
+  grayMode: boolean ;
+  valueBasedBg: string;
 }

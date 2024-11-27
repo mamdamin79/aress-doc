@@ -3,7 +3,7 @@ import { TableCellFormat } from "./TableNumberCell";
 export interface Column<T = unknown> {
   key: keyof T;
   header: string;
-  headerDivider?: 'left' | 'right',
+  headerDivider?: 'left' | 'right' | 'both',
   render?: (
     value: T[keyof T],
     rowIndex: number,
@@ -12,7 +12,8 @@ export interface Column<T = unknown> {
     hoveredRow: number|null,
     matchingCol: number|null,
     matchingRow: number|null,
-    format?: TableCellFormat
+    format?: TableCellFormat,
+    valueBasedBg?: string
   ) => React.ReactNode;
 }
 
@@ -25,6 +26,10 @@ export type RowData<T> =
 export interface TableProps<T> {
   data: RowData<T>[];
   schema: Column<T>[];
+  tableDataStyleClasses?: string;
+  border?:boolean;
+  hasValueBasedBg?: boolean;
+  striped?: boolean;
 }
 
 export interface TableRow {

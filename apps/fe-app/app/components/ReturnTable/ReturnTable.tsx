@@ -6,6 +6,6 @@ interface ReturnTableProps {
 }
 export const ReturnTable: React.FC<ReturnTableProps> = ({ data,schema }) =>{
   return (
-    <GeneralTable data={data} schema={schema}/>
+    <GeneralTable data={data} schema={schema} tableDataStyleClasses='bg-red'/>
   )
 }
