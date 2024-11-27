@@ -93,31 +93,43 @@ export const VideoPlayer: React.FC<Props> = ({
     >
       <div
         onClick={isPlaying ? pause : play}
-        className="w-full h-full absolute z-20"
-      ></div>
-      {/* loading displays when video is not loaded yet(even first frame) and when buffered time is finished and we are waiting for new chunks */}
-      {isVideoWaited && (
-        <div className="absolute z-30 flex items-center justify-center inset-0 m-auto">
-          <div className="animate-spin text-gray-600 w-fit mx-auto">
+        className="w-full flex items-center justify-center h-full absolute z-20"
+      >
+        {/* loading displays when video is not loaded yet(even first frame) and when buffered time is finished and we are waiting for new chunks */}
+        {isVideoWaited && (
+          <div className="animate-spin text-gray-600  w-fit mx-auto">
             <Icon name="loader-circle" size="xl" />
           </div>
-        </div>
-      )}
+        )}
+      </div>
       {isFullscreen ? (
         <MemoizedTitle title={title} />
       ) : (
-        <span className="absolute right-8 text-white">
+        <span
+          className={cn(
+            'absolute right-8 transition-all duration-700 ease-in-out opacity-90',
+            { ' opacity-20': !showControlPanel && isPlaying }
+          )}
+        >
           {<Image src={videoLogo} width={100} height={100} alt="logo" />}
         </span>
       )}
       <video className="w-full" poster={''} ref={videoRef} />
-      <div className="absolute inset-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+      <div
+        className={cn(
+          'absolute inset-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent duration-700 ease-in-out transition-all',
+          { '-bottom-full': !showControlPanel && isPlaying }
+        )}
+      ></div>
       {/* control panel container */}
       <div
         className={cn(
           'absolute w-full h-20 z-20 bottom-0 duration-700 ease-in-out transition-all',
           {
             '-bottom-28': !showControlPanel && isPlaying,
+          },
+          {
+            'animate-pulse pointer-events-none': !isVideoLoaded,
           }
         )}
         onClick={(e) => e.stopPropagation()}
