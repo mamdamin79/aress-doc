@@ -1,8 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 @import url('./../src/assets/fonts/vazirmant.css');
+
+:root {
+  --rt-transition-show-delay: 0.15s;
+  --rt-transition-closing-delay: 0.15s;
+}
 
 @layer base {
   :root {
@@ -55,17 +59,28 @@
     --color-vivid-green-100: 231, 250, 239;
     --color-vivid-green-50: 250, 254, 252;
     /* blue */
-    --color-blue-1000: 0 23 48; /* #001730 */
-    --color-blue-900: 0 57 120; /* #003978 */
-    --color-blue-800: 0 80 168; /* #0050A8 */
-    --color-blue-700: 0 97 204; /* #0061CC */
-    --color-blue-600: 0 114 240; /* #0072F0 */
-    --color-blue-500: 51 142 243; /* #338EF3 */
-    --color-blue-400: 102 170 246; /* #66AAF6 */
-    --color-blue-300: 153 199 249; /* #99C7F9 */
-    --color-blue-200: 204 227 252; /* #CCE3FC */
-    --color-blue-100: 240 247 254; /* #F0F7FE */
-    --color-blue-050: 250 252 255; /* #FAFCFF */
+    --color-blue-1000: 0 23 48;
+    /* #001730 */
+    --color-blue-900: 0 57 120;
+    /* #003978 */
+    --color-blue-800: 0 80 168;
+    /* #0050A8 */
+    --color-blue-700: 0 97 204;
+    /* #0061CC */
+    --color-blue-600: 0 114 240;
+    /* #0072F0 */
+    --color-blue-500: 51 142 243;
+    /* #338EF3 */
+    --color-blue-400: 102 170 246;
+    /* #66AAF6 */
+    --color-blue-300: 153 199 249;
+    /* #99C7F9 */
+    --color-blue-200: 204 227 252;
+    /* #CCE3FC */
+    --color-blue-100: 240 247 254;
+    /* #F0F7FE */
+    --color-blue-050: 250 252 255;
+    /* #FAFCFF */
     /* yellow */
     --color-yellow-1000: 51 36 0;
     --color-yellow-900: 128 90 0;
@@ -103,47 +118,81 @@
     --color-pink-100: 255 238 247;
     --color-pink-050: 255 252 253;
     /* purple */
-    --color-purple-1000: 22 14 45; /* #160E2D */
-    --color-purple-900: 55 35 114; /* #372372 */
-    --color-purple-800: 77 48 159; /* #4D309F */
-    --color-purple-700: 94 59 193; /* #5E3BC1 */
-    --color-purple-600: 110 69 227; /* #6E45E3 */
-    --color-purple-500: 139 106 233; /* #8B6AE9 */
-    --color-purple-400: 168 143 238; /* #A88FEE */
-    --color-purple-300: 197 181 244; /* #C5B5F4 */
-    --color-purple-200: 226 218 249; /* #E2DAF9 */
-    --color-purple-100: 240 236 252; /* #F0ECFC */
-    --color-purple-050: 252 251 254; /* #FCFBFE */
+    --color-purple-1000: 22 14 45;
+    /* #160E2D */
+    --color-purple-900: 55 35 114;
+    /* #372372 */
+    --color-purple-800: 77 48 159;
+    /* #4D309F */
+    --color-purple-700: 94 59 193;
+    /* #5E3BC1 */
+    --color-purple-600: 110 69 227;
+    /* #6E45E3 */
+    --color-purple-500: 139 106 233;
+    /* #8B6AE9 */
+    --color-purple-400: 168 143 238;
+    /* #A88FEE */
+    --color-purple-300: 197 181 244;
+    /* #C5B5F4 */
+    --color-purple-200: 226 218 249;
+    /* #E2DAF9 */
+    --color-purple-100: 240 236 252;
+    /* #F0ECFC */
+    --color-purple-050: 252 251 254;
+    /* #FCFBFE */
     /* base background */
     --color-base-background: 255, 255, 255;
     /* white */
     --color-white: 255, 255, 255;
   }
+
   :root.dark {
     /* Brand Dark Colors  */
-    --color-brand-1000: 227 243 243; /* #E3F3F3 */
-    --color-brand-900: 138 207 206; /* #8ACFCE */
-    --color-brand-800: 33 164 163; /* #21A4A3 */
-    --color-brand-700: 0 144 143; /* #00908F */
-    --color-brand-600: 0 133 132; /* #008584 */
-    --color-brand-500: 0 107 106; /* #006B6A */
-    --color-brand-400: 0 88 87; /* #005857 */
-    --color-brand-300: 0 68 68; /* #004444 */
-    --color-brand-200: 0 50 50; /* #003232 */
-    --color-brand-100: 0 36 35; /* #002423 */
-    --color-brand-050: 0 30 30; /* #001E1E */
+    --color-brand-1000: 227 243 243;
+    /* #E3F3F3 */
+    --color-brand-900: 138 207 206;
+    /* #8ACFCE */
+    --color-brand-800: 33 164 163;
+    /* #21A4A3 */
+    --color-brand-700: 0 144 143;
+    /* #00908F */
+    --color-brand-600: 0 133 132;
+    /* #008584 */
+    --color-brand-500: 0 107 106;
+    /* #006B6A */
+    --color-brand-400: 0 88 87;
+    /* #005857 */
+    --color-brand-300: 0 68 68;
+    /* #004444 */
+    --color-brand-200: 0 50 50;
+    /* #003232 */
+    --color-brand-100: 0 36 35;
+    /* #002423 */
+    --color-brand-050: 0 30 30;
+    /* #001E1E */
     /* Gray dark Colors in RGB */
-    --color-gray-1000: 253 253 253; /* #FDFDFD */
-    --color-gray-900: 248 248 248; /* #F8F8F8 */
-    --color-gray-800: 208 209 209; /* #D0D1D1 */
-    --color-gray-700: 171 172 172; /* #ABACAC */
-    --color-gray-600: 134 135 135; /* #868787 */
-    --color-gray-500: 106 107 107; /* #6A6B6B */
-    --color-gray-400: 60 63 63; /* #3C3F3F */
-    --color-gray-300: 50 53 53; /* #323535 */
-    --color-gray-200: 43 46 46; /* #2B2E2E */
-    --color-gray-100: 35 37 37; /* #232525 */
-    --color-gray-050: 25 28 28; /* #191C1C */
+    --color-gray-1000: 253 253 253;
+    /* #FDFDFD */
+    --color-gray-900: 248 248 248;
+    /* #F8F8F8 */
+    --color-gray-800: 208 209 209;
+    /* #D0D1D1 */
+    --color-gray-700: 171 172 172;
+    /* #ABACAC */
+    --color-gray-600: 134 135 135;
+    /* #868787 */
+    --color-gray-500: 106 107 107;
+    /* #6A6B6B */
+    --color-gray-400: 60 63 63;
+    /* #3C3F3F */
+    --color-gray-300: 50 53 53;
+    /* #323535 */
+    --color-gray-200: 43 46 46;
+    /* #2B2E2E */
+    --color-gray-100: 35 37 37;
+    /* #232525 */
+    --color-gray-050: 25 28 28;
+    /* #191C1C */
     /* Blue dark Colors in RGB */
     --color-blue-1000: 242, 248, 254;
     --color-blue-900: 157, 201, 249;

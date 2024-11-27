@@ -1,31 +1,15 @@
-<svg viewBox="0 0 36 36" fill="none"  xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_d_1691_36196)">
-<path stroke="" d="M3 17C3 8.16344 10.1634 1 19 1C27.8366 1 35 8.16344 35 17C35 25.8366 27.8366 33 19 33C10.1634 33 3 25.8366 3 17Z" fill="#119695" shape-rendering="crispEdges"/>
-<g filter="url(#filter1_d_1691_36196)">
-<circle cx="19" cy="17" r="12" fill="white"/>
-</g>
-<path stroke="black" d="M23.6668 12.3333L14.3335 21.6666M14.3335 12.3333L23.6668 21.6666"  stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-<defs>
-<filter id="filter0_d_1691_36196" x="0" y="0" width="40" height="40" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<!-- <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/> -->
-<feOffset dx="1" dy="3"/>
-<feGaussianBlur stdDeviation="2"/>
-<feComposite in2="hardAlpha" operator="out"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0.0431373 0 0 0 0 0.0901961 0 0 0 0.12 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1691_36196"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1691_36196" result="shape"/>
-</filter>
-<filter id="filter1_d_1691_36196" x="3.5" y="2.5" width="33" height="33" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feOffset dx="1" dy="2"/>
-<feGaussianBlur stdDeviation="2.25"/>
-<feComposite in2="hardAlpha" operator="out"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0.0414902 0 0 0 0 0.0901961 0 0 0 0.24 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1691_36196"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1691_36196" result="shape"/>
-</filter>
-</defs>
+<svg width="32" height="32" viewBox="0 0 32 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(0, 1)">
+    <path d="M0 16C0 7.16344 7.16344 0 16 0C24.8366 0 32 7.16344 32 16C32 24.8366 24.8366 32 16 32C7.16344 32 0 24.8366 0 16Z" fill="#009695"/>
+    <path d="M0 16C0 7.16344 7.16344 0 16 0C24.8366 0 32 7.16344 32 16C32 24.8366 24.8366 32 16 32C7.16344 32 0 24.8366 0 16Z" fill="url(#paint0_radial_1691_36196)"/>
+    <circle cx="16" cy="16" r="13" fill="white"/>
+    <path d="M20.6668 11.3333L11.3335 20.6666M11.3335 11.3333L20.6668 20.6666" stroke="#05070C" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <!-- <defs>
+    <radialGradient id="paint0_radial_1691_36196" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(17 18.5) rotate(50.8981) scale(13.5099 12.5422)">
+      <stop offset="0.5" stop-opacity="0"/>
+      <stop offset="0.742231" stop-opacity="0.1"/>
+      <stop offset="1" stop-opacity="0.04"/>
+    </radialGradient>
+  </defs> -->
 </svg>
