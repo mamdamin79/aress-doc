@@ -46,7 +46,12 @@ export const PlayerActions: React.FC<Props> = React.memo(
               isLoading={false}
               align="center"
             >
-              <Icon name="pause" />
+              <span className="sm:block hidden">
+                <Icon name="pause" />
+              </span>
+              <span className="sm:hidden block">
+                <Icon size="sm" name="pause" />
+              </span>
             </Button>
           </Tooltip>
         ) : (
@@ -63,12 +68,22 @@ export const PlayerActions: React.FC<Props> = React.memo(
               isLoading={false}
               align="center"
             >
-              <Icon name="play" />
+              <span className="sm:block hidden">
+                <Icon name="play" />
+              </span>
+              <span className="sm:hidden block">
+                <Icon size="sm" name="play" />
+              </span>
             </Button>
           </Tooltip>
         )}
         <button className="text-white  items-center justify-center p-1 sm:flex hidden  duration-300 transition-all">
-          <Icon name="skip-forward" />
+          <span className="sm:block hidden">
+            <Icon name="skip-forward" />
+          </span>
+          <span className="sm:hidden block">
+            <Icon size="sm" name="skip-forward" />
+          </span>
         </button>
         <div className="group relative flex items-center space-x-2">
           {muted ? (
@@ -77,7 +92,12 @@ export const PlayerActions: React.FC<Props> = React.memo(
                 onClick={toggleMute}
                 className=" text-white flex items-center justify-center p-1 duration-300 transition-all"
               >
-                <Icon name="volume-x" />
+                <span className="sm:block hidden">
+                  <Icon name="volume-x" />
+                </span>
+                <span className="sm:hidden block">
+                  <Icon size="sm" name="volume-x" />
+                </span>
               </button>
             </Tooltip>
           ) : (
@@ -86,7 +106,12 @@ export const PlayerActions: React.FC<Props> = React.memo(
                 onClick={toggleMute}
                 className="text-white flex items-center justify-center p-1 duration-300 transition-all"
               >
-                <Icon name="volume-2" />
+                <span className="sm:block hidden">
+                  <Icon name="volume-2" />
+                </span>
+                <span className="sm:hidden block">
+                  <Icon size="sm" name="volume-2" />
+                </span>
               </button>
             </Tooltip>
           )}

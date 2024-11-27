@@ -60,7 +60,12 @@ export const PlayerOptions: React.FC<Props> = React.memo(
       <div className="flex items-center gap-4">
         <Tooltip offset={48} className="!z-30" title="اشتراک گذاری">
           <button className="text-white flex items-center justify-center p-1  duration-300 transition-all">
-            <Icon name="share-2" />
+            <span className="sm:block hidden">
+              <Icon name="share-2" />
+            </span>
+            <span className="sm:hidden block">
+              <Icon size="sm" name="share-2" />
+            </span>
           </button>
         </Tooltip>
         <div className="relative">
@@ -73,7 +78,12 @@ export const PlayerOptions: React.FC<Props> = React.memo(
               onClick={() => setOpen(!open)}
               className="text-white relative flex items-center justify-center p-1 mt-1  duration-300 transition-all"
             >
-              <Icon name="settings" />
+              <span className="sm:block hidden">
+                <Icon name="settings" />
+              </span>
+              <span className="sm:hidden block">
+                <Icon size="sm" name="settings" />
+              </span>
             </button>
           </Tooltip>
           {
@@ -88,11 +98,22 @@ export const PlayerOptions: React.FC<Props> = React.memo(
               <Disclosure as="div" className="">
                 <DisclosureButton className="p-3 group flex w-full items-center justify-between">
                   <span className="flex-row-reverse gap-2 items-center font-medium text-white text-sm flex justify-between ">
-                    سرعت پخش <Icon name="circle-gauge" />
+                    سرعت پخش
+                    <span className="sm:block hidden">
+                      <Icon name="circle-gauge" />
+                    </span>
+                    <span className="sm:hidden block">
+                      <Icon size="sm" name="circle-gauge" />
+                    </span>
                   </span>
                   <span className="text-white flex items-center gap-1">
                     {playBackRate}
-                    <Icon name="chevron-left" />
+                    <span className="sm:block hidden">
+                      <Icon name="chevron-left" />
+                    </span>
+                    <span className="sm:hidden block">
+                      <Icon size="sm" name="chevron-left" />
+                    </span>
                   </span>
                 </DisclosureButton>
                 <DisclosurePanel className="text-white">
@@ -107,7 +128,12 @@ export const PlayerOptions: React.FC<Props> = React.memo(
                       >
                         {playBackRate === item && (
                           <span>
-                            <Icon name="check" />
+                            <span className="sm:block hidden">
+                              <Icon name="check" />
+                            </span>
+                            <span className="sm:hidden block">
+                              <Icon size="sm" name="check" />
+                            </span>
                           </span>
                         )}{' '}
                         {item}
@@ -119,11 +145,24 @@ export const PlayerOptions: React.FC<Props> = React.memo(
               <Disclosure as="div" className=" text-sm font-medium">
                 <DisclosureButton className="p-3 group flex w-full items-center justify-between">
                   <span className="flex-row-reverse gap-2 items-center font-medium text-white text-sm flex justify-between ">
-                    کیفیت <Icon name="sliders-horizontal" />
+                    کیفیت
+                    <span className="sm:block hidden">
+                      <Icon name="sliders-horizontal" />
+                    </span>
+                    <span className="sm:hidden block">
+                      <Icon size="sm" name="sliders-horizontal" />
+                    </span>
                   </span>
                   <span className="text-white flex items-center gap-1">
                     {quality.label}
-                    <Icon name="chevron-left" />
+                    <span>
+                      <span className="sm:block hidden">
+                        <Icon name="chevron-left" />
+                      </span>
+                      <span className="sm:hidden block">
+                        <Icon size="sm" name="chevron-left" />
+                      </span>
+                    </span>
                   </span>
                 </DisclosureButton>
                 <DisclosurePanel className="text-white">
@@ -138,7 +177,12 @@ export const PlayerOptions: React.FC<Props> = React.memo(
                       >
                         {quality.label === item.label && (
                           <span>
-                            <Icon name="check" />
+                            <span className="sm:block hidden">
+                              <Icon name="check" />
+                            </span>
+                            <span className="sm:hidden block">
+                              <Icon size="sm" name="check" />
+                            </span>
                           </span>
                         )}{' '}
                         {item.label}
@@ -159,7 +203,12 @@ export const PlayerOptions: React.FC<Props> = React.memo(
             onClick={pictureInPicture}
             className="text-white flex items-center justify-center p-1  duration-300 transition-all"
           >
-            <Icon name="picture-in-picture-2" />
+            <span className="sm:block hidden">
+              <Icon name="picture-in-picture-2" />
+            </span>
+            <span className="sm:hidden block">
+              <Icon size="sm" name="picture-in-picture-2" />
+            </span>
           </button>
         </Tooltip>
         <Tooltip
@@ -171,7 +220,12 @@ export const PlayerOptions: React.FC<Props> = React.memo(
             onClick={fullScreen}
             className="text-white flex items-center justify-center p-1  duration-300 transition-all"
           >
-            <Icon name="fullscreen" />
+            <span className="sm:block hidden">
+              <Icon name="fullscreen" />
+            </span>
+            <span className="sm:hidden block">
+              <Icon size="sm" name="fullscreen" />
+            </span>
           </button>
         </Tooltip>
       </div>
