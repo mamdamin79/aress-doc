@@ -58,13 +58,17 @@ export const PlayerOptions: React.FC<Props> = React.memo(
     }, []);
     return (
       <div className="flex items-center gap-4">
-        <Tooltip className="!z-30" title="اشتراک گذاری">
+        <Tooltip offset={48} className="!z-30" title="اشتراک گذاری">
           <button className="text-white flex items-center justify-center p-1  duration-300 transition-all">
             <Icon name="share-2" />
           </button>
         </Tooltip>
         <div className="relative">
-          <Tooltip title="تنظیمات" className="!z-30">
+          <Tooltip
+            offset={48}
+            title="تنظیمات"
+            className={cn('!z-30', { '!hidden': open })}
+          >
             <button
               onClick={() => setOpen(!open)}
               className="text-white relative flex items-center justify-center p-1 mt-1  duration-300 transition-all"
@@ -113,15 +117,15 @@ export const PlayerOptions: React.FC<Props> = React.memo(
                 </DisclosurePanel>
               </Disclosure>
               <Disclosure as="div" className=" text-sm font-medium">
-                  <DisclosureButton className="p-3 group flex w-full items-center justify-between">
-                    <span className="flex-row-reverse gap-2 items-center font-medium text-white text-sm flex justify-between ">
-                      کیفیت <Icon name="sliders-horizontal" />
-                    </span>
-                    <span className="text-white flex items-center gap-1">
-                      {quality.label}
-                      <Icon name="chevron-left" />
-                    </span>
-                  </DisclosureButton>
+                <DisclosureButton className="p-3 group flex w-full items-center justify-between">
+                  <span className="flex-row-reverse gap-2 items-center font-medium text-white text-sm flex justify-between ">
+                    کیفیت <Icon name="sliders-horizontal" />
+                  </span>
+                  <span className="text-white flex items-center gap-1">
+                    {quality.label}
+                    <Icon name="chevron-left" />
+                  </span>
+                </DisclosureButton>
                 <DisclosurePanel className="text-white">
                   <ul>
                     {qualities.map((item) => (
@@ -146,7 +150,11 @@ export const PlayerOptions: React.FC<Props> = React.memo(
             </div>
           }
         </div>
-        <Tooltip className="!z-30 !right-12" title="(i) picture-in-picture حالت">
+        <Tooltip
+          offset={48}
+          className="!z-30 !right-12"
+          title="(i) picture-in-picture حالت"
+        >
           <button
             onClick={pictureInPicture}
             className="text-white flex items-center justify-center p-1  duration-300 transition-all"
@@ -154,7 +162,11 @@ export const PlayerOptions: React.FC<Props> = React.memo(
             <Icon name="picture-in-picture-2" />
           </button>
         </Tooltip>
-        <Tooltip className="!z-30 !right-12" title="(f) حالت تمام صفحه ">
+        <Tooltip
+          offset={48}
+          className="!z-30 !right-12"
+          title="(f) حالت تمام صفحه "
+        >
           <button
             onClick={fullScreen}
             className="text-white flex items-center justify-center p-1  duration-300 transition-all"
