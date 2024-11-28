@@ -237,25 +237,26 @@ export const DateInput: React.FC<Props> = ({
     }
 
     if (minDate.month && minDate.year && minDate.day) {
-      if (
-        minDate.month + 1 === e &&
-        year === minDate.year &&
-        day < minDate.day
-      ) {
+      console.log(minDate.day, day);
+
+      if (minDate.month === e && year === minDate.year && day < minDate.day) {
         tempMinError = true;
       }
-      if (e < minDate.month + 1 && year === minDate.year) {
+      if (e < minDate.month && year === minDate.year) {
         tempMinError = true;
       }
 
       // if (year && year > minDate.year) tempMinError = false;
       if (year && year < minDate.year) tempMinError = true;
-      if (year && year === minDate.year && e > minDate.month + 1)
+      if (year && year === minDate.year && e > minDate.month) {
+        console.log('ماه بزرگ است');
+
         tempMinError = false;
+      }
       if (
         year &&
         year === minDate.year &&
-        e === minDate.month + 1 &&
+        e === minDate.month &&
         day >= minDate.day
       )
         tempMinError = false;
@@ -342,12 +343,11 @@ export const DateInput: React.FC<Props> = ({
 
     if (minDate.year && minDate.month && minDate.day) {
       if (year && year < minDate.year) tempMinError = true;
-      if (
-        year === minDate.year &&
-        month === minDate.month + 1 &&
-        e < minDate.day
-      ) {
+      if (year === minDate.year && month === minDate.month && e < minDate.day) {
+        console.log(e, minDate.day);
         tempMinError = true;
+      } else {
+        tempMinError = false;
       }
     }
 
@@ -434,18 +434,14 @@ export const DateInput: React.FC<Props> = ({
     }
 
     if (minDate.year && minDate.month && minDate.day) {
-      if (
-        e === minDate.year &&
-        month === minDate.month + 1 &&
-        day < minDate.day
-      ) {
+      if (e === minDate.year && month === minDate.month && day < minDate.day) {
         tempMinError = true;
       }
       if (
         e === minDate.year &&
         day >= minDate.day &&
         month &&
-        month < minDate.month + 1
+        month < minDate.month
       ) {
         tempMinError = true;
       }
