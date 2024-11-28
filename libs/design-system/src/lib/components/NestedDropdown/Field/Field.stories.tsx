@@ -41,6 +41,7 @@ export const selectedOption: Story = {
      selectedOption: "کل صنایع",
     icon:{ name: 'square-mouse-pointer', size: 'sm' },
     status:"normal",
+    hasTooltip:true
   }
 };
 export const error: Story = {
