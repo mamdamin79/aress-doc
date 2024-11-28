@@ -1,8 +1,3 @@
-import {
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-} from '@headlessui/react';
 import { Icon } from '../../../Icon';
 import React, { useEffect, useRef, useState } from 'react';
 import { cn } from '../../../../../utils/classNames.utils';
@@ -37,6 +32,8 @@ export const PlayerOptions: React.FC<Props> = React.memo(
     changeQuality,
   }) => {
     const [open, setOpen] = useState(false);
+    const [openRate, setOpenRate] = useState(false);
+    const [openQuality, setOpenQuality] = useState(false);
 
     const optionsRef = useRef<HTMLDivElement>(null);
 
@@ -76,7 +73,10 @@ export const PlayerOptions: React.FC<Props> = React.memo(
           >
             <button
               onClick={() => setOpen(!open)}
-              className="text-white relative flex items-center justify-center p-1 mt-1  duration-300 transition-all"
+              className={cn(
+                'text-white relative flex items-center justify-center p-1 mt-1   duration-300 transition-all',
+                { 'rotate-12': open }
+              )}
             >
               <span className="sm:block hidden">
                 <Icon name="settings" />
@@ -91,23 +91,115 @@ export const PlayerOptions: React.FC<Props> = React.memo(
               ref={optionsRef}
               dir="rtl"
               className={cn(
-                'w-60 bg-gray-900/90 z-20 border-gray-700 rounded-md duration-300 ease-in-out border-[1.5px] absolute bottom-20 -right-24',
-                { 'bottom-56 opacity-0 hidden': !open }
+                'w-60 overflow-hidden bg-gray-900/90 z-20 border-gray-700 opacity-0 rounded-md transition-all duration-300  ease-in-out border-[1.5px] absolute bottom-20 -right-20',
+                { 'opacity-100': open }
               )}
+              style={{
+                maxHeight: openRate || openQuality ? '400px' : '100px',
+              }}
             >
-              <Disclosure as="div" className="">
-                <DisclosureButton className="p-3 group flex w-full items-center justify-between">
-                  <span className="flex-row-reverse gap-2 items-center font-medium text-white text-sm flex justify-between ">
-                    سرعت پخش
-                    <span className="sm:block hidden">
-                      <Icon name="circle-gauge" />
-                    </span>
-                    <span className="sm:hidden block">
-                      <Icon size="sm" name="circle-gauge" />
-                    </span>
+              <div
+                onClick={() => setOpenRate(true)}
+                className={cn(
+                  'p-3 group flex w-full items-center justify-between transition-all relative right-0 duration-700 ',
+                  { 'absolute right-full opacity-0 duration-200': openRate },
+                  { 'absolute right-full opacity-0 duration-200': openQuality }
+                )}
+              >
+                <span className="flex-row-reverse gap-2 items-center font-medium text-white text-sm flex justify-between ">
+                  سرعت پخش
+                  <span className="sm:block hidden">
+                    <Icon name="circle-gauge" />
                   </span>
-                  <span className="text-white flex items-center gap-1">
-                    {playBackRate}
+                  <span className="sm:hidden block">
+                    <Icon size="sm" name="circle-gauge" />
+                  </span>
+                </span>
+                <span className="text-white flex items-center gap-1">
+                  {playBackRate}
+                  <span className="sm:block hidden">
+                    <Icon name="chevron-left" />
+                  </span>
+                  <span className="sm:hidden block">
+                    <Icon size="sm" name="chevron-left" />
+                  </span>
+                </span>
+              </div>
+              <div
+                className={cn(
+                  ' w-full text-white relative h-24 overflow-auto  transition-all  duration-700 bottom-0  right-full',
+                  { 'relative right-0 ': openRate }
+                )}
+                style={{
+                  maxHeight: openRate ? '500px' : '0',
+                }}
+              >
+                <ul>
+                  <li
+                    onClick={() => setOpenRate(false)}
+                    className={cn(
+                      'hover:bg-gray-800/80 transition-colors duration-700 py-2 cursor-pointer flex gap-2 pr-3'
+                    )}
+                  >
+                    <span>
+                      <span className="sm:block hidden">
+                        <Icon name="chevron-right" />
+                      </span>
+                      <span className="sm:hidden block">
+                        <Icon size="sm" name="chevron-right" />
+                      </span>
+                    </span>
+                    <span>سرعت پخش</span>
+                  </li>
+                  {PLAYBACK_RATES.map((item) => (
+                    <li
+                      onClick={() => setPlaybackRate(item)}
+                      className={cn(
+                        'hover:bg-gray-800/80 transition-colors duration-700 py-2 cursor-pointer flex gap-2 pr-10',
+                        { 'pr-3': playBackRate === item }
+                      )}
+                    >
+                      {playBackRate === item && (
+                        <span>
+                          <span className="sm:block hidden">
+                            <Icon name="check" />
+                          </span>
+                          <span className="sm:hidden block">
+                            <Icon size="sm" name="check" />
+                          </span>
+                        </span>
+                      )}{' '}
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div
+                onClick={() => setOpenQuality(true)}
+                className={cn(
+                  'p-3 group flex w-full items-center justify-between transition-all  relative right-0 duration-700 ',
+                  {
+                    'scale-y-100 absolute right-full opacity-0 duration-200 ':
+                      openRate,
+                  },
+                  {
+                    'scale-y-100 absolute right-full opacity-0 duration-200':
+                      openQuality,
+                  }
+                )}
+              >
+                <span className="flex-row-reverse gap-2 items-center font-medium text-white text-sm flex justify-between ">
+                  کیفیت
+                  <span className="sm:block hidden">
+                    <Icon name="sliders-horizontal" />
+                  </span>
+                  <span className="sm:hidden block">
+                    <Icon size="sm" name="sliders-horizontal" />
+                  </span>
+                </span>
+                <span className="text-white flex items-center gap-1">
+                  {quality.label}
+                  <span>
                     <span className="sm:block hidden">
                       <Icon name="chevron-left" />
                     </span>
@@ -115,82 +207,59 @@ export const PlayerOptions: React.FC<Props> = React.memo(
                       <Icon size="sm" name="chevron-left" />
                     </span>
                   </span>
-                </DisclosureButton>
-                <DisclosurePanel className="text-white">
-                  <ul>
-                    {PLAYBACK_RATES.map((item) => (
-                      <li
-                        onClick={() => setPlaybackRate(item)}
-                        className={cn(
-                          'hover:bg-gray-800/80 transition-colors duration-200 py-2 cursor-pointer flex gap-2 pr-10',
-                          { 'pr-3': playBackRate === item }
-                        )}
-                      >
-                        {playBackRate === item && (
-                          <span>
-                            <span className="sm:block hidden">
-                              <Icon name="check" />
-                            </span>
-                            <span className="sm:hidden block">
-                              <Icon size="sm" name="check" />
-                            </span>
-                          </span>
-                        )}{' '}
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </DisclosurePanel>
-              </Disclosure>
-              <Disclosure as="div" className=" text-sm font-medium">
-                <DisclosureButton className="p-3 group flex w-full items-center justify-between">
-                  <span className="flex-row-reverse gap-2 items-center font-medium text-white text-sm flex justify-between ">
-                    کیفیت
-                    <span className="sm:block hidden">
-                      <Icon name="sliders-horizontal" />
-                    </span>
-                    <span className="sm:hidden block">
-                      <Icon size="sm" name="sliders-horizontal" />
-                    </span>
-                  </span>
-                  <span className="text-white flex items-center gap-1">
-                    {quality.label}
+                </span>
+              </div>
+
+              <div
+                className={cn(
+                  ' w-full text-white relative h-24 bottom-0 transition-all  duration-700 opacity-0 right-full',
+                  { 'scale-y-100 opacity-0 right-full relative ': openRate },
+                  { 'scale-y-100 right-0 opacity-100 relative': openQuality }
+                )}
+                style={{
+                  maxHeight: openQuality ? '500px' : '0',
+                }}
+              >
+                <ul>
+                  <li
+                    onClick={() => setOpenQuality(false)}
+                    className={cn(
+                      'hover:bg-gray-800/80 transition-colors duration-700 py-2 cursor-pointer flex gap-2 pr-3'
+                    )}
+                  >
                     <span>
                       <span className="sm:block hidden">
-                        <Icon name="chevron-left" />
+                        <Icon name="chevron-right" />
                       </span>
                       <span className="sm:hidden block">
-                        <Icon size="sm" name="chevron-left" />
+                        <Icon size="sm" name="chevron-right" />
                       </span>
                     </span>
-                  </span>
-                </DisclosureButton>
-                <DisclosurePanel className="text-white">
-                  <ul>
-                    {qualities.map((item) => (
-                      <li
-                        onClick={() => changeQuality(item)}
-                        className={cn(
-                          'hover:bg-gray-800/80 transition-colors duration-200 py-2 cursor-pointer flex gap-2 pr-10',
-                          { 'pr-3': quality.label === item.label }
-                        )}
-                      >
-                        {quality.label === item.label && (
-                          <span>
-                            <span className="sm:block hidden">
-                              <Icon name="check" />
-                            </span>
-                            <span className="sm:hidden block">
-                              <Icon size="sm" name="check" />
-                            </span>
+                    <span>کیفیت پخش</span>
+                  </li>
+                  {qualities.map((item) => (
+                    <li
+                      onClick={() => changeQuality(item)}
+                      className={cn(
+                        'hover:bg-gray-800/80 transition-colors duration-700 py-2 cursor-pointer flex gap-2 pr-10',
+                        { 'pr-3': quality.label === item.label }
+                      )}
+                    >
+                      {quality.label === item.label && (
+                        <span>
+                          <span className="sm:block hidden">
+                            <Icon name="check" />
                           </span>
-                        )}{' '}
-                        {item.label}
-                      </li>
-                    ))}
-                  </ul>
-                </DisclosurePanel>
-              </Disclosure>
+                          <span className="sm:hidden block">
+                            <Icon size="sm" name="check" />
+                          </span>
+                        </span>
+                      )}{' '}
+                      {item.label}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           }
         </div>
