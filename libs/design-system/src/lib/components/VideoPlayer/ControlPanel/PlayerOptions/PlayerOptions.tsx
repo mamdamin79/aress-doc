@@ -101,7 +101,7 @@ export const PlayerOptions: React.FC<Props> = React.memo(
               <div
                 onClick={() => setOpenRate(true)}
                 className={cn(
-                  'p-3 group flex w-full items-center justify-between transition-all relative right-0 duration-700 ',
+                  'p-3 cursor-pointer group flex w-full items-center justify-between transition-all relative right-0 duration-700 ',
                   { 'absolute right-full opacity-0 duration-200': openRate },
                   { 'absolute right-full opacity-0 duration-200': openQuality }
                 )}
@@ -127,7 +127,7 @@ export const PlayerOptions: React.FC<Props> = React.memo(
               </div>
               <div
                 className={cn(
-                  ' w-full text-white relative h-24 overflow-auto  transition-all  duration-700 bottom-0  right-full',
+                  ' w-full text-white relative h-24 overflow-auto md:h-full transition-all  duration-700 bottom-0  right-full',
                   { 'relative right-0 ': openRate }
                 )}
                 style={{
@@ -177,7 +177,7 @@ export const PlayerOptions: React.FC<Props> = React.memo(
               <div
                 onClick={() => setOpenQuality(true)}
                 className={cn(
-                  'p-3 group flex w-full items-center justify-between transition-all  relative right-0 duration-700 ',
+                  'p-3 cursor-pointer group flex w-full items-center justify-between transition-all  relative right-0 duration-700 ',
                   {
                     'scale-y-100 absolute right-full opacity-0 duration-200 ':
                       openRate,
@@ -212,7 +212,7 @@ export const PlayerOptions: React.FC<Props> = React.memo(
 
               <div
                 className={cn(
-                  ' w-full text-white relative h-24 bottom-0 transition-all  duration-700 opacity-0 right-full',
+                  ' w-full text-white relative h-24 md:h-full overflow-auto bottom-0 transition-all  duration-700 opacity-0 right-full',
                   { 'scale-y-100 opacity-0 right-full relative ': openRate },
                   { 'scale-y-100 right-0 opacity-100 relative': openQuality }
                 )}
