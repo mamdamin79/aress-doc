@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
+import { useCallback, useEffect, useReducer, useRef } from 'react';
 import Hls from 'hls.js'; // Import HLS.js
 
 interface videoState {
@@ -292,17 +292,6 @@ export const useVideo = (
       video.removeEventListener('progress', updateBufferedTime);
     };
   }, [state.quality]);
-
-  // useEffect(()=>{
-  //   const video = videoRef.current!;
-  //   video.src = state.quality.src
-  //   video.addEventListener('loadedmetadata', ()=>{
-  //     video.currentTime = state.currentTime
-  //   });
-
-  //   state.isPlaying ? play() : pause()
-
-  // },[state.quality])
 
   // Keyboard controls
   useEffect(() => {

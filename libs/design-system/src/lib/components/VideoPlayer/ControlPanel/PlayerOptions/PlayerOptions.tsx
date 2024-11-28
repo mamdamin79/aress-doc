@@ -92,7 +92,8 @@ export const PlayerOptions: React.FC<Props> = React.memo(
               dir="rtl"
               className={cn(
                 'w-60 overflow-hidden bg-gray-900/90 z-20 border-gray-700 opacity-0 rounded-md transition-all duration-300  ease-in-out border-[1.5px] absolute bottom-20 -right-20',
-                { 'opacity-100': open }
+                { 'opacity-100': open },
+                { 'pointer-events-none': !open }
               )}
               style={{
                 maxHeight: openRate || openQuality ? '400px' : '100px',
