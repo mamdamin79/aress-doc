@@ -218,6 +218,10 @@ export function DatePicker({ min, max }: Props) {
     endErrors.minError,
   ]);
 
+  const handlerMouseLeave = () => {
+    setEndDateHover('');
+  };
+
   useEffect(() => {
     // change date listener
     onChangeDate(() => setDateS(createDate(getDate())));
@@ -590,7 +594,7 @@ export function DatePicker({ min, max }: Props) {
                 <Icon name="x" size="sm" />
               </div>
             </div>
-            <div className="flex gap-12">
+            <div onMouseLeave={handlerMouseLeave} className="flex gap-12">
               {getMode() === 'day' && (
                 <>
                   <div className="w-1/2">
@@ -697,14 +701,14 @@ export function DatePicker({ min, max }: Props) {
                                             day.state === 'current',
                                         },
                                         {
-                                          'rounded-none w-full  border-brand-600 border-t border-b':
+                                          'rounded-none w-full ml-1 border-brand-600 border-t border-b':
                                             !isSelectedDay(day.date) &&
                                             isSelecting() &&
                                             isDateInRange(day.date) &&
                                             day.state === 'current',
                                         },
                                         {
-                                          'bg-brand-200 rounded-none border-none hover:border-none text-brand-700 w-full':
+                                          'bg-brand-200 rounded-none pl-[3px] border-none hover:border-none text-brand-700 w-full':
                                             !isSelectedDay(day.date) &&
                                             !isSelecting() &&
                                             isDateInRange(day.date),
@@ -736,8 +740,9 @@ export function DatePicker({ min, max }: Props) {
                                               .replace(/-/g, '') >
                                               +max.replace(/-/g, ''),
                                         },
+
                                         {
-                                          'border-t-2 border-b-2 w-full rounded-none border-brand-600':
+                                          'border-t-2 border-b-2 pl-[3px] w-full rounded-none border-brand-600':
                                             endDateHover &&
                                             startDate &&
                                             focuseEndInput &&
@@ -759,7 +764,7 @@ export function DatePicker({ min, max }: Props) {
                                                 .replace(/-/g, ''),
                                         },
                                         {
-                                          'border-t-2 border-b-2 w-full rounded-none border-brand-600':
+                                          'border-t-2 border-b-2 pl-[3px] w-full rounded-none border-brand-600':
                                             endDateHover &&
                                             focuseEndInput &&
                                             endDate &&
@@ -803,9 +808,8 @@ export function DatePicker({ min, max }: Props) {
                                                 .format('YYYY-MM-DD')
                                                 .replace(/-/g, ''),
                                         },
-
                                         {
-                                          'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-r-2 rounded-r-full':
+                                          'border-t-2 border-b-2 w-full pl-[3px] rounded-none border-brand-600 border-r-2 rounded-r-full':
                                             endDateHover &&
                                             firstDayIndex === index &&
                                             startDate &&
@@ -828,7 +832,7 @@ export function DatePicker({ min, max }: Props) {
                                                 .replace(/-/g, ''),
                                         },
                                         {
-                                          'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-r-2 rounded-r-full':
+                                          'border-t-2 border-b-2 w-full pl-[3px] rounded-none border-brand-600 border-r-2 rounded-r-full':
                                             endDateHover &&
                                             firstDayIndex === index &&
                                             focuseEndInput &&
@@ -850,8 +854,9 @@ export function DatePicker({ min, max }: Props) {
                                                 .format('YYYY-MM-DD')
                                                 .replace(/-/g, ''),
                                         },
+
                                         {
-                                          'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-r-2 rounded-r-full':
+                                          'border-t- border-b-2 w-full pl-[10px] rounded-none border-brand-600 border-r-2 rounded-r-full':
                                             endDateHover &&
                                             firstDayIndex === index &&
                                             focuseStartInput &&
@@ -896,6 +901,14 @@ export function DatePicker({ min, max }: Props) {
                                                 .locale('fa')
                                                 .format('YYYY-MM-DD')
                                                 .replace(/-/g, ''),
+                                        },
+                                        {
+                                          'rounded-r-full':
+                                            !isSelectedDay(day.date) &&
+                                            !isSelecting() &&
+                                            isDateInRange(day.date) &&
+                                            day.state === 'current' &&
+                                            day.day === 1,
                                         },
                                         {
                                           'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-l-2 rounded-l-full':
@@ -1128,13 +1141,14 @@ export function DatePicker({ min, max }: Props) {
 
                           <div className="w-full bg-gray-200 h-0.5 mb-3"></div>
 
-                          <div className="grid grid-cols-7 gap-y-0.5">
+                          <div className="grid grid-cols-7 items-center justify-center gap-y-0.5">
                             {daysListNext.map((day, index) => {
                               const { firstDayIndex, lastDayIndex } =
                                 getFirstAndLastDayOfWeek(index);
 
                               return (
                                 <div
+                                  className="mx-auto w-full"
                                   key={index}
                                   onMouseEnter={() => {
                                     moseEnterCell(day);
@@ -1151,6 +1165,14 @@ export function DatePicker({ min, max }: Props) {
                                             {
                                               'bg-white shadow-xs':
                                                 day.state === 'current',
+                                            },
+                                            {
+                                              'border-r-2':
+                                                index === firstDayIndex,
+                                            },
+                                            {
+                                              'border-l-2':
+                                                index === lastDayIndex,
                                             },
                                             {
                                               'bg-brand-600 shadow-brand-600 shadow-sm text-white':
@@ -1190,6 +1212,14 @@ export function DatePicker({ min, max }: Props) {
                                                 !isSelecting() &&
                                                 isDateInRange(day.date) &&
                                                 index === lastDayIndex,
+                                            },
+                                            {
+                                              'rounded-r-full':
+                                                !isSelectedDay(day.date) &&
+                                                !isSelecting() &&
+                                                isDateInRange(day.date) &&
+                                                day.state === 'current' &&
+                                                day.day === 1,
                                             },
                                             {
                                               'bg-gray-200 cursor-default hover:border-none':
