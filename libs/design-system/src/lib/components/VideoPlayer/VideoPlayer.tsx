@@ -59,7 +59,9 @@ export const VideoPlayer: React.FC<Props> = ({
     isFullscreen,
     quality,
     changeQuality,
+    error,
   } = useVideo(qualities[0].src, qualities);
+  console.log(error);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -97,10 +99,13 @@ export const VideoPlayer: React.FC<Props> = ({
       >
         {/* loading displays when video is not loaded yet(even first frame) and when buffered time is finished and we are waiting for new chunks */}
         {isVideoWaited && (
-          <div className="animate-spin text-gray-600  w-fit mx-auto">
-            <Icon name="loader-circle" size="xl" />
+          <div>
+            <div className="animate-spin text-gray-600  w-fit mx-auto">
+              <Icon name="loader-circle" size="xl" />
+            </div>
           </div>
         )}
+        <p className="text-red-500">{error}</p>
       </div>
       {isFullscreen ? (
         <MemoizedTitle title={title} />

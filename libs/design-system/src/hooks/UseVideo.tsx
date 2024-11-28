@@ -18,6 +18,7 @@ interface videoState {
     src: string;
     label: string;
   };
+  error: string | null;
 }
 
 type videoAction =
@@ -34,6 +35,7 @@ type videoAction =
   | { type: 'SET_VOLUME'; volume: number }
   | { type: 'SET_MUTED'; muted: boolean }
   | { type: 'SET_FULLSCREEN'; isFullscreen: boolean }
+  | { type: 'SET_ERROR'; error: string | null }
   | {
       type: 'SET_QUALITY';
       quality: {
@@ -125,6 +127,11 @@ const videoReducer = (state: videoState, action: videoAction): videoState => {
         ...state,
         quality: action.quality,
       };
+    case 'SET_ERROR':
+      return {
+        ...state,
+        error: action.error,
+      };
       break;
     default:
       return state;
@@ -156,6 +163,7 @@ export const useVideo = (
     muted: false,
     isFullscreen: false,
     quality: qualities[0],
+    error: null,
   });
 
   useEffect(() => {
@@ -262,6 +270,32 @@ export const useVideo = (
       dispatch({ type: 'SET_VIDEO_WAITED', isVideoWaited: true });
     };
 
+    const handleError = () => {
+      const error = video.error;
+      let errorMessage = 'مشکلی در بارگذاری ویدیو پیش آمده است.';
+
+      if (error) {
+        switch (error.code) {
+          case MediaError.MEDIA_ERR_ABORTED:
+            errorMessage = 'پخش ویدیو توسط کاربر متوقف شد.';
+            break;
+          case MediaError.MEDIA_ERR_NETWORK:
+            errorMessage = 'مشکلی در ارتباط شبکه پیش آمده است.';
+            break;
+          case MediaError.MEDIA_ERR_DECODE:
+            errorMessage = 'مشکلی در پخش ویدیو پیش آمده است.';
+            break;
+          case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED:
+            errorMessage = 'فرمت ویدیوی انتخابی پشتیبانی نمی‌شود.';
+            break;
+          default:
+            errorMessage = 'خطای ناشناخته رخ داده است.';
+        }
+      }
+
+      dispatch({ type: 'SET_ERROR', error: errorMessage });
+    };
+
     video.addEventListener('play', handlePlay);
     video.addEventListener('pause', handlePause);
     // it raises every moment
@@ -277,6 +311,7 @@ export const useVideo = (
     // after waiting (when the new chunks loaded) playing event raises
     video.addEventListener('playing', handlePlaying);
     video.addEventListener('progress', updateBufferedTime);
+    video.addEventListener('error', handleError);
     document.addEventListener('fullscreenchange', handleFullScreenChange);
 
     return () => {
@@ -290,6 +325,7 @@ export const useVideo = (
       video.removeEventListener('playing', handlePlaying);
       video.removeEventListener('waiting', handleWaiting);
       video.removeEventListener('progress', updateBufferedTime);
+      video.removeEventListener('error', handleError);
     };
   }, [state.quality]);
 
