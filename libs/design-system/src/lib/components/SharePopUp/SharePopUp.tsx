@@ -73,7 +73,12 @@ export const SharePopUp: React.FC<SharePopUpProps> = ({
                   rel="noreferrer"
                 >
                   <div>
-                    <img src={platform.icon} alt={platform.name} />
+                    <img
+                      width={56}
+                      height={56}
+                      src={platform.icon}
+                      alt={platform.name}
+                    />
                   </div>
                   <span className="font-semibold">{platform.name}</span>
                 </a>
