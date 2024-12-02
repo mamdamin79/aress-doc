@@ -836,7 +836,12 @@ export function DatePicker({ min, max }: Props) {
                                               moment(endDateHover, 'YYYY/MM/DD')
                                                 .locale('fa')
                                                 .format('YYYY-MM-DD')
-                                                .replace(/-/g, ''),
+                                                .replace(/-/g, '') &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') >
+                                              min.replace(/-/g, ''),
                                         },
                                         {
                                           'border-t-2 border-b-2 w-full pl-[3px] rounded-none border-brand-600 border-r-2 !rounded-r-full':
@@ -859,7 +864,12 @@ export function DatePicker({ min, max }: Props) {
                                               moment(endDateHover, 'YYYY/MM/DD')
                                                 .locale('fa')
                                                 .format('YYYY-MM-DD')
-                                                .replace(/-/g, ''),
+                                                .replace(/-/g, '') &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') >
+                                              min.replace(/-/g, ''),
                                         },
                                         {
                                           'w-full rounded-none border-brand-600 border-r-2 !rounded-r-full':
@@ -883,7 +893,12 @@ export function DatePicker({ min, max }: Props) {
                                               moment(endDateHover, 'YYYY/MM/DD')
                                                 .locale('fa')
                                                 .format('YYYY-MM-DD')
-                                                .replace(/-/g, ''),
+                                                .replace(/-/g, '') &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') >
+                                              min.replace(/-/g, ''),
                                         },
                                         {
                                           'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-l-2 !rounded-l-full':
@@ -906,7 +921,12 @@ export function DatePicker({ min, max }: Props) {
                                               moment(endDateHover, 'YYYY/MM/DD')
                                                 .locale('fa')
                                                 .format('YYYY-MM-DD')
-                                                .replace(/-/g, ''),
+                                                .replace(/-/g, '') &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') >
+                                              min.replace(/-/g, ''),
                                         },
                                         {
                                           '!rounded-r-full':
@@ -936,7 +956,12 @@ export function DatePicker({ min, max }: Props) {
                                               moment(endDateHover, 'YYYY/MM/DD')
                                                 .locale('fa')
                                                 .format('YYYY-MM-DD')
-                                                .replace(/-/g, ''),
+                                                .replace(/-/g, '') &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') >
+                                              min.replace(/-/g, ''),
                                         },
                                         {
                                           'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-l-2 !rounded-l-full':
@@ -960,7 +985,12 @@ export function DatePicker({ min, max }: Props) {
                                               moment(endDateHover, 'YYYY/MM/DD')
                                                 .locale('fa')
                                                 .format('YYYY-MM-DD')
-                                                .replace(/-/g, ''),
+                                                .replace(/-/g, '') &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') >
+                                              min.replace(/-/g, ''),
                                         }
                                       )}
                                       disabled={day.day === 0}
@@ -1158,7 +1188,15 @@ export function DatePicker({ min, max }: Props) {
                                   {day.state === 'current' && (
                                     <Tooltip
                                       className="!z-50"
-                                      title={titleTooltip}
+                                      title={
+                                        moment(day.date, 'YYYY/MM/DD')
+                                          .locale('fa')
+                                          .format('YYYY-MM-DD')
+                                          .replace(/-/g, '') <
+                                        max.replace(/-/g, '')
+                                          ? titleTooltip
+                                          : ''
+                                      }
                                     >
                                       <div
                                         className={cn(
@@ -1210,7 +1248,17 @@ export function DatePicker({ min, max }: Props) {
                                             },
                                             {
                                               '!rounded-r-full border-r-2':
-                                                day.day === 1,
+                                                day.day === 1 &&
+                                                moment(day.date, 'YYYY/MM/DD')
+                                                  .locale('fa')
+                                                  .format('YYYY-MM-DD')
+                                                  .replace(/-/g, '') <
+                                                  max.replace(/-/g, '') &&
+                                                moment(day.date, 'YYYY/MM/DD')
+                                                  .locale('fa')
+                                                  .format('YYYY-MM-DD')
+                                                  .replace(/-/g, '') <
+                                                  max.replace(/-/g, ''),
                                             },
                                             {
                                               '!rounded-l-full': day.day === 31,
@@ -1279,6 +1327,11 @@ export function DatePicker({ min, max }: Props) {
                                                   .locale('fa')
                                                   .format('YYYY-MM-DD')
                                                   .replace(/-/g, '') <
+                                                  max.replace(/-/g, '') &&
+                                                moment(day.date, 'YYYY/MM/DD')
+                                                  .locale('fa')
+                                                  .format('YYYY-MM-DD')
+                                                  .replace(/-/g, '') <
                                                   moment(
                                                     endDateHover,
                                                     'YYYY/MM/DD'
@@ -1304,10 +1357,7 @@ export function DatePicker({ min, max }: Props) {
                                                   .locale('fa')
                                                   .format('YYYY-MM-DD')
                                                   .replace(/-/g, '') <
-                                                  moment(
-                                                    endDateHover,
-                                                    'YYYY/MM/DD'
-                                                  )
+                                                  moment(endDate, 'YYYY/MM/DD')
                                                     .locale('fa')
                                                     .format('YYYY-MM-DD')
                                                     .replace(/-/g, ''),
@@ -1363,7 +1413,12 @@ export function DatePicker({ min, max }: Props) {
                                                   )
                                                     .locale('fa')
                                                     .format('YYYY-MM-DD')
-                                                    .replace(/-/g, ''),
+                                                    .replace(/-/g, '') &&
+                                                moment(day.date, 'YYYY/MM/DD')
+                                                  .locale('fa')
+                                                  .format('YYYY-MM-DD')
+                                                  .replace(/-/g, '') <
+                                                  max.replace(/-/g, ''),
                                             },
                                             {
                                               'rounded-l-full':
@@ -1411,7 +1466,12 @@ export function DatePicker({ min, max }: Props) {
                                                   )
                                                     .locale('fa')
                                                     .format('YYYY-MM-DD')
-                                                    .replace(/-/g, ''),
+                                                    .replace(/-/g, '') &&
+                                                moment(day.date, 'YYYY/MM/DD')
+                                                  .locale('fa')
+                                                  .format('YYYY-MM-DD')
+                                                  .replace(/-/g, '') <
+                                                  max.replace(/-/g, ''),
                                             },
                                             {
                                               'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-r-2 rounded-r-full':
@@ -1438,7 +1498,12 @@ export function DatePicker({ min, max }: Props) {
                                                   )
                                                     .locale('fa')
                                                     .format('YYYY-MM-DD')
-                                                    .replace(/-/g, ''),
+                                                    .replace(/-/g, '') &&
+                                                moment(day.date, 'YYYY/MM/DD')
+                                                  .locale('fa')
+                                                  .format('YYYY-MM-DD')
+                                                  .replace(/-/g, '') <
+                                                  max.replace(/-/g, ''),
                                             },
                                             {
                                               'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-l-2 rounded-l-full':
@@ -1464,7 +1529,12 @@ export function DatePicker({ min, max }: Props) {
                                                   )
                                                     .locale('fa')
                                                     .format('YYYY-MM-DD')
-                                                    .replace(/-/g, ''),
+                                                    .replace(/-/g, '') &&
+                                                moment(day.date, 'YYYY/MM/DD')
+                                                  .locale('fa')
+                                                  .format('YYYY-MM-DD')
+                                                  .replace(/-/g, '') <
+                                                  max.replace(/-/g, ''),
                                             },
                                             {
                                               'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-l-2 rounded-l-full':
@@ -1490,7 +1560,12 @@ export function DatePicker({ min, max }: Props) {
                                                   )
                                                     .locale('fa')
                                                     .format('YYYY-MM-DD')
-                                                    .replace(/-/g, ''),
+                                                    .replace(/-/g, '') &&
+                                                moment(day.date, 'YYYY/MM/DD')
+                                                  .locale('fa')
+                                                  .format('YYYY-MM-DD')
+                                                  .replace(/-/g, '') <
+                                                  max.replace(/-/g, ''),
                                             },
                                             {
                                               'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-l-2 rounded-l-full':
@@ -1517,7 +1592,12 @@ export function DatePicker({ min, max }: Props) {
                                                   )
                                                     .locale('fa')
                                                     .format('YYYY-MM-DD')
-                                                    .replace(/-/g, ''),
+                                                    .replace(/-/g, '') &&
+                                                moment(day.date, 'YYYY/MM/DD')
+                                                  .locale('fa')
+                                                  .format('YYYY-MM-DD')
+                                                  .replace(/-/g, '') <
+                                                  max.replace(/-/g, ''),
                                             }
                                           )}
                                           disabled={day.day === 0}
