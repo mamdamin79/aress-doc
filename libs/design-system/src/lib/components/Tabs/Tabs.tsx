@@ -18,7 +18,7 @@ export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite, tag }) => {
           <TabList
             className={cn(
               'flex',
-              { 'gap-10 w-max pl-5': style === 'lined' },
+              { 'gap-10 w-max border-b-2 border-gray-300': style === 'lined' },
               { 'gap-4': style !== 'lined' && style !== 'divided' }
             )}
           >
