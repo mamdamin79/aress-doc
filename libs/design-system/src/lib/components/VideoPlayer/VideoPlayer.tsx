@@ -8,6 +8,7 @@ import { cn } from '../../../utils/classNames.utils';
 import { PlayerProgressBar } from './ControlPanel/PlayerProgressBar';
 import videoLogo from '../../../assets/images/videoLogo.svg';
 import Image from 'next/image';
+import { PlayList } from '../PlayList';
 
 type Props = {
   qualities: {
@@ -19,14 +20,27 @@ type Props = {
   title: string;
 };
 
-const MemoizedTitle = React.memo(({ title }: { title: string }) => (
-  <h2 className="absolute text-white text-xl font-semibold mt-8 flex gap-1 items-center">
-    <span className="mr-8">
-      <Icon name="list-video" size="lg" />
-    </span>
-    {title}
-  </h2>
-));
+const MemoizedTitle = React.memo(
+  ({
+    title,
+    setShowPlayList,
+  }: {
+    title: string;
+    setShowPlayList: React.Dispatch<React.SetStateAction<boolean>>;
+  }) => {
+    return (
+      <h2 className="absolute text-white text-xl z-30 font-semibold mt-8 flex gap-1 items-center">
+        <span
+          className="mr-8 cursor-pointer"
+          onClick={() => setShowPlayList(true)}
+        >
+          <Icon name="list-video" size="lg" />
+        </span>
+        {title}
+      </h2>
+    );
+  }
+);
 
 export const VideoPlayer: React.FC<Props> = ({
   qualities,
@@ -34,7 +48,7 @@ export const VideoPlayer: React.FC<Props> = ({
   title,
 }) => {
   const [showControlPanel, setShowControlPanel] = useState(true);
-  // const [selectedQuality, setSelectedQuality] = useState(qualities[2]);
+  const [showPlayList, setShowPlayList] = useState(false);
   const {
     play,
     videoRef,
@@ -61,7 +75,6 @@ export const VideoPlayer: React.FC<Props> = ({
     changeQuality,
     error,
   } = useVideo(qualities[0].src, qualities);
-  console.log(error);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -87,12 +100,43 @@ export const VideoPlayer: React.FC<Props> = ({
 
   return (
     <div
-      onContextMenu={(e) => e.preventDefault()}
+      // onContextMenu={(e) => e.preventDefault()}
       className={cn('relative rounded-md shadow-md overflow-hidden', {
         'cursor-none': !showControlPanel,
       })}
       ref={videoContainerRef}
     >
+      {isFullscreen && (
+        <div
+          // onClick={(e)=>e.stopPropagation()}
+          className={cn('absolute right-0 z-50', {
+            '-right-full': !showPlayList,
+          })}
+        >
+          <PlayList
+            isFullscreen={true}
+            onClose={() => setShowPlayList(false)}
+            playListTitle="لیست مصاحبات مدیر - محمد باقر خادمی"
+            videos={[
+              {
+                title: 'سرمایه گذاری و رشد پایدار در بازار های مالی',
+                src: 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4',
+                date: '1403/11/22',
+              },
+              {
+                title: 'ریسک ها و فرصت ها در سرمایه گذاری',
+                src: 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4',
+                date: '1403/11/22',
+              },
+              {
+                title: 'چالش های روزمره در مدیریت یک صندوق سرمایه گذاری',
+                src: 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4',
+                date: '1403/11/22',
+              },
+            ]}
+          />
+        </div>
+      )}
       <div
         onClick={isPlaying ? pause : play}
         className="w-full flex items-center justify-center h-full absolute z-20"
@@ -105,10 +149,10 @@ export const VideoPlayer: React.FC<Props> = ({
             </div>
           </div>
         )}
-        <p className="text-red-500">{error}</p>
+        {error && <p className="text-red-500">{error}</p>}
       </div>
       {isFullscreen ? (
-        <MemoizedTitle title={title} />
+        <MemoizedTitle setShowPlayList={setShowPlayList} title={title} />
       ) : (
         <span
           className={cn(

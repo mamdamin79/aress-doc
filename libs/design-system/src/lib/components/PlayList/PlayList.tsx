@@ -7,7 +7,7 @@ type PlayListPropsType = {
   videos: video[];
   playListTitle: string;
   isFullscreen: boolean;
-  onClose: () => void;
+  onClose: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type video = {
@@ -28,7 +28,7 @@ export const PlayList: React.FC<PlayListPropsType> = ({
         <div className="bg-gray-900/90 text-white h-screen w-[440px]">
           <div className="flex items-center px-6 pb-2 pt-8 justify-between text-xl font-medium">
             <span>{playListTitle}</span>
-            <span onClick={onClose} className="cursor-pointer">
+            <span onClick={() => onClose} className="cursor-pointer">
               <Icon name="x" size="lg" />
             </span>
           </div>
