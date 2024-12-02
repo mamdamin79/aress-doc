@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { cn } from '../../../../../utils/classNames.utils';
 import { PLAYBACK_RATES } from './PlayerOptions.constants';
 import { Tooltip } from '../../../Tooltip';
+import { SharePopUp } from '../../../SharePopUp';
 
 type Props = {
   quality: {
@@ -56,14 +57,19 @@ export const PlayerOptions: React.FC<Props> = React.memo(
     return (
       <div className="flex items-center gap-4">
         <Tooltip offset={48} className="!z-30" title="اشتراک گذاری">
-          <button className="text-white flex items-center justify-center p-1  duration-300 transition-all">
-            <span className="sm:block hidden">
-              <Icon name="share-2" />
-            </span>
-            <span className="sm:hidden block">
-              <Icon size="sm" name="share-2" />
-            </span>
-          </button>
+          <SharePopUp
+            message="لینک ویدیوی آموزشی"
+            url="https://www.example.com/video/example/thishasmoretoit/wetypeandwetype"
+            platformNames={[
+              'Email',
+              'Linkedin',
+              'Instagram',
+              'Telegram',
+              'WhatsApp',
+              'Sample 1',
+              'Sample 2',
+            ]}
+          />
         </Tooltip>
         <div className="relative">
           <Tooltip
