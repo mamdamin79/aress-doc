@@ -14,7 +14,7 @@ export const Icon: React.FC<IconProps> = ({ name, size = 'md' }) => {
   if (name in dynamicIconImports) {
     // we do this because we want to say to TS that we know this is a react component dont be stricter than us :)
     const LucideIcon = dynamic(
-      dynamicIconImports[name as keyof typeof dynamicIconImports]
+      dynamicIconImports[name as keyof typeof dynamicIconImports],
     ) as React.ComponentType<{
       size?: number;
       stroke?: string;

@@ -20,6 +20,7 @@ export const Tooltip: React.FC<Props> = ({
   offset = 4,
 }) => {
   const id = useId();
+  <div>sdsd</div>;
   return (
     <>
       {/* wrapper */}
@@ -27,6 +28,7 @@ export const Tooltip: React.FC<Props> = ({
         data-tooltip-id={id}
         className="relative inline-block cursor-pointer"
       >
+        knjh
         {/* here is the component that need a tooltip */}
         {children}
       </div>

@@ -13,13 +13,13 @@ export function CustomToast() {
       <div
         onClick={() => toast.dismiss(t.id)}
         className={cn(
-          'transform-gpu p-3 text-gray-1000 border-[1.5px] font-medium rounded-xl scale-0 relative transition-all duration-500 -top-96 ease-in-out',
-          t.visible ? 'top-0 scale-95 animate-toast' : 'opacity-0',
-          styleToasts[type]
+          'text-gray-1000 relative -top-96 scale-0 transform-gpu rounded-xl border-[1.5px] p-3 font-medium transition-all duration-500 ease-in-out',
+          t.visible ? 'animate-toast top-0 scale-95' : 'opacity-0',
+          styleToasts[type],
         )}
       >
         <div className="flex items-center gap-2">
-          <div className={cn('p-1.5 text-white rounded-lg', bgIcon[type])}>
+          <div className={cn('rounded-lg p-1.5 text-white', bgIcon[type])}>
             {icons[type]}
           </div>
           <span className="text-sm">{message}</span>
