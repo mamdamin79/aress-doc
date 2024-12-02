@@ -71,7 +71,7 @@ export const PlayerOptions: React.FC<Props> = React.memo(
             ]}
           />
         </Tooltip>
-        <div className="relative">
+        <div ref={optionsRef} className="relative">
           <Tooltip
             offset={48}
             title="تنظیمات"
@@ -94,7 +94,6 @@ export const PlayerOptions: React.FC<Props> = React.memo(
           </Tooltip>
           {
             <div
-              ref={optionsRef}
               dir="rtl"
               className={cn(
                 'w-60 overflow-hidden bg-gray-900/90 z-20 border-gray-700 opacity-0 rounded-md transition-all duration-300  ease-in-out border-[1.5px] absolute bottom-20 -right-20',
