@@ -18,6 +18,7 @@ export const Tooltip: React.FC<Props> = ({
   position = 'top',
 }) => {
   const id = useId();
+  <div>sdsd</div>;
   return (
     <>
       {/* wrapper */}
@@ -36,9 +37,11 @@ export const Tooltip: React.FC<Props> = ({
         offset={4}
         content={title}
         className={cn(
-          'bg-gray-1000 shadow-5xl rounded-xs font-vazirmatn text-sm font-medium text-white',
-          className,
+          'font-vazirmatn text-sm shadow-5xl bg-gray-1000  rounded-xs  font-medium text-white',
+          className
         )}
+
+        
       ></ReactTooltip>
     </>
   );
