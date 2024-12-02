@@ -52,7 +52,6 @@ export function DatePicker({ min, max }: Props) {
   const [endDateHover, setEndDateHover] = useState('');
   const [disableNextMonth, setDisableNextMonth] = useState(false);
   const [disablePrevMonth, setDisablePrevMonth] = useState(false);
-
   const [focuseStartInput, setFocuseStartInput] = useState(true);
   const [focuseEndInput, setFocuseEndInput] = useState(false);
 
@@ -734,7 +733,7 @@ export function DatePicker({ min, max }: Props) {
                                             day.day === 1,
                                         },
                                         {
-                                          '!rounded-l-full border-l-2':
+                                          '!rounded-l-full !border-l-2':
                                             day.day === 31,
                                         },
                                         {
@@ -1700,6 +1699,42 @@ export function DatePicker({ min, max }: Props) {
                   </div>
                 </>
               )}
+            </div>
+            <div className="flex flex-row-reverse mb-5 min-h-10 justify-between items-center">
+              <button
+                className={cn('px-2 bg-brand-300 py-1 rounded-md text-white', {
+                  'bg-brand-600':
+                    startDate &&
+                    endDate &&
+                    !endErrors.maxError &&
+                    !endErrors.minError &&
+                    !mosvaiDate &&
+                    !startErrors.maxError &&
+                    !startErrors.minError &&
+                    !invalidEndDate &&
+                    !invalidStartDate,
+                })}
+              >
+                اعمال بازه
+              </button>
+              {startDate &&
+                endDate &&
+                !endErrors.maxError &&
+                !endErrors.minError &&
+                !mosvaiDate &&
+                !startErrors.maxError &&
+                !startErrors.minError &&
+                !invalidEndDate &&
+                !invalidStartDate && (
+                  <div className="flex justify-start w-fit gap-2 px-2 py-1.5 bg-white rounded-sm items-center">
+                    <span className="text-sm">بازه دلخواه:</span>
+                    <span className="font-medium text-sm text-gray-1000">
+                      {+String(endDate).replace(/-/g, '') -
+                        +String(startDate).replace(/-/g, '')}{' '}
+                      روز
+                    </span>
+                  </div>
+                )}
             </div>
           </div>
         )}
