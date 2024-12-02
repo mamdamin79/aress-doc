@@ -49,12 +49,18 @@ export const TextField: React.FC<textFieldPropsType> = ({
       <div className="h-[26px]">
         {mergeTitleAndPlaceholder ? (
           (isFocused || inputValue) && (
-            <label className={cn('text-sm font-medium', { 'text-gray-400': disabled })}>
+            <label
+              className={cn('text-sm font-medium', {
+                'text-gray-400': disabled,
+              })}
+            >
               {label}
             </label>
           )
         ) : (
-          <label className={cn('text-sm font-medium', { 'text-gray-400': disabled })}>
+          <label
+            className={cn('text-sm font-medium', { 'text-gray-400': disabled })}
+          >
             {label}
           </label>
         )}
