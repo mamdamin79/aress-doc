@@ -13,7 +13,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={cn('sdfsdf', 'dfsdfs')}>
+      <body
+        className={cn(
+          'sdfsdf',
+          'dfsdfs pb-10 relative m-10 pr-10 shadow-sm text-center'
+        )}
+      >
         <Header />
         {children}
       </body>
