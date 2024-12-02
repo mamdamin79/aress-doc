@@ -26,6 +26,7 @@ export const Tooltip: React.FC<Props> = ({
         data-tooltip-id={id}
         className="relative inline-block cursor-pointer"
       >
+        knjh
         {/* here is the component that need a tooltip */}
         {children}
       </div>
@@ -37,11 +38,9 @@ export const Tooltip: React.FC<Props> = ({
         offset={4}
         content={title}
         className={cn(
-          'font-vazirmatn text-sm shadow-5xl bg-gray-1000  rounded-xs  font-medium text-white',
-          className
+          'font-vazirmatn shadow-5xl bg-gray-1000 rounded-xs text-sm font-medium text-white',
+          className,
         )}
-
-        
       ></ReactTooltip>
     </>
   );
