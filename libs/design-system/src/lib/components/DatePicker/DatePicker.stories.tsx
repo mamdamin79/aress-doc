@@ -15,7 +15,7 @@ type Story = StoryObj<typeof DatePicker>;
 // A default story for the DatePicker component
 export const Default: Story = {
   args: {
-    min: '1400-05-25',
+    min: '1400-06-25',
     max: '1409-05-25',
   },
 };

@@ -135,8 +135,9 @@ export const DateInput: React.FC<Props> = ({
   }, [mode, defaultValue]);
 
   useEffect(() => {
-    if (!day && active) {
+    if (!day) {
       dayRef?.current?.focus();
+      setActiveIndex(1);
     }
   }, [day, active]);
 
@@ -237,8 +238,6 @@ export const DateInput: React.FC<Props> = ({
     }
 
     if (minDate.month && minDate.year && minDate.day) {
-      console.log(minDate.day, day);
-
       if (minDate.month === e && year === minDate.year && day < minDate.day) {
         tempMinError = true;
       }
@@ -249,8 +248,6 @@ export const DateInput: React.FC<Props> = ({
       // if (year && year > minDate.year) tempMinError = false;
       if (year && year < minDate.year) tempMinError = true;
       if (year && year === minDate.year && e > minDate.month) {
-        console.log('ماه بزرگ است');
-
         tempMinError = false;
       }
       if (
@@ -305,8 +302,9 @@ export const DateInput: React.FC<Props> = ({
         moment([year]).isLeapYear() &&
         day &&
         day > 29
-      )
+      ) {
         setDay(29);
+      }
       if (e > 6 && e < 12 && day === 31 && mode) setDay(30);
     }
 
@@ -359,9 +357,9 @@ export const DateInput: React.FC<Props> = ({
       if (year && year > maxDate.year) tempMaxError = true;
     }
 
-    if (mode === 'jalali') {
-      if (month && month > 6 && e === 31) setDay(30);
-      if (month && month > 6 && month <= 8 && e === 31) setDay(30);
+    if (mode === 'jalali' && month) {
+      if (month > 6 && e === 31) setDay(30);
+      if (month > 6 && month <= 8 && e === 31) setDay(30);
       if (regex.test(String(e)) && day !== 31) {
         setDay(e);
       }

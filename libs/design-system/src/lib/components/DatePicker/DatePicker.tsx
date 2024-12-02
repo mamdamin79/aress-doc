@@ -50,11 +50,8 @@ export function DatePicker({ min, max }: Props) {
   const [mosvaiDate, setMosaviDate] = useState('');
   const [titleTooltip, setTitleTooltip] = useState('');
   const [endDateHover, setEndDateHover] = useState('');
-  const [endEnterCell, setEndEnterCell] = useState<{
-    date: string;
-    day: number;
-    state: string;
-  }>();
+  const [disableNextMonth, setDisableNextMonth] = useState(false);
+  const [disablePrevMonth, setDisablePrevMonth] = useState(false);
 
   const [focuseStartInput, setFocuseStartInput] = useState(true);
   const [focuseEndInput, setFocuseEndInput] = useState(false);
@@ -131,7 +128,9 @@ export function DatePicker({ min, max }: Props) {
     isLoading,
     getRenderedDateOriginal,
     goToToday,
+    getRenderedMonth,
     getRenderedNextMonth,
+    isStartDate,
     getEndDate,
     getDays,
     getRenderedNextMonthName,
@@ -217,6 +216,22 @@ export function DatePicker({ min, max }: Props) {
     endErrors.maxError,
     endErrors.minError,
   ]);
+
+  useEffect(() => {
+    if (getRenderedYear() === +min.slice(0, 4)) {
+      if (getRenderedMonth() < +min.slice(5, 7)) {
+        changeMonth(+min.slice(5, 7));
+      }
+    }
+    if (getRenderedYear() === +max.slice(0, 4)) {
+      if (getRenderedMonth() < +max.slice(5, 7)) {
+        changeMonth(+max.slice(5, 7));
+      }
+    }
+    if (getRenderedMonth() > +max.slice(5, 7)) {
+      changeMonth(+max.slice(5, 7));
+    }
+  }, [getRenderedMonth, getRenderedYear(), min, max]);
 
   const handlerMouseLeave = () => {
     setEndDateHover('');
@@ -341,8 +356,10 @@ export function DatePicker({ min, max }: Props) {
                   ) : (
                     <option
                       disabled={
-                        +min.slice(0, 4) === year &&
-                        item.monthNumber < +min.slice(5, 7)
+                        (+min.slice(0, 4) === year &&
+                          item.monthNumber < +min.slice(5, 7)) ||
+                        (+max.slice(0, 4) === year &&
+                          item.monthNumber > +max.slice(5, 7))
                       }
                       className={cn(
                         'shadow-none cursor-pointer !pr-7 !py-2 !hover:bg-brand-600',
@@ -371,11 +388,11 @@ export function DatePicker({ min, max }: Props) {
     date: string;
     state: string;
   }) => {
+    const selectedDate = moment(date.date, 'YYYY/MM/DD')
+      .locale('fa')
+      .format('YYYY-MM-DD');
+    const formattedSelectedDate = selectedDate.replace(/-/g, '');
     setEndDateHover(date.date);
-
-    if (date.state === 'current' && startDate) {
-      setEndEnterCell(date);
-    }
 
     if (!startDate && focuseStartInput) {
       setTitleTooltip('تاریخ شروع');
@@ -393,21 +410,11 @@ export function DatePicker({ min, max }: Props) {
       setTitleTooltip('');
     }
     if (endDate && focuseStartInput && typeof endDate === 'string') {
-      if (
-        endDate.replace(/-/g, '') ===
-        moment(date.date, 'YYYY/MM/DD')
-          .locale('fa')
-          .format('YYYY-MM-DD')
-          .replace(/-/g, '')
-      ) {
+      if (endDate.replace(/-/g, '') === formattedSelectedDate) {
         setTitleTooltip('');
       } else if (
         typeof startDate === 'string' &&
-        startDate.replace(/-/g, '') ===
-          moment(date.date, 'YYYY/MM/DD')
-            .locale('fa')
-            .format('YYYY-MM-DD')
-            .replace(/-/g, '')
+        startDate.replace(/-/g, '') === formattedSelectedDate
       ) {
         setTitleTooltip('');
       } else {
@@ -415,48 +422,28 @@ export function DatePicker({ min, max }: Props) {
       }
     }
     if (focuseEndInput && typeof startDate === 'string') {
-      if (
-        moment(date.date, 'YYYY/MM/DD')
-          .locale('fa')
-          .format('YYYY-MM-DD')
-          .replace(/-/g, '') > startDate.replace(/-/g, '')
-      ) {
+      if (formattedSelectedDate > startDate.replace(/-/g, '')) {
         setTitleTooltip('تاریخ پایان');
       } else {
         setTitleTooltip('تاریخ شروع');
       }
 
-      if (
-        moment(date.date, 'YYYY/MM/DD')
-          .locale('fa')
-          .format('YYYY-MM-DD')
-          .replace(/-/g, '') === startDate.replace(/-/g, '')
-      ) {
+      if (formattedSelectedDate === startDate.replace(/-/g, '')) {
         setTitleTooltip('');
       }
 
       if (
-        moment(date.date, 'YYYY/MM/DD')
-          .locale('fa')
-          .format('YYYY-MM-DD')
-          .replace(/-/g, '') ===
+        formattedSelectedDate ===
         (typeof endDate === 'string' && endDate.replace(/-/g, ''))
       ) {
         setTitleTooltip('');
       }
     }
 
-    if (
-      moment(date.date, 'YYYY/MM/DD')
-        .locale('fa')
-        .format('YYYY-MM-DD')
-        .replace(/-/g, '') < min.replace(/-/g, '')
-    ) {
+    if (formattedSelectedDate < min.replace(/-/g, '')) {
       setTitleTooltip('');
     }
   };
-
-  console.log(endDateHover);
 
   useEffect(() => {
     if (
@@ -620,20 +607,32 @@ export function DatePicker({ min, max }: Props) {
                                   +min.slice(5, 7) - 1 <
                                   +activeMonth.slice(5, 7)
                                 ) {
+                                  setDisablePrevMonth(false);
+                                  setDisableNextMonth(false);
                                   handleShowPrevMonth();
-                                }
+                                } else setDisablePrevMonth(true);
                               } else if (
                                 +min.slice(5, 7) < +activeMonth.slice(5, 7)
                               ) {
                                 handleShowPrevMonth();
-                              }
+                                setDisableNextMonth(false);
+                                setDisablePrevMonth(false);
+                              } else setDisablePrevMonth(true);
                             } else {
+                              setDisableNextMonth(false);
                               handleShowPrevMonth();
+                              setDisablePrevMonth(false);
                             }
                           }}
-                          className="rounded-full bg-white cursor-pointer flex items-center justify-center p-2 border-[1.5px] border-white duration-300 hover:border-brand-600 hover:border-[1.5px]"
+                          className={cn(
+                            'rounded-full bg-white cursor-pointer flex items-center justify-center p-2 border-2 border-white duration-300 hover:border-brand-600 hover:border-2',
+                            {
+                              'hover:border-white cursor-default text-gray-400':
+                                disablePrevMonth,
+                            }
+                          )}
                         >
-                          <Icon name="arrow-right" size="lg" />
+                          <Icon name="chevron-right" size="lg" />
                         </div>
                         <RenderTitle
                           year={getRenderedNextDateYear()}
@@ -677,10 +676,15 @@ export function DatePicker({ min, max }: Props) {
                             >
                               {day.state === 'current' && (
                                 <Tooltip
-                                  className="!cursor-default"
+                                  className={cn('!cursor-default !z-40')}
                                   title={titleTooltip}
                                 >
-                                  <div className={cn(isDateInRange(day.date))}>
+                                  <div
+                                    className={cn(
+                                      isDateInRange(day.date),
+                                      'z-20 relative'
+                                    )}
+                                  >
                                     <button
                                       className={cn(
                                         'w-10 h-10 my-1 text-lg hover:border-brand-600 hover:border-2 rounded-full',
@@ -689,23 +693,8 @@ export function DatePicker({ min, max }: Props) {
                                             day.state === 'current',
                                         },
                                         {
-                                          'bg-brand-600 shadow-brand-600 shadow-sm text-white':
-                                            isSelectedDay(day.date) &&
-                                            day.state === 'current',
-                                        },
-                                        {
-                                          'bg-brand-600 w-full text-white':
-                                            isSelecting() &&
-                                            isDateInRange(day.date) &&
-                                            isEndDate(day.date) &&
-                                            day.state === 'current',
-                                        },
-                                        {
-                                          'rounded-none w-full ml-1 border-brand-600 border-t border-b':
-                                            !isSelectedDay(day.date) &&
-                                            isSelecting() &&
-                                            isDateInRange(day.date) &&
-                                            day.state === 'current',
+                                          'bg-brand-600 !border-l-0 !border-r-0 shadow-brand-600 !rounded-full pl-[3px] !w-10 shadow-sm text-white':
+                                            isSelectedDay(day.date),
                                         },
                                         {
                                           'bg-brand-200 rounded-none pl-[3px] border-none hover:border-none text-brand-700 w-full':
@@ -714,21 +703,21 @@ export function DatePicker({ min, max }: Props) {
                                             isDateInRange(day.date),
                                         },
                                         {
-                                          'rounded-r-full':
+                                          '!rounded-r-full pl-[3px]':
                                             !isSelectedDay(day.date) &&
                                             !isSelecting() &&
                                             isDateInRange(day.date) &&
                                             index === firstDayIndex,
                                         },
                                         {
-                                          'rounded-l-full':
+                                          '!rounded-l-full':
                                             !isSelectedDay(day.date) &&
                                             !isSelecting() &&
                                             isDateInRange(day.date) &&
                                             index === lastDayIndex,
                                         },
                                         {
-                                          'bg-gray-200 cursor-default hover:border-none':
+                                          'text-gray-400 cursor-default hover:border-none':
                                             +moment(day.date, 'YYYY/MM/DD')
                                               .locale('fa')
                                               .format('YYYY-MM-DD')
@@ -740,178 +729,194 @@ export function DatePicker({ min, max }: Props) {
                                               .replace(/-/g, '') >
                                               +max.replace(/-/g, ''),
                                         },
-
                                         {
-                                          'border-t-2 border-b-2 pl-[3px] w-full rounded-none border-brand-600':
-                                            endDateHover &&
-                                            startDate &&
-                                            focuseEndInput &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
-                                              String(startDate).replace(
-                                                /-/g,
-                                                ''
-                                              ) &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') <
-                                              moment(endDateHover, 'YYYY/MM/DD')
-                                                .locale('fa')
-                                                .format('YYYY-MM-DD')
-                                                .replace(/-/g, ''),
-                                        },
-                                        {
-                                          'border-t-2 border-b-2 pl-[3px] w-full rounded-none border-brand-600':
-                                            endDateHover &&
-                                            focuseEndInput &&
-                                            endDate &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
-                                              String(endDate).replace(
-                                                /-/g,
-                                                ''
-                                              ) &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') <
-                                              moment(endDateHover, 'YYYY/MM/DD')
-                                                .locale('fa')
-                                                .format('YYYY-MM-DD')
-                                                .replace(/-/g, ''),
-                                        },
-                                        {
-                                          'border-t-2 border-b-2 w-full rounded-none border-brand-600':
-                                            endDateHover &&
-                                            focuseStartInput &&
-                                            endDate &&
-                                            startDate &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') <
-                                              String(startDate).replace(
-                                                /-/g,
-                                                ''
-                                              ) &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
-                                              moment(endDateHover, 'YYYY/MM/DD')
-                                                .locale('fa')
-                                                .format('YYYY-MM-DD')
-                                                .replace(/-/g, ''),
-                                        },
-                                        {
-                                          'border-t-2 border-b-2 w-full pl-[3px] rounded-none border-brand-600 border-r-2 rounded-r-full':
-                                            endDateHover &&
-                                            firstDayIndex === index &&
-                                            startDate &&
-                                            focuseEndInput &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
-                                              String(startDate).replace(
-                                                /-/g,
-                                                ''
-                                              ) &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') <
-                                              moment(endDateHover, 'YYYY/MM/DD')
-                                                .locale('fa')
-                                                .format('YYYY-MM-DD')
-                                                .replace(/-/g, ''),
-                                        },
-                                        {
-                                          'border-t-2 border-b-2 w-full pl-[3px] rounded-none border-brand-600 border-r-2 rounded-r-full':
-                                            endDateHover &&
-                                            firstDayIndex === index &&
-                                            focuseEndInput &&
-                                            endDate &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
-                                              String(endDate).replace(
-                                                /-/g,
-                                                ''
-                                              ) &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') <
-                                              moment(endDateHover, 'YYYY/MM/DD')
-                                                .locale('fa')
-                                                .format('YYYY-MM-DD')
-                                                .replace(/-/g, ''),
-                                        },
-
-                                        {
-                                          'border-t- border-b-2 w-full pl-[10px] rounded-none border-brand-600 border-r-2 rounded-r-full':
-                                            endDateHover &&
-                                            firstDayIndex === index &&
-                                            focuseStartInput &&
-                                            endDate &&
-                                            startDate &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') <
-                                              String(startDate).replace(
-                                                /-/g,
-                                                ''
-                                              ) &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
-                                              moment(endDateHover, 'YYYY/MM/DD')
-                                                .locale('fa')
-                                                .format('YYYY-MM-DD')
-                                                .replace(/-/g, ''),
-                                        },
-                                        {
-                                          'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-l-2 rounded-l-full':
-                                            endDateHover &&
-                                            lastDayIndex === index &&
-                                            startDate &&
-                                            focuseEndInput &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
-                                              String(startDate).replace(
-                                                /-/g,
-                                                ''
-                                              ) &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') <
-                                              moment(endDateHover, 'YYYY/MM/DD')
-                                                .locale('fa')
-                                                .format('YYYY-MM-DD')
-                                                .replace(/-/g, ''),
-                                        },
-                                        {
-                                          'rounded-r-full':
-                                            !isSelectedDay(day.date) &&
-                                            !isSelecting() &&
-                                            isDateInRange(day.date) &&
-                                            day.state === 'current' &&
+                                          '!rounded-r-full border-r-2':
                                             day.day === 1,
                                         },
                                         {
-                                          'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-l-2 rounded-l-full':
+                                          '!rounded-l-full border-l-2':
+                                            day.day === 31,
+                                        },
+                                        {
+                                          '!rounded-l-full':
+                                            !isSelectedDay(day.date) &&
+                                            !isSelecting() &&
+                                            isDateInRange(day.date) &&
+                                            +moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .slice(5, 7) <= 6 &&
+                                            day.day === 31,
+                                        },
+                                        {
+                                          'border-t-2 border-b-2 pl-[3px] w-full rounded-none border-brand-600':
+                                            endDateHover &&
+                                            startDate &&
+                                            focuseEndInput &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') >
+                                              String(startDate).replace(
+                                                /-/g,
+                                                ''
+                                              ) &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') <
+                                              moment(endDateHover, 'YYYY/MM/DD')
+                                                .locale('fa')
+                                                .format('YYYY-MM-DD')
+                                                .replace(/-/g, ''),
+                                        },
+                                        {
+                                          'border-t-2 border-b-2 pl-[3px] w-full rounded-none border-brand-600':
+                                            endDateHover &&
+                                            focuseEndInput &&
+                                            endDate &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') >
+                                              String(endDate).replace(
+                                                /-/g,
+                                                ''
+                                              ) &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') <
+                                              moment(endDateHover, 'YYYY/MM/DD')
+                                                .locale('fa')
+                                                .format('YYYY-MM-DD')
+                                                .replace(/-/g, ''),
+                                        },
+                                        {
+                                          'border-t-2 border-b-2 pl-[3px] w-full rounded-none border-brand-600':
+                                            endDateHover &&
+                                            focuseStartInput &&
+                                            endDate &&
+                                            startDate &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') <
+                                              String(startDate).replace(
+                                                /-/g,
+                                                ''
+                                              ) &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') >
+                                              moment(endDateHover, 'YYYY/MM/DD')
+                                                .locale('fa')
+                                                .format('YYYY-MM-DD')
+                                                .replace(/-/g, ''),
+                                        },
+                                        {
+                                          'border-t-2 border-b-2 w-full border-brand-600 border-r-2 !rounded-r-full':
+                                            endDateHover &&
+                                            firstDayIndex === index &&
+                                            startDate &&
+                                            focuseEndInput &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') >
+                                              String(startDate).replace(
+                                                /-/g,
+                                                ''
+                                              ) &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') <
+                                              moment(endDateHover, 'YYYY/MM/DD')
+                                                .locale('fa')
+                                                .format('YYYY-MM-DD')
+                                                .replace(/-/g, ''),
+                                        },
+                                        {
+                                          'border-t-2 border-b-2 w-full pl-[3px] rounded-none border-brand-600 border-r-2 !rounded-r-full':
+                                            endDateHover &&
+                                            firstDayIndex === index &&
+                                            focuseEndInput &&
+                                            endDate &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') >
+                                              String(endDate).replace(
+                                                /-/g,
+                                                ''
+                                              ) &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') <
+                                              moment(endDateHover, 'YYYY/MM/DD')
+                                                .locale('fa')
+                                                .format('YYYY-MM-DD')
+                                                .replace(/-/g, ''),
+                                        },
+                                        {
+                                          'w-full rounded-none border-brand-600 border-r-2 !rounded-r-full':
+                                            endDateHover &&
+                                            firstDayIndex === index &&
+                                            focuseStartInput &&
+                                            endDate &&
+                                            startDate &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') <
+                                              String(startDate).replace(
+                                                /-/g,
+                                                ''
+                                              ) &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') >
+                                              moment(endDateHover, 'YYYY/MM/DD')
+                                                .locale('fa')
+                                                .format('YYYY-MM-DD')
+                                                .replace(/-/g, ''),
+                                        },
+                                        {
+                                          'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-l-2 !rounded-l-full':
+                                            endDateHover &&
+                                            lastDayIndex === index &&
+                                            startDate &&
+                                            focuseEndInput &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') >
+                                              String(startDate).replace(
+                                                /-/g,
+                                                ''
+                                              ) &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') <
+                                              moment(endDateHover, 'YYYY/MM/DD')
+                                                .locale('fa')
+                                                .format('YYYY-MM-DD')
+                                                .replace(/-/g, ''),
+                                        },
+                                        {
+                                          '!rounded-r-full':
+                                            !isSelectedDay(day.date) &&
+                                            !isSelecting() &&
+                                            isDateInRange(day.date) &&
+                                            day.day === 1,
+                                        },
+                                        {
+                                          'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-l-2 !rounded-l-full':
                                             endDateHover &&
                                             lastDayIndex === index &&
                                             focuseEndInput &&
@@ -934,7 +939,7 @@ export function DatePicker({ min, max }: Props) {
                                                 .replace(/-/g, ''),
                                         },
                                         {
-                                          'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-l-2 rounded-l-full':
+                                          'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-l-2 !rounded-l-full':
                                             endDateHover &&
                                             lastDayIndex === index &&
                                             focuseStartInput &&
@@ -960,20 +965,19 @@ export function DatePicker({ min, max }: Props) {
                                       )}
                                       disabled={day.day === 0}
                                       onClick={() => {
+                                        const selectedDate = moment(
+                                          day.date,
+                                          'YYYY/MM/DD'
+                                        )
+                                          .locale('fa')
+                                          .format('YYYY-MM-DD');
+                                        const formattedSelectedDate =
+                                          selectedDate.replace(/-/g, '');
                                         if (
-                                          getDate() !==
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD') &&
-                                          moment(day.date, 'YYYY/MM/DD')
-                                            .locale('fa')
-                                            .format('YYYY-MM-DD')
-                                            .replace(/-/g, '') >=
+                                          getDate() !== selectedDate &&
+                                          formattedSelectedDate >=
                                             min.replace(/-/g, '') &&
-                                          moment(day.date, 'YYYY/MM/DD')
-                                            .locale('fa')
-                                            .format('YYYY-MM-DD')
-                                            .replace(/-/g, '') <=
+                                          formattedSelectedDate <=
                                             max.replace(/-/g, '')
                                         ) {
                                           setFocuseEndInput(true);
@@ -983,11 +987,7 @@ export function DatePicker({ min, max }: Props) {
                                             !getEndDate() &&
                                             focuseStartInput
                                           ) {
-                                            setStartDate(
-                                              moment(day.date, 'YYYY/MM/DD')
-                                                .locale('fa')
-                                                .format('YYYY-MM-DD')
-                                            );
+                                            setStartDate(selectedDate);
                                           }
 
                                           if (
@@ -996,25 +996,14 @@ export function DatePicker({ min, max }: Props) {
                                             focuseEndInput
                                           ) {
                                             if (
-                                              moment(day.date, 'YYYY/MM/DD')
-                                                .locale('fa')
-                                                .format('YYYY-MM-DD')
-                                                .replace(/-/g, '') >
+                                              formattedSelectedDate >
                                               startDate.replace(/-/g, '')
                                             ) {
-                                              setEndDateS(
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                              );
+                                              setEndDateS(selectedDate);
                                             } else {
                                               setEndDateS(null);
                                               setEndDate('');
-                                              setStartDate(
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                              );
+                                              setStartDate(selectedDate);
                                             }
                                           }
 
@@ -1024,25 +1013,14 @@ export function DatePicker({ min, max }: Props) {
                                             focuseStartInput
                                           ) {
                                             if (
-                                              moment(day.date, 'YYYY/MM/DD')
-                                                .locale('fa')
-                                                .format('YYYY-MM-DD')
-                                                .replace(/-/g, '') <
+                                              formattedSelectedDate <
                                               endDate.replace(/-/g, '')
                                             ) {
-                                              setStartDate(
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                              );
+                                              setStartDate(selectedDate);
                                             } else {
                                               setEndDateS(null);
                                               setEndDate('');
-                                              setStartDate(
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                              );
+                                              setStartDate(selectedDate);
                                             }
                                           }
                                           setFocuseStartInput(false);
@@ -1061,6 +1039,17 @@ export function DatePicker({ min, max }: Props) {
                                       </p>
                                     </button>
                                   </div>
+                                  {isSelectedDay(day.date) && (
+                                    <p
+                                      className={cn(
+                                        'w-1/2 z-0 absolute top-1 bg-brand-200 h-10',
+                                        {
+                                          'right-0': isEndDate(day.date),
+                                          'left-0': isStartDate(day.date),
+                                        }
+                                      )}
+                                    ></p>
+                                  )}
                                 </Tooltip>
                               )}
                             </div>
@@ -1099,22 +1088,34 @@ export function DatePicker({ min, max }: Props) {
                                     if (
                                       +max.slice(5, 7) > getRenderedNextMonth()
                                     ) {
+                                      setDisableNextMonth(false);
+                                      setDisablePrevMonth(false);
                                       handleShowNextMonth();
-                                    }
+                                    } else setDisableNextMonth(true);
                                   } else if (
                                     +max.slice(5, 7) > getRenderedNextMonth()
                                   ) {
+                                    setDisableNextMonth(false);
+                                    setDisablePrevMonth(false);
                                     handleShowNextMonth();
-                                  }
+                                  } else setDisableNextMonth(true);
                                 } else if (
                                   +getRenderedNextDateYear() < +max.slice(0, 4)
                                 ) {
                                   handleShowNextMonth();
+                                  setDisablePrevMonth(false);
+                                  setDisableNextMonth(false);
                                 }
                               }}
-                              className="rounded-full bg-white cursor-pointer flex items-center justify-center p-2 border-[1.5px] border-white duration-300 hover:border-brand-600 hover:border-[1.5px]"
+                              className={cn(
+                                'rounded-full bg-white cursor-pointer flex items-center justify-center p-2 border-2 border-white duration-300 hover:border-brand-600 hover:border-2',
+                                {
+                                  'cursor-default hover:border-white text-gray-400':
+                                    disableNextMonth,
+                                }
+                              )}
                             >
-                              <Icon name="arrow-left" size="lg" />
+                              <Icon name="chevron-left" size="lg" />
                             </div>
                           </div>
 
@@ -1148,16 +1149,22 @@ export function DatePicker({ min, max }: Props) {
 
                               return (
                                 <div
-                                  className="mx-auto w-full"
+                                  className="mx-auto relative w-full"
                                   key={index}
                                   onMouseEnter={() => {
                                     moseEnterCell(day);
                                   }}
                                 >
                                   {day.state === 'current' && (
-                                    <Tooltip title={titleTooltip}>
+                                    <Tooltip
+                                      className="!z-50"
+                                      title={titleTooltip}
+                                    >
                                       <div
-                                        className={cn(isDateInRange(day.date))}
+                                        className={cn(
+                                          isDateInRange(day.date),
+                                          'relative z-40'
+                                        )}
                                       >
                                         <button
                                           className={cn(
@@ -1167,34 +1174,55 @@ export function DatePicker({ min, max }: Props) {
                                                 day.state === 'current',
                                             },
                                             {
-                                              'border-r-2':
-                                                index === firstDayIndex,
+                                              'bg-brand-600 !border-r-0 !w-10 shadow-brand-600 !rounded-full shadow-sm text-white':
+                                                isSelectedDay(day.date),
                                             },
                                             {
-                                              'border-l-2':
-                                                index === lastDayIndex,
-                                            },
-                                            {
-                                              'bg-brand-600 shadow-brand-600 shadow-sm text-white':
-                                                isSelectedDay(day.date) &&
-                                                day.state === 'current',
+                                              'pr-[3px]':
+                                                moment(day.date, 'YYYY/MM/DD')
+                                                  .locale('fa')
+                                                  .format('YYYY-MM-DD')
+                                                  .replace(/-/g, '')
+                                                  .slice(-2) ===
+                                                  (typeof endDate ===
+                                                    'string' &&
+                                                    String(
+                                                      endDate.slice(-2)
+                                                    )) &&
+                                                endDateHover &&
+                                                moment(
+                                                  endDateHover,
+                                                  'YYYY/MM/DD'
+                                                )
+                                                  .locale('fa')
+                                                  .format('YYYY-MM-DD')
+                                                  .replace(/-/g, '') >
+                                                  String(endDate).replace(
+                                                    /-/g,
+                                                    ''
+                                                  ),
                                             },
                                             {
                                               'bg-brand-600 w-full text-white':
                                                 isSelecting() &&
                                                 isDateInRange(day.date) &&
-                                                isEndDate(day.date) &&
-                                                day.state === 'current',
+                                                isEndDate(day.date),
                                             },
                                             {
-                                              'rounded-none w-full  border-brand-600 border-t border-b':
+                                              '!rounded-r-full border-r-2':
+                                                day.day === 1,
+                                            },
+                                            {
+                                              '!rounded-l-full': day.day === 31,
+                                            },
+                                            {
+                                              'rounded-none !w-fit border-brand-600 border-t border-b':
                                                 !isSelectedDay(day.date) &&
                                                 isSelecting() &&
-                                                isDateInRange(day.date) &&
-                                                day.state === 'current',
+                                                isDateInRange(day.date),
                                             },
                                             {
-                                              'bg-brand-200 border-none rounded-none text-brand-700 w-full':
+                                              'bg-brand-200 pl-[3px] border-none rounded-none text-brand-700 w-full':
                                                 !isSelectedDay(day.date) &&
                                                 !isSelecting() &&
                                                 isDateInRange(day.date),
@@ -1207,22 +1235,21 @@ export function DatePicker({ min, max }: Props) {
                                                 index === firstDayIndex,
                                             },
                                             {
-                                              'rounded-l-full':
+                                              '!rounded-l-full':
                                                 !isSelectedDay(day.date) &&
                                                 !isSelecting() &&
                                                 isDateInRange(day.date) &&
                                                 index === lastDayIndex,
                                             },
                                             {
-                                              'rounded-r-full':
+                                              '!rounded-r-full':
                                                 !isSelectedDay(day.date) &&
                                                 !isSelecting() &&
                                                 isDateInRange(day.date) &&
-                                                day.state === 'current' &&
                                                 day.day === 1,
                                             },
                                             {
-                                              'bg-gray-200 cursor-default hover:border-none':
+                                              'text-gray-400 cursor-default hover:border-none':
                                                 +moment(day.date, 'YYYY/MM/DD')
                                                   .locale('fa')
                                                   .format('YYYY-MM-DD')
@@ -1236,7 +1263,7 @@ export function DatePicker({ min, max }: Props) {
                                             },
 
                                             {
-                                              'border-t-2 border-b-2 w-full rounded-none border-brand-600':
+                                              'border-t-2 pl-[3px] border-b-2 w-full rounded-none border-brand-600':
                                                 endDateHover &&
                                                 startDate &&
                                                 focuseEndInput &&
@@ -1286,7 +1313,7 @@ export function DatePicker({ min, max }: Props) {
                                                     .replace(/-/g, ''),
                                             },
                                             {
-                                              'border-t-2 border-b-2 w-full rounded-none border-brand-600':
+                                              'border-t-2 border-b-2 pl-[3px] w-full rounded-none border-brand-600':
                                                 endDateHover &&
                                                 focuseStartInput &&
                                                 endDate &&
@@ -1337,6 +1364,28 @@ export function DatePicker({ min, max }: Props) {
                                                     .locale('fa')
                                                     .format('YYYY-MM-DD')
                                                     .replace(/-/g, ''),
+                                            },
+                                            {
+                                              'rounded-l-full':
+                                                !isSelectedDay(day.date) &&
+                                                !isSelecting() &&
+                                                isDateInRange(day.date) &&
+                                                +moment(day.date, 'YYYY/MM/DD')
+                                                  .locale('fa')
+                                                  .format('YYYY-MM-DD')
+                                                  .slice(5, 7) > 6 &&
+                                                day.day === 30,
+                                            },
+                                            {
+                                              'rounded-l-full':
+                                                !isSelectedDay(day.date) &&
+                                                !isSelecting() &&
+                                                isDateInRange(day.date) &&
+                                                +moment(day.date, 'YYYY/MM/DD')
+                                                  .locale('fa')
+                                                  .format('YYYY-MM-DD')
+                                                  .slice(5, 7) <= 6 &&
+                                                day.day === 31,
                                             },
                                             {
                                               'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-r-2 rounded-r-full':
@@ -1473,41 +1522,31 @@ export function DatePicker({ min, max }: Props) {
                                           )}
                                           disabled={day.day === 0}
                                           onClick={() => {
+                                            const selectedDate = moment(
+                                              day.date,
+                                              'YYYY/MM/DD'
+                                            )
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD');
+                                            const formattedSelectedDate =
+                                              selectedDate.replace(/-/g, '');
                                             if (
-                                              getDate() !==
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD') &&
-                                              moment(day.date, 'YYYY/MM/DD')
-                                                .locale('fa')
-                                                .format('YYYY-MM-DD')
-                                                .replace(/-/g, '') >
+                                              getDate() !== selectedDate &&
+                                              formattedSelectedDate >=
                                                 min.replace(/-/g, '') &&
-                                              +moment(day.date, 'YYYY/MM/DD')
-                                                .locale('fa')
-                                                .format('YYYY-MM-DD')
-                                                .replace(/-/g, '') <
-                                                +max.replace(/-/g, '')
+                                              formattedSelectedDate <
+                                                max.replace(/-/g, '')
                                             ) {
-                                              if (startDate) {
-                                                setFocuseStartInput(false);
-                                                setFocuseEndInput(true);
-                                              } else {
-                                                setFocuseStartInput(true);
-                                                setFocuseEndInput(false);
-                                              }
                                               setActiveEndInput(true);
+                                              setFocuseEndInput(true);
+                                              setFocuseStartInput(false);
 
                                               if (
                                                 !endDate &&
                                                 !getEndDate() &&
                                                 focuseStartInput
                                               ) {
-                                                setStartDate(
-                                                  moment(day.date, 'YYYY/MM/DD')
-                                                    .locale('fa')
-                                                    .format('YYYY-MM-DD')
-                                                );
+                                                setStartDate(selectedDate);
                                               }
 
                                               if (
@@ -1516,31 +1555,14 @@ export function DatePicker({ min, max }: Props) {
                                                 focuseEndInput
                                               ) {
                                                 if (
-                                                  moment(day.date, 'YYYY/MM/DD')
-                                                    .locale('fa')
-                                                    .format('YYYY-MM-DD')
-                                                    .replace(/-/g, '') >
+                                                  formattedSelectedDate >
                                                   startDate.replace(/-/g, '')
                                                 ) {
-                                                  setEndDateS(
-                                                    moment(
-                                                      day.date,
-                                                      'YYYY/MM/DD'
-                                                    )
-                                                      .locale('fa')
-                                                      .format('YYYY-MM-DD')
-                                                  );
+                                                  setEndDateS(selectedDate);
                                                 } else {
                                                   setEndDateS(null);
                                                   setEndDate('');
-                                                  setStartDate(
-                                                    moment(
-                                                      day.date,
-                                                      'YYYY/MM/DD'
-                                                    )
-                                                      .locale('fa')
-                                                      .format('YYYY-MM-DD')
-                                                  );
+                                                  setStartDate(selectedDate);
                                                 }
                                               }
 
@@ -1550,31 +1572,14 @@ export function DatePicker({ min, max }: Props) {
                                                 focuseStartInput
                                               ) {
                                                 if (
-                                                  moment(day.date, 'YYYY/MM/DD')
-                                                    .locale('fa')
-                                                    .format('YYYY-MM-DD')
-                                                    .replace(/-/g, '') <
+                                                  formattedSelectedDate <=
                                                   endDate.replace(/-/g, '')
                                                 ) {
-                                                  setStartDate(
-                                                    moment(
-                                                      day.date,
-                                                      'YYYY/MM/DD'
-                                                    )
-                                                      .locale('fa')
-                                                      .format('YYYY-MM-DD')
-                                                  );
+                                                  setStartDate(selectedDate);
                                                 } else {
                                                   setEndDateS(null);
                                                   setEndDate('');
-                                                  setStartDate(
-                                                    moment(
-                                                      day.date,
-                                                      'YYYY/MM/DD'
-                                                    )
-                                                      .locale('fa')
-                                                      .format('YYYY-MM-DD')
-                                                  );
+                                                  setStartDate(selectedDate);
                                                 }
                                               }
                                             }
@@ -1592,6 +1597,17 @@ export function DatePicker({ min, max }: Props) {
                                           </p>
                                         </button>
                                       </div>
+                                      {isSelectedDay(day.date) && (
+                                        <p
+                                          className={cn(
+                                            'w-1/2 z-0 absolute top-1 bg-brand-200 h-10',
+                                            {
+                                              'right-0': isEndDate(day.date),
+                                              'left-0': isStartDate(day.date),
+                                            }
+                                          )}
+                                        ></p>
+                                      )}
                                     </Tooltip>
                                   )}
                                 </div>
