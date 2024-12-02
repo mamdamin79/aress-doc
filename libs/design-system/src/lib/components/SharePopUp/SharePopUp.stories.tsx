@@ -11,7 +11,11 @@ type Story = StoryObj<typeof SharePopUp>;
 
 export const Default: Story = {
   render: (args) => {
-    return <SharePopUp {...args} />;
+    return (
+      <div style={{ backgroundColor: '#ccc', padding: '16px' }}>
+        <SharePopUp {...args} />
+      </div>
+    );
   },
   args: {
     message: 'لینک ویدیوی آموزشی',
