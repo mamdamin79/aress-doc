@@ -3,7 +3,7 @@ import { Icon, IconProps } from '../../Icon';
 import { cn } from 'libs/design-system/src/utils';
 import { Tooltip } from '../../Tooltip';
 
-interface FieldProps {
+export interface FieldProps {
   title: string;
   status: 'normal' | 'opened' | 'error';
   icon: IconProps;
@@ -12,6 +12,7 @@ interface FieldProps {
   placeHolder?: string;
   selectedOption?: string;
   hasTooltip?: boolean;
+  hasChildren?:boolean;
 }
 
 interface WrapperProps {
@@ -36,12 +37,13 @@ export const Field: React.FC<FieldProps> = ({
   placeHolder,
   selectedOption,
   hasTooltip = false,
+  hasChildren=false
 }) => {
   return (
     <Wrapper hasTooltip={hasTooltip} selectedOption={selectedOption}>
       <div
         className={cn(
-          'h-10 w-full flex justify-between items-center rounded-md px-2 border border-gray-300',
+          'h-10 w-full flex justify-between items-center rounded-md px-2 border border-gray-300 transition-colors',
           status === 'normal' && 'hover:border-1.5 hover:border-gray-500',
           status === 'error' && 'border-1.5 border-red-600',
           status === 'opened' && 'border-2 border-brand-600'
@@ -49,7 +51,7 @@ export const Field: React.FC<FieldProps> = ({
         onClick={onClick}
       >
         <div className="flex flex-row gap-2 items-center text-sm">
-          <span className={cn('font-medium', status === 'error' && 'text-red-600')}>{title}</span>
+          <span className={cn('font-medium', status === 'error' && !hasChildren && 'text-red-600')}>{title}</span>
           {placeHolder && !selectedOption && (
             <span className="font-normal text-gray-500">{placeHolder}</span>
           )}
