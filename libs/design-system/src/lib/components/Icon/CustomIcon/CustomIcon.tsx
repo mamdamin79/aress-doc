@@ -9,7 +9,7 @@ export const CustomIcon: React.FC<IconProps> = ({ name, size = 'md' }) => {
   return (
     <div
       className={cn('relative hover:text-brand-600 group inline-block', {
-        'text-brand-600': name === 'CustomCirlcleX',
+        'text-brand-600': name === 'CustomCirlcleXcustomc',
       })}
     >
       <CustomIconComponent
