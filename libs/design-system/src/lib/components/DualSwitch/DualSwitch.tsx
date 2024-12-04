@@ -1,22 +1,53 @@
 import { cn } from 'libs/design-system/src/utils';
-import React from 'react';
-import { Icon } from '../Icon';
+import React, { useState } from 'react';
+import { Icon, IconProps } from '../Icon';
+import { Tooltip } from '../Tooltip';
+
+type TooltipProps = {
+  children?: React.ReactNode;
+  title: string;
+  position?: 'top' | 'right' | 'bottom' | 'left';
+  className?: string;
+};
+
+type DualSwitchItem = {
+  tooltip?: TooltipProps;
+  icon: IconProps;
+};
 
 interface DualSwitchProps {
-  activeIndex: number;
-  setActiveIndex: (index: number) => void;
-  disabled: boolean;
+  initialIndex?: number;
+  onChange: (value: number) => void;
+  items: DualSwitchItem[];
+  size: IconProps['size'];
+  disabled?: boolean;
   bgWhite?: boolean;
 }
 
 export const DualSwitch: React.FC<DualSwitchProps> = ({
-  activeIndex,
-  setActiveIndex,
+  initialIndex = 0,
+  onChange,
+  items,
+  size,
   disabled = false,
-  bgWhite,
+  bgWhite = false,
 }) => {
-  const handleSwitchClick = (index: number) => {
-    setActiveIndex(index);
+  const [activeItemIndex, setActiveItemIndex] = useState(initialIndex);
+
+  const handleSwitchClick = (itemIndex: number) => {
+    setActiveItemIndex(itemIndex);
+    onChange(itemIndex);
+  };
+
+  const Wrapper: React.FC<{
+    item: DualSwitchItem;
+    children: React.ReactNode;
+  }> = ({ item, children }) => {
+    return item.tooltip ? (
+      <Tooltip {...item.tooltip}>{children}</Tooltip>
+    ) : (
+      <>{children}</>
+    );
   };
 
   return (
@@ -27,36 +58,25 @@ export const DualSwitch: React.FC<DualSwitchProps> = ({
         disabled ? 'border-brand-300' : 'border-brand-600'
       )}
     >
-      <div
-        className={cn(
-          'rounded-full bg-white p-[6px]',
-          disabled
-            ? activeIndex === 0
-              ? 'bg-brand-300 text-white'
-              : ''
-            : activeIndex === 0
-            ? 'bg-brand-600 text-white  transition-colors'
-            : ''
-        )}
-        onClick={() => !disabled && handleSwitchClick(0)}
-      >
-        <Icon name="presentation" size="md" />
-      </div>
-      <div
-        className={cn(
-          'rounded-full bg-white p-[6px]',
-          disabled
-            ? activeIndex === 1
-              ? 'bg-brand-300 text-white'
-              : ''
-            : activeIndex === 1
-            ? 'bg-brand-600 text-white  transition-colors'
-            : ''
-        )}
-        onClick={() => !disabled && handleSwitchClick(0)}
-      >
-        <Icon name="layout-grid" size="md" />
-      </div>
+      {items.map((item, index) => (
+        <Wrapper key={index} item={item}>
+          <div
+            className={cn(
+              'rounded-full bg-white p-[6px]',
+              disabled
+                ? activeItemIndex === index
+                  ? 'bg-brand-300 text-white'
+                  : 'text-gray-400'
+                : activeItemIndex === index
+                ? 'bg-brand-600 text-white transition-colors'
+                : ''
+            )}
+            onClick={() => !disabled && handleSwitchClick(index)}
+          >
+            <Icon name={item.icon.name} size={size} />
+          </div>
+        </Wrapper>
+      ))}
     </div>
   );
 };
