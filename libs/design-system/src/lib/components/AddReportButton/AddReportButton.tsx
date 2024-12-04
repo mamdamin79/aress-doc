@@ -13,7 +13,7 @@ export const AddReportButton: React.FC<AddReportButtonProps> = ({
     >
       <div className="flex flex-col gap-4 justify-center items-center transition-all">
         <div className="w-[72px] h-[72px] rounded-full border-2 border-dashed border-gray-500 group-hover:border-brand-700 flex justify-center items-center">
-          <Icon name="plus" key={'plus'} size="lg_plus" />
+          <Icon name="plus" key={'plus'} size="lg_plus_plus" />
         </div>
         <span className="text-center">افزودن گزارش جدید</span>
       </div>
