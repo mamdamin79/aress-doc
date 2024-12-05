@@ -109,13 +109,16 @@ export const VideoPlayer: React.FC<Props> = ({
       {isFullscreen && (
         <div
           // onClick={(e)=>e.stopPropagation()}
-          className={cn('absolute right-0 z-50', {
-            '-right-full': !showPlayList,
-          })}
+          className={cn(
+            'absolute transition-all duration-300 ease-in-out right-0 z-50',
+            {
+              '-right-full': !showPlayList,
+            }
+          )}
         >
           <PlayList
             isFullscreen={true}
-            onClose={() => setShowPlayList(false)}
+            setShowPlayList={setShowPlayList}
             playListTitle="لیست مصاحبات مدیر - محمد باقر خادمی"
             videos={[
               {

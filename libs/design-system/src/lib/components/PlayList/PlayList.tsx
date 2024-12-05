@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Icon } from '../Icon';
 import { secondsToHHMMSS } from '../../../utils/time';
 import { cn } from '../../../utils/classNames.utils';
@@ -7,7 +7,7 @@ type PlayListPropsType = {
   videos: video[];
   playListTitle: string;
   isFullscreen: boolean;
-  onClose: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowPlayList: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type video = {
@@ -20,7 +20,7 @@ export const PlayList: React.FC<PlayListPropsType> = ({
   videos,
   playListTitle,
   isFullscreen = false,
-  onClose,
+  setShowPlayList,
 }) => {
   return (
     <div>
@@ -28,9 +28,12 @@ export const PlayList: React.FC<PlayListPropsType> = ({
         <div className="bg-gray-900/90 text-white h-screen w-[440px]">
           <div className="flex items-center px-6 pb-2 pt-8 justify-between text-xl font-medium">
             <span>{playListTitle}</span>
-            <span onClick={() => onClose} className="cursor-pointer">
+            <div
+              onClick={() => setShowPlayList(false)}
+              className="cursor-pointer"
+            >
               <Icon name="x" size="lg" />
-            </span>
+            </div>
           </div>
           <div className="pt-12 px-6">
             {videos.map((video, index) => (
@@ -69,6 +72,7 @@ const PlayListCell: React.FC<
   video & { index: number; isFullscreen?: boolean }
 > = ({ date, src, title, index, isFullscreen = false }) => {
   const [durations, setDurations] = useState<Record<number, string>>({});
+  const titleContainer = useRef<HTMLDivElement>(null);
 
   const handleLoadedMetadata = (
     index: number,
@@ -81,9 +85,12 @@ const PlayListCell: React.FC<
 
   return (
     <div
-      className={cn('rounded-lg bg-gray-100 gap-2 p-3 mb-3 flex items-center', {
-        'bg-black/30': isFullscreen,
-      })}
+      className={cn(
+        'group rounded-lg bg-gray-100 gap-2 p-3  mb-3 flex items-center hover:bg-gray-200 transition-colors duration-300 cursor-pointer',
+        {
+          'bg-black/30 hover:bg-white/20': isFullscreen,
+        }
+      )}
       key={`title-${title}`}
     >
       <span
@@ -107,13 +114,28 @@ const PlayListCell: React.FC<
           </span>
         )}
         <div>
-          <span
-            className={cn('text-gray-1000 font-medium text-sm line-clamp-1', {
-              'text-white': isFullscreen,
-            })}
+          <div
+            className={cn(
+              'text-gray-1000 p-2 font-medium text-sm overflow-hidden text-ellipsis w-[230px] relative whitespace-nowrap ',
+              {
+                'text-white': isFullscreen,
+              }
+            )}
           >
-            {title}
-          </span>
+            <div
+              ref={titleContainer}
+              className={cn(
+                'inline-block text-ellipsis whitespace-nowrap transform transition-transform duration-500 ease-in-out group-hover:translate-x-[calc(100%-222px)]',
+                {
+                  'group-hover:translate-x-0':
+                    titleContainer.current &&
+                    titleContainer.current?.offsetWidth < 214,
+                }
+              )}
+            >
+              {title}
+            </div>
+          </div>
           <span
             className={cn(
               'text-gray-600 font-medium text-xs flex items-center gap-1',
