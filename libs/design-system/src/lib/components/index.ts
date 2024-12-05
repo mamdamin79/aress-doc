@@ -3,6 +3,8 @@ export * from './IconDialog';
 export * from './Breadcrumb';
 export * from './Icon';
 export * from './SectionTitle';
+export * from './ContextMenu';
+export * from './PercentageLabel';
 export * from './Tooltip';
 export * from './FileUpload';
 export * from './Checkbox';
