@@ -22,11 +22,11 @@ export const ContextMenu: React.FC<Props> = ({
       <MenuButton>
         {/* if user provide a children we use it else we use the first item */}
         {children ? (
-          <div className="bg-gray-100  p-2 rounded-full shadow-md">
+          <div className="rounded-full bg-gray-100 p-2 shadow-md">
             {children}
           </div>
         ) : (
-          <div className="inline-flex items-center p-2 w-40 rounded-sm bg-white text-sm gap-2 font-medium text-gray-1000 shadow-md">
+          <div className="text-gray-1000 inline-flex w-40 items-center gap-2 rounded-sm bg-white p-2 text-sm font-medium shadow-md">
             <Icon name={items[0].icon} size="md" />
             {items[0].title}
           </div>
@@ -35,13 +35,13 @@ export const ContextMenu: React.FC<Props> = ({
       <MenuItems
         transition
         anchor={anchor}
-        className="w-[180px] [--anchor-gap:8px] shadow-7xl border-[1.5px]  rounded-xl border-gray-300 bg-white  text-sm  transition duration-200 ease-out focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
+        className="shadow-7xl w-[180px] rounded-xl border-[1.5px] border-gray-300 bg-white text-sm transition duration-200 ease-out [--anchor-gap:8px] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
       >
         {items.map((item) => (
           <MenuItem>
             <button
               onClick={item.onClick}
-              className="group  hover:bg-brand-100 text-sm text-gray-1000 font-medium flex w-full items-center gap-2 p-2 pr-3"
+              className="hover:bg-brand-100 text-gray-1000 group flex w-full items-center gap-2 p-2 pr-3 text-sm font-medium"
             >
               <Icon name={item.icon} size="md" />
               {item.title}
