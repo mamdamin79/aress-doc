@@ -22,7 +22,7 @@ type Story = StoryObj<typeof Tabs>;
 // examples story for the Tabs component
 export const Default: Story = {
   render: (args) => (
-    <div className={cn({ 'bg-gray-100 py-10 w-full': !args.bgWhite })}>
+    <div className={cn({ 'bg-gray-100 py-10 w-max': !args.bgWhite })}>
       <Tabs {...args} />
     </div>
   ),
@@ -38,6 +38,22 @@ export const Default: Story = {
           </div>
         ),
         title: 'خلاصه',
+      },
+      {
+        content: 'تحلیل بازدهی',
+        title: 'تحلیل بازدهی',
+      },
+      {
+        content: 'تحلیل بازدهی',
+        title: 'تحلیل بازدهی',
+      },
+      {
+        content: 'تحلیل بازدهی',
+        title: 'تحلیل بازدهی',
+      },
+      {
+        content: 'تحلیل بازدهی',
+        title: 'تحلیل بازدهی',
       },
       {
         content: 'تحلیل بازدهی',
