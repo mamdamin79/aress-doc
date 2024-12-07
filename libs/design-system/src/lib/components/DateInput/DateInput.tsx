@@ -342,7 +342,6 @@ export const DateInput: React.FC<Props> = ({
     if (minDate.year && minDate.month && minDate.day) {
       if (year && year < minDate.year) tempMinError = true;
       if (year === minDate.year && month === minDate.month && e < minDate.day) {
-        console.log(e, minDate.day);
         tempMinError = true;
       } else {
         tempMinError = false;
@@ -600,7 +599,6 @@ export const DateInput: React.FC<Props> = ({
         }
       }
       if (e.key === 'ArrowUp') {
-        document.body.style.overflow = 'hidden';
         if (activeIndex === 3) {
           changeYearInput(year ? year + 1 : 1);
         }
@@ -669,7 +667,16 @@ export const DateInput: React.FC<Props> = ({
               !mosaviDate &&
               !invalidEndDate &&
               !invalidStartDate,
-            'border-gray-500': year && day && month && !focus,
+            'border-gray-500':
+              year &&
+              day &&
+              month &&
+              !focus &&
+              !errors.maxError &&
+              !errors.minError &&
+              !mosaviDate &&
+              !invalidEndDate &&
+              !invalidStartDate,
           }
         )}
       >

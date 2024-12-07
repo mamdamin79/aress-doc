@@ -153,8 +153,8 @@ export function DatePicker({ min, max }: Props) {
   );
 
   const getFirstAndLastDayOfWeek = (index: number) => {
-    const firstDayIndex = index - (index % 7); // اولین روز هفته
-    const lastDayIndex = firstDayIndex + 6; // آخرین روز هفته
+    const firstDayIndex = index - (index % 7);
+    const lastDayIndex = firstDayIndex + 6;
     return { firstDayIndex, lastDayIndex };
   };
 
@@ -223,14 +223,11 @@ export function DatePicker({ min, max }: Props) {
       }
     }
     if (getRenderedYear() === +max.slice(0, 4)) {
-      if (getRenderedMonth() < +max.slice(5, 7)) {
+      if (getRenderedMonth() > +max.slice(5, 7)) {
         changeMonth(+max.slice(5, 7));
       }
     }
-    if (getRenderedMonth() > +max.slice(5, 7)) {
-      changeMonth(+max.slice(5, 7));
-    }
-  }, [getRenderedMonth, getRenderedYear(), min, max]);
+  }, [getRenderedMonth, min, max, getRenderedYear(), changeMonth]);
 
   const handlerMouseLeave = () => {
     setEndDateHover('');
@@ -439,7 +436,10 @@ export function DatePicker({ min, max }: Props) {
       }
     }
 
-    if (formattedSelectedDate < min.replace(/-/g, '')) {
+    if (
+      formattedSelectedDate < min.replace(/-/g, '') ||
+      formattedSelectedDate > max.replace(/-/g, '')
+    ) {
       setTitleTooltip('');
     }
   };
@@ -737,6 +737,11 @@ export function DatePicker({ min, max }: Props) {
                                             day.day === 31,
                                         },
                                         {
+                                          '!rounded-l-full !border-l-2':
+                                            day.day === 30 &&
+                                            getRenderedMonth() > 6,
+                                        },
+                                        {
                                           '!rounded-l-full':
                                             !isSelectedDay(day.date) &&
                                             !isSelecting() &&
@@ -767,7 +772,12 @@ export function DatePicker({ min, max }: Props) {
                                               moment(endDateHover, 'YYYY/MM/DD')
                                                 .locale('fa')
                                                 .format('YYYY-MM-DD')
-                                                .replace(/-/g, ''),
+                                                .replace(/-/g, '') &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') <
+                                              max.replace(/-/g, ''),
                                         },
                                         {
                                           'border-t-2 border-b-2 pl-[3px] w-full rounded-none border-brand-600':
@@ -789,7 +799,12 @@ export function DatePicker({ min, max }: Props) {
                                               moment(endDateHover, 'YYYY/MM/DD')
                                                 .locale('fa')
                                                 .format('YYYY-MM-DD')
-                                                .replace(/-/g, ''),
+                                                .replace(/-/g, '') &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') <
+                                              max.replace(/-/g, ''),
                                         },
                                         {
                                           'border-t-2 border-b-2 pl-[3px] w-full rounded-none border-brand-600':
@@ -812,7 +827,12 @@ export function DatePicker({ min, max }: Props) {
                                               moment(endDateHover, 'YYYY/MM/DD')
                                                 .locale('fa')
                                                 .format('YYYY-MM-DD')
-                                                .replace(/-/g, ''),
+                                                .replace(/-/g, '') &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') >
+                                              min.replace(/-/g, ''),
                                         },
                                         {
                                           'border-t-2 border-b-2 w-full border-brand-600 border-r-2 !rounded-r-full':
@@ -840,7 +860,12 @@ export function DatePicker({ min, max }: Props) {
                                               .locale('fa')
                                               .format('YYYY-MM-DD')
                                               .replace(/-/g, '') >
-                                              min.replace(/-/g, ''),
+                                              min.replace(/-/g, '') &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') <
+                                              max.replace(/-/g, ''),
                                         },
                                         {
                                           'border-t-2 border-b-2 w-full pl-[3px] rounded-none border-brand-600 border-r-2 !rounded-r-full':
@@ -868,7 +893,12 @@ export function DatePicker({ min, max }: Props) {
                                               .locale('fa')
                                               .format('YYYY-MM-DD')
                                               .replace(/-/g, '') >
-                                              min.replace(/-/g, ''),
+                                              min.replace(/-/g, '') &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') <
+                                              max.replace(/-/g, ''),
                                         },
                                         {
                                           'w-full rounded-none border-brand-600 border-r-2 !rounded-r-full':
@@ -925,7 +955,12 @@ export function DatePicker({ min, max }: Props) {
                                               .locale('fa')
                                               .format('YYYY-MM-DD')
                                               .replace(/-/g, '') >
-                                              min.replace(/-/g, ''),
+                                              min.replace(/-/g, '') &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') <
+                                              max.replace(/-/g, ''),
                                         },
                                         {
                                           '!rounded-r-full':
@@ -960,7 +995,12 @@ export function DatePicker({ min, max }: Props) {
                                               .locale('fa')
                                               .format('YYYY-MM-DD')
                                               .replace(/-/g, '') >
-                                              min.replace(/-/g, ''),
+                                              min.replace(/-/g, '') &&
+                                            moment(day.date, 'YYYY/MM/DD')
+                                              .locale('fa')
+                                              .format('YYYY-MM-DD')
+                                              .replace(/-/g, '') <
+                                              max.replace(/-/g, ''),
                                         },
                                         {
                                           'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-l-2 !rounded-l-full':
@@ -1263,6 +1303,11 @@ export function DatePicker({ min, max }: Props) {
                                               '!rounded-l-full': day.day === 31,
                                             },
                                             {
+                                              '!rounded-l-full !border-l-2':
+                                                day.day === 30 &&
+                                                getRenderedNextMonth() > 6,
+                                            },
+                                            {
                                               'rounded-none !w-fit border-brand-600 border-t border-b':
                                                 !isSelectedDay(day.date) &&
                                                 isSelecting() &&
@@ -1385,7 +1430,12 @@ export function DatePicker({ min, max }: Props) {
                                                   )
                                                     .locale('fa')
                                                     .format('YYYY-MM-DD')
-                                                    .replace(/-/g, ''),
+                                                    .replace(/-/g, '') &&
+                                                moment(day.date, 'YYYY/MM/DD')
+                                                  .locale('fa')
+                                                  .format('YYYY-MM-DD')
+                                                  .replace(/-/g, '') >
+                                                  min.replace(/-/g, ''),
                                             },
 
                                             {
@@ -1502,7 +1552,12 @@ export function DatePicker({ min, max }: Props) {
                                                   .locale('fa')
                                                   .format('YYYY-MM-DD')
                                                   .replace(/-/g, '') <
-                                                  max.replace(/-/g, ''),
+                                                  max.replace(/-/g, '') &&
+                                                moment(day.date, 'YYYY/MM/DD')
+                                                  .locale('fa')
+                                                  .format('YYYY-MM-DD')
+                                                  .replace(/-/g, '') >
+                                                  min.replace(/-/g, ''),
                                             },
                                             {
                                               'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-l-2 rounded-l-full':
@@ -1533,7 +1588,12 @@ export function DatePicker({ min, max }: Props) {
                                                   .locale('fa')
                                                   .format('YYYY-MM-DD')
                                                   .replace(/-/g, '') <
-                                                  max.replace(/-/g, ''),
+                                                  max.replace(/-/g, '') &&
+                                                moment(day.date, 'YYYY/MM/DD')
+                                                  .locale('fa')
+                                                  .format('YYYY-MM-DD')
+                                                  .replace(/-/g, '') >
+                                                  min.replace(/-/g, ''),
                                             },
                                             {
                                               'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-l-2 rounded-l-full':
@@ -1596,7 +1656,12 @@ export function DatePicker({ min, max }: Props) {
                                                   .locale('fa')
                                                   .format('YYYY-MM-DD')
                                                   .replace(/-/g, '') <
-                                                  max.replace(/-/g, ''),
+                                                  max.replace(/-/g, '') &&
+                                                moment(day.date, 'YYYY/MM/DD')
+                                                  .locale('fa')
+                                                  .format('YYYY-MM-DD')
+                                                  .replace(/-/g, '') >
+                                                  min.replace(/-/g, ''),
                                             }
                                           )}
                                           disabled={day.day === 0}
@@ -1613,7 +1678,7 @@ export function DatePicker({ min, max }: Props) {
                                               getDate() !== selectedDate &&
                                               formattedSelectedDate >=
                                                 min.replace(/-/g, '') &&
-                                              formattedSelectedDate <
+                                              formattedSelectedDate <=
                                                 max.replace(/-/g, '')
                                             ) {
                                               setActiveEndInput(true);
@@ -1702,18 +1767,21 @@ export function DatePicker({ min, max }: Props) {
             </div>
             <div className="flex flex-row-reverse mb-5 min-h-10 justify-between items-center">
               <button
-                className={cn('px-2 bg-brand-300 py-1 rounded-md text-white', {
-                  'bg-brand-600':
-                    startDate &&
-                    endDate &&
-                    !endErrors.maxError &&
-                    !endErrors.minError &&
-                    !mosvaiDate &&
-                    !startErrors.maxError &&
-                    !startErrors.minError &&
-                    !invalidEndDate &&
-                    !invalidStartDate,
-                })}
+                className={cn(
+                  'px-2 bg-brand-300 cursor-default py-1 rounded-md text-white',
+                  {
+                    'bg-brand-600 cursor-pointer':
+                      startDate &&
+                      endDate &&
+                      !endErrors.maxError &&
+                      !endErrors.minError &&
+                      !mosvaiDate &&
+                      !startErrors.maxError &&
+                      !startErrors.minError &&
+                      !invalidEndDate &&
+                      !invalidStartDate,
+                  }
+                )}
               >
                 اعمال بازه
               </button>
