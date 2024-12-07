@@ -41,7 +41,7 @@ export function DatePicker({ min, max }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [minDate, setMinDate] = useState(min);
   const [maxDate, setMaxDate] = useState(max);
-  const [startDate, setStartDate] = useState<string | Date>();
+  const [startDate, setStartDate] = useState<string | Date | null>();
   const [endDate, setEndDateS] = useState<string | Date | null>();
   const [activeStartInput, setActiveStartInput] = useState(true);
   const [activeEndInput, setActiveEndInput] = useState(false);
@@ -215,6 +215,17 @@ export function DatePicker({ min, max }: Props) {
     endErrors.maxError,
     endErrors.minError,
   ]);
+
+  const DateDifference = () => {
+    if (typeof startDate === 'string' && typeof endDate === 'string') {
+      const startDateTime = new Date(startDate);
+      const endDateTime = new Date(endDate);
+
+      const timeDifference = +endDateTime - +startDateTime;
+
+      return Math.ceil(timeDifference / (1000 * 3600 * 24));
+    }
+  };
 
   useEffect(() => {
     if (getRenderedYear() === +min.slice(0, 4)) {
@@ -453,6 +464,23 @@ export function DatePicker({ min, max }: Props) {
     }
   }, [min, startDate]);
 
+  const clearStartDate = () => {
+    if (endDate) {
+      clearEndDate();
+      setStartDate(null);
+      setDate('');
+      setActiveEndInput(false);
+    } else {
+      setStartDate(null);
+      setDate('');
+    }
+  };
+
+  const clearEndDate = () => {
+    setEndDateS(null);
+    setEndDate('');
+  };
+
   return (
     <div style={{ display: 'inline-block', width: 'auto' }}>
       <button onClick={goToToday}>go to today</button>
@@ -489,6 +517,7 @@ export function DatePicker({ min, max }: Props) {
                       active={activeStartInput}
                       focus={focuseStartInput}
                       onChange={updateStartInput}
+                      clearDate={clearStartDate}
                       errors={startErrors}
                       errorHandler={errorHandler}
                       mode="jalali"
@@ -521,6 +550,7 @@ export function DatePicker({ min, max }: Props) {
                       focus={focuseEndInput}
                       onChange={updateEndInput}
                       errors={endErrors}
+                      clearDate={clearEndDate}
                       errorHandler={endErrorHandler}
                       mode="jalali"
                       min={min}
@@ -1797,8 +1827,7 @@ export function DatePicker({ min, max }: Props) {
                   <div className="flex justify-start w-fit gap-2 px-2 py-1.5 bg-white rounded-sm items-center">
                     <span className="text-sm">بازه دلخواه:</span>
                     <span className="font-medium text-sm text-gray-1000">
-                      {+String(endDate).replace(/-/g, '') -
-                        +String(startDate).replace(/-/g, '')}{' '}
+                      {DateDifference()}
                       روز
                     </span>
                   </div>

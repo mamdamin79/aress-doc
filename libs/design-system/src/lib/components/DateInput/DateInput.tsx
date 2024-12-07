@@ -2,6 +2,7 @@ import moment from 'moment';
 import { cn } from '../../../utils';
 import { useEffect, useRef, useState } from 'react';
 import { CustomDate } from './DateInput.types';
+import { Icon } from '../Icon';
 
 interface Props {
   defaultValue?: string | Date | CustomDate;
@@ -13,6 +14,7 @@ interface Props {
   invalidStartDate: string;
   invalidEndDate: string;
   mosaviDate: string;
+  clearDate: () => void;
   errors: {
     minError: boolean;
     maxError: boolean;
@@ -45,6 +47,7 @@ export const DateInput: React.FC<Props> = ({
   errors,
   onChange,
   mode,
+  clearDate,
   min,
   max,
   active,
@@ -738,6 +741,13 @@ export const DateInput: React.FC<Props> = ({
                 activeIndex === 3 && active && 'bg-blue-200'
               )}
             />
+            {day && month && year ? (
+              <div onClick={() => clearDate()} className="cursor-pointer mr-4">
+                <Icon name="x" size="lg" />
+              </div>
+            ) : (
+              ''
+            )}
           </>
         ) : (
           <span className="text-md text-gray-700">{placeholder}</span>
