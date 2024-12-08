@@ -7,13 +7,16 @@ type PlayListPropsType = {
   videos: video[];
   playListTitle: string;
   isFullscreen: boolean;
-  setShowPlayList: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowPlayList?: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedVideo: React.Dispatch<React.SetStateAction<video>>;
 };
 
-type video = {
+export type video = {
   src: string;
   title: string;
   date: string;
+  poster?: string;
+  qualities: { src: string; label: string }[];
 };
 
 export const PlayList: React.FC<PlayListPropsType> = ({
@@ -21,6 +24,7 @@ export const PlayList: React.FC<PlayListPropsType> = ({
   playListTitle,
   isFullscreen = false,
   setShowPlayList,
+  setSelectedVideo,
 }) => {
   return (
     <div>
@@ -29,7 +33,7 @@ export const PlayList: React.FC<PlayListPropsType> = ({
           <div className="flex items-center px-6 pb-2 pt-8 justify-between text-xl font-medium">
             <span>{playListTitle}</span>
             <div
-              onClick={() => setShowPlayList(false)}
+              onClick={() => setShowPlayList && setShowPlayList(false)}
               className="cursor-pointer"
             >
               <Icon name="x" size="lg" />
@@ -38,11 +42,14 @@ export const PlayList: React.FC<PlayListPropsType> = ({
           <div className="pt-12 px-6">
             {videos.map((video, index) => (
               <PlayListCell
+                qualities={video.qualities}
+                poster={video.poster}
                 index={index}
                 date={video.date}
                 src={video.src}
                 title={video.title}
                 isFullscreen={isFullscreen}
+                setSelectedVideo={setSelectedVideo}
               />
             ))}
           </div>
@@ -55,10 +62,14 @@ export const PlayList: React.FC<PlayListPropsType> = ({
           <div className="p-6">
             {videos.map((video, index) => (
               <PlayListCell
+                qualities={video.qualities}
+                poster={video.poster}
                 index={index}
                 date={video.date}
                 src={video.src}
                 title={video.title}
+                isFullscreen={isFullscreen}
+                setSelectedVideo={setSelectedVideo}
               />
             ))}
           </div>
@@ -69,8 +80,20 @@ export const PlayList: React.FC<PlayListPropsType> = ({
 };
 
 const PlayListCell: React.FC<
-  video & { index: number; isFullscreen?: boolean }
-> = ({ date, src, title, index, isFullscreen = false }) => {
+  video & {
+    index: number;
+    isFullscreen?: boolean;
+    setSelectedVideo: React.Dispatch<React.SetStateAction<video>>;
+  }
+> = ({
+  date,
+  src,
+  title,
+  index,
+  isFullscreen = false,
+  setSelectedVideo,
+  qualities,
+}) => {
   const [durations, setDurations] = useState<Record<number, string>>({});
   const titleContainer = useRef<HTMLDivElement>(null);
 
@@ -92,6 +115,7 @@ const PlayListCell: React.FC<
         }
       )}
       key={`title-${title}`}
+      onClick={() => setSelectedVideo({ src, title, date, qualities })}
     >
       <span
         className={cn('text-md  text-gray-1000 font-medium', {

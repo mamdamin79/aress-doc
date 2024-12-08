@@ -19,17 +19,23 @@ export const Default: Story = {
           'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.',
         src: 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4',
         date: '1403/11/22',
+        qualities: [],
+        poster: '',
       },
       {
         title: 'ریسک ها و فرصت ها در سرمایه گذاری',
         src: 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4',
         date: '1403/11/22',
+        qualities: [],
+        poster: '',
       },
       {
         title:
           'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی',
         src: 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4',
         date: '1403/11/22',
+        qualities: [],
+        poster: '',
       },
     ],
   },

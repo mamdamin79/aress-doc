@@ -116,7 +116,7 @@ export const VideoPlayer: React.FC<Props> = ({
             }
           )}
         >
-          <PlayList
+          {/* <PlayList
             isFullscreen={true}
             setShowPlayList={setShowPlayList}
             playListTitle="لیست مصاحبات مدیر - محمد باقر خادمی"
@@ -137,7 +137,7 @@ export const VideoPlayer: React.FC<Props> = ({
                 date: '1403/11/22',
               },
             ]}
-          />
+          /> */}
         </div>
       )}
       <div
