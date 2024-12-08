@@ -481,6 +481,46 @@ export function DatePicker({ min, max }: Props) {
     setEndDate('');
   };
 
+  useEffect(() => {
+    if (startDate) {
+      if (+String(startDate).slice(5, 7) < getRenderedMonth()) {
+        changeMonth(+String(startDate).slice(5, 7));
+      } else if (+String(startDate).slice(5, 7) > getRenderedNextMonth()) {
+        changeMonth(+String(startDate).slice(5, 7));
+      }
+    }
+  }, [changeMonth, getRenderedMonth, getRenderedNextMonth, startDate]);
+
+  useEffect(() => {
+    if (endDate) {
+      if (+String(endDate).slice(5, 7) > getRenderedNextMonth()) {
+        changeMonth(+String(endDate).slice(5, 7));
+      } else if (+String(endDate).slice(5, 7) < getRenderedNextMonth()) {
+        changeMonth(+String(endDate).slice(5, 7));
+      }
+    }
+  }, [changeMonth, endDate, getRenderedNextMonth]);
+
+  useEffect(() => {
+    if (+String(startDate).slice(0, 4) > +min.slice(0, 4)) {
+      if (+String(startDate).slice(0, 4) > getRenderedYear()) {
+        changeYear(+String(startDate).slice(0, 4));
+      } else if (+String(startDate).slice(0, 4) < getRenderedYear()) {
+        changeYear(+String(startDate).slice(0, 4));
+      }
+    }
+  }, [changeYear, getRenderedYear, min, startDate]);
+
+  useEffect(() => {
+    if (+String(endDate).slice(0, 4) < +max.slice(0, 4)) {
+      if (+String(endDate).slice(0, 4) > getRenderedYear()) {
+        changeYear(+String(endDate).slice(0, 4));
+      } else if (+String(endDate).slice(0, 4) < getRenderedYear()) {
+        changeYear(+String(endDate).slice(0, 4));
+      }
+    }
+  }, [changeYear, getRenderedYear, max, endDate]);
+
   return (
     <div style={{ display: 'inline-block', width: 'auto' }}>
       <button onClick={goToToday}>go to today</button>

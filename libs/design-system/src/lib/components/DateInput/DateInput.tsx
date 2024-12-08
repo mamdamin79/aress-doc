@@ -97,7 +97,6 @@ export const DateInput: React.FC<Props> = ({
         changeDayInput(dateMiladi.date());
         changeMonthInput(dateMiladi.month() + 1);
         changeYearInput(dateMiladi.year());
-        // setActiveIndex(null);
         dayRef.current?.blur();
       }
 
