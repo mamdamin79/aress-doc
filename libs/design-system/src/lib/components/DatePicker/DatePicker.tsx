@@ -641,7 +641,6 @@ export function DatePicker({ min, max }: Props) {
                 </span>
               </div>
             </div>
-
             <div
               onClick={() => setOpen(false)}
               className="w-8 h-8 rounded-full cursor-pointer bg-brand-600 absolute -left-2 -top-2 flex items-center justify-center"
@@ -1835,7 +1834,7 @@ export function DatePicker({ min, max }: Props) {
                 </>
               )}
             </div>
-            <div className="flex flex-row-reverse mb-5 min-h-10 justify-between items-center">
+            <div className="flex flex-row-reverse justify-between items-center">
               <button
                 className={cn(
                   'px-2 bg-brand-300 cursor-default py-1 rounded-md text-white',
@@ -1864,7 +1863,7 @@ export function DatePicker({ min, max }: Props) {
                 !startErrors.minError &&
                 !invalidEndDate &&
                 !invalidStartDate && (
-                  <div className="flex justify-start w-fit gap-2 px-2 py-1.5 bg-white rounded-sm items-center">
+                  <div className="flex justify-start w-fit gap-2 px-2 pt-1.5 bg-white rounded-sm items-center">
                     <span className="text-sm">بازه دلخواه:</span>
                     <span className="font-medium text-sm text-gray-1000">
                       {DateDifference()}
