@@ -1,4 +1,3 @@
-import { SVGProps } from 'react';
 import { ReactComponent as CustomCalendar } from './src/icons/CustomCalendar.svg';
 import { ReactComponent as CustomBag } from './src/icons/CustomBag.svg';
 import { ReactComponent as CustomBadge } from './src/icons/CustomBadge.svg';
@@ -10,6 +9,7 @@ import { ReactComponent as CustomClock } from './src/icons/CustomClock.svg';
 import { ReactComponent as CustomCircularUser } from './src/icons/CustomCircularUser.svg';
 import { ReactComponent as CustomAlpha } from './src/icons/CustomAlpha.svg';
 import { ReactComponent as CustomCirlcleX } from './src/icons/CustomCirlcleX.svg';
+import { SVGProps } from 'react';
 
 export const CUSTOM_ICONS: Record<string, React.FC<SVGProps<SVGSVGElement>>> = {
   CustomCalendar,
