@@ -35,27 +35,17 @@ export function OptionsListExplorer({
         <span className="text-sm font-medium">{title}</span>
       </div>
       {!search?.placeholder && <p className="h-0.5 w-full bg-gray-300"></p>}
-      {
-        search && (
-          <div className="mx-4">
-            <TextField
-              placeholder={search.placeholder}
-              mode="outline"
-              leadingIcon="search"
-              mergeTitleAndPlaceholder={false}
-              trailingIcons={[]}
-            />
-          </div>
-        ) // <div className={cn('py-2 px-4 h-12 mx-4 border flex items-center gap-2 text-gray-1000 rounded-md border-gray-300', {'border-2 border-brand-600': focuseInput})}>
-        //     <Icon name='search' size='sm' />
-        //     <input
-        //     onFocus={() => setFocuseInput(true)}
-        //     onBlur={() => setFocuseInput(false)}
-        //     placeholder={search?.placeholder}
-        //     type="text"
-        //     className='outline-none border-none h-full w-full' />
-        // </div>
-      }
+      {search && (
+        <div className="mx-4 h-20 pb-1">
+          <TextField
+            placeholder={search.placeholder}
+            mode="outline"
+            leadingIcon="search"
+            mergeTitleAndPlaceholder={false}
+            trailingIcons={[]}
+          />
+        </div>
+      )}
       {categories && (
         <div className="mx-4 mb-2 mt-4 flex items-center gap-2">
           {categories.map((title: string) => (
