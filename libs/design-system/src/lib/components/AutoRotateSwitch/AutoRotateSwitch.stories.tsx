@@ -17,7 +17,6 @@ export const Default: Story = {
     </div>
   ),
   args: {
-    disabled: false,
     onChange: () => console.log('onChange'),
     rotateOptions: [5, 10, 15],
   },

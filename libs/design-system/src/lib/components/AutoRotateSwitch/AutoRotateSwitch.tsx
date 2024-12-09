@@ -4,8 +4,8 @@ import { cn } from 'libs/design-system/src/utils';
 
 interface AutoRotateProps {
   rotateOptions: number[];
-  initialValue: number;
   onChange: (value: number | null) => void;
+  initialValue?: number;
   disabled?: boolean;
 }
 
@@ -16,7 +16,7 @@ export const AutoRotateSwitch: React.FC<AutoRotateProps> = ({
   disabled = false,
 }) => {
   const [activeRotateOption, setActiveRotateOption] = useState<number | null>(
-    initialValue,
+    initialValue ? initialValue : null,
   );
   const [isOpen, setIsOpen] = useState(false);
 
@@ -29,9 +29,9 @@ export const AutoRotateSwitch: React.FC<AutoRotateProps> = ({
   };
 
   const changeActiveOption = (option: number | null) => {
+    setIsOpen(false);
     setActiveRotateOption(option);
     onChange(option);
-    setIsOpen(false);
   };
 
   const renderOption = (option: number) => (
@@ -80,16 +80,15 @@ export const AutoRotateSwitch: React.FC<AutoRotateProps> = ({
           </div>
         )}
       </div>
-      {isOpen && (
-        <div
-          className={cn(
-            'invisible flex w-full -translate-y-7 flex-col items-center justify-center gap-1 rounded-full border border-gray-400 p-1 font-medium opacity-0 transition-all duration-300',
+      <div
+        className={cn(
+          'invisible flex w-full -translate-y-7 select-none flex-col items-center justify-center gap-1 rounded-full border border-gray-400 p-1 font-medium opacity-0 transition-all duration-300',
+          isOpen &&
             'group-hover:visible group-hover:translate-y-0 group-hover:opacity-100',
-          )}
-        >
-          {rotateOptions.map(renderOption)}
-        </div>
-      )}
+        )}
+      >
+        {rotateOptions.map(renderOption)}
+      </div>
     </div>
   );
 };
