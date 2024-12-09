@@ -50,7 +50,7 @@ export const trailing: Story = {
     return (
       <>
         <div
-          className="cursor-pointer border p-2 rounded-md w-fit"
+          className="w-fit cursor-pointer rounded-md border p-2"
           onClick={() => {
             showProgressToast({
               title: 'گزارش جایگذاری شد.',
@@ -81,7 +81,7 @@ export const leading: Story = {
     return (
       <>
         <div
-          className="cursor-pointer border p-2 rounded-md w-fit"
+          className="w-fit cursor-pointer rounded-md border p-2"
           onClick={() => {
             showProgressToast({
               title: 'گزارش حذف شد.',
