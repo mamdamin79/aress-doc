@@ -1,8 +1,8 @@
 import React from 'react';
 import { IconName, IconSize } from './Icon.types';
-import { sizeValues, strokeValues } from './Icon.constants';
-import dynamicIconImports from 'lucide-react/dynamicIconImports';
-import dynamic from 'next/dynamic';
+import { SIZE_VALUES } from './Icon.constants';
+import { Icon as Iconify } from '@iconify/react';
+import { CustomIcon } from './CustomIcon';
 
 export interface IconProps {
   name: IconName;
@@ -10,14 +10,15 @@ export interface IconProps {
 }
 
 export const Icon: React.FC<IconProps> = ({ name, size = 'md' }) => {
-  // we do this because we want to say to TS that we know this is a react component dont be stricter than us :)
-  const LucideIcon = dynamic(dynamicIconImports[name]) as React.ComponentType<{
-    size?: number;
-    stroke?: string;
-    strokeWidth?: number;
-  }>;
+  const isCustomIcon = name.includes('Custom');
 
-  return (
-    <LucideIcon strokeWidth={strokeValues[size]} size={sizeValues[size]} />
+  return isCustomIcon ? (
+    <CustomIcon name={name} size={size} />
+  ) : (
+    <Iconify
+      icon={`lucide:${name}`}
+      width={SIZE_VALUES[size]}
+      height={SIZE_VALUES[size]}
+    />
   );
 };

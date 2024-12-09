@@ -1,7 +1,7 @@
 node_modules
 dist
 build
-
+./libs/design-system/storybook-static
 
 .nx/cache
 .nx/workspace-data
@@ -11,3 +11,4 @@ build
 out
 
 storybook-static
+.vercel
