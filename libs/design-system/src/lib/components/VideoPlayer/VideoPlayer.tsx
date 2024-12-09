@@ -8,7 +8,7 @@ import { cn } from '../../../utils/classNames.utils';
 import { PlayerProgressBar } from './ControlPanel/PlayerProgressBar';
 import videoLogo from '../../../assets/images/videoLogo.svg';
 import Image from 'next/image';
-import { PlayList } from '../PlayList';
+import { PlayList, video } from '../PlayList';
 
 type Props = {
   qualities: {
@@ -18,6 +18,9 @@ type Props = {
   poster?: string;
   className?: string;
   title: string;
+  src: string;
+  setSelectedVideo: React.Dispatch<React.SetStateAction<video>>;
+  videos: video[];
 };
 
 const MemoizedTitle = React.memo(
@@ -46,6 +49,10 @@ export const VideoPlayer: React.FC<Props> = ({
   qualities,
   poster = '',
   title,
+  className,
+  src,
+  videos,
+  setSelectedVideo,
 }) => {
   const [showControlPanel, setShowControlPanel] = useState(true);
   const [showPlayList, setShowPlayList] = useState(false);
@@ -74,8 +81,8 @@ export const VideoPlayer: React.FC<Props> = ({
     quality,
     changeQuality,
     error,
-  } = useVideo(qualities[0].src, qualities);
-
+  } = useVideo(src, qualities);
+  console.log(isFullscreen);
   useEffect(() => {
     let timeout: NodeJS.Timeout;
 
@@ -101,7 +108,7 @@ export const VideoPlayer: React.FC<Props> = ({
   return (
     <div
       // onContextMenu={(e) => e.preventDefault()}
-      className={cn('relative rounded-md shadow-md overflow-hidden', {
+      className={cn('relative w-full rounded-md shadow-md overflow-hidden', {
         'cursor-none': !showControlPanel,
       })}
       ref={videoContainerRef}
@@ -116,28 +123,13 @@ export const VideoPlayer: React.FC<Props> = ({
             }
           )}
         >
-          {/* <PlayList
+          <PlayList
+            setSelectedVideo={setSelectedVideo}
             isFullscreen={true}
             setShowPlayList={setShowPlayList}
             playListTitle="لیست مصاحبات مدیر - محمد باقر خادمی"
-            videos={[
-              {
-                title: 'سرمایه گذاری و رشد پایدار در بازار های مالی',
-                src: 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4',
-                date: '1403/11/22',
-              },
-              {
-                title: 'ریسک ها و فرصت ها در سرمایه گذاری',
-                src: 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4',
-                date: '1403/11/22',
-              },
-              {
-                title: 'چالش های روزمره در مدیریت یک صندوق سرمایه گذاری',
-                src: 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4',
-                date: '1403/11/22',
-              },
-            ]}
-          /> */}
+            videos={videos}
+          />
         </div>
       )}
       <div
@@ -166,7 +158,7 @@ export const VideoPlayer: React.FC<Props> = ({
           {<Image src={videoLogo} width={100} height={100} alt="logo" />}
         </span>
       )}
-      <video className="w-full" poster={''} ref={videoRef} />
+      <video src={src} className="w-full" poster={''} ref={videoRef} />
       <div
         className={cn(
           'absolute inset-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent duration-700 ease-in-out transition-all',

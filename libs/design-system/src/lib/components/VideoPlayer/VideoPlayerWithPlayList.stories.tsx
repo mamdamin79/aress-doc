@@ -5,6 +5,9 @@ import { PlayList, video } from '../PlayList';
 import video1080 from '../../../assets/videos/The Breathtaking Beauty of Nature1080p.mp4';
 import video720 from '../../../assets/videos/The Breathtaking Beauty of Nature720p.mp4';
 import video360 from '../../../assets/videos/The Breathtaking Beauty of Nature360p.mp4';
+import video1080forest from '../../../assets/videos/Cinematic Forest-1080.mp4';
+import video720forest from '../../../assets/videos/Cinematic Forest-720.mp4';
+import video360forest from '../../../assets/videos/Cinematic Forest-360.mp4';
 
 export default {
   title: 'Components/VideoPlayerWithPlaylist',
@@ -30,7 +33,7 @@ export const Default: StoryFn = () => {
     title: 'چالش های روزمره در مدیریت یک صندوق سرمایه گذاری',
     poster: 'https://api.classbon.com/api/picture/20219',
     date: '',
-    src: '',
+    src: video1080,
   });
 
   console.log(selectedVideo);
@@ -52,34 +55,38 @@ export const Default: StoryFn = () => {
       ],
       title: 'چالش های روزمره در مدیریت یک صندوق سرمایه گذاری',
       poster: 'https://api.classbon.com/api/picture/20219',
-      src: 'mamad',
+      src: video1080,
       date: '',
     },
     {
       qualities: [
         {
-          src: video1080,
+          src: video1080forest,
           label: '1080',
         },
         {
-          src: video720,
+          src: video720forest,
           label: '720',
         },
         {
-          src: video360,
+          src: video360forest,
           label: '360',
         },
       ],
       title: 'چالش های روزمره در مدیریت یک صندوق سرمایه گذاری',
       poster: 'https://api.classbon.com/api/picture/20219',
-      src: 'ahmad',
+      src: video1080forest,
       date: '',
     },
   ];
 
   return (
-    <div className="flex">
-      <VideoPlayer {...selectedVideo} />
+    <div className="flex flex-row-reverse gap-4">
+      <VideoPlayer
+        videos={videos}
+        setSelectedVideo={setSelectedVideo}
+        {...selectedVideo}
+      />
       <PlayList
         playListTitle="لیست ویدیوها"
         isFullscreen={false}

@@ -19,6 +19,7 @@ interface videoState {
     label: string;
   };
   error: string | null;
+  src: string;
 }
 
 type videoAction =
@@ -42,6 +43,11 @@ type videoAction =
         src: string;
         label: string;
       };
+    }
+  | {
+      type: 'SET_RESET';
+      src: string;
+      qualities: { src: string; label: string }[];
     };
 
 const videoReducer = (state: videoState, action: videoAction): videoState => {
@@ -133,6 +139,25 @@ const videoReducer = (state: videoState, action: videoAction): videoState => {
         error: action.error,
       };
       break;
+    case 'SET_RESET':
+      return {
+        isPlaying: false,
+        currentTime: 0,
+        duration: 0,
+        isFinished: false,
+        progress: 0,
+        isVideoLoaded: false,
+        isVideoWaited: false,
+        bufferedTime: 0,
+        playBackRate: 1,
+        volume: 1,
+        muted: false,
+        isFullscreen: state.isFullscreen,
+        quality: action.qualities[0],
+        error: null,
+        src: action.src,
+      };
+      break;
     default:
       return state;
       break;
@@ -164,10 +189,12 @@ export const useVideo = (
     isFullscreen: false,
     quality: qualities[0],
     error: null,
+    src: src,
   });
 
   useEffect(() => {
     const video = videoRef.current!;
+    dispatch({ type: 'SET_RESET', src, qualities });
     // Check if the source is M3U8
     if (src.endsWith('.m3u8')) {
       // Initialize HLS if the video format is M3U8
@@ -188,12 +215,10 @@ export const useVideo = (
       }
     } else {
       // If it's not M3U8, set the video source directly
-      const currentSrc = state.quality.src;
-      video.src = currentSrc;
+      video.src = src;
       video.addEventListener('loadedmetadata', () => {
-        video.currentTime = state.currentTime;
+        video.currentTime = 0.1;
       });
-      state.isPlaying ? play() : pause();
     }
     // dispatcher functions - these are update our states and used as a callback function in our listener
 
@@ -216,14 +241,7 @@ export const useVideo = (
     const updateProgress = () => {
       // first of all we should calculate progress form duration and current time - it used in handle time update and handle durationchange
       const { currentTime, duration } = videoRef.current!;
-      const progress =
-        duration > 0
-          ? ((currentTime === 0 && state.currentTime !== 0
-              ? state.currentTime
-              : currentTime) /
-              duration) *
-            100
-          : state.progress;
+      const progress = (currentTime / duration) * 100;
       dispatch({ type: 'SET_PROGRESS', progress });
     };
 
@@ -238,10 +256,7 @@ export const useVideo = (
     const handleTimeUpdate = () => {
       dispatch({
         type: 'TIME_UPDATE',
-        currentTime:
-          videoRef.current!.currentTime === 0 && state.currentTime !== 0
-            ? state.currentTime
-            : videoRef.current!.currentTime,
+        currentTime: videoRef.current!.currentTime,
       });
       updateProgress();
     };
@@ -326,6 +341,61 @@ export const useVideo = (
       video.removeEventListener('waiting', handleWaiting);
       video.removeEventListener('progress', updateBufferedTime);
       video.removeEventListener('error', handleError);
+      document.removeEventListener('fullscreenchange', handleFullScreenChange);
+    };
+  }, [src]);
+
+  useEffect(() => {
+    const video = videoRef.current!;
+    const currentSrc = state.quality.src;
+    video.src = currentSrc;
+    video.addEventListener('loadedmetadata', () => {
+      video.currentTime = state.currentTime;
+    });
+    state.isPlaying ? play() : pause();
+
+    const updateProgress = () => {
+      // first of all we should calculate progress form duration and current time - it used in handle time update and handle durationchange
+      const { currentTime, duration } = videoRef.current!;
+      const progress =
+        duration > 0
+          ? ((currentTime === 0 && state.currentTime !== 0
+              ? state.currentTime
+              : currentTime) /
+              duration) *
+            100
+          : state.progress;
+      dispatch({ type: 'SET_PROGRESS', progress });
+    };
+
+    const handleTimeUpdate = () => {
+      dispatch({
+        type: 'TIME_UPDATE',
+        currentTime:
+          videoRef.current!.currentTime === 0 &&
+          state.currentTime !== 0 &&
+          src !== state.src
+            ? state.currentTime
+            : videoRef.current!.currentTime,
+      });
+      updateProgress();
+    };
+
+    const handleDurationChange = () => {
+      dispatch({
+        type: 'DURATION_CHANGE',
+        duration: videoRef.current!.duration,
+      });
+      updateProgress();
+    };
+
+    video.addEventListener('timeupdate', handleTimeUpdate);
+    video.addEventListener('durationchange', handleDurationChange);
+
+    return () => {
+      // clean up listeners
+      video.removeEventListener('timeupdate', handleTimeUpdate);
+      video.removeEventListener('durationchange', handleDurationChange);
     };
   }, [state.quality]);
 
