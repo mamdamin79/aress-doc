@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
 import { Icon } from '../Icon';
 import { cn } from 'libs/design-system/src/utils';
+import { AutoRotateProps } from './AutoRotateSwitch.types';
 
-interface AutoRotateProps {
-  rotateOptions: number[];
-  onChange: (value: number | null) => void;
-  initialValue?: number;
-  disabled?: boolean;
-}
+
 
 export const AutoRotateSwitch: React.FC<AutoRotateProps> = ({
   rotateOptions,
