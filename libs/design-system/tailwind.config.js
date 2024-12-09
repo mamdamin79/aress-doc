@@ -204,7 +204,6 @@ module.exports = {
           900: 'rgb(var(--color-vivid-green-900))',
           1000: 'rgb(var(--color-vivid-green-1000))',
         },
-        white: 'rgb(var(--color-white))',
       },
     },
   },
