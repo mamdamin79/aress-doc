@@ -8,9 +8,16 @@ interface Props {
   style: 'shaped' | 'divided' | 'lined' | 'rounded' | 'rounded-full';
   bgWhite?: boolean;
   tag?: boolean;
+  onClickTab: (idTab: number) => void;
 }
 
-export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite, tag }) => {
+export const Tabs: React.FC<Props> = ({
+  style,
+  tabs,
+  onClickTab,
+  bgWhite,
+  tag,
+}) => {
   return (
     <div className="flex w-full justify-center px-4">
       <div className="w-full">
@@ -28,7 +35,7 @@ export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite, tag }) => {
                 className={cn(
                   'font-vazirmatn relative outline-none text-md',
                   {
-                    'py-2 data-[selected]:bg-brand-600 relative rounded-t-xl text-gray-600 data-[selected]:text-white hover:text-gray-700 data-[selected]:font-semibold min-w-52 text-center':
+                    'py-2 data-[selected]:bg-brand-600 relative rounded-t-xl text-gray-600 data-[selected]:text-white hover:text-gray-700 data-[selected]:font-semibold min-w-40 text-center':
                       style === 'lined',
                   },
                   {
@@ -116,7 +123,10 @@ export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite, tag }) => {
                       </>
                     )}
                     {style === 'shaped' ? (
-                      <div className="flex items-center gap-2">
+                      <div
+                        onClick={() => onClickTab(props.id)}
+                        className="flex items-center gap-2"
+                      >
                         {tag && (
                           <div className="rounded-full w-3 border-white bg-vividGreen-600 h-3 border-2 flex items-center justify-center"></div>
                         )}
@@ -129,7 +139,9 @@ export const Tabs: React.FC<Props> = ({ style, tabs, bgWhite, tag }) => {
                         )}
                       </div>
                     ) : (
-                      <span>{props.title}</span>
+                      <span onClick={() => onClickTab(props.id)}>
+                        {props.title}
+                      </span>
                     )}
                     {style === 'lined' && (
                       <>

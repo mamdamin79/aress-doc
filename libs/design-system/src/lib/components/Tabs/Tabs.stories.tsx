@@ -37,33 +37,44 @@ export const Default: Story = {
             <p>پرتفوی صندوق</p>
           </div>
         ),
+        id: 1,
         title: 'خلاصه',
       },
       {
+        id: 2,
         content: 'تحلیل بازدهی',
         title: 'تحلیل بازدهی',
       },
       {
+        id: 3,
         content: 'تحلیل بازدهی',
         title: 'تحلیل بازدهی',
       },
       {
+        id: 4,
         content: 'تحلیل بازدهی',
         title: 'تحلیل بازدهی',
       },
       {
+        id: 5,
         content: 'تحلیل بازدهی',
         title: 'تحلیل بازدهی',
       },
       {
+        id: 6,
         content: 'تحلیل بازدهی',
         title: 'تحلیل بازدهی',
       },
       {
+        id: 7,
         content: 'ارزیابی ریسک',
         title: 'سلام',
       },
-      { content: 'تحلیل عملکرد', title: 'تحلیل عملکرد' },
+      {
+        id: 8,
+        content: 'تحلیل عملکرد',
+        title: 'تحلیل عملکرد',
+      },
     ],
     bgWhite: false,
     style: 'lined',
