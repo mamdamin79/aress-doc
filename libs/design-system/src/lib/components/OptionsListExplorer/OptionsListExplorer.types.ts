@@ -1,6 +1,12 @@
+export interface CategoryItem {
+  id: number;
+  title: string;
+}
+
 export interface OptionItem {
   title: string;
-  percentage?: number;
-  total?: number;
-  investmentTypes?: string;
+  priceChangePercent?: number;
+  priceRials?: number;
+  type?: string;
+  categoryId?: number;
 }

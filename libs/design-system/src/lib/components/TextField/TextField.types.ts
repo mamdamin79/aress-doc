@@ -5,6 +5,7 @@ export type textFieldPropsType = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   placeholder?: string;
   supportText?: string;
+  onSearchInput: (value: string) => void;
   isError?: boolean;
   mode: 'filled' | 'outline';
   mergeTitleAndPlaceholder: boolean;

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { OptionItem } from './OptionsListExplorer.types';
+import { OptionItem, CategoryItem } from './OptionsListExplorer.types';
 import { Icon } from '../Icon';
 import { cn } from '../../../utils';
 import { PercentageLabel } from '../PercentageLabel';
@@ -7,26 +7,43 @@ import { TextField } from '../TextField';
 
 interface Props {
   title: string;
+  onSearch: (value: string) => void;
   onBackButtonClick: () => void;
   search?: {
     placeholder: string;
   };
-  categories: string[];
-  items: OptionItem[];
+  items: {
+    categories: CategoryItem[] | null;
+    items: OptionItem[];
+  };
 }
 
 export function OptionsListExplorer({
   title,
   onBackButtonClick,
   search,
-  categories,
+  onSearch,
   items,
 }: Props) {
-  const [focuseInput, setFocuseInput] = useState(false);
   const [checkedItem, setCheckedItem] = useState(0);
+  const [filteredItems, setFilteredItems] = useState<OptionItem[]>(items.items);
+  const itemsToShow =
+    items.items.length > 10 ? filteredItems.slice(0, 3) : filteredItems;
+
+  const handlerInput = (value: string) => {
+    onSearch(value);
+    if (value) {
+      const filtredList: OptionItem[] = items.items.filter((item: OptionItem) =>
+        item.title
+          .toLocaleLowerCase()
+          .includes(value.trim().toLocaleLowerCase()),
+      );
+      setFilteredItems(filtredList);
+    } else setFilteredItems(items.items);
+  };
 
   return (
-    <div className="w-max min-w-80 bg-white py-2.5">
+    <div className="w-[500px] bg-white py-2.5">
       <div
         onClick={() => onBackButtonClick}
         className="text-gray-1000 flex w-fit cursor-pointer items-center gap-1 px-4 py-2.5"
@@ -35,10 +52,11 @@ export function OptionsListExplorer({
         <span className="text-sm font-medium">{title}</span>
       </div>
       {!search?.placeholder && <p className="h-0.5 w-full bg-gray-300"></p>}
-      {search && (
+      {items.items.length > 10 && (
         <div className="mx-4 h-20 pb-1">
           <TextField
-            placeholder={search.placeholder}
+            onSearchInput={handlerInput}
+            placeholder={search?.placeholder}
             mode="outline"
             leadingIcon="search"
             mergeTitleAndPlaceholder={false}
@@ -46,18 +64,25 @@ export function OptionsListExplorer({
           />
         </div>
       )}
-      {categories && (
+      {items.categories && (
         <div className="mx-4 mb-2 mt-4 flex items-center gap-2">
-          {categories.map((title: string) => (
-            <span className="cursor-pointer px-3" key={title}>
-              {title}
+          {items.categories.map((item: CategoryItem) => (
+            <span
+              className="cursor-pointer px-3 text-xs font-medium"
+              key={item.title}
+            >
+              {item.title}
             </span>
           ))}
         </div>
       )}
-      {items && (
-        <div className="flex flex-col">
-          {items.map((item: OptionItem, index: number) => (
+      {filteredItems.length ? (
+        <div
+          className={cn('flex max-h-56 flex-col', {
+            'custom-scrollbar overflow-y-scroll': items.items.length <= 10,
+          })}
+        >
+          {itemsToShow.map((item: OptionItem, index: number) => (
             <div
               onClick={() => setCheckedItem(index + 1)}
               className={cn(
@@ -77,11 +102,11 @@ export function OptionsListExplorer({
                 <span className="max-w-52 truncate">{item.title}</span>
               </div>
               <div className="flex items-center gap-1">
-                <p className="w-20 text-center">{item.investmentTypes}</p>
-                <span className="px-4 text-center">{item.total} ریال</span>
-                {typeof item.percentage === 'number' && (
+                <p className="w-20 text-center">{item.type}</p>
+                <span className="px-4 text-center">{item.priceRials} ریال</span>
+                {typeof item.priceChangePercent === 'number' && (
                   <PercentageLabel
-                    value={item.percentage}
+                    value={item.priceChangePercent}
                     key={index}
                     size="normal"
                   />
@@ -90,6 +115,8 @@ export function OptionsListExplorer({
             </div>
           ))}
         </div>
+      ) : (
+        <p className="mt-3 px-4">صندوقی یافت نشد...</p>
       )}
     </div>
   );

@@ -7,6 +7,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
   label,
   placeholder,
   supportText,
+  onSearchInput,
   isError = false,
   mode = 'filled',
   mergeTitleAndPlaceholder = false,
@@ -98,7 +99,10 @@ export const TextField: React.FC<textFieldPropsType> = ({
         type={visibleCharacter ? 'text' : 'password'}
         value={inputValue}
         disabled={disabled}
-        onChange={(e) => setInputValue(e.target.value)}
+        onChange={(e) => {
+          setInputValue(e.target.value);
+          onSearchInput(e.target.value);
+        }}
         className={cn(
           'text-md w-full rounded-xl border-[1.5px] p-2 font-normal outline-none transition-colors duration-150',
           {

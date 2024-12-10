@@ -19,9 +19,9 @@ export const PercentageLabel: React.FC<Props> = ({ value, tooltip, size }) => {
     >
       <div
         className={cn(
-          'w-fit rounded-sm py-1 font-medium',
-          { 'px-5 text-sm': size === 'normal' },
-          { 'px-3 text-xs': size === 'small' },
+          'flex w-fit items-center justify-center rounded-sm py-1 font-medium',
+          { 'w-16 px-5 text-sm': size === 'normal' },
+          { 'w-12 px-3 text-xs': size === 'small' },
           { 'bg-green-100 text-green-700': value > 0 },
           { 'bg-red-100 text-red-700': value < 0 },
           { 'text-gray-1000 bg-gray-100 px-[25px]': value === 0 },
