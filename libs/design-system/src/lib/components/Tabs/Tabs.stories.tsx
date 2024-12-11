@@ -27,6 +27,8 @@ export const Default: Story = {
     </div>
   ),
   args: {
+    onClickTab: (e) => console.log(e),
+
     tabs: [
       {
         content: (

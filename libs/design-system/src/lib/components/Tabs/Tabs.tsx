@@ -32,7 +32,7 @@ export const Tabs: React.FC<Props> = ({
             {tabs.map((props, index) => (
               <Tab
                 onClick={() => onClickTab(props.id)}
-                key={props.title}
+                key={index}
                 className={cn(
                   'font-vazirmatn text-md relative outline-none',
                   {
@@ -195,8 +195,8 @@ export const Tabs: React.FC<Props> = ({
             ))}
           </TabList>
           <TabPanels className="mt-3">
-            {tabs.map(({ title, content }) => (
-              <TabPanel key={title}>{content}</TabPanel>
+            {tabs.map(({ content }, index) => (
+              <TabPanel key={index}>{content}</TabPanel>
             ))}
           </TabPanels>
         </TabGroup>
