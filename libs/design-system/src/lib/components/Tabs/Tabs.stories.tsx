@@ -8,7 +8,7 @@ const meta: Meta<typeof Tabs> = {
   component: Tabs, // Links to the actual component
   tags: ['autodocs'], // Optional: Add any additional tags for better categorization
   argTypes: {
-    style: {
+    mode: {
       control: 'radio',
       options: ['shaped', 'lined', 'divided', 'rounded', 'rounded-full'],
     },
@@ -22,7 +22,7 @@ type Story = StoryObj<typeof Tabs>;
 // examples story for the Tabs component
 export const Default: Story = {
   render: (args) => (
-    <div className={cn({ 'bg-gray-100 py-10 w-max': !args.bgWhite })}>
+    <div className={cn({ 'w-max bg-gray-100 py-10': !args.bgWhite })}>
       <Tabs {...args} />
     </div>
   ),
@@ -30,7 +30,7 @@ export const Default: Story = {
     tabs: [
       {
         content: (
-          <div className="flex items-center justify-between p-3 rounded-md bg-brand-500 text-white">
+          <div className="bg-brand-500 flex items-center justify-between rounded-md p-3 text-white">
             <p>خلاطه</p>
             <p>تحلیل بازدهی</p>
             <p>ارزیابی ریسک</p>
@@ -77,6 +77,6 @@ export const Default: Story = {
       },
     ],
     bgWhite: false,
-    style: 'lined',
+    mode: 'lined',
   },
 };
