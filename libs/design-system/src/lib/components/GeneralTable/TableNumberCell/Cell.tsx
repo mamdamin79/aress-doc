@@ -35,7 +35,7 @@ export const Cell: React.FC<NumberCellProps> = ({
       const formattedValue =
         format.type === 'decimal'
           ? value.toFixed(format.precision)
-          : `%${value.toFixed(format.precision)}`;
+          : `٪${value.toFixed(format.precision)}`;
 
       const signedValue = format.signed
         ? value > 0
