@@ -19,7 +19,7 @@ export const Tabs: React.FC<Props> = ({
   tag,
 }) => {
   return (
-    <div className="flex w-full justify-center px-4">
+    <div className="flex w-full justify-center">
       <div className="w-full">
         <TabGroup>
           <TabList
@@ -31,6 +31,7 @@ export const Tabs: React.FC<Props> = ({
           >
             {tabs.map((props, index) => (
               <Tab
+                onClick={() => onClickTab(props.id)}
                 key={props.title}
                 className={cn(
                   'font-vazirmatn relative outline-none text-md',
@@ -123,10 +124,7 @@ export const Tabs: React.FC<Props> = ({
                       </>
                     )}
                     {style === 'shaped' ? (
-                      <div
-                        onClick={() => onClickTab(props.id)}
-                        className="flex items-center gap-2"
-                      >
+                      <div className="flex items-center gap-2">
                         {tag && (
                           <div className="rounded-full w-3 border-white bg-vividGreen-600 h-3 border-2 flex items-center justify-center"></div>
                         )}
@@ -139,9 +137,7 @@ export const Tabs: React.FC<Props> = ({
                         )}
                       </div>
                     ) : (
-                      <span onClick={() => onClickTab(props.id)}>
-                        {props.title}
-                      </span>
+                      <span>{props.title}</span>
                     )}
                     {style === 'lined' && (
                       <>
