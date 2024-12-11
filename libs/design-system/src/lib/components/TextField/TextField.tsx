@@ -46,9 +46,19 @@ export const TextField: React.FC<textFieldPropsType> = ({
         className,
       )}
     >
-      <div className="h-[26px]">
-        {mergeTitleAndPlaceholder ? (
-          (isFocused || inputValue) && (
+      {label && (
+        <div className="h-[26px]">
+          {mergeTitleAndPlaceholder ? (
+            (isFocused || inputValue) && (
+              <label
+                className={cn('text-sm font-medium', {
+                  'text-gray-400': disabled,
+                })}
+              >
+                {label}
+              </label>
+            )
+          ) : (
             <label
               className={cn('text-sm font-medium', {
                 'text-gray-400': disabled,
@@ -56,15 +66,9 @@ export const TextField: React.FC<textFieldPropsType> = ({
             >
               {label}
             </label>
-          )
-        ) : (
-          <label
-            className={cn('text-sm font-medium', { 'text-gray-400': disabled })}
-          >
-            {label}
-          </label>
-        )}
-      </div>
+          )}
+        </div>
+      )}
 
       {!isFocused && !inputValue && (
         <label
@@ -84,6 +88,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
         <div
           className={cn('pointer-events-none absolute right-4 top-10', {
             'text-gray-400': disabled,
+            'top-[14px]': !label,
           })}
         >
           {leadingIcon && <Icon size="lg" name={leadingIcon} />}
@@ -119,7 +124,14 @@ export const TextField: React.FC<textFieldPropsType> = ({
         placeholder={mergeTitleAndPlaceholder ? '' : placeholder}
       />
 
-      <div className="absolute left-4 top-10 z-20 flex items-center justify-between gap-4">
+      <div
+        className={cn(
+          'absolute left-4 top-10 z-20 flex items-center justify-between gap-4',
+          {
+            'top-[14px]': !label,
+          },
+        )}
+      >
         {trailingIcons.map((icon) =>
           icon === 'eye' ? (
             <button
