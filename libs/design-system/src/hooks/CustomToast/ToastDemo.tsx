@@ -10,7 +10,7 @@ export function ToastDemo({ message, type }: Props) {
   return (
     <>
       <div
-        className="cursor-pointer border p-2 rounded-md w-fit"
+        className="w-fit cursor-pointer rounded-md border p-2"
         onClick={() => showToast({ message, type })}
       >
         show toast

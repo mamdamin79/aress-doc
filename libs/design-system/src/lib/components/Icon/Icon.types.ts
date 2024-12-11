@@ -1,7 +1,28 @@
 import dynamicIconImports from 'lucide-react/dynamicIconImports';
 
-// this is a type of all valid icon names
-export type IconName = keyof typeof dynamicIconImports;
+// custom icon valid name
+export type CustomIconName =
+  | 'CustomCalendar'
+  | 'CustomBag'
+  | 'CustomBadge'
+  | 'CustomBeta'
+  | 'CustomCircleSlice'
+  | 'CustomWallet'
+  | 'CustomScalesOfJustice'
+  | 'CustomClock'
+  | 'CustomCircularUser'
+  | 'CustomCirlcleX'
+  | 'CustomAlpha'
+  | 'CustomPinLinear'
+  | 'CustomPlayLinear'
+  | 'CustomPinOffLinear'
+  | 'CustomPinOffFill'
+  | 'CustomPlayFill'
+  | 'CustomPinFill'
+  | 'CustomGold';
+
+// this is a type of all valid icon names from lucide
+export type IconName = keyof typeof dynamicIconImports | CustomIconName;
 
 // valid icon size you can pass to IconComponent
-export type IconSize = 'sm' | 'md' | 'lg';
+export type IconSize = 'sm' | 'md' | 'lg' | 'lg_plus' | 'xl';
