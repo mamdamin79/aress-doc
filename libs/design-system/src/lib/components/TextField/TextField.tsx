@@ -20,7 +20,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
   const [inputValue, setInputValue] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [visibleCharacter, setIsVisibleCharacter] = useState(
-    type !== 'password'
+    type !== 'password',
   );
 
   const id = useId();
@@ -39,11 +39,11 @@ export const TextField: React.FC<textFieldPropsType> = ({
     <div
       data-twe-input-wrapper-init
       className={cn(
-        'relative w-full font-vazirmatn',
+        'font-vazirmatn relative w-full',
         {
           'pointer-events-none': disabled,
         },
-        className
+        className,
       )}
     >
       <div className="h-[26px]">
@@ -70,10 +70,10 @@ export const TextField: React.FC<textFieldPropsType> = ({
         <label
           htmlFor={id}
           className={cn(
-            'text-sm hidden absolute top-9 pr-4 cursor-text font-medium',
+            'absolute top-9 hidden cursor-text pr-4 text-sm font-medium',
             { 'right-8': leadingIcon },
             { block: mergeTitleAndPlaceholder },
-            { 'text-gray-400': disabled }
+            { 'text-gray-400': disabled },
           )}
         >
           {label}
@@ -82,7 +82,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
 
       {leadingIcon && (
         <div
-          className={cn('absolute top-10 right-4 pointer-events-none', {
+          className={cn('pointer-events-none absolute right-4 top-10', {
             'text-gray-400': disabled,
           })}
         >
@@ -100,9 +100,9 @@ export const TextField: React.FC<textFieldPropsType> = ({
         disabled={disabled}
         onChange={(e) => setInputValue(e.target.value)}
         className={cn(
-          'font-normal  w-full rounded-xl p-2 text-md outline-none border-[1.5px] transition-colors duration-150',
+          'text-md w-full rounded-xl border-[1.5px] p-2 font-normal outline-none transition-colors duration-150',
           {
-            'bg-transparent border-inherit opacity-100 placeholder:text-gray-400':
+            'border-inherit bg-transparent opacity-100 placeholder:text-gray-400':
               disabled,
             'placeholder:text-gray-500': !disabled,
             'pl-20': trailingIcons.length === 2,
@@ -111,15 +111,15 @@ export const TextField: React.FC<textFieldPropsType> = ({
             'hover:bg-gray-300': mode === 'filled' && !disabled && !isFocused,
             'cursor-not-allowed !bg-gray-50': disabled && mode === 'filled',
             'border-red-600 focus:border-[2.5px]': isError && !disabled,
-            'border-gray-300 focus:border-brand-600 focus:border-[2.5px]':
+            'focus:border-brand-600 border-gray-300 focus:border-[2.5px]':
               !isError && !disabled,
             'pr-12': leadingIcon,
-          }
+          },
         )}
         placeholder={mergeTitleAndPlaceholder ? '' : placeholder}
       />
 
-      <div className="absolute z-20 left-4 top-10 flex justify-between gap-4 items-center">
+      <div className="absolute left-4 top-10 z-20 flex items-center justify-between gap-4">
         {trailingIcons.map((icon) =>
           icon === 'eye' ? (
             <button
@@ -137,7 +137,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
                 <Icon size="lg" name={icon} />
               </button>
             )
-          )
+          ),
         )}
       </div>
       <span

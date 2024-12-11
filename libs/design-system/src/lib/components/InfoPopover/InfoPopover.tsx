@@ -10,25 +10,25 @@ interface Props {
 export function InfoPopover({ title, message, button }: Props) {
   return (
     <Popover>
-      <PopoverButton className="border-none active:border-none outline-none">
+      <PopoverButton className="border-none outline-none active:border-none">
         {button}
       </PopoverButton>
       <PopoverPanel
         transition
         anchor="bottom"
-        className="shadow-lg mt-4 !overflow-visible relative max-w-96 p-6 rounded-2xl transition bg-white duration-300 ease-in-out data-[closed]:-translate-y-1 data-[closed]:opacity-0"
+        className="relative mt-4 max-w-96 !overflow-visible rounded-2xl bg-white p-6 shadow-lg transition duration-300 ease-in-out data-[closed]:-translate-y-1 data-[closed]:opacity-0"
       >
         {({ close }) => (
-          <div className="max-w-md min-w-sm">
-            <span className="text-gray-1000 font-vazirmatn font-semibold text-lg text-right">
+          <div className="min-w-sm max-w-md">
+            <span className="text-gray-1000 font-vazirmatn text-right text-lg font-semibold">
               {title}
             </span>
-            <p className="text-gray-600 pt-4 text-sm font-vazirmatn text-right">
+            <p className="font-vazirmatn pt-4 text-right text-sm text-gray-600">
               {message}
             </p>
             <div
               onClick={() => close()}
-              className="absolute -top-2 -left-2 cursor-pointer"
+              className="absolute -left-2 -top-2 cursor-pointer"
             >
               <Icon name="CustomCirlcleX" size="lg_plus" />
             </div>

@@ -13,7 +13,7 @@ type Story = StoryObj<typeof LikeDislike>;
 export const Like: Story = {
   render: (args: LikeDislikeProps) => {
     return (
-      <div className="my-20 flex items-center justify-center bg-gray-100 h-[100px]">
+      <div className="my-20 flex h-[100px] items-center justify-center bg-gray-100">
         <LikeDislike {...args} />
       </div>
     );
@@ -28,7 +28,7 @@ export const Like: Story = {
 export const Dislike: Story = {
   render: (args: LikeDislikeProps) => {
     return (
-      <div className="my-20 flex items-center justify-center bg-gray-100 h-[100px]">
+      <div className="my-20 flex h-[100px] items-center justify-center bg-gray-100">
         <LikeDislike {...args} />
       </div>
     );
@@ -43,7 +43,7 @@ export const Dislike: Story = {
 export const ReactedWithInitialValue: Story = {
   render: (args: LikeDislikeProps) => {
     return (
-      <div className="my-20 flex items-center justify-center bg-gray-100 h-[100px]">
+      <div className="my-20 flex h-[100px] items-center justify-center bg-gray-100">
         <LikeDislike {...args} />
       </div>
     );

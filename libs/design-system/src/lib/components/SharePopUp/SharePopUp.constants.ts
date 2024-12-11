@@ -6,7 +6,7 @@ import emailIcon from '../../../assets/icons/email.svg';
 export const platformMappings = (
   platformNames: string[],
   message: string,
-  url: string
+  url: string,
 ) => {
   const allPlatforms = [
     {
@@ -47,7 +47,7 @@ export const platformMappings = (
   ];
 
   return allPlatforms.filter((platform) =>
-    platformNames.includes(platform.name)
+    platformNames.includes(platform.name),
   );
 };
 export type PlatformName =

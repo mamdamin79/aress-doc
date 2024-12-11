@@ -26,7 +26,7 @@ export const SharePopUp: React.FC<SharePopUpProps> = ({
     setCurrentIndex(
       (prevIndex) =>
         Math.min(prevIndex + visibleItems, platforms.length - visibleItems) +
-        0.75
+        0.75,
     );
   };
 
@@ -46,12 +46,12 @@ export const SharePopUp: React.FC<SharePopUpProps> = ({
     <>
       <button
         onClick={openShareModal}
-        className="text-white flex items-center justify-center p-1  duration-300 transition-all"
+        className="flex items-center justify-center p-1 text-white transition-all duration-300"
       >
-        <span className="sm:block hidden">
+        <span className="hidden sm:block">
           <Icon name="share-2" />
         </span>
-        <span className="sm:hidden block">
+        <span className="block sm:hidden">
           <Icon size="sm" name="share-2" />
         </span>
       </button>
@@ -65,13 +65,13 @@ export const SharePopUp: React.FC<SharePopUpProps> = ({
           <div className="flex min-h-full items-center justify-center p-4">
             <DialogPanel
               transition
-              className=" duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
+              className="data-[closed]:transform-[scale(95%)] duration-300 ease-out data-[closed]:opacity-0"
             >
-              <div className="relative bg-white rounded-3xl p-6 flex justify-center items-center gap-4 flex-col w-[440px] h-fit shadow-lg">
+              <div className="relative flex h-fit w-[440px] flex-col items-center justify-center gap-4 rounded-3xl bg-white p-6 shadow-lg">
                 {/* Close button */}
                 <div
                   onClick={close}
-                  className="absolute top-0 left-0 -mt-2 -ml-2 rounded-full flex justify-center items-center shadow-sm"
+                  className="absolute left-0 top-0 -ml-2 -mt-2 flex items-center justify-center rounded-full shadow-sm"
                 >
                   <CustomIcon
                     name="CustomCirlcleX"
@@ -80,19 +80,19 @@ export const SharePopUp: React.FC<SharePopUpProps> = ({
                   />
                 </div>
                 <h2 className="text-xl font-semibold">اشتراک گذاری</h2>
-                <div className="flex flex-col gap-3 w-full">
-                  <p className="text-right text-sm text-gray-600 font-semibold">
+                <div className="flex w-full flex-col gap-3">
+                  <p className="text-right text-sm font-semibold text-gray-600">
                     ارسال لینک به:
                   </p>
                   {currentIndex + visibleItems < platforms.length && (
                     <button
                       onClick={goLeft}
-                      className="z-10 bg-baseBackground p-1 text-brand-600 border-2 border-brand-600 rounded-full shadow-3xl absolute top-1/2 transform -translate-y-1/2 -mt-2 left-2"
+                      className="bg-baseBackground text-brand-600 border-brand-600 shadow-3xl absolute left-2 top-1/2 z-10 -mt-2 -translate-y-1/2 transform rounded-full border-2 p-1"
                     >
                       <Icon name="chevron-left" size="md" />
                     </button>
                   )}
-                  <div className="relative flex items-center w-full overflow-hidden">
+                  <div className="relative flex w-full items-center overflow-hidden">
                     {/* Left arrow button */}
 
                     <div
@@ -105,7 +105,7 @@ export const SharePopUp: React.FC<SharePopUpProps> = ({
                         .slice(currentIndex, currentIndex + visibleItems)
                         .map((platform, index) => (
                           <a
-                            className="flex flex-col items-center text-xs gap-2 w-16 mx-2"
+                            className="mx-2 flex w-16 flex-col items-center gap-2 text-xs"
                             key={index}
                             href={platform.link}
                             target="_blank"
@@ -130,15 +130,15 @@ export const SharePopUp: React.FC<SharePopUpProps> = ({
                   {currentIndex > 0 && (
                     <button
                       onClick={goRight}
-                      className="z-10 bg-baseBackground p-1 text-brand-600 border-2 border-brand-600 rounded-full shadow-3xl absolute top-1/2 transform -translate-y-1/2 right-2 -mt-2"
+                      className="bg-baseBackground text-brand-600 border-brand-600 shadow-3xl absolute right-2 top-1/2 z-10 -mt-2 -translate-y-1/2 transform rounded-full border-2 p-1"
                     >
                       <Icon name="chevron-right" size="md" />
                     </button>
                   )}
                 </div>
 
-                <div className="w-full h-fit rounded-xl p-2 gap-2 flex flex-row justify-between border-[2px] border-gray-300">
-                  <div className="text-nowrap w-28">
+                <div className="flex h-fit w-full flex-row justify-between gap-2 rounded-xl border-[2px] border-gray-300 p-2">
+                  <div className="w-28 text-nowrap">
                     <Button
                       onClick={() => navigator.clipboard.writeText(url)}
                       align="center"
@@ -154,7 +154,7 @@ export const SharePopUp: React.FC<SharePopUpProps> = ({
                     type="text"
                     readOnly
                     value={`...${url.slice(0, 37)}`}
-                    className="font-semibold text-sm outline-none w-full text-left ltr"
+                    className="ltr w-full text-left text-sm font-semibold outline-none"
                   />
                 </div>
               </div>
