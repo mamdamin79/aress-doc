@@ -48,39 +48,24 @@ export const addFormatsToRows = (
 
   ;
   
-  export const getCellBackgroundColor = (
-    value: number|null,
-    highestPositiveValue: number,
-    highestNegativeValue: number,
-  ): string =>{
+
+  export const getCellBackgroundColor = (value: number | null): string => {
     if (value === null) return 'bg-gray-100'; // Default background for null values
-  
-    // If the value is positive (green shades)
-    if (value > 0) {
-      // Calculate the ratio between the value and the highest positive value
-      const ratio = value / highestPositiveValue;
-  
-      if (ratio >= 0.8) return 'bg-green-500';
-      if (ratio >= 0.6) return 'bg-green-400';
-      if (ratio >= 0.4) return 'bg-green-300';
-      if (ratio >= 0.2) return 'bg-green-200';
-      return 'bg-green-100';
-    } else if (value < 0) {
-      // If the value is negative (red shades)
-      const absoluteValue = Math.abs(value);
-  
-      // Calculate the ratio between the absolute value and the lowest negative value
-      const ratio = absoluteValue / Math.abs(highestNegativeValue);
-  
-      if (ratio >= 0.8) return 'bg-red-500';
-      if (ratio >= 0.6) return 'bg-red-400';
-      if (ratio >= 0.4) return 'bg-red-300';
-      if (ratio >= 0.2) return 'bg-red-200';
-      return 'bg-red-100';
-    }
+    if (value >= 15) return 'bg-green-500';
+    if (value >= 12.5) return 'bg-green-400';
+    if (value >= 10) return 'bg-green-300';
+    if (value >= 7.5) return 'bg-green-200';
+    if (value >= 5) return 'bg-green-100';
+    if (value > 0) return 'bg-green-50';
+    if (value >= -5) return 'bg-red-50';
+    if (value >= -7.5) return 'bg-red-100';
+    if (value >= -10) return 'bg-red-200';
+    if (value >= -12.5) return 'bg-red-300';
+    if (value >= -15) return 'bg-red-400';
+    if (value < -15) return 'bg-red-500';
   
     return ''; // Default fallback
-  }
+  };
 
   interface rowsKeysProps {
     name: string;
