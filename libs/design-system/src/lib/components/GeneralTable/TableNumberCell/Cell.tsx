@@ -3,7 +3,13 @@ import { NumberCellProps } from './CellProps';
 import { FourlevelIndicatorProps } from './FourlevelIndicator';
 import { cn } from 'libs/design-system/src/utils';
 
-export const Cell: React.FC<NumberCellProps> = ({ value, format, cellStyle, grayMode, valueBasedBg }) => {
+export const Cell: React.FC<NumberCellProps> = ({
+  value,
+  format,
+  cellStyle,
+  grayMode,
+  valueBasedBg,
+}) => {
   // Render null values as "-"
   if (value === null) {
     return <div className={cellStyle}>-</div>;
@@ -33,7 +39,7 @@ export const Cell: React.FC<NumberCellProps> = ({ value, format, cellStyle, gray
 
       const signedValue = format.signed
         ? value > 0
-          ? `${formattedValue} +`
+          ? `${formattedValue}`
           : `${formattedValue.replace('-', '')} -`
         : formattedValue;
 

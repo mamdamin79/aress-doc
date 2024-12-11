@@ -9,21 +9,26 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
   schema,
   tableDataStyleClasses,
   border = false,
-  hasValueBasedBg,
   striped,
 }) => {
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const [hoveredCol, setHoveredCol] = useState<number | null>(null);
   const [matchingRow, setMatchingRow] = useState<number | null>(null);
   const [matchingCol, setMatchingCol] = useState<number | null>(null);
-  const [tableWidth, setTableWidth] = useState(0);
-  const [tableHeight, setTableHeight] = useState(0);
+  const [tableDimensions, setTableDimensions] = useState({
+    width: 0,
+    height: 0,
+  });
 
   const tableRef = useRef<HTMLTableElement>(null);
+
   useEffect(() => {
-    setTableWidth(tableRef.current ? tableRef.current.offsetWidth : 0);
-    setTableHeight(tableRef.current ? tableRef.current.offsetHeight : 0);
-  }, [tableRef.current]);
+    if (tableRef.current) {
+      const { offsetWidth: width, offsetHeight: height } = tableRef.current;
+      setTableDimensions({ width, height });
+    }
+  }, []);
+
   const setMatchings = (col: number | null, row: number | null) => {
     setMatchingCol(col);
     setMatchingRow(row);
@@ -35,7 +40,7 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
         return (
           <tr key={`separator-${rowIndex}`}>
             <td colSpan={schema.length} className="font-semibold">
-              <div className=" bg-gray-200 h-[1px] mt-3 "></div>
+              <div className="bg-gray-200 h-[1px] mt-3"></div>
               {row.label || ''}
             </td>
           </tr>
@@ -49,6 +54,9 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
         >
           {schema.map((column, cellIndex) => {
             const cellValue = row[column.key as keyof TableRow];
+            const isHoveredOrMatching =
+              matchingRow === rowIndex || hoveredRow === rowIndex;
+
             return (
               <td
                 key={cellIndex}
@@ -72,14 +80,12 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
                   <div
                     className={cn(
                       'w-fit pr-[6px] pl-[6px] h-[30px] rounded-sm flex items-center',
-                      matchingRow === rowIndex || hoveredRow === rowIndex
-                        ? 'bg-blue-600 text-white'
-                        : '',
+                      isHoveredOrMatching ? 'bg-blue-600 text-white' : '',
                     )}
                   >
                     {column.render
                       ? column.render(
-                          cellValue as number | string | null,
+                          cellValue,
                           rowIndex,
                           cellIndex,
                           hoveredCol,
@@ -92,7 +98,7 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
                   </div>
                 ) : column.render ? (
                   column.render(
-                    cellValue as number | string | null,
+                    cellValue,
                     rowIndex,
                     cellIndex,
                     hoveredCol,
@@ -114,13 +120,16 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
 
   return (
     <div className="relative w-[1280px]">
-      <div
-        className="border border-gray-400 absolute top-16 rounded-2xl -z-10"
-        style={{
-          width: tableWidth + 'px',
-          height: tableHeight - 40 + 'px',
-        }}
-      ></div>
+      {border && (
+        <div
+          className="border border-gray-400 absolute top-16 rounded-2xl -z-10"
+          style={{
+            width: `${tableDimensions.width}px`,
+            height: `${tableDimensions.height - 40}px`,
+          }}
+        ></div>
+      )}
+
       <table className="min-w-full rounded-t-xl" ref={tableRef}>
         <thead className="bg-transparent text-md font-medium h-16 after:content-[''] after:block after:h-4">
           <tr>
@@ -141,10 +150,9 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
                       matchingCol === index || hoveredCol === index
                         ? 'bg-blue-600 text-white'
                         : '',
-                      column.key === 'name' && ' pr-6 w-[144px]',
+                      column.key === 'name' && 'pr-6 w-[144px]',
                     )}
                   >
-                    {' '}
                     {column.header}
                   </div>
                 </div>
@@ -153,10 +161,7 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
                   <div
                     className={cn(
                       'absolute top-0 bottom-0 my-auto bg-gray-400 w-[1px] h-6 rounded-[100px]',
-                      column.headerDivider &&
-                        (column.headerDivider === 'left'
-                          ? 'left-0'
-                          : 'right-0'),
+                      column.headerDivider === 'left' ? 'left-0' : 'right-0',
                     )}
                   ></div>
                 )}

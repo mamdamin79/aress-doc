@@ -18,7 +18,7 @@ export function ProgressBar({ progressBarItems, activeIndex }: Props) {
                 <div
                   className={cn(
                     'w-full h-full absolute',
-                    activeIndex > index && 'bg-brand-600 animate-progressBar'
+                    activeIndex > index && 'bg-brand-600 animate-progressBar',
                   )}
                 ></div>
               </div>
@@ -34,7 +34,7 @@ export function ProgressBar({ progressBarItems, activeIndex }: Props) {
               <div
                 className={cn(
                   'mr-6 w-full col-span-12 break-keep font-medium text-md text-center mt-5',
-                  activeIndex < index && 'text-gray-600 text-sm'
+                  activeIndex < index && 'text-gray-600 text-sm',
                 )}
               >
                 {item}

@@ -1,19 +1,19 @@
-import { TableCellFormat } from "./TableNumberCell";
+import { TableCellFormat } from './TableNumberCell';
 
 export interface Column<T = unknown> {
   key: keyof T;
   header: string;
-  headerDivider?: 'left' | 'right' | 'both',
+  headerDivider?: 'left' | 'right' | 'both';
   render?: (
     value: T[keyof T],
     rowIndex: number,
     colIndex: number,
-    hoveredCol: number|null,
-    hoveredRow: number|null,
-    matchingCol: number|null,
-    matchingRow: number|null,
+    hoveredCol: number | null,
+    hoveredRow: number | null,
+    matchingCol: number | null,
+    matchingRow: number | null,
     format?: TableCellFormat,
-    valueBasedBg?: string
+    valueBasedBg?: string,
   ) => React.ReactNode;
 }
 
@@ -27,8 +27,7 @@ export interface TableProps<T> {
   data: RowData<T>[];
   schema: Column<T>[];
   tableDataStyleClasses?: string;
-  border?:boolean;
-  hasValueBasedBg?: boolean;
+  border?: boolean;
   striped?: boolean;
 }
 
