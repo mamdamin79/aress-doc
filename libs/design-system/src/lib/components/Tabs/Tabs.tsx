@@ -26,7 +26,7 @@ export const Tabs: React.FC<Props> = ({
             className={cn(
               'flex',
               { 'gap-10 w-max border-b-2 border-gray-300': style === 'lined' },
-              { 'gap-4': style !== 'lined' && style !== 'divided' }
+              { 'gap-4': style !== 'lined' && style !== 'divided' },
             )}
           >
             {tabs.map((props, index) => (
@@ -82,7 +82,7 @@ export const Tabs: React.FC<Props> = ({
                   },
                   {
                     'bg-white': style === 'rounded-full' && !bgWhite,
-                  }
+                  },
                 )}
               >
                 {({ hover, selected }) => (
@@ -104,7 +104,7 @@ export const Tabs: React.FC<Props> = ({
                             { 'absolute block': selected && index },
                             {
                               'absolute block': !selected && hover && index,
-                            }
+                            },
                           )}
                         ></div>
                         <div
@@ -118,7 +118,7 @@ export const Tabs: React.FC<Props> = ({
                             {
                               'absolute block bg-gray-100':
                                 !selected && hover && index && bgWhite,
-                            }
+                            },
                           )}
                         ></div>
                       </>
@@ -160,7 +160,7 @@ export const Tabs: React.FC<Props> = ({
                             {
                               'absolute block':
                                 hover && !selected && index + 1 !== tabs.length,
-                            }
+                            },
                           )}
                         ></div>
                         <div
@@ -184,7 +184,7 @@ export const Tabs: React.FC<Props> = ({
                                 hover &&
                                 index + 1 !== tabs.length &&
                                 bgWhite,
-                            }
+                            },
                           )}
                         ></div>
                       </>
