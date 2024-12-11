@@ -54,15 +54,13 @@ export const renderCell = (
 export const getCellBackgroundColor = (value: number | null): string => {
   if (value === null) return '';
   if (value >= 15) return 'bg-green-500';
-  if (value >= 12) return 'bg-green-400';
-  if (value >= 9) return 'bg-green-300';
-  if (value >= 6) return 'bg-green-200';
-  if (value >= 3) return 'bg-green-100';
-  if (value > 0) return 'bg-green-50';
-  if (value >= -3) return 'bg-red-50';
-  if (value >= -6) return 'bg-red-100';
-  if (value >= -9) return 'bg-red-200';
-  if (value >= -12) return 'bg-red-300';
+  if (value >= 11) return 'bg-green-400';
+  if (value >= 7) return 'bg-green-300';
+  if (value >= 3) return 'bg-green-200';
+  if (value > 0) return 'bg-green-100';
+  if (value >= -3) return 'bg-red-100';
+  if (value >= -7) return 'bg-red-200';
+  if (value >= -11) return 'bg-red-300';
   if (value >= -15) return 'bg-red-400';
   if (value < -15) return 'bg-red-500';
 
