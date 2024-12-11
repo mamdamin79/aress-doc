@@ -13,23 +13,23 @@ export const PercentageLabel: React.FC<Props> = ({ value, tooltip, size }) => {
 
   return (
     <Tooltip
-      className="!py-0 !px-2 !rounded-xs !text-xs font-medium"
+      className="!rounded-xs !px-2 !py-0 !text-xs font-medium"
       position="bottom"
       title={tooltip ?? ''}
     >
       <div
         className={cn(
-          'rounded-sm w-fit py-1 font-medium',
-          { 'px-5 text-sm': size === 'normal' },
-          { 'px-3 text-xs': size === 'small' },
+          'flex w-fit items-center justify-center rounded-sm py-1 font-medium',
+          { 'w-16 text-sm': size === 'normal' },
+          { 'w-14 text-xs': size === 'small' },
           { 'bg-green-100 text-green-700': value > 0 },
           { 'bg-red-100 text-red-700': value < 0 },
-          { 'bg-gray-100 text-gray-1000': value === 0 }
+          { 'text-gray-1000 bg-gray-100': value === 0 }
         )}
       >
         <div className="flex items-center">
           <span>{absoluteValue}</span>%
-          <span className="mr-0.5 mb-0.5">
+          <span className="mb-0.5 mr-0.5">
             {value > 0 ? '+' : value < 0 && '-'}{' '}
           </span>
         </div>
