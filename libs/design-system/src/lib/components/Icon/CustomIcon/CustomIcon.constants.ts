@@ -9,6 +9,13 @@ import { ReactComponent as CustomClock } from './src/icons/CustomClock.svg';
 import { ReactComponent as CustomCircularUser } from './src/icons/CustomCircularUser.svg';
 import { ReactComponent as CustomAlpha } from './src/icons/CustomAlpha.svg';
 import { ReactComponent as CustomCirlcleX } from './src/icons/CustomCirlcleX.svg';
+import { ReactComponent as CustomPinOffLinear } from './src/icons/CustomPinOffLinear.svg';
+import { ReactComponent as CustomPlayLinear } from './src/icons/CustomPlayLinear.svg';
+import { ReactComponent as CustomPinLinear } from './src/icons/CustomPinLinear.svg';
+import { ReactComponent as CustomPinOffFill } from './src/icons/CustomPinOffFill.svg';
+import { ReactComponent as CustomPlayFill } from './src/icons/CustomPlayFill.svg';
+import { ReactComponent as CustomPinFill } from './src/icons/CustomPinFill.svg';
+import { ReactComponent as CustomGold } from './src/icons/CustomGold.svg';
 import { SVGProps } from 'react';
 
 export const CUSTOM_ICONS: Record<string, React.FC<SVGProps<SVGSVGElement>>> = {
@@ -23,4 +30,11 @@ export const CUSTOM_ICONS: Record<string, React.FC<SVGProps<SVGSVGElement>>> = {
   CustomCircularUser,
   CustomAlpha,
   CustomCirlcleX,
+  CustomPinLinear,
+  CustomPlayLinear,
+  CustomPinOffLinear,
+  CustomPinOffFill,
+  CustomPlayFill,
+  CustomPinFill,
+  CustomGold,
 };
