@@ -14,7 +14,7 @@ interface Props {
     placeholder: string;
   };
   items: {
-    categories: CategoryItem[] | null;
+    categories?: CategoryItem[] | null;
     items: OptionItem[];
   };
 }
@@ -35,6 +35,7 @@ export function OptionsListExplorer({
 
   const handlerInput = (value: string) => {
     setInputValue(value);
+    onSearch(value);
   };
 
   useEffect(() => {
@@ -70,7 +71,7 @@ export function OptionsListExplorer({
   return (
     <div
       className={cn(
-        items.items.length > 10 ? 'h-[340px]' : 'h-[290px]',
+        items.items.length > 10 && items.categories ? 'h-[340px]' : 'h-72',
         'w-[500px] bg-white',
       )}
     >
@@ -81,9 +82,11 @@ export function OptionsListExplorer({
         <Icon name="chevron-right" />
         <span className="text-sm font-medium">{title}</span>
       </div>
-      {!search?.placeholder && <p className="h-0.5 w-full bg-gray-300"></p>}
+      {!items.categories && items.items.length < 10 && (
+        <div className="my-4 h-0.5 w-full bg-gray-300"></div>
+      )}
       {items.items.length > 10 && (
-        <div className="mx-4 h-12 pb-1">
+        <div className="mx-4 -mt-8 pb-2">
           <TextField
             value={inputValue}
             onSearchInput={handlerInput}
@@ -135,9 +138,13 @@ export function OptionsListExplorer({
               </div>
               <div className="flex items-center gap-1">
                 {item.categoryId !== activeTab && (
-                  <p className="w-20 text-center">{item.type}</p>
+                  <p className="w-20 text-center">{item?.type}</p>
                 )}
-                <span className="px-4 text-center">{item.priceRials} ریال</span>
+                {item.priceRials && (
+                  <span className="px-4 text-center">
+                    {item.priceRials} ریال
+                  </span>
+                )}
                 {typeof item.priceChangePercent === 'number' && (
                   <PercentageLabel
                     value={item.priceChangePercent}

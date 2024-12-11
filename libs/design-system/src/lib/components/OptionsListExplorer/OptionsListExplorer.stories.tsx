@@ -60,6 +60,114 @@ export const Default: Story = {
         {
           title: 'ذغال سنگ',
           categoryId: 2,
+          priceRials: 11250,
+          type: 'سهامی',
+        },
+        {
+          title: 'مس',
+        },
+        {
+          title: 'آلومینیوم',
+          categoryId: 5,
+          priceChangePercent: -1.1,
+          priceRials: 30000,
+          type: 'مختلط',
+        },
+        {
+          title: 'پتروشیمی',
+          categoryId: 6,
+          priceChangePercent: 3.5,
+          priceRials: 22000,
+          type: 'دیده بان',
+        },
+        {
+          title: 'معدنی',
+          categoryId: 2,
+          priceChangePercent: 0.5,
+          priceRials: 18000,
+          type: 'سهامی',
+        },
+        {
+          title: 'گاز',
+          categoryId: 3,
+          priceChangePercent: -2.5,
+          priceRials: 35000,
+          type: 'درآمد ثابت',
+        },
+        {
+          title: 'برق',
+          categoryId: 3,
+          priceChangePercent: 4.0,
+          priceRials: 15000,
+          type: 'درآمد ثابت',
+        },
+        {
+          title: 'کاشی',
+          categoryId: 3,
+          priceChangePercent: -1.5,
+          priceRials: 27000,
+          type: 'درآمد ثابت',
+        },
+        {
+          title: 'شیمیایی',
+          categoryId: 4,
+          priceChangePercent: 5.0,
+          priceRials: 33000,
+          type: 'کالایی',
+        },
+      ],
+    },
+  },
+};
+
+export const Search: Story = {
+  render: (args) => {
+    return (
+      <div className="bg-[#EFF0F2] p-10">
+        <div className="w-fit overflow-hidden rounded-l-2xl">
+          <OptionsListExplorer {...args} />
+        </div>
+      </div>
+    );
+  },
+  args: {
+    title: 'انتخاب صندوق',
+    onSearch: (value: string) => console.log(value),
+    search: {
+      placeholder: 'جستجوی صنعت...',
+    },
+    onBackButtonClick: () => console.log('click to back'),
+    items: {
+      categories: [
+        {
+          id: 1,
+          title: 'همه',
+        },
+        {
+          id: 2,
+          title: 'سهامی',
+        },
+        {
+          id: 3,
+          title: 'درآمد ثابت',
+        },
+        {
+          id: 4,
+          title: 'کالایی',
+        },
+        {
+          id: 5,
+          title: 'مختلط',
+        },
+        {
+          id: 6,
+          title: 'دیده بان',
+        },
+      ],
+      items: [
+        {
+          title: 'ذغال سنگ',
+          categoryId: 2,
           priceChangePercent: -5,
           priceRials: 11250,
           type: 'سهامی',
