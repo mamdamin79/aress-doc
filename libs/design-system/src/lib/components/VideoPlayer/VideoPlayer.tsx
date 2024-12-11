@@ -21,6 +21,7 @@ type Props = {
   src: string;
   setSelectedVideo: React.Dispatch<React.SetStateAction<video>>;
   videos: video[];
+  selectedVideo: video;
 };
 
 const MemoizedTitle = React.memo(
@@ -53,6 +54,7 @@ export const VideoPlayer: React.FC<Props> = ({
   src,
   videos,
   setSelectedVideo,
+  selectedVideo,
 }) => {
   const [showControlPanel, setShowControlPanel] = useState(true);
   const [showPlayList, setShowPlayList] = useState(false);
@@ -82,7 +84,6 @@ export const VideoPlayer: React.FC<Props> = ({
     changeQuality,
     error,
   } = useVideo(src, qualities);
-  console.log(isFullscreen);
   useEffect(() => {
     let timeout: NodeJS.Timeout;
 
@@ -108,14 +109,16 @@ export const VideoPlayer: React.FC<Props> = ({
   return (
     <div
       // onContextMenu={(e) => e.preventDefault()}
-      className={cn('relative w-full rounded-md shadow-md overflow-hidden', {
-        'cursor-none': !showControlPanel,
-      })}
+      className={cn(
+        `relative w-full rounded-md shadow-md h-full overflow-hidden ${className}`,
+        {
+          'cursor-none': !showControlPanel,
+        }
+      )}
       ref={videoContainerRef}
     >
       {isFullscreen && (
         <div
-          // onClick={(e)=>e.stopPropagation()}
           className={cn(
             'absolute transition-all duration-300 ease-in-out right-0 z-50',
             {
@@ -129,6 +132,7 @@ export const VideoPlayer: React.FC<Props> = ({
             setShowPlayList={setShowPlayList}
             playListTitle="لیست مصاحبات مدیر - محمد باقر خادمی"
             videos={videos}
+            selectedVideo={selectedVideo}
           />
         </div>
       )}
@@ -147,7 +151,9 @@ export const VideoPlayer: React.FC<Props> = ({
         {error && <p className="text-red-500">{error}</p>}
       </div>
       {isFullscreen ? (
-        <MemoizedTitle setShowPlayList={setShowPlayList} title={title} />
+        !showPlayList && (
+          <MemoizedTitle setShowPlayList={setShowPlayList} title={title} />
+        )
       ) : (
         <span
           className={cn(
@@ -158,7 +164,7 @@ export const VideoPlayer: React.FC<Props> = ({
           {<Image src={videoLogo} width={100} height={100} alt="logo" />}
         </span>
       )}
-      <video src={src} className="w-full" poster={''} ref={videoRef} />
+      <video src={src} className="w-full h-full" poster={''} ref={videoRef} />
       <div
         className={cn(
           'absolute inset-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent duration-700 ease-in-out transition-all',

@@ -191,6 +191,7 @@ export const useVideo = (
     error: null,
     src: src,
   });
+  console.log(state.isPlaying);
 
   useEffect(() => {
     const video = videoRef.current!;

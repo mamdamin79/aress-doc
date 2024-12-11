@@ -1,42 +1,44 @@
-import { Meta, StoryObj } from '@storybook/react';
-import { PlayList } from './PlayList';
+import React, { useState } from 'react';
+import { Meta, StoryFn } from '@storybook/react';
+import { PlayList, video } from './PlayList';
+import video1080 from '../../../assets/videos/The Breathtaking Beauty of Nature1080p.mp4';
+import video1080forest from '../../../assets/videos/Cinematic Forest-1080.mp4';
 
-const meta: Meta<typeof PlayList> = {
+export default {
+  title: 'Components/PlayList',
   component: PlayList,
-  tags: ['autodocs'],
-};
+} as Meta;
 
-export default meta;
+export const Default: StoryFn = () => {
+  const videos: video[] = [
+    {
+      qualities: [],
+      title:
+        'تحلیل داده‌های مالی و بازار بورس | کشف فرصت‌های سرمایه‌گذاری با استفاده از ابزارهای پردازش پیشرفته و تکنیک‌های نوین در تحلیل اطلاعات مالی',
+      poster: 'https://api.classbon.com/api/picture/20219',
+      src: video1080,
+      date: '1403/09/22',
+    },
+    {
+      qualities: [],
+      title:
+        'بررسی داده‌های مالی و بازار بورس | با تحلیل‌های پیشرفته و ابزارهای نوین، فرصت‌های سرمایه‌گذاری را شناسایی کنید و استراتژی‌های هوشمندانه برای موفقیت در بازار سرمایه بیاموزید!',
+      poster: 'https://api.classbon.com/api/picture/20219',
+      src: video1080forest,
+      date: '1403/11/22',
+    },
+  ];
+  const [selectedVideo, setSelectedVideo] = useState<video>(videos[0]);
 
-type Story = StoryObj<typeof PlayList>;
-
-export const Default: Story = {
-  args: {
-    playListTitle: 'لیست مصاحبات مدیر - محمد باقر خادمی',
-    videos: [
-      {
-        title:
-          'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.',
-        src: 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4',
-        date: '1403/11/22',
-        qualities: [],
-        poster: '',
-      },
-      {
-        title: 'ریسک ها و فرصت ها در سرمایه گذاری',
-        src: 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4',
-        date: '1403/11/22',
-        qualities: [],
-        poster: '',
-      },
-      {
-        title:
-          'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی',
-        src: 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4',
-        date: '1403/11/22',
-        qualities: [],
-        poster: '',
-      },
-    ],
-  },
+  return (
+    <div className="flex items-center justify-center">
+      <PlayList
+        playListTitle="لیست ویدیوها"
+        isFullscreen={false}
+        videos={videos}
+        setSelectedVideo={setSelectedVideo}
+        selectedVideo={selectedVideo}
+      />
+    </div>
+  );
 };

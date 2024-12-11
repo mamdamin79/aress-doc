@@ -31,6 +31,7 @@ export const PlayerOptions: React.FC<Props> = React.memo(
     qualities,
     quality,
     changeQuality,
+    isFullscreen,
   }) => {
     const [open, setOpen] = useState(false);
     const [openRate, setOpenRate] = useState(false);
@@ -271,7 +272,7 @@ export const PlayerOptions: React.FC<Props> = React.memo(
         </div>
         <Tooltip
           offset={48}
-          className="!z-30 !right-12"
+          className="!z-30 !right-1"
           title="(i) picture-in-picture حالت"
         >
           <button
@@ -288,7 +289,7 @@ export const PlayerOptions: React.FC<Props> = React.memo(
         </Tooltip>
         <Tooltip
           offset={48}
-          className="!z-30 !right-12"
+          className="!z-30 !right-1"
           title="(f) حالت تمام صفحه "
         >
           <button

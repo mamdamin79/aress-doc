@@ -14,7 +14,7 @@ module.exports = {
   theme: {
     extend: {
       transitionDuration: {
-        2000: '2000ms',
+        4000: '4000ms',
       },
       borderWidth: {
         1.5: '1.5px',
@@ -227,7 +227,6 @@ module.exports = {
           900: 'rgb(var(--color-vivid-green-900))',
           1000: 'rgb(var(--color-vivid-green-1000))',
         },
-        white: 'rgb(var(--color-white))',
       },
     },
     plugins: [],

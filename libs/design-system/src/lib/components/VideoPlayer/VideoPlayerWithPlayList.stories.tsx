@@ -15,28 +15,6 @@ export default {
 } as Meta;
 
 export const Default: StoryFn = () => {
-  const [selectedVideo, setSelectedVideo] = useState<video>({
-    qualities: [
-      {
-        src: video1080,
-        label: '1080',
-      },
-      {
-        src: video720,
-        label: '720',
-      },
-      {
-        src: video360,
-        label: '360',
-      },
-    ],
-    title: 'چالش های روزمره در مدیریت یک صندوق سرمایه گذاری',
-    poster: 'https://api.classbon.com/api/picture/20219',
-    date: '',
-    src: video1080,
-  });
-
-  console.log(selectedVideo);
   const videos: video[] = [
     {
       qualities: [
@@ -56,7 +34,7 @@ export const Default: StoryFn = () => {
       title: 'چالش های روزمره در مدیریت یک صندوق سرمایه گذاری',
       poster: 'https://api.classbon.com/api/picture/20219',
       src: video1080,
-      date: '',
+      date: '1403/09/22',
     },
     {
       qualities: [
@@ -76,22 +54,26 @@ export const Default: StoryFn = () => {
       title: 'چالش های روزمره در مدیریت یک صندوق سرمایه گذاری',
       poster: 'https://api.classbon.com/api/picture/20219',
       src: video1080forest,
-      date: '',
+      date: '1403/11/22',
     },
   ];
+  const [selectedVideo, setSelectedVideo] = useState<video>(videos[0]);
 
   return (
-    <div className="flex flex-row-reverse gap-4">
+    <div className="flex flex-row-reverse gap-6  max-w-7xl container mx-auto">
       <VideoPlayer
         videos={videos}
         setSelectedVideo={setSelectedVideo}
         {...selectedVideo}
+        className="w-full h-[459px]"
+        selectedVideo={selectedVideo}
       />
       <PlayList
         playListTitle="لیست ویدیوها"
         isFullscreen={false}
         videos={videos}
         setSelectedVideo={setSelectedVideo}
+        selectedVideo={selectedVideo}
       />
     </div>
   );
