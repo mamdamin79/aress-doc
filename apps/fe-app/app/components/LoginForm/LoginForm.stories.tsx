@@ -15,9 +15,13 @@ type Story = StoryObj<typeof LoginForm>;
 // A default story for the LoginForm component
 
 export const Default: Story = {
-  render: () => (
+  render: (args) => (
     <div className="w-[528px]">
-      <LoginForm />
+      <LoginForm {...args} />
     </div>
   ),
+  args: {
+    title: 'ورود به آرسس ترمینال',
+    onClick: () => console.log('clicked'),
+  },
 };
