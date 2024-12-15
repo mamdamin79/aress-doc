@@ -11,8 +11,9 @@ import { Icon } from '../Icon';
 import { DateInput } from '../DateInput';
 import moment from 'jalali-moment';
 import { Tooltip } from '../Tooltip';
+import { getFirstAndLastDayOfWeek } from './DatePicker.utils';
 
-const locale: PickerLocale = (year) => ({
+const locale: PickerLocale = () => ({
   months: {
     1: { name: 'فروردین', numberOfDays: 31 },
     2: { name: 'اردیبهشت', numberOfDays: 31 },
@@ -32,10 +33,14 @@ const weeksTitle = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
 
 interface Props {
   min: string;
+  dateRange: { start: string; end: string };
   max: string;
+  isOpen: boolean;
+  onClose: () => void;
+  setDateRange: (start: string, end: string) => void;
 }
 
-export function DatePicker({ min, max }: Props) {
+export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
   const [isPending, startTransition] = useTransition();
   const [date, setDateS] = useState<Date>(); // create date based on timezone
   const containerRef = useRef<HTMLDivElement>(null);
@@ -54,7 +59,6 @@ export function DatePicker({ min, max }: Props) {
   const [disablePrevMonth, setDisablePrevMonth] = useState(false);
   const [focuseStartInput, setFocuseStartInput] = useState(true);
   const [focuseEndInput, setFocuseEndInput] = useState(false);
-
   const [startErrors, setStartErrors] = useState<{
     minError: boolean;
     maxError: boolean;
@@ -112,7 +116,6 @@ export function DatePicker({ min, max }: Props) {
     onChangeDate,
     handleShowNextMonth,
     handleShowPrevMonth,
-    setOpen,
     getMode,
     getDate,
     isSelectedDay,
@@ -126,7 +129,6 @@ export function DatePicker({ min, max }: Props) {
     changeYear,
     isLoading,
     getRenderedDateOriginal,
-    goToToday,
     getRenderedMonth,
     getRenderedNextMonth,
     isStartDate,
@@ -151,12 +153,6 @@ export function DatePicker({ min, max }: Props) {
       }),
     []
   );
-
-  const getFirstAndLastDayOfWeek = (index: number) => {
-    const firstDayIndex = index - (index % 7);
-    const lastDayIndex = firstDayIndex + 6;
-    return { firstDayIndex, lastDayIndex };
-  };
 
   useEffect(() => {
     if (typeof startDate === 'string') {
@@ -238,7 +234,7 @@ export function DatePicker({ min, max }: Props) {
         changeMonth(+max.slice(5, 7));
       }
     }
-  }, [getRenderedMonth, min, max, getRenderedYear(), changeMonth]);
+  }, [getRenderedMonth, min, max, changeMonth, getRenderedYear]);
 
   const handlerMouseLeave = () => {
     setEndDateHover('');
@@ -256,7 +252,7 @@ export function DatePicker({ min, max }: Props) {
         !isPending
       ) {
         startTransition(() => {
-          setOpen(false);
+          onClose();
         });
       }
     };
@@ -266,7 +262,7 @@ export function DatePicker({ min, max }: Props) {
     return () => {
       document.removeEventListener('click', handleClickOutside, true);
     };
-  }, [getDate, isPending, onChangeDate, setOpen]);
+  }, [getDate, isPending, onChangeDate, onClose]);
 
   const daysList = getDays();
   const daysListNext = getDays('next');
@@ -335,15 +331,15 @@ export function DatePicker({ min, max }: Props) {
         </div>
       </button>
       <button>
-        <div className="w-full bg-white rounded-md overflow-hidden border-none">
+        <div className="w-[104px] bg-white rounded-md overflow-hidden border-none">
           <Field>
-            <div className="relative flex items-center justify-center rounded-md overflow-hidden w-full">
+            <div className="relative flex items-center justify-center rounded-md overflow-hidden w-[104px]">
               <Select
                 onChange={(e) => {
                   changeMonth(+e.target.value);
                 }}
                 className={cn(
-                  'w-24 appearance-none cursor-pointer border-none font-vazirmatn',
+                  'w-full appearance-none cursor-pointer max-h-[48px] border-none font-vazirmatn',
                   ' data-[focus]:outline-[1.5px] data-[focus]:bg-white outline-brand-600 py-2 rounded-md pr-2 cursor-pointer'
                 )}
               >
@@ -521,12 +517,28 @@ export function DatePicker({ min, max }: Props) {
     }
   }, [changeYear, getRenderedYear, max, endDate]);
 
+  const formatDateToPersian = (date: string): string => {
+    return moment(date, 'YYYY/MM/DD')
+      .locale('fa')
+      .format('YYYY-MM-DD')
+      .replace(/-/g, '');
+  };
+
+  const isDateRangeValid =
+    startDate &&
+    endDate &&
+    !endErrors.maxError &&
+    !endErrors.minError &&
+    !mosvaiDate &&
+    !startErrors.maxError &&
+    !startErrors.minError &&
+    !invalidEndDate &&
+    !invalidStartDate;
+
   return (
     <div style={{ display: 'inline-block', width: 'auto' }}>
-      <button onClick={goToToday}>go to today</button>
-
       <div ref={containerRef} className="bg-gray-100 relative rounded-3xl">
-        {!isLoading() && (
+        {!isLoading() && isOpen && (
           <div
             className="flex flex-col p-6 gap-4"
             style={{
@@ -642,7 +654,7 @@ export function DatePicker({ min, max }: Props) {
               </div>
             </div>
             <div
-              onClick={() => setOpen(false)}
+              onClick={() => onClose()}
               className="w-8 h-8 rounded-full cursor-pointer bg-brand-600 absolute -left-2 -top-2 flex items-center justify-center"
             >
               <div className="rounded-full flex items-center bg-white justify-center w-6 h-6">
@@ -755,11 +767,7 @@ export function DatePicker({ min, max }: Props) {
                                   >
                                     <button
                                       className={cn(
-                                        'w-10 h-10 my-1 text-lg hover:border-brand-600 hover:border-2 rounded-full',
-                                        {
-                                          'bg-white shadow-xs':
-                                            day.state === 'current',
-                                        },
+                                        'w-10 h-10 my-1 bg-white shadow-xs text-lg hover:border-brand-600 hover:border-2 rounded-full',
                                         {
                                           'bg-brand-600 !border-l-0 !border-r-0 shadow-brand-600 !rounded-full pl-[3px] !w-10 shadow-sm text-white':
                                             isSelectedDay(day.date),
@@ -786,15 +794,9 @@ export function DatePicker({ min, max }: Props) {
                                         },
                                         {
                                           'text-gray-400 cursor-default hover:border-none':
-                                            +moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') <
+                                            +formatDateToPersian(day.date) <
                                               +min.replace(/-/g, '') ||
-                                            +moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
+                                            +formatDateToPersian(day.date) >
                                               +max.replace(/-/g, ''),
                                         },
                                         {
@@ -826,26 +828,16 @@ export function DatePicker({ min, max }: Props) {
                                             endDateHover &&
                                             startDate &&
                                             focuseEndInput &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
+                                            formatDateToPersian(day.date) >
                                               String(startDate).replace(
                                                 /-/g,
                                                 ''
                                               ) &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') <
-                                              moment(endDateHover, 'YYYY/MM/DD')
-                                                .locale('fa')
-                                                .format('YYYY-MM-DD')
-                                                .replace(/-/g, '') &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') <
+                                            formatDateToPersian(day.date) <
+                                              formatDateToPersian(
+                                                endDateHover
+                                              ) &&
+                                            formatDateToPersian(day.date) <
                                               max.replace(/-/g, ''),
                                         },
                                         {
@@ -853,26 +845,16 @@ export function DatePicker({ min, max }: Props) {
                                             endDateHover &&
                                             focuseEndInput &&
                                             endDate &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
+                                            formatDateToPersian(day.date) >
                                               String(endDate).replace(
                                                 /-/g,
                                                 ''
                                               ) &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') <
-                                              moment(endDateHover, 'YYYY/MM/DD')
-                                                .locale('fa')
-                                                .format('YYYY-MM-DD')
-                                                .replace(/-/g, '') &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') <
+                                            formatDateToPersian(day.date) <
+                                              formatDateToPersian(
+                                                endDateHover
+                                              ) &&
+                                            formatDateToPersian(day.date) <
                                               max.replace(/-/g, ''),
                                         },
                                         {
@@ -881,26 +863,16 @@ export function DatePicker({ min, max }: Props) {
                                             focuseStartInput &&
                                             endDate &&
                                             startDate &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') <
+                                            formatDateToPersian(day.date) <
                                               String(startDate).replace(
                                                 /-/g,
                                                 ''
                                               ) &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
-                                              moment(endDateHover, 'YYYY/MM/DD')
-                                                .locale('fa')
-                                                .format('YYYY-MM-DD')
-                                                .replace(/-/g, '') &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
+                                            formatDateToPersian(day.date) >
+                                              formatDateToPersian(
+                                                endDateHover
+                                              ) &&
+                                            formatDateToPersian(day.date) >
                                               min.replace(/-/g, ''),
                                         },
                                         {
@@ -909,31 +881,18 @@ export function DatePicker({ min, max }: Props) {
                                             firstDayIndex === index &&
                                             startDate &&
                                             focuseEndInput &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
+                                            formatDateToPersian(day.date) >
                                               String(startDate).replace(
                                                 /-/g,
                                                 ''
                                               ) &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') <
-                                              moment(endDateHover, 'YYYY/MM/DD')
-                                                .locale('fa')
-                                                .format('YYYY-MM-DD')
-                                                .replace(/-/g, '') &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
+                                            formatDateToPersian(day.date) <
+                                              formatDateToPersian(
+                                                endDateHover
+                                              ) &&
+                                            formatDateToPersian(day.date) >
                                               min.replace(/-/g, '') &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') <
+                                            formatDateToPersian(day.date) <
                                               max.replace(/-/g, ''),
                                         },
                                         {
@@ -942,31 +901,18 @@ export function DatePicker({ min, max }: Props) {
                                             firstDayIndex === index &&
                                             focuseEndInput &&
                                             endDate &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
+                                            formatDateToPersian(day.date) >
                                               String(endDate).replace(
                                                 /-/g,
                                                 ''
                                               ) &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') <
-                                              moment(endDateHover, 'YYYY/MM/DD')
-                                                .locale('fa')
-                                                .format('YYYY-MM-DD')
-                                                .replace(/-/g, '') &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
+                                            formatDateToPersian(day.date) <
+                                              formatDateToPersian(
+                                                endDateHover
+                                              ) &&
+                                            formatDateToPersian(day.date) >
                                               min.replace(/-/g, '') &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') <
+                                            formatDateToPersian(day.date) <
                                               max.replace(/-/g, ''),
                                         },
                                         {
@@ -976,26 +922,16 @@ export function DatePicker({ min, max }: Props) {
                                             focuseStartInput &&
                                             endDate &&
                                             startDate &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') <
+                                            formatDateToPersian(day.date) <
                                               String(startDate).replace(
                                                 /-/g,
                                                 ''
                                               ) &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
-                                              moment(endDateHover, 'YYYY/MM/DD')
-                                                .locale('fa')
-                                                .format('YYYY-MM-DD')
-                                                .replace(/-/g, '') &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
+                                            formatDateToPersian(day.date) >
+                                              formatDateToPersian(
+                                                endDateHover
+                                              ) &&
+                                            formatDateToPersian(day.date) >
                                               min.replace(/-/g, ''),
                                         },
                                         {
@@ -1004,31 +940,18 @@ export function DatePicker({ min, max }: Props) {
                                             lastDayIndex === index &&
                                             startDate &&
                                             focuseEndInput &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
+                                            formatDateToPersian(day.date) >
                                               String(startDate).replace(
                                                 /-/g,
                                                 ''
                                               ) &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') <
-                                              moment(endDateHover, 'YYYY/MM/DD')
-                                                .locale('fa')
-                                                .format('YYYY-MM-DD')
-                                                .replace(/-/g, '') &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
+                                            formatDateToPersian(day.date) <
+                                              formatDateToPersian(
+                                                endDateHover
+                                              ) &&
+                                            formatDateToPersian(day.date) >
                                               min.replace(/-/g, '') &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') <
+                                            formatDateToPersian(day.date) <
                                               max.replace(/-/g, ''),
                                         },
                                         {
@@ -1044,31 +967,18 @@ export function DatePicker({ min, max }: Props) {
                                             lastDayIndex === index &&
                                             focuseEndInput &&
                                             endDate &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
+                                            formatDateToPersian(day.date) >
                                               String(endDate).replace(
                                                 /-/g,
                                                 ''
                                               ) &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') <
-                                              moment(endDateHover, 'YYYY/MM/DD')
-                                                .locale('fa')
-                                                .format('YYYY-MM-DD')
-                                                .replace(/-/g, '') &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
+                                            formatDateToPersian(day.date) <
+                                              formatDateToPersian(
+                                                endDateHover
+                                              ) &&
+                                            formatDateToPersian(day.date) >
                                               min.replace(/-/g, '') &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') <
+                                            formatDateToPersian(day.date) <
                                               max.replace(/-/g, ''),
                                         },
                                         {
@@ -1078,26 +988,16 @@ export function DatePicker({ min, max }: Props) {
                                             focuseStartInput &&
                                             endDate &&
                                             startDate &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') <
+                                            formatDateToPersian(day.date) <
                                               String(startDate).replace(
                                                 /-/g,
                                                 ''
                                               ) &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
-                                              moment(endDateHover, 'YYYY/MM/DD')
-                                                .locale('fa')
-                                                .format('YYYY-MM-DD')
-                                                .replace(/-/g, '') &&
-                                            moment(day.date, 'YYYY/MM/DD')
-                                              .locale('fa')
-                                              .format('YYYY-MM-DD')
-                                              .replace(/-/g, '') >
+                                            formatDateToPersian(day.date) >
+                                              formatDateToPersian(
+                                                endDateHover
+                                              ) &&
+                                            formatDateToPersian(day.date) >
                                               min.replace(/-/g, ''),
                                         }
                                       )}
@@ -1314,35 +1214,25 @@ export function DatePicker({ min, max }: Props) {
                                       >
                                         <button
                                           className={cn(
-                                            'w-10 h-10 my-1 text-lg hover:border-brand-600 hover:border-2 rounded-full',
-                                            {
-                                              'bg-white shadow-xs':
-                                                day.state === 'current',
-                                            },
+                                            'w-10 h-10 bg-white shadow-xs my-1 text-lg hover:border-brand-600 hover:border-2 rounded-full',
                                             {
                                               'bg-brand-600 !border-r-0 !w-10 shadow-brand-600 !rounded-full shadow-sm text-white':
                                                 isSelectedDay(day.date),
                                             },
                                             {
                                               'pr-[3px]':
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '')
-                                                  .slice(-2) ===
+                                                formatDateToPersian(
+                                                  day.date
+                                                ).slice(-2) ===
                                                   (typeof endDate ===
                                                     'string' &&
                                                     String(
                                                       endDate.slice(-2)
                                                     )) &&
                                                 endDateHover &&
-                                                moment(
-                                                  endDateHover,
-                                                  'YYYY/MM/DD'
-                                                )
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') >
+                                                formatDateToPersian(
+                                                  endDateHover
+                                                ) >
                                                   String(endDate).replace(
                                                     /-/g,
                                                     ''
@@ -1357,15 +1247,9 @@ export function DatePicker({ min, max }: Props) {
                                             {
                                               '!rounded-r-full border-r-2':
                                                 day.day === 1 &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') <
+                                                formatDateToPersian(day.date) <
                                                   max.replace(/-/g, '') &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') <
+                                                formatDateToPersian(day.date) <
                                                   max.replace(/-/g, ''),
                                             },
                                             {
@@ -1411,16 +1295,10 @@ export function DatePicker({ min, max }: Props) {
                                             },
                                             {
                                               'text-gray-400 cursor-default hover:border-none':
-                                                +moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') <
-                                                  +min.replace(/-/g, '') ||
-                                                +moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') >
-                                                  +max.replace(/-/g, ''),
+                                                formatDateToPersian(day.date) <
+                                                  min.replace(/-/g, '') ||
+                                                formatDateToPersian(day.date) >
+                                                  max.replace(/-/g, ''),
                                             },
 
                                             {
@@ -1428,48 +1306,29 @@ export function DatePicker({ min, max }: Props) {
                                                 endDateHover &&
                                                 startDate &&
                                                 focuseEndInput &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') >
+                                                formatDateToPersian(day.date) >
                                                   String(startDate).replace(
                                                     /-/g,
                                                     ''
                                                   ) &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') <
+                                                formatDateToPersian(day.date) <
                                                   max.replace(/-/g, '') &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') <
-                                                  moment(
-                                                    endDateHover,
-                                                    'YYYY/MM/DD'
-                                                  )
-                                                    .locale('fa')
-                                                    .format('YYYY-MM-DD')
-                                                    .replace(/-/g, ''),
+                                                formatDateToPersian(day.date) <
+                                                  formatDateToPersian(
+                                                    endDateHover
+                                                  ),
                                             },
                                             {
                                               'border-t-2 border-b-2 w-full rounded-none border-brand-600':
                                                 endDateHover &&
                                                 focuseEndInput &&
                                                 endDate &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') >
+                                                formatDateToPersian(day.date) >
                                                   String(endDate).replace(
                                                     /-/g,
                                                     ''
                                                   ) &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') <
+                                                formatDateToPersian(day.date) <
                                                   moment(endDate, 'YYYY/MM/DD')
                                                     .locale('fa')
                                                     .format('YYYY-MM-DD')
@@ -1481,18 +1340,12 @@ export function DatePicker({ min, max }: Props) {
                                                 focuseStartInput &&
                                                 endDate &&
                                                 startDate &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') <
+                                                formatDateToPersian(day.date) <
                                                   String(startDate).replace(
                                                     /-/g,
                                                     ''
                                                   ) &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') >
+                                                formatDateToPersian(day.date) >
                                                   moment(
                                                     endDateHover,
                                                     'YYYY/MM/DD'
@@ -1500,10 +1353,7 @@ export function DatePicker({ min, max }: Props) {
                                                     .locale('fa')
                                                     .format('YYYY-MM-DD')
                                                     .replace(/-/g, '') &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') >
+                                                formatDateToPersian(day.date) >
                                                   min.replace(/-/g, ''),
                                             },
 
@@ -1513,18 +1363,12 @@ export function DatePicker({ min, max }: Props) {
                                                 firstDayIndex === index &&
                                                 startDate &&
                                                 focuseEndInput &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') >
+                                                formatDateToPersian(day.date) >
                                                   String(startDate).replace(
                                                     /-/g,
                                                     ''
                                                   ) &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') <
+                                                formatDateToPersian(day.date) <
                                                   moment(
                                                     endDateHover,
                                                     'YYYY/MM/DD'
@@ -1532,10 +1376,7 @@ export function DatePicker({ min, max }: Props) {
                                                     .locale('fa')
                                                     .format('YYYY-MM-DD')
                                                     .replace(/-/g, '') &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') <
+                                                formatDateToPersian(day.date) <
                                                   max.replace(/-/g, ''),
                                             },
                                             {
@@ -1566,18 +1407,12 @@ export function DatePicker({ min, max }: Props) {
                                                 firstDayIndex === index &&
                                                 focuseEndInput &&
                                                 endDate &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') >
+                                                formatDateToPersian(day.date) >
                                                   String(endDate).replace(
                                                     /-/g,
                                                     ''
                                                   ) &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') <
+                                                formatDateToPersian(day.date) <
                                                   moment(
                                                     endDateHover,
                                                     'YYYY/MM/DD'
@@ -1585,10 +1420,7 @@ export function DatePicker({ min, max }: Props) {
                                                     .locale('fa')
                                                     .format('YYYY-MM-DD')
                                                     .replace(/-/g, '') &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') <
+                                                formatDateToPersian(day.date) <
                                                   max.replace(/-/g, ''),
                                             },
                                             {
@@ -1598,18 +1430,12 @@ export function DatePicker({ min, max }: Props) {
                                                 focuseStartInput &&
                                                 endDate &&
                                                 startDate &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') <
+                                                formatDateToPersian(day.date) <
                                                   String(startDate).replace(
                                                     /-/g,
                                                     ''
                                                   ) &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') >
+                                                formatDateToPersian(day.date) >
                                                   moment(
                                                     endDateHover,
                                                     'YYYY/MM/DD'
@@ -1617,15 +1443,9 @@ export function DatePicker({ min, max }: Props) {
                                                     .locale('fa')
                                                     .format('YYYY-MM-DD')
                                                     .replace(/-/g, '') &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') <
+                                                formatDateToPersian(day.date) <
                                                   max.replace(/-/g, '') &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') >
+                                                formatDateToPersian(day.date) >
                                                   min.replace(/-/g, ''),
                                             },
                                             {
@@ -1634,34 +1454,18 @@ export function DatePicker({ min, max }: Props) {
                                                 lastDayIndex === index &&
                                                 startDate &&
                                                 focuseEndInput &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') >
+                                                formatDateToPersian(day.date) >
                                                   String(startDate).replace(
                                                     /-/g,
                                                     ''
                                                   ) &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') <
-                                                  moment(
-                                                    endDateHover,
-                                                    'YYYY/MM/DD'
-                                                  )
-                                                    .locale('fa')
-                                                    .format('YYYY-MM-DD')
-                                                    .replace(/-/g, '') &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') <
+                                                formatDateToPersian(day.date) <
+                                                  formatDateToPersian(
+                                                    endDateHover
+                                                  ) &&
+                                                formatDateToPersian(day.date) <
                                                   max.replace(/-/g, '') &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') >
+                                                formatDateToPersian(day.date) >
                                                   min.replace(/-/g, ''),
                                             },
                                             {
@@ -1670,18 +1474,12 @@ export function DatePicker({ min, max }: Props) {
                                                 lastDayIndex === index &&
                                                 focuseEndInput &&
                                                 endDate &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') >
+                                                formatDateToPersian(day.date) >
                                                   String(endDate).replace(
                                                     /-/g,
                                                     ''
                                                   ) &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') <
+                                                formatDateToPersian(day.date) <
                                                   moment(
                                                     endDateHover,
                                                     'YYYY/MM/DD'
@@ -1689,10 +1487,7 @@ export function DatePicker({ min, max }: Props) {
                                                     .locale('fa')
                                                     .format('YYYY-MM-DD')
                                                     .replace(/-/g, '') &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') <
+                                                formatDateToPersian(day.date) <
                                                   max.replace(/-/g, ''),
                                             },
                                             {
@@ -1702,34 +1497,18 @@ export function DatePicker({ min, max }: Props) {
                                                 focuseStartInput &&
                                                 endDate &&
                                                 startDate &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') <
+                                                formatDateToPersian(day.date) <
                                                   String(startDate).replace(
                                                     /-/g,
                                                     ''
                                                   ) &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') >
-                                                  moment(
-                                                    endDateHover,
-                                                    'YYYY/MM/DD'
-                                                  )
-                                                    .locale('fa')
-                                                    .format('YYYY-MM-DD')
-                                                    .replace(/-/g, '') &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') <
+                                                formatDateToPersian(day.date) >
+                                                  formatDateToPersian(
+                                                    endDateHover
+                                                  ) &&
+                                                formatDateToPersian(day.date) <
                                                   max.replace(/-/g, '') &&
-                                                moment(day.date, 'YYYY/MM/DD')
-                                                  .locale('fa')
-                                                  .format('YYYY-MM-DD')
-                                                  .replace(/-/g, '') >
+                                                formatDateToPersian(day.date) >
                                                   min.replace(/-/g, ''),
                                             }
                                           )}
@@ -1836,41 +1615,32 @@ export function DatePicker({ min, max }: Props) {
             </div>
             <div className="flex flex-row-reverse justify-between items-center">
               <button
+                onClick={() => {
+                  if (
+                    typeof startDate === 'string' &&
+                    typeof endDate === 'string'
+                  ) {
+                    setDateRange(startDate, endDate);
+                  }
+                }}
                 className={cn(
                   'px-2 bg-brand-300 cursor-default py-1 rounded-md text-white',
                   {
-                    'bg-brand-600 cursor-pointer':
-                      startDate &&
-                      endDate &&
-                      !endErrors.maxError &&
-                      !endErrors.minError &&
-                      !mosvaiDate &&
-                      !startErrors.maxError &&
-                      !startErrors.minError &&
-                      !invalidEndDate &&
-                      !invalidStartDate,
+                    'bg-brand-600 cursor-pointer': isDateRangeValid,
                   }
                 )}
               >
                 اعمال بازه
               </button>
-              {startDate &&
-                endDate &&
-                !endErrors.maxError &&
-                !endErrors.minError &&
-                !mosvaiDate &&
-                !startErrors.maxError &&
-                !startErrors.minError &&
-                !invalidEndDate &&
-                !invalidStartDate && (
-                  <div className="flex justify-start w-fit gap-2 px-2 pt-1.5 bg-white rounded-sm items-center">
-                    <span className="text-sm">بازه دلخواه:</span>
-                    <span className="font-medium text-sm text-gray-1000">
-                      {DateDifference()}
-                      روز
-                    </span>
-                  </div>
-                )}
+              {isDateRangeValid && (
+                <div className="flex justify-start w-fit gap-2 px-2 pt-1.5 bg-white rounded-sm items-center">
+                  <span className="text-sm">بازه دلخواه:</span>
+                  <span className="font-medium text-sm text-gray-1000">
+                    {DateDifference()}
+                    روز
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         )}
