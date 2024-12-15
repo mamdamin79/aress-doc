@@ -12,25 +12,13 @@ export default meta;
 
 type Story = StoryObj<typeof PercentageLabel>;
 
-export const Positive: Story = {
+export const Default: Story = {
+  argTypes: {
+    size: { control: 'radio', options: ['normal', 'small'] },
+    value: { control: 'number' },
+  },
   args: {
     size: 'normal',
     value: 8,
-  },
-};
-
-export const Negative: Story = {
-  args: {
-    size: 'normal',
-    tooltip: 'negative number',
-    value: -8,
-  },
-};
-
-export const Zero: Story = {
-  args: {
-    size: 'normal',
-    tooltip: 'zero number',
-    value: 0,
   },
 };
