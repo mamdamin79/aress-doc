@@ -18,19 +18,21 @@ type optionProps = {
 interface ReportSettingsProps {
   options: optionProps[];
   isOpen: boolean;
+  onClose: () => void;
 }
 
 export const ReportSettings: React.FC<ReportSettingsProps> = ({
   options,
   isOpen,
+  onClose,
 }) => {
   return (
     <div
       className={cn(
-        'z-10 flex h-80 w-[328px] flex-col rounded-bl-2xl rounded-tl-2xl shadow-lg transition-all duration-300 ease-in-out',
+        'bg-baseBackground flex h-80 w-[328px] flex-col rounded-bl-2xl rounded-tl-2xl shadow-lg transition-all duration-300 ease-in-out',
         isOpen
           ? 'visible translate-x-0 transform opacity-100'
-          : 'invisible -translate-x-5 transform opacity-0',
+          : 'invisible w-0 -translate-x-5 transform opacity-0',
       )}
     >
       <div className="text-md w-full py-2 pr-4 font-medium">تنظیمات گزارش</div>
@@ -56,7 +58,13 @@ export const ReportSettings: React.FC<ReportSettingsProps> = ({
         })}
       </CustomScrollbar>
       <div className="flex w-full flex-row gap-1 text-nowrap pb-4 pl-4 pr-[175px] text-xs font-semibold">
-        <Button align="center" isLoading={false} mode="secondary" size="sm">
+        <Button
+          align="center"
+          isLoading={false}
+          mode="secondary"
+          size="sm"
+          onClick={onClose}
+        >
           انصراف
         </Button>
         <Button align="center" isLoading={false} mode="primary" size="sm">

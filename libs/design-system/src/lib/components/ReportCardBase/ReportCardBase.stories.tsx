@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ReportCardBase } from './ReportCardBase';
+import { useState } from 'react';
 
 // Meta configuration for the ReportCardBase component in Storybook
 const meta: Meta<typeof ReportCardBase> = {
@@ -15,7 +16,14 @@ type Story = StoryObj<typeof ReportCardBase>;
 // A default story for the ReportCardBase component
 export const Default: Story = {
   render: (args) => {
-    return <ReportCardBase {...args} />
+    const [settingsOpen, setSettingsOpen] = useState(true);
+    return (
+      <ReportCardBase
+        {...args}
+        settingsOpen={settingsOpen}
+        setSettingsOpen={setSettingsOpen}
+      />
+    );
   },
   args: {
     title: 'تایتل (اسم گزارش)',
@@ -28,7 +36,7 @@ export const Default: Story = {
           icon: { name: 'chart-scatter' },
         },
       ],
-      onChange(value:number) {
+      onChange(value: number) {
         console.log(value);
       },
       size: 'sm',
