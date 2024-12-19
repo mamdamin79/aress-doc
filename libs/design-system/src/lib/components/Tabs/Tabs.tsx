@@ -48,7 +48,7 @@ export const Tabs: React.FC<Props> = ({
                       !bgWhite && mode !== 'lined' && mode !== 'rounded',
                   },
                   {
-                    'data-[selected]:bg-brand-200 data-[selected]:text-brand-900 rounded-sm px-3 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-700':
+                    'data-[selected]:bg-brand-200 data-[selected]:text-brand-800 rounded-sm px-3 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-700':
                       mode === 'rounded',
                   },
                   {
