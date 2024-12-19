@@ -6,7 +6,7 @@ import { Icon } from '../Icon';
 
 interface Props {
   defaultValue?: string | Date | CustomDate;
-  onChange: (value: string | Date) => void;
+  onChange: (value: string) => void;
   mode: 'jalali' | 'miladi';
   min?: string;
   active: boolean;

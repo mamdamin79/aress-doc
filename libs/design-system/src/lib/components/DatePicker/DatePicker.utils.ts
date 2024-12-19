@@ -16,3 +16,13 @@ export const convertToISODate = (date: string) => {
 export const formatDateToPersian = (date: string): string => {
   return convertToISODate(date).replace(/-/g, '');
 };
+
+export const DateDifference = (
+  startDate: string | Date,
+  endDate: string | Date
+) => {
+  const startDateTime = new Date(startDate);
+  const endDateTime = new Date(endDate);
+  const timeDifference = +endDateTime - +startDateTime;
+  return Math.ceil(timeDifference / (1000 * 3600 * 24));
+};

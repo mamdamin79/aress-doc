@@ -1,35 +1,13 @@
 import { useState, useEffect, useRef, useMemo, useTransition } from 'react';
-import {
-  RangePicker,
-  PickerLocale,
-  createDate,
-  formatDate,
-} from 'drm-datepickerjs';
+import { RangePicker, createDate, formatDate } from 'drm-datepickerjs';
 import { cn } from '../../../utils';
 import { Field, Select } from '@headlessui/react';
 import { Icon } from '../Icon';
 import { DateInput } from '../DateInput';
 import moment from 'jalali-moment';
 import { Tooltip } from '../Tooltip';
-import { getFirstAndLastDayOfWeek } from './DatePicker.utils';
-
-const locale: PickerLocale = () => ({
-  months: {
-    1: { name: 'فروردین', numberOfDays: 31 },
-    2: { name: 'اردیبهشت', numberOfDays: 31 },
-    3: { name: 'خرداد', numberOfDays: 31 },
-    4: { name: 'تیر', numberOfDays: 31 },
-    5: { name: 'مرداد', numberOfDays: 31 },
-    6: { name: 'شهریور', numberOfDays: 31 },
-    7: { name: 'مهر', numberOfDays: 30 },
-    8: { name: 'آبان', numberOfDays: 30 },
-    9: { name: 'آذر', numberOfDays: 30 },
-    10: { name: 'دی', numberOfDays: 30 },
-    11: { name: 'بهمن', numberOfDays: 30 },
-    12: { name: 'اسفند', numberOfDays: 30 },
-  },
-});
-const weeksTitle = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
+import { convertToISODate, getFirstAndLastDayOfWeek } from './DatePicker.utils';
+import { locale, weeksTitle } from './DatePicker.constansts';
 
 interface Props {
   min: string;
@@ -46,8 +24,8 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [minDate, setMinDate] = useState(min);
   const [maxDate, setMaxDate] = useState(max);
-  const [startDate, setStartDate] = useState<string | Date | null>();
-  const [endDate, setEndDateS] = useState<string | Date | null>();
+  const [startDate, setStartDate] = useState<string | null>();
+  const [endDate, setEndDateS] = useState<string | null>();
   const [activeStartInput, setActiveStartInput] = useState(true);
   const [activeEndInput, setActiveEndInput] = useState(false);
   const [invalidStartDate, setInvalidStartDate] = useState('');
@@ -66,7 +44,6 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
     minError: false,
     maxError: false,
   });
-
   const [endErrors, setEndErrors] = useState<{
     minError: boolean;
     maxError: boolean;
@@ -82,11 +59,11 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
     setEndErrors(e);
   };
 
-  const updateStartInput = (e: string | Date) => {
+  const updateStartInput = (e: string) => {
     setStartDate(e);
   };
 
-  const updateEndInput = (e: string | Date) => {
+  const updateEndInput = (e: string) => {
     setEndDateS(e);
   };
 
@@ -155,30 +132,15 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
   );
 
   useEffect(() => {
-    if (typeof startDate === 'string') {
-      setDate(
-        moment
-          .from(startDate, 'fa', 'YYYY/MM/DD')
-          .locale('en')
-          .format('YYYY-MM-DD')
-      );
+    if (startDate) {
+      setDate(convertToISODate(startDate));
     }
-    if (typeof endDate === 'string') {
-      setEndDate(
-        moment
-          .from(endDate, 'fa', 'YYYY/MM/DD')
-          .locale('en')
-          .format('YYYY-MM-DD')
-      );
+    if (endDate) {
+      setEndDate(convertToISODate(endDate));
     }
-    if (typeof startDate === 'string' && typeof endDate === 'string') {
+    if (startDate && endDate) {
       if (startDate.replace(/-/g, '') < endDate.replace(/-/g, '')) {
-        setDate(
-          moment
-            .from(startDate, 'fa', 'YYYY/MM/DD')
-            .locale('en')
-            .format('YYYY-MM-DD')
-        );
+        setDate(convertToISODate(startDate));
       }
       if (
         startDate.replace(/-/g, '') > endDate.replace(/-/g, '') &&
@@ -194,7 +156,6 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
         setInvalidEndDate('');
         setInvalidStartDate('');
       }
-
       if (startDate.replace(/-/g, '') === endDate.replace(/-/g, '')) {
         setMosaviDate('تاریخ شروع و پایان نباید تو یک روز باشد.');
       } else {
@@ -213,12 +174,10 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
   ]);
 
   const DateDifference = () => {
-    if (typeof startDate === 'string' && typeof endDate === 'string') {
+    if (startDate && endDate) {
       const startDateTime = new Date(startDate);
       const endDateTime = new Date(endDate);
-
       const timeDifference = +endDateTime - +startDateTime;
-
       return Math.ceil(timeDifference / (1000 * 3600 * 24));
     }
   };
@@ -420,34 +379,22 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
         startDate.replace(/-/g, '') === formattedSelectedDate
       ) {
         setTitleTooltip('');
-      } else {
-        setTitleTooltip('تاریخ شروع');
-      }
+      } else setTitleTooltip('تاریخ شروع');
     }
     if (focuseEndInput && typeof startDate === 'string') {
       if (formattedSelectedDate > startDate.replace(/-/g, '')) {
         setTitleTooltip('تاریخ پایان');
-      } else {
-        setTitleTooltip('تاریخ شروع');
-      }
-
-      if (formattedSelectedDate === startDate.replace(/-/g, '')) {
-        setTitleTooltip('');
-      }
+      } else setTitleTooltip('تاریخ شروع');
 
       if (
+        formattedSelectedDate === startDate.replace(/-/g, '') ||
         formattedSelectedDate ===
-        (typeof endDate === 'string' && endDate.replace(/-/g, ''))
+          (typeof endDate === 'string' && endDate.replace(/-/g, '')) ||
+        formattedSelectedDate < min.replace(/-/g, '') ||
+        formattedSelectedDate > max.replace(/-/g, '')
       ) {
         setTitleTooltip('');
       }
-    }
-
-    if (
-      formattedSelectedDate < min.replace(/-/g, '') ||
-      formattedSelectedDate > max.replace(/-/g, '')
-    ) {
-      setTitleTooltip('');
     }
   };
 
@@ -614,42 +561,30 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
               </div>
               <div className="h-4">
                 <span className="text-red-600 mr-40 font-medium text-xs">
-                  {!startErrors.minError &&
-                    !startErrors.maxError &&
-                    focuseStartInput &&
-                    invalidStartDate}
-                  {startErrors.minError &&
-                    focuseStartInput &&
-                    'تاریخ شروع وارد شده کمتر از حداقل تاریخ مجاز است.'}
-                  {startErrors.maxError &&
-                    focuseStartInput &&
-                    'تاریخ شروع وارد شده بیشتر از حداکثر تاریخ مجاز است.'}
-                  {!endErrors.maxError &&
-                    focuseStartInput &&
-                    !endErrors.minError &&
-                    !startErrors.minError &&
-                    !startErrors.maxError &&
-                    !invalidEndDate &&
-                    mosvaiDate}
+                  {focuseStartInput &&
+                    (startErrors.minError
+                      ? 'تاریخ شروع وارد شده کمتر از حداقل تاریخ مجاز است.'
+                      : startErrors.maxError
+                      ? 'تاریخ شروع وارد شده بیشتر از حداکثر تاریخ مجاز است.'
+                      : invalidStartDate ||
+                        (mosvaiDate &&
+                          !endErrors.maxError &&
+                          !endErrors.minError &&
+                          mosvaiDate))}
                 </span>
                 <span className="text-red-600 mr-[180px] font-medium text-xs">
-                  {!endErrors.minError &&
-                    !endErrors.maxError &&
-                    focuseEndInput &&
-                    invalidEndDate}
-                  {endErrors.minError &&
-                    focuseEndInput &&
-                    'تاریخ پایان وارد شده کمتر از حداقل تاریخ مجاز است.'}
-                  {endErrors.maxError &&
-                    focuseEndInput &&
-                    'تاریخ پایان وارد شده بیشتر از حداکثر تاریخ مجاز است.'}
-                  {!endErrors.maxError &&
-                    focuseEndInput &&
-                    !endErrors.minError &&
-                    !startErrors.minError &&
-                    !startErrors.maxError &&
-                    !invalidEndDate &&
-                    mosvaiDate}
+                  {focuseEndInput &&
+                    (endErrors.minError
+                      ? 'تاریخ پایان وارد شده کمتر از حداقل تاریخ مجاز است.'
+                      : endErrors.maxError
+                      ? 'تاریخ پایان وارد شده بیشتر از حداکثر تاریخ مجاز است.'
+                      : invalidEndDate ||
+                        (mosvaiDate &&
+                          !endErrors.maxError &&
+                          !endErrors.minError &&
+                          !startErrors.minError &&
+                          !startErrors.maxError &&
+                          mosvaiDate))}
                 </span>
               </div>
             </div>
@@ -769,7 +704,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                                       className={cn(
                                         'w-10 h-10 my-1 bg-white shadow-xs text-lg hover:border-brand-600 hover:border-2 rounded-full',
                                         {
-                                          'bg-brand-600 !border-l-0 !border-r-0 shadow-brand-600 !rounded-full pl-[3px] !w-10 shadow-sm text-white':
+                                          'bg-brand-600 !border-l-0 !border-r-0 shadow-brand-600 !rounded-full !w-10 shadow-sm text-white':
                                             isSelectedDay(day.date),
                                         },
                                         {
