@@ -12,10 +12,17 @@ export type CustomIconName =
   | 'CustomClock'
   | 'CustomCircularUser'
   | 'CustomCirlcleX'
-  | 'CustomAlpha';
+  | 'CustomAlpha'
+  | 'CustomPinLinear'
+  | 'CustomPlayLinear'
+  | 'CustomPinOffLinear'
+  | 'CustomPinOffFill'
+  | 'CustomPlayFill'
+  | 'CustomPinFill'
+  | 'CustomGold';
 
 // this is a type of all valid icon names from lucide
 export type IconName = keyof typeof dynamicIconImports | CustomIconName;
 
 // valid icon size you can pass to IconComponent
-export type IconSize = 'sm' | 'md' | 'lg' | "lg_plus" | 'xl';
+export type IconSize = 'sm' | 'md' | 'lg' | 'lg_plus' | 'xl';
