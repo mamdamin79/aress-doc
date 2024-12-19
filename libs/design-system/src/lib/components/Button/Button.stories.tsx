@@ -17,7 +17,7 @@ const meta: Meta<typeof Button> = {
     },
     theme: {
       control: { type: 'radio' },
-      options: ['brand', 'error'],
+      options: ['brand', 'pressed'],
     },
     align: {
       control: { type: 'radio' },

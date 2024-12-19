@@ -10,7 +10,7 @@ export interface ButtonProps
   size: ButtonSize;
   mode: ButtonMode;
   align: 'center' | 'right';
-  theme: 'brand' | 'error';
+  theme: 'brand' | 'pressed';
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -94,7 +94,7 @@ export const Button: React.FC<ButtonProps> = ({
           !disabled &&
           (theme === 'brand'
             ? 'text-brand-600 active:text-brand-800 active:border-brand-800'
-            : 'text-red-600 active:red-brand-800 active:border-red-800')
+            : 'text-red-600 active:red-brand-800 active:border-red-800'),
       )}
     >
       {isLoading ? (
@@ -112,7 +112,7 @@ export const Button: React.FC<ButtonProps> = ({
               { 'text-center': align === 'center' },
               mode === 'underline' &&
                 !disabled &&
-                'transition-transform pb-1 group-hover:underline underline-offset-8 group-hover:border-b-brand-600'
+                'transition-transform pb-1 group-hover:underline underline-offset-8 group-hover:border-b-brand-600',
             )}
           >
             {children}
