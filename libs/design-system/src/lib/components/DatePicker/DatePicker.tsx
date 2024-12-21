@@ -1635,7 +1635,7 @@ export function DatePicker({
   const [focuseEndInput, setFocuseEndInput] = useState(false);
   const [focuseStartInput, setFocuseStartInput] = useState(true);
   const [activeStartInput, setActiveStartInput] = useState(true);
-  const [activeEndInput, setActiveEndInput] = useState(true);
+  const [activeEndInput, setActiveEndInput] = useState(false);
   const [errors, setErrors] = useState<{
     start: ErrorState;
     end: ErrorState;
@@ -1681,11 +1681,12 @@ export function DatePicker({
     endDate,
     startDate,
     setCurrentDate,
+    getDayName,
     setEndDate,
     setStartDate,
   } = usePersianCalendar(
-    { day: 15, month: 4, year: +min.slice(0, 4) },
-    { day: 15, month: 12, year: +max.slice(0, 4) }
+    { day: 15, month: +min.slice(5, 7), year: +min.slice(0, 4) },
+    { day: 15, month: +max.slice(5, 7), year: +max.slice(0, 4) }
   );
 
   useEffect(() => {
@@ -1708,7 +1709,7 @@ export function DatePicker({
       (_, index) => {
         const dayName =
           weekdayNames[
-            (weekdayNames.indexOf(days[0].dayName) - (index + 1) + 7) % 7
+          (weekdayNames.indexOf(days[0].dayName) - (index + 1) + 7) % 7
           ];
         return { day: index + 1, dayName, status: 'prev' };
       }
@@ -1785,43 +1786,62 @@ export function DatePicker({
               <div className="flex gap-2 text-md items-center font-vazirmatn justify-center">
                 <div className="flex flex-col gap-1 items-start">
                   <span>تاریخ شروع بازه:</span>
-
-                  <DateInput
-                    invalidStartDate={validEndDateS}
-                    invalidEndDate={validEndDateS}
-                    mosaviDate={areInputsEqual}
-                    placeholder="تاریخ شروع"
-                    active={activeStartInput}
-                    onChange={updateStartInput}
-                    clearDate={clearStartDate}
-                    errors={errors.start}
-                    focuse={focuseStartInput}
-                    // errorHandler={errorHandler}
-                    mode="jalali"
-                    min={min}
-                    max={max}
-                    defaultValue={startDateS}
-                  />
+                  <div
+                    onClick={() => {
+                      setActiveStartInput(true);
+                      setFocuseStartInput(true);
+                      setFocuseEndInput(false);
+                      if (startDate && !endDate) {
+                        setActiveEndInput(false);
+                      }
+                    }}
+                  >
+                    <DateInput
+                      invalidStartDate={validEndDateS}
+                      invalidEndDate={validEndDateS}
+                      mosaviDate={areInputsEqual}
+                      placeholder="تاریخ شروع"
+                      active={activeStartInput}
+                      onChange={updateStartInput}
+                      clearDate={clearStartDate}
+                      errors={errors.start}
+                      focuse={focuseStartInput}
+                      // errorHandler={errorHandler}
+                      mode="jalali"
+                      min={min}
+                      max={max}
+                      defaultValue={startDateS}
+                    />
+                  </div>
                 </div>
                 <div className="w-2.5 h-0.5 mt-7 bg-gray-500"></div>
                 <div className="gap-1 flex-col flex items-start">
                   <span>تاریخ پایان بازه:</span>
-                  <DateInput
-                    invalidStartDate={validStartDate}
-                    invalidEndDate={validEndDateS}
-                    mosaviDate={areInputsEqual}
-                    focuse={focuseEndInput}
-                    placeholder="تاریخ پایان"
-                    active={activeEndInput}
-                    onChange={updateEndInput}
-                    errors={errors.end}
-                    clearDate={clearEndDate}
-                    // errorHandler={endErrorHandler}
-                    mode="jalali"
-                    min={min}
-                    max={max}
-                    defaultValue={endDateS}
-                  />
+                  <div onClick={() => {
+                    if (startDate) {
+                      setActiveEndInput(true);
+                      setFocuseEndInput(true);
+                      setFocuseStartInput(false);
+                    }
+                  }
+                  }>
+                    <DateInput
+                      invalidStartDate={validStartDate}
+                      invalidEndDate={validEndDateS}
+                      mosaviDate={areInputsEqual}
+                      focuse={focuseEndInput}
+                      placeholder="تاریخ پایان"
+                      active={activeEndInput}
+                      onChange={updateEndInput}
+                      errors={errors.end}
+                      clearDate={clearEndDate}
+                      // errorHandler={endErrorHandler}
+                      mode="jalali"
+                      min={min}
+                      max={max}
+                      defaultValue={endDateS}
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -1858,21 +1878,20 @@ export function DatePicker({
               <select
                 onChange={(e) =>
                   setCurrentDate(
-                    `${calendars[0].slice(0, 4)}-${
-                      +e.target.value < 10
-                        ? `0${e.target.value}`
-                        : e.target.value
+                    `${calendars[0].slice(0, 4)}-${+e.target.value < 10
+                      ? `0${e.target.value}`
+                      : e.target.value
                     }-${calendars[0].slice(8, 9)}`
                   )
                 }
                 className="w-24 outline-none cursor-pointer rounded-md"
               >
                 {listMonth.map((item) => (
-                  <option 
-                  className={cn({'bg-brand-300': min.slice(0, 4) === calendars[0].slice(0, 4) && item.id === +calendars[0].slice(5, 7)})}
-                  disabled={min.slice(0, 4) === calendars[0].slice(0, 4) && item.id < +min.slice(5, 7)}
-                  selected={item.id === +calendars[0].slice(5, 7)}
-                  key={item.id} value={item.id}>
+                  <option
+                    className={cn({ 'bg-brand-300': min.slice(0, 4) === calendars[0].slice(0, 4) && item.id === +calendars[0].slice(5, 7) })}
+                    disabled={min.slice(0, 4) === calendars[0].slice(0, 4) && item.id < +min.slice(5, 7)}
+                    selected={item.id === +calendars[0].slice(5, 7)}
+                    key={item.id} value={item.id}>
                     {item.name}
                   </option>
                 ))}
@@ -1880,10 +1899,9 @@ export function DatePicker({
               <select
                 onChange={(e) =>
                   setCurrentDate(
-                    `${calendars[0].slice(0, 4)}-${
-                      +e.target.value < 10
-                        ? `0${e.target.value}`
-                        : e.target.value
+                    `${calendars[0].slice(0, 4)}-${+e.target.value < 10
+                      ? `0${e.target.value}`
+                      : e.target.value
                     }-${calendars[0].slice(8, 9)}`
                   )
                 }
@@ -1911,13 +1929,13 @@ export function DatePicker({
             <div className="w-full flex justify-between items-center">
               <div
                 onClick={() => setCurrentDate(-1)}
-                className={cn('bg-white hover:border-2 border-brand-600 cursor-pointer rounded-full w-10 h-10 flex items-center justify-center text-black', {'bg-gray-200 hover:border-none cursor-default': min.slice(0, 4) === calendars[0].slice(0, 4) && min.slice(5, 7) > calendars[0].slice(5, 7)})}
+                className={cn('bg-white hover:border-2 border-brand-600 cursor-pointer rounded-full w-10 h-10 flex items-center justify-center text-black', { 'bg-gray-200 hover:border-none cursor-default': min.slice(0, 4) === calendars[0].slice(0, 4) && min.slice(5, 7) >= calendars[0].slice(5, 7) })}
               >
                 <Icon name="chevron-right" size="lg" />
               </div>
               <div
                 onClick={() => setCurrentDate(+1)}
-                className={cn('bg-white hover:border-2 border-brand-600 flex items-center justify-center w-10 h-10 cursor-pointer rounded-full text-black', {'bg-gray-200 hover:border-none cursor-default': max.slice(0, 4) === calendars[1].slice(0, 4) && max.slice(5, 7) < calendars[0].slice(5, 7)})}>
+                className={cn('bg-white hover:border-2 border-brand-600 flex items-center justify-center w-10 h-10 cursor-pointer rounded-full text-black', { 'bg-gray-200 hover:border-none cursor-default': max.slice(0, 4) === calendars[1].slice(0, 4) && max.slice(5, 7) <= calendars[0].slice(5, 7) })}>
                 <Icon name="chevron-left" size="lg" />
               </div>
             </div>
@@ -1936,12 +1954,30 @@ export function DatePicker({
                       {day.status === 'current' && (
                         <div className={cn('z-20 relative')}>
                           <button
-                            onClick={() =>
-                              setStartDate({
-                                day: day.day,
-                                month: +calendars[0].slice(5, 7),
-                                year: +calendars[0].slice(0, 4),
-                              })
+                            onClick={() => {
+                              if (`${calendars[0].slice(0, 4)}${calendars[0].slice(5, 7)}${day.day}` > min.replace(/-/g, '') && `${calendars[0].slice(0, 4)}${calendars[0].slice(5, 7)}${day.day}` < max.replace(/-/g, '')) {
+                                if (!endDate && !startDate) {
+                                  setStartDate({
+                                    day: day.day,
+                                    month: +calendars[0].slice(5, 7),
+                                    year: +calendars[0].slice(0, 4)
+                                  })
+                                }
+
+                                setFocuseEndInput(true);
+                                setActiveEndInput(true);
+                                setFocuseStartInput(false);
+
+                                if (!endDate && startDate && focuseStartInput) {
+                                  setStartDate('');
+                                  setStartDate({
+                                    day: day.day,
+                                    month: +calendars[0].slice(5, 7),
+                                    year: +calendars[0].slice(0, 4)
+                                  })
+                                }
+                              }
+                            }
                             }
                             className={cn(
                               'w-10 h-10 my-1 bg-white shadow-brand-600 shadow-xs text-lg hover:border-brand-600 hover:border-2 rounded-full'
@@ -1970,48 +2006,11 @@ export function DatePicker({
                         <div className={cn('z-20 relative')}>
                           <button
                             onClick={() => {
-                                setActiveEndInput(true);
-                                setFocuseEndInput(true);
-                                setFocuseStartInput(false);
-
-                                if (
-                                  !endDate &&
-                                  focuseStartInput
-                                ) {
-                                  setStartDate(day);
-                                }
-
-                                if (
-                                  (startDate) &&
-                                  focuseEndInput
-                                ) {
-                                  if (
-                                    formattedSelectedDate >
-                                    startDate.replace(/-/g, '')
-                                  ) {
-                                    setEndDateS(selectedDate);
-                                  } else {
-                                    setEndDateS(null);
-                                    setEndDate('');
-                                    setStartDate(selectedDate);
-                                  }
-                                }
-
-                                if (
-                                  (!endDate) &&
-                                  focuseStartInput
-                                ) {
-                                  if (
-                                    formattedSelectedDate <=
-                                    endDate.replace(/-/g, '')
-                                  ) {
-                                    setStartDate(selectedDate);
-                                  } else {
-                                    setEndDateS(null);
-                                    setEndDate('');
-                                    setStartDate(selectedDate);
-                                  }
-                                }
+                              setEndDate({
+                                day: day.day,
+                                month: +calendars[1].slice(5, 7),
+                                year: +calendars[1].slice(0, 4)
+                              })
                             }}
                             className={cn(
                               'w-10 h-10 my-1 bg-white shadow-brand-600 shadow-xs text-lg hover:border-brand-600 hover:border-2 rounded-full'

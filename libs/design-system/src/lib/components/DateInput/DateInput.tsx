@@ -652,9 +652,6 @@ export const DateInput: React.FC<Props> = ({
 
   return (
       <div
-        tabIndex={1}
-        onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
         className={cn(
           'w-40 rounded-md bg-white border-2 flex items-center gap-1 py-2 px-4',
           {
@@ -666,7 +663,7 @@ export const DateInput: React.FC<Props> = ({
               invalidStartDate,
             'border-brand-600':
               active &&
-              focus &&
+              focuse &&
               !errors.maxError &&
               !errors.minError &&
               !mosaviDate &&
@@ -676,7 +673,7 @@ export const DateInput: React.FC<Props> = ({
               year &&
               day &&
               month &&
-              !focus &&
+              !focuse &&
               !errors.maxError &&
               !errors.minError &&
               !mosaviDate &&

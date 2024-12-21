@@ -61,7 +61,7 @@ const usePersianCalendar = (min: DateObject, max: DateObject) => {
   );
 
   const setStartDate = useCallback(
-    (date: DateObject | '') => {
+    (date: DateObject | '') => {      
       if (date) {
         if (
           endDate &&
@@ -72,7 +72,7 @@ const usePersianCalendar = (min: DateObject, max: DateObject) => {
               date.day >= endDate.day))
         ) {
           setEndDateRaw(null);
-        }
+        }        
         setStartDateRaw(date);
       } else setEndDateRaw(null);
     },
@@ -154,6 +154,7 @@ const usePersianCalendar = (min: DateObject, max: DateObject) => {
     endDate,
     currentDate,
     calendars,
+    getDayName,
     setStartDate,
     setEndDate,
     setCurrentDate,
