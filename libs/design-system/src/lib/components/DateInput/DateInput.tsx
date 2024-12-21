@@ -10,10 +10,10 @@ interface Props {
   mode: 'jalali' | 'miladi';
   min?: string;
   active: boolean;
-  focus: boolean;
   invalidStartDate: string;
   invalidEndDate: string;
   mosaviDate: string;
+  focuse: boolean;
   clearDate: () => void;
   errors: {
     minError: boolean;
@@ -21,7 +21,7 @@ interface Props {
   };
   placeholder: string;
   max?: string;
-  errorHandler: (e: { minError: boolean; maxError: boolean }) => void;
+  // errorHandler: (e: { minError: boolean; maxError: boolean }) => void;
 }
 
 const isCustomDate = (value: unknown): value is CustomDate => {
@@ -38,11 +38,11 @@ const isCustomDate = (value: unknown): value is CustomDate => {
 };
 export const DateInput: React.FC<Props> = ({
   defaultValue,
+  focuse,
   invalidEndDate,
   invalidStartDate,
   mosaviDate,
-  errorHandler,
-  focus,
+  // errorHandler,
   placeholder,
   errors,
   onChange,
@@ -56,6 +56,7 @@ export const DateInput: React.FC<Props> = ({
   const [day, setDay] = useState<number>(0);
   const [month, setMonth] = useState<number | null>();
   const [year, setYear] = useState<number | null>();
+  const [focus, setFocus] = useState(false);
 
   const [minDate, setMinDate] = useState({
     day,
@@ -107,10 +108,10 @@ export const DateInput: React.FC<Props> = ({
         changeYearInput(dateJalali.year());
         if (day && month && year) {
           if (max && defaultValue.replace(/-/g, '') > max?.replace(/-/g, '')) {
-            errorHandler({ minError: false, maxError: true });
+            // errorHandler({ minError: false, maxError: true });
           }
           if (min && defaultValue.replace(/-/g, '') < min?.replace(/-/g, '')) {
-            errorHandler({ minError: true, maxError: false });
+            // errorHandler({ minError: true, maxError: false });
           }
 
           onChange(
@@ -264,10 +265,10 @@ export const DateInput: React.FC<Props> = ({
     if (!e) {
       setMonth(null);
     }
-    errorHandler({
-      minError: tempMinError,
-      maxError: tempMaxError,
-    });
+    // errorHandler({
+    //   minError: tempMinError,
+    //   maxError: tempMaxError,
+    // });
 
     if (year && e && day) {
       onChange(
@@ -404,10 +405,10 @@ export const DateInput: React.FC<Props> = ({
       }
     }
 
-    errorHandler({
-      minError: tempMinError,
-      maxError: tempMaxError,
-    });
+    // errorHandler({
+    //   minError: tempMinError,
+    //   maxError: tempMaxError,
+    // });
 
     if (year && month && e) {
       onChange(
@@ -467,10 +468,10 @@ export const DateInput: React.FC<Props> = ({
 
       if (e < maxDate.year) tempMaxError = false;
     }
-    errorHandler({
-      minError: tempMinError,
-      maxError: tempMaxError,
-    });
+    // errorHandler({
+    //   minError: tempMinError,
+    //   maxError: tempMaxError,
+    // });
 
     if (!e) {
       setYear(null);
@@ -650,8 +651,10 @@ export const DateInput: React.FC<Props> = ({
   }, [focus]);
 
   return (
-    <div>
       <div
+        tabIndex={1}
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
         className={cn(
           'w-40 rounded-md bg-white border-2 flex items-center gap-1 py-2 px-4',
           {
@@ -752,6 +755,5 @@ export const DateInput: React.FC<Props> = ({
           <span className="text-md text-gray-700">{placeholder}</span>
         )}
       </div>
-    </div>
   );
 };

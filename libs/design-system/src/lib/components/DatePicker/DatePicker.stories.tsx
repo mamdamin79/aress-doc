@@ -19,6 +19,11 @@ export const Default: Story = {
     min: '1400-04-25',
     max: '1409-05-25',
   },
+  argTypes: {
+    min: {
+      control: { type: 'text' },
+    }
+  },
   render: function Success(args) {
     const [{ isOpen }, updateArgs] = useArgs();
     const [{ dateRange }, updateArgsDateRange] = useArgs();
@@ -35,7 +40,7 @@ export const Default: Story = {
       <DatePicker
         dateRange={dateRange}
         setDateRange={(start, end) => setDateRange(start, end)}
-        max="1500-05-12"
+        max="1401-05-12"
         min="1400-05-12"
         isOpen={isOpen}
         onClose={onCloseDatePicer}
