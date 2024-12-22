@@ -1,298 +1,3 @@
-//                                               'bg-brand-600 !border-r-0 !w-10 shadow-brand-600 !rounded-full shadow-sm text-white':
-//                                                 isSelectedDay(day.date),
-//                                               'pr-[3px]':
-//                                                 formatDateToPersian(
-//                                                   day.date
-//                                                 ).slice(-2) ===
-//                                                   (typeof endDate ===
-//                                                     'string' &&
-//                                                     String(
-//                                                       endDate.slice(-2)
-//                                                     )) &&
-//                                                 endDateHover &&
-//                                                 formatDateToPersian(
-//                                                   endDateHover
-//                                                 ) >
-//                                                   String(endDate).replace(
-//                                                     /-/g,
-//                                                     ''
-//                                                   ),
-//                                             },
-//                                             {
-//                                               'bg-brand-600 w-full text-white':
-//                                                 isSelecting() &&
-//                                                 isDateInRange(day.date) &&
-//                                                 isEndDate(day.date),
-//                                             },
-//                                             {
-//                                               '!rounded-r-full border-r-2':
-//                                                 day.day === 1 &&
-//                                                 formatDateToPersian(day.date) <
-//                                                   max.replace(/-/g, '') &&
-//                                                 formatDateToPersian(day.date) <
-//                                                   max.replace(/-/g, ''),
-//                                             },
-//                                             {
-//                                               '!rounded-l-full': day.day === 31,
-//                                             },
-//                                             {
-//                                               '!rounded-l-full !border-l-2':
-//                                                 day.day === 30 &&
-//                                                 getRenderedNextMonth() > 6,
-//                                             },
-//                                             {
-//                                               'rounded-none !w-fit border-brand-600 border-t border-b':
-//                                                 !isSelectedDay(day.date) &&
-//                                                 isSelecting() &&
-//                                                 isDateInRange(day.date),
-//                                             },
-//                                             {
-//                                               'bg-brand-200 pl-[3px] border-none rounded-none text-brand-700 w-full':
-//                                                 !isSelectedDay(day.date) &&
-//                                                 !isSelecting() &&
-//                                                 isDateInRange(day.date),
-//                                             },
-//                                             {
-//                                               'rounded-r-full':
-//                                                 !isSelectedDay(day.date) &&
-//                                                 !isSelecting() &&
-//                                                 isDateInRange(day.date) &&
-//                                                 index === firstDayIndex,
-//                                             },
-//                                             {
-//                                               '!rounded-l-full':
-//                                                 !isSelectedDay(day.date) &&
-//                                                 !isSelecting() &&
-//                                                 isDateInRange(day.date) &&
-//                                                 index === lastDayIndex,
-//                                             },
-//                                             {
-//                                               '!rounded-r-full':
-//                                                 !isSelectedDay(day.date) &&
-//                                                 !isSelecting() &&
-//                                                 isDateInRange(day.date) &&
-//                                                 day.day === 1,
-//                                             },
-//                                             {
-//                                               'text-gray-400 cursor-default hover:border-none':
-//                                                 formatDateToPersian(day.date) <
-//                                                   min.replace(/-/g, '') ||
-//                                                 formatDateToPersian(day.date) >
-//                                                   max.replace(/-/g, ''),
-//                                             },
-
-//                                             {
-//                                               'border-t-2 pl-[3px] border-b-2 w-full rounded-none border-brand-600':
-//                                                 endDateHover &&
-//                                                 startDate &&
-//                                                 focuseEndInput &&
-//                                                 formatDateToPersian(day.date) >
-//                                                   String(startDate).replace(
-//                                                     /-/g,
-//                                                     ''
-//                                                   ) &&
-//                                                 formatDateToPersian(day.date) <
-//                                                   max.replace(/-/g, '') &&
-//                                                 formatDateToPersian(day.date) <
-//                                                   formatDateToPersian(
-//                                                     endDateHover
-//                                                   ),
-//                                             },
-//                                             {
-//                                               'border-t-2 border-b-2 w-full rounded-none border-brand-600':
-//                                                 endDateHover &&
-//                                                 focuseEndInput &&
-//                                                 endDate &&
-//                                                 formatDateToPersian(day.date) >
-//                                                   String(endDate).replace(
-//                                                     /-/g,
-//                                                     ''
-//                                                   ) &&
-//                                                 formatDateToPersian(day.date) <
-//                                                   moment(endDate, 'YYYY/MM/DD')
-//                                                     .locale('fa')
-//                                                     .format('YYYY-MM-DD')
-//                                                     .replace(/-/g, ''),
-//                                             },
-//                                             {
-//                                               'border-t-2 border-b-2 pl-[3px] w-full rounded-none border-brand-600':
-//                                                 endDateHover &&
-//                                                 focuseStartInput &&
-//                                                 endDate &&
-//                                                 startDate &&
-//                                                 formatDateToPersian(day.date) <
-//                                                   String(startDate).replace(
-//                                                     /-/g,
-//                                                     ''
-//                                                   ) &&
-//                                                 formatDateToPersian(day.date) >
-//                                                   moment(
-//                                                     endDateHover,
-//                                                     'YYYY/MM/DD'
-//                                                   )
-//                                                     .locale('fa')
-//                                                     .format('YYYY-MM-DD')
-//                                                     .replace(/-/g, '') &&
-//                                                 formatDateToPersian(day.date) >
-//                                                   min.replace(/-/g, ''),
-//                                             },
-
-//                                             {
-//                                               'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-r-2 rounded-r-full':
-//                                                 endDateHover &&
-//                                                 firstDayIndex === index &&
-//                                                 startDate &&
-//                                                 focuseEndInput &&
-//                                                 formatDateToPersian(day.date) >
-//                                                   String(startDate).replace(
-//                                                     /-/g,
-//                                                     ''
-//                                                   ) &&
-//                                                 formatDateToPersian(day.date) <
-//                                                   moment(
-//                                                     endDateHover,
-//                                                     'YYYY/MM/DD'
-//                                                   )
-//                                                     .locale('fa')
-//                                                     .format('YYYY-MM-DD')
-//                                                     .replace(/-/g, '') &&
-//                                                 formatDateToPersian(day.date) <
-//                                                   max.replace(/-/g, ''),
-//                                             },
-//                                             {
-//                                               'rounded-l-full':
-//                                                 !isSelectedDay(day.date) &&
-//                                                 !isSelecting() &&
-//                                                 isDateInRange(day.date) &&
-//                                                 +moment(day.date, 'YYYY/MM/DD')
-//                                                   .locale('fa')
-//                                                   .format('YYYY-MM-DD')
-//                                                   .slice(5, 7) > 6 &&
-//                                                 day.day === 30,
-//                                             },
-//                                             {
-//                                               'rounded-l-full':
-//                                                 !isSelectedDay(day.date) &&
-//                                                 !isSelecting() &&
-//                                                 isDateInRange(day.date) &&
-//                                                 +moment(day.date, 'YYYY/MM/DD')
-//                                                   .locale('fa')
-//                                                   .format('YYYY-MM-DD')
-//                                                   .slice(5, 7) <= 6 &&
-//                                                 day.day === 31,
-//                                             },
-//                                             {
-//                                               'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-r-2 rounded-r-full':
-//                                                 endDateHover &&
-//                                                 firstDayIndex === index &&
-//                                                 focuseEndInput &&
-//                                                 endDate &&
-//                                                 formatDateToPersian(day.date) >
-//                                                   String(endDate).replace(
-//                                                     /-/g,
-//                                                     ''
-//                                                   ) &&
-//                                                 formatDateToPersian(day.date) <
-//                                                   moment(
-//                                                     endDateHover,
-//                                                     'YYYY/MM/DD'
-//                                                   )
-//                                                     .locale('fa')
-//                                                     .format('YYYY-MM-DD')
-//                                                     .replace(/-/g, '') &&
-//                                                 formatDateToPersian(day.date) <
-//                                                   max.replace(/-/g, ''),
-//                                             },
-//                                             {
-//                                               'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-r-2 rounded-r-full':
-//                                                 endDateHover &&
-//                                                 firstDayIndex === index &&
-//                                                 focuseStartInput &&
-//                                                 endDate &&
-//                                                 startDate &&
-//                                                 formatDateToPersian(day.date) <
-//                                                   String(startDate).replace(
-//                                                     /-/g,
-//                                                     ''
-//                                                   ) &&
-//                                                 formatDateToPersian(day.date) >
-//                                                   moment(
-//                                                     endDateHover,
-//                                                     'YYYY/MM/DD'
-//                                                   )
-//                                                     .locale('fa')
-//                                                     .format('YYYY-MM-DD')
-//                                                     .replace(/-/g, '') &&
-//                                                 formatDateToPersian(day.date) <
-//                                                   max.replace(/-/g, '') &&
-//                                                 formatDateToPersian(day.date) >
-//                                                   min.replace(/-/g, ''),
-//                                             },
-//                                             {
-//                                               'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-l-2 rounded-l-full':
-//                                                 endDateHover &&
-//                                                 lastDayIndex === index &&
-//                                                 startDate &&
-//                                                 focuseEndInput &&
-//                                                 formatDateToPersian(day.date) >
-//                                                   String(startDate).replace(
-//                                                     /-/g,
-//                                                     ''
-//                                                   ) &&
-//                                                 formatDateToPersian(day.date) <
-//                                                   formatDateToPersian(
-//                                                     endDateHover
-//                                                   ) &&
-//                                                 formatDateToPersian(day.date) <
-//                                                   max.replace(/-/g, '') &&
-//                                                 formatDateToPersian(day.date) >
-//                                                   min.replace(/-/g, ''),
-//                                             },
-//                                             {
-//                                               'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-l-2 rounded-l-full':
-//                                                 endDateHover &&
-//                                                 lastDayIndex === index &&
-//                                                 focuseEndInput &&
-//                                                 endDate &&
-//                                                 formatDateToPersian(day.date) >
-//                                                   String(endDate).replace(
-//                                                     /-/g,
-//                                                     ''
-//                                                   ) &&
-//                                                 formatDateToPersian(day.date) <
-//                                                   moment(
-//                                                     endDateHover,
-//                                                     'YYYY/MM/DD'
-//                                                   )
-//                                                     .locale('fa')
-//                                                     .format('YYYY-MM-DD')
-//                                                     .replace(/-/g, '') &&
-//                                                 formatDateToPersian(day.date) <
-//                                                   max.replace(/-/g, ''),
-//                                             },
-//                                             {
-//                                               'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-l-2 rounded-l-full':
-//                                                 endDateHover &&
-//                                                 lastDayIndex === index &&
-//                                                 focuseStartInput &&
-//                                                 endDate &&
-//                                                 startDate &&
-//                                                 formatDateToPersian(day.date) <
-//                                                   String(startDate).replace(
-//                                                     /-/g,
-//                                                     ''
-//                                                   ) &&
-//                                                 formatDateToPersian(day.date) >
-//                                                   formatDateToPersian(
-//                                                     endDateHover
-//                                                   ) &&
-//                                                 formatDateToPersian(day.date) <
-//                                                   max.replace(/-/g, '') &&
-//                                                 formatDateToPersian(day.date) >
-//                                                   min.replace(/-/g, ''),
-//                                             }
-//                                           )}
-
 import { cn } from '../../../utils/classNames.utils';
 import { useCallback, useMemo, useState } from 'react';
 import { Icon } from '../Icon';
@@ -308,7 +13,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
   const [validEndDateS, setValidEndDate] = useState('');
   const [validStartDate, setValidStartDate] = useState('');
   const [titleTooltip, setTitleTooltip] = useState('');
-  const [dateHover, setDateHover] = useState('');
+  const [dateHover, setDateHover] = useState<DateType>();
   const [areInputsEqual, setAreInputsEqual] = useState('');
   const [focuseEndInput, setFocuseEndInput] = useState(false);
   const [focuseStartInput, setFocuseStartInput] = useState(true);
@@ -363,7 +68,11 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
     endDate,
     startDate,
     setStartDate,
+    isStartDateEqual,
+    isDateBetweenStartAndEnd,
     setEndDate,
+    isDateAfterStartOrEnd,
+    isEndDateEqual,
   } = usePersianCalendar(
     { day: 25, month: +min.slice(5, 7), year: +min.slice(0, 4) },
     { day: 25, month: +max.slice(5, 7), year: +max.slice(0, 4) }
@@ -384,7 +93,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
       (_, index) => {
         const dayName =
           weekdayNames[
-            (weekdayNames.indexOf(days[0].dayName) - (index + 1) + 7) % 7
+          (weekdayNames.indexOf(days[0].dayName) - (index + 1) + 7) % 7
           ];
         return { day: index + 1, dayName, status: 'prev' };
       }
@@ -410,16 +119,13 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
   // Render TitleTooltip
   const moseEnterCell = useCallback(
     (date: DateType) => {
-      
+
       if (isDateInRange(date)) {
         const formatDate = (date: DateType | null) => {
-          return `${date?.year}${date?.month}${date?.day}`;
+          return `${date?.year}${date?.month && date.month < 10 ? `0${date.month}` : date?.month}${date?.day && date.day < 10 ? `0${date?.day}` : date?.day}`;
         };
 
-        console.log(date);
-        
-
-        setDateHover(formatDate(date));
+        setDateHover(date);
 
         if (!startDate && focuseStartInput) {
           setTitleTooltip('تاریخ شروع');
@@ -437,8 +143,9 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
         }
 
         if (focuseEndInput && startDate) {
+          console.log(formatDate(date), formatDate(startDate));
+          
           if (formatDate(date) > formatDate(startDate)) {
-            console.log(formatDate(startDate), formatDate(date));
             setTitleTooltip('تاریخ پایان');
           } else setTitleTooltip('تاریخ شروع');
 
@@ -632,10 +339,9 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                   <select
                     onChange={(e) => {
                       setCurrentDate(
-                        `${calendars[0].slice(0, 4)}-${
-                          +e.target.value < 10
-                            ? `0${e.target.value}`
-                            : e.target.value
+                        `${calendars[0].slice(0, 4)}-${+e.target.value < 10
+                          ? `0${e.target.value}`
+                          : e.target.value
                         }-${calendars[0].slice(8, 9)}`
                       );
                     }}
@@ -697,10 +403,9 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                   <select
                     onChange={(e) => {
                       setCurrentDate(
-                        `${calendars[1].slice(0, 4)}-${
-                          +e.target.value < 10
-                            ? +`0${+e.target.value - 1}`
-                            : +e.target.value - 1
+                        `${calendars[1].slice(0, 4)}-${+e.target.value < 10
+                          ? +`0${+e.target.value - 1}`
+                          : +e.target.value - 1
                         }-${calendars[1].slice(8, 9)}`
                       );
                     }}
@@ -757,7 +462,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                       <div
                         onMouseEnter={() => {
                           moseEnterCell({
-                            day: +day.day < 10 ? +`0${day.day}` : day.day,
+                            day: day.day,
                             month: +calendars[0].slice(5, 7),
                             year: +calendars[0].slice(0, 4),
                           });
@@ -767,22 +472,9 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                       >
                         {day.status === 'current' && (
                           <div
-                            className={cn(
-                              'z-20 relative cursor-pointer w-10 h-10 my-1 bg-white flex items-center justify-center text-lg hover:border-brand-600 hover:border-2 rounded-full',
-                              {
-                                'hover:border-none text-gray-400 cursor-default':
-                                  !isDateInRange({
-                                    day: day.day,
-                                    month: +calendars[0].slice(5, 7),
-                                    year: +calendars[0].slice(0, 4),
-                                  }),
-                              }
-                            )}
-                          >
-                            <div
-                              onClick={() => {
-                                if (isDateInRange({day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4)})) {
-                                  if (focuseStartInput) {
+                            onClick={() => {
+                              if (isDateInRange({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) })) {
+                                if (focuseStartInput) {
                                   setFocuseStartInput(false);
                                   setFocuseEndInput(true);
                                   setActiveEndInput(true);
@@ -798,8 +490,30 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                                     year: +calendars[0].slice(0, 4),
                                   });
                                 }
-                              }}}
-                            >
+                              }
+                            }}
+                            className={cn(
+                              'z-20 relative cursor-pointer w-10 h-10 my-1 bg-white flex items-center justify-center text-lg hover:border-brand-600 hover:border-2 rounded-full',
+                              {
+                                'hover:border-none text-gray-400 cursor-default':
+                                  !isDateInRange({
+                                    day: day.day,
+                                    month: +calendars[0].slice(5, 7),
+                                    year: +calendars[0].slice(0, 4),
+                                  }),
+                              },
+                              {
+                                'bg-brand-200 w-11 rounded-none hover:border-none hover:bg-brand-400': isDateBetweenStartAndEnd({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) }) && !isStartDateEqual({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) }) && !isEndDateEqual({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) })
+                              },
+                              {
+                                'border-t-2 border-b-2 border-brand-600 w-11 rounded-none': dateHover && `${dateHover.year}${dateHover.month < 10 ? `0${dateHover.month}` : dateHover.month}${dateHover.day < 10 ? `0${dateHover.day}` : dateHover.day}` > `${calendars[0].slice(0, 4)}${calendars[0].slice(5, 7)}${day.day < 10 ? `0${day.day}` : day.day}` && isDateAfterStartOrEnd({day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4)}),
+                              },
+                              {
+                                'text-white bg-brand-600': isStartDateEqual({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) }) || isEndDateEqual({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) })
+                              }
+                            )}
+                          >
+                            <div>
                               {day.day}
                             </div>
                           </div>
@@ -825,24 +539,10 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                       key={index}
                     >
                       {day.status === 'current' && (
-                    <Tooltip className='!z-40' title={titleTooltip}>
-                        <div
-                          className={cn(
-                            'z-20 relative w-10 h-10 my-1 bg-white flex items-center cursor-pointer justify-center text-lg hover:border-brand-600 hover:border-2 rounded-full',
-                            {
-                              'hover:border-none text-gray-400 cursor-default':
-                                !isDateInRange({
-                                  day: day.day,
-                                  month: +calendars[1].slice(5, 7),
-                                  year: +calendars[1].slice(0, 4),
-                                }),
-                            }
-                          )}
-                        >
-                          {' '}
+                        <Tooltip className='!z-40' title={titleTooltip}>
                           <div
                             onClick={() => {
-                              if (isDateInRange({day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4)})) {
+                              if (isDateInRange({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) })) {
 
                                 if (focuseStartInput) {
                                   setFocuseStartInput(false);
@@ -862,11 +562,33 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                                 }
                               }
                             }}
+                            className={cn(
+                              'z-20 relative w-10 h-10 my-1 bg-white flex items-center cursor-pointer justify-center text-lg hover:border-brand-600 hover:border-2 rounded-full',
+                              {
+                                'hover:border-none text-gray-400 cursor-default':
+                                  !isDateInRange({
+                                    day: day.day,
+                                    month: +calendars[1].slice(5, 7),
+                                    year: +calendars[1].slice(0, 4),
+                                  }),
+                              },
+                              {
+                                'border-t-2 border-b-2 border-brand-600 w-11 rounded-none': dateHover && `${dateHover.year}${dateHover.month < 10 ? `0${dateHover.month}` : dateHover.month}${dateHover.day < 10 ? `0${dateHover.day}` : dateHover.day}` > `${calendars[1].slice(0, 4)}${calendars[1].slice(5, 7)}${day.day < 10 ? `0${day.day}` : day.day}` && isDateAfterStartOrEnd({day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4)}),
+                              },
+                              {
+                                'bg-brand-200 w-11 rounded-none hover:border-none hover:bg-brand-400': isDateBetweenStartAndEnd({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) && !isStartDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) && !isEndDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) })
+                              },
+                              {
+                                'text-white bg-brand-600': isStartDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) || isEndDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) })
+                              }
+                            )}
                           >
-                            {day.day}
+                            {' '}
+                            <div>
+                              {day.day}
+                            </div>
                           </div>
-                        </div>
-                      </Tooltip>
+                        </Tooltip>
                       )}
                     </div>
 
