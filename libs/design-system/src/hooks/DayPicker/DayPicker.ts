@@ -32,14 +32,6 @@ type DateObject = {
   day: number;
 };
 
-type CalendarRange = {
-  startDayName: DayName;
-  month: number;
-  start: number;
-  end: 29 | 30 | 31;
-  year: number;
-};
-
 const usePersianCalendar = (min: DateObject, max: DateObject) => {
   const [startDate, setStartDateRaw] = useState<DateObject | null>(null);
   const [endDate, setEndDateRaw] = useState<DateObject | null>(null);
@@ -74,7 +66,7 @@ const usePersianCalendar = (min: DateObject, max: DateObject) => {
           setEndDateRaw(null);
         }        
         setStartDateRaw(date);
-      } else setEndDateRaw(null);
+      } else setStartDateRaw(null);
     },
     [endDate]
   );
@@ -113,13 +105,12 @@ const usePersianCalendar = (min: DateObject, max: DateObject) => {
       } else if (typeof value === 'number') {
         const newMonth = currentDate.month + value;
         
-        // تنظیم درست ماه و سال در هنگام تغییر ماه
         const adjustedYear = currentDate.year + Math.floor((newMonth - 1) / 12);
-        const adjustedMonth = ((newMonth - 1) % 12 + 12) % 12 + 1; // اطمینان از اینکه ماه همیشه بین 1 و 12 است
+        const adjustedMonth = ((newMonth - 1) % 12 + 12) % 12 + 1;
   
         newDate = { year: adjustedYear, month: adjustedMonth, day: 1 };
-      } else if (Object.values(MonthName).includes(value as MonthName)) {
-        newDate = { year: currentDate.year, month: value as number, day: 1 };
+      } else if (Object.values(MonthName).includes(+value as MonthName)) {
+        newDate = { year: currentDate.year, month: +value as number, day: 1 };
       } else if (typeof value === 'string') {
         const [year, month] = value.split('-').map(Number);
         newDate = { year, month, day: 1 };
@@ -149,15 +140,48 @@ const usePersianCalendar = (min: DateObject, max: DateObject) => {
     ),
   ];
 
+  // Helper function to check if a date is inside the range
+  const isDateInRange = useCallback(
+    (date: DateObject) => {
+      const isAfterMin =
+        date.year > min.year ||
+        (date.year === min.year && date.month > min.month) ||
+        (date.year === min.year && date.month === min.month && date.day >= min.day);
+
+      const isBeforeMax =
+        date.year < max.year ||
+        (date.year === max.year && date.month < max.month) ||
+        (date.year === max.year && date.month === max.month && date.day <= max.day);
+
+      return isAfterMin && isBeforeMax;
+    },
+    [min, max]
+  );
+
+  const isCurrentDateInRange = useCallback(() => {
+    return isDateInRange(currentDate);
+  }, [currentDate, isDateInRange]);
+
+  const isCustomDateInRange = useCallback(
+    (date: DateObject) => {
+      return isDateInRange(date);
+    },
+    [isDateInRange]
+  );
+
   return {
     startDate,
     endDate,
     currentDate,
     calendars,
     getDayName,
+    isDateInRange,
     setStartDate,
     setEndDate,
     setCurrentDate,
+    isCurrentDateInRange,
+    isCustomDateInRange,
+    calculateDaysInMonth
   };
 };
 

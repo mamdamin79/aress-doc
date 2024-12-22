@@ -1,20 +1,28 @@
-import { PickerLocale } from 'drm-datepickerjs';
 
 export const weeksTitle = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
 
-export const locale: PickerLocale = () => ({
-  months: {
-    1: { name: 'فروردین', numberOfDays: 31 },
-    2: { name: 'اردیبهشت', numberOfDays: 31 },
-    3: { name: 'خرداد', numberOfDays: 31 },
-    4: { name: 'تیر', numberOfDays: 31 },
-    5: { name: 'مرداد', numberOfDays: 31 },
-    6: { name: 'شهریور', numberOfDays: 31 },
-    7: { name: 'مهر', numberOfDays: 30 },
-    8: { name: 'آبان', numberOfDays: 30 },
-    9: { name: 'آذر', numberOfDays: 30 },
-    10: { name: 'دی', numberOfDays: 30 },
-    11: { name: 'بهمن', numberOfDays: 30 },
-    12: { name: 'اسفند', numberOfDays: 30 },
-  },
-});
+export const weekdayNames = [
+  'Saturday',
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+];
+
+
+export const listMonth = [
+  { id: 1, name: 'فروردین' },
+  { id: 2, name: 'اردیبهشت' },
+  { id: 3, name: 'خرداد' },
+  { id: 4, name: 'تیر' },
+  { id: 5, name: 'مرداد' },
+  { id: 6, name: 'شهریور' },
+  { id: 7, name: 'مهر' },
+  { id: 8, name: 'آبان' },
+  { id: 9, name: 'آذر' },
+  { id: 10, name: 'دی' },
+  { id: 11, name: 'بهمن' },
+  { id: 12, name: 'اسفند' },
+];

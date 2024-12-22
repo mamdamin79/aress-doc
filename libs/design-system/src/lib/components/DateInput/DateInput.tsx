@@ -142,7 +142,8 @@ export const DateInput: React.FC<Props> = ({
       dayRef?.current?.focus();
       setActiveIndex(1);
     }
-  }, [day, active]);
+    if (!focuse) setActiveIndex(null);
+  }, [day, active, focuse]);
 
   useEffect(() => {
     if (min && mode === 'miladi') {
@@ -642,7 +643,6 @@ export const DateInput: React.FC<Props> = ({
 
     return () => {
       window.removeEventListener('keydown', keydownHandler);
-      document.body.style.overflow = 'scroll';
     };
   }, [isArrowKeyPressed, activeIndex, day, month, year, keydownHandler]);
 

@@ -1,1160 +1,5 @@
-// import { useState, useEffect, useRef, useMemo, useTransition } from 'react';
-// import { RangePicker, createDate, formatDate } from 'drm-datepickerjs';
-// import { cn } from '../../../utils';
-// import { Field, Select } from '@headlessui/react';
-// import { Icon } from '../Icon';
-// import { DateInput } from '../DateInput';
-// import moment from 'jalali-moment';
-// import { Tooltip } from '../Tooltip';
-// import { convertToISODate, getFirstAndLastDayOfWeek } from './DatePicker.utils';
-// import { locale, weeksTitle } from './DatePicker.constansts';
-
-// interface Props {
-//   min: string;
-//   dateRange: { start: string; end: string };
-//   max: string;
-//   isOpen: boolean;
-//   onClose: () => void;
-//   setDateRange: (start: string, end: string) => void;
-// }
-
-// export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
-//   const [isPending, startTransition] = useTransition();
-//   const [date, setDateS] = useState<Date>(); // create date based on timezone
-//   const containerRef = useRef<HTMLDivElement>(null);
-//   const [minDate, setMinDate] = useState(min);            ----------------------
-//   const [maxDate, setMaxDate] = useState(max);            ----------------------
-//   const [startDate, setStartDate] = useState<string | null>();
-//   const [endDate, setEndDateS] = useState<string | null>();
-//   const [activeStartInput, setActiveStartInput] = useState(true);
-//   const [activeEndInput, setActiveEndInput] = useState(false);
-//   const [invalidStartDate, setInvalidStartDate] = useState('');
-//   const [invalidEndDate, setInvalidEndDate] = useState('');
-//   const [mosvaiDate, setMosaviDate] = useState('');
-//   const [titleTooltip, setTitleTooltip] = useState('');
-//   const [endDateHover, setEndDateHover] = useState('');
-//   const [disableNextMonth, setDisableNextMonth] = useState(false);
-//   const [disablePrevMonth, setDisablePrevMonth] = useState(false);
-//   const [focuseStartInput, setFocuseStartInput] = useState(true);
-//   const [focuseEndInput, setFocuseEndInput] = useState(false);
-//   const [startErrors, setStartErrors] = useState<{
-//     minError: boolean;
-//     maxError: boolean;
-//   }>({
-//     minError: false,
-//     maxError: false,
-//   });
-//   const [endErrors, setEndErrors] = useState<{
-//     minError: boolean;
-//     maxError: boolean;
-//   }>({
-//     minError: false,
-//     maxError: false,
-//   });
-
-//   const errorHandler = (e: { minError: boolean; maxError: boolean }) => {
-//     setStartErrors(e);
-//   };
-//   const endErrorHandler = (e: { minError: boolean; maxError: boolean }) => {
-//     setEndErrors(e);
-//   };
-
-//   const updateStartInput = (e: string) => {
-//     setStartDate(e);
-//   };
-
-//   const updateEndInput = (e: string) => {
-//     setEndDateS(e);
-//   };
-
-//   function formatter(date: string) {
-//     const formattedDate = new Intl.DateTimeFormat('FA', {
-//       year: 'numeric',
-//       month: '2-digit',
-//       day: '2-digit',
-//       numberingSystem: 'latn',
-//     })
-//       .format(createDate(date))
-//       .split('/');
-
-//     const day = formattedDate[2];
-//     const month = formattedDate[1];
-//     const year = formattedDate[0];
-
-//     return `${year}-${month}-${day}`;
-//   }
-
-//   useEffect(() => {
-//     setMinDate(min);
-//     setMaxDate(max);
-//   }, [min, max]);
-
-//   const {
-//     onChangeDate,
-//     handleShowNextMonth,
-//     handleShowPrevMonth,
-//     getMode,
-//     getDate,
-//     isSelectedDay,
-//     getRenderedMonthName,
-//     setDate,
-//     setEndDate,
-//     getRenderedYear,
-//     getMonthList,
-//     changeMonth,
-//     getYearsList,
-//     changeYear,
-//     isLoading,
-//     getRenderedDateOriginal,
-//     getRenderedMonth,
-//     getRenderedNextMonth,
-//     isStartDate,
-//     getEndDate,
-//     getDays,
-//     getRenderedNextMonthName,
-//     getRenderedNextDateYear,
-//     isDateInRange,
-//     isSelecting,
-//     isEndDate,
-//   } = useMemo(
-//     // use memo to insure that only one instance of datePicker exist and don't change on re-rendering
-//     () =>
-//       new RangePicker({
-//         date: formatDate(date), // convert date to iso format YYYY-MM-DD
-//         locale,
-//         weekOffset: 1,
-//         dayRenderType: 'fill',
-//         twoSide: true,
-//         normalized: true,
-//         dateFormatter: formatter,
-//       }),
-//     []
-//   );
-
-//   useEffect(() => {
-//     if (startDate) {
-//       setDate(convertToISODate(startDate));
-//     }
-//     if (endDate) {
-//       setEndDate(convertToISODate(endDate));
-//     }
-//     if (startDate && endDate) {
-//       if (startDate.replace(/-/g, '') < endDate.replace(/-/g, '')) {
-//         setDate(convertToISODate(startDate));
-//       }
-//       if (
-//         startDate.replace(/-/g, '') > endDate.replace(/-/g, '') &&
-//         focuseStartInput
-//       ) {
-//         setInvalidStartDate('تاریخ شروع نباید بیشتر از تاریخ پایان باشد.');
-//       } else if (
-//         endDate.replace(/-/g, '') < startDate.replace(/-/g, '') &&
-//         focuseEndInput
-//       ) {
-//         setInvalidEndDate('تاریخ پایان نباید کمتر از تاریخ شروع باشد.');
-//       } else {
-//         setInvalidEndDate('');
-//         setInvalidStartDate('');
-//       }
-//       if (startDate.replace(/-/g, '') === endDate.replace(/-/g, '')) {
-//         setMosaviDate('تاریخ شروع و پایان نباید تو یک روز باشد.');
-//       } else {
-//         setMosaviDate('');
-//       }
-//     }
-//   }, [
-//     startDate,
-//     endDate,
-//     focuseStartInput,
-//     focuseEndInput,
-//     setDate,
-//     setEndDate,
-//     endErrors.maxError,
-//     endErrors.minError,
-//   ]);
-
-//   const DateDifference = () => {
-//     if (startDate && endDate) {
-//       const startDateTime = new Date(startDate);
-//       const endDateTime = new Date(endDate);
-//       const timeDifference = +endDateTime - +startDateTime;
-//       return Math.ceil(timeDifference / (1000 * 3600 * 24));
-//     }
-//   };
-
-//   useEffect(() => {
-//     if (getRenderedYear() === +min.slice(0, 4)) {
-//       if (getRenderedMonth() < +min.slice(5, 7)) {
-//         changeMonth(+min.slice(5, 7));
-//       }
-//     }
-//     if (getRenderedYear() === +max.slice(0, 4)) {
-//       if (getRenderedMonth() > +max.slice(5, 7)) {
-//         changeMonth(+max.slice(5, 7));
-//       }
-//     }
-//   }, [getRenderedMonth, min, max, changeMonth, getRenderedYear]);
-
-//   const handlerMouseLeave = () => {
-//     setEndDateHover('');
-//   };
-
-//   useEffect(() => {
-//     // change date listener
-//     onChangeDate(() => setDateS(createDate(getDate())));
-
-//     // close date picker on click outside
-//     const handleClickOutside = (event: MouseEvent) => {
-//       if (
-//         containerRef.current &&
-//         !containerRef.current.contains(event.target as Node) &&
-//         !isPending
-//       ) {
-//         startTransition(() => {
-//           onClose();
-//         });
-//       }
-//     };
-
-//     document.addEventListener('click', handleClickOutside, true);
-
-//     return () => {
-//       document.removeEventListener('click', handleClickOutside, true);
-//     };
-//   }, [getDate, isPending, onChangeDate, onClose]);
-
-//   const daysList = getDays();
-//   const daysListNext = getDays('next');
-
-//   const RenderTitle = ({ year, month }: { year: number; month: string }) => (
-//     <div className="flex w-full items-center justify-center gap-2">
-//       <button>
-//         <div className="w-20 bg-white rounded-md overflow-hidden border-none">
-//           <Field>
-//             <div className="relative flex items-center justify-center rounded-md overflow-hidden w-full">
-//               <Select
-//                 onChange={(e) => {
-//                   changeYear(+e.target.value);
-//                 }}
-//                 className={cn(
-//                   'w-full appearance-none border-none font-vazirmatn',
-//                   ' data-[focus]:outline-[1.5px] data-[focus]:bg-white outline-brand-600 py-2 rounded-md pr-2 cursor-pointer'
-//                 )}
-//               >
-//                 {getYearsList(+minDate.slice(0, 4), +maxDate.slice(0, 4)).map(
-//                   (item) =>
-//                     year === item ? (
-//                       !getEndDate() ? (
-//                         <option
-//                           key={item}
-//                           className={cn(
-//                             'shadow-none !cursor-pointer hover:bg-brand-600',
-//                             item === year && 'text-brand-600'
-//                           )}
-//                           value={getRenderedYear()}
-//                           selected
-//                         >
-//                           {year}
-//                         </option>
-//                       ) : (
-//                         <option
-//                           className={cn(
-//                             'shadow-none !cursor-pointer hover:bg-brand-600',
-//                             item === year && 'text-brand-600'
-//                           )}
-//                           value={year}
-//                           selected
-//                         >
-//                           {year}
-//                         </option>
-//                       )
-//                     ) : (
-//                       <option
-//                         className={cn(
-//                           'shadow-none !cursor-pointer !py-2 pr-7 !hover:bg-brand-600',
-//                           item === year && 'text-brand-600'
-//                         )}
-//                         key={item}
-//                         value={item}
-//                       >
-//                         {item}
-//                       </option>
-//                     )
-//                 )}
-//               </Select>
-//               <div className="absolute left-2 text-gray-1000">
-//                 <Icon name="chevron-down" size="lg" />
-//               </div>
-//             </div>
-//           </Field>
-//         </div>
-//       </button>
-//       <button>
-//         <div className="w-[104px] bg-white rounded-md overflow-hidden border-none">
-//           <Field>
-//             <div className="relative flex items-center justify-center rounded-md overflow-hidden w-[104px]">
-//               <Select
-//                 onChange={(e) => {
-//                   changeMonth(+e.target.value);
-//                 }}
-//                 className={cn(
-//                   'w-full appearance-none cursor-pointer max-h-[48px] border-none font-vazirmatn',
-//                   ' data-[focus]:outline-[1.5px] data-[focus]:bg-white outline-brand-600 py-2 rounded-md pr-2 cursor-pointer'
-//                 )}
-//               >
-//                 {getMonthList().map((item, index) =>
-//                   month === item.name ? (
-//                     <option
-//                       key={index}
-//                       className={cn(
-//                         'shadow-none cursor-pointer hover:bg-brand-600',
-//                         item.name === month && 'bg-brand-100'
-//                       )}
-//                       value={getRenderedMonthName()}
-//                       selected
-//                     >
-//                       {month}
-//                     </option>
-//                   ) : (
-//                     <option
-//                       disabled={
-//                         (+min.slice(0, 4) === year &&
-//                           item.monthNumber < +min.slice(5, 7)) ||
-//                         (+max.slice(0, 4) === year &&
-//                           item.monthNumber > +max.slice(5, 7))
-//                       }
-//                       className={cn(
-//                         'shadow-none cursor-pointer !pr-7 !py-2 !hover:bg-brand-600',
-//                         item.name === month && 'text-brand-600'
-//                       )}
-//                       key={item.name}
-//                       value={item.monthNumber}
-//                     >
-//                       {item.name}
-//                     </option>
-//                   )
-//                 )}
-//               </Select>
-//               <div className="absolute left-2 text-gray-1000">
-//                 <Icon name="chevron-down" size="lg" />
-//               </div>
-//             </div>
-//           </Field>
-//         </div>
-//       </button>
-//     </div>
-//   );
-
-//   const moseEnterCell = (date: {
-//     day: number;
-//     date: string;
-//     state: string;
-//   }) => {
-//     const selectedDate = moment(date.date, 'YYYY/MM/DD')
-//       .locale('fa')
-//       .format('YYYY-MM-DD');
-//     const formattedSelectedDate = selectedDate.replace(/-/g, '');
-//     setEndDateHover(date.date);
-
-//     if (!startDate && focuseStartInput) {
-//       setTitleTooltip('تاریخ شروع');
-//     }
-
-//     if (
-//       typeof startDate === 'string' &&
-//       focuseStartInput &&
-//       startDate.replace(/-/g, '') ===
-//         moment(date.date, 'YYYY/MM/DD')
-//           .locale('fa')
-//           .format('YYYY-MM-DD')
-//           .replace(/-/g, '')
-//     ) {
-//       setTitleTooltip('');
-//     }
-//     if (endDate && focuseStartInput && typeof endDate === 'string') {
-//       if (endDate.replace(/-/g, '') === formattedSelectedDate) {
-//         setTitleTooltip('');
-//       } else if (
-//         typeof startDate === 'string' &&
-//         startDate.replace(/-/g, '') === formattedSelectedDate
-//       ) {
-//         setTitleTooltip('');
-//       } else setTitleTooltip('تاریخ شروع');
-//     }
-//     if (focuseEndInput && typeof startDate === 'string') {
-//       if (formattedSelectedDate > startDate.replace(/-/g, '')) {
-//         setTitleTooltip('تاریخ پایان');
-//       } else setTitleTooltip('تاریخ شروع');
-
-//       if (
-//         formattedSelectedDate === startDate.replace(/-/g, '') ||
-//         formattedSelectedDate ===
-//           (typeof endDate === 'string' && endDate.replace(/-/g, '')) ||
-//         formattedSelectedDate < min.replace(/-/g, '') ||
-//         formattedSelectedDate > max.replace(/-/g, '')
-//       ) {
-//         setTitleTooltip('');
-//       }
-//     }
-//   };
-
-//   useEffect(() => {
-//     if (
-//       typeof startDate === 'string' &&
-//       startDate.replace(/-/g, '') < min.replace(/-/g, '')
-//     ) {
-//       errorHandler({ minError: true, maxError: false });
-//     }
-//   }, [min, startDate]);
-
-//   const clearStartDate = () => {
-//     if (endDate) {
-//       clearEndDate();
-//       setStartDate(null);
-//       setDate('');
-//       setActiveEndInput(false);
-//     } else {
-//       setStartDate(null);
-//       setDate('');
-//     }
-//   };
-
-//   const clearEndDate = () => {
-//     setEndDateS(null);
-//     setEndDate('');
-//   };
-
-//   useEffect(() => {
-//     if (startDate) {
-//       if (+String(startDate).slice(5, 7) < getRenderedMonth()) {
-//         changeMonth(+String(startDate).slice(5, 7));
-//       } else if (+String(startDate).slice(5, 7) > getRenderedNextMonth()) {
-//         changeMonth(+String(startDate).slice(5, 7));
-//       }
-//     }
-//   }, [changeMonth, getRenderedMonth, getRenderedNextMonth, startDate]);
-
-//   useEffect(() => {
-//     if (endDate) {
-//       if (+String(endDate).slice(5, 7) > getRenderedNextMonth()) {
-//         changeMonth(+String(endDate).slice(5, 7));
-//       } else if (+String(endDate).slice(5, 7) < getRenderedNextMonth()) {
-//         changeMonth(+String(endDate).slice(5, 7));
-//       }
-//     }
-//   }, [changeMonth, endDate, getRenderedNextMonth]);
-
-//   useEffect(() => {
-//     if (+String(startDate).slice(0, 4) > +min.slice(0, 4)) {
-//       if (+String(startDate).slice(0, 4) > getRenderedYear()) {
-//         changeYear(+String(startDate).slice(0, 4));
-//       } else if (+String(startDate).slice(0, 4) < getRenderedYear()) {
-//         changeYear(+String(startDate).slice(0, 4));
-//       }
-//     }
-//   }, [changeYear, getRenderedYear, min, startDate]);
-
-//   useEffect(() => {
-//     if (+String(endDate).slice(0, 4) < +max.slice(0, 4)) {
-//       if (+String(endDate).slice(0, 4) > getRenderedYear()) {
-//         changeYear(+String(endDate).slice(0, 4));
-//       } else if (+String(endDate).slice(0, 4) < getRenderedYear()) {
-//         changeYear(+String(endDate).slice(0, 4));
-//       }
-//     }
-//   }, [changeYear, getRenderedYear, max, endDate]);
-
-//   const formatDateToPersian = (date: string): string => {
-//     return moment(date, 'YYYY/MM/DD')
-//       .locale('fa')
-//       .format('YYYY-MM-DD')
-//       .replace(/-/g, '');
-//   };
-
-//   const isDateRangeValid =
-//     startDate &&
-//     endDate &&
-//     !endErrors.maxError &&
-//     !endErrors.minError &&
-//     !mosvaiDate &&
-//     !startErrors.maxError &&
-//     !startErrors.minError &&
-//     !invalidEndDate &&
-//     !invalidStartDate;
-
-//   return (
-//     <div style={{ display: 'inline-block', width: 'auto' }}>
-//       <div ref={containerRef} className="bg-gray-100 relative rounded-3xl">
-//         {!isLoading() && isOpen && (
-//           <div
-//             className="flex flex-col p-6 gap-4"
-//             style={{
-//               width: 704,
-//             }}
-//           >
-//             <div className="flex flex-col gap-1">
-//               <div className="flex gap-2 text-md items-center font-vazirmatn justify-center">
-//                 <div className="flex flex-col gap-1 items-start">
-//                   <span className={cn({ invisible: !activeStartInput })}>
-//                     تاریخ شروع بازه:
-//                   </span>
-//                   <div
-//                     onClick={() => {
-//                       setActiveStartInput(true);
-//                       setFocuseStartInput(true);
-//                       setFocuseEndInput(false);
-//                       if (getDate() && !getEndDate()) {
-//                         setActiveEndInput(false);
-//                       }
-//                     }}
-//                   >
-//                     <DateInput
-//                       invalidStartDate={invalidStartDate}
-//                       invalidEndDate={invalidEndDate}
-//                       mosaviDate={mosvaiDate}
-//                       placeholder="تاریخ شروع"
-//                       active={activeStartInput}
-//                       focus={focuseStartInput}
-//                       onChange={updateStartInput}
-//                       clearDate={clearStartDate}
-//                       errors={startErrors}
-//                       errorHandler={errorHandler}
-//                       mode="jalali"
-//                       min={min}
-//                       max={max}
-//                       defaultValue={getDate()}
-//                     />
-//                   </div>
-//                 </div>
-//                 <div className="w-2.5 h-0.5 mt-7 bg-gray-500"></div>
-//                 <div className="gap-1 flex-col flex items-start">
-//                   <span className={cn({ invisible: !activeEndInput })}>
-//                     تاریخ پایان بازه:
-//                   </span>
-//                   <div
-//                     onClick={() => {
-//                       if (startDate) {
-//                         setActiveEndInput(true);
-//                         setFocuseEndInput(true);
-//                         setFocuseStartInput(false);
-//                       }
-//                     }}
-//                   >
-//                     <DateInput
-//                       invalidStartDate={invalidStartDate}
-//                       invalidEndDate={invalidEndDate}
-//                       mosaviDate={mosvaiDate}
-//                       placeholder="تاریخ پایان"
-//                       active={activeEndInput}
-//                       focus={focuseEndInput}
-//                       onChange={updateEndInput}
-//                       errors={endErrors}
-//                       clearDate={clearEndDate}
-//                       errorHandler={endErrorHandler}
-//                       mode="jalali"
-//                       min={min}
-//                       max={max}
-//                       defaultValue={getEndDate()}
-//                     />
-//                   </div>
-//                 </div>
-//               </div>
-//               <div className="h-4">
-//                 <span className="text-red-600 mr-40 font-medium text-xs">
-//                   {focuseStartInput &&
-//                     (startErrors.minError
-//                       ? 'تاریخ شروع وارد شده کمتر از حداقل تاریخ مجاز است.'
-//                       : startErrors.maxError
-//                       ? 'تاریخ شروع وارد شده بیشتر از حداکثر تاریخ مجاز است.'
-//                       : invalidStartDate ||
-//                         (mosvaiDate &&
-//                           !endErrors.maxError &&
-//                           !endErrors.minError &&
-//                           mosvaiDate))}
-//                 </span>
-//                 <span className="text-red-600 mr-[180px] font-medium text-xs">
-//                   {focuseEndInput &&
-//                     (endErrors.minError
-//                       ? 'تاریخ پایان وارد شده کمتر از حداقل تاریخ مجاز است.'
-//                       : endErrors.maxError
-//                       ? 'تاریخ پایان وارد شده بیشتر از حداکثر تاریخ مجاز است.'
-//                       : invalidEndDate ||
-//                         (mosvaiDate &&
-//                           !endErrors.maxError &&
-//                           !endErrors.minError &&
-//                           !startErrors.minError &&
-//                           !startErrors.maxError &&
-//                           mosvaiDate))}
-//                 </span>
-//               </div>
-//             </div>
-//             <div
-//               onClick={() => onClose()}
-//               className="w-8 h-8 rounded-full cursor-pointer bg-brand-600 absolute -left-2 -top-2 flex items-center justify-center"
-//             >
-//               <div className="rounded-full flex items-center bg-white justify-center w-6 h-6">
-//                 <Icon name="x" size="sm" />
-//               </div>
-//             </div>
-//             <div onMouseLeave={handlerMouseLeave} className="flex gap-12">
-//               {getMode() === 'day' && (
-//                 <>
-//                   <div className="w-1/2">
-//                     <div>
-//                       <div
-//                         style={{
-//                           display: 'flex',
-//                           justifyContent: 'space-between',
-//                           alignItems: 'center',
-//                         }}
-//                       >
-//                         <div
-//                           onClick={() => {
-//                             const activeMonth = moment(
-//                               getRenderedDateOriginal(),
-//                               'YYYY/MM/DD'
-//                             )
-//                               .locale('fa')
-//                               .format('YYYY-MM-DD');
-//                             if (+activeMonth.slice(0, 4) === +min.slice(0, 4)) {
-//                               if (+min.slice(5, 7) % 2 === 0) {
-//                                 if (
-//                                   +min.slice(5, 7) - 1 <
-//                                   +activeMonth.slice(5, 7)
-//                                 ) {
-//                                   setDisablePrevMonth(false);
-//                                   setDisableNextMonth(false);
-//                                   handleShowPrevMonth();
-//                                 } else setDisablePrevMonth(true);
-//                               } else if (
-//                                 +min.slice(5, 7) < +activeMonth.slice(5, 7)
-//                               ) {
-//                                 handleShowPrevMonth();
-//                                 setDisableNextMonth(false);
-//                                 setDisablePrevMonth(false);
-//                               } else setDisablePrevMonth(true);
-//                             } else {
-//                               setDisableNextMonth(false);
-//                               handleShowPrevMonth();
-//                               setDisablePrevMonth(false);
-//                             }
-//                           }}
-//                           className={cn(
-//                             'rounded-full bg-white cursor-pointer flex items-center justify-center p-2 border-2 border-white duration-300 hover:border-brand-600 hover:border-2',
-//                             {
-//                               'hover:border-white cursor-default text-gray-400':
-//                                 disablePrevMonth,
-//                             }
-//                           )}
-//                         >
-//                           <Icon name="chevron-right" size="lg" />
-//                         </div>
-//                         <RenderTitle
-//                           year={getRenderedNextDateYear()}
-//                           month={getRenderedMonthName()}
-//                         />
-//                       </div>
-
-//                       <div
-//                         style={{
-//                           display: 'flex',
-//                           padding: '7px 0 5px',
-//                           flexWrap: 'wrap',
-//                         }}
-//                       >
-//                         {weeksTitle.map((week) => (
-//                           <div
-//                             className="font-vazirmatn"
-//                             key={week}
-//                             style={{
-//                               textAlign: 'center',
-//                               width: `${100 / 7}%`,
-//                             }}
-//                           >
-//                             <span>{week}</span>
-//                           </div>
-//                         ))}
-//                       </div>
-//                       <div className="w-full bg-gray-200 h-0.5 mb-3"></div>
-//                       <div className="w-full grid grid-cols-7">
-//                         {daysList.map((day, index) => {
-//                           const { firstDayIndex, lastDayIndex } =
-//                             getFirstAndLastDayOfWeek(index);
-
-//                           return (
-//                             <div
-//                               key={index}
-//                               className={cn('w-full')}
-//                               onMouseEnter={() => {
-//                                 moseEnterCell(day);
-//                               }}
-//                             >
-//                               {day.state === 'current' && (
-//                                 <Tooltip
-//                                   className={cn('!cursor-default !z-40')}
-//                                   title={titleTooltip}
-//                                 >
-//                                   <div
-//                                     className={cn(
-//                                       isDateInRange(day.date),
-//                                       'z-20 relative'
-//                                     )}
-//                                   >
-//                                     <button
-//                                       className={cn(
-//                                         'w-10 h-10 my-1 bg-white shadow-xs text-lg hover:border-brand-600 hover:border-2 rounded-full',
-//                                         {
-//                                           'bg-brand-600 !border-l-0 !border-r-0 shadow-brand-600 !rounded-full !w-10 shadow-sm text-white':
-//                                             isSelectedDay(day.date),
-//                                         },
-//                                         {
-//                                           'bg-brand-200 rounded-none pl-[3px] border-none hover:border-none text-brand-700 w-full':
-//                                             !isSelectedDay(day.date) &&
-//                                             !isSelecting() &&
-//                                             isDateInRange(day.date),
-//                                         },
-//                                         {
-//                                           '!rounded-r-full pl-[3px]':
-//                                             !isSelectedDay(day.date) &&
-//                                             !isSelecting() &&
-//                                             isDateInRange(day.date) &&
-//                                             index === firstDayIndex,
-//                                         },
-//                                         {
-//                                           '!rounded-l-full':
-//                                             !isSelectedDay(day.date) &&
-//                                             !isSelecting() &&
-//                                             isDateInRange(day.date) &&
-//                                             index === lastDayIndex,
-//                                         },
-//                                         {
-//                                           'text-gray-400 cursor-default hover:border-none':
-//                                             +formatDateToPersian(day.date) <
-//                                               +min.replace(/-/g, '') ||
-//                                             +formatDateToPersian(day.date) >
-//                                               +max.replace(/-/g, ''),
-//                                         },
-//                                         {
-//                                           '!rounded-r-full border-r-2':
-//                                             day.day === 1,
-//                                         },
-//                                         {
-//                                           '!rounded-l-full !border-l-2':
-//                                             day.day === 31,
-//                                         },
-//                                         {
-//                                           '!rounded-l-full !border-l-2':
-//                                             day.day === 30 &&
-//                                             getRenderedMonth() > 6,
-//                                         },
-//                                         {
-//                                           '!rounded-l-full':
-//                                             !isSelectedDay(day.date) &&
-//                                             !isSelecting() &&
-//                                             isDateInRange(day.date) &&
-//                                             +moment(day.date, 'YYYY/MM/DD')
-//                                               .locale('fa')
-//                                               .format('YYYY-MM-DD')
-//                                               .slice(5, 7) <= 6 &&
-//                                             day.day === 31,
-//                                         },
-//                                         {
-//                                           'border-t-2 border-b-2 pl-[3px] w-full rounded-none border-brand-600':
-//                                             endDateHover &&
-//                                             startDate &&
-//                                             focuseEndInput &&
-//                                             formatDateToPersian(day.date) >
-//                                               String(startDate).replace(
-//                                                 /-/g,
-//                                                 ''
-//                                               ) &&
-//                                             formatDateToPersian(day.date) <
-//                                               formatDateToPersian(
-//                                                 endDateHover
-//                                               ) &&
-//                                             formatDateToPersian(day.date) <
-//                                               max.replace(/-/g, ''),
-//                                         },
-//                                         {
-//                                           'border-t-2 border-b-2 pl-[3px] w-full rounded-none border-brand-600':
-//                                             endDateHover &&
-//                                             focuseEndInput &&
-//                                             endDate &&
-//                                             formatDateToPersian(day.date) >
-//                                               String(endDate).replace(
-//                                                 /-/g,
-//                                                 ''
-//                                               ) &&
-//                                             formatDateToPersian(day.date) <
-//                                               formatDateToPersian(
-//                                                 endDateHover
-//                                               ) &&
-//                                             formatDateToPersian(day.date) <
-//                                               max.replace(/-/g, ''),
-//                                         },
-//                                         {
-//                                           'border-t-2 border-b-2 pl-[3px] w-full rounded-none border-brand-600':
-//                                             endDateHover &&
-//                                             focuseStartInput &&
-//                                             endDate &&
-//                                             startDate &&
-//                                             formatDateToPersian(day.date) <
-//                                               String(startDate).replace(
-//                                                 /-/g,
-//                                                 ''
-//                                               ) &&
-//                                             formatDateToPersian(day.date) >
-//                                               formatDateToPersian(
-//                                                 endDateHover
-//                                               ) &&
-//                                             formatDateToPersian(day.date) >
-//                                               min.replace(/-/g, ''),
-//                                         },
-//                                         {
-//                                           'border-t-2 border-b-2 w-full border-brand-600 border-r-2 !rounded-r-full':
-//                                             endDateHover &&
-//                                             firstDayIndex === index &&
-//                                             startDate &&
-//                                             focuseEndInput &&
-//                                             formatDateToPersian(day.date) >
-//                                               String(startDate).replace(
-//                                                 /-/g,
-//                                                 ''
-//                                               ) &&
-//                                             formatDateToPersian(day.date) <
-//                                               formatDateToPersian(
-//                                                 endDateHover
-//                                               ) &&
-//                                             formatDateToPersian(day.date) >
-//                                               min.replace(/-/g, '') &&
-//                                             formatDateToPersian(day.date) <
-//                                               max.replace(/-/g, ''),
-//                                         },
-//                                         {
-//                                           'border-t-2 border-b-2 w-full pl-[3px] rounded-none border-brand-600 border-r-2 !rounded-r-full':
-//                                             endDateHover &&
-//                                             firstDayIndex === index &&
-//                                             focuseEndInput &&
-//                                             endDate &&
-//                                             formatDateToPersian(day.date) >
-//                                               String(endDate).replace(
-//                                                 /-/g,
-//                                                 ''
-//                                               ) &&
-//                                             formatDateToPersian(day.date) <
-//                                               formatDateToPersian(
-//                                                 endDateHover
-//                                               ) &&
-//                                             formatDateToPersian(day.date) >
-//                                               min.replace(/-/g, '') &&
-//                                             formatDateToPersian(day.date) <
-//                                               max.replace(/-/g, ''),
-//                                         },
-//                                         {
-//                                           'w-full rounded-none border-brand-600 border-r-2 !rounded-r-full':
-//                                             endDateHover &&
-//                                             firstDayIndex === index &&
-//                                             focuseStartInput &&
-//                                             endDate &&
-//                                             startDate &&
-//                                             formatDateToPersian(day.date) <
-//                                               String(startDate).replace(
-//                                                 /-/g,
-//                                                 ''
-//                                               ) &&
-//                                             formatDateToPersian(day.date) >
-//                                               formatDateToPersian(
-//                                                 endDateHover
-//                                               ) &&
-//                                             formatDateToPersian(day.date) >
-//                                               min.replace(/-/g, ''),
-//                                         },
-//                                         {
-//                                           'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-l-2 !rounded-l-full':
-//                                             endDateHover &&
-//                                             lastDayIndex === index &&
-//                                             startDate &&
-//                                             focuseEndInput &&
-//                                             formatDateToPersian(day.date) >
-//                                               String(startDate).replace(
-//                                                 /-/g,
-//                                                 ''
-//                                               ) &&
-//                                             formatDateToPersian(day.date) <
-//                                               formatDateToPersian(
-//                                                 endDateHover
-//                                               ) &&
-//                                             formatDateToPersian(day.date) >
-//                                               min.replace(/-/g, '') &&
-//                                             formatDateToPersian(day.date) <
-//                                               max.replace(/-/g, ''),
-//                                         },
-//                                         {
-//                                           '!rounded-r-full':
-//                                             !isSelectedDay(day.date) &&
-//                                             !isSelecting() &&
-//                                             isDateInRange(day.date) &&
-//                                             day.day === 1,
-//                                         },
-//                                         {
-//                                           'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-l-2 !rounded-l-full':
-//                                             endDateHover &&
-//                                             lastDayIndex === index &&
-//                                             focuseEndInput &&
-//                                             endDate &&
-//                                             formatDateToPersian(day.date) >
-//                                               String(endDate).replace(
-//                                                 /-/g,
-//                                                 ''
-//                                               ) &&
-//                                             formatDateToPersian(day.date) <
-//                                               formatDateToPersian(
-//                                                 endDateHover
-//                                               ) &&
-//                                             formatDateToPersian(day.date) >
-//                                               min.replace(/-/g, '') &&
-//                                             formatDateToPersian(day.date) <
-//                                               max.replace(/-/g, ''),
-//                                         },
-//                                         {
-//                                           'border-t-2 border-b-2 w-full rounded-none border-brand-600 border-l-2 !rounded-l-full':
-//                                             endDateHover &&
-//                                             lastDayIndex === index &&
-//                                             focuseStartInput &&
-//                                             endDate &&
-//                                             startDate &&
-//                                             formatDateToPersian(day.date) <
-//                                               String(startDate).replace(
-//                                                 /-/g,
-//                                                 ''
-//                                               ) &&
-//                                             formatDateToPersian(day.date) >
-//                                               formatDateToPersian(
-//                                                 endDateHover
-//                                               ) &&
-//                                             formatDateToPersian(day.date) >
-//                                               min.replace(/-/g, ''),
-//                                         }
-//                                       )}
-//                                       disabled={day.day === 0}
-//                                       onClick={() => {
-//                                         const selectedDate = moment(
-//                                           day.date,
-//                                           'YYYY/MM/DD'
-//                                         )
-//                                           .locale('fa')
-//                                           .format('YYYY-MM-DD');
-//                                         const formattedSelectedDate =
-//                                           selectedDate.replace(/-/g, '');
-//                                         if (
-//                                           getDate() !== selectedDate &&
-//                                           formattedSelectedDate >=
-//                                             min.replace(/-/g, '') &&
-//                                           formattedSelectedDate <=
-//                                             max.replace(/-/g, '')
-//                                         ) {
-//                                           setFocuseEndInput(true);
-//                                           setActiveEndInput(true);
-//                                           if (
-//                                             !endDate &&
-//                                             !getEndDate() &&
-//                                             focuseStartInput
-//                                           ) {
-//                                             setStartDate(selectedDate);
-//                                           }
-
-//                                           if (
-//                                             (startDate || getDate()) &&
-//                                             typeof startDate === 'string' &&
-//                                             focuseEndInput
-//                                           ) {
-//                                             if (
-//                                               formattedSelectedDate >
-//                                               startDate.replace(/-/g, '')
-//                                             ) {
-//                                               setEndDateS(selectedDate);
-//                                             } else {
-//                                               setEndDateS(null);
-//                                               setEndDate('');
-//                                               setStartDate(selectedDate);
-//                                             }
-//                                           }
-
-//                                           if (
-//                                             (endDate || getEndDate()) &&
-//                                             typeof endDate === 'string' &&
-//                                             focuseStartInput
-//                                           ) {
-//                                             if (
-//                                               formattedSelectedDate <
-//                                               endDate.replace(/-/g, '')
-//                                             ) {
-//                                               setStartDate(selectedDate);
-//                                             } else {
-//                                               setEndDateS(null);
-//                                               setEndDate('');
-//                                               setStartDate(selectedDate);
-//                                             }
-//                                           }
-//                                           setFocuseStartInput(false);
-//                                         }
-//                                       }}
-//                                     >
-//                                       <p
-//                                         className={cn({
-//                                           'hover:rounded-full mx-auto hover:bg-brand-300 flex items-center justify-center w-10 h-10':
-//                                             !isSelectedDay(day.date) &&
-//                                             !isSelecting() &&
-//                                             isDateInRange(day.date),
-//                                         })}
-//                                       >
-//                                         {day.day}
-//                                       </p>
-//                                     </button>
-//                                   </div>
-//                                   {isSelectedDay(day.date) && (
-//                                     <p
-//                                       className={cn(
-//                                         'w-1/2 z-0 absolute top-1 bg-brand-200 h-10',
-//                                         {
-//                                           'right-0': isEndDate(day.date),
-//                                           'left-0': isStartDate(day.date),
-//                                         }
-//                                       )}
-//                                     ></p>
-//                                   )}
-//                                 </Tooltip>
-//                               )}
-//                             </div>
-//                           );
-//                         })}
-//                       </div>
-//                     </div>
-//                   </div>
-//                   <div className="w-1/2">
-//                     {daysListNext.length > 0 && (
-//                       <div
-//                         style={{
-//                           flex: 1,
-//                         }}
-//                       >
-//                         <div>
-//                           <div
-//                             style={{
-//                               display: 'flex',
-//                               justifyContent: 'space-between',
-//                               alignItems: 'center',
-//                             }}
-//                           >
-//                             <div></div>
-//                             <RenderTitle
-//                               year={getRenderedYear()}
-//                               month={getRenderedNextMonthName()}
-//                             />
-//                             <div
-//                               onClick={() => {
-//                                 if (
-//                                   +getRenderedNextDateYear() ===
-//                                   +max.slice(0, 4)
-//                                 ) {
-//                                   if (+max.slice(5, 7) % 2 === 1) {
-//                                     if (
-//                                       +max.slice(5, 7) > getRenderedNextMonth()
-//                                     ) {
-//                                       setDisableNextMonth(false);
-//                                       setDisablePrevMonth(false);
-//                                       handleShowNextMonth();
-//                                     } else setDisableNextMonth(true);
-//                                   } else if (
-//                                     +max.slice(5, 7) > getRenderedNextMonth()
-//                                   ) {
-//                                     setDisableNextMonth(false);
-//                                     setDisablePrevMonth(false);
-//                                     handleShowNextMonth();
-//                                   } else setDisableNextMonth(true);
-//                                 } else if (
-//                                   +getRenderedNextDateYear() < +max.slice(0, 4)
-//                                 ) {
-//                                   handleShowNextMonth();
-//                                   setDisablePrevMonth(false);
-//                                   setDisableNextMonth(false);
-//                                 }
-//                               }}
-//                               className={cn(
-//                                 'rounded-full bg-white cursor-pointer flex items-center justify-center p-2 border-2 border-white duration-300 hover:border-brand-600 hover:border-2',
-//                                 {
-//                                   'cursor-default hover:border-white text-gray-400':
-//                                     disableNextMonth,
-//                                 }
-//                               )}
-//                             >
-//                               <Icon name="chevron-left" size="lg" />
-//                             </div>
-//                           </div>
-
-//                           <div
-//                             style={{
-//                               display: 'flex',
-//                               padding: '7px 0 5px',
-//                               flexWrap: 'wrap',
-//                             }}
-//                           >
-//                             {weeksTitle.map((week) => (
-//                               <div
-//                                 className="font-vazirmatn"
-//                                 key={week}
-//                                 style={{
-//                                   textAlign: 'center',
-//                                   width: `${100 / 7}%`,
-//                                 }}
-//                               >
-//                                 <span>{week}</span>
-//                               </div>
-//                             ))}
-//                           </div>
-
-//                           <div className="w-full bg-gray-200 h-0.5 mb-3"></div>
-
-//                           <div className="grid grid-cols-7 items-center justify-center gap-y-0.5">
-//                             {daysListNext.map((day, index) => {
-//                               const { firstDayIndex, lastDayIndex } =
-//                                 getFirstAndLastDayOfWeek(index);
-
-//                               return (
-//                                 <div
-//                                   className="mx-auto relative w-full"
-//                                   key={index}
-//                                   onMouseEnter={() => {
-//                                     moseEnterCell(day);
-//                                   }}
-//                                 >
-//                                   {day.state === 'current' && (
-//                                     <Tooltip
-//                                       className="!z-50"
-//                                       title={
-//                                         moment(day.date, 'YYYY/MM/DD')
-//                                           .locale('fa')
-//                                           .format('YYYY-MM-DD')
-//                                           .replace(/-/g, '') <
-//                                         max.replace(/-/g, '')
-//                                           ? titleTooltip
-//                                           : ''
-//                                       }
-//                                     >
-//                                       <div
-//                                         className={cn(
-//                                           isDateInRange(day.date),
-//                                           'relative z-40'
-//                                         )}
-//                                       >
-//                                         <button
-//                                           className={cn(
-//                                             'w-10 h-10 bg-white shadow-xs my-1 text-lg hover:border-brand-600 hover:border-2 rounded-full',
-//                                             {
 //                                               'bg-brand-600 !border-r-0 !w-10 shadow-brand-600 !rounded-full shadow-sm text-white':
 //                                                 isSelectedDay(day.date),
-//                                             },
-//                                             {
 //                                               'pr-[3px]':
 //                                                 formatDateToPersian(
 //                                                   day.date
@@ -1447,190 +292,23 @@
 //                                                   min.replace(/-/g, ''),
 //                                             }
 //                                           )}
-//                                           disabled={day.day === 0}
-//                                           onClick={() => {
-//                                             const selectedDate = moment(
-//                                               day.date,
-//                                               'YYYY/MM/DD'
-//                                             )
-//                                               .locale('fa')
-//                                               .format('YYYY-MM-DD');
-//                                             const formattedSelectedDate =
-//                                               selectedDate.replace(/-/g, '');
-//                                             if (
-//                                               getDate() !== selectedDate &&
-//                                               formattedSelectedDate >=
-//                                                 min.replace(/-/g, '') &&
-//                                               formattedSelectedDate <=
-//                                                 max.replace(/-/g, '')
-//                                             ) {
-//                                               setActiveEndInput(true);
-//                                               setFocuseEndInput(true);
-//                                               setFocuseStartInput(false);
 
-//                                               if (
-//                                                 !endDate &&
-//                                                 !getEndDate() &&
-//                                                 focuseStartInput
-//                                               ) {
-//                                                 setStartDate(selectedDate);
-//                                               }
-
-//                                               if (
-//                                                 (startDate || getDate()) &&
-//                                                 typeof startDate === 'string' &&
-//                                                 focuseEndInput
-//                                               ) {
-//                                                 if (
-//                                                   formattedSelectedDate >
-//                                                   startDate.replace(/-/g, '')
-//                                                 ) {
-//                                                   setEndDateS(selectedDate);
-//                                                 } else {
-//                                                   setEndDateS(null);
-//                                                   setEndDate('');
-//                                                   setStartDate(selectedDate);
-//                                                 }
-//                                               }
-
-//                                               if (
-//                                                 (endDate || getEndDate()) &&
-//                                                 typeof endDate === 'string' &&
-//                                                 focuseStartInput
-//                                               ) {
-//                                                 if (
-//                                                   formattedSelectedDate <=
-//                                                   endDate.replace(/-/g, '')
-//                                                 ) {
-//                                                   setStartDate(selectedDate);
-//                                                 } else {
-//                                                   setEndDateS(null);
-//                                                   setEndDate('');
-//                                                   setStartDate(selectedDate);
-//                                                 }
-//                                               }
-//                                             }
-//                                           }}
-//                                         >
-//                                           <p
-//                                             className={cn({
-//                                               'hover:rounded-full mx-auto hover:bg-brand-300 flex items-center justify-center w-10 h-10':
-//                                                 !isSelectedDay(day.date) &&
-//                                                 !isSelecting() &&
-//                                                 isDateInRange(day.date),
-//                                             })}
-//                                           >
-//                                             {day.day}
-//                                           </p>
-//                                         </button>
-//                                       </div>
-//                                       {isSelectedDay(day.date) && (
-//                                         <p
-//                                           className={cn(
-//                                             'w-1/2 z-0 absolute top-1 bg-brand-200 h-10',
-//                                             {
-//                                               'right-0': isEndDate(day.date),
-//                                               'left-0': isStartDate(day.date),
-//                                             }
-//                                           )}
-//                                         ></p>
-//                                       )}
-//                                     </Tooltip>
-//                                   )}
-//                                 </div>
-//                               );
-//                             })}
-//                           </div>
-//                         </div>
-//                       </div>
-//                     )}
-//                   </div>
-//                 </>
-//               )}
-//             </div>
-//             <div className="flex flex-row-reverse justify-between items-center">
-//               <button
-//                 onClick={() => {
-//                   if (
-//                     typeof startDate === 'string' &&
-//                     typeof endDate === 'string'
-//                   ) {
-//                     setDateRange(startDate, endDate);
-//                   }
-//                 }}
-//                 className={cn(
-//                   'px-2 bg-brand-300 cursor-default py-1 rounded-md text-white',
-//                   {
-//                     'bg-brand-600 cursor-pointer': isDateRangeValid,
-//                   }
-//                 )}
-//               >
-//                 اعمال بازه
-//               </button>
-//               {isDateRangeValid && (
-//                 <div className="flex justify-start w-fit gap-2 px-2 pt-1.5 bg-white rounded-sm items-center">
-//                   <span className="text-sm">بازه دلخواه:</span>
-//                   <span className="font-medium text-sm text-gray-1000">
-//                     {DateDifference()}
-//                     روز
-//                   </span>
-//                 </div>
-//               )}
-//             </div>
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
-
-import { cn } from 'libs/design-system/src/utils';
-import { useEffect, useState } from 'react';
+import { cn } from '../../../utils/classNames.utils';
+import { useCallback, useMemo, useState } from 'react';
 import { Icon } from '../Icon';
 import { DateInput } from '../DateInput';
-import {
-  MonthName,
-  usePersianCalendar,
-} from 'libs/design-system/src/hooks/DayPicker';
+import { usePersianCalendar } from 'libs/design-system/src/hooks/DayPicker';
 import jalaali from 'jalaali-js';
+import { DateDifference, updatedCurrentMonthDays } from './DatePicker.utils';
+import { Props, ErrorState, DateType } from './DatePicker.types';
+import { listMonth, weekdayNames, weeksTitle } from './DatePicker.constansts';
+import { Tooltip } from '../Tooltip';
 
-interface Props {
-  min: string;
-  dateRange: { start: string; end: string };
-  max: string;
-  isOpen: boolean;
-  onClose: () => void;
-  setDateRange: (start: string, end: string) => void;
-}
-
-type ErrorState = {
-  minError: boolean;
-  maxError: boolean;
-};
-
-const weekdayNames = [
-  'Saturday',
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-];
-
-export function DatePicker({
-  min,
-  dateRange,
-  max,
-  isOpen,
-  onClose,
-  setDateRange,
-}: Props) {
-  const [startDateS, setStartDateS] = useState('');
-  const [endDateS, setEndDateS] = useState('');
+export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
   const [validEndDateS, setValidEndDate] = useState('');
   const [validStartDate, setValidStartDate] = useState('');
-  const [dateHover, setDateHover] = useState();
+  const [titleTooltip, setTitleTooltip] = useState('');
+  const [dateHover, setDateHover] = useState('');
   const [areInputsEqual, setAreInputsEqual] = useState('');
   const [focuseEndInput, setFocuseEndInput] = useState(false);
   const [focuseStartInput, setFocuseStartInput] = useState(true);
@@ -1645,14 +323,11 @@ export function DatePicker({
   });
 
   const clearStartDate = () => {
-    setStartDateS('');
-    setEndDateS('');
     setStartDate('');
     setEndDate('');
   };
 
   const clearEndDate = () => {
-    setEndDateS('');
     setEndDate('');
   };
 
@@ -1676,23 +351,23 @@ export function DatePicker({
     return result;
   }
 
+  const years = [];
+  for (let year: number = +min.slice(0, 4); year <= +max.slice(0, 4); year++) {
+    years.push(year);
+  }
+
   const {
     calendars,
+    setCurrentDate,
+    isDateInRange,
     endDate,
     startDate,
-    setCurrentDate,
-    getDayName,
-    setEndDate,
     setStartDate,
+    setEndDate,
   } = usePersianCalendar(
-    { day: 15, month: +min.slice(5, 7), year: +min.slice(0, 4) },
-    { day: 15, month: +max.slice(5, 7), year: +max.slice(0, 4) }
+    { day: 25, month: +min.slice(5, 7), year: +min.slice(0, 4) },
+    { day: 25, month: +max.slice(5, 7), year: +max.slice(0, 4) }
   );
-
-  useEffect(() => {
-    setStartDateS(`${startDate?.year}-${startDate?.month}-${startDate?.day}`);
-    setEndDateS(`${endDate?.year}-${endDate?.month}-${endDate?.day}`);
-  }, [startDate, endDate]);
 
   const days = getPersianMonthDays(
     +calendars[0].slice(0, 4),
@@ -1703,24 +378,17 @@ export function DatePicker({
     +calendars[1].slice(5, 7)
   );
 
-  const daysFromPrevMonth = (days: any) => {
+  const daysFromPrevMonth = (days: { day: number; dayName: string }[]) => {
     return Array.from(
       { length: weekdayNames.indexOf(days[0].dayName) },
       (_, index) => {
         const dayName =
           weekdayNames[
-          (weekdayNames.indexOf(days[0].dayName) - (index + 1) + 7) % 7
+            (weekdayNames.indexOf(days[0].dayName) - (index + 1) + 7) % 7
           ];
         return { day: index + 1, dayName, status: 'prev' };
       }
     );
-  };
-
-  const updatedCurrentMonthDays = (days: any) => {
-    return days.map((day: any) => ({
-      ...day,
-      status: 'current',
-    }));
   };
 
   const startDays = [
@@ -1732,46 +400,83 @@ export function DatePicker({
     ...updatedCurrentMonthDays(nextDays),
   ];
 
-  const listWeek = [
-    { id: 1, name: 'ش' },
-    { id: 2, name: 'ی' },
-    { id: 3, name: 'د' },
-    { id: 4, name: 'س' },
-    { id: 5, name: 'چ' },
-    { id: 6, name: 'پ' },
-    { id: 7, name: 'ج' },
-  ];
-
   const updateStartInput = (date: string) => {
-    setStartDate({
-      day: +date.slice(0, 2),
-      month: +date.slice(5, 7),
-      year: +date.slice(0, 2),
-    });
+    // setStartDate(date);
   };
   const updateEndInput = (date: string) => {
-    setEndDate({
-      day: +date.slice(0, 2),
-      month: +date.slice(5, 7),
-      year: +date.slice(0, 2),
-    });
+    // setEndDate(date);
   };
 
-  const listMonth = [
-    { id: 1, name: 'فروردین' },
-    { id: 2, name: 'اردیبهشت' },
-    { id: 3, name: 'خرداد' },
-    { id: 4, name: 'تیر' },
-    { id: 5, name: 'مرداد' },
-    { id: 6, name: 'شهریور' },
-    { id: 7, name: 'مهر' },
-    { id: 8, name: 'آبان' },
-    { id: 9, name: 'آذر' },
-    { id: 10, name: 'دی' },
-    { id: 11, name: 'بهمن' },
-    { id: 12, name: 'اسفند' },
-  ];
+  // Render TitleTooltip
+  const moseEnterCell = useCallback(
+    (date: DateType) => {
+      
+      if (isDateInRange(date)) {
+        const formatDate = (date: DateType | null) => {
+          return `${date?.year}${date?.month}${date?.day}`;
+        };
 
+        console.log(date);
+        
+
+        setDateHover(formatDate(date));
+
+        if (!startDate && focuseStartInput) {
+          setTitleTooltip('تاریخ شروع');
+        }
+        if (focuseStartInput && formatDate(startDate) === formatDate(date)) {
+          setTitleTooltip('');
+        }
+
+        if (endDate && focuseStartInput) {
+          if (formatDate(endDate) === formatDate(date)) {
+            setTitleTooltip('');
+          } else if (formatDate(startDate) === formatDate(date)) {
+            setTitleTooltip('');
+          } else setTitleTooltip('تاریخ شروع');
+        }
+
+        if (focuseEndInput && startDate) {
+          if (formatDate(date) > formatDate(startDate)) {
+            console.log(formatDate(startDate), formatDate(date));
+            setTitleTooltip('تاریخ پایان');
+          } else setTitleTooltip('تاریخ شروع');
+
+          if (
+            formatDate(date) === formatDate(startDate) ||
+            formatDate(date) === formatDate(endDate) ||
+            formatDate(date) < min.replace(/-/g, '') ||
+            formatDate(date) > max.replace(/-/g, '')
+          ) {
+            setTitleTooltip('');
+          }
+        }
+      } else setTitleTooltip('');
+    },
+    [
+      isDateInRange,
+      startDate,
+      focuseStartInput,
+      endDate,
+      focuseEndInput,
+      min,
+      max,
+    ]
+  );
+
+  const close = useMemo(
+    () => (
+      <div
+        onClick={() => onClose()}
+        className="w-8 h-8 rounded-full cursor-pointer bg-brand-600 absolute -left-2 -top-2 flex items-center justify-center"
+      >
+        <div className="rounded-full flex items-center bg-white justify-center w-6 h-6">
+          <Icon name="x" size="sm" />
+        </div>
+      </div>
+    ),
+    [onClose]
+  );
   return (
     <div style={{ display: 'inline-block', width: 'auto' }}>
       <div className="bg-gray-100 relative rounded-3xl">
@@ -1791,9 +496,9 @@ export function DatePicker({
                       setActiveStartInput(true);
                       setFocuseStartInput(true);
                       setFocuseEndInput(false);
-                      if (startDate && !endDate) {
-                        setActiveEndInput(false);
-                      }
+                      // if (startDate && !endDate) {
+                      //   setActiveEndInput(false);
+                      // }
                     }}
                   >
                     <DateInput
@@ -1810,21 +515,22 @@ export function DatePicker({
                       mode="jalali"
                       min={min}
                       max={max}
-                      defaultValue={startDateS}
+                      defaultValue={`${startDate?.year}-${startDate?.month}-${startDate?.day}`}
                     />
                   </div>
                 </div>
                 <div className="w-2.5 h-0.5 mt-7 bg-gray-500"></div>
                 <div className="gap-1 flex-col flex items-start">
                   <span>تاریخ پایان بازه:</span>
-                  <div onClick={() => {
-                    if (startDate) {
-                      setActiveEndInput(true);
-                      setFocuseEndInput(true);
-                      setFocuseStartInput(false);
-                    }
-                  }
-                  }>
+                  <div
+                    onClick={() => {
+                      if (startDate) {
+                        setActiveEndInput(true);
+                        setFocuseEndInput(true);
+                        setFocuseStartInput(false);
+                      }
+                    }}
+                  >
                     <DateInput
                       invalidStartDate={validStartDate}
                       invalidEndDate={validEndDateS}
@@ -1839,7 +545,7 @@ export function DatePicker({
                       mode="jalali"
                       min={min}
                       max={max}
-                      defaultValue={endDateS}
+                      defaultValue={`${endDate?.year}-${endDate?.month}-${endDate?.day}`}
                     />
                   </div>
                 </div>
@@ -1874,178 +580,354 @@ export function DatePicker({
                     </span> */}
               </div>
             </div>
-            <div className="flex justify-between items-center">
-              <select
-                onChange={(e) =>
-                  setCurrentDate(
-                    `${calendars[0].slice(0, 4)}-${+e.target.value < 10
-                      ? `0${e.target.value}`
-                      : e.target.value
-                    }-${calendars[0].slice(8, 9)}`
-                  )
-                }
-                className="w-24 outline-none cursor-pointer rounded-md"
-              >
-                {listMonth.map((item) => (
-                  <option
-                    className={cn({ 'bg-brand-300': min.slice(0, 4) === calendars[0].slice(0, 4) && item.id === +calendars[0].slice(5, 7) })}
-                    disabled={min.slice(0, 4) === calendars[0].slice(0, 4) && item.id < +min.slice(5, 7)}
-                    selected={item.id === +calendars[0].slice(5, 7)}
-                    key={item.id} value={item.id}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
-              <select
-                onChange={(e) =>
-                  setCurrentDate(
-                    `${calendars[0].slice(0, 4)}-${+e.target.value < 10
-                      ? `0${e.target.value}`
-                      : e.target.value
-                    }-${calendars[0].slice(8, 9)}`
-                  )
-                }
-                className="w-24 outline-none py-1 px-2 cursor-pointer rounded-md"
-              >
-                {listMonth.map((item) => (
-                  <option
-                    selected={item.id === +calendars[1].slice(5, 7)}
-                    key={item.id}
-                    value={item.id}
-                  >
-                    {item.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div
-              onClick={() => onClose()}
-              className="w-8 h-8 rounded-full cursor-pointer bg-brand-600 absolute -left-2 -top-2 flex items-center justify-center"
-            >
-              <div className="rounded-full flex items-center bg-white justify-center w-6 h-6">
-                <Icon name="x" size="sm" />
-              </div>
-            </div>
+
+            {/* select drop down */}
             <div className="w-full flex justify-between items-center">
-              <div
-                onClick={() => setCurrentDate(-1)}
-                className={cn('bg-white hover:border-2 border-brand-600 cursor-pointer rounded-full w-10 h-10 flex items-center justify-center text-black', { 'bg-gray-200 hover:border-none cursor-default': min.slice(0, 4) === calendars[0].slice(0, 4) && min.slice(5, 7) >= calendars[0].slice(5, 7) })}
-              >
-                <Icon name="chevron-right" size="lg" />
+              <div className="flex gap-6 items-center">
+                <div
+                  onClick={() => setCurrentDate(-1)}
+                  className={cn(
+                    'bg-white hover:border-2 border-brand-600 cursor-pointer rounded-full w-10 h-10 flex items-center justify-center text-black',
+                    {
+                      'bg-gray-200 hover:border-none cursor-default':
+                        min.slice(0, 4) === calendars[0].slice(0, 4) &&
+                        min.slice(5, 7) >= calendars[0].slice(5, 7),
+                    }
+                  )}
+                >
+                  <Icon name="chevron-right" size="lg" />
+                </div>
+                {close}
+                <div className="flex items-center gap-1">
+                  <select
+                    onChange={(e) =>
+                      setCurrentDate(
+                        `${e.target.value}-${calendars[0].slice(
+                          5,
+                          7
+                        )}-${calendars[0].slice(8, 9)}`
+                      )
+                    }
+                    className="w-16 outline-none font-semibold text-base text-center py-1.5 cursor-pointer rounded-md"
+                  >
+                    {years.map((item) => (
+                      <option
+                        className={cn({
+                          'bg-brand-300':
+                            min.slice(0, 4) === calendars[0].slice(0, 4) &&
+                            item === +calendars[0].slice(0, 4),
+                        })}
+                        disabled={
+                          min.slice(0, 4) === calendars[0].slice(0, 4) &&
+                          item < +min.slice(5, 7)
+                        }
+                        selected={item === +calendars[0].slice(0, 4)}
+                        key={item}
+                        value={item}
+                      >
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    onChange={(e) => {
+                      setCurrentDate(
+                        `${calendars[0].slice(0, 4)}-${
+                          +e.target.value < 10
+                            ? `0${e.target.value}`
+                            : e.target.value
+                        }-${calendars[0].slice(8, 9)}`
+                      );
+                    }}
+                    className="w-24 outline-none font-semibold text-base text-center py-1.5 cursor-pointer rounded-md"
+                  >
+                    {listMonth.map((item) => (
+                      <option
+                        className={cn({
+                          'bg-brand-300':
+                            min.slice(0, 4) === calendars[0].slice(0, 4) &&
+                            item.id === +calendars[0].slice(5, 7),
+                        })}
+                        disabled={
+                          min.slice(0, 4) === calendars[0].slice(0, 4) &&
+                          item.id < +min.slice(5, 7)
+                        }
+                        selected={item.id === +calendars[0].slice(5, 7)}
+                        key={item.id}
+                        value={item.id}
+                      >
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
-              <div
-                onClick={() => setCurrentDate(+1)}
-                className={cn('bg-white hover:border-2 border-brand-600 flex items-center justify-center w-10 h-10 cursor-pointer rounded-full text-black', { 'bg-gray-200 hover:border-none cursor-default': max.slice(0, 4) === calendars[1].slice(0, 4) && max.slice(5, 7) <= calendars[0].slice(5, 7) })}>
-                <Icon name="chevron-left" size="lg" />
+              <div className="flex items-center gap-6">
+                <div className="flex gap-1">
+                  <select
+                    onChange={(e) =>
+                      setCurrentDate(
+                        `${e.target.value}-${calendars[0].slice(
+                          5,
+                          7
+                        )}-${calendars[0].slice(8, 9)}`
+                      )
+                    }
+                    className="w-16 outline-none font-semibold text-base text-center py-1.5 cursor-pointer rounded-md"
+                  >
+                    {years.map((item) => (
+                      <option
+                        className={cn({
+                          'bg-brand-300':
+                            min.slice(0, 4) === calendars[1].slice(0, 4) &&
+                            item === +calendars[1].slice(0, 4),
+                        })}
+                        disabled={
+                          min.slice(0, 4) === calendars[1].slice(0, 4) &&
+                          item < +min.slice(5, 7)
+                        }
+                        selected={item === +calendars[1].slice(0, 4)}
+                        key={item}
+                        value={item}
+                      >
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    onChange={(e) => {
+                      setCurrentDate(
+                        `${calendars[1].slice(0, 4)}-${
+                          +e.target.value < 10
+                            ? +`0${+e.target.value - 1}`
+                            : +e.target.value - 1
+                        }-${calendars[1].slice(8, 9)}`
+                      );
+                    }}
+                    className="w-28 text-base font-semibold py-1.5 text-center outline-none px-2 cursor-pointer rounded-md"
+                  >
+                    {listMonth.map((item) => (
+                      <option
+                        selected={item.id === +calendars[1].slice(5, 7)}
+                        key={item.id}
+                        value={item.id}
+                      >
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div
+                  onClick={() => setCurrentDate(+1)}
+                  className={cn(
+                    'bg-white hover:border-2 border-brand-600 flex items-center justify-center w-10 h-10 cursor-pointer rounded-full text-black',
+                    {
+                      'bg-gray-200 hover:border-none cursor-default':
+                        max.slice(0, 4) === calendars[1].slice(0, 4) &&
+                        max.slice(5, 7) <= calendars[0].slice(5, 7),
+                    }
+                  )}
+                >
+                  <Icon name="chevron-left" size="lg" />
+                </div>
               </div>
             </div>
-            <div className="flex items-center gap-5">
-              <div className="w-[300px] grid grid-cols-7">
-                <div className="col-span-7 flex items-center mb-3 justify-between px-5">
-                  {listWeek.map((item, index) => (
-                    <div key={index} className="text-center">
-                      {item.name}
-                    </div>
-                  ))}
-                </div>
+            <div className="flex items-center justify-between gap-10">
+              <div className="col-span-7 w-1/2 items-start row-start-1 flex mb-3 justify-between px-5">
+                {weeksTitle.map((item, index) => (
+                  <div key={index} className="text-center">
+                    {item}
+                  </div>
+                ))}
+              </div>
+              <div className="col-span-7 w-1/2 flex items-center justify-between px-5">
+                {weeksTitle.map((item, index) => (
+                  <div key={index} className="text-center">
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="flex items-center gap-10">
+              <div className="w-[310px] h-[260px] grid grid-cols-7">
                 {startDays.map((day, index) => {
                   return (
-                    <div key={index} className={cn('w-full')}>
-                      {day.status === 'current' && (
-                        <div className={cn('z-20 relative')}>
-                          <button
-                            onClick={() => {
-                              if (`${calendars[0].slice(0, 4)}${calendars[0].slice(5, 7)}${day.day}` > min.replace(/-/g, '') && `${calendars[0].slice(0, 4)}${calendars[0].slice(5, 7)}${day.day}` < max.replace(/-/g, '')) {
-                                if (!endDate && !startDate) {
-                                  setStartDate({
-                                    day: day.day,
-                                    month: +calendars[0].slice(5, 7),
-                                    year: +calendars[0].slice(0, 4)
-                                  })
-                                }
-
-                                setFocuseEndInput(true);
-                                setActiveEndInput(true);
-                                setFocuseStartInput(false);
-
-                                if (!endDate && startDate && focuseStartInput) {
-                                  setStartDate('');
-                                  setStartDate({
-                                    day: day.day,
-                                    month: +calendars[0].slice(5, 7),
-                                    year: +calendars[0].slice(0, 4)
-                                  })
-                                }
-                              }
-                            }
-                            }
+                    <Tooltip className="!z-40" title={titleTooltip}>
+                      <div
+                        onMouseEnter={() => {
+                          moseEnterCell({
+                            day: +day.day < 10 ? +`0${day.day}` : day.day,
+                            month: +calendars[0].slice(5, 7),
+                            year: +calendars[0].slice(0, 4),
+                          });
+                        }}
+                        key={index}
+                        className={cn('')}
+                      >
+                        {day.status === 'current' && (
+                          <div
                             className={cn(
-                              'w-10 h-10 my-1 bg-white shadow-brand-600 shadow-xs text-lg hover:border-brand-600 hover:border-2 rounded-full'
+                              'z-20 relative cursor-pointer w-10 h-10 my-1 bg-white flex items-center justify-center text-lg hover:border-brand-600 hover:border-2 rounded-full',
+                              {
+                                'hover:border-none text-gray-400 cursor-default':
+                                  !isDateInRange({
+                                    day: day.day,
+                                    month: +calendars[0].slice(5, 7),
+                                    year: +calendars[0].slice(0, 4),
+                                  }),
+                              }
                             )}
                           >
-                            {day.day}
-                          </button>
-                        </div>
-                      )}
-                    </div>
+                            <div
+                              onClick={() => {
+                                if (isDateInRange({day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4)})) {
+                                  if (focuseStartInput) {
+                                  setFocuseStartInput(false);
+                                  setFocuseEndInput(true);
+                                  setActiveEndInput(true);
+                                  setStartDate({
+                                    day: day.day,
+                                    month: +calendars[0].slice(5, 7),
+                                    year: +calendars[0].slice(0, 4),
+                                  });
+                                } else if (focuseEndInput) {
+                                  setEndDate({
+                                    day: day.day,
+                                    month: +calendars[0].slice(5, 7),
+                                    year: +calendars[0].slice(0, 4),
+                                  });
+                                }
+                              }}}
+                            >
+                              {day.day}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </Tooltip>
                   );
                 })}
               </div>
-              <div className="w-[300px] grid grid-cols-7">
-                <div className="col-span-7 flex items-center mb-3 justify-between px-5">
-                  {listWeek.map((item, index) => (
-                    <div key={index} className="text-center">
-                      {item.name}
-                    </div>
-                  ))}
-                </div>
+              <div className="w-[310px] h-[260px] grid grid-cols-7">
                 {endMonth.map((day, index) => {
                   return (
-                    <div key={index} className={cn('w-full')}>
+
+                    <div
+                      onMouseEnter={() => {
+                        moseEnterCell({
+                          day: +day.day < 10 ? +`0${day.day}` : day.day,
+                          month: +calendars[1].slice(5, 7),
+                          year: +calendars[1].slice(0, 4),
+                        });
+                      }}
+                      className="mx-auto"
+                      key={index}
+                    >
                       {day.status === 'current' && (
-                        <div className={cn('z-20 relative')}>
-                          <button
+                    <Tooltip className='!z-40' title={titleTooltip}>
+                        <div
+                          className={cn(
+                            'z-20 relative w-10 h-10 my-1 bg-white flex items-center cursor-pointer justify-center text-lg hover:border-brand-600 hover:border-2 rounded-full',
+                            {
+                              'hover:border-none text-gray-400 cursor-default':
+                                !isDateInRange({
+                                  day: day.day,
+                                  month: +calendars[1].slice(5, 7),
+                                  year: +calendars[1].slice(0, 4),
+                                }),
+                            }
+                          )}
+                        >
+                          {' '}
+                          <div
                             onClick={() => {
-                              setEndDate({
-                                day: day.day,
-                                month: +calendars[1].slice(5, 7),
-                                year: +calendars[1].slice(0, 4)
-                              })
+                              if (isDateInRange({day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4)})) {
+
+                                if (focuseStartInput) {
+                                  setFocuseStartInput(false);
+                                  setFocuseEndInput(true);
+                                  setActiveEndInput(true);
+                                  setStartDate({
+                                    day: day.day,
+                                    month: +calendars[1].slice(5, 7),
+                                    year: +calendars[1].slice(0, 4),
+                                  });
+                                } else if (focuseEndInput) {
+                                  setEndDate({
+                                    day: day.day,
+                                    month: +calendars[1].slice(5, 7),
+                                    year: +calendars[1].slice(0, 4),
+                                  });
+                                }
+                              }
                             }}
-                            className={cn(
-                              'w-10 h-10 my-1 bg-white shadow-brand-600 shadow-xs text-lg hover:border-brand-600 hover:border-2 rounded-full'
-                            )}
                           >
                             {day.day}
-                          </button>
+                          </div>
                         </div>
+                      </Tooltip>
                       )}
                     </div>
+
                   );
                 })}
               </div>
             </div>
-            <div className="flex flex-row-reverse justify-between items-center">
+            <div className="flex flex-row-reverse mt-4 justify-between items-center">
               <button
                 onClick={() => {
                   if (
-                    typeof startDate === 'string' &&
-                    typeof endDate === 'string'
+                    startDate &&
+                    endDate &&
+                    !errors.end &&
+                    !errors.start &&
+                    !areInputsEqual &&
+                    !validStartDate &&
+                    !validEndDateS
                   ) {
                     setDateRange(startDate, endDate);
                   }
                 }}
                 className={cn(
-                  'px-2 bg-brand-300 cursor-default py-1 rounded-md text-white'
+                  'px-2 bg-brand-300 cursor-default py-1 rounded-md text-white',
+                  {
+                    'cursor-pointer bg-brand-500':
+                      startDate &&
+                      endDate &&
+                      !errors.end.maxError &&
+                      !errors.end.minError &&
+                      !errors.start.maxError &&
+                      !errors.start.minError &&
+                      !areInputsEqual &&
+                      !validStartDate &&
+                      !validEndDateS,
+                  }
                 )}
               >
                 اعمال بازه
               </button>
 
-              <div className="flex justify-start w-fit gap-2 px-2 pt-1.5 bg-white rounded-sm items-center">
-                <span className="text-sm">بازه دلخواه:</span>
-                <span className="font-medium text-sm text-gray-1000">روز</span>
-              </div>
+              {startDate &&
+                endDate &&
+                !errors.end.maxError &&
+                !errors.end.minError &&
+                !errors.start.maxError &&
+                !errors.start.minError &&
+                !areInputsEqual &&
+                !validStartDate &&
+                !validEndDateS && (
+                  <div className="flex justify-start w-fit gap-2 px-2 pt-1.5 bg-white rounded-sm items-center">
+                    <span className="text-sm">بازه دلخواه:</span>
+                    {DateDifference(
+                      `${startDate.year}-${startDate.month}-${startDate.day}`,
+                      `${endDate.year}-${endDate.month}-${endDate.day}`
+                    )}
+                    <span className="font-medium text-sm text-gray-1000">
+                      روز
+                    </span>
+                  </div>
+                )}
             </div>
           </div>
         )}

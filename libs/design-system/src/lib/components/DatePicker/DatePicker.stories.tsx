@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { DatePicker } from './DatePicker';
 import { useArgs } from '@storybook/preview-api';
+import { DateType } from './DatePicker.types';
 
 // Meta configuration for the DatePicker component in Storybook
 const meta: Meta<typeof DatePicker> = {
@@ -16,8 +17,8 @@ type Story = StoryObj<typeof DatePicker>;
 // A default story for the DatePicker component
 export const Default: Story = {
   args: {
-    min: '1400-04-25',
-    max: '1409-05-25',
+    min: '1300-05-25',
+    max: '1400-05-25',
   },
   argTypes: {
     min: {
@@ -32,7 +33,7 @@ export const Default: Story = {
       updateArgs({ isOpen: false });
     }
 
-    function setDateRange(start: string, end: string) {
+    function setDateRange(start: DateType, end: DateType) {
       updateArgsDateRange({ dateRange: { start, end } });
     }
 
@@ -40,8 +41,8 @@ export const Default: Story = {
       <DatePicker
         dateRange={dateRange}
         setDateRange={(start, end) => setDateRange(start, end)}
-        max="1401-05-12"
-        min="1400-05-12"
+        max="1400-05-25"
+        min="1300-05-25"
         isOpen={isOpen}
         onClose={onCloseDatePicer}
       />
