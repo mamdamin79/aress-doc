@@ -4,7 +4,6 @@ import { Button, Icon, TextField } from 'design-system';
 import Link from 'next/link';
 import { useForm, Controller } from 'react-hook-form';
 interface OTPFormProps {
-  title: string;
   phoneNumber: string;
   onClick: () => void;
 }
