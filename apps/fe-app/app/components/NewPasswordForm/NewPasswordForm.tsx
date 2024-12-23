@@ -4,7 +4,7 @@ import { BulletList, Button, TextField } from 'design-system';
 import Link from 'next/link';
 import { useState } from 'react';
 
-export const NewPasswordForm = () => {
+export const NewPasswordForm = ({ onClick }: { onClick: () => void }) => {
   const {
     control,
     handleSubmit,
@@ -20,6 +20,7 @@ export const NewPasswordForm = () => {
 
   const onSubmit = async (data: any) => {
     await new Promise((r) => setTimeout(r, 5000));
+    onClick();
   };
   const [formValidations, setFormValidations] = useState({
     lowerAndUpperCase: false,

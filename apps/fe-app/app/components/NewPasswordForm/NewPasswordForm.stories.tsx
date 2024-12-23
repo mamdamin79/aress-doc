@@ -16,7 +16,7 @@ type Story = StoryObj<typeof NewPasswordForm>;
 export const Default: Story = {
   render: () => (
     <div className="w-[528px]">
-      <NewPasswordForm />
+      <NewPasswordForm onClick={() => console.log('clicked')} />
     </div>
   ),
 };
