@@ -17,7 +17,7 @@ export function BulletList({ items, textColor = 'black' }: Props) {
         return (
           <div
             className={cn(
-              'flex items-start gap-2 text-sm font-medium',
+              'flex items-start gap-2 font-medium',
               status === 'error' && 'text-red-600',
               status === 'success' && 'text-green-600',
               status === 'normal' &&
