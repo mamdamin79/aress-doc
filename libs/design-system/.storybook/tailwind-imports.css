@@ -8,6 +8,18 @@
   --rt-transition-closing-delay: 0.15s;
 }
 
+.drop-down::-webkit-scrollbar {
+  width: 4px;
+  background-color: #D8DBE1;
+  border-radius: 8px;
+  margin: 5px 0;
+}
+.drop-down::-webkit-scrollbar-thumb {
+  background-color: #8c9096;
+  position: sticky;
+  border-radius: 8px;
+}
+
 @layer base {
   :root {
     /* brand colors */
