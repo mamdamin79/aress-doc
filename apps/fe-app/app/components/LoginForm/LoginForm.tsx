@@ -66,7 +66,7 @@ export const LoginForm = () => {
               <TextField
                 mergeTitleAndPlaceholder={false}
                 mode="outline"
-                trailingIcons={['x']}
+                trailingIcons={[{ name: 'x', size: 'lg' }]}
                 label="شماره همراه / کدملی / نام کاربری"
                 placeholder=""
                 isError={!!fieldState.error}
@@ -90,7 +90,10 @@ export const LoginForm = () => {
                 mergeTitleAndPlaceholder={false}
                 mode="outline"
                 type="password"
-                trailingIcons={['x', 'eye']}
+                trailingIcons={[
+                  { name: 'x', size: 'lg' },
+                  { name: 'eye', size: 'lg' },
+                ]}
                 label="رمز عبور"
                 placeholder=""
                 isError={!!fieldState.error}
