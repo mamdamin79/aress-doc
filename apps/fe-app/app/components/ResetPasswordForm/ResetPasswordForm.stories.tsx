@@ -16,7 +16,7 @@ type Story = StoryObj<typeof ResetPasswordForm>;
 export const Default: Story = {
   render: () => (
     <div className="w-[528px]">
-      <ResetPasswordForm />
+      <ResetPasswordForm onClick={() => console.log('clicked')} />
     </div>
   ),
 };
