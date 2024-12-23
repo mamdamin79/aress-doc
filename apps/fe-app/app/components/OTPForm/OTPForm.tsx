@@ -4,6 +4,7 @@ import { Button, Icon, TextField } from 'design-system';
 import Link from 'next/link';
 import { useForm, Controller } from 'react-hook-form';
 interface OTPFormProps {
+  title: string;
   phoneNumber: string;
   onClick: () => void;
 }
@@ -20,7 +21,7 @@ export const OTPForm: React.FC<OTPFormProps> = ({ phoneNumber, onClick }) => {
   });
   const onSubmit = async (data: any) => {
     await new Promise((r) => setTimeout(r, 5000));
-    onClick();
+    console.log(data);
   };
 
   const [OTP, setOTP] = useState('');

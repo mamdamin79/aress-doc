@@ -3,7 +3,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { Button, TextField } from 'design-system';
 import Link from 'next/link';
 
-export const ResetPasswordForm = ({onClick}: {onClick: () => void}) => {
+export const ResetPasswordForm = () => {
   const {
     control,
     handleSubmit,
@@ -17,7 +17,7 @@ export const ResetPasswordForm = ({onClick}: {onClick: () => void}) => {
 
   const onSubmit = async (data: any) => {
     await new Promise((r) => setTimeout(r, 5000));
-    onClick()
+    console.log(data);
   };
 
   const validateNationalCode = (code: string): boolean => {
