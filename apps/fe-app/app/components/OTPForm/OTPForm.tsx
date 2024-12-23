@@ -35,7 +35,15 @@ export const OTPForm: React.FC<OTPFormProps> = ({ phoneNumber, onClick }) => {
       className="flex w-full flex-col gap-6 rounded-3xl border border-gray-300 p-6"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <h3 className="text-center text-xl font-medium">بازنشانی رمز عبور</h3>
+      <div className="flex w-full flex-row items-center justify-between">
+        <div className="w-[101px]"></div>
+        <h3 className="text-center text-xl font-medium">بازنشانی رمز عبور</h3>
+
+        <div className="text-brand-600 flex flex-row items-center justify-center text-sm">
+          <span className="text-sm font-medium">ویرایش شماره</span>
+          <Icon name="chevron-left" size="lg" />
+        </div>
+      </div>{' '}
       <div className="flex flex-col gap-7">
         <div className="flex flex-row gap-2">
           <Controller
@@ -89,12 +97,6 @@ export const OTPForm: React.FC<OTPFormProps> = ({ phoneNumber, onClick }) => {
           >
             ادامه
           </Button>
-          <Link
-            href="/forgot"
-            className="text-brand-600 text-md text-center font-medium"
-          >
-            بازگشت به صفحه ورود
-          </Link>
         </div>
       </div>
     </form>
