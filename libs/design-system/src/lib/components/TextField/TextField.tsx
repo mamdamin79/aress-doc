@@ -14,22 +14,30 @@ export const TextField: React.FC<textFieldPropsType> = ({
   trailingIcons,
   type,
   disabled,
+  onChange,
+  value,
   className,
   ...rest
 }) => {
-  const [inputValue, setInputValue] = useState('');
+  const [internalValue, setInternalValue] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [visibleCharacter, setIsVisibleCharacter] = useState(
     type !== 'password',
   );
-
   const id = useId();
+
+  const inputValue = value ?? internalValue;
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInternalValue(e.target.value);
+    onChange?.(e); // if you want to use the value in the parent component
+  };
 
   const handleClearInput = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setInputValue('');
+    setInternalValue('');
+    onChange?.({ target: { value: '' } } as any); // event simulation
   };
-
   const handleCharacterVisibility = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsVisibleCharacter(!visibleCharacter);
@@ -46,19 +54,9 @@ export const TextField: React.FC<textFieldPropsType> = ({
         className,
       )}
     >
-      {label && (
-        <div className="h-[26px]">
-          {mergeTitleAndPlaceholder ? (
-            (isFocused || inputValue) && (
-              <label
-                className={cn('text-sm font-medium', {
-                  'text-gray-400': disabled,
-                })}
-              >
-                {label}
-              </label>
-            )
-          ) : (
+      <div className="h-[26px]">
+        {mergeTitleAndPlaceholder ? (
+          (isFocused || inputValue) && (
             <label
               className={cn('text-sm font-medium', {
                 'text-gray-400': disabled,
@@ -66,9 +64,15 @@ export const TextField: React.FC<textFieldPropsType> = ({
             >
               {label}
             </label>
-          )}
-        </div>
-      )}
+          )
+        ) : (
+          <label
+            className={cn('text-sm font-medium', { 'text-gray-400': disabled })}
+          >
+            {label}
+          </label>
+        )}
+      </div>
 
       {!isFocused && !inputValue && (
         <label
@@ -88,10 +92,11 @@ export const TextField: React.FC<textFieldPropsType> = ({
         <div
           className={cn('pointer-events-none absolute right-4 top-10', {
             'text-gray-400': disabled,
-            'top-[14px]': !label,
           })}
         >
-          {leadingIcon && <Icon size="lg" name={leadingIcon} />}
+          {leadingIcon && (
+            <Icon name={leadingIcon.name} size={leadingIcon.size} />
+          )}
         </div>
       )}
 
@@ -103,9 +108,9 @@ export const TextField: React.FC<textFieldPropsType> = ({
         type={visibleCharacter ? 'text' : 'password'}
         value={inputValue}
         disabled={disabled}
-        onChange={(e) => setInputValue(e.target.value)}
+        onChange={handleInputChange}
         className={cn(
-          'text-md w-full rounded-xl border-[1.5px] p-2 font-normal outline-none transition-colors duration-150',
+          'text-md h-[50px] w-full rounded-xl border p-2 font-normal outline-none transition-colors duration-150',
           {
             'border-inherit bg-transparent opacity-100 placeholder:text-gray-400':
               disabled,
@@ -116,7 +121,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
             'hover:bg-gray-300': mode === 'filled' && !disabled && !isFocused,
             'cursor-not-allowed !bg-gray-50': disabled && mode === 'filled',
             'border-red-600 focus:border-[2.5px]': isError && !disabled,
-            'focus:border-brand-600 border-gray-300 focus:border-[2.5px]':
+            'focus:border-brand-600 border-gray-300 focus:border-2 focus:outline-none':
               !isError && !disabled,
             'pr-12': leadingIcon,
           },
@@ -124,17 +129,11 @@ export const TextField: React.FC<textFieldPropsType> = ({
         placeholder={mergeTitleAndPlaceholder ? '' : placeholder}
       />
 
-      <div
-        className={cn(
-          'absolute left-4 top-10 z-20 flex items-center justify-between gap-4',
-          {
-            'top-[14px]': !label,
-          },
-        )}
-      >
+      <div className="absolute left-4 top-10 z-20 flex items-center justify-between gap-4">
         {trailingIcons.map((icon) =>
           icon === 'eye' ? (
             <button
+              type="button"
               className={cn({ 'text-gray-400': disabled })}
               onMouseDown={(e) => handleCharacterVisibility(e)}
             >
@@ -143,6 +142,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
           ) : (
             inputValue && (
               <button
+                type="button"
                 className={cn({ 'text-gray-400': disabled })}
                 onMouseDown={(e) => handleClearInput(e)}
               >
@@ -152,15 +152,15 @@ export const TextField: React.FC<textFieldPropsType> = ({
           ),
         )}
       </div>
-      <span
-        className={cn('text-xs', {
+      <div
+        className={cn('h-[22px] text-xs', {
           'text-red-600': isError,
           'text-gray-600': !isError,
           'text-gray-400': disabled,
         })}
       >
         {supportText}
-      </span>
+      </div>
     </div>
   );
 };

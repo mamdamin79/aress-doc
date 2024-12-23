@@ -1,5 +1,5 @@
 import { InputHTMLAttributes } from 'react';
-import { IconName } from '../Icon/Icon.types';
+import { IconProps } from '../Icon';
 
 export type textFieldPropsType = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
@@ -8,6 +8,6 @@ export type textFieldPropsType = InputHTMLAttributes<HTMLInputElement> & {
   isError?: boolean;
   mode: 'filled' | 'outline';
   mergeTitleAndPlaceholder: boolean;
-  leadingIcon?: IconName;
+  leadingIcon?: IconProps;
   trailingIcons: [] | ['x'] | ['x', 'eye'];
 };
