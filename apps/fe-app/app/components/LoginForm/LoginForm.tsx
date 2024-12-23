@@ -1,62 +1,100 @@
-import React, { useState } from 'react';
-import { Button, Checkbox, TextField } from 'design-system';
-import Link from 'next/link';
-interface LoginFormProps {
-  title: string;
-  onClick: () => void;
-}
-export const LoginForm: React.FC<LoginFormProps> = ({ title, onClick }) => {
-  const [username, setUserName] = useState('');
-  const [password, setPassword] = useState('');
-  const [isChecked, setIsChecked] = useState(false);
-  const submitForm = () => {
-    console.log('submit');
+'use client';
+import { useForm, Controller } from 'react-hook-form';
+import { Button, TextField } from 'design-system';
+
+export const LoginForm = () => {
+  const {
+    control,
+    handleSubmit,
+    formState:{isSubmitting}
+  } = useForm({
+    defaultValues: {
+      username: '',
+      password: '',
+    },
+  });
+
+  const  onSubmit = async(data: any) => {
+    await new Promise(r => setTimeout(r, 5000));
+    console.log(data);
   };
+
+  const validateNationalCode = (code: string): boolean => {
+    if (code.length !== 10 || !/^\d+$/.test(code)) return false;
+  
+    const check = +code[9];
+    const sum =
+      code
+        .split("")
+        .slice(0, 9)
+        .reduce((acc, num, idx) => acc + +num * (10 - idx), 0) % 11;
+  
+    return (sum < 2 && check === sum) || (sum >= 2 && check + sum === 11);
+  };
+  
+
   return (
-    <div className="flex w-full flex-col items-center gap-6 rounded-3xl border border-gray-300 bg-white p-6 text-xl font-medium">
-      <h5>{title}</h5>
-      <div className="flex w-full flex-col gap-12">
-        <div className="flex flex-col">
+    <form dir='rtl' className='rounded-3xl border border-gray-300 p-6 w-[480px]' onSubmit={handleSubmit(onSubmit)}>
+      <h3 className='text-center text-xl font-medium pb-6'>ورود به آرسس</h3>
+      <Controller
+        name="username"
+        control={control}
+        rules={{
+          required: {
+            value: true,
+            message: 'این فیلد اجباری است.',
+          },
+          validate: (value) => {
+            const isNationalCode =
+              /^[0-9]{10}$/.test(value) && validateNationalCode(value);
+            const isPhoneNumber = /^09[0-9]{9}$/.test(value);
+            // const isUsername = /^[a-zA-Z0-9_]{3,}$/.test(value);
+
+            if (!isNationalCode && !isPhoneNumber) {
+              return 'لطفاً کد ملی، شماره تماس یا نام کاربری معتبر وارد کنید.';
+            }
+
+            return true;
+          },
+        }}
+        render={({ field, fieldState }) => (
           <TextField
-            label="شماره همراه/کد ملی/نام کاربری"
             mergeTitleAndPlaceholder={false}
             mode="outline"
-            trailingIcons={[]}
+            trailingIcons={['x']}
+            label="شماره همراه / کدملی / نام کاربری"
             placeholder=""
-            supportText="یکی از موارد خواسته شده را وارد کنید."
-            value={username}
-            onChange={(e) => setUserName(e.target.value)}
+            isError={!!fieldState.error}
+            supportText={
+              fieldState.error?.message ||
+              'یکی از موارد خواسته شده را وارد کنید.'
+            }
+            {...field}
           />
+        )}
+      />
+
+      <Controller
+        name="password"
+        control={control}
+        rules={{
+          required: 'این فیلد اجباری است.',
+        }}
+        render={({ field, fieldState }) => (
           <TextField
-            label="رمز عبور"
             mergeTitleAndPlaceholder={false}
             mode="outline"
-            trailingIcons={['x', 'eye']}
             type="password"
+            trailingIcons={['x', 'eye']}
+            label="رمز عبور"
             placeholder=""
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            isError={!!fieldState.error}
+            supportText={fieldState.error?.message}
+            {...field}
           />
-        </div>
-        <div className="flex flex-col gap-4">
-          <Checkbox
-            content="مرا به خاطر بسپار"
-            onChange={() => setIsChecked(!isChecked)}
-          />
-          <Button
-            align="center"
-            isLoading={false}
-            mode="primary"
-            size="md"
-            onClick={submitForm}
-          >
-            <span className="text-md font-medium">ورود به ترمینال</span>{' '}
-          </Button>
-          <Link href="#" className="text-brand-600 text-center text-sm">
-            رمز عبور خود را فراموش کرده‌اید؟
-          </Link>
-        </div>
-      </div>
-    </div>
+        )}
+      />
+      <Button align='center' mode='primary' isLoading={isSubmitting} size='md'  type="submit">ورود به ترمینال</Button>
+    </form>
   );
 };
