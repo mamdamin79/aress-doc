@@ -169,7 +169,7 @@ export const useVideo = (
   qualities: {
     src: string;
     label: string;
-  }[]
+  }[],
 ) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
@@ -191,7 +191,6 @@ export const useVideo = (
     error: null,
     src: src,
   });
-  console.log(state.isPlaying);
 
   useEffect(() => {
     const video = videoRef.current!;
@@ -414,7 +413,7 @@ export const useVideo = (
         case 'ArrowRight': {
           return (videoRef.current!.currentTime = Math.min(
             videoRef.current!.currentTime + 10,
-            videoRef.current!.duration
+            videoRef.current!.duration,
           ));
         }
         case 'ArrowLeft': {
@@ -443,12 +442,12 @@ export const useVideo = (
     (quality: { src: string; label: string }) => {
       dispatch({ type: 'SET_QUALITY', quality });
     },
-    []
+    [],
   );
 
   const pictureInPicture = useCallback(
     () => videoRef.current?.requestPictureInPicture(),
-    []
+    [],
   );
   const seek = (newProgress: number) => {
     if (videoRef.current) {
