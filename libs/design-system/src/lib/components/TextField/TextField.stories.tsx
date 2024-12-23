@@ -18,7 +18,10 @@ export const Default: Story = {
     isError: false,
     mode: 'filled',
     mergeTitleAndPlaceholder: true,
-    leadingIcon: 'user-round',
+    leadingIcon: {
+      name: 'user-round',
+      size: 'lg',
+    },
     trailingIcons: ['x', 'eye'],
     disabled: false,
     type: 'text',
