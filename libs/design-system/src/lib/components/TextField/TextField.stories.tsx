@@ -22,7 +22,10 @@ export const Default: Story = {
       name: 'user-round',
       size: 'lg',
     },
-    trailingIcons: ['x', 'eye'],
+    trailingIcons: [
+      { name: 'x', size: 'md' },
+      { name: 'eye', size: 'md' },
+    ],
     disabled: false,
     type: 'text',
     className: 'w-[320px]',
