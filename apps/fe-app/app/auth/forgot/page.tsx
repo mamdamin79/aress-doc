@@ -5,7 +5,7 @@ import RESET_PASSWORD from '@aress-assets/icons/ResetPassword.svg';
 import Image from 'next/image';
 import { ResetPasswordForm } from '../../components/ResetPasswordForm';
 import { OTPForm } from '../../components/OTPForm';
-import { NewPassword } from '../../components/NewPasswordForm';
+import { NewPasswordForm } from '../../components/NewPasswordForm';
 
 const login = () => {
   const [activeIndex, setActiveIndex] = useState(0);
