@@ -21,14 +21,10 @@ export const OTPForm: React.FC<OTPFormProps> = ({ phoneNumber, onClick }) => {
   });
   const onSubmit = async (data: any) => {
     await new Promise((r) => setTimeout(r, 5000));
-    console.log(data);
-  };
-
-  const [OTP, setOTP] = useState('');
-  const [showTimer, setShowTimer] = useState(true);
-  const submitForm = () => {
     onClick();
   };
+
+  const [showTimer, setShowTimer] = useState(true);
   return (
     <form
       dir="rtl"
