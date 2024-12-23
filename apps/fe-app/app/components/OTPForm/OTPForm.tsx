@@ -24,11 +24,7 @@ export const OTPForm: React.FC<OTPFormProps> = ({ phoneNumber, onClick }) => {
     onClick();
   };
 
-  const [OTP, setOTP] = useState('');
   const [showTimer, setShowTimer] = useState(true);
-  const submitForm = () => {
-    onClick();
-  };
   return (
     <form
       dir="rtl"
