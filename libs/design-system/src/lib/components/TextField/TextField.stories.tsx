@@ -22,7 +22,10 @@ export const Default: Story = {
       name: 'user-round',
       size: 'lg',
     },
-    trailingIcons: ['x', 'eye'],
+    trailingIcons: [
+      { name: 'x', size: 'md' },
+      { name: 'eye', size: 'md' },
+    ],
     disabled: false,
     type: 'text',
     className: 'w-[320px]',
@@ -34,6 +37,21 @@ export const WithError: Story = {
     ...Default.args,
     isError: true,
     supportText: 'خطا: فیلد دارای مشکل است',
+  },
+};
+
+export const OTP: Story = {
+  args: {
+    label: 'لطفا رمز یکبار مصرف ارسال شده به شماره 09124109520 را وارد کنید',
+    placeholder: '- - - - - -',
+    supportText: 'رمز ارسال شده تا 5 دقیقه دیگر معتبر است',
+    isError: false,
+    mode: 'filled',
+    trailingIcons: [],
+    mergeTitleAndPlaceholder: false,
+    disabled: false,
+    type: 'text',
+    className: 'w-[380px]',
   },
 };
 
