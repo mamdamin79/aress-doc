@@ -170,7 +170,7 @@ export const NewPasswordForm = () => {
             size="md"
             type="submit"
           >
-            ادامه
+            تایید
           </Button>
           <Link
             href="/forgot"
