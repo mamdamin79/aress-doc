@@ -4,7 +4,7 @@ import { BulletList, Button, TextField } from 'design-system';
 import Link from 'next/link';
 import { useState } from 'react';
 
-export const NewPasswordForm = () => {
+export const NewPasswordForm = ({ onClick }: { onClick: () => void }) => {
   const {
     control,
     handleSubmit,
