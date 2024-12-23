@@ -82,6 +82,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
             { 'right-8': leadingIcon },
             { block: mergeTitleAndPlaceholder },
             { 'text-gray-400': disabled },
+            { 'top-10': leadingIcon?.size === 'md' },
           )}
         >
           {label}
@@ -92,10 +93,11 @@ export const TextField: React.FC<textFieldPropsType> = ({
         <div
           className={cn('pointer-events-none absolute right-4 top-10', {
             'text-gray-400': disabled,
+            'top-[42px]': leadingIcon?.size === 'md',
           })}
         >
           {leadingIcon && (
-            <Icon name={leadingIcon.name} size={leadingIcon.size} />
+            <Icon name={leadingIcon.name} size={leadingIcon.size || 'lg'} />
           )}
         </div>
       )}
@@ -129,15 +131,26 @@ export const TextField: React.FC<textFieldPropsType> = ({
         placeholder={mergeTitleAndPlaceholder ? '' : placeholder}
       />
 
-      <div className="absolute left-4 top-10 z-20 flex items-center justify-between gap-4">
+      <div
+        className={cn(
+          'absolute left-4 top-10 z-20 flex items-center justify-between gap-4',
+          {
+            'top-[42px]':
+              trailingIcons.length > 0 && trailingIcons[1]?.size === 'md',
+          },
+        )}
+      >
         {trailingIcons.map((icon) =>
-          icon === 'eye' ? (
+          icon.name === 'eye' ? (
             <button
               type="button"
               className={cn({ 'text-gray-400': disabled })}
               onMouseDown={(e) => handleCharacterVisibility(e)}
             >
-              <Icon size="lg" name={visibleCharacter ? 'eye-off' : icon} />
+              <Icon
+                size={icon.size}
+                name={visibleCharacter ? 'eye-off' : icon.name}
+              />
             </button>
           ) : (
             inputValue && (
@@ -146,7 +159,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
                 className={cn({ 'text-gray-400': disabled })}
                 onMouseDown={(e) => handleClearInput(e)}
               >
-                <Icon size="lg" name={icon} />
+                <Icon size={icon.size} name={icon.name} />
               </button>
             )
           ),
