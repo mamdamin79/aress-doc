@@ -15,3 +15,5 @@ export * from './ProgressBar';
 export * from './SummaryCell';
 export * from './Button';
 export * from './TextField';
+export * from './NotesHeading';
+export * from './BulletList';

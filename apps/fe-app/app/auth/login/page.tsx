@@ -1,4 +1,3 @@
-'use client';
 import { BulletList, NotesHeading, SectionTitle } from 'design-system';
 import React from 'react';
 import { LoginForm } from '../../components/LoginForm';
@@ -13,8 +12,6 @@ const login = () => {
         <div className="flex w-full flex-row gap-20 px-[152px]">
           <div className="mt-[72px] w-1/2">
             <LoginForm
-              title="ورود به آرسس ترمینال"
-              onClick={() => console.log('submit')}
             />
           </div>
           <div className="flex w-1/2 flex-col gap-4 pt-10">
