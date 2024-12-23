@@ -71,6 +71,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
     isStartDateEqual,
     isDateBetweenStartAndEnd,
     setEndDate,
+    isLastDayOfWeek,
     isDateAfterStartOrEnd,
     isEndDateEqual,
   } = usePersianCalendar(
@@ -144,7 +145,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
 
         if (focuseEndInput && startDate) {
           console.log(formatDate(date), formatDate(startDate));
-          
+
           if (formatDate(date) > formatDate(startDate)) {
             setTitleTooltip('تاریخ پایان');
           } else setTitleTooltip('تاریخ شروع');
@@ -494,6 +495,15 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                             }}
                             className={cn(
                               'z-20 relative cursor-pointer w-10 h-10 my-1 bg-white flex items-center justify-center text-lg hover:border-brand-600 hover:border-2 rounded-full',
+                              day.day === 1 && '!rounded-r-full',
+                              isLastDayOfWeek(index).firstDayIndex === index && '!rounded-r-full',
+                              day.day === 31 && '!rounded-l-full',
+                              +calendars[0].slice(5, 7) > 6 && day.day === 30 && '!rounded-l-full',
+                              isLastDayOfWeek(index).lastDayIndex === index && '!rounded-l-full',
+                              dateHover && `${dateHover.year}${dateHover.month < 10 ? `0${dateHover.month}` : dateHover.month}${dateHover.day < 10 ? `0${dateHover.day}` : dateHover.day}` > `${calendars[0].slice(0, 4)}${calendars[0].slice(5, 7)}${day.day < 10 ? `0${day.day}` : day.day}` && isDateAfterStartOrEnd({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) }) && focuseEndInput && day.day === 31 || isLastDayOfWeek(index).lastDayIndex === index ? '!border-l-2 !rounded-l-full' : (day.day === 1 || isLastDayOfWeek(index).firstDayIndex === index) && '!border-r-2',
+
+
+
                               {
                                 'hover:border-none text-gray-400 cursor-default':
                                   !isDateInRange({
@@ -503,21 +513,31 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                                   }),
                               },
                               {
-                                'bg-brand-200 w-11 rounded-none hover:border-none hover:bg-brand-400': isDateBetweenStartAndEnd({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) }) && !isStartDateEqual({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) }) && !isEndDateEqual({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) })
+                                'bg-brand-200 pl-[4px] w-11 rounded-none text-brand-800 hover:border-none mx-auto': isDateBetweenStartAndEnd({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) }) && !isStartDateEqual({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) }) && !isEndDateEqual({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) })
                               },
                               {
-                                'border-t-2 border-b-2 border-brand-600 w-11 rounded-none': dateHover && `${dateHover.year}${dateHover.month < 10 ? `0${dateHover.month}` : dateHover.month}${dateHover.day < 10 ? `0${dateHover.day}` : dateHover.day}` > `${calendars[0].slice(0, 4)}${calendars[0].slice(5, 7)}${day.day < 10 ? `0${day.day}` : day.day}` && isDateAfterStartOrEnd({day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4)}),
+                                'border-t-2 border-b-2 pl-[4px] border-brand-300 w-11 rounded-none': dateHover && `${dateHover.year}${dateHover.month < 10 ? `0${dateHover.month}` : dateHover.month}${dateHover.day < 10 ? `0${dateHover.day}` : dateHover.day}` > `${calendars[0].slice(0, 4)}${calendars[0].slice(5, 7)}${day.day < 10 ? `0${day.day}` : day.day}` && isDateAfterStartOrEnd({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) }) && focuseEndInput,
                               },
                               {
-                                'text-white bg-brand-600': isStartDateEqual({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) }) || isEndDateEqual({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) })
+                                'text-white bg-brand-600 w-10': isStartDateEqual({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) }) || isEndDateEqual({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) })
                               }
                             )}
                           >
-                            <div>
-                              {day.day}
+                            <div className={cn(
+                              { 'hover:bg-brand-300 rounded-full text-center w-full h-full flex items-center justify-center hover:rounded-full': isDateBetweenStartAndEnd({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) }) && !isStartDateEqual({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) }) && !isEndDateEqual({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) }) },
+                            )}>                              
+                            {day.day}
                             </div>
                           </div>
                         )}
+                        {
+                          day.status === 'current' && isStartDateEqual({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) }) &&
+                          <p className='w-6 h-10 bg-brand-200 absolute top-1 left-0'></p>
+                        }
+                        {
+                          day.status === 'current' && isEndDateEqual({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) }) &&
+                          <p className='w-6 h-10 bg-brand-200 absolute top-1 right-0'></p>
+                        }
                       </div>
                     </Tooltip>
                   );
@@ -540,53 +560,76 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                     >
                       {day.status === 'current' && (
                         <Tooltip className='!z-40' title={titleTooltip}>
-                          <div
-                            onClick={() => {
-                              if (isDateInRange({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) })) {
+                          <div className='w-11'>
+                            <div
+                              onClick={() => {
+                                if (isDateInRange({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) })) {
 
-                                if (focuseStartInput) {
-                                  setFocuseStartInput(false);
-                                  setFocuseEndInput(true);
-                                  setActiveEndInput(true);
-                                  setStartDate({
-                                    day: day.day,
-                                    month: +calendars[1].slice(5, 7),
-                                    year: +calendars[1].slice(0, 4),
-                                  });
-                                } else if (focuseEndInput) {
-                                  setEndDate({
-                                    day: day.day,
-                                    month: +calendars[1].slice(5, 7),
-                                    year: +calendars[1].slice(0, 4),
-                                  });
+                                  if (focuseStartInput) {
+                                    setFocuseStartInput(false);
+                                    setFocuseEndInput(true);
+                                    setActiveEndInput(true);
+                                    setStartDate({
+                                      day: day.day,
+                                      month: +calendars[1].slice(5, 7),
+                                      year: +calendars[1].slice(0, 4),
+                                    });
+                                  } else if (focuseEndInput) {
+                                    setEndDate({
+                                      day: day.day,
+                                      month: +calendars[1].slice(5, 7),
+                                      year: +calendars[1].slice(0, 4),
+                                    });
+                                  }
                                 }
-                              }
-                            }}
-                            className={cn(
-                              'z-20 relative w-10 h-10 my-1 bg-white flex items-center cursor-pointer justify-center text-lg hover:border-brand-600 hover:border-2 rounded-full',
-                              {
-                                'hover:border-none text-gray-400 cursor-default':
-                                  !isDateInRange({
-                                    day: day.day,
-                                    month: +calendars[1].slice(5, 7),
-                                    year: +calendars[1].slice(0, 4),
-                                  }),
-                              },
-                              {
-                                'border-t-2 border-b-2 border-brand-600 w-11 rounded-none': dateHover && `${dateHover.year}${dateHover.month < 10 ? `0${dateHover.month}` : dateHover.month}${dateHover.day < 10 ? `0${dateHover.day}` : dateHover.day}` > `${calendars[1].slice(0, 4)}${calendars[1].slice(5, 7)}${day.day < 10 ? `0${day.day}` : day.day}` && isDateAfterStartOrEnd({day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4)}),
-                              },
-                              {
-                                'bg-brand-200 w-11 rounded-none hover:border-none hover:bg-brand-400': isDateBetweenStartAndEnd({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) && !isStartDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) && !isEndDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) })
-                              },
-                              {
-                                'text-white bg-brand-600': isStartDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) || isEndDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) })
-                              }
-                            )}
-                          >
-                            {' '}
-                            <div>
-                              {day.day}
+                              }}
+                              className={cn(
+                                'z-20 relative cursor-pointer w-10 h-10 my-1 bg-white flex items-center justify-center text-lg hover:border-brand-600 hover:border-2 rounded-full',
+                                day.day === 1 && '!rounded-r-full',
+                                isLastDayOfWeek(index).firstDayIndex === index && '!rounded-r-full',
+                                day.day === 31 && '!rounded-l-full',
+                                +calendars[1].slice(5, 7) > 6 && day.day === 30 && '!rounded-l-full',
+                                isLastDayOfWeek(index).lastDayIndex === index && '!rounded-l-full',
+                                dateHover && `${dateHover.year}${dateHover.month < 10 ? `0${dateHover.month}` : dateHover.month}${dateHover.day < 10 ? `0${dateHover.day}` : dateHover.day}` > `${calendars[0].slice(0, 4)}${calendars[0].slice(5, 7)}${day.day < 10 ? `0${day.day}` : day.day}` && isDateAfterStartOrEnd({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) }) && focuseEndInput && day.day === 31 || isLastDayOfWeek(index).lastDayIndex === index ? '!border-l-2 !rounded-l-full' : (day.day === 1 || isLastDayOfWeek(index).firstDayIndex === index) && '!border-r-2',
+
+                                {
+                                  'hover:border-none text-gray-400 cursor-default':
+                                    !isDateInRange({
+                                      day: day.day,
+                                      month: +calendars[1].slice(5, 7),
+                                      year: +calendars[1].slice(0, 4),
+                                    }),
+                                },
+                                {
+                                  '!rounded-r-full': day.day === 1 && isDateBetweenStartAndEnd({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) }) && !isStartDateEqual({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) }) && !isEndDateEqual({ day: day.day, month: +calendars[0].slice(5, 7), year: +calendars[0].slice(0, 4) })
+                                },
+                                {
+                                  'border-t-2 border-b-2 pl-[4px] border-brand-300 w-11 rounded-none': dateHover && `${dateHover.year}${dateHover.month < 10 ? `0${dateHover.month}` : dateHover.month}${dateHover.day < 10 ? `0${dateHover.day}` : dateHover.day}` > `${calendars[1].slice(0, 4)}${calendars[1].slice(5, 7)}${day.day < 10 ? `0${day.day}` : day.day}` && isDateAfterStartOrEnd({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) && focuseEndInput,
+                                },
+                                {
+                                  'bg-brand-200 pl-[4px] mx-auto w-11 group hover:bg-brand-200 rounded-none hover:border-none text-brand-800 ': isDateBetweenStartAndEnd({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) && !isStartDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) && !isEndDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) })
+                                },
+                                {
+                                  'text-white bg-brand-600 w-10': isStartDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) || isEndDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) })
+                                }
+                              )}
+                            >
+                              {' '}
+                              <div className={cn(
+                                { 'hover:bg-brand-300 rounded-full text-center w-full h-full flex items-center justify-center hover:rounded-full': isDateBetweenStartAndEnd({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) && !isStartDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) && !isEndDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) },
+                              )}>
+                                {day.day}
+                              </div>
                             </div>
+
+                            {
+                              day.status === 'current' && isStartDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) &&
+                              <p className='w-6 h-10 bg-brand-200 absolute top-0 left-0'></p>
+                            }
+                            {
+                              day.status === 'current' && isEndDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) &&
+                              <p className='w-6 h-10 bg-brand-200 absolute top-0 right-0'></p>
+                            }
                           </div>
                         </Tooltip>
                       )}

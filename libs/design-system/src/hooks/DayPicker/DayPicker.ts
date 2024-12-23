@@ -261,6 +261,13 @@ const usePersianCalendar = (min: DateObject, max: DateObject) => {
       },
       [startDate, endDate, isDateAfterStart, isDateAfterEnd]
     );
+    
+    const isLastDayOfWeek = (index: number) => {
+      const firstDayIndex = index - (index % 7); // اولین روز هفته
+      const lastDayIndex = firstDayIndex + 6;    // آخرین روز هفته
+      return { firstDayIndex, lastDayIndex };
+    };
+    
 
   return {
     startDate,
@@ -278,7 +285,8 @@ const usePersianCalendar = (min: DateObject, max: DateObject) => {
     isStartDateEqual, // return the new function
     isEndDateEqual, // return the end date equal function
     isDateBetweenStartAndEnd, // return the date between start and end function
-    isDateAfterStartOrEnd
+    isDateAfterStartOrEnd,
+    isLastDayOfWeek
   };
 };
 
