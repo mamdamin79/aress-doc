@@ -27,23 +27,16 @@ const login = () => {
         <div className="flex w-full flex-row gap-20 px-[152px]">
           <div className="mt-[72px] w-1/2">
             {activeIndex === 0 && (
-              <ResetPasswordForm
-                onClick={() => setActiveIndex(1)}
-                title="بازنشانی رمز عبور"
-              />
+              <ResetPasswordForm onClick={() => setActiveIndex(1)} />
             )}
             {activeIndex === 1 && (
               <OTPForm
                 onClick={() => setActiveIndex(2)}
                 phoneNumber="09339133225"
-                title="بازنشانی رمز عبور"
               />
             )}
             {activeIndex === 2 && (
-              <NewPassword
-                onClick={() => alert('logged in')}
-                title="بازنشانی رمز عبور"
-              />
+              <NewPasswordForm onClick={() => alert('logged in')} />
             )}
           </div>
           <div className="flex w-1/2 flex-col gap-4 pt-10">
