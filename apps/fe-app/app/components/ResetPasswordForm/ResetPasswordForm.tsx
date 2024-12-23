@@ -1,17 +1,17 @@
 'use client';
 import { useForm, Controller } from 'react-hook-form';
-import { Button, Checkbox, TextField } from 'design-system';
+import { Button, TextField } from 'design-system';
 import Link from 'next/link';
 
-export const LoginForm = () => {
+export const ResetPasswordForm = () => {
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
   } = useForm({
     defaultValues: {
-      username: '',
-      password: '',
+      nationalCode: '',
+      phoneNumber: '',
     },
   });
 
@@ -38,11 +38,11 @@ export const LoginForm = () => {
       className="flex w-full flex-col gap-6 rounded-3xl border border-gray-300 p-6"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <h3 className="text-center text-xl font-medium">ورود به آرسس ترمینال</h3>
+      <h3 className="text-center text-xl font-medium">بازنشانی رمز عبور</h3>
       <div className="flex flex-col gap-7">
         <div className="flex flex-col gap-4">
           <Controller
-            name="username"
+            name="nationalCode"
             control={control}
             rules={{
               required: {
@@ -52,11 +52,9 @@ export const LoginForm = () => {
               validate: (value) => {
                 const isNationalCode =
                   /^[0-9]{10}$/.test(value) && validateNationalCode(value);
-                const isPhoneNumber = /^09[0-9]{9}$/.test(value);
-                // const isUsername = /^[a-zA-Z0-9_]{3,}$/.test(value);
 
-                if (!isNationalCode && !isPhoneNumber) {
-                  return 'لطفاً کد ملی، شماره تماس یا نام کاربری معتبر وارد کنید.';
+                if (!isNationalCode) {
+                  return 'لطفا یک کد ملی معتبر وارد کنید.';
                 }
 
                 return true;
@@ -66,32 +64,40 @@ export const LoginForm = () => {
               <TextField
                 mergeTitleAndPlaceholder={false}
                 mode="outline"
-                trailingIcons={['x']}
-                label="شماره همراه / کدملی / نام کاربری"
+                trailingIcons={[]}
+                label="کد ملی"
                 placeholder=""
                 isError={!!fieldState.error}
-                supportText={
-                  fieldState.error?.message ||
-                  'یکی از موارد خواسته شده را وارد کنید.'
-                }
+                supportText={fieldState.error?.message}
                 {...field}
               />
             )}
           />
 
           <Controller
-            name="password"
+            name="phoneNumber"
             control={control}
             rules={{
-              required: 'این فیلد اجباری است.',
+              required: {
+                value: true,
+                message: 'این فیلد اجباری است.',
+              },
+              validate: (value) => {
+                const isPhoneNumber = /^09[0-9]{9}$/.test(value);
+
+                if (!isPhoneNumber) {
+                  return 'لطفا یک  شماره همراه معتبر وارد کنید.';
+                }
+
+                return true;
+              },
             }}
             render={({ field, fieldState }) => (
               <TextField
                 mergeTitleAndPlaceholder={false}
                 mode="outline"
-                type="password"
-                trailingIcons={['x', 'eye']}
-                label="رمز عبور"
+                trailingIcons={[]}
+                label="شماره همراه"
                 placeholder=""
                 isError={!!fieldState.error}
                 supportText={fieldState.error?.message}
@@ -101,10 +107,6 @@ export const LoginForm = () => {
           />
         </div>
         <div className="flex flex-col justify-center gap-4">
-          <div className="flex flex-row">
-            <Checkbox onChange={() => console.log('checked')} />
-            <span className="text-sm font-medium">مرا به خاطر بسپار</span>
-          </div>
           <Button
             align="center"
             mode="primary"
@@ -112,13 +114,13 @@ export const LoginForm = () => {
             size="md"
             type="submit"
           >
-            ورود به ترمینال
+            ادامه
           </Button>
           <Link
             href="/forgot"
             className="text-brand-600 text-md text-center font-medium"
           >
-            رمز عبور را فراموش کرده‌اید؟
+            بازگشت به صفحه ورود
           </Link>
         </div>
       </div>
