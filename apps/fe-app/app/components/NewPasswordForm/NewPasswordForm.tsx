@@ -20,6 +20,7 @@ export const NewPasswordForm = ({ onClick }: { onClick: () => void }) => {
 
   const onSubmit = async (data: any) => {
     await new Promise((r) => setTimeout(r, 5000));
+    onClick();
   };
   const [formValidations, setFormValidations] = useState({
     lowerAndUpperCase: false,
