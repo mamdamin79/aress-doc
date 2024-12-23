@@ -94,7 +94,13 @@ export const NewPasswordForm = ({ onClick }: { onClick: () => void }) => {
                   mergeTitleAndPlaceholder={false}
                   mode="outline"
                   type="password"
-                  trailingIcons={['x', 'eye']}
+                  trailingIcons={[
+                    {
+                      name: 'x',
+                      size: 'lg',
+                    },
+                    { name: 'eye', size: 'lg' },
+                  ]}
                   label="رمز عبور"
                   placeholder=""
                   isError={!!fieldState.error}
@@ -153,7 +159,13 @@ export const NewPasswordForm = ({ onClick }: { onClick: () => void }) => {
                 mergeTitleAndPlaceholder={false}
                 mode="outline"
                 type="password"
-                trailingIcons={['x', 'eye']}
+                trailingIcons={[
+                  {
+                    name: 'x',
+                    size: 'lg',
+                  },
+                  { name: 'eye', size: 'lg' },
+                ]}
                 label="تکرار رمز عبور"
                 placeholder=""
                 isError={!!fieldState.error}
