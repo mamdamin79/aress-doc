@@ -40,6 +40,21 @@ export const WithError: Story = {
   },
 };
 
+export const OTP: Story = {
+  args: {
+    label: 'لطفا رمز یکبار مصرف ارسال شده به شماره 09124109520 را وارد کنید',
+    placeholder: '- - - - - -',
+    supportText: 'رمز ارسال شده تا 5 دقیقه دیگر معتبر است',
+    isError: false,
+    mode: 'filled',
+    trailingIcons: [],
+    mergeTitleAndPlaceholder: false,
+    disabled: false,
+    type: 'text',
+    className: 'w-[380px]',
+  },
+};
+
 export const Disabled: Story = {
   args: {
     ...Default.args,
