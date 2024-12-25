@@ -25,9 +25,9 @@ export const withInput: Story = {
       label: 'نام جدید را وارد کنید',
       placeholder: 'نام مد نظر خود را وارد کنید ...',
     },
-    CheckboxText: 'باز کردن در تب جدید',
-    ConfirmButtonText: 'ذخیره',
-    CancelButtonText: 'انصراف',
+    checkBoxText: 'باز کردن در تب جدید',
+    confirmButtonText: 'ذخیره',
+    cancelButtonText: 'انصراف',
     onConfirm: ({ checked, input }) => {
       console.log(checked);
       console.log(input);
@@ -52,8 +52,8 @@ export const withoutInput: Story = {
     input: {
       label: 'آیا مطمئن هستید که می‌خواهید «اسلاید ۱» را حذف کنید؟',
     },
-    ConfirmButtonText: 'بله',
-    CancelButtonText: 'خیر',
+    confirmButtonText: 'بله',
+    cancelButtonText: 'خیر',
     onConfirm: ({ checked, input }) => {
       console.log(checked);
       console.log(input);
