@@ -10,12 +10,19 @@ const meta: Meta<typeof Heart> = {
 export default meta;
 
 type Story = StoryObj<typeof Heart>;
-let isLiked=false
+let isLiked = false;
 
 // A default story for the Header component
 export const Default: Story = {
-    render: (args)=> <div className='w-full mt-20 flex justify-center items-center'><Heart isLiked={args.isLiked} onClick={()=>console.log("clicked")}/></div>,
-    args:{
-      isLiked:isLiked
-    }
+  render: (args) => (
+    <div className="w-full mt-20 flex justify-center items-center">
+      <Heart
+        initialIsliked={args.initialIsliked}
+        onLike={() => console.log('clicked')}
+      />
+    </div>
+  ),
+  args: {
+    initialIsliked: isLiked,
+  },
 };
