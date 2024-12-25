@@ -29,24 +29,24 @@ export function IconDialog({ title, message, onClose, isOpen, mode }: Props) {
         <div className="flex min-h-full items-center justify-center p-4">
           <DialogPanel
             transition
-            className="w-96 h-60 duration-300 ease-out data-[closed]:transform-[scale(1)] data-[closed]:scale-50 data-[closed]:opacity-0 relative flex flex-col items-center shadow-lg rounded-3xl pt-16 px-6 pb-6"
+            className="data-[closed]:transform-[scale(1)] relative flex h-60 w-96 flex-col items-center rounded-3xl px-6 pb-6 pt-16 shadow-lg duration-300 ease-out data-[closed]:scale-50 data-[closed]:opacity-0"
           >
             <div
               className={cn(
-                'absolute -top-12 w-24 h-24 flex items-center justify-center rounded-full',
-                colors[mode][0]
+                'absolute -top-12 flex h-24 w-24 items-center justify-center rounded-full',
+                colors[mode][0],
               )}
             >
               <div
                 className={cn(
-                  'rounded-full flex items-center justify-center w-20 h-20',
-                  colors[mode][1]
+                  'flex h-20 w-20 items-center justify-center rounded-full',
+                  colors[mode][1],
                 )}
               >
                 <div
                   className={cn(
-                    'rounded-full text-white px-4 w-16 flex justify-center items-center h-16',
-                    colors[mode][2]
+                    'flex h-16 w-16 items-center justify-center rounded-full px-4 text-white',
+                    colors[mode][2],
                   )}
                 >
                   {mode === 'error' ? (
@@ -57,11 +57,11 @@ export function IconDialog({ title, message, onClose, isOpen, mode }: Props) {
                 </div>
               </div>
             </div>
-            <p className="text-xl text-center font-semibold">{title}</p>
-            <p className="mt-4 text-center text-md">{message}</p>
+            <p className="text-center text-xl font-semibold">{title}</p>
+            <p className="text-md mt-4 text-center">{message}</p>
             <Button
               onClick={onClose}
-              className="w-full mt-6 text-white py-2 rounded-lg font-semibold transition-colors duration-300 hover:bg-brand-700 bg-brand-600"
+              className="hover:bg-brand-700 bg-brand-600 mt-6 w-full rounded-lg py-2 font-semibold text-white transition-colors duration-300"
             >
               بستن
             </Button>
