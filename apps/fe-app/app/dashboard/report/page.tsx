@@ -1,4 +1,5 @@
-import { Heart, Icon } from 'design-system';
+'use client';
+import { Button, Heart, Icon } from 'design-system';
 import Image from 'next/image';
 import React from 'react';
 import fake2 from '../fake2.png';
@@ -33,12 +34,30 @@ const page = () => {
               </span>
               <NewBadge />
             </div>
-            <div className="flex flex-row gap-3">
+            <div className="flex flex-row items-center gap-3">
               <div className="flex h-8 w-8 items-center justify-center">
-                <Heart isLiked={false} onClick={() => console.log('clicked')} />
+                <Heart
+                  initialIsliked={false}
+                  onLike={() => console.log('sdasdd')}
+                />
               </div>
+              <Button align="center" isLoading={false} mode="primary" size="sm">
+                <div className="flex w-fit flex-row gap-2">
+                  <Icon name="plus" size="lg" />
+                  <div> افزودن به داشبورد</div>
+                </div>
+              </Button>
             </div>
           </div>
+          <div className="h-0.5 w-full border border-gray-300"></div>
+          <span className="text-md text-right font-medium">معرفی کوتاه:</span>
+          <p className="text-xs font-normal">
+            این گزارش روند ورود و خروج سرمایه‌گذاران حقیقی به دو دسته دارایی را
+            بررسی می‌کند: سهام و درآمد ثابت. به طور خلاصه، میزان
+            سرمایه‌گذاری‌های جدید و برداشت‌های انجام شده در این دو بخش را طی یک
+            دوره زمانی مشخص تحلیل می‌کند تا نوسانات و تمایلات سرمایه‌گذاران
+            حقیقی را نشان دهد.
+          </p>
         </div>
       </div>
     </div>
