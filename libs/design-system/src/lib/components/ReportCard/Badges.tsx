@@ -2,6 +2,7 @@ import React from 'react';
 import { cn } from '../../../utils/classNames.utils';
 import { Icon as Iconify } from '@iconify/react';
 import { Icon } from '../Icon';
+import styles from './Styles.modules.css';
 
 export const NewBadge = () => {
   return (
@@ -34,7 +35,7 @@ export const LikeBadge = ({ isLiked, onClick }: LikeBadgeProps) => {
         icon={'lucide:heart'}
         width={16}
         height={16}
-        fill={isLiked ? 'red-600' : 'white'}
+        className={isLiked && styles['activeHeart']}
       />
     </div>
   );
