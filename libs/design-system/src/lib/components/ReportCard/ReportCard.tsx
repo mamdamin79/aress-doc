@@ -36,7 +36,7 @@ export const ReportCard: React.FC<CardComponentProps> = ({
         `flex flex-col transition-all bg-gray-100 rounded-3xl border-[3px] border-gray-100 relative group overflow-hidden`,
         fixedBrief
           ? 'h-fit min-h-[507px] items-start w-[508px] hover:shadow-7xl'
-          : 'h-[308px]  w-[416px] hover:shadow-md'
+          : 'h-[308px]  w-[416px] hover:shadow-md',
       )}
     >
       {/* Image Section */}
@@ -44,7 +44,7 @@ export const ReportCard: React.FC<CardComponentProps> = ({
         <div
           className={cn(
             `w-full rounded-xl overflow-hidden flex justify-center items-center shadow-md`,
-            fixedBrief ? 'h-[247px]' : 'h-[200px]'
+            fixedBrief ? 'h-[247px]' : 'h-[200px]',
           )}
         >
           <Image
@@ -62,7 +62,7 @@ export const ReportCard: React.FC<CardComponentProps> = ({
         className={cn(
           `w-full`,
           !fixedBrief &&
-            'opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:duration-500 h-full ease-in-out absolute bottom-0 left-0 overflow-hidden bg-gradient-to-b from-[rgba(255,255,255,0)] via-white to-[rgba(255,255,255,1)]'
+            'opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:duration-500 h-full ease-in-out absolute bottom-0 left-0 overflow-hidden bg-gradient-to-b from-[rgba(255,255,255,0)] via-white to-[rgba(255,255,255,1)]',
         )}
       ></div>
       <div
@@ -70,11 +70,10 @@ export const ReportCard: React.FC<CardComponentProps> = ({
           `p-4 gap-3 flex flex-col justify-between transition-all duration-500 ease-in group-hover:duration-700`,
           fixedBrief
             ? 'h-[212px] items-baseline'
-            : 'absolute bottom-0 left-0 items-end max-h-[92px] group-hover:max-h-[250px] overflow-hidden transition-all ease-in-out'
+            : 'absolute bottom-0 left-0 items-end max-h-[92px] group-hover:max-h-[250px] overflow-hidden transition-all ease-in-out',
         )}
       >
         <div className="w-fit h-fit flex flex-col gap-2">
-          {/* Title */}
           <p className="text-gray-1000 font-semibold text-sm">{title}</p>
           <div className="flex flex-row text-sm font-medium text-right text-gray-700 gap-4">
             <span className="flex flex-row gap-1 items-center">
@@ -86,9 +85,7 @@ export const ReportCard: React.FC<CardComponentProps> = ({
               {reportSubscription}
             </span>
             <div className="flex gap-2">
-              {/* New Badge */}
               {newBadge && <NewBadge />}
-              {/* Video Icon */}
               {videoBadge && <VideoBadge />}
             </div>
           </div>
