@@ -18,7 +18,7 @@ export const Default: Story = {
     <div className="w-full mt-20 flex justify-center items-center">
       <Heart
         initialIsliked={args.initialIsliked}
-        onClick={() => console.log('clicked')}
+        onLike={() => console.log('clicked')}
       />
     </div>
   ),

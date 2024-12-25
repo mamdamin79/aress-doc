@@ -1,14 +1,15 @@
+'use client';
 import { cn } from 'libs/design-system/src/utils';
 import { Heart } from 'lucide-react';
 import React, { useState } from 'react';
 interface HeartProps {
   initialIsliked: boolean;
-  onClick: (isLiked: boolean) => void;
+  onLike: (isLiked: boolean) => void;
 }
-const HeartComponent = ({ initialIsliked, onClick }: HeartProps) => {
+const HeartComponent = ({ initialIsliked, onLike }: HeartProps) => {
   const [isLiked, setIsLiked] = useState(initialIsliked);
   const handleClick = () => {
-    onClick(isLiked);
+    onLike(isLiked);
     setIsLiked(!isLiked);
   };
   return (
