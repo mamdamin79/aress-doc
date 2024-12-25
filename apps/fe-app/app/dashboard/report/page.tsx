@@ -2,6 +2,7 @@ import { Icon } from 'design-system';
 import Image from 'next/image';
 import React from 'react';
 import fake2 from '../fake2.png';
+import { NewBadge } from 'design-system';
 const page = () => {
   return (
     <div className="h-[100vh]">
@@ -24,8 +25,14 @@ const page = () => {
           <h3 className="text-right text-2xl font-medium">
             ورود و خروج سرمایه‌گذاران حقیقی به سهام و درآمد ثابت
           </h3>
-          <div className="flex w-full flex-row justify-between">
-            <div className=""></div>
+          <div className="flex w-full flex-row justify-between text-sm">
+            <div className="flex flex-row items-center gap-4">
+              <span className="flex flex-row items-center gap-1">
+                <Icon name="layers-2" size="md" />
+                صندوق‌های درآمد ثابت
+              </span>
+              <NewBadge />
+            </div>
           </div>
         </div>
       </div>
