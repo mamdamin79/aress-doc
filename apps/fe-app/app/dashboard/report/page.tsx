@@ -1,4 +1,4 @@
-import { Icon } from 'design-system';
+import { Heart, Icon } from 'design-system';
 import Image from 'next/image';
 import React from 'react';
 import fake2 from '../fake2.png';
@@ -32,6 +32,11 @@ const page = () => {
                 صندوق‌های درآمد ثابت
               </span>
               <NewBadge />
+            </div>
+            <div className="flex flex-row gap-3">
+              <div className="flex h-8 w-8 items-center justify-center">
+                <Heart isLiked={false} onClick={() => console.log('clicked')} />
+              </div>
             </div>
           </div>
         </div>
