@@ -17,7 +17,7 @@ export default function DashboardLayout({
           className="h-12 w-12 object-contain"
           alt="product logo"
         />
-        <div className="flex flex-row gap-6 text-sm font-normal">
+        <div className="flex flex-row items-center gap-6 text-sm font-normal">
           <div>
             <span className="text-gray-600">تاریخ امروز: </span>
             <span className="font-medium">
@@ -26,7 +26,7 @@ export default function DashboardLayout({
           </div>
           <div className="flex flex-row gap-3">
             <HeadProfile
-              name="احمد محمدی"
+              name="احمد محمدی سینا"
               profileImage="https://picsum.photos/200"
             />
             <SquaredButton
