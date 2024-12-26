@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { Footer } from '../(layout)/(footer)';
 import PRODUCT_LOGO from '@aress-assets/icons/product_logo.svg';
-import { HeadProfile, SquaredButton } from 'design-system';
+import { HeaderMenus, HeadProfile, SquaredButton } from 'design-system';
 export default function DashboardLayout({
   children,
 }: {
@@ -9,24 +9,18 @@ export default function DashboardLayout({
 }) {
   return (
     <>
-      <div className="row flex w-full justify-between px-20 pt-4">
-        <Image
-          src={PRODUCT_LOGO}
-          width={48}
-          height={48}
-          className="h-12 w-12 object-contain"
-          alt="product logo"
-        />
-        <div className="flex flex-row items-center gap-6 text-sm font-normal">
-          <div>
-            <span className="text-gray-600">تاریخ امروز: </span>
-            <span className="font-medium">
-              {new Date().toLocaleDateString('fa-IR')}
-            </span>
-          </div>
+      <div className="flex w-full flex-col gap-2 pt-4">
+        <div className="flex flex-row items-center justify-between px-20 pb-2">
+          <Image
+            src={PRODUCT_LOGO}
+            width={48}
+            height={48}
+            className="h-12 w-12 object-contain"
+            alt="product logo"
+          />
           <div className="flex flex-row gap-3">
             <HeadProfile
-              name="احمد محمدی سینا"
+              name="سینا محمدی"
               profileImage="https://picsum.photos/200"
             />
             <SquaredButton
@@ -42,6 +36,24 @@ export default function DashboardLayout({
               ]}
               badge={{ enabled: false }}
             />
+          </div>
+        </div>
+
+        <div className="flex flex-row justify-between border-b border-gray-300 px-20 pb-4 pt-2">
+          <HeaderMenus
+            menuItems={[
+              {
+                name: 'داشبورد مدیریتی',
+                subMenu: [{ groupLabel: 'تست', children: [] }],
+              },
+              { name: 'گزارش‌ها' },
+            ]}
+          />
+          <div className="flex flex-row gap-1">
+            <span className="text-gray-600">تاریخ امروز: </span>
+            <span className="font-medium">
+              {new Date().toLocaleDateString('fa-IR')}
+            </span>
           </div>
         </div>
       </div>
