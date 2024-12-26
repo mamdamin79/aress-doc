@@ -14,11 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={cn('sdfsdf py-2 absolute pb-1', 'dfsdfs')}>
-        <Header />
-        {children}
-        <Footer />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
