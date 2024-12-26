@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, NewBadge, Heart, Icon } from 'design-system';
+import { TextWithIcon } from 'compositions';
 
 export const ReportOverview: React.FC = () => {
   return (
@@ -9,10 +10,10 @@ export const ReportOverview: React.FC = () => {
       </h3>
       <div className="flex w-full flex-row justify-between text-sm">
         <div className="flex flex-row items-center gap-4">
-          <span className="flex flex-row items-center gap-1">
-            <Icon name="layers-2" size="md" />
-            صندوق‌های درآمد ثابت
-          </span>
+          <TextWithIcon
+            icon={{ name: 'layers-2', size: 'md' }}
+            text="صندوق درآمد ثابت"
+          />
           <NewBadge />
         </div>
         <div className="flex flex-row items-center gap-3">
