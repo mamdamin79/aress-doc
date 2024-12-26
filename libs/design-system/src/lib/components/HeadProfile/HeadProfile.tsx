@@ -27,7 +27,7 @@ export const HeadProfile: React.FC<HeadProfileProps> = ({
           'bg-brand-100 flex h-10 items-center gap-3 overflow-hidden rounded-lg p-1 shadow-2xl transition-all duration-300',
         )}
         style={{
-          width: username ? `${40 + name.length * 7}px` : '40px', // Base width + dynamic text width
+          width: username ? `${40 + name.length * 8}px` : '40px', // Base width + dynamic text width
         }}
       >
         <Image
