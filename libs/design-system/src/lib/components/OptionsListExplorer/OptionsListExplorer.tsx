@@ -89,10 +89,13 @@ export function OptionsListExplorer({
         <div className="mx-4 -mt-8 pb-2">
           <TextField
             value={inputValue}
-            onSearchInput={handlerInput}
+            onChange={(e) => handlerInput(e.target.value)}
             placeholder={search?.placeholder}
             mode="outline"
-            leadingIcon="search"
+            leadingIcon={{
+              name: 'search',
+              size: 'md',
+            }}
             mergeTitleAndPlaceholder={false}
             trailingIcons={[]}
           />
