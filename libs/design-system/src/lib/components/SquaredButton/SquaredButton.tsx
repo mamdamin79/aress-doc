@@ -37,7 +37,7 @@ export const SquaredButton: React.FC<SquaredButtonProps> = ({
 
       {/* red badge */}
       {badge.enabled && (
-        <div className="absolute left-5 top-1.5 flex h-2 w-2 items-center justify-center rounded-full bg-red-600 text-white transition-all group-hover:left-6 group-hover:top-0 group-hover:h-5 group-hover:w-5">
+        <div className="absolute left-5 top-1.5 flex h-2 w-2 items-center justify-center rounded-full bg-red-600 text-white transition-all group-hover:top-0 group-hover:h-5 group-hover:w-5">
           <span className="invisible text-xs font-semibold opacity-0 transition-all group-hover:visible group-hover:opacity-100">
             {badge.text}
           </span>
