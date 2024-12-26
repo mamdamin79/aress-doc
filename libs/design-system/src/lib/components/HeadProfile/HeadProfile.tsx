@@ -1,3 +1,4 @@
+'use client';
 import { cn } from '../../../utils/classNames.utils';
 import Image from 'next/image';
 import React, { useState } from 'react';
