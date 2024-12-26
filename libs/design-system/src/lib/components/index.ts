@@ -17,3 +17,5 @@ export * from './Button';
 export * from './NotesHeading';
 export * from './SquaredButton';
 export * from './HeadProfile';
+export * from './Tooltip';
+export * from './HeaderMenus';
