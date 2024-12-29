@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { OptionItem, CategoryItem } from './OptionsListExplorer.types';
 import { Icon } from '../Icon';
-import { cn } from '../../../utils';
+import { cn, formatNumber } from '../../../utils';
 import { PercentageLabel } from '../PercentageLabel';
 import { TextField } from '../TextField';
 import { Tabs } from '../Tabs';
@@ -71,7 +71,11 @@ export function OptionsListExplorer({
   return (
     <div
       className={cn(
-        items.items.length > 10 && items.categories ? 'h-[340px]' : 'h-72',
+        items.items.length > 10
+          ? items.categories
+            ? 'h-[340px]'
+            : 'h-72'
+          : 'h-[250px]',
         'w-[500px] bg-white',
       )}
     >
@@ -102,7 +106,7 @@ export function OptionsListExplorer({
         </div>
       )}
       {items.categories && (
-        <div className="mx-4 mt-4">
+        <div className="mx-4">
           <Tabs
             tabs={items.categories}
             bgWhite
@@ -145,7 +149,10 @@ export function OptionsListExplorer({
                 )}
                 {item.priceRials && (
                   <span className="px-4 text-center">
-                    {item.priceRials} ریال
+                    {formatNumber(item.priceRials, {
+                      commaSeparated: true,
+                    })}
+                    ریال
                   </span>
                 )}
                 {typeof item.priceChangePercent === 'number' && (
