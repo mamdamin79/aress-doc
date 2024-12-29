@@ -1,4 +1,4 @@
-import { Footer } from './(layout)/(footer)';
+import { FooterLite } from './(layout)/(footer-lite)';
 import './global.css';
 import { cn, Header } from 'design-system';
 
@@ -14,10 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={cn('sdfsdf py-2 absolute pb-1', 'dfsdfs')}>
+      <body className={cn('sdfsdf', 'dfsdfs')}>
         <Header />
         {children}
-        <Footer />
+        <FooterLite />
       </body>
     </html>
   );
