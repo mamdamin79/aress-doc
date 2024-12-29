@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { OptionItem, CategoryItem } from './OptionsListExplorer.types';
-import { Icon } from '../Icon';
 import { cn, formatNumber } from '../../../utils';
 import { PercentageLabel } from '../PercentageLabel';
 import { TextField } from '../TextField';
 import { Tabs } from '../Tabs';
+import { Icon } from '../Icon/Icon';
 
 interface Props {
   title: string;
@@ -75,7 +75,7 @@ export function OptionsListExplorer({
           ? items.categories
             ? 'h-[340px]'
             : 'h-72'
-          : 'h-[250px]',
+          : 'h-[260px]',
         'w-[500px] bg-white',
       )}
     >
@@ -117,8 +117,8 @@ export function OptionsListExplorer({
       )}
       {filteredItems.length ? (
         <div
-          className={cn('flex max-h-56 flex-col', {
-            'custom-scrollbar h-[60%] overflow-y-scroll':
+          className={cn('flex max-h-60 flex-col', {
+            'custom-scrollbar h-[64%] overflow-y-scroll':
               items.items.length <= 10 &&
               items.items.length > 3 &&
               filteredItems.length > 3,
@@ -128,7 +128,7 @@ export function OptionsListExplorer({
             <div
               onClick={() => setCheckedItem(index + 1)}
               className={cn(
-                'flex w-full cursor-pointer justify-between border-b border-gray-200 px-4 py-3 last:border-b-0',
+                'flex h-14 w-full cursor-pointer justify-between border-b border-gray-200 px-4 py-3 last:border-b-0',
                 { 'bg-brand-100': checkedItem === index + 1 },
               )}
               key={index}
