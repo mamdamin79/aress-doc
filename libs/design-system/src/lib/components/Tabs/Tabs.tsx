@@ -8,7 +8,7 @@ interface Props {
   variant: 'shaped' | 'divided' | 'lined' | 'rounded' | 'rounded-full';
   colorMode: 'neutral' | 'inverse';
   tag?: boolean;
-  onClickTab: (idTab: number) => void;
+  onClickTab: (idTab: string) => void;
 }
 
 export const Tabs: React.FC<Props> = ({
@@ -30,7 +30,7 @@ export const Tabs: React.FC<Props> = ({
         >
           {tabs.map((props, index) => (
             <Tab
-              onClick={() => onClickTab(+props.id)}
+              onClick={() => onClickTab(props.id)}
               key={index}
               className={cn(
                 'font-vazirmatn text-md relative outline-none',

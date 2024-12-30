@@ -6,8 +6,14 @@ import { ReportOverview } from './_components/ReportOverview';
 import { SectionItem } from './_components/SectionUlItem';
 import { VideoPlayerWrapper } from './_components/VideoPlayerWrapper';
 import { ReportsCarouselWrapper } from './_components/ReportsCarouselWrapper';
+import Link from 'next/link';
 
 const page = () => {
+  const scroll = (id: string) => {
+    const section = document.querySelector('#' + id);
+    console.log(id);
+    section?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
   return (
     <div>
       <section className="flex w-full flex-row justify-around gap-8 px-20 pt-6">
@@ -31,7 +37,7 @@ const page = () => {
         <Tabs
           variant="rounded-full"
           colorMode="neutral"
-          onClickTab={(idTab: number) => console.log(idTab)}
+          onClickTab={(id) => scroll(id)}
           tabs={[
             { id: 'videoReview', title: 'ویدیو بررسی' },
             { id: 'moreInfo', title: 'اطلاعات بیشتر' },
@@ -39,13 +45,16 @@ const page = () => {
           ]}
         />
       </section>
-      <section className="flex w-full flex-col items-center">
+      <section className="flex w-full flex-col items-center" id="videoReview">
         <SectionTitle align="center" level={3} title="ویدیو بررسی" />
         <div className="mt-12">
           <VideoPlayerWrapper />
         </div>
       </section>
-      <section className="flex flex-col items-center justify-center pt-[112px]">
+      <section
+        className="flex flex-col items-center justify-center pt-[112px]"
+        id="moreInfo"
+      >
         <SectionTitle align="center" level={3} title="اطلاعات بیشتر" />
         <div className="mt-12 flex max-w-[960px] flex-col items-center justify-center">
           <ul className="rtl marker:text-brand-600 list-disc text-xl font-medium marker:text-3xl">
@@ -81,7 +90,7 @@ const page = () => {
           </ul>
         </div>
       </section>
-      <section className="flex flex-col gap-12 pt-[112px]">
+      <section className="flex flex-col gap-12 pt-[112px]" id="relatedReports">
         <SectionTitle align="center" level={2} title="گزارش‌های مرتبط" />
         <ReportsCarouselWrapper />
       </section>
