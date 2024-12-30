@@ -28,12 +28,13 @@ const page = () => {
       </section>
       <section className="flex justify-center px-2 pb-14 pt-[72px]">
         <Tabs
-          mode="rounded-full"
+          variant="rounded-full"
+          colorMode="neutral"
           onClickTab={(idTab: number) => console.log(idTab)}
           tabs={[
-            { id: 1, title: 'ویدیو بررسی' },
-            { id: 2, title: 'اطلاعات بیشتر' },
-            { id: 3, title: 'گزارش های مرتبط' },
+            { id: 'videoReview', title: 'ویدیو بررسی' },
+            { id: 'moreInfo', title: 'اطلاعات بیشتر' },
+            { id: 'relatedReports', title: 'گزارش های مرتبط' },
           ]}
         />
       </section>
