@@ -1,11 +1,113 @@
 'use client';
-import { Icon, SectionTitle, Tabs } from 'design-system';
+import { Icon, ReportsCarousel, SectionTitle, Tabs } from 'design-system';
 import Image from 'next/image';
 import React from 'react';
 import fake2 from '../fake2.png';
 import fake1 from '../fake1.png';
 import { ReportOverview } from './_components/ReportOverview';
 import { SectionItem } from './_components/SectionUlItem';
+const cards = [
+  {
+    title: 'ورود سرمایه‌گذاران حقیقی به ۵ صنعت برتر',
+    brief:
+      'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد',
+
+    reportSubscription: 'سهامی',
+    categoryType: 'سهامی',
+    newBadge: false,
+    videoBadge: false,
+    image: fake1,
+    fixedBrief: false,
+  },
+  {
+    title: 'نرخ بازده تا سررسید',
+    brief:
+      'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد',
+    reportSubscription: 'صندوق‌های سهامی',
+    categoryType: 'صندوق‌های سهامی',
+    newBadge: false,
+    videoBadge: false,
+    image: fake2,
+    fixedBrief: false,
+  },
+  {
+    title: 'سهم تأثیر بازدهی صنایع در شاخص',
+    brief:
+      'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد',
+    reportSubscription: 'سهامی',
+    categoryType: 'سهامی',
+    newBadge: true,
+    videoBadge: false,
+    image: fake1,
+    fixedBrief: false,
+  },
+  {
+    title: 'شاخص کل و ورود و خروج سرمایه گذار حقیقی',
+    brief:
+      'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد',
+    reportSubscription: 'سهامی',
+    categoryType: 'سهامی',
+    newBadge: false,
+    videoBadge: false,
+    image: fake2,
+    fixedBrief: false,
+  },
+  {
+    title: 'ورود و خروج تجمعی سرمایه‌گذاران حقیقی به سهام و درآمد ثابت',
+    brief:
+      'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد',
+    reportSubscription: 'درآمد ثابت',
+    categoryType: 'درآمد ثابت',
+    newBadge: true,
+    videoBadge: false,
+    image: fake1,
+    fixedBrief: false,
+  },
+  {
+    title: 'سهم تأثیر صنایع در شاخص',
+    brief:
+      'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد',
+    reportSubscription: 'سهامی',
+    categoryType: 'سهامی',
+    newBadge: false,
+    videoBadge: true,
+    image: fake2,
+    fixedBrief: false,
+  },
+  {
+    title: 'شاخص کل و ورود و خروج سرمایه',
+    brief:
+      'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد',
+    reportSubscription: 'سهامی',
+    categoryType: 'سهامی',
+    newBadge: false,
+    videoBadge: false,
+    image: fake1,
+    fixedBrief: false,
+  },
+  {
+    title: 'ورود سرمایه‌گذاران حقیقی به ۵ صنعت برتر',
+    brief:
+      'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد',
+    reportSubscription: 'سهامی',
+    categoryType: 'سهامی',
+    newBadge: false,
+    videoBadge: false,
+    image: fake2,
+  },
+  {
+    title: 'نرخ بازده تا سررسید',
+    brief:
+      'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد',
+    reportSubscription: 'صندوق‌های سهامی',
+    categoryType: 'صندوق‌های سهامی',
+    newBadge: false,
+    videoBadge: false,
+    image: fake1,
+    fixedBrief: false,
+  },
+];
+
 const page = () => {
   return (
     <div>
@@ -82,7 +184,9 @@ const page = () => {
       </section>
       <section className="flex flex-col gap-12 pt-[112px]">
         <SectionTitle align="center" level={2} title="گزارش‌های مرتبط" />
+        <ReportsCarousel cards={cards} />
       </section>
+      <div className="mb-6 h-14 w-full border-b border-gray-200"></div>
     </div>
   );
 };
