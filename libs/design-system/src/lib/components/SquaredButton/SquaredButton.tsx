@@ -21,7 +21,7 @@ export const SquaredButton: React.FC<SquaredButtonProps> = ({
       <div className="bg-brand-600 group-hover:bg-brand-700 flex h-8 w-8 cursor-pointer overflow-hidden rounded-md text-white transition-colors">
         <div
           className={cn(
-            'flex h-fit w-8 origin-center translate-y-1 flex-col items-center gap-2 transition-transform duration-[400ms] group-hover:-translate-y-7',
+            'flex h-fit w-8 translate-y-1 flex-col items-center gap-2 transition-transform duration-[400ms] will-change-transform group-hover:-translate-y-7',
             icons.length === 1 &&
               'h-full translate-y-0 justify-center group-hover:-translate-y-0',
           )}
@@ -31,7 +31,7 @@ export const SquaredButton: React.FC<SquaredButtonProps> = ({
           )}
           {icons[1] && (
             <Icon name={icons[1].name} size={icons[1].size ?? 'lg'} />
-          )}{' '}
+          )}
         </div>
       </div>
 
