@@ -76,6 +76,7 @@ export const ReportsCarousel: React.FC<ReportsCarouselProps> = ({ cards }) => {
       </button>
       <div className="absolute inset-x-0 bottom-0 mx-auto flex justify-center">
         <DotIndicator
+          setIndex={(index) => setCurrentIndex(index * 3)}
           currentIndex={currentIndex / 3}
           totalLength={cards.length / 3}
         />
