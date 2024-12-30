@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { Button, NewBadge, Heart, Icon } from 'design-system';
 import { TextWithIcon } from 'compositions';

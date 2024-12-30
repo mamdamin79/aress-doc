@@ -1,3 +1,4 @@
+'use client';
 import { useVideo } from '../../../hooks/UseVideo';
 import React, { useEffect, useState } from 'react';
 import { Icon } from '../Icon';
@@ -6,7 +7,7 @@ import { PlayerActions } from './ControlPanel/PlayerActions';
 import { PlayerOptions } from './ControlPanel/PlayerOptions';
 import { cn } from '../../../utils/classNames.utils';
 import { PlayerProgressBar } from './ControlPanel/PlayerProgressBar';
-import videoLogo from '../../../assets/images/videoLogo.svg';
+import videoLogo from '../../../assets/icons/logo.svg';
 import Image from 'next/image';
 import { PlayList, video } from '../PlayList';
 
@@ -33,7 +34,7 @@ const MemoizedTitle = React.memo(
     setShowPlayList: React.Dispatch<React.SetStateAction<boolean>>;
   }) => {
     return (
-      <h2 className="absolute text-white text-xl z-30 font-semibold mt-8 flex gap-1 items-center">
+      <h2 className="absolute z-30 mt-8 flex items-center gap-1 text-xl font-semibold text-white">
         <span
           className="mr-8 cursor-pointer"
           onClick={() => setShowPlayList(true)}
@@ -43,7 +44,7 @@ const MemoizedTitle = React.memo(
         {title}
       </h2>
     );
-  }
+  },
 );
 
 export const VideoPlayer: React.FC<Props> = ({
@@ -100,7 +101,7 @@ export const VideoPlayer: React.FC<Props> = ({
       videoContainerRef.current?.removeEventListener('mousemove', showControls);
       videoContainerRef.current?.removeEventListener(
         'touchstart',
-        showControls
+        showControls,
       );
       clearTimeout(timeout);
     };
@@ -110,20 +111,20 @@ export const VideoPlayer: React.FC<Props> = ({
     <div
       // onContextMenu={(e) => e.preventDefault()}
       className={cn(
-        `relative w-full rounded-md shadow-md h-full overflow-hidden ${className}`,
+        `relative h-full w-full overflow-hidden rounded-md shadow-md ${className}`,
         {
           'cursor-none': !showControlPanel,
-        }
+        },
       )}
       ref={videoContainerRef}
     >
       {isFullscreen && (
         <div
           className={cn(
-            'absolute transition-all duration-300 ease-in-out right-0 z-50',
+            'absolute right-0 z-50 transition-all duration-300 ease-in-out',
             {
               '-right-full': !showPlayList,
-            }
+            },
           )}
         >
           <PlayList
@@ -138,12 +139,12 @@ export const VideoPlayer: React.FC<Props> = ({
       )}
       <div
         onClick={isPlaying ? pause : play}
-        className="w-full flex items-center justify-center h-full absolute z-20"
+        className="absolute z-20 flex h-full w-full items-center justify-center"
       >
         {/* loading displays when video is not loaded yet(even first frame) and when buffered time is finished and we are waiting for new chunks */}
         {isVideoWaited && (
           <div>
-            <div className="animate-spin text-gray-600  w-fit mx-auto">
+            <div className="mx-auto w-fit animate-spin text-gray-600">
               <Icon name="loader-circle" size="xl" />
             </div>
           </div>
@@ -157,30 +158,30 @@ export const VideoPlayer: React.FC<Props> = ({
       ) : (
         <span
           className={cn(
-            'absolute right-8 transition-all duration-700 ease-in-out opacity-90',
-            { ' opacity-20': !showControlPanel && isPlaying }
+            'absolute right-8 opacity-90 transition-all duration-700 ease-in-out',
+            { 'opacity-20': !showControlPanel && isPlaying },
           )}
         >
           {<Image src={videoLogo} width={100} height={100} alt="logo" />}
         </span>
       )}
-      <video src={src} className="w-full h-full" poster={''} ref={videoRef} />
+      <video src={src} className="h-full w-full" poster={''} ref={videoRef} />
       <div
         className={cn(
-          'absolute inset-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent duration-700 ease-in-out transition-all',
-          { '-bottom-full': !showControlPanel && isPlaying }
+          'absolute inset-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent transition-all duration-700 ease-in-out',
+          { '-bottom-full': !showControlPanel && isPlaying },
         )}
       ></div>
       {/* control panel container */}
       <div
         className={cn(
-          'absolute w-full h-20 z-20 bottom-0 duration-700 ease-in-out transition-all',
+          'absolute bottom-0 z-20 h-20 w-full transition-all duration-700 ease-in-out',
           {
             '-bottom-28': !showControlPanel && isPlaying,
           },
           {
-            'animate-pulse pointer-events-none': !isVideoLoaded,
-          }
+            'pointer-events-none animate-pulse': !isVideoLoaded,
+          },
         )}
         onClick={(e) => e.stopPropagation()}
       >
@@ -198,7 +199,7 @@ export const VideoPlayer: React.FC<Props> = ({
           </div>
           {/* controls */}
           <div className={cn('flex items-center justify-between')} dir="ltr">
-            <div className="flex justify-between items-center gap-4 ">
+            <div className="flex items-center justify-between gap-4">
               <PlayerActions
                 setVolume={setVolume}
                 volume={volume}
