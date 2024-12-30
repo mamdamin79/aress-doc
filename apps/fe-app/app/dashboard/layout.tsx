@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { Footer } from '../(layout)/(footer)';
 import PRODUCT_LOGO from '@aress-assets/icons/product_logo.svg';
 import { HeaderMenus, HeadProfile, SquaredButton } from 'design-system';
+import { FooterLite } from '../(layout)/(footer-lite)';
 export default function DashboardLayout({
   children,
 }: {
@@ -58,7 +59,7 @@ export default function DashboardLayout({
         </div>
       </div>
       {children}
-      <Footer />
+      <FooterLite />
     </>
   );
 }
