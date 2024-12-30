@@ -22,3 +22,7 @@ export * from './HeadProfile';
 export * from './Tooltip';
 export * from './HeaderMenus';
 export * from './ReportsCarousel';
+export * from './VideoPlayer';
+export * from './Tooltip';
+export * from './SharePopUp';
+export * from './LikeDislike';
