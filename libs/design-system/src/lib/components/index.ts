@@ -21,3 +21,4 @@ export * from './SquaredButton';
 export * from './HeadProfile';
 export * from './Tooltip';
 export * from './HeaderMenus';
+export * from './ReportsCarousel';
