@@ -1,7 +1,12 @@
 import Image from 'next/image';
 import { Footer } from '../(layout)/(footer)';
 import PRODUCT_LOGO from '@aress-assets/icons/product_logo.svg';
-import { HeaderMenus, HeadProfile, SquaredButton } from 'design-system';
+import {
+  Breadcrumb,
+  HeaderMenus,
+  HeadProfile,
+  SquaredButton,
+} from 'design-system';
 import { FooterLite } from '../(layout)/(footer-lite)';
 export default function DashboardLayout({
   children,
@@ -56,6 +61,17 @@ export default function DashboardLayout({
               {new Date().toLocaleDateString('fa-IR')}
             </span>
           </div>
+        </div>
+        <div className="px-20 pt-3">
+          <Breadcrumb
+            items={[
+              { title: 'گزارش ها' },
+              {
+                title:
+                  'ورود و خروج تجمعی سرمایه‌گذاران حقیقی به سهام و درآمد ثابت',
+              },
+            ]}
+          />
         </div>
       </div>
       {children}
