@@ -3,9 +3,13 @@ import React, { useState } from 'react';
 interface DotIndicator {
   totalLength: number;
   currentIndex: number;
-  setIndex: (index:number)=>void
+  setIndex: (index: number) => void;
 }
-export const DotIndicator = ({ totalLength, currentIndex, setIndex }: DotIndicator) => {
+export const DotIndicator = ({
+  totalLength,
+  currentIndex,
+  setIndex,
+}: DotIndicator) => {
   const tempArr = new Array(totalLength).fill(null);
   return (
     <div className="flex flex-row gap-1">
@@ -13,10 +17,10 @@ export const DotIndicator = ({ totalLength, currentIndex, setIndex }: DotIndicat
         <div
           key={index}
           className={cn(
-            `bg-brand-500 h-3 rounded-full transition-all`,
+            `bg-brand-500 h-3 cursor-pointer rounded-full transition-all`,
             index === currentIndex ? 'w-8' : 'w-3',
           )}
-          onClick={()=>setIndex(index)}
+          onClick={() => setIndex(index)}
         ></div>
       ))}
     </div>
