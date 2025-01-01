@@ -14,9 +14,9 @@ export interface HorizontalScrollBarProps {
 export const HorizontalScrollBar: React.FC<HorizontalScrollBarProps> = ({
   barsNumber,
   autoRotate,
-  autoRotateDuration = 5000,
   onChangeIndex,
-  hasArrows,
+  autoRotateDuration = 5000,
+  hasArrows = false,
 }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const intervalRef = useRef<NodeJS.Timer | null>(null);
@@ -63,14 +63,14 @@ export const HorizontalScrollBar: React.FC<HorizontalScrollBarProps> = ({
   }, [barsNumber, autoRotate, autoRotateDuration, onChangeIndex]);
 
   return (
-    <div className="flex w-fit flex-col items-center justify-center">
+    <div className="relative flex w-fit flex-col items-center justify-center">
       {hasArrows && (
-        <>
-          <div onClick={handlePrev} className="cursor-pointer">
+        <div className="flex flex-col items-center justify-center">
+          <span className="text-sm font-medium">(W)</span>
+          <div onClick={handlePrev} className="cursor-pointer text-center">
             <Icon name="chevron-up" size="md" />
           </div>
-          <span className="text-sm font-medium">(W)</span>
-        </>
+        </div>
       )}
 
       {Array.from({ length: barsNumber }, (_, index) => (
@@ -88,22 +88,30 @@ export const HorizontalScrollBar: React.FC<HorizontalScrollBarProps> = ({
                 activeIndex === index
                   ? `translate-y-0 duration-[5000ms]`
                   : '-translate-y-full delay-0 duration-100',
+                !autoRotate && activeIndex === index && 'translate-y-0 delay-0',
               )}
               style={{
                 transitionDuration:
-                  activeIndex === index ? `${autoRotateDuration}ms` : '100ms',
+                  activeIndex === index
+                    ? !autoRotate
+                      ? '100ms'
+                      : `${autoRotateDuration}ms`
+                    : '100ms',
               }}
             ></div>
           </div>
         </div>
       ))}
       {hasArrows && (
-        <>
-          <div onClick={handleNext} className="cursor-pointer">
+        <div
+          className={cn('fixed flex flex-col items-center justify-center')}
+          style={{ top: `${barsNumber * 25 + 100}px` }}
+        >
+          <div onClick={handleNext} className="cursor-pointer text-center">
             <Icon name="chevron-down" size="md" />
           </div>
           <span className="text-sm font-medium">(S)</span>
-        </>
+        </div>
       )}
     </div>
   );
