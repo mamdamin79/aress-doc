@@ -38,7 +38,11 @@ export default function DashboardLayout({
 
   return (
     <>
-      <div className="flex w-full flex-col gap-2 pt-4">
+      <div
+        className="flex w-full flex-col gap-2 pt-4"
+        onMouseEnter={() => setIsVisible(true)}
+        onMouseLeave={() => setIsVisible(false)}
+      >
         {/* Always fixed top header */}
         <div
           className={cn(
@@ -74,7 +78,7 @@ export default function DashboardLayout({
           id="hideable"
           className={cn(
             isVisible ? 'translate-y-0' : '-translate-y-full',
-            'fixed top-16 z-[35] flex w-full flex-row justify-between border-b border-gray-300 bg-white px-20 pb-4 pt-6 transition-transform duration-300',
+            'fixed top-16 z-[35] flex w-full flex-row justify-between border-b-2 border-gray-300 bg-white px-20 pb-4 pt-6 transition-transform duration-300',
           )}
         >
           <HeaderMenus
