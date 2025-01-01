@@ -9,5 +9,23 @@ export default meta;
 type Story = StoryObj<typeof HorizontalScrollBar>;
 
 export const Default: Story = {
-  args: {},
+  args: {
+    autoRotate: true,
+    autoRotateDuration: 5000,
+    barsNumber: 5,
+    onChangeIndex: () => {
+      console.log('changed');
+    },
+  },
+};
+export const withArrows: Story = {
+  args: {
+    autoRotate: true,
+    autoRotateDuration: 5000,
+    barsNumber: 5,
+    onChangeIndex: () => {
+      console.log('changed');
+    },
+    hasArrows:true
+  },
 };
