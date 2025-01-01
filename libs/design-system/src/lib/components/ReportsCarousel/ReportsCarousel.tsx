@@ -28,7 +28,7 @@ export const ReportsCarousel: React.FC<ReportsCarouselProps> = ({ cards }) => {
 
   return (
     <div
-      className="relative flex h-[358px] w-full items-center justify-between overflow-hidden pb-7 pl-[40px] pr-[68px] pt-4"
+      className="relative flex h-[358px] w-full max-w-[1440px] items-center justify-between overflow-hidden pb-7 pl-[40px] pr-[68px] pt-4"
       dir="rtl"
     >
       {/* Left Arrow */}
@@ -39,6 +39,13 @@ export const ReportsCarousel: React.FC<ReportsCarouselProps> = ({ cards }) => {
         <Icon name="chevron-left" key="chevron-left" size="lg" />
       </button>
 
+      {/* Right Arrow */}
+      <button
+        onClick={handlePrev}
+        className="border-brand-600 text-brand-600 hover:bg-brand-600 absolute right-6 z-10 rounded-full border-2 bg-white p-3 transition-colors hover:text-white focus:outline-none"
+      >
+        <Icon name="chevron-right" key="chevron-right" size="lg" />
+      </button>
       {/* Cards */}
       <div
         className={cn(
@@ -67,13 +74,6 @@ export const ReportsCarousel: React.FC<ReportsCarouselProps> = ({ cards }) => {
         ))}
       </div>
 
-      {/* Right Arrow */}
-      <button
-        onClick={handlePrev}
-        className="border-brand-600 text-brand-600 hover:bg-brand-600 absolute right-6 z-10 rounded-full border-2 bg-white p-3 transition-colors hover:text-white focus:outline-none"
-      >
-        <Icon name="chevron-right" key="chevron-right" size="lg" />
-      </button>
       <div className="absolute inset-x-0 bottom-0 mx-auto flex justify-center">
         <DotIndicator
           setIndex={(index) => setCurrentIndex(index * 3)}
