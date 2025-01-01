@@ -1,22 +1,51 @@
+'use client';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Footer } from '../(layout)/(footer)';
+import { FooterLite } from '../(layout)/(footer-lite)';
 import PRODUCT_LOGO from '@aress-assets/icons/product_logo.svg';
 import {
   Breadcrumb,
+  cn,
   HeaderMenus,
   HeadProfile,
   SquaredButton,
 } from 'design-system';
-import { FooterLite } from '../(layout)/(footer-lite)';
+
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // Determine if the user is scrolling down or up
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
   return (
     <>
       <div className="flex w-full flex-col gap-2 pt-4">
-        <div className="flex flex-row items-center justify-between px-20 pb-2">
+        {/* Always fixed top header */}
+        <div
+          className={cn(
+            'fixed right-0 top-0 z-10 flex w-full flex-row items-center justify-between bg-white px-20 pb-2',
+            !isVisible && 'shadow-sm',
+          )}
+        >
           <Image
             src={PRODUCT_LOGO}
             width={48}
@@ -34,18 +63,20 @@ export default function DashboardLayout({
               badge={{ enabled: true, text: '3' }}
             />
             <SquaredButton
-              icons={[
-                {
-                  name: 'moon',
-                },
-                { name: 'sun' },
-              ]}
+              icons={[{ name: 'moon' }, { name: 'sun' }]}
               badge={{ enabled: false }}
             />
           </div>
         </div>
 
-        <div className="flex flex-row justify-between border-b border-gray-300 px-20 pb-4 pt-2">
+        {/* Hideable menu */}
+        <div
+          id="hideable"
+          className={cn(
+            isVisible ? 'translate-y-0' : '-translate-y-full',
+            'fixed top-14 flex w-full flex-row justify-between border-b border-gray-300 px-20 pb-4 pt-2 transition-transform duration-300',
+          )}
+        >
           <HeaderMenus
             menuItems={[
               {
@@ -62,6 +93,8 @@ export default function DashboardLayout({
             </span>
           </div>
         </div>
+
+        {/* Breadcrumb */}
         <div className="px-20 pt-3">
           <Breadcrumb
             items={[
