@@ -24,7 +24,7 @@ export default function DashboardLayout({
       const currentScrollY = window.scrollY;
 
       // Determine if the user is scrolling down or up
-      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
         setIsVisible(false);
       } else {
         setIsVisible(true);
@@ -42,7 +42,7 @@ export default function DashboardLayout({
         {/* Always fixed top header */}
         <div
           className={cn(
-            'fixed right-0 top-0 z-10 flex w-full flex-row items-center justify-between bg-white px-20 pb-2',
+            'fixed right-0 top-0 z-10 flex w-full flex-row items-center justify-between bg-white px-20 pb-2 pt-4',
             !isVisible && 'shadow-sm',
           )}
         >
@@ -74,7 +74,7 @@ export default function DashboardLayout({
           id="hideable"
           className={cn(
             isVisible ? 'translate-y-0' : '-translate-y-full',
-            'fixed top-14 flex w-full flex-row justify-between border-b border-gray-300 px-20 pb-4 pt-2 transition-transform duration-300',
+            'fixed top-16 flex w-full flex-row justify-between border-b border-gray-300 bg-white px-20 pb-4 pt-6 transition-transform duration-300',
           )}
         >
           <HeaderMenus
@@ -93,7 +93,8 @@ export default function DashboardLayout({
             </span>
           </div>
         </div>
-
+        {/* hidden div */}
+        <div className="h-32"></div>
         {/* Breadcrumb */}
         <div className="px-20 pt-3">
           <Breadcrumb
