@@ -28,7 +28,7 @@ export const ReportsCarousel: React.FC<ReportsCarouselProps> = ({ cards }) => {
 
   return (
     <div
-      className="relative flex h-[358px] w-[1440px] items-center justify-between overflow-hidden pb-7 pl-[40px] pr-[68px] pt-4"
+      className="relative flex h-[358px] w-full items-center justify-between overflow-hidden pb-7 pl-[40px] pr-[68px] pt-4"
       dir="rtl"
     >
       {/* Left Arrow */}
