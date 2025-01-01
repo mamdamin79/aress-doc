@@ -41,7 +41,6 @@ export default function DashboardLayout({
       <div
         className="flex w-full flex-col gap-2 pt-4"
         onMouseEnter={() => setIsVisible(true)}
-        onMouseLeave={() => setIsVisible(false)}
       >
         {/* Always fixed top header */}
         <div
