@@ -1,7 +1,6 @@
-import { Icon } from 'design-system';
+'use client';
+import { AddReportButton, Icon } from 'design-system';
 import React from 'react';
-import fake2 from '../../fake2.png';
-import Image from 'next/image';
 export const SlidersBox: React.FC = () => {
   return (
     <div className="flex w-[1280px] flex-col justify-start">
@@ -15,42 +14,18 @@ export const SlidersBox: React.FC = () => {
       <div className="flex h-[688px] w-full flex-col gap-4 rounded-bl-3xl rounded-br-3xl rounded-tl-3xl bg-gray-100 p-4">
         <div className="flex flex-row gap-4">
           <div className="h-80 w-[616px] rounded-2xl shadow-sm">
-            <Image
-              src={fake2}
-              alt="fake2"
-              width={616}
-              height={80}
-              className="h-full w-full"
-            />
+            <AddReportButton onClick={() => {}} />
           </div>
           <div className="h-80 w-[616px] rounded-2xl shadow-sm">
-            <Image
-              src={fake2}
-              alt="fake2"
-              width={616}
-              height={80}
-              className="h-full w-full"
-            />
+            <AddReportButton onClick={() => {}} />
           </div>
         </div>
         <div className="flex flex-row gap-4">
           <div className="h-80 w-[616px] rounded-2xl shadow-sm">
-            <Image
-              src={fake2}
-              alt="fake2"
-              width={616}
-              height={80}
-              className="h-full w-full"
-            />
+            <AddReportButton onClick={() => {}} />
           </div>
           <div className="h-80 w-[616px] rounded-2xl shadow-sm">
-            <Image
-              src={fake2}
-              alt="fake2"
-              width={616}
-              height={80}
-              className="h-full w-full"
-            />
+            <AddReportButton onClick={() => {}} />
           </div>
         </div>
       </div>
