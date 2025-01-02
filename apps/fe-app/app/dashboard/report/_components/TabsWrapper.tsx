@@ -1,6 +1,6 @@
 'use client';
 import { useHeaderVisibility } from 'apps/fe-app/hooks';
-import { Tabs } from 'design-system';
+import { cn, Tabs } from 'design-system';
 import React from 'react';
 
 export const TabsWrapper: React.FC = () => {
@@ -12,9 +12,9 @@ export const TabsWrapper: React.FC = () => {
   };
   return (
     <section
-      className={'sticky z-40 flex justify-center px-2 pb-14 pt-[72px]'}
+      className={cn('sticky z-40 mb-8 bg-white px-2 pb-6 [&>div]:pt-6')}
       style={{
-        top: contentStart,
+        top: contentStart - 10,
       }}
     >
       <Tabs
@@ -27,7 +27,6 @@ export const TabsWrapper: React.FC = () => {
           { id: 'relatedReports', title: 'گزارش های مرتبط' },
         ]}
       />
-      {isHeaderVisible}sdsd
     </section>
   );
 };
