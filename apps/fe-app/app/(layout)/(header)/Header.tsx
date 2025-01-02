@@ -11,8 +11,7 @@ import {
 } from 'design-system';
 import { useHeaderVisibility } from 'apps/fe-app/hooks';
 export const Header: React.FC = () => {
-  const { isHeaderVisible, headerRef, setIsHeaderVisible } =
-    useHeaderVisibility();
+  const { isHeaderVisible, setIsHeaderVisible } = useHeaderVisibility();
 
   return (
     <div
@@ -51,7 +50,6 @@ export const Header: React.FC = () => {
 
       {/* Hideable menu */}
       <div
-      ref={headerRef}
         id="hideable"
         className={cn(
           isHeaderVisible ? 'translate-y-0' : '-translate-y-full',
