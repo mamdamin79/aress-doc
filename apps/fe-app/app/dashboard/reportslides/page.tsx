@@ -1,5 +1,7 @@
 import React from 'react';
 import { SlidersBox } from './_components';
+import { HorizontalScrollBar } from 'design-system';
+import { AutoScroll } from 'compositions';
 
 const page = () => {
   return (
@@ -9,6 +11,9 @@ const page = () => {
         <span> </span>
         تحلیل صنعت پتروشیمی
       </h1>
+      <div>
+        <AutoScroll />
+      </div>
       <section className="mt-8 flex w-full justify-center px-20">
         <SlidersBox />
       </section>
