@@ -11,7 +11,7 @@ const page = () => {
         <span> </span>
         تحلیل صنعت پتروشیمی
       </h1>
-      <div>
+      <div className="fixed right-6 top-1/2 -mt-16 -translate-x-1/2">
         <AutoScroll />
       </div>
       <section className="mt-8 flex w-full justify-center px-20">

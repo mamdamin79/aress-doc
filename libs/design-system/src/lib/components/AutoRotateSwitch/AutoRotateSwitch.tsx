@@ -1,9 +1,8 @@
+'use client';
 import React, { useState } from 'react';
 import { Icon } from '../Icon';
 import { cn } from 'libs/design-system/src/utils';
 import { AutoRotateProps } from './AutoRotateSwitch.types';
-
-
 
 export const AutoRotateSwitch: React.FC<AutoRotateProps> = ({
   rotateOptions,
