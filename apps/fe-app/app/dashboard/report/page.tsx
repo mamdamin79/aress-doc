@@ -1,4 +1,3 @@
-'use client';
 import { Icon, SectionTitle, Tabs } from 'design-system';
 import Image from 'next/image';
 import fake2 from '../fake2.png';
@@ -7,13 +6,9 @@ import { SectionItem } from './_components/SectionUlItem';
 import { VideoPlayerWrapper } from './_components/VideoPlayerWrapper';
 import { ReportsCarouselWrapper } from './_components/ReportsCarouselWrapper';
 import Link from 'next/link';
+import { TabsWrapper } from './_components/TabsWrapper';
 
 const page = () => {
-  const scroll = (id: string) => {
-    const section = document.querySelector('#' + id);
-    console.log(id);
-    section?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
   return (
     <div>
       <section className="flex w-full flex-row justify-around gap-8 px-20 pt-6">
@@ -33,18 +28,7 @@ const page = () => {
         </div>
         <ReportOverview />
       </section>
-      <section className="flex justify-center px-2 pb-14 pt-[72px]">
-        <Tabs
-          variant="rounded-full"
-          colorMode="neutral"
-          onClickTab={(id) => scroll(id)}
-          tabs={[
-            { id: 'videoReview', title: 'ویدیو بررسی' },
-            { id: 'moreInfo', title: 'اطلاعات بیشتر' },
-            { id: 'relatedReports', title: 'گزارش های مرتبط' },
-          ]}
-        />
-      </section>
+        <TabsWrapper />
       <section className="flex w-full flex-col items-center" id="videoReview">
         <SectionTitle align="center" level={3} title="ویدیو بررسی" />
         <div className="mt-12">
