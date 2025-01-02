@@ -1,3 +1,4 @@
+'use client';
 import React, { MouseEvent, useId, useState } from 'react';
 import { textFieldPropsType } from './TextField.types';
 import { cn } from '../../../utils';

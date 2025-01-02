@@ -29,7 +29,7 @@ export const LikeBadge = ({ isLiked, onClick }: LikeBadgeProps) => {
         `flex h-[36px] w-[36px] cursor-pointer items-center justify-center rounded-full bg-white p-2 text-red-600 transition-colors hover:bg-red-100`,
         isLiked ? 'fill-red-600' : '',
       )}
-      onClick={onClick}
+      onMouseDown={onClick}
     >
       <Iconify
         icon={'lucide:heart'}
