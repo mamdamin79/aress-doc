@@ -84,6 +84,7 @@
     "@storybook/preview-api": "^8.3.2",
     "@storybook/react": "^8.3.2",
     "@svgr/webpack": "^8.1.0",
+    "@uidotdev/usehooks": "^2.4.1",
     "clsx": "^2.1.1",
     "hls.js": "^1.5.17",
     "lucide-react": "^0.445.0",
