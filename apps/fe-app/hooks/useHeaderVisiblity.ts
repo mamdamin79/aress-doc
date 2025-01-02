@@ -4,7 +4,6 @@ import { useWindowScroll } from '@uidotdev/usehooks';
 type UseHeaderVisibilityResult = {
   isHeaderVisible: boolean;
   contentStart: number;
-  headerRef: React.RefObject<HTMLDivElement>;
   setIsHeaderVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -13,7 +12,6 @@ export const useHeaderVisibility = (): UseHeaderVisibilityResult => {
   const [isHeaderVisible, setIsHeaderVisible] = React.useState(true);
   const [contentStart, setContentStart] = React.useState(0);
 
-  const headerRef = React.useRef<HTMLDivElement | null>(null);
   const lastScrollY = React.useRef<number>(0); // Ref to track the previous scroll position (default 0)
 
   React.useEffect(() => {
@@ -26,14 +24,12 @@ export const useHeaderVisibility = (): UseHeaderVisibilityResult => {
     setIsHeaderVisible(!(isScrollingDown && isPastThreshold));
     lastScrollY.current = currentScrollY;
 
-    // Dynamically calculate content start only if headerRef is valid
-    if (headerRef.current) {
-      const rect = headerRef.current.getBoundingClientRect();
-      setContentStart(rect.bottom);
+    if (isHeaderVisible) {
+      setContentStart(155);
     } else {
-      setContentStart(0); // Fallback to 0 if the ref is null
+      setContentStart(72);
     }
   }, [scrollY]);
 
-  return { isHeaderVisible, contentStart, headerRef, setIsHeaderVisible };
+  return { isHeaderVisible, contentStart, setIsHeaderVisible };
 };
