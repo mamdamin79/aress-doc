@@ -29,7 +29,7 @@ export const useHeaderVisibility = (): UseHeaderVisibilityResult => {
     // Dynamically calculate content start only if headerRef is valid
     if (headerRef.current) {
       const rect = headerRef.current.getBoundingClientRect();
-      setContentStart(rect.bottom + currentScrollY);
+      setContentStart(rect.bottom);
     } else {
       setContentStart(0); // Fallback to 0 if the ref is null
     }
