@@ -1,4 +1,4 @@
-import { Icon, SectionTitle, Tabs } from 'design-system';
+import { Breadcrumb, Icon, SectionTitle, Tabs } from 'design-system';
 import Image from 'next/image';
 import fake2 from '../fake2.png';
 import { ReportOverview } from './_components/ReportOverview';
@@ -11,6 +11,18 @@ import { TabsWrapper } from './_components/TabsWrapper';
 const page = () => {
   return (
     <div>
+      {/* Breadcrumb */}
+      <div className="px-20 pt-3">
+        <Breadcrumb
+          items={[
+            { title: 'گزارش ها' },
+            {
+              title:
+                'ورود و خروج تجمعی سرمایه‌گذاران حقیقی به سهام و درآمد ثابت',
+            },
+          ]}
+        />
+      </div>
       <section className="mb-16 flex w-full flex-row justify-around gap-8 px-20 pt-6">
         <div className="flex w-fit flex-col gap-2">
           <div className="rounded-3xl bg-gray-100 p-4">
