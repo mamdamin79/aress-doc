@@ -74,18 +74,6 @@ export const Header: React.FC = () => {
       </div>
       {/* hidden div */}
       <div className="h-32"></div>
-      {/* Breadcrumb */}
-      <div className="px-20 pt-3">
-        <Breadcrumb
-          items={[
-            { title: 'گزارش ها' },
-            {
-              title:
-                'ورود و خروج تجمعی سرمایه‌گذاران حقیقی به سهام و درآمد ثابت',
-            },
-          ]}
-        />
-      </div>
     </div>
   );
 };
