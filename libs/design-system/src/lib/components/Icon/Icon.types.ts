@@ -25,4 +25,4 @@ export type CustomIconName =
 export type IconName = keyof typeof dynamicIconImports | CustomIconName;
 
 // valid icon size you can pass to IconComponent
-export type IconSize = 'sm' | 'md' | 'lg' | 'lg_plus' | 'xl';
+export type IconSize = 'sm' | 'md' | 'lg' | 'lg_plus' | 'lg_plus_plus' | 'xl';
