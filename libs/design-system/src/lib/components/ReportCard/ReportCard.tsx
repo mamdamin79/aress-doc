@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Icon } from '../Icon';
 import Image from 'next/image';
-import { NewBadge, VideoBadge, LikeBadge } from './Badges';
+import { NewBadge, VideoBadge, LikeBadge } from './Badges/Badges';
 import { cn } from '../../../utils/classNames.utils';
 import { Button } from '../Button';
 
@@ -28,22 +28,20 @@ export const ReportCard: React.FC<CardComponentProps> = ({
   image,
   isLiked = false,
 }) => {
-  const [isLikedTemp, setIsLikedTemp] = useState(isLiked);
-
   return (
     <div
       className={cn(
-        `flex flex-col transition-all bg-gray-100 rounded-3xl border-[3px] border-gray-100 relative group overflow-hidden`,
+        `group relative flex flex-col overflow-hidden rounded-3xl border-[3px] border-gray-100 bg-gray-100 transition-all`,
         fixedBrief
-          ? 'h-fit min-h-[507px] items-start w-[508px] hover:shadow-7xl'
-          : 'h-[308px]  w-[416px] hover:shadow-md',
+          ? 'hover:shadow-7xl h-fit min-h-[507px] w-[508px] items-start'
+          : 'h-[308px] w-[416px] hover:shadow-md',
       )}
     >
       {/* Image Section */}
-      <div className="px-3 mt-3">
+      <div className="mt-3 px-3">
         <div
           className={cn(
-            `w-full rounded-xl overflow-hidden flex justify-center items-center shadow-md`,
+            `flex w-full items-center justify-center overflow-hidden rounded-xl shadow-md`,
             fixedBrief ? 'h-[247px]' : 'h-[200px]',
           )}
         >
@@ -52,7 +50,7 @@ export const ReportCard: React.FC<CardComponentProps> = ({
             height={247}
             src={image}
             alt="Content Thumbnail"
-            className="w-full h-full object-cover"
+            className="h-full w-full object-cover"
           />
         </div>
       </div>
@@ -62,25 +60,25 @@ export const ReportCard: React.FC<CardComponentProps> = ({
         className={cn(
           `w-full`,
           !fixedBrief &&
-            'opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:duration-500 h-full ease-in-out absolute bottom-0 left-0 overflow-hidden bg-gradient-to-b from-[rgba(255,255,255,0)] via-white to-[rgba(255,255,255,1)]',
+            'absolute bottom-0 left-0 h-full overflow-hidden bg-gradient-to-b from-[rgba(255,255,255,0)] via-white to-[rgba(255,255,255,1)] opacity-0 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:duration-500',
         )}
       ></div>
       <div
         className={cn(
-          `p-4 gap-3 flex flex-col justify-between transition-all duration-500 ease-in group-hover:duration-700`,
+          `flex flex-col justify-between gap-3 p-4 transition-all duration-500 ease-in group-hover:duration-700`,
           fixedBrief
             ? 'h-[212px] items-baseline'
-            : 'absolute bottom-0 left-0 items-end max-h-[92px] group-hover:max-h-[250px] overflow-hidden transition-all ease-in-out',
+            : 'absolute bottom-0 left-0 max-h-[92px] items-end overflow-hidden transition-all ease-in-out group-hover:max-h-[250px]',
         )}
       >
-        <div className="w-fit h-fit flex flex-col gap-2">
-          <p className="text-gray-1000 font-semibold text-sm">{title}</p>
-          <div className="flex flex-row text-sm font-medium text-right text-gray-700 gap-4">
-            <span className="flex flex-row gap-1 items-center">
+        <div className="flex h-fit w-fit flex-col gap-2">
+          <p className="text-gray-1000 text-sm font-semibold">{title}</p>
+          <div className="flex flex-row gap-4 text-right text-sm font-medium text-gray-700">
+            <span className="flex flex-row items-center gap-1">
               <Icon name="layers-2" key={categoryType} size="md" />
               {categoryType}
             </span>
-            <span className="flex flex-row gap-1 items-center">
+            <span className="flex flex-row items-center gap-1">
               <Icon name="package" key={reportSubscription} size="md" />
               {reportSubscription}
             </span>
@@ -93,20 +91,15 @@ export const ReportCard: React.FC<CardComponentProps> = ({
           {/* Brief Section fixed */}
           {fixedBrief && (
             <>
-              <span className="text-sm text-gray-600 text-right line-clamp-3">
+              <span className="line-clamp-3 text-right text-sm text-gray-600">
                 {brief}
               </span>
-              <div className="flex items-center justify-between absolute bottom-4 right-0 px-4 w-full">
+              <div className="absolute bottom-4 right-0 flex w-full items-center justify-between px-4">
                 <LikeBadge
-                  isLiked={isLikedTemp}
-                  onClick={() => setIsLikedTemp(!isLikedTemp)}
+                  isLiked={isLiked}
+                  onClick={() => console.log('like')}
                 />
-                <div
-                  className="h-[38px] rounded-[100px] overflow-hidden flex items-center text-xs
-                  opacity-0 group-hover:opacity-100
-                  transform origin-left scale-x-[0.3] group-hover:scale-x-100
-                  transition-all duration-300 ease-in-out"
-                >
+                <div className="flex h-[38px] origin-left scale-x-[0.3] transform items-center overflow-hidden rounded-[100px] text-xs opacity-0 transition-all duration-300 ease-in-out group-hover:scale-x-100 group-hover:opacity-100">
                   <Button
                     align="center"
                     isLoading={false}
@@ -114,7 +107,7 @@ export const ReportCard: React.FC<CardComponentProps> = ({
                     size="md"
                     className="w-fit"
                   >
-                    <div className="flex gap-2 items-center whitespace-nowrap opacity-0 group-hover:opacity-100 transition-colors duration-100">
+                    <div className="flex items-center gap-2 whitespace-nowrap opacity-0 transition-colors duration-100 group-hover:opacity-100">
                       مشاهده گزارش
                       <Icon name="arrow-left" key="arrow-left" size="md" />
                     </div>
@@ -126,11 +119,7 @@ export const ReportCard: React.FC<CardComponentProps> = ({
 
           {/* Brief Section (Drawer Animation) */}
           {!fixedBrief && (
-            <span
-              className="text-sm text-gray-600 opacity-0 transform translate-y-12 overflow-hidden 
-              group-hover:opacity-100 group-hover:translate-y-0
-              transition-all duration-500 ease-in-out -mb-2 text-right line-clamp-4"
-            >
+            <span className="-mb-2 line-clamp-4 translate-y-12 transform overflow-hidden text-right text-sm text-gray-600 opacity-0 transition-all duration-500 ease-in-out group-hover:translate-y-0 group-hover:opacity-100">
               {brief}
             </span>
           )}
