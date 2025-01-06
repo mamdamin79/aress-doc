@@ -94,6 +94,22 @@ export const justText: Story = {
     },
   },
 };
+export const expandable: Story = {
+  render: (args) => (
+    <div className="w-full h-40 bg-gray-300 flex justify-center items-center">
+      <MenuTiles {...args} />
+    </div>
+  ),
+  args: {
+    text: 'بازارها',
+    isDashboard: false,
+    isActive: false,
+    leadingAction: () => {
+      console.log('clicked');
+    },
+    expandable: true,
+  },
+};
 export const dashBoard: Story = {
   render: (args) => (
     <div className="w-full h-40 flex justify-center items-center">

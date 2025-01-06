@@ -50,7 +50,7 @@ const IconWithBadge = ({
   <div
     className={cn(
       'flex flex-col items-start gap-2 pt-[3px] h-fit relative',
-      isDisabled ? 'text-gray-400' : 'text-gray-1000'
+      isDisabled ? 'text-gray-400' : 'text-gray-1000',
     )}
   >
     {icon && (
@@ -62,7 +62,7 @@ const IconWithBadge = ({
       <div
         className={cn(
           'w-2 h-2 rounded-full mr-1 absolute bottom-0 -right-1',
-          badgeColor
+          badgeColor,
         )}
       />
     )}
@@ -94,7 +94,7 @@ const TextContainer = ({
       className={cn(
         'font-semibold text-sm',
         isActive && !isDashboard ? 'text-brand-700' : 'text-gray-1000',
-        !isActive && (isDisabled ? 'text-gray-400' : 'text-gray-1000')
+        !isActive && (isDisabled ? 'text-gray-400' : 'text-gray-1000'),
       )}
     >
       {prefix}
@@ -104,7 +104,7 @@ const TextContainer = ({
       <p
         className={cn(
           'font-semibold text-xs',
-          isActive && !isDashboard ? 'text-brand-600' : 'text-gray-600'
+          isActive && !isDashboard ? 'text-brand-600' : 'text-gray-600',
         )}
       >
         {subText}
@@ -128,8 +128,8 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
 }) => {
   const wrapperClasses = `w-full min-w-[240px] max-w-[272px] flex items-center justify-between py-2 pr-3 pl-5 transition-all 
     bg-baseBackground ${!isDisabled && 'hover:bg-brand-100'} ${
-    isActive ? 'text-brand-700' : 'text-gray-1000'
-  }`;
+      isActive ? 'text-brand-700' : 'text-gray-1000'
+    }`;
 
   const dashboardClasses = `flex items-center justify-between gap-2 transition-all 
     bg-baseBackground min-w-52 w-[208px] h-10 rounded-md relative group
@@ -149,7 +149,7 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
       {/* Elements of dashboard are limited and we conditionally render two type of components based
       on the value of the isDashboard prop */}
       {!isDashboard ? (
-        <div className="flex justify-start gap-2">
+        <div className="flex justify-start gap-2 relative w-full">
           <IconWithBadge
             icon={icon}
             badgeColor={badgeColor}
@@ -162,6 +162,11 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
             isDashboard={false}
             isDisabled={isDisabled}
           />
+          {expandable && (
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 ">
+              <Icon name="chevron-left" size="md" />
+            </div>
+          )}
         </div>
       ) : (
         <>
@@ -172,6 +177,7 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
                 : 'bg-brand-400 rounded-lg w-[2px] h-4 group-hover:bg-brand-600 group-hover:h-5'
             }`}
           />
+
           <div className="flex justify-start pr-2">
             <TextContainer
               text={text}

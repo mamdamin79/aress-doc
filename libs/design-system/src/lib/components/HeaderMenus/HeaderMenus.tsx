@@ -7,7 +7,7 @@ import {
 import React from 'react';
 import { Icon } from '../Icon';
 import { MenuTiles } from '../MenuTiles';
-import { MenuItem } from './HeaderMenus.types';
+import { MenuItem, subMenu } from './HeaderMenus.types';
 import { cn } from '../../../../src/utils/classNames.utils';
 import Link from 'next/link';
 
@@ -16,26 +16,32 @@ interface MenuProps {
 }
 
 export const HeaderMenus: React.FC<MenuProps> = ({ menuItems }) => {
+  const [activeSubMenu, setActiveSubMenu] = React.useState<null | subMenu>(
+    null,
+  );
   const activeTab = 0;
   return (
     <div className="flex items-center gap-6 text-nowrap">
+      <div className="w-8 h-8 flex justify-center items-center">
+        <Icon name="align-justify" size="lg" />
+      </div>
       {menuItems.map((item, index) => (
         <Popover key={index} className="relative group h-[40px]">
           <PopoverButton
             className={cn(
               'flex items-center gap-2 py-1 outline-none transition-colors text-shadow-sm font-normal',
-              item.subMenu
+              item.dropdown
                 ? 'group-hover:text-brand-600'
                 : activeTab === index
-                ? 'group-hover:text-gray-1000'
-                : 'group-hover:text-gray-700',
+                  ? 'group-hover:text-gray-1000'
+                  : 'group-hover:text-gray-700',
               activeTab === index
                 ? 'text-gray-1000 font-medium'
-                : 'text-gray-600'
+                : 'text-gray-600',
             )}
           >
             <div className="relative">
-              {item.subMenu && (
+              {item.dropdown && (
                 <span className="absolute block font-medium h-0 overflow-hidden transition-all">
                   {item.name}
                 </span>
@@ -51,7 +57,7 @@ export const HeaderMenus: React.FC<MenuProps> = ({ menuItems }) => {
                 }`}
               />
             </div>
-            {item.subMenu && (
+            {item.dropdown && (
               <div className="transition-transform duration-200 transform group-hover:rotate-180">
                 <Icon name="chevron-down" size="lg" />
               </div>
@@ -59,43 +65,92 @@ export const HeaderMenus: React.FC<MenuProps> = ({ menuItems }) => {
           </PopoverButton>
 
           {/* Dropdown panel */}
-          {item.subMenu && (
-            <div className="absolute hidden group-hover:block text-right shadow-md bg-baseBackground w-fit max-w-[272px] h-fit rounded-xl border-2 border-gray-300 z-10 py-4 gap-2 flex flex-col mt-2 shadow-offset-y-10">
-              {item.subMenu?.map((subMenuItem, subMenuItemIndex) => (
-                <div
-                  key={subMenuItemIndex}
-                  className={cn(
-                    'flex flex-col',
-                    subMenuItem.border
-                      ? 'border-t-2 border-b-2 border-gray-200 mb-2'
-                      : '',
-                    subMenuItem.children[0]?.isDashboard ? 'gap-2' : ''
-                  )}
-                >
-                  <div className="text-gray-600 text-sm pr-4 font-normal flex flex-row gap-2 items-center">
-                    {subMenuItem.groupLabel}
-                    {subMenuItem.counter && (
-                      <>
-                        <span> ({subMenuItem.children.length}/8) </span>
-                        <Icon name="info" size="md" />
-                      </>
+          {item.dropdown && (
+            <div
+              onMouseLeave={() => setActiveSubMenu(null)}
+              className="flex flex-row absolute shadow-md bg-baseBackground  rounded-xl border-2 border-gray-300 z-10 shadow-offset-y-10"
+            >
+              <div className="hidden group-hover:block text-right w-fit max-w-[272px] h-fit py-4 gap-2 flex flex-col mt-2 ">
+                {item.dropdown?.map((dropdownItem, dropdownItemIndex) => (
+                  <div
+                    key={dropdownItemIndex}
+                    className={cn(
+                      'flex flex-col',
+                      dropdownItem.border
+                        ? 'border-t-2 border-b-2 border-gray-200 mb-2'
+                        : '',
+                      dropdownItem.children[0]?.isDashboard ? 'gap-2' : '',
+                    )}
+                  >
+                    <div className="text-gray-600 text-sm pr-4 font-normal flex flex-row gap-2 items-center">
+                      {dropdownItem.groupLabel}
+                      {dropdownItem.counter && (
+                        <>
+                          <span> ({dropdownItem.children.length}/8) </span>
+                          <Icon name="info" size="md" />
+                        </>
+                      )}
+                    </div>
+                    {dropdownItem.children.map(
+                      (subItemChildren, subItemChildrenIndex) => (
+                        <div
+                          key={subItemChildrenIndex}
+                          className="flex relative justify-center"
+                          onMouseEnter={() =>
+                            subItemChildren.subMenu
+                              ? setActiveSubMenu(subItemChildren.subMenu)
+                              : setActiveSubMenu(null)
+                          }
+                        >
+                          <MenuTiles
+                            {...subItemChildren}
+                            prefix={`${subItemChildrenIndex + 1}. `}
+                          />
+                        </div>
+                      ),
                     )}
                   </div>
-                  {subMenuItem.children.map(
-                    (subItemChildren, subItemChildrenIndex) => (
-                      <div
-                        key={subItemChildrenIndex}
-                        className="flex relative justify-center"
-                      >
-                        <MenuTiles
-                          {...subItemChildren}
-                          prefix={`${subItemChildrenIndex + 1}. `}
-                        />
+                ))}
+              </div>
+              {activeSubMenu && (
+                <div className="hidden group-hover:block text-right w-fit max-w-[272px] h-fitz-10 py-4 gap-2 flex flex-col mt-2">
+                  {activeSubMenu?.map((dropdownItem, dropdownItemIndex) => (
+                    <div
+                      key={dropdownItemIndex}
+                      className={cn(
+                        'flex flex-col',
+                        dropdownItem.border
+                          ? 'border-t-2 border-b-2 border-gray-200 mb-2'
+                          : '',
+                        dropdownItem.children[0]?.isDashboard ? 'gap-2' : '',
+                      )}
+                    >
+                      <div className="text-gray-600 text-sm pr-4 font-normal flex flex-row gap-2 items-center">
+                        {dropdownItem.groupLabel}
+                        {dropdownItem.counter && (
+                          <>
+                            <span> ({dropdownItem.children.length}/8) </span>
+                            <Icon name="info" size="md" />
+                          </>
+                        )}
                       </div>
-                    )
-                  )}
+                      {dropdownItem.children.map(
+                        (subItemChildren, subItemChildrenIndex) => (
+                          <div
+                            key={subItemChildrenIndex}
+                            className="flex relative justify-center"
+                          >
+                            <MenuTiles
+                              {...subItemChildren}
+                              prefix={`${subItemChildrenIndex + 1}. `}
+                            />
+                          </div>
+                        ),
+                      )}
+                    </div>
+                  ))}
                 </div>
-              ))}
+              )}
             </div>
           )}
         </Popover>

@@ -2,7 +2,7 @@ import { MenuItem } from './HeaderMenus.types';
 export const menu = [
   {
     name: 'داشبورد مدیریتی',
-    subMenu: [
+    dropdown: [
       {
         groupLabel: 'گزینه‌ها',
 
@@ -95,7 +95,7 @@ export const menu = [
   {
     name: 'صندوق من',
 
-    subMenu: [
+    dropdown: [
       {
         groupLabel: '',
 
@@ -109,6 +109,88 @@ export const menu = [
               size: 'md',
             },
             badgeColor: 'bg-green-500',
+            expandable: true,
+            subMenu: [
+              {
+                groupLabel: 'گزینه‌ها',
+
+                children: [
+                  {
+                    text: 'تغییر نام داشبورد',
+                    icon: {
+                      name: 'pencil',
+                      size: 'md',
+                    },
+                    leadingAction: () => console.log('clicked'),
+                  },
+                  {
+                    text: 'کپی کردن داشبورد',
+                    icon: {
+                      name: 'copy',
+                      size: 'md',
+                    },
+                    leadingAction: () => console.log('clicked'),
+                  },
+                  {
+                    text: 'حذف داشبورد',
+                    icon: {
+                      name: 'trash-2',
+                      size: 'md',
+                    },
+                    leadingAction: () => console.log('clicked'),
+                    isDisabled: true,
+                  },
+                ],
+              },
+              {
+                groupLabel: '',
+                border: true,
+
+                children: [
+                  {
+                    text: 'افزودن داشبورد جدید',
+                    icon: {
+                      name: 'plus',
+                      size: 'md',
+                    },
+                    leadingAction: () => console.log('clicked'),
+                  },
+                ],
+              },
+              {
+                groupLabel: 'داشبوردهای شما',
+                counter: true,
+
+                children: [
+                  {
+                    link: '#',
+                    text: 'تحلیل صنعت پتروشیمی',
+                    isDashboard: true,
+                    isActive: true,
+                  },
+                  {
+                    link: '#',
+                    text: 'صندوق کالایی',
+                    isDashboard: true,
+                  },
+                  {
+                    link: '#',
+                    text: 'صندوق های پربازده',
+                    isDashboard: true,
+                  },
+                  {
+                    link: '#',
+                    text: 'مقایسه صندوق من',
+                    isDashboard: true,
+                  },
+                  {
+                    link: '#',
+                    text: 'داشبورد نمونه 1',
+                    isDashboard: true,
+                  },
+                ],
+              },
+            ],
           },
           {
             text: 'امین آشنا ایرانیان',
@@ -167,7 +249,7 @@ export const menu = [
   {
     name: 'بازارها',
 
-    subMenu: [
+    dropdown: [
       {
         groupLabel: '',
         children: [
