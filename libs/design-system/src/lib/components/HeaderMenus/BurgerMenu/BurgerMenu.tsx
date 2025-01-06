@@ -1,9 +1,4 @@
-import {
-  Popover,
-  PopoverButton,
-  PopoverPanel,
-  Transition,
-} from '@headlessui/react';
+import { Popover, PopoverButton } from '@headlessui/react';
 import React from 'react';
 import { Icon } from '../../Icon';
 import { MenuTiles } from '../../MenuTiles';
