@@ -126,7 +126,7 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
   prefix = '',
   link,
 }) => {
-  const wrapperClasses = `w-full min-w-[240px] max-w-[272px] flex items-center justify-between py-2 pr-3 pl-5 transition-all 
+  const wrapperClasses = `w-full min-w-[240px] max-w-[272px] flex items-center justify-between py-2 pr-3 transition-all 
     bg-baseBackground ${!isDisabled && 'hover:bg-brand-100'} ${
       isActive ? 'text-brand-700' : 'text-gray-1000'
     }`;
@@ -149,7 +149,7 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
       {/* Elements of dashboard are limited and we conditionally render two type of components based
       on the value of the isDashboard prop */}
       {!isDashboard ? (
-        <div className="flex justify-start gap-2 relative w-full">
+        <div className="flex justify-start gap-2 relative w-full pl-5">
           <IconWithBadge
             icon={icon}
             badgeColor={badgeColor}
