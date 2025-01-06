@@ -84,13 +84,13 @@ export function Footer() {
       </div>
 
       <div className="grid mt-10 grid-cols-1 grid-rows-4 sm:grid-rows-2 lg:grid-rows-1 items-center mx-auto text-center md:text-start sm:grid-cols-2 lg:grid-cols-4">
-        {linksFooter.map(({ title, links }) => (
-          <div key={title} className="mt-8 self-start lg:mt-0">
+        {linksFooter.map(({ title, links }, index) => (
+          <div key={index} className="mt-8 self-start lg:mt-0">
             <span className="text-gray-1000 mb-6 font-medium text-2xl block">
               {title}
             </span>
-            {links.map(({ title, icons, link }) => (
-              <div key={link}>
+            {links.map(({ title, icons, link }, index) => (
+              <div key={index}>
                 {link ? (
                   <Link
                     className="text-gray-600 hover:text-gray-700 text-md mt-2"
@@ -104,8 +104,8 @@ export function Footer() {
                   </span>
                 )}
                 <div className="flex gap-4 mt-2 justify-center md:justify-start text-brand-600">
-                  {icons?.map(({ icon, link }) => (
-                    <div key={link} className="text-brand-600 hover:text-brand-700 transition">
+                  {icons?.map(({ icon, link }, index) => (
+                    <div key={index} className="text-brand-600 hover:text-brand-700 transition">
                       {link ? (
                         <Link href={link}>{icon}</Link>
                       ) : (
