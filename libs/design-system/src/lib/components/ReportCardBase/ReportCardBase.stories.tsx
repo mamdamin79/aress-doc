@@ -16,14 +16,7 @@ type Story = StoryObj<typeof ReportCardBase>;
 // A default story for the ReportCardBase component
 export const Default: Story = {
   render: (args) => {
-    const [settingsOpen, setSettingsOpen] = useState(true);
-    return (
-      <ReportCardBase
-        {...args}
-        settingsOpen={settingsOpen}
-        setSettingsOpen={setSettingsOpen}
-      />
-    );
+    return <ReportCardBase {...args} />;
   },
   args: {
     title: 'تایتل (اسم گزارش)',
@@ -43,37 +36,98 @@ export const Default: Story = {
       bgWhite: false,
       initialIndex: 1,
     },
-    contextMenu: {
+    optionsListItems: {
+      categories: [
+        {
+          id: 1,
+          title: 'همه',
+        },
+        {
+          id: 2,
+          title: 'سهامی',
+        },
+        {
+          id: 3,
+          title: 'درآمد ثابت',
+        },
+        {
+          id: 4,
+          title: 'کالایی',
+        },
+        {
+          id: 5,
+          title: 'مختلط',
+        },
+        {
+          id: 6,
+          title: 'دیده بان',
+        },
+      ],
       items: [
         {
-          icon: 'settings',
-          title: 'تنظیمات گزارش',
-          onClick: () => console.log('تنظیمات گزارش'),
+          title: 'ذغال سنگ',
+          categoryId: 2,
+          priceRials: 11250,
+          type: 'سهامی',
         },
         {
-          icon: 'share-2',
-          title: 'اشتراک گذاری',
-          onClick: () => console.log('اشتراک گذاری'),
+          title: 'مس',
         },
         {
-          icon: 'square-arrow-out-up-right',
-          title: 'هدایت به نسخه مادر',
-          onClick: () => console.log('تنظیمات گزارش'),
+          title: 'آلومینیوم',
+          categoryId: 5,
+          priceChangePercent: -1.1,
+          priceRials: 30000,
+          type: 'مختلط',
         },
         {
-          icon: 'info',
-          title: 'اطلاعات بیشتر',
-          onClick: () => console.log('اطلاعات بیشتر'),
+          title: 'پتروشیمی',
+          categoryId: 6,
+          priceChangePercent: 3.5,
+          priceRials: 22000,
+          type: 'دیده بان',
         },
         {
-          icon: 'repeat',
-          title: 'جایگزینی گزارش',
-          onClick: () => console.log('جایگزینی گزارش'),
+          title: 'معدنی',
+          categoryId: 2,
+          priceChangePercent: 0.5,
+          priceRials: 18000,
+          type: 'سهامی',
         },
         {
-          icon: 'trash-2',
-          title: 'حذف گزارش از این فضا',
-          onClick: () => console.log('حذف گزارش از این فضا'),
+          title: 'گاز',
+          categoryId: 3,
+          priceChangePercent: -2.5,
+          priceRials: 35000,
+          type: 'درآمد ثابت',
+        },
+        {
+          title: 'برق',
+          categoryId: 3,
+          priceChangePercent: 4.0,
+          priceRials: 15000,
+          type: 'درآمد ثابت',
+        },
+        {
+          title: 'کاشی',
+          categoryId: 3,
+          priceChangePercent: -1.5,
+          priceRials: 27000,
+          type: 'درآمد ثابت',
+        },
+        {
+          title: 'شیمیایی',
+          categoryId: 4,
+          priceChangePercent: 5.0,
+          priceRials: 33000,
+          type: 'کالایی',
+        },
+        {
+          title: 'برق',
+          categoryId: 3,
+          priceChangePercent: 4.0,
+          priceRials: 15000,
+          type: 'درآمد ثابت',
         },
       ],
     },

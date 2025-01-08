@@ -17,24 +17,15 @@ type optionProps = {
 
 interface ReportSettingsProps {
   options: optionProps[];
-  isOpen: boolean;
   onClose: () => void;
 }
 
 export const ReportSettings: React.FC<ReportSettingsProps> = ({
   options,
-  isOpen,
   onClose,
 }) => {
   return (
-    <div
-      className={cn(
-        'bg-baseBackground flex h-80 w-[328px] flex-col rounded-bl-2xl rounded-tl-2xl shadow-lg transition-all duration-300 ease-in-out',
-        isOpen
-          ? 'visible translate-x-0 transform opacity-100'
-          : 'invisible w-0 -translate-x-5 transform opacity-0',
-      )}
-    >
+    <div className={cn('bg-baseBackground flex h-80 w-[328px] flex-col')}>
       <div className="text-md w-full py-2 pr-4 font-medium">تنظیمات گزارش</div>
       <CustomScrollbar
         className={cn('flex h-[236px] flex-col pl-5 pr-4', 'overflow-y-auto')}

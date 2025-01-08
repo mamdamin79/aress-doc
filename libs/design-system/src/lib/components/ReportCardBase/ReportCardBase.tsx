@@ -1,29 +1,34 @@
 import React, { useState } from 'react';
 import { Icon } from '../Icon';
 import { DualSwitch, DualSwitchProps } from '../DualSwitch';
-import { ContextMenu, Props as contextMenuProps } from '../ContextMenu';
 import { ReportSettings } from '../ReportSettings';
+import { ContextMenu } from '../ContextMenu';
+import { SlideFromLeft } from './SlideFromLeft';
+import { OptionsListExplorer } from '../OptionsListExplorer';
+import {
+  CategoryItem,
+  OptionItem,
+} from '../OptionsListExplorer/OptionsListExplorer.types';
 interface ReportCardBaseProps {
   title: string;
   switchIcons: DualSwitchProps;
-  contextMenu: contextMenuProps;
-  settingsOpen:boolean;
-  setSettingsOpen: (value: boolean) => void
+  optionsListItems: {
+    categories?: CategoryItem[] | null;
+    items: OptionItem[];
+  };
 }
 export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
   title,
   switchIcons,
-  contextMenu,
-  settingsOpen,
-  setSettingsOpen
+  optionsListItems,
 }) => {
-
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [optionsListOpen, setOptionsListOpen] = useState(false);
   return (
-    <div className="bg-baseBackground relative flex w-[616px] flex-col shadow-sm">
-      <div className="absolute left-0 top-0 z-30">
+    <div className="bg-baseBackground group relative flex w-[616px] flex-col overflow-x-hidden shadow-sm">
+      <SlideFromLeft isOpen={settingsOpen}>
         <ReportSettings
-        onClose={() => setSettingsOpen(false)}
-          isOpen={settingsOpen}
+          onClose={() => setSettingsOpen(false)}
           options={[
             {
               type: 'nestedDropdown',
@@ -68,7 +73,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                 icon: { name: 'square-mouse-pointer', size: 'sm' },
                 status: 'normal',
                 selectedOption: 'خطی',
-                onClick: () => console.log('hi'),
+                onClick: () => setOptionsListOpen(true),
               },
             },
             {
@@ -93,7 +98,15 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
             },
           ]}
         />
-      </div>
+      </SlideFromLeft>
+      <SlideFromLeft isOpen={optionsListOpen}>
+        <OptionsListExplorer
+          items={optionsListItems}
+          onBackButtonClick={() => setOptionsListOpen(false)}
+          onSearch={(value) => console.log(value)}
+          title="انتخاب دسته بندی اوراق"
+        />
+      </SlideFromLeft>
       <div className="relative w-full p-3 pb-2">
         <div className="flex w-full items-center justify-between">
           <div className="flex flex-row items-center text-xs font-semibold">
@@ -102,15 +115,49 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
             </div>
             <span>{title}</span>
           </div>
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-row gap-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <DualSwitch {...switchIcons} />
 
-            <ContextMenu {...contextMenu}>
+            <ContextMenu
+              anchor="right start"
+              items={[
+                {
+                  icon: 'settings',
+                  title: 'تنظیمات گزارش',
+                  onClick: () => setSettingsOpen(true),
+                },
+                {
+                  icon: 'share-2',
+                  title: 'اشتراک گذاری',
+                  onClick: () => console.log('اشتراک گذاری'),
+                },
+                {
+                  icon: 'square-arrow-out-up-right',
+                  title: 'هدایت به نسخه مادر',
+                  onClick: () => console.log('تنظیمات گزارش'),
+                },
+                {
+                  icon: 'info',
+                  title: 'اطلاعات بیشتر',
+                  onClick: () => console.log('اطلاعات بیشتر'),
+                },
+                {
+                  icon: 'repeat',
+                  title: 'جایگزینی گزارش',
+                  onClick: () => console.log('جایگزینی گزارش'),
+                },
+                {
+                  icon: 'trash-2',
+                  title: 'حذف گزارش از این فضا',
+                  onClick: () => console.log('حذف گزارش از این فضا'),
+                },
+              ]}
+            >
               <Icon name="ellipsis-vertical" size="md" />
             </ContextMenu>
           </div>
         </div>
-        <div className="absolute bottom-0 w-[592px] border-b"></div>
+        <div className="absolute bottom-0 w-[592px] border-b group-hover:hidden"></div>
       </div>
       <div className="bg-baseBackground h-[268px] w-full p-3 pt-2"></div>
     </div>

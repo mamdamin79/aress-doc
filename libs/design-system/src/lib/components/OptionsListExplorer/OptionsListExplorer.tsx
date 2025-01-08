@@ -80,7 +80,7 @@ export function OptionsListExplorer({
       )}
     >
       <div
-        onClick={() => onBackButtonClick}
+        onClick={onBackButtonClick}
         className="text-gray-1000 flex w-fit cursor-pointer items-center gap-1 px-4 py-2.5"
       >
         <Icon name="chevron-right" />
