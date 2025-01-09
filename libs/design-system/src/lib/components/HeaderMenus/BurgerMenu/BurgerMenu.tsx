@@ -5,6 +5,7 @@ import { MenuTiles } from '../../MenuTiles';
 import { cn } from '../../../../../src/utils/classNames.utils';
 import { BurgerMenuItems, BurgerSubMenu } from './BurgerMenu.types';
 import { useClickAway } from '@uidotdev/usehooks';
+import { HamburgerMenuIcon } from '../../HamburgerMenuIcon';
 
 interface MenuProps {
   menuItems: BurgerMenuItems[];
@@ -22,15 +23,13 @@ export const BurgerMenu: React.FC<MenuProps> = ({ menuItems }) => {
     setActiveSubMenu(null);
   };
   return (
-    <div className="flex items-center gap-6 text-nowrap">
+    <div className="flex items-center text-nowrap">
       <Popover className="group relative h-[40px]" ref={ref}>
         <PopoverButton
           className="outline-none"
           onClick={() => (activeMenu ? closeAll() : setActiveMenu(true))}
         >
-          <div className="flex h-8 w-8 items-center justify-center">
-            <Icon name="align-justify" size="lg" />
-          </div>
+          <HamburgerMenuIcon open={activeMenu} />
         </PopoverButton>
         <div
           className={cn(

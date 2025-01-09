@@ -17,3 +17,4 @@ export * from './Button';
 export * from './Tooltip';
 export * from './HeaderMenus';
 export * from './NotesHeading';
+export * from './HamburgerMenuIcon';
