@@ -32,13 +32,13 @@ export const HeaderMenus: React.FC<MenuProps> = ({ menuItems }) => {
             <div className="relative">
               {item.dropdown && (
                 <span className="absolute block h-0 overflow-hidden font-medium transition-all">
-                  {item.name}
+                  {item.text}
                 </span>
               )}
               {item.link ? (
-                <Link href={item.link}>{item.name}</Link>
+                <Link href={item.link}>{item.text}</Link>
               ) : (
-                <span>{item.name}</span>
+                <span>{item.text}</span>
               )}
               <div
                 className={`bg-brand-600 absolute bottom-0 left-0 right-0 mx-auto -mb-2 h-[6px] w-6 rounded-full ${

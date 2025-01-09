@@ -1,11 +1,11 @@
 import { MenuTilesProps } from '../MenuTiles/MenuTiles.types';
-
+export type dropdownType = {
+  groupLabel: string;
+  counter?: boolean;
+  children: MenuTilesProps[];
+}[];
 export interface MenuItem {
-  name: string;
+  text: string;
   link?: string;
-  dropdown?: {
-    groupLabel: string;
-    counter?: boolean;
-    children: MenuTilesProps[];
-  }[];
+  dropdown?: dropdownType;
 }

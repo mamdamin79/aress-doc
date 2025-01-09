@@ -1,7 +1,7 @@
 import { MenuItem } from './HeaderMenus.types';
 export const menu = [
   {
-    name: 'داشبورد مدیریتی',
+    text: 'داشبورد مدیریتی',
     dropdown: [
       {
         groupLabel: 'گزینه‌ها',
@@ -56,7 +56,6 @@ export const menu = [
             link: '#',
             text: 'تحلیل صنعت پتروشیمی',
             isDashboard: true,
-            isActive: true,
           },
           {
             link: '#',
@@ -83,15 +82,15 @@ export const menu = [
     ],
   },
   {
-    name: 'گزارش‌ها',
+    text: 'گزارش‌ها',
     link: '#',
   },
   {
-    name: 'صندوق های سرمایه گذاری',
+    text: 'صندوق های سرمایه گذاری',
     link: '#',
   },
   {
-    name: 'صندوق من',
+    text: 'صندوق من',
 
     dropdown: [
       {
@@ -126,7 +125,6 @@ export const menu = [
               name: 'circle-dot',
               size: 'md',
             },
-            isActive: true,
             badgeColor: 'bg-blue-500',
           },
         ],
@@ -162,7 +160,7 @@ export const menu = [
     ],
   },
   {
-    name: 'بازارها',
+    text: 'بازارها',
 
     dropdown: [
       {
@@ -243,15 +241,15 @@ export const menu = [
     ],
   },
   {
-    name: 'نمودار',
+    text: 'نمودار',
     link: '#',
   },
   {
-    name: 'اشتراکات آرسس',
+    text: 'اشتراکات آرسس',
     link: '#',
   },
   {
-    name: 'سوالی دارید؟',
+    text: 'سوالی دارید؟',
     link: '#',
   },
 ] as MenuItem[];
