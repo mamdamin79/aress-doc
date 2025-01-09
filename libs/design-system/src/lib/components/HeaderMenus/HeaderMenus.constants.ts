@@ -36,8 +36,6 @@ export const menu = [
       },
       {
         groupLabel: '',
-        border: true,
-
         children: [
           {
             text: 'افزودن داشبورد جدید',
@@ -136,7 +134,6 @@ export const menu = [
       {
         groupLabel: '',
         children: [],
-        border: true,
       },
       {
         groupLabel: 'ابزارهای مدیرعامل',

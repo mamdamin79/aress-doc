@@ -92,9 +92,6 @@ export const BurgerMenu: React.FC<MenuProps> = ({ menuItems }) => {
                   key={dropdownItemIndex}
                   className={cn(
                     'flex flex-col',
-                    dropdownItem.border
-                      ? 'mb-2 border-b border-t border-gray-200'
-                      : '',
                     dropdownItem.children[0]?.isDashboard ? 'gap-2' : '',
                   )}
                 >

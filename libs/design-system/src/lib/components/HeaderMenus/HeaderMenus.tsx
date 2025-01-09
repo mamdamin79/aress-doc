@@ -62,9 +62,6 @@ export const HeaderMenus: React.FC<MenuProps> = ({ menuItems }) => {
                     key={dropdownItemIndex}
                     className={cn(
                       'flex flex-col',
-                      dropdownItem.border
-                        ? 'mb-2 border-b-2 border-t-2 border-gray-200'
-                        : '',
                       dropdownItem.children[0]?.isDashboard ? 'gap-2' : '',
                     )}
                   >

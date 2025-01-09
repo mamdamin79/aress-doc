@@ -5,7 +5,6 @@ export interface MenuItem {
   link?: string;
   dropdown?: {
     groupLabel: string;
-    border?: boolean;
     counter?: boolean;
     children: MenuTilesProps[];
   }[];
