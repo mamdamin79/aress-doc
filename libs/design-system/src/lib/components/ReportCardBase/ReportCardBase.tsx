@@ -119,7 +119,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
             <DualSwitch {...switchIcons} />
 
             <ContextMenu
-              anchor="right start"
+              anchor="bottom end"
               items={[
                 {
                   icon: 'settings',
