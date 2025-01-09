@@ -19,7 +19,7 @@ interface DualSwitchProps {
   initialIndex?: number;
   onChange: (value: number) => void;
   items: DualSwitchItem[];
-  size: IconProps['size'];
+  size: 'sm' | 'lg';
   disabled?: boolean;
   bgWhite?: boolean;
 }
@@ -55,7 +55,11 @@ export const DualSwitch: React.FC<DualSwitchProps> = ({
       className={cn(
         'rounded-[100px] h-fit w-fit border p-1 gap-1 flex flex-row shadow-xs text-xs',
         bgWhite ? 'bg-white' : 'bg-gray-100 transition-colors',
-        disabled ? 'border-brand-300' : 'border-brand-600'
+        size === 'lg'
+          ? disabled
+            ? 'border-brand-300'
+            : 'border-brand-600'
+          : '',
       )}
     >
       {items.map((item, index) => (
@@ -68,8 +72,8 @@ export const DualSwitch: React.FC<DualSwitchProps> = ({
                   ? 'bg-brand-300 text-white'
                   : 'text-gray-400'
                 : activeItemIndex === index
-                ? 'bg-brand-600 text-white transition-colors'
-                : ''
+                  ? 'bg-brand-600 text-white transition-colors'
+                  : '',
             )}
             onClick={() => !disabled && handleSwitchClick(index)}
           >
