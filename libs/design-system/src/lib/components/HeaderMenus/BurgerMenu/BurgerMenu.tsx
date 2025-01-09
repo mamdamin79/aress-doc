@@ -15,35 +15,39 @@ export const BurgerMenu: React.FC<MenuProps> = ({ menuItems }) => {
   const [activeSubMenu, setActiveSubMenu] =
     React.useState<null | BurgerSubMenu>(null);
   const ref = useClickAway(() => {
+    closeAll();
+  });
+  const closeAll = () => {
     setActiveMenu(false);
     setActiveSubMenu(null);
-  });
+  };
   return (
     <div className="flex items-center gap-6 text-nowrap">
       <Popover className="group relative h-[40px]" ref={ref}>
         <PopoverButton
           className="outline-none"
-          onClick={() => setActiveMenu(!activeMenu)}
+          onClick={() => (activeMenu ? closeAll() : setActiveMenu(true))}
         >
           <div className="flex h-8 w-8 items-center justify-center">
             <Icon name="align-justify" size="lg" />
           </div>
         </PopoverButton>
-        <div className="shadow-8xl shadow-offset-y-10 absolute z-10 flex flex-row overflow-hidden rounded-xl">
+        <div
+          className={cn(
+            'shadow-8xl shadow-offset-y-10 absolute z-10 flex flex-row overflow-hidden rounded-xl border border-gray-300 py-2',
+            activeMenu ? '' : 'hidden',
+          )}
+        >
           <div
-            className={cn(
-              'bg-baseBackground flex h-fit w-fit max-w-[272px] flex-col gap-2 text-right',
-              activeMenu ? 'block' : 'hidden',
-            )}
+            className={
+              'bg-baseBackground flex h-fit w-fit max-w-[272px] flex-col gap-2 text-right'
+            }
           >
             {menuItems?.map((dropdownItem, dropdownItemIndex) => (
               <div
                 key={dropdownItemIndex}
                 className={cn(
                   'flex flex-col',
-                  dropdownItem.border
-                    ? 'mb-2 border-b border-t border-gray-200'
-                    : '',
                   dropdownItem.children[0]?.isDashboard ? 'gap-2' : '',
                 )}
               >
@@ -80,7 +84,7 @@ export const BurgerMenu: React.FC<MenuProps> = ({ menuItems }) => {
           {activeSubMenu && (
             <div
               className={cn(
-                'flex h-fit w-fit max-w-[272px] flex-col gap-2 rounded-xl py-4 text-right shadow-md',
+                'flex h-fit w-fit max-w-[272px] flex-col gap-2 rounded-l-xl border-r border-gray-300 py-2 text-right shadow-md',
                 activeSubMenu ? 'visible' : 'invisible',
               )}
             >

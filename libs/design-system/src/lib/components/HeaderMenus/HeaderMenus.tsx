@@ -55,7 +55,7 @@ export const HeaderMenus: React.FC<MenuProps> = ({ menuItems }) => {
 
           {/* Dropdown panel */}
           {item.dropdown && (
-            <div className="bg-baseBackground shadow-offset-y-10 absolute z-10 flex flex-row rounded-xl border-2 border-gray-300 shadow-md">
+            <div className="bg-baseBackground shadow-offset-y-10 shadow-8xl absolute z-10 flex flex-row rounded-xl border-2 border-gray-300">
               <div className="flex hidden h-fit w-fit max-w-[272px] flex-col gap-2 py-4 text-right group-hover:block">
                 {item.dropdown?.map((dropdownItem, dropdownItemIndex) => (
                   <div

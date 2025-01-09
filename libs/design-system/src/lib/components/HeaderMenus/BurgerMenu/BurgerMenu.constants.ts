@@ -105,7 +105,6 @@ export const menu = [
     children: [
       {
         text: 'صندوق‌های سرمایه‌گذاری',
-        expandable: true,
       },
       {
         text: 'صندوق من',
