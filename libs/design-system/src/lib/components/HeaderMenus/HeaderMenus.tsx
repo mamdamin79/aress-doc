@@ -1,16 +1,21 @@
 import { Popover, PopoverButton } from '@headlessui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { Icon } from '../Icon';
 import { MenuTiles } from '../MenuTiles';
-import { MenuItem } from './HeaderMenus.types';
+import { dropdownType, MenuItem } from './HeaderMenus.types';
 import { cn } from '../../../../src/utils/classNames.utils';
 import Link from 'next/link';
+import { MultiLevelDropdown } from './MultiLevelDropDown';
 
 interface MenuProps {
   menuItems: MenuItem[];
 }
 
 export const HeaderMenus: React.FC<MenuProps> = ({ menuItems }) => {
+  const [activeSubMenu, setActiveSubMenu] = React.useState<null | dropdownType>(
+    null,
+  );
+  const [showMoreMenu, setShowMoreMenu] = useState(false);
   const activeTab = 0;
   return (
     <div className="flex items-center gap-5 text-nowrap">
@@ -94,6 +99,21 @@ export const HeaderMenus: React.FC<MenuProps> = ({ menuItems }) => {
           )}
         </Popover>
       ))}
+      <div
+        className="group"
+        onMouseEnter={() => setShowMoreMenu(true)}
+        onMouseLeave={() => setShowMoreMenu(false)}
+      >
+        <div>...</div>
+        <div className={cn(showMoreMenu ? 'block' : 'hidden')}>
+          <MultiLevelDropdown
+            activeMenu={true}
+            setActiveSubMenu={setActiveSubMenu}
+            activeSubMenu={activeSubMenu}
+            menuItems={menuItems}
+          />
+        </div>
+      </div>
     </div>
   );
 };
