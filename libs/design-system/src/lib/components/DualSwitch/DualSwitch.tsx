@@ -53,12 +53,12 @@ export const DualSwitch: React.FC<DualSwitchProps> = ({
   return (
     <div
       className={cn(
-        'rounded-[100px] h-fit w-fit border p-1 gap-1 flex flex-row shadow-xs text-xs',
+        'shadow-xs flex h-fit w-fit flex-row gap-1 rounded-[100px] p-1 text-xs',
         bgWhite ? 'bg-white' : 'bg-gray-100 transition-colors',
         size === 'lg'
           ? disabled
-            ? 'border-brand-300'
-            : 'border-brand-600'
+            ? 'border-brand-300 border'
+            : 'border-brand-600 border'
           : '',
       )}
     >
