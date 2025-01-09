@@ -10,7 +10,6 @@ interface BurgerMenuTilesPropsWithSubmenu extends MenuTilesProps {
 }
 export interface BurgerMenuItems {
   groupLabel: string;
-  border?: boolean;
   counter?: boolean;
   children: BurgerMenuTilesPropsWithSubmenu[];
 }

@@ -1,31 +1,41 @@
 import { Popover, PopoverButton } from '@headlessui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { Icon } from '../../Icon';
 import { MenuTiles } from '../../MenuTiles';
 import { cn } from '../../../../../src/utils/classNames.utils';
 import { BurgerMenuItems, BurgerSubMenu } from './BurgerMenu.types';
+import { useClickAway } from '@uidotdev/usehooks';
 
 interface MenuProps {
   menuItems: BurgerMenuItems[];
 }
 
 export const BurgerMenu: React.FC<MenuProps> = ({ menuItems }) => {
+  const [activeMenu, setActiveMenu] = useState(false);
   const [activeSubMenu, setActiveSubMenu] =
     React.useState<null | BurgerSubMenu>(null);
-
+  const ref = useClickAway(() => {
+    setActiveMenu(false);
+    setActiveSubMenu(null);
+  });
   return (
     <div className="flex items-center gap-6 text-nowrap">
-      <Popover className="group relative h-[40px]">
-        <PopoverButton>
+      <Popover className="group relative h-[40px]" ref={ref}>
+        <PopoverButton
+          className="outline-none"
+          onClick={() => setActiveMenu(!activeMenu)}
+        >
           <div className="flex h-8 w-8 items-center justify-center">
             <Icon name="align-justify" size="lg" />
           </div>
         </PopoverButton>
-        <div
-          onMouseLeave={() => setActiveSubMenu(null)}
-          className="shadow-8xl shadow-offset-y-10 absolute z-10 flex flex-row overflow-hidden rounded-xl"
-        >
-          <div className="bg-baseBackground flex hidden h-fit w-fit max-w-[272px] flex-col gap-2 text-right group-hover:block">
+        <div className="shadow-8xl shadow-offset-y-10 absolute z-10 flex flex-row overflow-hidden rounded-xl">
+          <div
+            className={cn(
+              'bg-baseBackground flex h-fit w-fit max-w-[272px] flex-col gap-2 text-right',
+              activeMenu ? 'block' : 'hidden',
+            )}
+          >
             {menuItems?.map((dropdownItem, dropdownItemIndex) => (
               <div
                 key={dropdownItemIndex}
@@ -51,7 +61,7 @@ export const BurgerMenu: React.FC<MenuProps> = ({ menuItems }) => {
                     <div
                       key={subItemChildrenIndex}
                       className="relative flex justify-center"
-                      onMouseEnter={() =>
+                      onClick={() =>
                         subItemChildren.subMenu
                           ? setActiveSubMenu(subItemChildren.subMenu)
                           : setActiveSubMenu(null)
@@ -68,7 +78,12 @@ export const BurgerMenu: React.FC<MenuProps> = ({ menuItems }) => {
             ))}
           </div>
           {activeSubMenu && (
-            <div className="invisible flex h-fit w-fit max-w-[272px] flex-col gap-2 rounded-xl py-4 text-right shadow-md group-hover:visible">
+            <div
+              className={cn(
+                'flex h-fit w-fit max-w-[272px] flex-col gap-2 rounded-xl py-4 text-right shadow-md',
+                activeSubMenu ? 'visible' : 'invisible',
+              )}
+            >
               {activeSubMenu?.map((dropdownItem, dropdownItemIndex) => (
                 <div
                   key={dropdownItemIndex}
