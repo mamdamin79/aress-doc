@@ -41,7 +41,7 @@ export const BurgerMenu: React.FC<MenuProps> = ({ menuItems }) => {
         >
           <div
             className={
-              'bg-baseBackground flex h-fit w-fit max-w-[272px] flex-col gap-2 py-2 text-right'
+              'bg-baseBackground flex h-fit w-fit max-w-[272px] flex-col gap-2 border-r border-gray-300 py-2 text-right'
             }
           >
             {menuItems?.map((firstLayer, firstLayerIndex) => (
@@ -57,6 +57,7 @@ export const BurgerMenu: React.FC<MenuProps> = ({ menuItems }) => {
                   <MenuTiles
                     {...firstLayer}
                     prefix={`${firstLayerIndex + 1}. `}
+                    expandable={Boolean(firstLayer.dropdown)}
                   />
                 </div>
               </div>
