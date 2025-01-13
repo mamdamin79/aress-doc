@@ -1,3 +1,4 @@
+'use client';
 import { Popover, PopoverButton } from '@headlessui/react';
 import React, { useEffect, useState } from 'react';
 import { Icon } from '../Icon';
@@ -42,7 +43,7 @@ export const HeaderMenus: React.FC<MenuProps> = ({ menuItems }) => {
         more: removedItems,
       });
     }
-  }, [width]);
+  }, [width, menuItems]);
 
   const handleTabClick = (index: number) => {
     setActiveTab(index);
