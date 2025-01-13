@@ -1,16 +1,20 @@
+'use client';
 import React from 'react';
 import Image from 'next/image';
 import PRODUCT_LOGO from '@aress-assets/icons/product_logo.svg';
-import { cn, HeadProfile, SquaredButton } from 'design-system';
+import { Breadcrumb, cn, HeadProfile, SquaredButton } from 'design-system';
 import { HeaderMenuWrapper } from './_components/HeaderMenuWrapper';
+import { useHeaderVisibility } from '../../../hooks';
 export const Header: React.FC = () => {
+  const { isHeaderVisible } = useHeaderVisibility();
   return (
     <div>
       {/* Always fixed top header */}
       <div
         className={cn(
-          'fixed right-0 top-0 z-40 flex w-full flex-row items-center justify-between bg-white px-20 pb-2 pt-4',
+          'fixed right-0 top-0 z-40 flex w-full flex-row items-center justify-between bg-white px-20 pb-3 pt-4 transition-transform duration-300',
           'shadow-sm',
+          isHeaderVisible ? 'translate-y-0' : '-translate-y-full',
         )}
       >
         <div className="mt-1 flex flex-row gap-6">
@@ -36,6 +40,17 @@ export const Header: React.FC = () => {
           <HeadProfile profileImage="https://picsum.photos/200" />
         </div>
       </div>
+      {/* hidden div */}
+      <div className={cn('invisible', `h-[80px]`)}></div>
+      {/* <div className="border-t-2 border-gray-300 px-20 pt-3">
+        <Breadcrumb
+          items={[
+            { icon: 'house', link: '/' },
+            { title: 'صندوق های من', link: '/' },
+            { title: 'صندوق سرمایه گذاری سهم آشنا', link: '/' },
+          ]}
+        />
+      </div> */}
     </div>
   );
 };
