@@ -5,15 +5,21 @@ import PRODUCT_LOGO from '@aress-assets/icons/product_logo.svg';
 import { Breadcrumb, cn, HeadProfile, SquaredButton } from 'design-system';
 import { HeaderMenuWrapper } from './_components/HeaderMenuWrapper';
 import { useHeaderVisibility } from '../../../hooks';
+import { useWindowScroll } from '@uidotdev/usehooks';
 export const Header: React.FC = () => {
   const { isHeaderVisible } = useHeaderVisibility();
+  const [{ y: scrollY }] = useWindowScroll();
+  const currentScrollY = scrollY ?? 0;
+
   return (
     <div>
       {/* Always fixed top header */}
       <div
         className={cn(
-          'fixed right-0 top-0 z-40 flex w-full flex-row items-center justify-between bg-white px-20 pb-3 pt-4 transition-transform duration-300',
-          'shadow-sm',
+          'fixed right-0 top-0 z-40 flex w-full flex-row items-center justify-between border-b-2 bg-white px-20 pb-3 pt-4 transition-transform duration-300',
+          currentScrollY === 0
+            ? 'border-gray-300'
+            : 'border-gray-200 shadow-sm',
           isHeaderVisible ? 'translate-y-0' : '-translate-y-full',
         )}
       >
@@ -42,15 +48,8 @@ export const Header: React.FC = () => {
       </div>
       {/* hidden div */}
       <div className={cn('invisible', `h-[80px]`)}></div>
-      {/* <div className="border-t-2 border-gray-300 px-20 pt-3">
-        <Breadcrumb
-          items={[
-            { icon: 'house', link: '/' },
-            { title: 'صندوق های من', link: '/' },
-            { title: 'صندوق سرمایه گذاری سهم آشنا', link: '/' },
-          ]}
-        />
-      </div> */}
+
+      {/* craete a new comp */}
     </div>
   );
 };
