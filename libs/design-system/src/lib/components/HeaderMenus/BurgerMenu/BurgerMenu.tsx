@@ -17,7 +17,7 @@ export const BurgerMenu: React.FC<MenuProps> = ({ menuItems }) => {
   const [activeSubMenu, setActiveSubMenu] = React.useState<null | dropdownType>(
     null,
   );
-  const ref = useClickAway(() => {
+  const ref = useClickAway<HTMLDivElement>(() => {
     closeAll();
   });
   const closeAll = () => {
