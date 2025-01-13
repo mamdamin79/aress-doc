@@ -33,7 +33,7 @@ export const HeaderMenus: React.FC<MenuProps> = ({ menuItems }) => {
   useEffect(() => {
     if (!width) return;
 
-    const itemsToRemove = width <= 1440 ? Math.floor((1440 - width) / 100) : 0;
+    const itemsToRemove = width <= 1440 ? Math.floor((1440 - width) / 90) : 0;
     if (itemsToRemove === 0) {
       setMenus({ main: menuItems, more: [] });
     } else {
