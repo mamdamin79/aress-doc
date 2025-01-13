@@ -1,4 +1,3 @@
-import { MenuItem } from './HeaderMenus.types';
 export const menu = [
   {
     text: 'داشبورد مدیریتی',
@@ -252,4 +251,4 @@ export const menu = [
     text: 'سوالی دارید؟',
     link: '#',
   },
-] as MenuItem[];
+] as any;
