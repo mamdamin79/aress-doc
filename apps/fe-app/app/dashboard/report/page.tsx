@@ -41,7 +41,7 @@ const page = () => {
         <ReportOverview />
       </section>
       <TabsWrapper />
-      <section className="flex w-full flex-col items-center" id="videoReview">
+      <section className="flex w-full flex-col items-center" id="0">
         <SectionTitle align="center" level={3} title="ویدیو بررسی" />
         <div className="mt-12">
           <VideoPlayerWrapper />
@@ -49,7 +49,7 @@ const page = () => {
       </section>
       <section
         className="flex flex-col items-center justify-center pt-[112px]"
-        id="moreInfo"
+        id="1"
       >
         <SectionTitle align="center" level={3} title="اطلاعات بیشتر" />
         <div className="mt-12 flex max-w-[960px] flex-col items-center justify-center">
@@ -86,7 +86,7 @@ const page = () => {
           </ul>
         </div>
       </section>
-      <section className="flex flex-col gap-12 pt-[112px]" id="relatedReports">
+      <section className="flex flex-col gap-12 pt-[112px]" id="2">
         <SectionTitle align="center" level={2} title="گزارش‌های مرتبط" />
         <ReportsCarouselWrapper />
       </section>

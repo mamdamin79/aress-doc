@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { cn, Tabs } from 'design-system';
 
 const TABS = [
@@ -10,8 +10,10 @@ const TABS = [
 ];
 
 export const TabsWrapper: React.FC = () => {
-  const scrollToSection = (id: string) => {
-    const section = document.getElementById(id);
+  const [activeTab, setActiveTab] = useState(0);
+  const scrollToSection = (id: number) => {
+    setActiveTab(id);
+    const section = document.getElementById(String(id));
     if (section) {
       section.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -25,8 +27,9 @@ export const TabsWrapper: React.FC = () => {
       <Tabs
         variant="rounded-full"
         colorMode="neutral"
-        onClickTab={scrollToSection}
         tabs={TABS}
+        activeTab={activeTab}
+        onClickTab={(idTab) => scrollToSection(idTab)}
       />
     </section>
   );
