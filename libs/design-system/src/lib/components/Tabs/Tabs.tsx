@@ -8,7 +8,7 @@ interface Props {
   variant: 'shaped' | 'divided' | 'lined' | 'rounded' | 'rounded-full';
   colorMode: 'neutral' | 'inverse';
   tag?: boolean;
-  initialActiveTab: number;
+  activeTab: number;
   onClickTab: (idTab: number) => void;
 }
 
@@ -17,13 +17,13 @@ export const Tabs: React.FC<Props> = ({
   tabs,
   onClickTab,
   colorMode,
-  initialActiveTab,
+  activeTab,
   tag,
 }) => {
   return (
     <div className="flex w-full justify-center">
       <TabGroup
-        selectedIndex={initialActiveTab}
+        selectedIndex={activeTab}
         onChange={(index) => {
           onClickTab(index);
         }}
