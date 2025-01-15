@@ -80,7 +80,7 @@ export function OptionsListExplorer({
       )}
     >
       <div
-        onClick={() => onBackButtonClick}
+        onClick={onBackButtonClick}
         className="text-gray-1000 flex w-fit cursor-pointer items-center gap-1 px-4 py-2.5"
       >
         <Icon name="chevron-right" />
@@ -118,7 +118,7 @@ export function OptionsListExplorer({
       {filteredItems.length ? (
         <div
           className={cn('flex max-h-60 flex-col', {
-            'custom-scrollbar h-[64%] overflow-y-scroll':
+            'custom-scrollbar h-3/5 overflow-y-scroll':
               items.items.length <= 10 &&
               items.items.length > 3 &&
               filteredItems.length > 3,
