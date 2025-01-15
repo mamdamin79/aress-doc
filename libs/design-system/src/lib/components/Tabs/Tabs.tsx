@@ -8,6 +8,7 @@ interface Props {
   variant: 'shaped' | 'divided' | 'lined' | 'rounded' | 'rounded-full';
   colorMode: 'neutral' | 'inverse';
   tag?: boolean;
+  initialActiveTab: number;
   onClickTab: (idTab: number) => void;
 }
 
@@ -16,11 +17,12 @@ export const Tabs: React.FC<Props> = ({
   tabs,
   onClickTab,
   colorMode,
+  initialActiveTab = 0,
   tag,
 }) => {
   return (
     <div className="flex w-full justify-center">
-      <TabGroup>
+      <TabGroup defaultIndex={initialActiveTab}>
         <TabList
           className={cn(
             'flex',
