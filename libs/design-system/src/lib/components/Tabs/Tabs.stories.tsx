@@ -68,5 +68,6 @@ export const Default: Story = {
     ],
     colorMode: 'inverse',
     variant: 'lined',
+    initialActiveTab: 1,
   },
 };

@@ -17,12 +17,17 @@ export const Tabs: React.FC<Props> = ({
   tabs,
   onClickTab,
   colorMode,
-  initialActiveTab = 0,
+  initialActiveTab,
   tag,
 }) => {
   return (
     <div className="flex w-full justify-center">
-      <TabGroup defaultIndex={initialActiveTab}>
+      <TabGroup
+        selectedIndex={initialActiveTab}
+        onChange={(index) => {
+          onClickTab(index);
+        }}
+      >
         <TabList
           className={cn(
             'flex',
@@ -32,7 +37,6 @@ export const Tabs: React.FC<Props> = ({
         >
           {tabs.map((props, index) => (
             <Tab
-              onClick={() => onClickTab(+props.id)}
               key={index}
               className={cn(
                 'font-vazirmatn text-md relative outline-none',
@@ -95,48 +99,26 @@ export const Tabs: React.FC<Props> = ({
               {({ hover, selected }) => (
                 <>
                   {variant === 'lined' && (
-                    <>
-                      <div
-                        className={cn(
-                          {
-                            'left-[100%] top-0 z-30 hidden h-full w-4 rounded-bl-3xl':
-                              variant === 'lined',
-                          },
-                          {
-                            'bg-gray-100':
-                              variant === 'lined' && colorMode === 'inverse',
-                          },
-                          {
-                            'bg-white':
-                              variant === 'lined' && colorMode === 'neutral',
-                          },
-                          { 'absolute block': selected && index },
-                          {
-                            'absolute block': !selected && hover && index,
-                          },
-                        )}
-                      ></div>
-                      <div
-                        className={cn(
-                          'bg-brand-600 left-[100%] top-0 z-10 hidden h-full w-4',
-                          { 'absolute block': selected && index },
-                          {
-                            'absolute block bg-white':
-                              !selected &&
-                              hover &&
-                              index &&
-                              colorMode === 'inverse',
-                          },
-                          {
-                            'absolute block bg-gray-100':
-                              !selected &&
-                              hover &&
-                              index &&
-                              colorMode === 'neutral',
-                          },
-                        )}
-                      ></div>
-                    </>
+                    <div
+                      className={cn(
+                        {
+                          'left-[100%] top-0 z-30 hidden h-full w-4 rounded-bl-3xl':
+                            variant === 'lined',
+                        },
+                        {
+                          'bg-gray-100':
+                            variant === 'lined' && colorMode === 'inverse',
+                        },
+                        {
+                          'bg-white':
+                            variant === 'lined' && colorMode === 'neutral',
+                        },
+                        { 'absolute block': selected && index },
+                        {
+                          'absolute block': !selected && hover && index,
+                        },
+                      )}
+                    ></div>
                   )}
                   {variant === 'shaped' ? (
                     <div className="flex items-center gap-2">
@@ -153,58 +135,6 @@ export const Tabs: React.FC<Props> = ({
                     </div>
                   ) : (
                     <span>{props.title}</span>
-                  )}
-                  {variant === 'lined' && (
-                    <>
-                      <div
-                        className={cn(
-                          {
-                            'right-[100%] top-0 z-30 hidden h-full w-4 rounded-br-3xl bg-white':
-                              variant === 'lined',
-                          },
-                          {
-                            'bg-gray-100':
-                              variant === 'lined' && colorMode === 'inverse',
-                          },
-                          {
-                            'bg-white':
-                              variant === 'lined' && colorMode === 'neutral',
-                          },
-                          {
-                            'absolute block':
-                              selected && index + 1 < tabs.length,
-                          },
-                          {
-                            'absolute block':
-                              hover && !selected && index + 1 !== tabs.length,
-                          },
-                        )}
-                      ></div>
-                      <div
-                        className={cn(
-                          'bg-brand-600 right-[100%] top-0 z-10 hidden h-full w-4',
-                          {
-                            'absolute block':
-                              selected && index + 1 !== tabs.length,
-                          },
-
-                          {
-                            'absolute block bg-white':
-                              !selected &&
-                              hover &&
-                              index + 1 !== tabs.length &&
-                              colorMode === 'inverse',
-                          },
-                          {
-                            'absolute block bg-gray-100':
-                              !selected &&
-                              hover &&
-                              index + 1 !== tabs.length &&
-                              colorMode === 'neutral',
-                          },
-                        )}
-                      ></div>
-                    </>
                   )}
                 </>
               )}
