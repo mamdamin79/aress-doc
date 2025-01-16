@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { cn, Tabs } from 'design-system';
+import { useGetCurrentSection } from '../../../../hooks';
 
 const TABS = [
   { id: 'videoReview', title: 'ویدیو بررسی' },
@@ -11,6 +12,7 @@ const TABS = [
 
 export const TabsWrapper: React.FC = () => {
   const [activeTab, setActiveTab] = useState(0);
+  const currentSection = useGetCurrentSection();
   const scrollToSection = (id: number) => {
     setActiveTab(id);
     const section = document.getElementById(String(id));
@@ -28,7 +30,7 @@ export const TabsWrapper: React.FC = () => {
         variant="rounded-full"
         colorMode="neutral"
         tabs={TABS}
-        activeTab={activeTab}
+        activeTab={currentSection ? Number(currentSection) : 0}
         onClickTab={(idTab) => scrollToSection(idTab)}
       />
     </section>
