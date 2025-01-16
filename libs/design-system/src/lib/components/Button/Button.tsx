@@ -20,6 +20,7 @@ export const Button: React.FC<ButtonProps> = ({
   iconRight,
   isLoading,
   iconLeft,
+  className,
   children,
   ...props
 }) => {
@@ -27,6 +28,7 @@ export const Button: React.FC<ButtonProps> = ({
     <button
       {...props}
       className={cn(
+        className,
         'flex gap-2 group w-full transition-all duration-300 items-center px-2',
         { 'justify-center': align === 'center' },
         { 'justify-start': align === 'right' },
@@ -68,7 +70,7 @@ export const Button: React.FC<ButtonProps> = ({
         {
           'text-brand-600 active:text-brand-800 active:border-brand-800':
             mode === 'underline' && !isLoading && !disabled,
-        }
+        },
       )}
     >
       {isLoading ? (
@@ -86,7 +88,7 @@ export const Button: React.FC<ButtonProps> = ({
               { 'text-center': align === 'center' },
               mode === 'underline' &&
                 !disabled &&
-                'transition-transform pb-1 group-hover:underline underline-offset-8 group-hover:border-b-brand-600'
+                'transition-transform pb-1 group-hover:underline underline-offset-8 group-hover:border-b-brand-600',
             )}
           >
             {children}
