@@ -17,6 +17,8 @@ export const Miladi: Story = {
     mode: 'miladi',
     min: '1300-05-12',
     max: '1400-05-12',
+    focus: true,
+    active: true,
     defaultValue: '',
   },
   render: function Success(args) {
