@@ -1,3 +1,4 @@
+"use client"
 import { cn } from '../../../utils';
 import { Icon, IconProps } from '../Icon';
 import { ButtonMode, ButtonSize } from './Button.types';

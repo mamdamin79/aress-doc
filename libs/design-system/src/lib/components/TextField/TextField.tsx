@@ -92,13 +92,15 @@ export const TextField: React.FC<textFieldPropsType> = ({
 
       {leadingIcon && (
         <div
-          className={cn('pointer-events-none absolute right-4 top-10', {
+          className={cn(' absolute right-4 top-10', {
             'text-gray-400': disabled,
             'top-[42px]': leadingIcon?.size === 'md',
           })}
         >
           {leadingIcon && (
-            <Icon name={leadingIcon.name} size={leadingIcon.size || 'lg'} />
+            <div onClick={()=>leadingIcon.onClick && leadingIcon?.onClick(inputValue)}>
+              <Icon name={leadingIcon.name} size={leadingIcon.size || 'lg'} />
+            </div>
           )}
         </div>
       )}

@@ -30,7 +30,6 @@ export const ReportCard: React.FC<CardComponentProps> = ({
   isLiked = false,
 }) => {
   const [isLikedTemp, setIsLikedTemp] = useState(isLiked);
-  console.log(isLikedTemp);
 
   return (
     <div
@@ -103,7 +102,6 @@ export const ReportCard: React.FC<CardComponentProps> = ({
                   isLiked={isLikedTemp}
                   onClick={() => {
                     setIsLikedTemp(!isLikedTemp);
-                    console.log(isLikedTemp);
                   }}
                 />
                 <div className="flex h-[38px] origin-left scale-x-[0.3] transform items-center overflow-hidden rounded-[100px] text-xs opacity-0 transition-all duration-300 ease-in-out group-hover:scale-x-100 group-hover:opacity-100">

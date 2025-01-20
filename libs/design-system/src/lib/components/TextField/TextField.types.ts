@@ -6,6 +6,10 @@ type TrailingIconType = {
   name: 'x' | 'eye';
   size?: IconSize;
 };
+
+type leadingIconType = IconProps & {
+  onClick?: (value?:string | number | readonly string[]) => void;
+}
 export type TrailingIcons =
   | []
   | [TrailingIconType]
@@ -18,6 +22,6 @@ export type textFieldPropsType = InputHTMLAttributes<HTMLInputElement> & {
   isError?: boolean;
   mode: 'filled' | 'outline';
   mergeTitleAndPlaceholder: boolean;
-  leadingIcon?: IconProps;
+  leadingIcon?: leadingIconType;
   trailingIcons: TrailingIcons;
 };
