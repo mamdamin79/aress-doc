@@ -21,9 +21,14 @@ export const Default: Story = {
     leadingIcon: {
       name: 'user-round',
       size: 'lg',
+      onClick: () => console.log('clicked on leadingIcon'),
     },
     trailingIcons: [
-      { name: 'x', size: 'md' },
+      {
+        name: 'x',
+        size: 'md',
+        onClick: () => console.log('clicked on X leading icon'),
+      },
       { name: 'eye', size: 'md' },
     ],
     disabled: false,

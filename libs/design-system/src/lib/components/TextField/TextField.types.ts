@@ -5,6 +5,7 @@ import { IconSize } from '../Icon/Icon.types';
 type TrailingIconType = {
   name: 'x' | 'eye';
   size?: IconSize;
+  onClick?: (value?: string | number | readonly string[]) => void;
 };
 
 type leadingIconType = IconProps & {

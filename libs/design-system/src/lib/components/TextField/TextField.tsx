@@ -164,7 +164,10 @@ export const TextField: React.FC<textFieldPropsType> = ({
               <button
                 type="button"
                 className={cn({ 'text-gray-400': disabled })}
-                onMouseDown={(e) => handleClearInput(e)}
+                onMouseDown={(e) => {
+                  handleClearInput(e);
+                  icon.onClick?.(inputValue);
+                }}
               >
                 <Icon size={icon.size} name={icon.name} />
               </button>
