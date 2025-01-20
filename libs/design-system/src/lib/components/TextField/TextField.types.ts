@@ -25,4 +25,5 @@ export type textFieldPropsType = InputHTMLAttributes<HTMLInputElement> & {
   mergeTitleAndPlaceholder: boolean;
   leadingIcon?: leadingIconType;
   trailingIcons: TrailingIcons;
+  longText?: boolean;
 };
