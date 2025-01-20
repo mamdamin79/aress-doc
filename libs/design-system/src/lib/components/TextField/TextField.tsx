@@ -150,6 +150,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
         {trailingIcons.map((icon) =>
           icon.name === 'eye' ? (
             <button
+              key={icon.name}
               type="button"
               className={cn({ 'text-gray-400': disabled })}
               onMouseDown={(e) => handleCharacterVisibility(e)}
@@ -162,6 +163,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
           ) : (
             inputValue && (
               <button
+                key={icon.name}
                 type="button"
                 className={cn({ 'text-gray-400': disabled })}
                 onMouseDown={(e) => {
