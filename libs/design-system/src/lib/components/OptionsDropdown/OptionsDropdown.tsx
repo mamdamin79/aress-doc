@@ -4,8 +4,6 @@ import { IconProps } from '../Icon';
 import { OptionsDropdownCell } from './OptionsDropdownCell';
 import { dropDownCell, triggerCell } from './OptionsDropdown.types';
 export interface OptionsDropdownProps {
-  size: 'sm' | 'md' | 'lg';
-  bg: 'primary' | 'secondary';
   trigger: triggerCell;
   dropDownList: dropDownCell[];
 }

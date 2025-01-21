@@ -14,5 +14,9 @@ export interface triggerCell {
   tag?: {
     color: string;
   };
+  size: 'sm' | 'md' | 'lg';
+  bg: 'primary' | 'secondary';
+  emphasize: 'medium' | 'high';
   icon?: IconProps;
+  isActive?: boolean;
 }
