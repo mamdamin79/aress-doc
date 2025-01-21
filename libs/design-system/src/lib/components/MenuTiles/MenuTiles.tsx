@@ -49,7 +49,7 @@ const IconWithBadge = ({
 }) => (
   <div
     className={cn(
-      'relative flex h-fit flex-col items-start gap-2 pt-[3px]',
+      'flex flex-col items-start gap-2 pt-[3px] h-fit relative',
       isDisabled ? 'text-gray-400' : 'text-gray-1000',
     )}
   >
@@ -61,7 +61,7 @@ const IconWithBadge = ({
     {icon && badgeColor && (
       <div
         className={cn(
-          'absolute -right-1 bottom-0 mr-1 h-2 w-2 rounded-full',
+          'w-2 h-2 rounded-full mr-1 absolute bottom-0 -right-1',
           badgeColor,
         )}
       />
@@ -103,7 +103,7 @@ const TextContainer = ({
     {subText && (
       <p
         className={cn(
-          'text-xs font-semibold',
+          'font-semibold text-xs',
           isActive && !isDashboard ? 'text-brand-600' : 'text-gray-600',
         )}
       >
@@ -126,7 +126,7 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
   prefix = '',
   link,
 }) => {
-  const wrapperClasses = `w-full min-w-[240px] max-w-[272px] flex items-center justify-between py-2 pr-3 pl-5 transition-all 
+  const wrapperClasses = `w-full min-w-[240px] max-w-[272px] flex items-center justify-between py-2 pr-3 transition-all 
     bg-baseBackground ${!isDisabled && 'hover:bg-brand-100'} ${
       isActive ? 'text-brand-700' : 'text-gray-1000'
     }`;
@@ -149,7 +149,7 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
       {/* Elements of dashboard are limited and we conditionally render two type of components based
       on the value of the isDashboard prop */}
       {!isDashboard ? (
-        <div className="flex justify-start gap-2">
+        <div className="flex justify-start gap-2 relative w-full pl-5">
           <IconWithBadge
             icon={icon}
             badgeColor={badgeColor}
@@ -162,6 +162,11 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
             isDashboard={false}
             isDisabled={isDisabled}
           />
+          {expandable && (
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 ">
+              <Icon name="chevron-left" size="md" />
+            </div>
+          )}
         </div>
       ) : (
         <>
@@ -172,6 +177,7 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
                 : 'bg-brand-400 group-hover:bg-brand-600 h-4 w-[2px] rounded-lg group-hover:h-5'
             }`}
           />
+
           <div className="flex justify-start pr-2">
             <TextContainer
               text={text}

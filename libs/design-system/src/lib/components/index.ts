@@ -22,3 +22,7 @@ export * from './HeaderMenus';
 export * from './ReportCard';
 export * from './TextField';
 export * from './Pagination';
+export * from './Tooltip';
+export * from './HeaderMenus';
+export * from './NotesHeading';
+export * from './HeaderMenus/BurgerMenu/HamburgerMenuIcon';
