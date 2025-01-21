@@ -17,6 +17,7 @@ export function Checkbox(props: CheckboxProps) {
   return (
     <Field className="flex items-center gap-2">
       <CheckboxHeadlessUIProps
+        aria-roledescription="checkbox"
         {...props}
         className="group"
         id={props.id ?? unikId}
