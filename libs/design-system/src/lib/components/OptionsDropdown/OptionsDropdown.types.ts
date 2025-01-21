@@ -1,3 +1,4 @@
+import { AnchorProps } from '@headlessui/react/dist/internal/floating';
 import { IconProps } from '../Icon';
 
 export interface dropDownCell {
@@ -9,14 +10,11 @@ export interface dropDownCell {
   isActive?: boolean;
   withCheck?: boolean;
 }
-export interface triggerCell {
-  text: string;
-  tag?: {
-    color: string;
-  };
+
+export interface dropDownStyle {
   size: 'sm' | 'md' | 'lg';
   bg: 'primary' | 'secondary';
   emphasize: 'medium' | 'high';
-  icon?: IconProps;
-  isActive?: boolean;
+  checkSelected?: boolean;
+  anchor: AnchorProps;
 }

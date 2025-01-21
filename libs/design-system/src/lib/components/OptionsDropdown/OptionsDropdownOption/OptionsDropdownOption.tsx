@@ -3,7 +3,7 @@ import { dropDownCell } from '../OptionsDropdown.types';
 import { cn } from '../../../../utils/index';
 import { Icon } from '../../Icon';
 
-export const OptionsDropdownCell: React.FC<dropDownCell> = ({
+export const OptionsDropdownOption: React.FC<dropDownCell> = ({
   text,
   tag,
   icon,

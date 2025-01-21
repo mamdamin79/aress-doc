@@ -1,12 +1,12 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { OptionsDropdownCell } from './OptionsDropdownCell';
-const meta: Meta<typeof OptionsDropdownCell> = {
-  component: OptionsDropdownCell,
+import { OptionsDropdownOption } from './OptionsDropdownOption';
+const meta: Meta<typeof OptionsDropdownOption> = {
+  component: OptionsDropdownOption,
 };
 
 export default meta;
 
-type Story = StoryObj<typeof OptionsDropdownCell>;
+type Story = StoryObj<typeof OptionsDropdownOption>;
 export const textOnly: Story = {
   args: {
     text: 'متن نمونه',

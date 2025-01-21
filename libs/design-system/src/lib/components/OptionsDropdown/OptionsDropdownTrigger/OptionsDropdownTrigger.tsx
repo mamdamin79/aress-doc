@@ -1,8 +1,12 @@
 import React from 'react';
-import { triggerCell } from '../OptionsDropdown.types';
 import { cn } from '../../../../utils/index';
 import { Icon } from '../../Icon';
-
+import { dropDownCell } from '../OptionsDropdown.types';
+export interface triggerCell extends dropDownCell {
+  size: 'sm' | 'md' | 'lg';
+  bg: 'primary' | 'secondary';
+  emphasize: 'medium' | 'high';
+}
 export const OptionsDropdownTrigger: React.FC<triggerCell> = ({
   text,
   tag,
@@ -50,7 +54,7 @@ export const OptionsDropdownTrigger: React.FC<triggerCell> = ({
       )}
       {icon && <Icon {...icon} size={icon?.size || 'md'} />}
       {text}
-      {icon && <Icon name="chevron-down" size="md" />}
+      <Icon name="chevron-down" size="md" />
     </div>
   );
 };

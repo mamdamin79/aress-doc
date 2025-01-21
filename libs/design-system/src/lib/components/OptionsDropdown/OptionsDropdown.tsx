@@ -1,67 +1,70 @@
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
+import {
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
+} from '@headlessui/react';
 import React, { ReactHTMLElement, useEffect, useRef, useState } from 'react';
-import { OptionsDropdownCell } from './OptionsDropdownCell';
-import { dropDownCell, triggerCell } from './OptionsDropdown.types';
+import { OptionsDropdownOption } from './OptionsDropdownOption';
+import { dropDownCell, dropDownStyle } from './OptionsDropdown.types';
 import { OptionsDropdownTrigger } from './OptionsDropdownTrigger';
-import { AnchorProps } from '@headlessui/react/dist/internal/floating';
-import { cn } from '../../../utils/index';
+
 export interface OptionsDropdownProps {
-  trigger: triggerCell;
+  dropDownStyles: dropDownStyle;
   dropDownList: dropDownCell[];
-  anchor: AnchorProps;
+  customTriggerRender?: (props: {
+    isActive: boolean;
+    selectedItem: dropDownCell;
+    dropDownStyles: dropDownStyle;
+  }) => React.ReactNode;
 }
 export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
-  anchor,
   dropDownList,
-  trigger,
+  dropDownStyles,
+  customTriggerRender,
 }) => {
-  const [buttonWidth, setButtonWidth] = useState<number | null>(null);
-  const menuButtonRef = useRef<HTMLButtonElement | null>(null);
-  useEffect(() => {
-    if (menuButtonRef.current) {
-      const observer = new ResizeObserver((entries) => {
-        for (const entry of entries) {
-          const width = entry.contentRect.width;
-          setButtonWidth(width);
-        }
-      });
-
-      observer.observe(menuButtonRef.current);
-      // Cleanup observer on unmount
-      return () => {
-        observer.disconnect();
-      };
-    }
-  }, []);
-  const isFullWidth = (): boolean => {
-    const maxLengthInList = dropDownList.reduce((maxLength, cell) => {
-      return Math.max(maxLength, cell.text.length);
-    }, 0);
-    return maxLengthInList > trigger.text.length;
-  };
+  const [selectedItem, setSelectedItem] = useState<dropDownCell>(
+    dropDownList[0],
+  );
   return (
-    <Menu>
-      <MenuButton className="outline-none" ref={menuButtonRef}>
-        {({ active }) => (
-          <OptionsDropdownTrigger {...trigger} isActive={active} />
-        )}
-      </MenuButton>
-      <MenuItems
-        anchor={anchor}
-        className={cn(
-          'shadow-7xl mt-1 gap-1 rounded-lg border border-gray-300 p-1 outline-none',
-        )}
-        style={{
-          width:
-            isFullWidth() && buttonWidth ? `${buttonWidth + 1}px` : 'w-fit',
-        }}
+    <Listbox value={selectedItem} onChange={setSelectedItem}>
+      <ListboxButton className="outline-none">
+        {({ open }) =>
+          customTriggerRender ? (
+            (customTriggerRender({
+              isActive: open,
+              selectedItem,
+              dropDownStyles,
+            }) as React.ReactElement)
+          ) : (
+            <OptionsDropdownTrigger
+              {...dropDownStyles}
+              {...selectedItem}
+              isActive={open}
+            />
+          )
+        }
+      </ListboxButton>
+      <ListboxOptions
+        anchor={dropDownStyles.anchor}
+        className={
+          'shadow-7xl mt-1 gap-1 rounded-lg border border-gray-300 p-1 outline-none'
+        }
       >
-        {dropDownList.map((item) => (
-          <MenuItem>
-            {({ focus }) => <OptionsDropdownCell {...item} isActive={focus} />}
-          </MenuItem>
+        {dropDownList.map((item, index) => (
+          <div onClick={() => setSelectedItem(item)} key={index}>
+            <ListboxOption value={item}>
+              {({ selected }) => (
+                <OptionsDropdownOption
+                  {...item}
+                  isActive={selected}
+                  withCheck={dropDownStyles.checkSelected ? selected : false}
+                />
+              )}
+            </ListboxOption>
+          </div>
         ))}
-      </MenuItems>
-    </Menu>
+      </ListboxOptions>
+    </Listbox>
   );
 };
