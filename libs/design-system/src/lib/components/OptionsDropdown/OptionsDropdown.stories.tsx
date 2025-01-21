@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { OptionsDropdown } from './OptionsDropdown';
+import { dropDownCell, triggerCell } from './OptionsDropdown.types';
 const meta: Meta<typeof OptionsDropdown> = {
   component: OptionsDropdown,
 };
@@ -20,7 +21,7 @@ export const Default: Story = {
         text: 'متن نمونه',
         tag: { color: 'bg-green-600' },
       },
-    ],
+    ] as dropDownCell[],
     trigger: {
       bg: 'primary',
       emphasize: 'medium',
@@ -30,6 +31,6 @@ export const Default: Story = {
         name: 'clock',
       },
       tag: { color: 'bg-green-600' },
-    },
+    } as triggerCell,
   },
 };
