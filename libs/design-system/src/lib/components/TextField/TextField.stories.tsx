@@ -21,9 +21,14 @@ export const Default: Story = {
     leadingIcon: {
       name: 'user-round',
       size: 'lg',
+      onClick: () => console.log('clicked on leadingIcon'),
     },
     trailingIcons: [
-      { name: 'x', size: 'md' },
+      {
+        name: 'x',
+        size: 'md',
+        onClick: () => console.log('clicked on X leading icon'),
+      },
       { name: 'eye', size: 'md' },
     ],
     disabled: false,
@@ -85,5 +90,18 @@ export const MergedTitleAndPlaceholder: Story = {
     mergeTitleAndPlaceholder: true,
     label: 'نام کاربری',
     supportText: 'برچسب و پلیس‌هولدر ترکیب شده‌اند',
+  },
+};
+
+export const TextArea: Story = {
+  args: {
+    ...Default.args,
+    mergeTitleAndPlaceholder: false,
+    label: 'شرح گزارش',
+    placeholder:
+      'میتواند شامل محور افقی و عمودی روابط آماری و ریاضی و تشریح مدل های مالی باشد...',
+    longText: true,
+    trailingIcons: [],
+    leadingIcon: undefined,
   },
 };
