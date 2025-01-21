@@ -21,6 +21,7 @@ export const Button: React.FC<ButtonProps> = ({
   iconRight,
   isLoading,
   iconLeft,
+  className,
   children,
   ...props
 }) => {
@@ -28,7 +29,8 @@ export const Button: React.FC<ButtonProps> = ({
     <button
       {...props}
       className={cn(
-        'group flex w-full items-center gap-2 px-2 py-2 transition-all duration-300',
+        className,
+        'flex gap-2 group w-full transition-all duration-300 items-center px-2',
         { 'justify-center': align === 'center' },
         { 'justify-start': align === 'right' },
         { 'cursor-default': disabled },
@@ -87,7 +89,7 @@ export const Button: React.FC<ButtonProps> = ({
               { 'text-center': align === 'center' },
               mode === 'underline' &&
                 !disabled &&
-                'group-hover:border-b-brand-600 pb-1 underline-offset-8 transition-transform group-hover:underline',
+                'transition-transform pb-1 group-hover:underline underline-offset-8 group-hover:border-b-brand-600',
             )}
           >
             {children}
