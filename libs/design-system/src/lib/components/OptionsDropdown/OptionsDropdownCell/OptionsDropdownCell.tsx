@@ -13,7 +13,7 @@ export const OptionsDropdownCell: React.FC<dropDownCell> = ({
   return (
     <div
       className={cn(
-        'flex w-fit cursor-pointer flex-row items-center gap-2 rounded-sm p-2 transition-colors',
+        'flex w-full cursor-pointer flex-row items-center gap-2 rounded-sm p-2 text-sm transition-colors',
         isActive
           ? 'bg-brand-100 text-brand-800'
           : 'hover:bg-brand-100 bg-baseBackground',
