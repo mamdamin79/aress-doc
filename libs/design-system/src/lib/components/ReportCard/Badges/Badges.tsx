@@ -1,8 +1,8 @@
+'use client';
 import React, { useState } from 'react';
 import { cn } from '../../../../utils/classNames.utils';
 import { Icon as Iconify } from '@iconify/react';
 import { Icon } from '../../Icon';
-import styles from './Styles.modules.css';
 
 export const NewBadge = () => {
   return (
