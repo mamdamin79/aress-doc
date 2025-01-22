@@ -57,8 +57,8 @@ export const ReportsCarousel: React.FC<ReportsCarouselProps> = ({ cards }) => {
           dir="rtl"
         >
           {/* Gradient Overlays */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-white to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-white to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-32 bg-gradient-to-r from-white to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-32 bg-gradient-to-l from-white to-transparent" />
 
           {/* Navigation Buttons */}
           <button
