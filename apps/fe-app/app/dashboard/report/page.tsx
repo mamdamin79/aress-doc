@@ -25,10 +25,10 @@ const page = () => {
 
       <section className="mb-16 flex w-full flex-col-reverse items-center gap-8 px-20 pt-6 xl:flex-row xl:justify-around">
         <div className="flex w-fit flex-col gap-2">
-          <div className="rounded-3xl bg-gray-100 p-4">
+          <div className="w-[616px] rounded-3xl bg-gray-100 p-4">
             <Image src={fake2} alt="fake2" width={616} height={320} />
           </div>
-          <div className="flex flex-row items-center gap-1 text-sm font-normal">
+          <div className="flex w-fit flex-row items-center gap-1 text-sm font-normal">
             <Icon name="info" size="md" />
             <span>با زدن بر روی آیکون </span>
             <span className="flex flex-row items-center">
@@ -52,7 +52,7 @@ const page = () => {
         id="1"
       >
         <SectionTitle align="center" level={3} title="اطلاعات بیشتر" />
-        <div className="mt-12 flex max-w-[960px] flex-col items-center justify-center">
+        <div className="mt-12 flex flex-col items-center justify-center">
           <ul className="rtl marker:text-brand-600 list-disc text-xl font-medium marker:text-3xl">
             {/* Section Component */}
             <SectionItem

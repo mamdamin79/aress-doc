@@ -5,7 +5,7 @@ import { TextWithIcon } from 'compositions';
 
 export const ReportOverview: React.FC = () => {
   return (
-    <div className="flex w-full flex-col gap-4 xl:w-[600px]">
+    <div className="flex w-full flex-col gap-4">
       <h3 className="text-right text-2xl font-medium">
         ورود و خروج سرمایه‌گذاران حقیقی به سهام و درآمد ثابت
       </h3>
