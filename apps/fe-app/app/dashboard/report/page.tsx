@@ -23,7 +23,7 @@ const page = () => {
         />
       </div>
 
-      <section className="mb-16 flex w-full flex-row justify-around gap-8 px-20 pt-6 lg:flex-col-reverse lg:items-center">
+      <section className="mb-16 flex w-full flex-col-reverse items-center gap-8 px-20 pt-6 xl:flex-row xl:justify-around">
         <div className="flex w-fit flex-col gap-2">
           <div className="rounded-3xl bg-gray-100 p-4">
             <Image src={fake2} alt="fake2" width={616} height={320} />
