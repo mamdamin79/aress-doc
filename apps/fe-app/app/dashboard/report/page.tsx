@@ -5,14 +5,13 @@ import { ReportOverview } from './_components/ReportOverview';
 import { SectionItem } from './_components/SectionUlItem';
 import { VideoPlayerWrapper } from './_components/VideoPlayerWrapper';
 import { ReportsCarouselWrapper } from './_components/ReportsCarouselWrapper';
-import Link from 'next/link';
 import { TabsWrapper } from './_components/TabsWrapper';
 
 const page = () => {
   return (
-    <div>
+    <div className="mx-auto max-w-[1680px]">
       {/* Breadcrumb */}
-      <div className="px-20 pt-3">
+      <div className="px-8 pt-3">
         <Breadcrumb
           items={[
             { title: 'گزارش ها' },
@@ -23,7 +22,8 @@ const page = () => {
           ]}
         />
       </div>
-      <section className="mb-16 flex w-full flex-row justify-around gap-8 px-20 pt-6">
+
+      <section className="mb-16 flex w-full flex-row justify-around gap-8 px-20 pt-6 lg:flex-col-reverse lg:items-center">
         <div className="flex w-fit flex-col gap-2">
           <div className="rounded-3xl bg-gray-100 p-4">
             <Image src={fake2} alt="fake2" width={616} height={320} />
@@ -41,14 +41,14 @@ const page = () => {
         <ReportOverview />
       </section>
       <TabsWrapper />
-      <section className="flex w-full flex-col items-center" id="0">
+      <section className="flex w-full flex-col items-center px-20" id="0">
         <SectionTitle align="center" level={3} title="ویدیو بررسی" />
         <div className="mt-12">
           <VideoPlayerWrapper />
         </div>
       </section>
       <section
-        className="flex flex-col items-center justify-center pt-[112px]"
+        className="flex flex-col items-center justify-center px-20 pt-[112px]"
         id="1"
       >
         <SectionTitle align="center" level={3} title="اطلاعات بیشتر" />

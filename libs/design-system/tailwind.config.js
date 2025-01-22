@@ -13,12 +13,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      transitionDuration: {
-        4000: '4000ms',
-      },
-      borderWidth: {
-        1.5: '1.5px',
-      },
       keyframes: {
         progressBar: {
           '0%': { transform: 'translateX(100%)' },
@@ -41,16 +35,15 @@ module.exports = {
         xs: '0px 1px 1px 0px rgba(0, 11, 23, 0.06)',
         sm: '0px 3px 4px 0px rgba(0, 11, 23, 0.04)',
         md: '0px 2px 8px 0px rgba(0, 11, 23, 0.04)',
-        md2: '0px -4px 6px 0px rgba(0, 11, 23, 0.05)',
         lg: '0px 1px 100px 0px rgba(0, 11, 23, 0.12)',
         xl: '0px 0.8px 0.5px 0px rgba(0, 11, 23, 0.34)',
         '2xl': '1px 3px 4px 0px rgba(0, 11, 23, 0.12)',
         '3xl': '0px 4px 8px 0px rgba(0, 11, 23, 0.09)',
         '4xl': '1px 2px 4.5px 0px rgba(0, 11, 23, 0.24)',
         '5xl': '0px 4px 8px 0px rgba(0, 11, 23, 0.2)',
-        '6xl': '4px 4px 6px 0px rgba(0, 11, 23, 0.16)',
-        '7xl': '2px 8px 10px 0px rgba(0, 11, 23, 0.16)',
-        '8xl': '4px 10px 10px 0px rgba(0, 11, 23, 0.16)',
+        '6xl': '4px 4px 1.5px 0px rgba(0, 11, 23, 0.16)',
+        '7xl': '8px 8px 2px 0px rgba(0, 11, 23, 0.16)',
+        '8xl': '12px 12px 2px 0px rgba(0, 11, 23, 0.16)',
       },
       borderRadius: {
         xs: '4px',
@@ -227,8 +220,19 @@ module.exports = {
           900: 'rgb(var(--color-vivid-green-900))',
           1000: 'rgb(var(--color-vivid-green-1000))',
         },
+        white: 'rgb(var(--color-white))',
+      },
+      screens: {
+        sm: { max: '640px' },
+        md: { max: '768px' },
+        lg: { max: '1024px' },
+        xl: { max: '1280px' },
+        '2xl': { max: '1536px' },
+        '3xl': { max: '1680px' },
+        '4xl': { max: '1920px' },
+        '5xl': { max: '1560px' },
       },
     },
-    plugins: [],
   },
+  plugins: [],
 };
