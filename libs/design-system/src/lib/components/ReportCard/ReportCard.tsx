@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Icon } from '../Icon';
 import Image from 'next/image';
-import { NewBadge, VideoBadge, LikeBadge } from './Badges';
+import { NewBadge, VideoBadge, LikeBadge } from './Badges/Badges';
 import { cn } from '../../../utils/classNames.utils';
 import { Button } from '../Button';
 
@@ -29,8 +29,6 @@ export const ReportCard: React.FC<CardComponentProps> = ({
   image,
   isLiked = false,
 }) => {
-  const [isLikedTemp, setIsLikedTemp] = useState(isLiked);
-
   return (
     <div
       className={cn(
@@ -99,8 +97,8 @@ export const ReportCard: React.FC<CardComponentProps> = ({
               </span>
               <div className="absolute bottom-4 right-0 flex w-full items-center justify-between px-4">
                 <LikeBadge
-                  isLiked={isLikedTemp}
-                  onClick={() => setIsLikedTemp(!isLikedTemp)}
+                  isLiked={isLiked}
+                  onClick={() => console.log('like')}
                 />
                 <div className="flex h-[38px] origin-left scale-x-[0.3] transform items-center overflow-hidden rounded-[100px] text-xs opacity-0 transition-all duration-300 ease-in-out group-hover:scale-x-100 group-hover:opacity-100">
                   <Button
