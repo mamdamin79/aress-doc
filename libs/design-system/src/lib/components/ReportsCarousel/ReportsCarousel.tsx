@@ -1,5 +1,6 @@
 'use client';
-import React, { useState } from 'react';
+
+import React, { useState, useEffect, useRef } from 'react';
 import { cn } from '../../../utils/classNames.utils';
 import { CardComponentProps, ReportCard } from '../ReportCard';
 import { Icon } from '../Icon';
@@ -10,78 +11,106 @@ interface ReportsCarouselProps {
 }
 
 export const ReportsCarousel: React.FC<ReportsCarouselProps> = ({ cards }) => {
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [slidesPerView, setSlidesPerView] = useState(4);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const handlePrev = () => {
-    setCurrentIndex((prevIndex: number) =>
-      prevIndex === 0 ? cards.length - 3 : Math.max(prevIndex - 3, 0),
-    );
+  const CARD_WIDTH = 416;
+  const GAP_WIDTH = 16;
+  const MAX_SLIDES = 4;
+
+  useEffect(() => {
+    const updateSlidesPerView = () => {
+      if (containerRef.current) {
+        const containerWidth = containerRef.current.clientWidth;
+        const availableWidth = containerWidth - 136; // Subtract padding (68px * 2)
+        const possibleSlides = Math.floor(
+          (availableWidth + GAP_WIDTH) / (CARD_WIDTH + GAP_WIDTH),
+        );
+        setSlidesPerView(Math.max(1, Math.min(MAX_SLIDES, possibleSlides)));
+      }
+    };
+
+    updateSlidesPerView();
+    window.addEventListener('resize', updateSlidesPerView);
+    return () => window.removeEventListener('resize', updateSlidesPerView);
+  }, []);
+
+  const handleNavigation = (direction: 'prev' | 'next') => {
+    setCurrentIndex((prevIndex) => {
+      const offset = direction === 'next' ? slidesPerView : -slidesPerView;
+      const newIndex = prevIndex + offset;
+      const maxIndex = cards.length - slidesPerView;
+      return Math.max(0, Math.min(maxIndex, newIndex));
+    });
   };
 
-  const handleNext = () => {
-    setCurrentIndex((prevIndex: number) =>
-      prevIndex + 3 >= cards.length
-        ? 0
-        : Math.min(prevIndex + 3, cards.length - 3),
-    );
-  };
+  const canGoNext = currentIndex < cards.length - slidesPerView;
+  const canGoPrev = currentIndex > 0;
 
   return (
-    <div
-      className="relative flex h-[358px] w-full max-w-[1440px] items-center justify-between overflow-hidden pb-7 pl-[40px] pr-[68px] pt-4"
-      dir="rtl"
-    >
-      {/* Left Arrow */}
-      <button
-        onClick={handleNext}
-        className="border-brand-600 text-brand-600 hover:bg-brand-600 absolute left-6 z-10 rounded-full border-2 bg-white p-3 transition-colors hover:text-white focus:outline-none"
-      >
-        <Icon name="chevron-left" key="chevron-left" size="lg" />
-      </button>
+    <div className="flex w-full justify-center">
+      <div className="mx-auto w-full max-w-[1680px]">
+        <div
+          ref={containerRef}
+          className="carousel-container relative flex h-[358px] w-full items-center justify-between overflow-hidden px-[68px] pb-7 pt-4"
+          dir="rtl"
+        >
+          {/* Gradient Overlays */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-white to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-white to-transparent" />
 
-      {/* Right Arrow */}
-      <button
-        onClick={handlePrev}
-        className="border-brand-600 text-brand-600 hover:bg-brand-600 absolute right-6 z-10 rounded-full border-2 bg-white p-3 transition-colors hover:text-white focus:outline-none"
-      >
-        <Icon name="chevron-right" key="chevron-right" size="lg" />
-      </button>
-      {/* Cards */}
-      <div
-        className={cn(
-          `flex w-full flex-row transition-transform duration-300 ease-in-out`,
-          currentIndex,
-        )}
-        style={{
-          transform: `translateX(${currentIndex * (100 / 3)}%)`,
-        }}
-      >
-        {cards.map((card, index) => (
-          <div
-            key={index}
+          {/* Navigation Buttons */}
+          <button
+            onClick={() => handleNavigation('next')}
             className={cn(
-              `w-[calc(100%/3)] flex-shrink-0 transition-opacity duration-300 ease-in-out`,
-              index === currentIndex ||
-                index === currentIndex + 1 ||
-                index === currentIndex + 2
-                ? 'opacity-100'
-                : 'opacity-0',
-              index,
+              'border-brand-600 text-brand-600 hover:bg-brand-600 absolute left-6 z-20 rounded-full border-2 bg-white p-3 transition-colors hover:text-white focus:outline-none',
+              !canGoNext && 'invisible',
             )}
+            disabled={!canGoNext}
           >
-            <ReportCard {...card} />
-          </div>
-        ))}
-      </div>
+            <Icon name="chevron-left" size="lg" />
+          </button>
 
-      <div className="absolute inset-x-0 bottom-0 mx-auto flex justify-center">
-        <DotIndicator
-          setIndex={(index) => setCurrentIndex(index * 3)}
-          currentIndex={currentIndex / 3}
-          totalLength={cards.length / 3}
-        />
+          <button
+            onClick={() => handleNavigation('prev')}
+            className={cn(
+              'border-brand-600 text-brand-600 hover:bg-brand-600 absolute right-6 z-20 rounded-full border-2 bg-white p-3 transition-colors hover:text-white focus:outline-none',
+              !canGoPrev && 'invisible',
+            )}
+            disabled={!canGoPrev}
+          >
+            <Icon name="chevron-right" size="lg" />
+          </button>
+
+          <div
+            className="flex w-full flex-row transition-transform duration-300 ease-in-out"
+            style={{
+              transform: `translateX(${currentIndex * (CARD_WIDTH + GAP_WIDTH)}px)`,
+              gap: `${GAP_WIDTH}px`,
+            }}
+          >
+            {cards.map((card, index) => (
+              <div
+                key={index}
+                className="flex-shrink-0"
+                style={{ width: `${CARD_WIDTH}px` }}
+              >
+                <ReportCard {...card} />
+              </div>
+            ))}
+          </div>
+
+          {/* Dot Indicators */}
+          <div className="absolute inset-x-0 bottom-0 mx-auto flex justify-center">
+            <DotIndicator
+              setIndex={(index) => setCurrentIndex(index * slidesPerView)}
+              currentIndex={Math.ceil(currentIndex / slidesPerView)}
+              totalLength={Math.ceil(cards.length / slidesPerView)}
+            />
+          </div>
+        </div>
       </div>
-      {currentIndex}
     </div>
   );
 };
