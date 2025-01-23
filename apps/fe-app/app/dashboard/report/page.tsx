@@ -1,4 +1,4 @@
-import { Breadcrumb, Icon, SectionTitle, Tabs } from 'design-system';
+import { Breadcrumb, Icon, ReportCardBase, SectionTitle, Tabs } from 'design-system';
 import Image from 'next/image';
 import fake2 from '../fake2.png';
 import { ReportOverview } from './_components/ReportOverview';
@@ -6,6 +6,7 @@ import { SectionItem } from './_components/SectionUlItem';
 import { VideoPlayerWrapper } from './_components/VideoPlayerWrapper';
 import { ReportsCarouselWrapper } from './_components/ReportsCarouselWrapper';
 import { TabsWrapper } from './_components/TabsWrapper';
+import { ReportCardBaseWrapper } from './_components/ReportCardBaseWrapper';
 
 const page = () => {
   return (
@@ -25,9 +26,8 @@ const page = () => {
 
       <section className="mb-16 flex w-full flex-col-reverse items-center gap-8 px-20 pt-6 xl:flex-row xl:justify-around">
         <div className="flex w-fit flex-col gap-2">
-          <div className="w-[616px] rounded-3xl bg-gray-100 p-4">
-            <Image src={fake2} alt="fake2" width={616} height={320} />
-          </div>
+          <ReportCardBaseWrapper/>
+
           <div className="flex w-fit flex-row items-center gap-1 text-sm font-normal">
             <Icon name="info" size="md" />
             <span>با زدن بر روی آیکون </span>

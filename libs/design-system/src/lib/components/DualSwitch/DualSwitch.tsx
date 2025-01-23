@@ -1,3 +1,4 @@
+'use client';
 import { cn } from 'libs/design-system/src/utils';
 import React, { useState } from 'react';
 import { Icon, IconProps } from '../Icon';

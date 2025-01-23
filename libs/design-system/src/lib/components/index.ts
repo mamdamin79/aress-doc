@@ -27,3 +27,4 @@ export * from './LikeDislike';
 export * from './HeaderMenus/BurgerMenu/HamburgerMenuIcon';
 export * from './OptionsListExplorer';
 export * from './DualSwitch';
+export * from './ReportCardBase';
