@@ -18,7 +18,7 @@ export const DotIndicator = ({
           key={index}
           className={cn(
             `bg-brand-500 h-3 cursor-pointer rounded-full transition-all`,
-            index === currentIndex ? 'w-8' : 'w-3',
+            index === currentIndex ? 'bg-brand-600 w-8' : 'w-3',
           )}
           onClick={() => setIndex(index)}
         ></div>

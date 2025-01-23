@@ -1,8 +1,8 @@
-'use client';
-
-import React, { useState, useEffect, useRef } from 'react';
-import { cn } from '../../../utils/classNames.utils';
+import React, { useEffect, useState } from 'react';
 import { CardComponentProps, ReportCard } from '../ReportCard';
+import 'keen-slider/keen-slider.min.css';
+import { useKeenSlider } from 'keen-slider/react';
+import { cn } from '../../../utils/classNames.utils';
 import { Icon } from '../Icon';
 import { DotIndicator } from './DotIndicator';
 
@@ -10,106 +10,120 @@ interface ReportsCarouselProps {
   cards: CardComponentProps[];
 }
 
-export const ReportsCarousel: React.FC<ReportsCarouselProps> = ({ cards }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [slidesPerView, setSlidesPerView] = useState(4);
-  const containerRef = useRef<HTMLDivElement>(null);
+const GAP_WIDTH = 16;
+const MAX_SLIDES = 4;
+const CARD_WIDTH = 416;
 
-  const CARD_WIDTH = 416;
-  const GAP_WIDTH = 16;
-  const MAX_SLIDES = 4;
+export const ReportsCarousel: React.FC<ReportsCarouselProps> = ({ cards }) => {
+  const [slidesPerView, setSlidesPerView] = useState<number>(4);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [sliderRef, instanceRef] = useKeenSlider(
+    {
+      rtl: true,
+      slides: {
+        perView: slidesPerView,
+        spacing: GAP_WIDTH,
+      },
+      slideChanged(s) {
+        setCurrentIndex(s.track.details.rel);
+        console.log(slidesPerView);
+        console.log(s.track.details.rel);
+      },
+      created(s) {
+        setCurrentIndex(s.track.details.rel);
+      },
+    },
+    [],
+  );
 
   useEffect(() => {
     const updateSlidesPerView = () => {
-      if (containerRef.current) {
-        const containerWidth = containerRef.current.clientWidth;
-        const availableWidth = containerWidth - 136; // Subtract padding (68px * 2)
-        const possibleSlides = Math.floor(
-          (availableWidth + GAP_WIDTH) / (CARD_WIDTH + GAP_WIDTH),
-        );
-        setSlidesPerView(Math.max(1, Math.min(MAX_SLIDES, possibleSlides)));
-      }
+      const containerWidth = instanceRef.current?.container.clientWidth || 0;
+      const possibleSlides = (containerWidth + 20) / (CARD_WIDTH + GAP_WIDTH);
+      setSlidesPerView(Math.max(1, Math.min(MAX_SLIDES, possibleSlides)));
     };
-
     updateSlidesPerView();
     window.addEventListener('resize', updateSlidesPerView);
     return () => window.removeEventListener('resize', updateSlidesPerView);
-  }, []);
+  }, [instanceRef]);
 
-  const handleNavigation = (direction: 'prev' | 'next') => {
-    setCurrentIndex((prevIndex) => {
-      const offset = direction === 'next' ? slidesPerView : -slidesPerView;
-      const newIndex = prevIndex + offset;
-      const maxIndex = cards.length - slidesPerView;
-      return Math.max(0, Math.min(maxIndex, newIndex));
-    });
+  const handleNavigation = (direction: 'next' | 'prev') => {
+    const slides = instanceRef.current?.track.details.slides || [];
+    const maxIndex = slides.length - Math.ceil(slidesPerView);
+
+    if (direction === 'next' && currentIndex < maxIndex) {
+      instanceRef.current?.moveToIdx(currentIndex + Math.floor(slidesPerView));
+    }
+    if (direction === 'prev' && currentIndex > 0) {
+      instanceRef.current?.moveToIdx(currentIndex - Math.floor(slidesPerView));
+    }
   };
 
-  const canGoNext = currentIndex < cards.length - slidesPerView;
-  const canGoPrev = currentIndex > 0;
+  // Determine if navigation buttons should be disabled
+  const isPrevDisabled = currentIndex <= 0;
+  const isNextDisabled =
+    currentIndex >=
+    (instanceRef.current?.track.details.slides.length || 0) -
+      Math.ceil(slidesPerView);
+  const handleDotClick = (index: number) => {
+    const targetIndex = index * Math.floor(slidesPerView);
+    instanceRef.current?.moveToIdx(targetIndex);
+    setCurrentIndex(targetIndex);
+  };
 
+  const totalDots = Math.ceil(cards.length / Math.floor(slidesPerView));
   return (
-    <div className="flex w-full justify-center">
-      <div className="mx-auto w-full max-w-[1680px]">
+    <div
+      ref={sliderRef}
+      className="keen-slider relative w-full max-w-[1680px] pb-8"
+    >
+      {/* Left Arrow */}
+      <button
+        onClick={() => handleNavigation('next')}
+        disabled={isNextDisabled}
+        className={cn(
+          'border-brand-600 text-brand-600 hover:bg-brand-600 absolute left-6 top-[40%] z-20 -translate-y-1/2 rounded-full border-2 bg-white p-3 transition-all duration-500 hover:text-white focus:outline-none',
+          isNextDisabled && 'opacity-0',
+        )}
+      >
+        <Icon name="chevron-left" key="chevron-left" size="lg" />
+      </button>
+
+      {/* Right Arrow */}
+      <button
+        onClick={() => handleNavigation('prev')}
+        disabled={isPrevDisabled}
+        className={cn(
+          'border-brand-600 text-brand-600 hover:bg-brand-600 absolute right-6 top-[40%] z-20 -translate-y-1/2 rounded-full border-2 bg-white p-3 transition-all duration-500 hover:text-white focus:outline-none',
+          isPrevDisabled && 'opacity-0',
+        )}
+      >
+        <Icon name="chevron-right" key="chevron-right" size="lg" />
+      </button>
+
+      {/* Gradient Overlays */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-white to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-white to-transparent" />
+
+      {/* Cards */}
+      {cards.map((card, index) => (
         <div
-          ref={containerRef}
-          className="carousel-container relative flex h-[358px] w-full items-center justify-between overflow-hidden px-[68px] pb-7 pt-4"
-          dir="rtl"
+          className={cn('keen-slider__slide', index === 0 && '-ml-16')}
+          key={index}
         >
-          {/* Gradient Overlays */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-32 bg-gradient-to-r from-white to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-32 bg-gradient-to-l from-white to-transparent" />
-
-          {/* Navigation Buttons */}
-          <button
-            onClick={() => handleNavigation('next')}
-            className={cn(
-              'border-brand-600 text-brand-600 hover:bg-brand-600 absolute left-6 z-20 rounded-full border-2 bg-white p-3 transition-colors hover:text-white focus:outline-none',
-              !canGoNext && 'invisible',
-            )}
-            disabled={!canGoNext}
-          >
-            <Icon name="chevron-left" size="lg" />
-          </button>
-
-          <button
-            onClick={() => handleNavigation('prev')}
-            className={cn(
-              'border-brand-600 text-brand-600 hover:bg-brand-600 absolute right-6 z-20 rounded-full border-2 bg-white p-3 transition-colors hover:text-white focus:outline-none',
-              !canGoPrev && 'invisible',
-            )}
-            disabled={!canGoPrev}
-          >
-            <Icon name="chevron-right" size="lg" />
-          </button>
-
-          <div
-            className="flex w-full flex-row transition-transform duration-300 ease-in-out"
-            style={{
-              transform: `translateX(${currentIndex * (CARD_WIDTH + GAP_WIDTH)}px)`,
-              gap: `${GAP_WIDTH}px`,
-            }}
-          >
-            {cards.map((card, index) => (
-              <div
-                key={index}
-                className="flex-shrink-0"
-                style={{ width: `${CARD_WIDTH}px` }}
-              >
-                <ReportCard {...card} />
-              </div>
-            ))}
-          </div>
-
-          {/* Dot Indicators */}
-          <div className="absolute inset-x-0 bottom-0 mx-auto flex justify-center">
-            <DotIndicator
-              setIndex={(index) => setCurrentIndex(index * slidesPerView)}
-              currentIndex={Math.ceil(currentIndex / slidesPerView)}
-              totalLength={Math.ceil(cards.length / slidesPerView)}
-            />
-          </div>
+          <ReportCard {...card} />
+          {/* Spacer for the last card */}
+          {index === cards.length - 1 && (
+            <div className="keen-slider__slide w-16" />
+          )}
         </div>
+      ))}
+      <div className="absolute inset-x-0 bottom-0 mx-auto flex justify-center">
+        <DotIndicator
+          setIndex={handleDotClick}
+          currentIndex={Math.floor(currentIndex / Math.floor(slidesPerView))}
+          totalLength={totalDots}
+        />
       </div>
     </div>
   );
