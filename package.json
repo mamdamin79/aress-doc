@@ -87,6 +87,7 @@
     "@uidotdev/usehooks": "^2.4.1",
     "clsx": "^2.1.1",
     "hls.js": "^1.5.17",
+    "keen-slider": "^6.8.6",
     "lucide-react": "^0.445.0",
     "next": "14.2.3",
     "prettier": "^3.3.3",
