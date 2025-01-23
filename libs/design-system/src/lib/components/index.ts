@@ -25,3 +25,5 @@ export * from './VideoPlayer';
 export * from './SharePopUp';
 export * from './LikeDislike';
 export * from './HeaderMenus/BurgerMenu/HamburgerMenuIcon';
+export * from './OptionsListExplorer';
+export * from './DualSwitch';
