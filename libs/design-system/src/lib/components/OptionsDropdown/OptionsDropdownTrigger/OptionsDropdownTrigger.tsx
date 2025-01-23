@@ -2,6 +2,7 @@ import React from 'react';
 import { cn } from '../../../../utils/index';
 import { Icon } from '../../Icon';
 import { dropDownCell } from '../OptionsDropdown.types';
+import { FundsTag } from '../../FundsTag';
 export interface triggerCell extends dropDownCell {
   size: 'sm' | 'md' | 'lg';
   bg: 'primary' | 'secondary';
@@ -49,9 +50,7 @@ export const OptionsDropdownTrigger: React.FC<triggerCell> = ({
         detectBgStylings(),
       )}
     >
-      {tag && (
-        <div className={cn('flex h-2.5 w-2.5 rounded-full', tag.color)}></div>
-      )}
+      {tag && <FundsTag color={tag.color} />}
       {icon && <Icon {...icon} size={icon?.size || 'md'} />}
       {text}
       <Icon name="chevron-down" size="md" />

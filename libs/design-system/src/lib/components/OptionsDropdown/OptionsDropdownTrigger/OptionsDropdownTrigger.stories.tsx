@@ -15,7 +15,7 @@ export const Default: Story = {
     },
     text: 'متن نمونه',
     tag: {
-      color: 'bg-green-600',
+      color: 'purple',
     },
     bg: 'primary',
     emphasize: 'medium',

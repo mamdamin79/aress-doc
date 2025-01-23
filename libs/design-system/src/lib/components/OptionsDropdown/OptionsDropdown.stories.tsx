@@ -12,12 +12,16 @@ export const withbadge: Story = {
   args: {
     dropDownList: [
       {
+        text: 'روزانه',
+        tag: { color: 'yellow' },
+      },
+      {
         text: 'هفتگی',
-        tag: { color: 'bg-green-600' },
+        tag: { color: 'blue' },
       },
       {
         text: 'ماهانه',
-        tag: { color: 'bg-red-600' },
+        tag: { color: 'purple' },
       },
     ],
     dropDownStyles: {

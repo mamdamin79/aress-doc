@@ -21,7 +21,7 @@ export const withIcon: Story = {
 export const withTag: Story = {
   args: {
     tag: {
-      color: 'bg-green-600',
+      color: 'green',
     },
     text: 'متن نمونه',
   },

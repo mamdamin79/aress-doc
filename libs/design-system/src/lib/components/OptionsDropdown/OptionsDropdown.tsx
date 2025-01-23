@@ -4,7 +4,7 @@ import {
   ListboxOption,
   ListboxOptions,
 } from '@headlessui/react';
-import React, { ReactHTMLElement, useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { OptionsDropdownOption } from './OptionsDropdownOption';
 import { dropDownCell, dropDownStyle } from './OptionsDropdown.types';
 import { OptionsDropdownTrigger } from './OptionsDropdownTrigger';
