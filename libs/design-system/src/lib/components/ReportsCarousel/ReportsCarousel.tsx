@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect, useState } from 'react';
 import { CardComponentProps, ReportCard } from '../ReportCard';
 import 'keen-slider/keen-slider.min.css';
