@@ -18,7 +18,7 @@ export interface OptionsDropdownProps {
     selectedItem: dropDownCell;
     dropDownStyles: dropDownStyle;
   }) => React.ReactNode;
-  customOptionRender: (props: dropDownCell) => React.ReactNode;
+  customOptionRender?: (props: dropDownCell) => React.ReactNode;
 }
 export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
   dropDownList,
