@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { OptionsDropdown } from '../OptionsDropdown';
 import { PrimarySection } from './PrimarySection';
 import { NumberSection } from './NumberSection';
@@ -14,8 +14,12 @@ export interface FundsSidebarProps {
   }[];
 }
 export const FundsSidebar: React.FC<FundsSidebarProps> = ({ data }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
   return (
-    <div className="bg-baseBackground flex h-[490px] w-[296px] flex-col items-center overflow-y-hidden rounded-tl-2xl rounded-tr-2xl border-2 border-gray-300 pt-4">
+    <div
+      className="bg-baseBackground flex h-[490px] w-full flex-col items-center overflow-y-hidden rounded-tl-2xl rounded-tr-2xl border-2 border-gray-300 pt-4"
+      ref={containerRef}
+    >
       <div className="shadow-3xl flex w-full flex-col items-center">
         <div className="flex w-full justify-center">
           <OptionsDropdown
@@ -30,7 +34,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({ data }) => {
               bg: 'secondary',
               emphasize: 'high',
               size: 'lg',
-              fixedWidth: 264,
+              fixedWidth: (containerRef.current?.clientWidth as number) - 32,
             }}
           />
         </div>
@@ -68,17 +72,17 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({ data }) => {
           />
         </div>
         <div className="mt-3 h-0.5 w-[264px] rounded-sm bg-gray-300"></div>
-        <div className="grid w-full grid-cols-[1.5fr_1fr_1fr] px-4 pt-2 text-xs font-medium text-gray-600">
+        <div className="grid w-full grid-cols-[1fr_0.7fr_0.3fr] px-4 pt-2 text-xs font-medium text-gray-600">
           <div className="text-right">نام صندوق</div>
           <div className="text-center">نمودار</div>
           <div className="text-left">بازده</div>
         </div>
       </div>
-      <div className="custom-scrollbar grid w-full grid-cols-[1.5fr_1fr_1fr] gap-4 overflow-y-scroll px-4 pb-2 pt-3">
+      <div className="custom-scrollbar grid w-full grid-cols-[1fr_0.7fr_0.3fr] gap-4 overflow-y-scroll px-4 pb-2 pt-3">
         {data.map((item) => (
           <>
             {/* First Row */}
-            <div className="flex min-w-24 items-center justify-start">
+            <div className="flex items-center justify-start">
               <PrimarySection
                 primaryText={{
                   mode: 'neutral',

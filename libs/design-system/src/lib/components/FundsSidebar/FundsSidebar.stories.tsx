@@ -20,7 +20,7 @@ export const Default: Story = {
           ],
           trend: 'positive',
         },
-        title: 'گنجینه فیروزه',
+        title: 'صندوق اهرمی کاریزما',
       },
       {
         changeValue: 45,
@@ -31,7 +31,7 @@ export const Default: Story = {
           ],
           trend: 'positive',
         },
-        title: 'آسمان ابری',
+        title: 'سبدگردان ماهان',
       },
       {
         changeValue: -12,
@@ -42,7 +42,7 @@ export const Default: Story = {
           ],
           trend: 'negative',
         },
-        title: 'رودخانه آبی متن طولانی',
+        title: 'صندوق سرمایه‌گذاری دارا یکم',
       },
       {
         changeValue: 11,
@@ -53,7 +53,7 @@ export const Default: Story = {
           ],
           trend: 'positive',
         },
-        title: 'دریاچه آرام',
+        title: 'صندوق بازنشستگی سامان',
       },
       {
         changeValue: 37,
@@ -64,7 +64,7 @@ export const Default: Story = {
           ],
           trend: 'positive',
         },
-        title: 'کوهستان برفی',
+        title: 'صندوق سرمایه‌گذاری پالایش',
       },
       {
         changeValue: -5,
@@ -75,7 +75,7 @@ export const Default: Story = {
           ],
           trend: 'negative',
         },
-        title: 'جنگل انبوه',
+        title: 'صندوق گلدمن ساکس',
       },
       {
         changeValue: 29,
@@ -86,7 +86,7 @@ export const Default: Story = {
           ],
           trend: 'positive',
         },
-        title: 'سبزینگی بهاری',
+        title: 'صندوق سرمایه‌گذاری مشترک آرمان',
       },
       {
         changeValue: 17,
@@ -97,7 +97,7 @@ export const Default: Story = {
           ],
           trend: 'positive',
         },
-        title: 'کوی سفید',
+        title: 'سبدگردان نوین',
       },
       {
         changeValue: 8,
@@ -108,7 +108,7 @@ export const Default: Story = {
           ],
           trend: 'positive',
         },
-        title: 'آبشار نیلوفر',
+        title: 'صندوق درآمد ثابت ملت',
       },
       {
         changeValue: -3,
@@ -119,7 +119,7 @@ export const Default: Story = {
           ],
           trend: 'negative',
         },
-        title: 'دمنوش گل‌سرخ',
+        title: 'صندوق تک سهم بورس',
       },
     ],
   },
