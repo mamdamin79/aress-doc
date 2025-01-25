@@ -62,6 +62,8 @@ export const FundsSidebar: React.FC = () => {
           <div className="text-right">نام صندوق</div>
           <div className="text-center">نمودار</div>
           <div className="text-left">بازده</div>
+        </div>
+        <div className="grid h-16 w-full grid-cols-3 items-center px-4">
           <PrimarySection
             primaryText={{
               mode: 'neutral',
