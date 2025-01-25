@@ -42,7 +42,7 @@ export const Default: Story = {
           ],
           trend: 'negative',
         },
-        title: 'رودخانه آبی',
+        title: 'رودخانه آبی متن طولانی',
       },
       {
         changeValue: 11,

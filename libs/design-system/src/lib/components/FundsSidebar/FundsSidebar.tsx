@@ -15,7 +15,7 @@ export interface FundsSidebarProps {
 }
 export const FundsSidebar: React.FC<FundsSidebarProps> = ({ data }) => {
   return (
-    <div className="bg-baseBackground flex h-[790px] w-[296px] flex-col items-center overflow-y-hidden rounded-tl-2xl rounded-tr-2xl border-2 border-gray-300 pt-4">
+    <div className="bg-baseBackground flex h-[490px] w-[296px] flex-col items-center overflow-y-hidden rounded-tl-2xl rounded-tr-2xl border-2 border-gray-300 pt-4">
       <div className="shadow-3xl flex w-full flex-col items-center">
         <div className="flex w-full justify-center">
           <OptionsDropdown
@@ -68,13 +68,13 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({ data }) => {
           />
         </div>
         <div className="mt-3 h-0.5 w-[264px] rounded-sm bg-gray-300"></div>
-        <div className="grid w-full grid-cols-3 px-4 pt-2 text-xs font-medium text-gray-600">
+        <div className="grid w-full grid-cols-[1.5fr_1fr_1fr] px-4 pt-2 text-xs font-medium text-gray-600">
           <div className="text-right">نام صندوق</div>
           <div className="text-center">نمودار</div>
           <div className="text-left">بازده</div>
         </div>
       </div>
-      <div className="grid w-full grid-cols-3 gap-4 px-4 pb-2 pt-3">
+      <div className="custom-scroll-bar grid w-full grid-cols-[1.5fr_1fr_1fr] gap-4 overflow-y-scroll px-4 pb-2 pt-3">
         {data.map((item) => (
           <>
             {/* First Row */}
