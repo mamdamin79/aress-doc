@@ -10,6 +10,7 @@ export const NumberSection = ({ value }: { value: number }) => {
   );
   return (
     <div
+      dir="ltr"
       className={cn(
         'text-left text-xs font-medium',
 
@@ -17,8 +18,8 @@ export const NumberSection = ({ value }: { value: number }) => {
         formattedNumber < 0 && 'text-red-600',
       )}
     >
-      {value}
       {formattedNumber > 0 && '+'}
+      {value}
     </div>
   );
 };

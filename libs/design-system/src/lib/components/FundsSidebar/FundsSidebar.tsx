@@ -2,8 +2,18 @@ import React from 'react';
 import { OptionsDropdown } from '../OptionsDropdown';
 import { PrimarySection } from './PrimarySection';
 import { NumberSection } from './NumberSection';
-
-export const FundsSidebar: React.FC = () => {
+import { SparkLine } from '../SparkLine';
+export interface FundsSidebarProps {
+  data: {
+    title: string;
+    chartData: {
+      data: number[];
+      trend: 'positive' | 'negative';
+    };
+    changeValue: number;
+  }[];
+}
+export const FundsSidebar: React.FC<FundsSidebarProps> = ({ data }) => {
   return (
     <div className="bg-baseBackground flex h-[790px] w-[296px] flex-col items-center overflow-y-hidden rounded-tl-2xl rounded-tr-2xl border-2 border-gray-300 pt-4">
       <div className="shadow-3xl flex w-full flex-col items-center">
@@ -63,15 +73,30 @@ export const FundsSidebar: React.FC = () => {
           <div className="text-center">نمودار</div>
           <div className="text-left">بازده</div>
         </div>
-        <div className="grid h-16 w-full grid-cols-3 items-center px-4">
-          <PrimarySection
-            primaryText={{
-              mode: 'neutral',
-              text: 'متن اصلی',
-            }}
-          />
-          <NumberSection value={12.34} />
-        </div>
+      </div>
+      <div className="grid w-full grid-cols-3 gap-4 px-4 pb-2 pt-3">
+        {data.map((item) => (
+          <>
+            {/* First Row */}
+            <div className="flex min-w-24 items-center justify-start">
+              <PrimarySection
+                primaryText={{
+                  mode: 'neutral',
+                  text: item.title,
+                }}
+              />
+            </div>
+            <div className="flex items-center justify-center">
+              <SparkLine
+                data={item.chartData.data}
+                trend={item.chartData.trend}
+              />
+            </div>
+            <div className="flex items-center justify-end pt-2">
+              <NumberSection value={item.changeValue} />
+            </div>
+          </>
+        ))}
       </div>
     </div>
   );
