@@ -1,5 +1,24 @@
+import { cn } from '../../../../utils/classNames.utils';
 import React from 'react';
+import { formatNumber } from '../../../../utils/number-utils';
+export const NumberSection = ({ value }: { value: number }) => {
+  const formattedNumber = Number(
+    formatNumber(value, {
+      commaSeparated: true,
+      decimals: 2,
+    }),
+  );
+  return (
+    <div
+      className={cn(
+        'text-left text-xs font-medium',
 
-export const NumberSection: React.FC = () => {
-  return <div>NumberSection</div>;
+        formattedNumber > 0 && 'text-green-600',
+        formattedNumber < 0 && 'text-red-600',
+      )}
+    >
+      {value}
+      {formattedNumber > 0 && '+'}
+    </div>
+  );
 };
