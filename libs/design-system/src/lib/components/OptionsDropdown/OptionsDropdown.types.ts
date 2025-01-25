@@ -16,4 +16,5 @@ export interface dropDownStyle {
   emphasize: 'medium' | 'high';
   checkSelected?: boolean;
   anchor: AnchorProps;
+  fixedWidth?: number;
 }
