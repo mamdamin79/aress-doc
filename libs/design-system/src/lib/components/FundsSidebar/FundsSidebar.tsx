@@ -74,7 +74,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({ data }) => {
           <div className="text-left">بازده</div>
         </div>
       </div>
-      <div className="custom-scroll-bar grid w-full grid-cols-[1.5fr_1fr_1fr] gap-4 overflow-y-scroll px-4 pb-2 pt-3">
+      <div className="custom-scrollbar grid w-full grid-cols-[1.5fr_1fr_1fr] gap-4 overflow-y-scroll px-4 pb-2 pt-3">
         {data.map((item) => (
           <>
             {/* First Row */}
