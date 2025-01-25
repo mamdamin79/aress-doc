@@ -17,3 +17,5 @@ export * from './Button';
 export * from './NotesHeading';
 export * from './FundsSidebar';
 export * from './SparkLine';
+export * from './OptionsDropdown';
+export * from './FundsTag';
