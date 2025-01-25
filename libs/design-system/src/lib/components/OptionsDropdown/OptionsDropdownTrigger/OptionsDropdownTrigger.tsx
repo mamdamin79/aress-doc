@@ -43,7 +43,7 @@ export const OptionsDropdownTrigger: React.FC<triggerCell> = ({
   return (
     <div
       className={cn(
-        'flex w-fit cursor-pointer flex-row items-center gap-1 rounded-md border-2 border-transparent px-2 transition-colors',
+        'flex w-full cursor-pointer flex-row items-center gap-1 rounded-md border-2 border-transparent px-2 transition-colors',
         size === 'sm' && 'h-[34px] text-sm',
         size === 'md' && 'h-[40px] text-sm',
         size === 'lg' && 'text-md h-[46px]',

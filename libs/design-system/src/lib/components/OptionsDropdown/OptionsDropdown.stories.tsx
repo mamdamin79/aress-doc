@@ -9,6 +9,11 @@ export default meta;
 type Story = StoryObj<typeof OptionsDropdown>;
 
 export const withbadge: Story = {
+  render: (args) => (
+    <div className="w-28">
+      <OptionsDropdown {...args} />
+    </div>
+  ),
   args: {
     dropDownList: [
       {
@@ -33,6 +38,11 @@ export const withbadge: Story = {
   },
 };
 export const withIcon: Story = {
+  render: (args) => (
+    <div>
+      <OptionsDropdown {...args} />
+    </div>
+  ),
   args: {
     dropDownList: [
       {
@@ -56,7 +66,42 @@ export const withIcon: Story = {
     },
   },
 };
+export const fixedWidth: Story = {
+  render: (args) => (
+    <div>
+      <OptionsDropdown {...args} />
+    </div>
+  ),
+  args: {
+    dropDownList: [
+      {
+        text: 'تستی هست',
+        icon: { name: 'settings' },
+      },
+      {
+        text: 'تستی هست 2',
+        icon: { name: 'alarm-clock-check' },
+      },
+      {
+        text: 'تستی هست 3',
+        icon: { name: 'git-pull-request-draft' },
+      },
+    ],
+    dropDownStyles: {
+      bg: 'primary',
+      emphasize: 'medium',
+      size: 'md',
+      anchor: 'bottom start',
+      fixedWidth: 400,
+    },
+  },
+};
 export const withCheck: Story = {
+  render: (args) => (
+    <div>
+      <OptionsDropdown {...args} />
+    </div>
+  ),
   args: {
     dropDownList: [
       {
@@ -79,6 +124,11 @@ export const withCheck: Story = {
   },
 };
 export const customTriggerRender: Story = {
+  render: (args) => (
+    <div>
+      <OptionsDropdown {...args} />
+    </div>
+  ),
   args: {
     dropDownList: [
       {
@@ -107,6 +157,36 @@ export const customTriggerRender: Story = {
           </span>
         </div>
       );
+    },
+  },
+};
+export const customOptionsRender: Story = {
+  render: (args) => (
+    <div>
+      <OptionsDropdown {...args} />
+    </div>
+  ),
+  args: {
+    dropDownList: [
+      {
+        text: 'متن شماره یک',
+      },
+      {
+        text: 'متن دوم',
+      },
+      {
+        text: 'متن سوم',
+      },
+    ],
+    dropDownStyles: {
+      bg: 'primary',
+      emphasize: 'medium',
+      size: 'md',
+      anchor: 'bottom start',
+      checkSelected: true,
+    },
+    customOptionRender(props) {
+      return <div className="w-60">{props.text}</div>;
     },
   },
 };
