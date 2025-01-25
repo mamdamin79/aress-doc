@@ -40,20 +40,22 @@ export const PrimarySection: React.FC<PrimarySectionProps> = ({
   };
 
   return (
-    <div className="flex h-[43px] w-full flex-col justify-center">
+    <div className="flex h-[43px] max-w-full flex-col justify-center">
       <div className="flex flex-row items-center gap-0.5 text-right text-sm font-normal">
         <div
           className={cn(
-            'text-gray-1000 whitespace-nowrap',
+            'text-gray-1000 overflow-hidden whitespace-nowrap',
             getTextClass(primaryText.mode),
           )}
         >
           <Tooltip
             title={primaryText.text}
             position="bottom"
-            className="truncate"
+            className="max-w-full"
           >
-            {primaryText.text.slice(0, 11)}...
+            <div className="block w-full overflow-hidden truncate whitespace-nowrap">
+              {primaryText.text}
+            </div>
           </Tooltip>
         </div>
 

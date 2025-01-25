@@ -1,8 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { OptionsDropdown } from '../OptionsDropdown';
 import { PrimarySection } from './PrimarySection';
 import { NumberSection } from './NumberSection';
 import { SparkLine } from '../SparkLine';
+
 export interface FundsSidebarProps {
   data: {
     title: string;
@@ -13,11 +14,30 @@ export interface FundsSidebarProps {
     changeValue: number;
   }[];
 }
+
 export const FundsSidebar: React.FC<FundsSidebarProps> = ({ data }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+
+  // Update container width when the component mounts or when the window resizes
+  useEffect(() => {
+    if (containerRef.current) {
+      setContainerWidth(containerRef.current.clientWidth);
+    }
+
+    const handleResize = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.clientWidth);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div
-      className="bg-baseBackground flex h-[490px] w-full flex-col items-center overflow-y-hidden rounded-tl-2xl rounded-tr-2xl border-2 border-gray-300 pt-4"
+      className="bg-baseBackground flex h-[490px] w-full min-w-[296px] flex-col items-center overflow-y-hidden rounded-tl-2xl rounded-tr-2xl border-2 border-gray-300 pt-4"
       ref={containerRef}
     >
       <div className="shadow-3xl flex w-full flex-col items-center">
@@ -31,14 +51,14 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({ data }) => {
             ]}
             dropDownStyles={{
               anchor: 'bottom',
-              bg: 'secondary',
+              bg: 'primary',
               emphasize: 'high',
               size: 'lg',
-              fixedWidth: (containerRef.current?.clientWidth as number) - 32,
+              fixedWidth: containerWidth ? containerWidth - 32 : 0, // Apply the width dynamically
             }}
           />
         </div>
-        <div className="flex w-full flex-row items-center justify-between px-4">
+        <div className="flex w-full flex-row items-center justify-between px-4 pb-3 pt-2">
           <OptionsDropdown
             dropDownList={[
               {
@@ -71,18 +91,20 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({ data }) => {
             }}
           />
         </div>
-        <div className="mt-3 h-0.5 w-[264px] rounded-sm bg-gray-300"></div>
-        <div className="grid w-full grid-cols-[1fr_0.7fr_0.3fr] px-4 pt-2 text-xs font-medium text-gray-600">
+        <div className="w-full px-4">
+          <div className="h-0.5 w-full rounded-md bg-gray-300"></div>
+        </div>
+        <div className="grid w-full grid-cols-[1fr_0.7fr_0.3fr] px-4 py-2 text-xs font-medium text-gray-600">
           <div className="text-right">نام صندوق</div>
           <div className="text-center">نمودار</div>
           <div className="text-left">بازده</div>
         </div>
       </div>
-      <div className="custom-scrollbar grid w-full grid-cols-[1fr_0.7fr_0.3fr] gap-4 overflow-y-scroll px-4 pb-2 pt-3">
+      <div className="custom-scrollbar grid w-full grid-cols-[1fr_88px_88px] gap-4 overflow-y-scroll px-4">
         {data.map((item) => (
           <>
             {/* First Row */}
-            <div className="flex items-center justify-start">
+            <div className="flex w-full items-center justify-start overflow-x-hidden">
               <PrimarySection
                 primaryText={{
                   mode: 'neutral',
@@ -90,13 +112,13 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({ data }) => {
                 }}
               />
             </div>
-            <div className="flex items-center justify-center">
+            <div className="flex w-[88px] items-center justify-center">
               <SparkLine
                 data={item.chartData.data}
                 trend={item.chartData.trend}
               />
             </div>
-            <div className="flex items-center justify-end pt-2">
+            <div className="flex w-[88px] items-center justify-end pt-2">
               <NumberSection value={item.changeValue} />
             </div>
           </>
