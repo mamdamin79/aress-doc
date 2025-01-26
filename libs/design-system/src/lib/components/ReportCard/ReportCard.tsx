@@ -31,10 +31,10 @@ export const ReportCard: React.FC<CardComponentProps> = ({
   return (
     <div
       className={cn(
-        `group relative flex flex-col overflow-hidden rounded-3xl border-[3px] border-gray-100 bg-gray-100 transition-all`,
+        `group relative flex flex-col overflow-hidden rounded-3xl border-[3px] border-gray-100 bg-gray-100 transition-all hover:shadow-md`,
         fixedBrief
-          ? 'hover:shadow-7xl h-[448px] min-w-[380px] max-w-[512px] items-start'
-          : 'h-[318px] min-w-[304px] max-w-[416px] hover:shadow-md',
+          ? 'h-[448px] min-w-[380px] max-w-[512px] items-start'
+          : 'h-[318px] min-w-[304px] max-w-[416px]',
       )}
     >
       {/* Image Section */}
