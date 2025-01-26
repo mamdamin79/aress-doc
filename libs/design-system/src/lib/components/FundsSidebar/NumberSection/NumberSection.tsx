@@ -18,8 +18,8 @@ export const NumberSection = ({ value }: { value: number }) => {
         formattedNumber < 0 && 'text-red-600',
       )}
     >
-      {formattedNumber > 0 && '+'}
-      {value}٪
+      ٪ {formattedNumber > 0 && '+'}
+      {value}
     </div>
   );
 };

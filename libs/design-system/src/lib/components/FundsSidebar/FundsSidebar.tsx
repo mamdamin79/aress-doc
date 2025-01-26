@@ -4,6 +4,7 @@ import { PrimarySection } from './PrimarySection';
 import { NumberSection } from './NumberSection';
 import { SparkLine } from '../SparkLine';
 import { cn } from '../../../utils/classNames.utils';
+import { CustomTriggerWithoutLogo } from './CustomTriggerWithoutLogo';
 
 export interface FundsSidebarProps {
   data: {
@@ -88,6 +89,12 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({ data }) => {
               emphasize: 'medium',
               size: 'sm',
             }}
+            customTriggerRender={({ isActive, selectedItem }) => (
+              <CustomTriggerWithoutLogo
+                isActive={isActive}
+                text={selectedItem.text}
+              />
+            )}
           />
           <OptionsDropdown
             dropDownList={[
