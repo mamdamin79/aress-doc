@@ -50,7 +50,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({ data }) => {
     >
       <div
         className={cn(
-          'flex w-full flex-col items-center transition-all',
+          'z-10 flex w-full flex-col items-center transition-all',
           scrollTopPosition > 0 && 'shadow-3xl',
         )}
       >
