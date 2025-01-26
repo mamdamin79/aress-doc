@@ -82,7 +82,7 @@ export const ReportsCarousel: React.FC<ReportsCarouselProps> = ({ cards }) => {
         onClick={() => handleNavigation('next')}
         disabled={isNextDisabled}
         className={cn(
-          'border-brand-600 text-brand-600 hover:bg-brand-600 absolute left-6 top-[40%] z-20 -translate-y-1/2 rounded-full border-2 bg-white p-3 transition-all duration-500 hover:text-white focus:outline-none',
+          'shadow-4xl border-brand-600 text-brand-600 hover:bg-brand-600 absolute left-6 top-[40%] z-20 -translate-y-1/2 rounded-full border-2 bg-white p-3 transition-all duration-500 hover:text-white focus:outline-none',
           isNextDisabled && 'opacity-0',
         )}
       >
@@ -94,7 +94,7 @@ export const ReportsCarousel: React.FC<ReportsCarouselProps> = ({ cards }) => {
         onClick={() => handleNavigation('prev')}
         disabled={isPrevDisabled}
         className={cn(
-          'border-brand-600 text-brand-600 hover:bg-brand-600 absolute right-6 top-[40%] z-20 -translate-y-1/2 rounded-full border-2 bg-white p-3 transition-all duration-500 hover:text-white focus:outline-none',
+          'shadow-4xl border-brand-600 text-brand-600 hover:bg-brand-600 absolute right-6 top-[40%] z-20 -translate-y-1/2 rounded-full border-2 bg-white p-3 transition-all duration-500 hover:text-white focus:outline-none',
           isPrevDisabled && 'opacity-0',
         )}
       >
