@@ -9,6 +9,7 @@ interface SparkLineProps {
 
 const defaultOptions: Options = {
   chart: {
+    backgroundColor: 'transparent',
     borderWidth: 0,
     type: 'area',
     margin: [2, 0, 2, 0],
@@ -37,7 +38,7 @@ const defaultOptions: Options = {
   plotOptions: {
     series: {
       animation: false,
-      lineWidth: 1,
+      lineWidth: 2,
       shadow: false,
       states: {
         hover: {
