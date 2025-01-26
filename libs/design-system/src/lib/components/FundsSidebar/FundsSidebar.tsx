@@ -107,14 +107,14 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({ data }) => {
         <div className="w-full px-4">
           <div className="h-0.5 w-full rounded-md bg-gray-300"></div>
         </div>
-        <div className="grid w-full grid-cols-[1fr_0.7fr_0.3fr] px-4 py-2 text-xs font-medium text-gray-600">
+        <div className="grid w-full grid-cols-[1fr_88px_60px] px-4 py-2 text-xs font-medium text-gray-600">
           <div className="text-right">نام صندوق</div>
           <div className="text-center">نمودار</div>
           <div className="text-left">بازده</div>
         </div>
       </div>
       <div
-        className="custom-scrollbar grid w-full grid-cols-[1fr_88px_88px] gap-4 overflow-y-scroll px-4"
+        className="custom-scrollbar grid w-full grid-cols-[1fr_88px_60px] gap-4 overflow-y-scroll px-4"
         ref={listContainerRef}
         onScroll={handleScroll}
       >
@@ -135,7 +135,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({ data }) => {
                 trend={item.chartData.trend}
               />
             </div>
-            <div className="flex w-[88px] items-center justify-end pt-2">
+            <div className="flex w-[60px] items-center justify-end pt-2">
               <NumberSection value={item.changeValue} />
             </div>
           </>
