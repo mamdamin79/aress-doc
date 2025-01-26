@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Icon } from '../Icon';
 import { cn } from 'libs/design-system/src/utils';
 import { AutoRotateProps } from './AutoRotateSwitch.types';
+import { Tooltip } from '../Tooltip';
 
 export const AutoRotateSwitch: React.FC<AutoRotateProps> = ({
   rotateOptions,
@@ -64,21 +65,21 @@ export const AutoRotateSwitch: React.FC<AutoRotateProps> = ({
           isOpen && activeRotateOption && 'border-red-600 bg-red-600',
         )}
       >
-        <div
-          className={cn(
-            'flex h-8 w-8 items-center justify-center transition-all duration-300',
-            !activeRotateOption && 'group-hover:rotate-90',
-          )}
-        >
-          {!(activeRotateOption && isOpen) && (
-            <Icon name="refresh-cw" size="md" />
-          )}
-        </div>
         {activeRotateOption && !disabled && !isOpen && (
           <div className="bg-brand-600 hover:bg-brand-600 flex h-8 w-8 items-center justify-center rounded-full text-white">
             {activeRotateOption}s
           </div>
         )}
+        <Tooltip title="گردش خودکار" position="bottom" offset={10}>
+          <div
+            className={cn(
+              'flex h-8 w-8 items-center justify-center transition-all duration-300',
+              !activeRotateOption && 'group-hover:rotate-90',
+            )}
+          >
+            <Icon name="refresh-cw" size="md" />
+          </div>
+        </Tooltip>
       </div>
     </div>
   );
