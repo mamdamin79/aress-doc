@@ -26,7 +26,7 @@ export const MultiLevelDropdown: React.FC<MultiLevelDropdownProps> = ({
   return (
     <div
       className={cn(
-        'shadow-8xl shadow-offset-y-10 absolute z-10 flex flex-row overflow-hidden rounded-xl border border-gray-300',
+        'shadow-8xl shadow-offset-y-10 absolute z-10 flex flex-row overflow-hidden rounded-xl border border-gray-300 bg-white',
         { hidden: !activeMenu, '-right-52': fixedropDown },
       )}
     >
