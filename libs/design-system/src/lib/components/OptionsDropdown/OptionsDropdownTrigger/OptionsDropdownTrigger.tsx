@@ -43,16 +43,18 @@ export const OptionsDropdownTrigger: React.FC<triggerCell> = ({
   return (
     <div
       className={cn(
-        'flex w-full cursor-pointer flex-row items-center gap-1 rounded-md border-2 border-transparent px-2 transition-colors',
+        'flex w-full cursor-pointer flex-row items-center justify-between gap-1 rounded-md border-2 border-transparent px-2 transition-colors',
         size === 'sm' && 'h-[34px] text-sm',
         size === 'md' && 'h-[40px] text-sm',
         size === 'lg' && 'text-md h-[46px]',
         detectBgStylings(),
       )}
     >
-      {tag && <FundsTag color={tag.color} />}
-      {icon && <Icon {...icon} size={icon?.size || 'md'} />}
-      {text}
+      <div className="flex flex-row items-center gap-1">
+        {tag && <FundsTag color={tag.color} />}
+        {icon && <Icon {...icon} size={icon?.size || 'md'} />}
+        {text}
+      </div>
       <Icon name="chevron-down" size="md" />
     </div>
   );
