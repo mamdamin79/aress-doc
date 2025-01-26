@@ -19,7 +19,7 @@ export const NumberSection = ({ value }: { value: number }) => {
       )}
     >
       {formattedNumber > 0 && '+'}
-      {value}
+      {value}٪
     </div>
   );
 };

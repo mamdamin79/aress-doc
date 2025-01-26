@@ -3,6 +3,7 @@ import { OptionsDropdown } from '../OptionsDropdown';
 import { PrimarySection } from './PrimarySection';
 import { NumberSection } from './NumberSection';
 import { SparkLine } from '../SparkLine';
+import { cn } from '../../../utils/classNames.utils';
 
 export interface FundsSidebarProps {
   data: {
@@ -18,7 +19,14 @@ export interface FundsSidebarProps {
 export const FundsSidebar: React.FC<FundsSidebarProps> = ({ data }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState<number>(0);
-
+  const listContainerRef = useRef<HTMLDivElement>(null);
+  const [scrollTopPosition, setScrollTopPosition] = useState(0);
+  const handleScroll = () => {
+    if (listContainerRef.current) {
+      const { scrollTop } = listContainerRef.current;
+      setScrollTopPosition(scrollTop);
+    }
+  };
   // Update container width when the component mounts or when the window resizes
   useEffect(() => {
     if (containerRef.current) {
@@ -40,7 +48,12 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({ data }) => {
       className="bg-baseBackground flex h-[490px] w-full min-w-[296px] flex-col items-center overflow-y-hidden rounded-tl-2xl rounded-tr-2xl border-2 border-gray-300 pt-4"
       ref={containerRef}
     >
-      <div className="shadow-3xl flex w-full flex-col items-center">
+      <div
+        className={cn(
+          'flex w-full flex-col items-center transition-all',
+          scrollTopPosition > 0 && 'shadow-3xl',
+        )}
+      >
         <div className="flex w-full justify-center">
           <OptionsDropdown
             dropDownList={[
@@ -100,7 +113,11 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({ data }) => {
           <div className="text-left">بازده</div>
         </div>
       </div>
-      <div className="custom-scrollbar grid w-full grid-cols-[1fr_88px_88px] gap-4 overflow-y-scroll px-4">
+      <div
+        className="custom-scrollbar grid w-full grid-cols-[1fr_88px_88px] gap-4 overflow-y-scroll px-4"
+        ref={listContainerRef}
+        onScroll={handleScroll}
+      >
         {data.map((item) => (
           <>
             {/* First Row */}
