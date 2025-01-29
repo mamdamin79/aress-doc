@@ -1,6 +1,4 @@
-import { FooterLite } from './(layout)/(footer-lite)';
 import './global.css';
-import { cn, Header } from 'design-system';
 
 export const metadata = {
   title: 'Welcome to apps/fe-app',

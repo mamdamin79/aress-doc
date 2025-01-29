@@ -2,7 +2,7 @@
 import React from 'react';
 import Image from 'next/image';
 import PRODUCT_LOGO from '@aress-assets/icons/product_logo.svg';
-import { Breadcrumb, cn, HeadProfile, SquaredButton } from 'design-system';
+import { cn, HeadProfile, SquaredButton } from 'design-system';
 import { HeaderMenuWrapper } from './_components/HeaderMenuWrapper';
 import { useHeaderVisibility } from '../../../hooks';
 import { useWindowScroll } from '@uidotdev/usehooks';
