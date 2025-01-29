@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import { ContextMenuItem } from './ContextMenu.types';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { Icon } from '../Icon';
+import { cn } from '../../../utils/classNames.utils';
 
 // this pulls out types of menuItem
 type MenuItemsProps = React.ComponentProps<typeof MenuItems>;
@@ -35,18 +36,28 @@ export const ContextMenu: React.FC<Props> = ({
       <MenuItems
         transition
         anchor={anchor}
-        className="w-[180px] [--anchor-gap:8px] shadow-7xl border-[1.5px]  rounded-xl border-gray-300 bg-white  text-sm  transition duration-200 ease-out focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
+        className="w-[180px] [--anchor-gap:8px] shadow-7xl border  rounded-xl border-gray-300 bg-white  text-sm  transition duration-200 ease-out focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
       >
         {items.map((item) => (
-          <MenuItem>
-            <button
-              onClick={item.onClick}
-              className="group  hover:bg-brand-100 text-sm text-gray-1000 font-medium flex w-full items-center gap-2 p-2 pr-3"
-            >
-              <Icon name={item.icon} size="md" />
-              {item.title}
-            </button>
-          </MenuItem>
+          <>
+            {item.dividerBefore && (
+              <div className="w-full border border-gray-200"></div>
+            )}
+            <MenuItem>
+              <button
+                disabled={item.disabled}
+                onClick={item.onClick}
+                className={cn(
+                  'group  hover:bg-brand-100 text-sm text-gray-1000 font-medium flex w-full items-center gap-2 p-2 pr-3',
+                  item.isActive && 'bg-brand-50 text-brand-800',
+                  item.disabled && 'text-gray-400 pointer-events-none',
+                )}
+              >
+                <Icon name={item.icon} size="md" />
+                {item.title}
+              </button>
+            </MenuItem>
+          </>
         ))}
       </MenuItems>
     </Menu>
