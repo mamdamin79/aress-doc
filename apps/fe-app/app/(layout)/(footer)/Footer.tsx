@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { FooterSection } from './Footer.types';
-import Logo from '@aress-assets/icons/logo.svg';
+import PRODUCT_LOGO from '@aress-assets/icons/product_logo.svg';
 import Enamad from '@aress-assets/icons/enamad.png';
 import DigitalUnion from '@aress-assets/icons/digital-union.png';
 import TELEGRAM_ICON from '@aress-assets/icons/telegram.svg';
@@ -75,37 +75,35 @@ export function Footer() {
   return (
     <div className="px-5 md:px-20">
       <div className="flex justify-center md:justify-start">
-        <Image
-          width={104}
-          height={104}
-          src={Logo}
-          alt="Logo image"
-        />
+        <Image width={104} height={104} src={PRODUCT_LOGO} alt="Logo image" />
       </div>
 
-      <div className="grid mt-10 grid-cols-1 grid-rows-4 sm:grid-rows-2 lg:grid-rows-1 items-center mx-auto text-center md:text-start sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mx-auto mt-10 grid grid-cols-1 grid-rows-4 items-center text-center sm:grid-cols-2 sm:grid-rows-2 md:text-start lg:grid-cols-4 lg:grid-rows-1">
         {linksFooter.map(({ title, links }, index) => (
           <div key={index} className="mt-8 self-start lg:mt-0">
-            <span className="text-gray-1000 mb-6 font-medium text-2xl block">
+            <span className="text-gray-1000 mb-6 block text-2xl font-medium">
               {title}
             </span>
             {links.map(({ title, icons, link }, index) => (
               <div key={index}>
                 {link ? (
                   <Link
-                    className="text-gray-600 hover:text-gray-700 text-md mt-2"
+                    className="text-md mt-2 text-gray-600 hover:text-gray-700"
                     href={link}
                   >
                     {title}
                   </Link>
                 ) : (
-                  <span className="text-gray-600 text-md block mt-2">
+                  <span className="text-md mt-2 block text-gray-600">
                     {title}
                   </span>
                 )}
-                <div className="flex gap-4 mt-2 justify-center md:justify-start text-brand-600">
+                <div className="text-brand-600 mt-2 flex justify-center gap-4 md:justify-start">
                   {icons?.map(({ icon, link }, index) => (
-                    <div key={index} className="text-brand-600 hover:text-brand-700 transition">
+                    <div
+                      key={index}
+                      className="text-brand-600 hover:text-brand-700 transition"
+                    >
                       {link ? (
                         <Link href={link}>{icon}</Link>
                       ) : (
@@ -120,21 +118,21 @@ export function Footer() {
         ))}
       </div>
 
-      <div className="mt-16 flex items-center flex-col lg:flex-row justify-between">
-        <div className="flex flex-col md:flex-row items-center gap-20">
+      <div className="mt-16 flex flex-col items-center justify-between lg:flex-row">
+        <div className="flex flex-col items-center gap-20 md:flex-row">
           <div className="flex flex-col items-center md:items-start">
-            <span className="text-2xl font-semibold text-center md:text-right">
+            <span className="text-center text-2xl font-semibold md:text-right">
               دانلود اپلیکیشن
             </span>
-            <div className="flex items-center gap-3 mt-6">
+            <div className="mt-6 flex items-center gap-3">
               {applications.map((item, index) => (
                 <Link key={index} href={item.link}>
                   <Tooltip
                     position="bottom"
-                    className="!rounded-xs !text-sm !py-0 !px-2"
+                    className="!rounded-xs !px-2 !py-0 !text-sm"
                     title={item.title}
                   >
-                    <div className="rounded-lg bg-gray-100 py-2.5 px-4">
+                    <div className="rounded-lg bg-gray-100 px-4 py-2.5">
                       <Image
                         src={item.icon}
                         width={24}
@@ -148,35 +146,35 @@ export function Footer() {
             </div>
           </div>
           <div className="flex flex-col items-center md:items-start">
-            <span className="text-2xl font-semibold text-center md:text-right">
+            <span className="text-center text-2xl font-semibold md:text-right">
               ربات هوشمند تلگرام
             </span>
-            <div className="rounded-lg cursor-pointer bg-gray-100 py-2.5 mt-6 w-fit px-4 flex items-center gap-2">
+            <div className="mt-6 flex w-fit cursor-pointer items-center gap-2 rounded-lg bg-gray-100 px-4 py-2.5">
               <Image
                 src={TELEGRAM_ICON}
                 width={24}
                 height={24}
                 alt="Telegram"
               />
-              <span className="font-medium text-xs">ورود به ربات</span>
+              <span className="text-xs font-medium">ورود به ربات</span>
             </div>
           </div>
         </div>
-        <div className="flex mt-6 lg:mt-0 items-center gap-8">
+        <div className="mt-6 flex items-center gap-8 lg:mt-0">
           <Link href="/" className="rounded-2xl bg-gray-100 p-4">
             <Image
               width={0}
               height={0}
-              className="w-16 h-16"
+              className="h-16 w-16"
               src={Enamad}
               alt="enamad"
             />
           </Link>
-          <Link href="/" className="rounded-2xl cursor-pointer bg-gray-100 p-4">
+          <Link href="/" className="cursor-pointer rounded-2xl bg-gray-100 p-4">
             <Image
               width={0}
               height={0}
-              className="w-16 h-16"
+              className="h-16 w-16"
               src={DigitalUnion}
               alt="digitalUnion"
             />
@@ -184,7 +182,7 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="mt-10 text-xs text-gray-600 flex-col sm:flex-row flex items-center justify-between">
+      <div className="mt-10 flex flex-col items-center justify-between text-xs text-gray-600 sm:flex-row">
         <p className="font-medium">
           © تمامی حقوق اینترنتی برای پردازش اطلاعات مالی آرسس محفوظ است.
         </p>
