@@ -19,4 +19,5 @@ export * from './HeadProfile';
 export * from './HeaderMenus';
 export * from './NotesHeading';
 export * from './HeaderMenus/BurgerMenu/HamburgerMenuIcon';
+export * from './OptionsDropdown';
 export * from './FundsTag';

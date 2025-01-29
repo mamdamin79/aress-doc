@@ -130,6 +130,7 @@ const Funds = () => {
       </div>
 
       <div className="flex sticky bottom-6 items-center mt-6 justify-between">
+        
         <select
           className="cursor-pointer rounded-md bg-gray-300 px-3 py-2 outline-none"
           value={table.getState().pagination.pageSize}
@@ -137,9 +138,10 @@ const Funds = () => {
             table.setPageSize(Number(e.target.value));
           }}
         >
+          <option value="" aria-checked>تعداد سطر در جدول</option>
           {[10, 20, 30, 40, 50].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              تعداد سطر در جدول {pageSize}
+            <option selected={false} key={pageSize} value={pageSize}>
+              {pageSize}
             </option>
           ))}
         </select>
