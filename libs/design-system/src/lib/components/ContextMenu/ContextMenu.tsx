@@ -23,11 +23,11 @@ export const ContextMenu: React.FC<Props> = ({
       <MenuButton>
         {/* if user provide a children we use it else we use the first item */}
         {children ? (
-          <div className="bg-gray-100  p-2 rounded-full shadow-md">
+          <div className="rounded-full bg-gray-100 p-2 shadow-md">
             {children}
           </div>
         ) : (
-          <div className="inline-flex items-center p-2 w-40 rounded-sm bg-white text-sm gap-2 font-medium text-gray-1000 shadow-md">
+          <div className="text-gray-1000 inline-flex w-40 items-center gap-2 rounded-sm bg-white p-2 text-sm font-medium shadow-md">
             <Icon name={items[0].icon} size="md" />
             {items[0].title}
           </div>

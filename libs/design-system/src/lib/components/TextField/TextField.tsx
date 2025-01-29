@@ -14,22 +14,30 @@ export const TextField: React.FC<textFieldPropsType> = ({
   trailingIcons,
   type,
   disabled,
+  onChange,
+  value,
   className,
   ...rest
 }) => {
-  const [inputValue, setInputValue] = useState('');
+  const [internalValue, setInternalValue] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [visibleCharacter, setIsVisibleCharacter] = useState(
-    type !== 'password'
+    type !== 'password',
   );
-
   const id = useId();
+
+  const inputValue = value ?? internalValue;
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInternalValue(e.target.value);
+    onChange?.(e); // if you want to use the value in the parent component
+  };
 
   const handleClearInput = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setInputValue('');
+    setInternalValue('');
+    onChange?.({ target: { value: '' } } as any); // event simulation
   };
-
   const handleCharacterVisibility = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsVisibleCharacter(!visibleCharacter);
@@ -39,22 +47,28 @@ export const TextField: React.FC<textFieldPropsType> = ({
     <div
       data-twe-input-wrapper-init
       className={cn(
-        'relative w-full font-vazirmatn',
+        'font-vazirmatn relative w-full',
         {
           'pointer-events-none': disabled,
         },
-        className
+        className,
       )}
     >
       <div className="h-[26px]">
         {mergeTitleAndPlaceholder ? (
           (isFocused || inputValue) && (
-            <label className={cn('text-sm font-medium', { 'text-gray-400': disabled })}>
+            <label
+              className={cn('text-sm font-medium', {
+                'text-gray-400': disabled,
+              })}
+            >
               {label}
             </label>
           )
         ) : (
-          <label className={cn('text-sm font-medium', { 'text-gray-400': disabled })}>
+          <label
+            className={cn('text-sm font-medium', { 'text-gray-400': disabled })}
+          >
             {label}
           </label>
         )}
@@ -64,10 +78,11 @@ export const TextField: React.FC<textFieldPropsType> = ({
         <label
           htmlFor={id}
           className={cn(
-            'text-sm hidden absolute top-9 pr-4 cursor-text font-medium',
+            'absolute top-9 hidden cursor-text pr-4 text-sm font-medium',
             { 'right-8': leadingIcon },
             { block: mergeTitleAndPlaceholder },
-            { 'text-gray-400': disabled }
+            { 'text-gray-400': disabled },
+            { 'top-10': leadingIcon?.size === 'md' },
           )}
         >
           {label}
@@ -76,11 +91,14 @@ export const TextField: React.FC<textFieldPropsType> = ({
 
       {leadingIcon && (
         <div
-          className={cn('absolute top-10 right-4 pointer-events-none', {
+          className={cn('pointer-events-none absolute right-4 top-10', {
             'text-gray-400': disabled,
+            'top-[42px]': leadingIcon?.size === 'md',
           })}
         >
-          {leadingIcon && <Icon size="lg" name={leadingIcon} />}
+          {leadingIcon && (
+            <Icon name={leadingIcon.name} size={leadingIcon.size || 'lg'} />
+          )}
         </div>
       )}
 
@@ -92,11 +110,11 @@ export const TextField: React.FC<textFieldPropsType> = ({
         type={visibleCharacter ? 'text' : 'password'}
         value={inputValue}
         disabled={disabled}
-        onChange={(e) => setInputValue(e.target.value)}
+        onChange={handleInputChange}
         className={cn(
-          'font-normal  w-full rounded-xl p-2 text-md outline-none border-[1.5px] transition-colors duration-150',
+          'text-md h-[50px] w-full rounded-xl border p-2 font-normal outline-none transition-colors duration-150',
           {
-            'bg-transparent border-inherit opacity-100 placeholder:text-gray-400':
+            'border-inherit bg-transparent opacity-100 placeholder:text-gray-400':
               disabled,
             'placeholder:text-gray-500': !disabled,
             'pl-20': trailingIcons.length === 2,
@@ -105,44 +123,57 @@ export const TextField: React.FC<textFieldPropsType> = ({
             'hover:bg-gray-300': mode === 'filled' && !disabled && !isFocused,
             'cursor-not-allowed !bg-gray-50': disabled && mode === 'filled',
             'border-red-600 focus:border-[2.5px]': isError && !disabled,
-            'border-gray-300 focus:border-brand-600 focus:border-[2.5px]':
+            'focus:border-brand-600 border-gray-300 focus:border-2 focus:outline-none':
               !isError && !disabled,
             'pr-12': leadingIcon,
-          }
+          },
         )}
         placeholder={mergeTitleAndPlaceholder ? '' : placeholder}
       />
 
-      <div className="absolute z-20 left-4 top-10 flex justify-between gap-4 items-center">
+      <div
+        className={cn(
+          'absolute left-4 top-10 z-20 flex items-center justify-between gap-4',
+          {
+            'top-[42px]':
+              trailingIcons.length > 0 && trailingIcons[1]?.size === 'md',
+          },
+        )}
+      >
         {trailingIcons.map((icon) =>
-          icon === 'eye' ? (
+          icon.name === 'eye' ? (
             <button
+              type="button"
               className={cn({ 'text-gray-400': disabled })}
               onMouseDown={(e) => handleCharacterVisibility(e)}
             >
-              <Icon size="lg" name={visibleCharacter ? 'eye-off' : icon} />
+              <Icon
+                size={icon.size}
+                name={visibleCharacter ? 'eye-off' : icon.name}
+              />
             </button>
           ) : (
             inputValue && (
               <button
+                type="button"
                 className={cn({ 'text-gray-400': disabled })}
                 onMouseDown={(e) => handleClearInput(e)}
               >
-                <Icon size="lg" name={icon} />
+                <Icon size={icon.size} name={icon.name} />
               </button>
             )
-          )
+          ),
         )}
       </div>
-      <span
-        className={cn('text-xs', {
+      <div
+        className={cn('h-[22px] pt-1 text-xs', {
           'text-red-600': isError,
           'text-gray-600': !isError,
           'text-gray-400': disabled,
         })}
       >
         {supportText}
-      </span>
+      </div>
     </div>
   );
 };
