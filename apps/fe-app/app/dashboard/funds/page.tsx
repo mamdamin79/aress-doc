@@ -7,6 +7,8 @@ import {
   Tooltip,
   formatNumber,
   OptionsDropdown,
+  FundsFilterSection,
+  FundsTag,
 } from 'design-system';
 import {
   ColumnDef,
@@ -19,11 +21,73 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { makeData, Person } from './components/makeData';
+import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
+
+type SelectedColumnsType = {
+  [key: string]: boolean;
+};
 
 const Funds = () => {
   const [indexCategoryTab, setIndexCategoryTab] = useState(0);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [data, setData] = useState<Person[]>(() => makeData(5000));
+  const [data, setData] = useState<Person[]>(() => makeData(500));
+  const [isFilterModal, setIsFilterModal] = useState(false);
+  const [isSettingModal, setIsSettingModal] = useState(false);
+
+  const [selectedColumns, setSelectedColumns] = useState<SelectedColumnsType>(
+    {},
+  );
+
+  const handleToggle = (section: string, option: string) => {
+    setSelectedColumns((prev) => ({
+      ...prev,
+      [option]: !prev[option],
+    }));
+  };
+
+  const sections = [
+    {
+      title: 'مشخصات صندوق',
+      options: [
+        'تعداد واحد',
+        'تعداد واحد صندوق',
+        'کل ارزش خالص دارایی‌ها',
+        'تسهیم سقف صندوق',
+      ],
+    },
+    {
+      title: 'ارکان صندوق',
+      options: ['مدیر صندوق', 'متولی', 'حسابرس'],
+    },
+    {
+      title: 'سهم پردازی صندوق',
+      options: ['سهم پایه', 'آخرین قیمت خالص'],
+    },
+    {
+      title: 'عملکرد صندوق',
+      options: ['بازده روزانه', 'بازده هفتگی', 'بازده ماهانه', 'بازده سالانه'],
+    },
+    {
+      title: 'ریسک صندوق',
+      options: ['انحراف معیار', 'بتا', 'ضریب شارپ'],
+    },
+    {
+      title: 'مقایسه با شاخص',
+      options: ['مقایسه با شاخص کل', 'مقایسه با شاخص هم وزن'],
+    },
+    {
+      title: 'اطلاعات خرید و فروش',
+      options: ['ارزش خرید', 'ارزش فروش', 'تعداد معاملات'],
+    },
+    {
+      title: 'نقدشوندگی صندوق',
+      options: ['میانگین حجم معاملات', 'حجم معاملات روزانه'],
+    },
+  ];
+
+  const resetSelections = () => {
+    setSelectedColumns({});
+  };
 
   const columns: ColumnDef<Person>[] = [
     { accessorKey: 'firstName', cell: (info) => info.getValue() },
@@ -156,12 +220,7 @@ const Funds = () => {
                   >
                     {header.isPlaceholder ? null : (
                       <>
-                        <div
-                        // {...{
-                        //   className: header.column.getCanSort(),
-                        //   onClick: header.column.getToggleSortingHandler(),
-                        // }}
-                        >
+                        <div>
                           <div
                             className={cn({
                               'mx-4 flex items-center gap-7': index === 0,
@@ -170,21 +229,38 @@ const Funds = () => {
                             {index === 0 && (
                               <div className="flex items-center gap-2">
                                 <Tooltip title="انتخاب ستون ها">
-                                  <div className="bg-brand-600 cursor-pointer rounded-md p-1 text-white">
+                                  <div
+                                    onClick={() => setIsSettingModal(true)}
+                                    className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
+                                  >
                                     <Icon size="lg" name="settings" />
                                   </div>
                                 </Tooltip>
                                 <Tooltip title="فیلتر صندوق ها">
-                                  <div className="bg-brand-600 cursor-pointer rounded-md p-1 text-white">
+                                  <div
+                                    onClick={() => setIsFilterModal(true)}
+                                    className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
+                                  >
+                                    {Object.values(selectedColumns).filter(
+                                      Boolean,
+                                    ).length ? (
+                                      <div className="absolute -right-1 -top-1">
+                                        <FundsTag color="blue" />
+                                      </div>
+                                    ) : ''}
                                     <Icon size="lg" name="filter" />
                                   </div>
                                 </Tooltip>
                               </div>
                             )}
-                            {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
+                            <div
+                              onClick={header.column.getToggleSortingHandler()}
+                            >
+                              {flexRender(
+                                header.column.columnDef.header,
+                                header.getContext(),
+                              )}
+                            </div>
                           </div>
                           {/* 
                         {{
@@ -219,31 +295,42 @@ const Funds = () => {
       </div>
 
       <div className="sticky bottom-6 mt-6 flex items-center justify-between">
-        {/* <div className="bg-gray-400 py-2 px-3 rounded-md">
+        <div className="rounded-md bg-gray-400 px-3 py-2">
           <OptionsDropdown
+            onChange={(e) => {
+              table.setPageSize(Number(e));
+            }}
             dropDownStyles={{
               bg: 'primary',
               emphasize: 'medium',
-              size: 'sm',
+              size: 'md',
               anchor: 'bottom start',
-              checkSelected: false,
+              checkSelected: true,
             }}
             customTriggerRender={(prop) => (
               <div className="flex items-center gap-2">
                 <span>تعداد سطر در جدول: </span>
                 {prop.selectedItem.text}
+                <Icon name={prop.isActive ? 'chevron-up' : 'chevron-down'} />
               </div>
             )}
             customOptionRender={(prop) => (
-              <div className="bg-gray-400 px-5 font-medium text-xs first:pt-2 text-center text-gray-1000 w-full cursor-pointer">
-                <span>{prop.text}</span>
+              <div className="text-gray-1000 w-full cursor-pointer bg-gray-400 px-5 text-center text-xs font-medium first:pt-2">
+                <span>
+                  {table.getState().pagination.pageSize *
+                    (table.getState().pagination.pageIndex + 1) *
+                    table.getPageCount() ===
+                  +prop.text
+                    ? 'همه'
+                    : prop.text}
+                </span>
               </div>
             )}
             dropDownList={[
               { text: '10' },
-              { text: '20' },
-              { text: '30' },
-              { text: '40' },
+              { text: '25' },
+              { text: '50' },
+              { text: '100' },
               {
                 text: String(
                   table.getState().pagination.pageSize *
@@ -253,34 +340,7 @@ const Funds = () => {
               },
             ]}
           />
-        </div> */}
-
-        <select
-          className="cursor-pointer rounded-md bg-gray-300 px-3 py-2 outline-none"
-          value={table.getState().pagination.pageSize}
-          onChange={(e) => {
-            table.setPageSize(Number(e.target.value));
-          }}
-        >
-          {[
-            10,
-            20,
-            30,
-            40,
-            table.getState().pagination.pageSize *
-              (table.getState().pagination.pageIndex + 1) *
-              table.getPageCount(),
-          ].map((pageSize) => (
-            <option selected={false} key={pageSize} value={pageSize}>
-              {pageSize ===
-              table.getState().pagination.pageSize *
-                (table.getState().pagination.pageIndex + 1) *
-                table.getPageCount()
-                ? 'همه'
-                : pageSize}{' '}
-            </option>
-          ))}
-        </select>
+        </div>
 
         <span className="rounded-md bg-gray-300 px-3 py-2 text-xs font-medium">
           مجموعه ارزش خالص دارایی ها: 10,986,249.09
@@ -288,8 +348,11 @@ const Funds = () => {
         <div className="flex items-center gap-2 rounded-md bg-gray-400 px-3 py-2">
           <span className="text-gray-1000 flex items-center gap-1 text-xs font-medium">
             <div>
-              {formatNumber(table.getState().pagination.pageSize *
-                (table.getState().pagination.pageIndex + 1), { commaSeparated: true})}
+              {formatNumber(
+                table.getState().pagination.pageSize *
+                  (table.getState().pagination.pageIndex + 1),
+                { commaSeparated: true },
+              )}
               -
               {table.getState().pagination.pageSize *
                 table.getState().pagination.pageIndex +
@@ -313,10 +376,8 @@ const Funds = () => {
             <Icon size="lg" name="chevron-right" />
           </button>
           <button
-          
-            className={cn("cursor-pointer rounded", {
-              'cursor-default text-gray-300':
-              !table.getCanNextPage(),
+            className={cn('cursor-pointer rounded', {
+              'cursor-default text-gray-300': !table.getCanNextPage(),
             })}
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
@@ -325,6 +386,55 @@ const Funds = () => {
           </button>
         </div>
       </div>
+      <Dialog
+        open={isFilterModal}
+        as="div"
+        className="relative z-20 focus:outline-none"
+        onClose={() => setIsFilterModal(false)}
+      >
+        <div className="fixed inset-0 z-20 w-screen overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center">
+            <DialogPanel
+              transition
+              className="shadow-3xl data-[closed]:transform-[scale(0%)] relative w-full max-w-lg rounded-3xl bg-white duration-300 ease-out data-[closed]:opacity-0"
+            >
+              <DialogTitle className="flex items-center justify-between">
+                <span className="p-6 text-xl font-medium">
+                  انتخاب سوتون ها (
+                  {Object.values(selectedColumns).filter(Boolean).length}/25)
+                </span>
+                {
+                  Object.values(selectedColumns).filter(Boolean).length ? 
+                  <span
+                  className="cursor-pointer m-6 text-base font-medium text-red-600"
+                  onClick={resetSelections}
+                  >
+                  بازنشانی به پیشفرض
+                </span> : ''
+                }
+              </DialogTitle>
+              <hr />
+              <div className=' scrollbar-thumb-gray-500  h-[550px] scrollbar-track-rounded-full scrollbar-thumb-rounded-full scrollbar-thin scrollbar-track-gray-300 overflow-x-hidden overflow-y-scroll'>
+                {sections.map((item) => (
+                  <FundsFilterSection
+                    key={item.title}
+                    title={item.title}
+                    options={item.options}
+                    selectedColumns={selectedColumns}
+                    onToggle={handleToggle}
+                  />
+                ))}
+              </div>
+              <div
+                onClick={() => setIsFilterModal(false)}
+                className="text-brand-600 absolute -left-2 -top-2 cursor-pointer"
+              >
+                <Icon name="circle-x" size="lg_plus" />
+              </div>
+            </DialogPanel>
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 };
