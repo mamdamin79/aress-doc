@@ -5,7 +5,7 @@ import { Icon } from '../Icon';
 import { cn } from '../../../utils/classNames.utils';
 
 // LikeDislike component receives an initial value, a reaction type, a flag to specify if the user has already reacted, and a function to call when the reaction is clicked.
-const LikeDislike: React.FC<LikeDislikeProps> = ({
+export const LikeDislike: React.FC<LikeDislikeProps> = ({
   initialValue,
   reaction,
   reactedBefore,
@@ -50,5 +50,3 @@ const LikeDislike: React.FC<LikeDislikeProps> = ({
     </button>
   );
 };
-
-export default LikeDislike;
