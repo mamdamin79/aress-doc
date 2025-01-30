@@ -37,10 +37,6 @@ export const Tabs: React.FC<Props> = ({
         >
           {tabs.map((props, index) => (
             <Tab
-<<<<<<< HEAD
-              onClick={() => onClickTab(props.id)}
-=======
->>>>>>> feat/9x26FWOZ/funds-sidebar
               key={index}
               className={cn(
                 'font-vazirmatn text-md relative outline-none',

@@ -1,3 +1,4 @@
+'use client';
 import React, { useRef, useState, useEffect } from 'react';
 import { OptionsDropdown } from '../OptionsDropdown';
 import { PrimarySection } from './PrimarySection';
