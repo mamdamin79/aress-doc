@@ -8,7 +8,7 @@ export const AddReportButton: React.FC<AddReportButtonProps> = ({
 }) => {
   return (
     <button
-      className="w-[616px] h-[320px] flex justify-center items-center bg-white rounded-2xl shadow-sm  text-gray-600 text-lg font-medium group/reportBtn hover:text-brand-700"
+      className="w-[616px] h-[336px] flex justify-center items-center bg-white rounded-2xl shadow-sm  text-gray-600 text-lg font-medium group/reportBtn hover:text-brand-700"
       onClick={onClick}
     >
       <div className="flex flex-col gap-4 justify-center items-center transition-all">
