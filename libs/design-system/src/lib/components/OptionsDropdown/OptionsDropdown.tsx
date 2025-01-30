@@ -19,18 +19,30 @@ export interface OptionsDropdownProps {
     dropDownStyles: dropDownStyle;
   }) => React.ReactNode;
   customOptionRender?: (props: dropDownCell) => React.ReactNode;
+  onChange?: (selectedText: string) => void;
 }
+
 export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
   dropDownList,
   dropDownStyles,
   customTriggerRender,
   customOptionRender,
+  onChange,
 }) => {
   const [selectedItem, setSelectedItem] = useState<dropDownCell>(
     dropDownList[0],
   );
+
+  // Handle selection change
+  const handleSelectionChange = (item: dropDownCell) => {
+    setSelectedItem(item);
+    if (onChange) {
+      onChange(item.text);
+    }
+  };
+
   return (
-    <Listbox value={selectedItem} onChange={setSelectedItem}>
+    <Listbox value={selectedItem} onChange={handleSelectionChange}>
       <ListboxButton
         className={cn('outline-none', !dropDownStyles.fixedWidth && 'w-fit')}
         style={
@@ -68,7 +80,7 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
         }
       >
         {dropDownList.map((item, index) => (
-          <div onClick={() => setSelectedItem(item)} key={index}>
+          <div onClick={() => handleSelectionChange(item)} key={index}>
             <ListboxOption value={item}>
               {({ selected }) =>
                 customOptionRender ? (
