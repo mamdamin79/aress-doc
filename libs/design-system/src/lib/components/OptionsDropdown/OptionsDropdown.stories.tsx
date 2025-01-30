@@ -35,6 +35,9 @@ export const withbadge: Story = {
       size: 'md',
       anchor: 'bottom start',
     },
+    onChange(selectedText) {
+      console.log(selectedText);
+    },
   },
 };
 export const withIcon: Story = {
