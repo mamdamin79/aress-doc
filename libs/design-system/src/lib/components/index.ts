@@ -29,3 +29,7 @@ export * from './LikeDislike';
 export * from './AddReportButton';
 export * from './HorizontalScrollBar';
 export * from './AutoRotateSwitch';
+export * from './Tooltip';
+export * from './HeaderMenus';
+export * from './NotesHeading';
+export * from './HeaderMenus/BurgerMenu/HamburgerMenuIcon';
