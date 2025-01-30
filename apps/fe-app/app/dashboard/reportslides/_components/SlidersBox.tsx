@@ -2,7 +2,6 @@
 import { AddReportButton } from 'design-system';
 import React from 'react';
 
-
 export const SlidersBox: React.FC = () => {
   return (
     <div
@@ -14,6 +13,15 @@ export const SlidersBox: React.FC = () => {
       <div className="shadow-6xl h-[336px] overflow-hidden rounded-2xl border-2 border-gray-200">
         <AddReportButton onClick={() => {}} />
       </div>
+      <div className="shadow-6xl h-[336px] overflow-hidden rounded-2xl border-2 border-gray-200">
+        <AddReportButton onClick={() => {}} />
+      </div>
+      <div className="shadow-6xl h-[336px] overflow-hidden rounded-2xl border-2 border-gray-200">
+        <AddReportButton onClick={() => {}} />
+      </div>
+      <div className="shadow-6xl h-[336px] overflow-hidden rounded-2xl border-2 border-gray-200">
+        <AddReportButton onClick={() => {}} />
+      </div>{' '}
       <div className="shadow-6xl h-[336px] overflow-hidden rounded-2xl border-2 border-gray-200">
         <AddReportButton onClick={() => {}} />
       </div>
