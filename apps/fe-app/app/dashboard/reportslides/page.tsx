@@ -1,18 +1,21 @@
 import React from 'react';
 import { DashboardNumberAndName, SlidersBox } from './_components';
-import { HorizontalScrollBar } from 'design-system';
-import { AutoScroll } from 'compositions';
+import { AutoRotateSwitchWrapper } from './_components/AutoRotateSwitchWrapper';
+import { FundsSidebarWrapper } from './_components/FundsSidebarWrapper';
 
 const page = () => {
   return (
-    <div className="relative flex w-full flex-row">
-      <div>
-        <div className="flex justify-between">
+    <div className="3xl:px-6 relative mt-8 flex w-full flex-row justify-center gap-20 lg:px-4 xl:px-0">
+      <div className="3xl:block hidden lg:block xl:hidden">
+        <FundsSidebarWrapper />
+      </div>
+      <div className="w-fit">
+        <div className="flex w-full justify-between">
           <DashboardNumberAndName number={2} title="صندوق کالایی" />
-          <AutoScroll />
+          <AutoRotateSwitchWrapper />
         </div>
 
-        <section className="mt-8 flex w-full justify-center">
+        <section className="mt-8 flex w-fit justify-center">
           <SlidersBox />
         </section>
       </div>
