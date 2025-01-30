@@ -1,6 +1,13 @@
 'use client';
 import React, { useState } from 'react';
-import { cn, Icon, Tabs } from 'design-system';
+import {
+  cn,
+  Icon,
+  Tabs,
+  Tooltip,
+  formatNumber,
+  OptionsDropdown,
+} from 'design-system';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -42,95 +49,212 @@ const Funds = () => {
     getPaginationRowModel: getPaginationRowModel(),
   });
 
-
   return (
-    <div className="container max-w-7xl px-20 mx-auto p-4">
-      <div className="mt-4 flex w-full items-center justify-start gap-3">
-        <span className="pb-2.5">دسته بندی صندوق‌ها</span>
-        <Tabs
-          variant="shaped"
-          onClickTab={(e) => setIndexCategoryTab(e)}
-          activeTab={indexCategoryTab}
-          colorMode="neutral"
-          tabs={[
-            { title: 'سهامی', tag: 'green', id: '1' },
-            { title: 'دیده بان', id: '2' },
-          ]}
-        />
-      </div>
-      <div className='mt-4 border-2 overflow-hidden rounded-xl border-brand-200'>
-      <table className="w-full text-center">
-        <thead className='border'>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id} className='border sticky top-0 h-[72px] border-brand-200 bg-brand-100'>
-              {headerGroup.headers.map((header, index) => (
-                <th
-                  className={cn({
-                    'w-64 text-right': index === 0
-                  })}
-                  key={header.id}
-                  colSpan={header.colSpan}
+    <div className="container mx-auto max-w-7xl p-4 px-20">
+      <div className="mt-4 flex items-center justify-between">
+        <div className="flex w-full items-center justify-start gap-3">
+          <span className="pb-2.5">دسته بندی صندوق‌ها</span>
+          <Tabs
+            variant="shaped"
+            onClickTab={(e) => setIndexCategoryTab(e)}
+            activeTab={indexCategoryTab}
+            colorMode="neutral"
+            tabs={[
+              { title: 'سهامی', tag: 'green', id: '1' },
+              { title: 'دیده بان', id: '2' },
+            ]}
+          />
+        </div>
+        <Tooltip title="خروجی اکسل">
+          <div className="border-brand-600 rounded-md border p-1.5">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M14.6865 11.5133L6.38477 10.0508V20.8575C6.38467 20.975 6.40775 21.0913 6.4527 21.1998C6.49765 21.3083 6.56358 21.4069 6.6467 21.4899C6.72983 21.5729 6.82851 21.6387 6.93711 21.6834C7.0457 21.7282 7.16206 21.7511 7.27952 21.7508H21.6045C21.7221 21.7513 21.8386 21.7285 21.9474 21.6839C22.0562 21.6392 22.155 21.5734 22.2383 21.4904C22.3216 21.4074 22.3876 21.3088 22.4327 21.2002C22.4777 21.0916 22.5009 20.9751 22.5008 20.8575V16.8758L14.6865 11.5133Z"
+                fill="#185C37"
+              />
+              <path
+                d="M14.6865 2.25H7.27952C7.16206 2.24971 7.0457 2.2726 6.93711 2.31736C6.82851 2.36213 6.72983 2.42789 6.6467 2.51088C6.56358 2.59386 6.49765 2.69244 6.4527 2.80096C6.40775 2.90947 6.38467 3.0258 6.38477 3.14325V7.125L14.6865 12L19.0823 13.4625L22.5008 12V7.125L14.6865 2.25Z"
+                fill="#21A366"
+              />
+              <path
+                d="M6.38477 7.125H14.6865V12H6.38477V7.125Z"
+                fill="#107C41"
+              />
+              <path
+                opacity="0.1"
+                d="M12.3263 6.15039H6.38477V18.3379H12.3263C12.563 18.3367 12.7898 18.2423 12.9574 18.0751C13.125 17.9079 13.22 17.6814 13.2218 17.4446V7.04364C13.22 6.80689 13.125 6.58038 12.9574 6.41318C12.7898 6.24598 12.563 6.15157 12.3263 6.15039Z"
+                fill="black"
+              />
+              <path
+                opacity="0.2"
+                d="M11.838 6.63672H6.38477V18.8242H11.838C12.0748 18.823 12.3015 18.7286 12.4691 18.5614C12.6368 18.3942 12.7317 18.1677 12.7335 17.931V7.52997C12.7317 7.29322 12.6368 7.06671 12.4691 6.89951C12.3015 6.73231 12.0748 6.6379 11.838 6.63672Z"
+                fill="black"
+              />
+              <path
+                opacity="0.2"
+                d="M11.838 6.63672H6.38477V17.8492H11.838C12.0748 17.848 12.3015 17.7536 12.4691 17.5864C12.6368 17.4192 12.7317 17.1927 12.7335 16.956V7.52997C12.7317 7.29322 12.6368 7.06671 12.4691 6.89951C12.3015 6.73231 12.0748 6.6379 11.838 6.63672Z"
+                fill="black"
+              />
+              <path
+                opacity="0.2"
+                d="M11.3498 6.63672H6.38477V17.8492H11.3498C11.5865 17.848 11.8133 17.7536 11.9809 17.5864C12.1485 17.4192 12.2435 17.1927 12.2453 16.956V7.52997C12.2435 7.29322 12.1485 7.06671 11.9809 6.89951C11.8133 6.73231 11.5865 6.6379 11.3498 6.63672Z"
+                fill="black"
+              />
+              <path
+                d="M2.3955 6.63672H11.349C11.5862 6.63652 11.8137 6.7305 11.9816 6.89799C12.1496 7.06549 12.2441 7.2928 12.2445 7.52997V16.4685C12.2441 16.7056 12.1496 16.933 11.9816 17.1005C11.8137 17.2679 11.5862 17.3619 11.349 17.3617H2.3955C2.27798 17.3621 2.16154 17.3393 2.05286 17.2946C1.94418 17.2499 1.84541 17.1841 1.7622 17.1011C1.679 17.0181 1.613 16.9195 1.56801 16.8109C1.52301 16.7024 1.4999 16.586 1.5 16.4685V7.52997C1.4999 7.41245 1.52301 7.29607 1.56801 7.1875C1.613 7.07894 1.679 6.98033 1.7622 6.89733C1.84541 6.81434 1.94418 6.74859 2.05286 6.70387C2.16154 6.65915 2.27798 6.63633 2.3955 6.63672Z"
+                fill="url(#paint0_linear_11739_193806)"
+              />
+              <path
+                d="M4.27539 14.9052L6.15864 11.9922L4.43364 9.0957H5.81889L6.76014 10.9505C6.84714 11.126 6.91014 11.2565 6.93864 11.3435H6.95139C7.01289 11.203 7.07789 11.0665 7.14639 10.934L8.15289 9.0987H9.42789L7.65864 11.9787L9.47289 14.9075H8.11614L7.02864 12.8742C6.97829 12.7867 6.93539 12.6951 6.90039 12.6005H6.88239C6.85061 12.6927 6.80833 12.7811 6.75639 12.8637L5.63664 14.9052H4.27539Z"
+                fill="white"
+              />
+              <path
+                d="M21.6045 2.25001H14.6858V7.125H22.5V3.14325C22.5001 3.02573 22.477 2.90935 22.432 2.80079C22.387 2.69222 22.321 2.59361 22.2378 2.51061C22.1546 2.42762 22.0559 2.36187 21.9472 2.31715C21.8385 2.27243 21.7221 2.24961 21.6045 2.25001Z"
+                fill="#33C481"
+              />
+              <path d="M14.6858 12H22.5V16.875H14.6858V12Z" fill="#107C41" />
+              <defs>
+                <linearGradient
+                  id="paint0_linear_11739_193806"
+                  x1="3.3705"
+                  y1="5.93472"
+                  x2="10.374"
+                  y2="18.0637"
+                  gradientUnits="userSpaceOnUse"
                 >
-                  {header.isPlaceholder ? null : (
-                    <>
-                      <div
+                  <stop stop-color="#18884F" />
+                  <stop offset="0.5" stop-color="#117E43" />
+                  <stop offset="1" stop-color="#0B6631" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </Tooltip>
+      </div>
+
+      <div className="border-brand-200 mt-4 overflow-hidden rounded-xl border-2">
+        <table className="w-full text-center">
+          <thead className="border">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr
+                key={headerGroup.id}
+                className="border-brand-200 bg-brand-100 sticky top-0 h-[72px] border"
+              >
+                {headerGroup.headers.map((header, index) => (
+                  <th
+                    className={cn({
+                      'w-64 text-right': index === 0,
+                    })}
+                    key={header.id}
+                    colSpan={header.colSpan}
+                  >
+                    {header.isPlaceholder ? null : (
+                      <>
+                        <div
                         // {...{
                         //   className: header.column.getCanSort(),
                         //   onClick: header.column.getToggleSortingHandler(),
                         // }}
-                      >
-                        <div className={cn({
-                          'flex items-center gap-7 mx-4': index === 0
-                        })}>
-
-                        {
-                          index === 0 && (
-                            <div className='flex items-center gap-2'>
-                              <div className='bg-brand-600 cursor-pointer text-white rounded-md p-1'>
-                                <Icon size='lg' name='settings' />
+                        >
+                          <div
+                            className={cn({
+                              'mx-4 flex items-center gap-7': index === 0,
+                            })}
+                          >
+                            {index === 0 && (
+                              <div className="flex items-center gap-2">
+                                <Tooltip title="انتخاب ستون ها">
+                                  <div className="bg-brand-600 cursor-pointer rounded-md p-1 text-white">
+                                    <Icon size="lg" name="settings" />
+                                  </div>
+                                </Tooltip>
+                                <Tooltip title="فیلتر صندوق ها">
+                                  <div className="bg-brand-600 cursor-pointer rounded-md p-1 text-white">
+                                    <Icon size="lg" name="filter" />
+                                  </div>
+                                </Tooltip>
                               </div>
-                              <div className='bg-brand-600 cursor-pointer text-white rounded-md p-1'>
-                                <Icon size='lg' name='filter' />
-                              </div>
-                            </div>
-                          )
-                        }
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                        </div>
-{/* 
+                            )}
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                          </div>
+                          {/* 
                         {{
                           asc: ' 🔼',
                           desc: ' 🔽',
                         }[header.column.getIsSorted() as string] ?? null} */}
-                      </div>
-                    </>
-                  )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className='border-y h-16'>
-              {row.getVisibleCells().map((cell, index) => (
-                <td key={cell.id} className={cn({
-                  'text-right px-2': index === 0
-                })}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                        </div>
+                      </>
+                    )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id} className="h-16 border-y">
+                {row.getVisibleCells().map((cell, index) => (
+                  <td
+                    key={cell.id}
+                    className={cn({
+                      'px-2 text-right': index === 0,
+                    })}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
-      <div className="flex sticky bottom-6 items-center mt-6 justify-between">
-        
+      <div className="sticky bottom-6 mt-6 flex items-center justify-between">
+        {/* <div className="bg-gray-400 py-2 px-3 rounded-md">
+          <OptionsDropdown
+            dropDownStyles={{
+              bg: 'primary',
+              emphasize: 'medium',
+              size: 'sm',
+              anchor: 'bottom start',
+              checkSelected: false,
+            }}
+            customTriggerRender={(prop) => (
+              <div className="flex items-center gap-2">
+                <span>تعداد سطر در جدول: </span>
+                {prop.selectedItem.text}
+              </div>
+            )}
+            customOptionRender={(prop) => (
+              <div className="bg-gray-400 px-5 font-medium text-xs first:pt-2 text-center text-gray-1000 w-full cursor-pointer">
+                <span>{prop.text}</span>
+              </div>
+            )}
+            dropDownList={[
+              { text: '10' },
+              { text: '20' },
+              { text: '30' },
+              { text: '40' },
+              {
+                text: String(
+                  table.getState().pagination.pageSize *
+                    (table.getState().pagination.pageIndex + 1) *
+                    table.getPageCount(),
+                ),
+              },
+            ]}
+          />
+        </div> */}
+
         <select
           className="cursor-pointer rounded-md bg-gray-300 px-3 py-2 outline-none"
           value={table.getState().pagination.pageSize}
@@ -138,43 +262,66 @@ const Funds = () => {
             table.setPageSize(Number(e.target.value));
           }}
         >
-          <option value="" aria-checked>تعداد سطر در جدول</option>
-          {[10, 20, 30, 40, 50].map((pageSize) => (
+          {[
+            10,
+            20,
+            30,
+            40,
+            table.getState().pagination.pageSize *
+              (table.getState().pagination.pageIndex + 1) *
+              table.getPageCount(),
+          ].map((pageSize) => (
             <option selected={false} key={pageSize} value={pageSize}>
-              {pageSize}
+              {pageSize ===
+              table.getState().pagination.pageSize *
+                (table.getState().pagination.pageIndex + 1) *
+                table.getPageCount()
+                ? 'همه'
+                : pageSize}{' '}
             </option>
           ))}
         </select>
 
-        <div className='rounded-md bg-gray-300 py-2 px-3'>
+        <span className="rounded-md bg-gray-300 px-3 py-2 text-xs font-medium">
           مجموعه ارزش خالص دارایی ها: 10,986,249.09
-        </div>
-        <div className="flex items-center gap-2 bg-gray-400 opacity-[0.55] rounded-md py-2 px-3">
-          <span className="flex items-center gap-1">
+        </span>
+        <div className="flex items-center gap-2 rounded-md bg-gray-400 px-3 py-2">
+          <span className="text-gray-1000 flex items-center gap-1 text-xs font-medium">
             <div>
-              {table.getState().pagination.pageSize * (table.getState().pagination.pageIndex + 1)}
+              {formatNumber(table.getState().pagination.pageSize *
+                (table.getState().pagination.pageIndex + 1), { commaSeparated: true})}
               -
-              {(table.getState().pagination.pageSize * table.getState().pagination.pageIndex) + 1}
+              {table.getState().pagination.pageSize *
+                table.getState().pagination.pageIndex +
+                1}
             </div>
-              از 
-              {table.getPageCount()}
-              صندوق 
+            از
+            {formatNumber(
+              table.getPageCount() * table.getState().pagination.pageSize,
+              { commaSeparated: true },
+            )}
+            <span className="px-[1px]">صندوق</span>
           </span>
           <button
-            className={cn("rounded cursor-pointer", {
-              'text-gray-200 cursor-default': table.getState().pagination.pageIndex + 1 === 1
+            className={cn('cursor-pointer rounded', {
+              'cursor-default text-gray-300':
+                table.getState().pagination.pageIndex + 1 === 1,
             })}
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            <Icon size='lg' name='chevron-right' />
+            <Icon size="lg" name="chevron-right" />
           </button>
           <button
-            className="rounded cursor-pointer"
+          
+            className={cn("cursor-pointer rounded", {
+              'cursor-default text-gray-300':
+              !table.getCanNextPage(),
+            })}
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            <Icon size='lg' name='chevron-left' />
+            <Icon size="lg" name="chevron-left" />
           </button>
         </div>
       </div>
