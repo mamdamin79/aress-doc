@@ -5,10 +5,11 @@ import { Icon } from '../Icon';
 
 export interface HorizontalScrollBarProps {
   barsNumber: number;
-  autoRotate: boolean;
-  onChangeIndex: (index: number) => void;
+  autoRotate?: boolean;
+  onChangeIndex?: (index: number) => void;
   autoRotateDuration?: 5000 | 10000 | 15000 | number;
   hasArrows?: boolean;
+  externalIndex?: number;
 }
 
 export const HorizontalScrollBar: React.FC<HorizontalScrollBarProps> = ({
@@ -17,6 +18,7 @@ export const HorizontalScrollBar: React.FC<HorizontalScrollBarProps> = ({
   onChangeIndex,
   autoRotateDuration = 5000,
   hasArrows = false,
+  externalIndex,
 }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const intervalRef = useRef<NodeJS.Timer | null>(null);
@@ -25,7 +27,7 @@ export const HorizontalScrollBar: React.FC<HorizontalScrollBarProps> = ({
     setActiveIndex((prevIndex) => {
       const newIndex =
         prevIndex === barsNumber - 1 ? 0 : (prevIndex as number) + 1;
-      onChangeIndex(newIndex);
+      onChangeIndex?.(newIndex);
       return newIndex;
     });
     resetTimer(); // Reset timer when manually changing the index
@@ -35,12 +37,16 @@ export const HorizontalScrollBar: React.FC<HorizontalScrollBarProps> = ({
     setActiveIndex((prevIndex) => {
       const newIndex =
         prevIndex === 0 ? barsNumber - 1 : (prevIndex as number) - 1;
-      onChangeIndex(newIndex);
+      onChangeIndex?.(newIndex);
       return newIndex;
     });
     resetTimer();
   };
-
+  const handleClick = (index: number) => {
+    setActiveIndex(index);
+    onChangeIndex?.(index);
+    resetTimer();
+  };
   const resetTimer = () => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
@@ -52,7 +58,11 @@ export const HorizontalScrollBar: React.FC<HorizontalScrollBarProps> = ({
     }
   };
   useEffect(() => {
-    setActiveIndex(0);
+    if (externalIndex !== undefined) {
+      setActiveIndex(externalIndex);
+    } else {
+      setActiveIndex(0);
+    }
     resetTimer();
 
     return () => {
@@ -60,7 +70,13 @@ export const HorizontalScrollBar: React.FC<HorizontalScrollBarProps> = ({
         clearInterval(intervalRef.current);
       }
     };
-  }, [barsNumber, autoRotate, autoRotateDuration, onChangeIndex]);
+  }, [
+    barsNumber,
+    autoRotate,
+    autoRotateDuration,
+    onChangeIndex,
+    externalIndex,
+  ]);
 
   return (
     <div className="relative flex w-fit flex-col items-center justify-center">
@@ -76,7 +92,7 @@ export const HorizontalScrollBar: React.FC<HorizontalScrollBarProps> = ({
       {Array.from({ length: barsNumber }, (_, index) => (
         <div className="p-1" key={index}>
           <div
-            onClick={() => setActiveIndex(index)}
+            onClick={() => handleClick(index)}
             className={cn(
               'bg-brand-400 h-4 w-4 cursor-pointer overflow-hidden rounded-[100px] transition-all ease-in-out',
               activeIndex === index ? 'h-14 duration-500' : 'duration-100',
