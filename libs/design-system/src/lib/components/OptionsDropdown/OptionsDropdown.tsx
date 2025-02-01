@@ -70,7 +70,7 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
       <ListboxOptions
         anchor={dropDownStyles.anchor}
         className={cn(
-          'shadow-7xl mt-1 gap-1 rounded-lg border border-gray-300 outline-none',
+          'gap-1 rounded-lg border border-gray-300 outline-none',
           !dropDownStyles.fixedWidth && 'w-fit',
         )}
         style={

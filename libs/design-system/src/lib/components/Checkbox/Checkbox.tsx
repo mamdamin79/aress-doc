@@ -15,7 +15,7 @@ export function Checkbox(props: CheckboxProps) {
   const unikId = useId();
 
   return (
-    <Field className="flex w-full items-center gap-2">
+    <Field className="flex items-center gap-2">
       <CheckboxHeadlessUIProps
         {...props}
         className="group w-fit"

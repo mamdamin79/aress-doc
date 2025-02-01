@@ -65,7 +65,7 @@ const Funds = () => {
     },
     {
       title: 'عملکرد صندوق',
-      options: ['بازده روزانه', 'بازده هفتگی', 'بازده ماهانه', 'بازده سالانه'],
+      options: ['بازده روزانه', 'بازده هفتگی', 'بازده ماهانه', 'بازده سالانه', 'بازه دلخواه'],
     },
     {
       title: 'ریسک صندوق',
@@ -295,8 +295,9 @@ const Funds = () => {
       </div>
 
       <div className="sticky bottom-6 mt-6 flex items-center justify-between">
-        <div className="rounded-md bg-gray-400 px-3 py-2">
+        <div className="rounded-md bg-gray-400 py-2">
           <OptionsDropdown
+
             onChange={(e) => {
               table.setPageSize(Number(e));
             }}
@@ -304,11 +305,11 @@ const Funds = () => {
               bg: 'primary',
               emphasize: 'medium',
               size: 'md',
-              anchor: 'bottom start',
+              anchor: 'top end',
               checkSelected: true,
             }}
             customTriggerRender={(prop) => (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 px-3">
                 <span>تعداد سطر در جدول: </span>
                 {prop.selectedItem.text}
                 <Icon name={prop.isActive ? 'chevron-up' : 'chevron-down'} />
@@ -320,7 +321,7 @@ const Funds = () => {
                   {table.getState().pagination.pageSize *
                     (table.getState().pagination.pageIndex + 1) *
                     table.getPageCount() ===
-                  +prop.text
+                    +prop.text
                     ? 'همه'
                     : prop.text}
                 </span>
@@ -334,8 +335,8 @@ const Funds = () => {
               {
                 text: String(
                   table.getState().pagination.pageSize *
-                    (table.getState().pagination.pageIndex + 1) *
-                    table.getPageCount(),
+                  (table.getState().pagination.pageIndex + 1) *
+                  table.getPageCount(),
                 ),
               },
             ]}
@@ -350,7 +351,7 @@ const Funds = () => {
             <div>
               {formatNumber(
                 table.getState().pagination.pageSize *
-                  (table.getState().pagination.pageIndex + 1),
+                (table.getState().pagination.pageIndex + 1),
                 { commaSeparated: true },
               )}
               -
@@ -404,30 +405,35 @@ const Funds = () => {
                   {Object.values(selectedColumns).filter(Boolean).length}/25)
                 </span>
                 {
-                  Object.values(selectedColumns).filter(Boolean).length ? 
-                  <span
-                  className="cursor-pointer m-6 text-base font-medium text-red-600"
-                  onClick={resetSelections}
-                  >
-                  بازنشانی به پیشفرض
-                </span> : ''
+                  Object.values(selectedColumns).filter(Boolean).length ?
+                    <span
+                      className="cursor-pointer m-6 text-base font-medium text-red-600"
+                      onClick={resetSelections}
+                    >
+                      بازنشانی به پیشفرض
+                    </span> : ''
                 }
               </DialogTitle>
               <hr />
-              <div className=' scrollbar-thumb-gray-500  h-[550px] scrollbar-track-rounded-full scrollbar-thumb-rounded-full scrollbar-thin scrollbar-track-gray-300 overflow-x-hidden overflow-y-scroll'>
-                {sections.map((item) => (
-                  <FundsFilterSection
-                    key={item.title}
-                    title={item.title}
-                    options={item.options}
-                    selectedColumns={selectedColumns}
-                    onToggle={handleToggle}
-                  />
+              <div className='scrollbar-thumb-gray-500 mb-6 scrollbar-thumb-rounded-full scrollbar  h-[550px] scrollbar-track-rounded-full scrollbar-thumb-rounded-full scrollbar-thin scrollbar-track-gray-300 overflow-x-hidden overflow-y-scroll'>
+                {sections.map((item, index) => (
+                  <div key={item.title}>
+                    <FundsFilterSection
+                      title={item.title}
+                      options={item.options}
+                      selectedColumns={selectedColumns}
+                      onToggle={handleToggle}
+                    />
+                    {
+                      index + 1 < sections.length &&
+                      <hr />
+                    }
+                  </div>
                 ))}
               </div>
               <div
                 onClick={() => setIsFilterModal(false)}
-                className="text-brand-600 absolute -left-2 -top-2 cursor-pointer"
+                className="text-brand-600 absolute -left-2 -top-2 cursor-pointer bg-white rounded-full"
               >
                 <Icon name="circle-x" size="lg_plus" />
               </div>
