@@ -7,7 +7,7 @@ export interface HorizontalScrollBarProps {
   barsNumber: number;
   autoRotate?: boolean;
   onChangeIndex?: (index: number) => void;
-  autoRotateDuration?: 5000 | 10000 | 15000 | number;
+  autoRotateDuration?: 5 | 10 | 15 | number;
   hasArrows?: boolean;
   externalIndex?: number;
 }
@@ -16,13 +16,11 @@ export const HorizontalScrollBar: React.FC<HorizontalScrollBarProps> = ({
   barsNumber,
   autoRotate,
   onChangeIndex,
-  autoRotateDuration = 5000,
+  autoRotateDuration = 5,
   hasArrows = false,
   externalIndex,
 }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const intervalRef = useRef<NodeJS.Timer | null>(null);
-
   const handleNext = () => {
     setActiveIndex((prevIndex) => {
       const newIndex =
@@ -30,7 +28,6 @@ export const HorizontalScrollBar: React.FC<HorizontalScrollBarProps> = ({
       onChangeIndex?.(newIndex);
       return newIndex;
     });
-    resetTimer(); // Reset timer when manually changing the index
   };
 
   const handlePrev = () => {
@@ -40,36 +37,18 @@ export const HorizontalScrollBar: React.FC<HorizontalScrollBarProps> = ({
       onChangeIndex?.(newIndex);
       return newIndex;
     });
-    resetTimer();
   };
   const handleClick = (index: number) => {
     setActiveIndex(index);
     onChangeIndex?.(index);
-    resetTimer();
   };
-  const resetTimer = () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-    }
-    if (autoRotate) {
-      intervalRef.current = setInterval(() => {
-        handleNext();
-      }, autoRotateDuration);
-    }
-  };
+
   useEffect(() => {
     if (externalIndex !== undefined) {
       setActiveIndex(externalIndex);
     } else {
       setActiveIndex(0);
     }
-    resetTimer();
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
   }, [
     barsNumber,
     autoRotate,
@@ -111,7 +90,7 @@ export const HorizontalScrollBar: React.FC<HorizontalScrollBarProps> = ({
                   activeIndex === index
                     ? !autoRotate
                       ? '100ms'
-                      : `${autoRotateDuration}ms`
+                      : `${autoRotateDuration * 1000}ms`
                     : '100ms',
               }}
             ></div>

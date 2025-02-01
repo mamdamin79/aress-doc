@@ -34,26 +34,50 @@ export const SlidersBox: React.FC = () => {
       Array.from(elements).forEach((el) => observer.observe(el));
     }
 
+    let intervalId: NodeJS.Timeout | null = null;
+
+    if (activeRotate !== null) {
+      intervalId = setInterval(() => {
+        setCurrIndex((prev) => {
+          const nextIndex = (prev + 1) % slides; // Loop back to 0 after the last slide
+          handleScroll(nextIndex);
+          return nextIndex;
+        });
+      }, activeRotate * 1000);
+    }
+
     return () => {
+      if (intervalId) clearInterval(intervalId); // Clear interval on unmount or dependency change
       if (elements) {
         Array.from(elements).forEach((el) => observer.unobserve(el));
       }
     };
-  }, []);
+  }, [activeRotate, slides]);
+
+  const handleRotation = (time: number | null) => {
+    setActiveRotate(time);
+  };
+
   const scrollStep = window.innerWidth >= 1280 ? 2 : 1;
   const barsNumber = Math.ceil(slides / scrollStep);
+
   const handleScroll = (index: number) => {
     const targetElement = document.getElementById(`slide-${index}`);
     if (targetElement) {
-      targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const blockPosition = scrollStep === 2 ? 'start' : 'center';
+      targetElement.scrollIntoView({
+        behavior: 'smooth',
+        block: blockPosition,
+      });
     }
   };
+
   return (
     <>
       <div className="flex w-full justify-between">
         <DashboardNumberAndName number={2} title="صندوق کالایی" />
         <AutoRotateSwitch
-          onChange={(item) => setActiveRotate(item)}
+          onChange={(item) => handleRotation(item)}
           rotateOptions={[5, 10, 15]}
           initialValue={activeRotate}
         />
@@ -81,6 +105,8 @@ export const SlidersBox: React.FC = () => {
           onChangeIndex={(index) => handleScroll(index)}
           barsNumber={barsNumber}
           externalIndex={currIndex}
+          autoRotate={Boolean(activeRotate)}
+          autoRotateDuration={activeRotate || undefined}
         />
       </div>
     </>
