@@ -31,6 +31,10 @@ export const FundsFilterSection: React.FC<Props> = ({
               onChange={() => onToggle(title, option)}
               content={option}
             />
+            {
+              selectedColumns[option] && option === 'بازه دلخواه' &&
+              <span className='text-sm text-brand-600 font-mediym'>تغیر بازه</span>
+            }
           </div>
         ))}
       </div>
