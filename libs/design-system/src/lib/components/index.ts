@@ -22,3 +22,4 @@ export * from './HeaderMenus/BurgerMenu/HamburgerMenuIcon';
 export * from './OptionsDropdown';
 export * from './FundsTag';
 export * from './FundsFilterSection';
+export * from './FundsTableRow';

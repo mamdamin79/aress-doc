@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   cn,
   Icon,
@@ -8,12 +8,11 @@ import {
   formatNumber,
   OptionsDropdown,
   FundsFilterSection,
-  FundsTag,
+  FundsTableRow,
 } from 'design-system';
 import {
   ColumnDef,
   ColumnFiltersState,
-  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -32,7 +31,9 @@ const Funds = () => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [data, setData] = useState<Person[]>(() => makeData(500));
   const [isFilterModal, setIsFilterModal] = useState(false);
-  const [isSettingModal, setIsSettingModal] = useState(false);
+
+  const [isScrolled, setIsScrolled] = useState(false);
+  const tableRef = useRef<HTMLDivElement>(null);
 
   const [selectedColumns, setSelectedColumns] = useState<SelectedColumnsType>(
     {},
@@ -44,6 +45,33 @@ const Funds = () => {
       [option]: !prev[option],
     }));
   };
+
+
+  useEffect(() => {
+    const handleScroll = () => {
+      console.log(tableRef?.current);
+      if (tableRef.current) {
+        console.log(isScrolled);
+        if (tableRef.current.scrollLeft < 0) {
+          setIsScrolled(true);
+        } else {
+          setIsScrolled(false);
+        }
+      }
+    };
+
+    const tableElement = tableRef.current;
+    if (tableElement) {
+      tableElement.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (tableElement) {
+        tableElement.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [isScrolled]);
+
 
   const sections = [
     {
@@ -102,6 +130,7 @@ const Funds = () => {
     { accessorKey: 'progress', header: 'Profile Progress' },
   ];
 
+  
   const table = useReactTable({
     data,
     columns,
@@ -112,6 +141,9 @@ const Funds = () => {
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
+
+  console.log(table?.getRowModel().rows[0].getVisibleCells()[0].getContext().row.original.visits);
+  
 
   return (
     <div className="container mx-auto max-w-7xl p-4 px-20">
@@ -202,9 +234,9 @@ const Funds = () => {
         </Tooltip>
       </div>
 
-      <div className="border-brand-200 mt-4 overflow-hidden rounded-xl border-2">
-        <table className="w-full text-center">
-          <thead className="border">
+      <div ref={tableRef} className="border-brand-200 mt-4 overflow-y-hidden overflow-x-scroll rounded-xl border-2">
+        <table className="relative w-full text-center">
+          {/* <thead className="border">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr
                 key={headerGroup.id}
@@ -247,7 +279,9 @@ const Funds = () => {
                                       <div className="absolute -right-1 -top-1">
                                         <FundsTag color="blue" />
                                       </div>
-                                    ) : ''}
+                                    ) : (
+                                      ''
+                                    )}
                                     <Icon size="lg" name="filter" />
                                   </div>
                                 </Tooltip>
@@ -262,11 +296,6 @@ const Funds = () => {
                               )}
                             </div>
                           </div>
-                          {/* 
-                        {{
-                          asc: ' 🔼',
-                          desc: ' 🔽',
-                        }[header.column.getIsSorted() as string] ?? null} */}
                         </div>
                       </>
                     )}
@@ -274,28 +303,24 @@ const Funds = () => {
                 ))}
               </tr>
             ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="h-16 border-y">
-                {row.getVisibleCells().map((cell, index) => (
-                  <td
-                    key={cell.id}
-                    className={cn({
-                      'px-2 text-right': index === 0,
-                    })}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
+          </thead> */}
+          {table.getRowModel().rows.map((row, index) => (
+            <FundsTableRow
+              isScrolled={isScrolled}
+              key={row.id}
+              data={['23333', '333455', '343233', '3444444444', '3343434', '33344', '34444', '4444']}
+              name="نام صندوق"
+              pined={true}
+              selected={false}
+              shadow={false}
+              logo="https://s.cafebazaar.ir/images/icons/com.dotin.wepod-36b7a6e5-ed88-4590-ab3e-8811ed799168_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize"
+            />
+          ))}
         </table>
       </div>
 
       <div className="sticky bottom-6 mt-6 flex items-center justify-between">
-        <div className="rounded-md bg-gray-400 px-3 py-2">
+        <div className="rounded-md bg-gray-400 py-2">
           <OptionsDropdown
             onChange={(e) => {
               table.setPageSize(Number(e));
@@ -304,7 +329,7 @@ const Funds = () => {
               bg: 'primary',
               emphasize: 'medium',
               size: 'md',
-              anchor: 'bottom start',
+              anchor: 'top end',
               checkSelected: true,
             }}
             customTriggerRender={(prop) => (
@@ -315,7 +340,7 @@ const Funds = () => {
               </div>
             )}
             customOptionRender={(prop) => (
-              <div className="text-gray-1000 w-full cursor-pointer bg-gray-400 px-5 text-center text-xs font-medium first:pt-2">
+              <div className="text-gray-1000 w-full cursor-pointer bg-gray-400 px-3 text-center text-xs font-medium first:pt-2">
                 <span>
                   {table.getState().pagination.pageSize *
                     (table.getState().pagination.pageIndex + 1) *
@@ -403,18 +428,19 @@ const Funds = () => {
                   انتخاب سوتون ها (
                   {Object.values(selectedColumns).filter(Boolean).length}/25)
                 </span>
-                {
-                  Object.values(selectedColumns).filter(Boolean).length ? 
+                {Object.values(selectedColumns).filter(Boolean).length ? (
                   <span
-                  className="cursor-pointer m-6 text-base font-medium text-red-600"
-                  onClick={resetSelections}
+                    className="m-6 cursor-pointer text-base font-medium text-red-600"
+                    onClick={resetSelections}
                   >
-                  بازنشانی به پیشفرض
-                </span> : ''
-                }
+                    بازنشانی به پیشفرض
+                  </span>
+                ) : (
+                  ''
+                )}
               </DialogTitle>
               <hr />
-              <div className=' scrollbar-thumb-gray-500  h-[550px] scrollbar-track-rounded-full scrollbar-thumb-rounded-full scrollbar-thin scrollbar-track-gray-300 overflow-x-hidden overflow-y-scroll'>
+              <div className="scrollbar-thumb-gray-500 scrollbar-track-rounded-full scrollbar-thumb-rounded-full scrollbar-thin scrollbar-track-gray-300 h-[550px] overflow-x-hidden overflow-y-scroll">
                 {sections.map((item) => (
                   <FundsFilterSection
                     key={item.title}
