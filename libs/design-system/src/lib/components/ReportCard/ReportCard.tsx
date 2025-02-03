@@ -7,26 +7,26 @@ import { Button } from '../Button';
 
 export interface CardComponentProps {
   title: string;
-  brief: string;
+  summary: string;
   reportSubscription: string;
   categoryType: string;
   newBadge?: boolean;
   videoBadge?: boolean;
   image: string;
   fixedBrief?: boolean;
-  isLiked?: boolean;
+  userFavorite?: boolean;
 }
 
 export const ReportCard: React.FC<CardComponentProps> = ({
   title,
   reportSubscription,
-  brief,
+  summary,
   fixedBrief = false,
   categoryType,
   newBadge = false,
   videoBadge = false,
   image,
-  isLiked = false,
+  userFavorite = false,
 }) => {
   return (
     <div
@@ -95,15 +95,15 @@ export const ReportCard: React.FC<CardComponentProps> = ({
             </div>
           </div>
 
-          {/* Brief Section fixed */}
+          {/* summary Section fixed */}
           {fixedBrief && (
             <>
               <span className="line-clamp-3 text-right text-sm text-gray-600">
-                {brief}
+                {summary}
               </span>
               <div className="absolute bottom-4 right-0 flex w-full items-center justify-between px-4">
                 <LikeBadge
-                  isLiked={isLiked}
+                  isLiked={userFavorite}
                   onClick={() => console.log('like')}
                 />
                 <div className="flex h-[38px] origin-left scale-x-[0.3] transform items-center overflow-hidden rounded-[100px] text-xs opacity-0 transition-all duration-300 ease-in-out group-hover:scale-x-100 group-hover:opacity-100">
@@ -124,10 +124,10 @@ export const ReportCard: React.FC<CardComponentProps> = ({
             </>
           )}
 
-          {/* Brief Section (Drawer Animation) */}
+          {/* summary Section (Drawer Animation) */}
           {!fixedBrief && (
             <span className="-mb-2 line-clamp-4 h-fit translate-y-12 transform overflow-hidden text-right text-sm text-gray-600 opacity-0 transition-all duration-500 ease-in-out group-hover:translate-y-0 group-hover:opacity-100">
-              {brief}
+              {summary}
             </span>
           )}
         </div>
