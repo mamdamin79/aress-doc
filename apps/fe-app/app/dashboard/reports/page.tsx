@@ -4,6 +4,7 @@ import { Checkbox, Icon } from 'design-system';
 import { ReportList } from './_components/ReportsList';
 import { SideBar } from './_components/SideBar';
 import { SearchBar } from './_components/SearchBar';
+import CoursesSlugs from './_components/CourseSlugs';
 
 const categories = [
   {
@@ -94,7 +95,8 @@ export default async function ReportMenuPage({ searchParams }: any) {
             pageSize={meta.per_page}
           /> */}
         </div>
-        <SideBar categories={categories} />
+        {/* <SideBar categories={categories} /> */}
+        <CoursesSlugs/>
       </div>
     </div>
   );

@@ -1,0 +1,8 @@
+{
+    "inputs": [
+      {
+        "inputURL": "https://api.classbon.com/swagger/v1/swagger.json"
+      }
+    ],
+    "output": "./swagger.output.json"
+}
