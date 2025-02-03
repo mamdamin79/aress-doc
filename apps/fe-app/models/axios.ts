@@ -9,503 +9,292 @@
  * ---------------------------------------------------------------
  */
 
-export interface ActivateUserCommand {
-  code?: string | null;
-  username?: string | null;
+/** AnonymousApiUser */
+export type AnonymousApiUser = object;
+
+/** AressApiUser */
+export interface AressApiUser {
+  /**
+   * Identifier
+   * Unique identifier of user
+   */
+  identifier: number;
+  /**
+   * Username
+   * Username for the user
+   */
+  username: string;
+  /**
+   * Email
+   * Email for the user.
+   */
+  email: string;
+  /**
+   * Phonenumber
+   * Phone number of the user.
+   */
+  phoneNumber: string | null;
+  /**
+   * Nationalcode
+   * National code of the user.
+   */
+  nationalCode: string | null;
+  /**
+   * Active
+   * Whether this user is active or not, is always "true" for logged in user.
+   */
+  active: boolean;
 }
 
-export interface AdminBlogCategoryDto {
-  /** @format int64 */
-  id?: number;
-  title?: string | null;
-  imageUrl?: string | null;
+/** Body_login_for_access_token_users_login_post */
+export interface BodyLoginForAccessTokenUsersLoginPost {
+  /** Grant Type */
+  grant_type?: string | null;
+  /** Username */
+  username: string;
+  /** Password */
+  password: string;
+  /**
+   * Scope
+   * @default ""
+   */
+  scope?: string;
+  /** Client Id */
+  client_id?: string | null;
+  /** Client Secret */
+  client_secret?: string | null;
 }
 
-export interface AdminBlogPostApprovalDto {
-  createdAt?: string | null;
-  comment?: string | null;
-  reviewAt?: string | null;
-  state?: BlogPostApprovalStatus;
+/** Body_test_user_access_token_users_token_post */
+export interface BodyTestUserAccessTokenUsersTokenPost {
+  /** Grant Type */
+  grant_type?: string | null;
+  /** Username */
+  username: string;
+  /** Password */
+  password: string;
+  /**
+   * Scope
+   * @default ""
+   */
+  scope?: string;
+  /** Client Id */
+  client_id?: string | null;
+  /** Client Secret */
+  client_secret?: string | null;
 }
 
-export interface AdminBlogPostDetailsDto {
-  title?: string | null;
-  metaTitle?: string | null;
-  metaDescription?: string | null;
-  slug?: string | null;
-  summary?: string | null;
-  coverImageUrl?: string | null;
-  /** @format int64 */
-  categoryId?: number;
+/** CaptchaApiModel */
+export interface CaptchaApiModel {
+  /** Value */
+  value: string;
+  /** Uid */
+  uid: number;
+  /** Required */
+  required: boolean;
 }
 
-export interface AdminBlogPostDto {
-  /** @format int64 */
-  id?: number;
-  createdAt?: string | null;
-  lastModified?: string | null;
-  title?: string | null;
-  published?: boolean;
-  thumbnailUrl?: string | null;
-  author?: string | null;
-  state?: BlogPostApprovalStatus;
-  category?: string | null;
+/** CaptchaType */
+export enum CaptchaType {
+  Image = 'image',
+  Audio = 'audio',
 }
 
-export interface AdminBlogPostDtoPaging {
-  /** @format int32 */
-  count?: number;
-  data?: AdminBlogPostDto[] | null;
+/** FinancialReportCategoryApiModel */
+export interface FinancialReportCategoryApiModel {
+  /** Title */
+  title: string;
+  /**
+   * Identifier
+   * Unique identifier of report category
+   */
+  identifier: number;
 }
 
-export interface AdminCouponDto {
-  code?: string | null;
-  /** @format int32 */
-  usageLimit?: number;
-}
-
-export interface AdminCourseCategoryDto {
-  /** @format int64 */
-  id?: number;
-  title?: string | null;
-  enTitle?: string | null;
-  imageUrl?: string | null;
-}
-
-export interface AdminCreateBlogCategoryDto {
-  title?: string | null;
-  metaTitle?: string | null;
-  slug?: string | null;
-  description?: string | null;
-  metaDescription?: string | null;
-  /** @format binary */
-  image?: File | null;
-}
-
-export interface AdminCreateBlogPostApprovalDto {
-  /** @format int64 */
-  postId?: number;
-  status?: BlogPostApprovalStatus;
-  comment?: string | null;
-}
-
-export interface AdminCreateBlogPostDto {
-  title?: string | null;
-  metaTitle?: string | null;
-  metaDescription?: string | null;
-  slug?: string | null;
-  summary?: string | null;
-  /** @format binary */
-  coverImage?: File | null;
-  /** @format int64 */
-  categoryId?: number;
-}
-
-export interface AdminCreateCourseCategoryDto {
-  title?: string | null;
-  enTitle?: string | null;
-  metaTitle?: string | null;
-  slug?: string | null;
-  description?: string | null;
-  metaDescription?: string | null;
-  /** @format binary */
-  image?: File | null;
-}
-
-export interface AdminCreateDiscountDto {
-  name?: string | null;
-  /** @format double */
-  value?: number;
-  type?: DiscountType;
-  /** @format date-time */
-  validFrom?: string;
-  /** @format date-time */
-  validUntil?: string;
-  description?: string | null;
-  courseIds?: number[] | null;
-  coupon?: AdminCouponDto;
-  userIds?: string[] | null;
-}
-
-export interface AdminDiscountDto {
-  /** @format int64 */
-  id?: number;
-  name?: string | null;
-  /** @format double */
-  value?: number;
-  type?: string | null;
-  validFrom?: string | null;
-  validUntil?: string | null;
-}
-
-export interface AdminFullBlogCategoryDto {
-  /** @format int64 */
-  id?: number;
-  title?: string | null;
-  metaTitle?: string | null;
-  slug?: string | null;
-  description?: string | null;
-  metaDescription?: string | null;
-  imageUrl?: string | null;
-}
-
-export interface AdminFullCourseCategoryDto {
-  /** @format int64 */
-  id?: number;
-  title?: string | null;
-  enTitle?: string | null;
-  metaTitle?: string | null;
-  slug?: string | null;
-  description?: string | null;
-  metaDescription?: string | null;
-  imageUrl?: string | null;
-}
-
-export interface AdminFullDiscountDto {
-  /** @format int64 */
-  id?: number;
-  name?: string | null;
-  /** @format double */
-  value?: number;
-  type?: DiscountType;
-  /** @format date-time */
-  validFrom?: string;
-  /** @format date-time */
-  validUntil?: string;
-  description?: string | null;
-}
-
-export interface AdminUpdateBlogCategoryDto {
-  /** @format int64 */
-  id?: number;
-  title?: string | null;
-  metaTitle?: string | null;
-  slug?: string | null;
-  description?: string | null;
-  metaDescription?: string | null;
-  /** @format binary */
-  image?: File | null;
-}
-
-export interface AdminUpdateBlogPostBodyDto {
-  /** @format int64 */
-  id?: number;
-  body?: string | null;
-}
-
-export interface AdminUpdateBlogPostDto {
-  /** @format int64 */
-  id?: number;
-  title?: string | null;
-  metaTitle?: string | null;
-  metaDescription?: string | null;
-  slug?: string | null;
-  summary?: string | null;
-  /** @format binary */
-  coverImage?: File | null;
-  /** @format int64 */
-  categoryId?: number;
-}
-
-export interface AdminUpdateCourseCategoryDto {
-  /** @format int64 */
-  id?: number;
-  title?: string | null;
-  enTitle?: string | null;
-  metaTitle?: string | null;
-  slug?: string | null;
-  description?: string | null;
-  metaDescription?: string | null;
-  /** @format binary */
-  image?: File | null;
-}
-
-export interface AdminUpdateDiscountDto {
-  /** @format int64 */
-  id?: number;
-  name?: string | null;
-  /** @format double */
-  value?: number;
-  type?: DiscountType;
-  /** @format date-time */
-  validFrom?: string;
-  /** @format date-time */
-  validUntil?: string;
-  description?: string | null;
-}
-
-/** @format int32 */
-export enum BlogPostApprovalStatus {
-  Value0 = 0,
-  Value1 = 1,
-  Value2 = 2,
-  Value3 = 3,
-  Value4 = 4,
-  Value5 = 5,
-  Value6 = 6,
-}
-
-export interface BlogPostSummary {
-  title?: string | null;
-  slug?: string | null;
-  postDate?: string | null;
-  thumbnailUrl?: string | null;
-  /** @format int32 */
-  studyTime?: number;
+/** FinancialReportDetailsApiModel */
+export interface FinancialReportDetailsApiModel {
+  /**
+   * Identifier
+   * Unique identifier of report
+   */
+  identifier: number;
+  /** Title */
+  title: string;
+  category: FinancialReportCategoryApiModel;
+  /** Image */
+  image: string;
+  /** Summary */
+  summary: string;
+  /** Htmldescription */
+  htmlDescription: string | null;
+  video: VideoApiModel | null;
+  /**
+   * Userfavorite
+   * @default false
+   */
+  userFavorite?: boolean;
+  /**
+   * Isnew
+   * @default false
+   */
   isNew?: boolean;
-  /** @format int32 */
-  numberOfViews?: number;
-  author?: string | null;
-  /** @format int32 */
-  numberOfComments?: number;
-  summary?: string | null;
-  category?: string | null;
+  /** Relatedreports */
+  relatedReports: FinancialReportListItemApiModel[];
 }
 
-export interface Cart {
-  /** @format int32 */
-  id?: number;
-  /** @format date-time */
-  createdAt?: string;
-  /** @format date-time */
-  updatedAt?: string | null;
-  /** @format date-time */
-  completedAt?: string | null;
-  userId?: string | null;
-  idempotencyKey?: string | null;
-  lineItems?: LineItem[] | null;
+/** FinancialReportListItemApiModel */
+export interface FinancialReportListItemApiModel {
+  /**
+   * Identifier
+   * Unique identifier of report
+   */
+  identifier: number;
+  /** Title */
+  title: string;
+  category: FinancialReportCategoryApiModel;
+  /** Image */
+  image: string;
+  /** Summary */
+  summary: string;
+  video: VideoApiModel | null;
+  /**
+   * Userfavorite
+   * @default false
+   */
+  userFavorite?: boolean;
+  /**
+   * Isnew
+   * @default false
+   */
+  isNew?: boolean;
 }
 
-export interface CourseCardDTO {
-  /** @format int64 */
-  id?: number;
-  title?: string | null;
-  /** @format int64 */
-  courseCategoryId?: number;
-  duration?: string | null;
-  level?: string | null;
-  levelNumber?: CourseLevel;
-  /** @format int32 */
-  averageReviewRating?: number | null;
-  /** @format int32 */
-  numOfReviews?: number | null;
-  /** @format int64 */
-  coverImageId?: number | null;
-  recordStatus?: string | null;
-  slug?: string | null;
-  subTitle?: string | null;
-  isFree?: boolean;
-  /** @format double */
-  basePrice?: number;
-  /** @format double */
-  discountedPrice?: number | null;
-  /** @format int32 */
-  discountRemainingTime?: number | null;
-  discountType?: DiscountType;
+/** HTTPValidationError */
+export interface HTTPValidationError {
+  /** Detail */
+  detail?: ValidationError[];
 }
 
-export interface CourseCommentDTO {
-  data?: CourseComments[] | null;
-  /** @format int32 */
-  nextPage?: number | null;
+/** TokenApiModel */
+export interface TokenApiModel {
+  /** Access Token */
+  access_token: string;
+  /** Token Type */
+  token_type: string;
 }
 
-export interface CourseComments {
-  /** @format int64 */
-  id?: number;
-  date?: string | null;
-  /** @format int64 */
-  userId?: number | null;
-  fullName?: string | null;
-  commentText?: string | null;
-  /** @format int32 */
-  score?: number | null;
-  isResponse?: boolean;
+/** UserReportFavoriteStatus */
+export interface UserReportFavoriteStatus {
+  /** Userid */
+  userId: number;
+  /** Reportid */
+  reportId: number;
+  /** Isfavorite */
+  isFavorite: boolean;
 }
 
-export interface CourseDetailsCurriculumDTO {
-  /** @format int64 */
-  id?: number;
-  title?: string | null;
-  /** @format int32 */
-  numOfLectures?: number;
-  duration?: string | null;
-  lectures?: CourseDetailsLectureDTO[] | null;
+/** ValidationError */
+export interface ValidationError {
+  /** Location */
+  loc: (string | number)[];
+  /** Message */
+  msg: string;
+  /** Error Type */
+  type: string;
 }
 
-export interface CourseDetailsDTO {
-  /** @format int64 */
-  id?: number;
-  title?: string | null;
-  slug?: string | null;
-  /** @format double */
-  basePrice?: number | null;
-  /** @format int32 */
-  numberOfLectures?: number;
-  level?: string | null;
-  levelNumber?: CourseLevel;
-  /** @format int32 */
-  numOfStudents?: number;
-  duration?: string | null;
-  isDownloadable?: boolean;
-  /** @format int32 */
-  numOfReviews?: number | null;
-  isFree?: boolean;
-  subTitle?: string | null;
-  /** @format int32 */
-  averageReviewRating?: number | null;
-  /** @format int64 */
-  profileImageId?: number | null;
-  authorName?: string | null;
-  recordStatus?: string | null;
-  authorSpecialty?: string | null;
-  videoUrl?: string | null;
-  /** @format int64 */
-  coverImageId?: number | null;
-  description?: string | null;
-  showWithSpotPlayer?: boolean;
-  downloadLink?: string | null;
-  excerciseFileUrl?: string | null;
-  frequentlyAskedQuestions?: CourseDetailsFAQDTO[] | null;
-}
-
-export interface CourseDetailsFAQDTO {
-  /** @format int64 */
-  id?: number;
-  question?: string | null;
-  answer?: string | null;
-}
-
-export interface CourseDetailsLectureDTO {
-  title?: string | null;
-  duration?: string | null;
-  description?: string | null;
-  videoSize?: string | null;
-}
-
-/** @format int32 */
-export enum CourseLevel {
-  Value0 = 0,
-  Value1 = 1,
-  Value2 = 2,
-  Value3 = 3,
-}
-
-export interface CourseNameDTO {
-  /** @format int64 */
-  id?: number;
-  title?: string | null;
-}
-
-export interface CreateBlogPostCommentDto {
-  /** @format int64 */
-  postId?: number;
-  /** @format int64 */
-  parentId?: number | null;
-  content?: string | null;
-}
-
-export interface CreateCourseComment {
-  commentText?: string | null;
-  /** @format int32 */
-  score?: number | null;
-  courseSlug?: string | null;
-  /** @format int64 */
-  parentId?: number | null;
-}
-
-export interface CreateLineItemDto {
-  /** @format int32 */
-  courseId?: number;
-  /** @format int32 */
-  licenseQuantity?: number;
-}
-
-export interface DashboardSummaryDto {
-  spotPlayerLicense?: string | null;
-}
-
-export interface DiscountDto {
-  description?: string | null;
-  /** @format double */
-  percent?: number;
-  courses?: CourseNameDTO[] | null;
-  type?: DiscountType;
-  coupon?: string | null;
-  /** @format int32 */
-  duration?: number;
-}
-
-/** @format int32 */
-export enum DiscountType {
-  Value0 = 0,
-  Value1 = 1,
-  Value2 = 2,
-  Value3 = 3,
-}
-
-export interface EnrolledCourseDTO {
-  /** @format int64 */
-  id?: number;
-  title?: string | null;
-  subTitle?: string | null;
-  duration?: string | null;
-  level?: string | null;
-  levelNumber?: CourseLevel;
-  /** @format int64 */
-  coverImageId?: number | null;
-  recordStatus?: string | null;
-  slug?: string | null;
-  showWithSpotPlayer?: boolean;
-  isFree?: boolean;
-}
-
-export interface GridifyQuery {
-  /** @format int32 */
-  page?: number;
-  /** @format int32 */
-  pageSize?: number;
-  orderBy?: string | null;
-  filter?: string | null;
-}
-
-export interface LineItem {
-  /** @format int32 */
-  id?: number;
-  /** @format int32 */
-  cartId?: number;
-  /** @format int32 */
-  courseId?: number;
-  /** @format int32 */
-  licenseQuantity?: number;
-}
-
-export interface SearchUserQuery {
-  term?: string | null;
-}
-
-export interface SearchUserResponseDTO {
-  id?: string | null;
-  response?: string | null;
-}
-
-export interface SendActivationCodeQuery {
-  mobile?: string | null;
-}
-
-export interface SignInCommand {
-  mobile?: string | null;
-}
-
-export interface UpdateProfileCommand {
-  email?: string | null;
-  firstName?: string | null;
-  surName?: string | null;
-}
-
-export interface UserInfo {
-  token?: string | null;
-  refreshToken?: string | null;
+/** VideoApiModel */
+export interface VideoApiModel {
+  /**
+   * Identifier
+   * Unique identifier of video
+   */
+  identifier: number;
+  /**
+   * Mp4Video1080P
+   * Url of mp4 video file in 1080p
+   */
+  mp4Video1080P: string;
+  /**
+   * Mp4Video1080Psizebytes
+   * Size of 1080p mp4 video file in bytes
+   */
+  mp4Video1080PSizeBytes: number;
+  /**
+   * Mp4Video720P
+   * Url of mp4 video file in 720p
+   */
+  mp4Video720P: string;
+  /**
+   * Mp4Video720Psizebytes
+   * Size of 720p mp4 video file in bytes
+   */
+  mp4Video720PSizeBytes: number;
+  /**
+   * Mp4Video480P
+   * Url of mp4 video file in 480p
+   */
+  mp4Video480P: string;
+  /**
+   * Mp4Video480Psizebytes
+   * Size of 480p mp4 video file in bytes
+   */
+  mp4Video480PSizeBytes: number;
+  /**
+   * Mp4Video360P
+   * Url of mp4 video file in 360p
+   */
+  mp4Video360P: string;
+  /**
+   * Mp4Video360Psizebytes
+   * Size of 360p mp4 video file in bytes
+   */
+  mp4Video360PSizeBytes: number;
+  /**
+   * Mp4Video240P
+   * Url of mp4 video file in 240p
+   */
+  mp4Video240P: string;
+  /**
+   * Mp4Video240Psizebytes
+   * Size of 240p mp4 video file in bytes
+   */
+  mp4Video240PSizeBytes: number;
+  /**
+   * Durationinseconds
+   * Duration of video in seconds
+   */
+  durationInSeconds: number;
+  /**
+   * Poster1080P
+   * Poster (placeholder) image of video in medium size (1920x1080)
+   */
+  poster1080P: string;
+  /**
+   * Poster720P
+   * Poster (placeholder) image of video in medium size (1280x720)
+   */
+  poster720P: string;
+  /**
+   * Poster480P
+   * Poster (placeholder) image of video in medium size (854x480)
+   */
+  poster480P: string;
+  /**
+   * Poster360P
+   * Poster (placeholder) image of video in medium size (640x360)
+   */
+  poster360P: string;
+  /**
+   * Poster240P
+   * Poster (placeholder) image of video in medium size (426x240)
+   */
+  poster240P: string;
+  /**
+   * Thumbnailimage
+   * Thumbnail of video
+   */
+  thumbnailImage: string;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -719,710 +508,53 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title Classbon App
- * @version v1
+ * @title Aress FDP
+ * @version 0.0.1
+ *
+ *
+ * Aress API helps you get data from Aress Server. 🚀
+ * There are several routes:
+ *
+ * ## Users
+ * Endpoints for captcha, login, signup, and user data are in this section
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
-  api = {
+  users = {
     /**
-     * No description
+     * @description Get captcha for a user. Captcha can be an **image** or an **audio**, depending on the **captchaType** param. In case of an image, you can also pass **captchaWidth** and **captchaHeight** for customizing the size of generated image.
      *
-     * @tags Admin Blog
-     * @name AdminBlogListCreate
-     * @request POST:/api/admin/blog/list
+     * @tags users
+     * @name CaptchaForLoginUsersLoginCaptchaGet
+     * @summary Captcha For Login
+     * @request GET:/users/login_captcha
      * @secure
      */
-    adminBlogListCreate: (data: GridifyQuery, params: RequestParams = {}) =>
-      this.request<AdminBlogPostDtoPaging, any>({
-        path: `/api/admin/blog/list`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Admin Blog
-     * @name AdminBlogDetail
-     * @request GET:/api/admin/blog/{postId}
-     * @secure
-     */
-    adminBlogDetail: (postId: number, params: RequestParams = {}) =>
-      this.request<AdminBlogPostDetailsDto, any>({
-        path: `/api/admin/blog/${postId}`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Admin Blog
-     * @name AdminBlogDelete
-     * @request DELETE:/api/admin/blog/{postId}
-     * @secure
-     */
-    adminBlogDelete: (postId: number, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/admin/blog/${postId}`,
-        method: 'DELETE',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Admin Blog
-     * @name AdminBlogCreate
-     * @request POST:/api/admin/blog
-     * @secure
-     */
-    adminBlogCreate: (
-      data: {
-        model: AdminCreateBlogPostDto;
+    captchaForLoginUsersLoginCaptchaGet: (
+      query?: {
+        /**
+         * Captchawidth
+         * @min 50
+         * @max 1000
+         * @default 280
+         */
+        captchaWidth?: number;
+        /**
+         * Captchaheight
+         * @min 50
+         * @max 1000
+         * @default 90
+         */
+        captchaHeight?: number;
+        /**
+         * Captchatype
+         * @default "image"
+         */
+        captchaType?: CaptchaType;
       },
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
-        path: `/api/admin/blog`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.UrlEncoded,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Admin Blog
-     * @name AdminBlogUpdate
-     * @request PUT:/api/admin/blog
-     * @secure
-     */
-    adminBlogUpdate: (
-      data: {
-        model: AdminUpdateBlogPostDto;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/admin/blog`,
-        method: 'PUT',
-        body: data,
-        secure: true,
-        type: ContentType.UrlEncoded,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Admin Blog
-     * @name AdminBlogBodyCreate
-     * @request POST:/api/admin/blog/body
-     * @secure
-     */
-    adminBlogBodyCreate: (data: AdminUpdateBlogPostBodyDto, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/admin/blog/body`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Admin Blog
-     * @name AdminBlogBodyDetail
-     * @request GET:/api/admin/blog/body/{postId}
-     * @secure
-     */
-    adminBlogBodyDetail: (postId: number, params: RequestParams = {}) =>
-      this.request<string, any>({
-        path: `/api/admin/blog/body/${postId}`,
-        method: 'GET',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Admin Blog
-     * @name AdminBlogPostApprovalCreate
-     * @request POST:/api/admin/blog/post-approval
-     * @secure
-     */
-    adminBlogPostApprovalCreate: (data: AdminCreateBlogPostApprovalDto, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/admin/blog/post-approval`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Admin Blog
-     * @name AdminBlogPostUnderReviewCreate
-     * @request POST:/api/admin/blog/post-under-review/{postId}
-     * @secure
-     */
-    adminBlogPostUnderReviewCreate: (postId: number, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/admin/blog/post-under-review/${postId}`,
-        method: 'POST',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Admin Blog
-     * @name AdminBlogPostApprovalsDetail
-     * @request GET:/api/admin/blog/post-approvals/{postId}
-     * @secure
-     */
-    adminBlogPostApprovalsDetail: (postId: number, params: RequestParams = {}) =>
-      this.request<AdminBlogPostApprovalDto[], any>({
-        path: `/api/admin/blog/post-approvals/${postId}`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Admin Blog Category
-     * @name AdminBlogCategoryListList
-     * @request GET:/api/admin/blog/category/list
-     * @secure
-     */
-    adminBlogCategoryListList: (params: RequestParams = {}) =>
-      this.request<AdminBlogCategoryDto[], any>({
-        path: `/api/admin/blog/category/list`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Admin Blog Category
-     * @name AdminBlogCategoryDetail
-     * @request GET:/api/admin/blog/category/{id}
-     * @secure
-     */
-    adminBlogCategoryDetail: (id: number, params: RequestParams = {}) =>
-      this.request<AdminFullBlogCategoryDto, any>({
-        path: `/api/admin/blog/category/${id}`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Admin Blog Category
-     * @name AdminBlogCategoryDelete
-     * @request DELETE:/api/admin/blog/category/{categoryId}
-     * @secure
-     */
-    adminBlogCategoryDelete: (categoryId: number, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/admin/blog/category/${categoryId}`,
-        method: 'DELETE',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Admin Blog Category
-     * @name AdminBlogCategoryCreate
-     * @request POST:/api/admin/blog/category
-     * @secure
-     */
-    adminBlogCategoryCreate: (
-      data: {
-        model: AdminCreateBlogCategoryDto;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/admin/blog/category`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.UrlEncoded,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Admin Blog Category
-     * @name AdminBlogCategoryUpdate
-     * @request PUT:/api/admin/blog/category
-     * @secure
-     */
-    adminBlogCategoryUpdate: (
-      data: {
-        model: AdminUpdateBlogCategoryDto;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/admin/blog/category`,
-        method: 'PUT',
-        body: data,
-        secure: true,
-        type: ContentType.UrlEncoded,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Admin Discount
-     * @name AdminDiscountListList
-     * @request GET:/api/admin/discount/list
-     * @secure
-     */
-    adminDiscountListList: (params: RequestParams = {}) =>
-      this.request<AdminDiscountDto[], any>({
-        path: `/api/admin/discount/list`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Admin Discount
-     * @name AdminDiscountDetail
-     * @request GET:/api/admin/discount/{id}
-     * @secure
-     */
-    adminDiscountDetail: (id: number, params: RequestParams = {}) =>
-      this.request<AdminFullDiscountDto, any>({
-        path: `/api/admin/discount/${id}`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Admin Discount
-     * @name AdminDiscountDelete
-     * @request DELETE:/api/admin/discount/{discountId}
-     * @secure
-     */
-    adminDiscountDelete: (discountId: number, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/admin/discount/${discountId}`,
-        method: 'DELETE',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Admin Discount
-     * @name AdminDiscountCreate
-     * @request POST:/api/admin/discount
-     * @secure
-     */
-    adminDiscountCreate: (data: AdminCreateDiscountDto, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/admin/discount`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Admin Discount
-     * @name AdminDiscountUpdate
-     * @request PUT:/api/admin/discount
-     * @secure
-     */
-    adminDiscountUpdate: (data: AdminUpdateDiscountDto, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/admin/discount`,
-        method: 'PUT',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Blog
-     * @name BlogNewestDetail
-     * @request GET:/api/blog/newest/{count}
-     * @secure
-     */
-    blogNewestDetail: (count: number, params: RequestParams = {}) =>
-      this.request<BlogPostSummary[], any>({
-        path: `/api/blog/newest/${count}`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Blog
-     * @name BlogCommentCreate
-     * @request POST:/api/blog/comment
-     * @secure
-     */
-    blogCommentCreate: (data: CreateBlogPostCommentDto, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/blog/comment`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Blog
-     * @name BlogCommentDelete
-     * @request DELETE:/api/blog/comment/{commentId}
-     * @secure
-     */
-    blogCommentDelete: (commentId: number, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/blog/comment/${commentId}`,
-        method: 'DELETE',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Cart
-     * @name CartGetCartList
-     * @request GET:/api/cart/get-cart
-     * @secure
-     */
-    cartGetCartList: (params: RequestParams = {}) =>
-      this.request<Cart, any>({
-        path: `/api/cart/get-cart`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Cart
-     * @name CartCreateCartCreate
-     * @request POST:/api/cart/create-cart
-     * @secure
-     */
-    cartCreateCartCreate: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/cart/create-cart`,
-        method: 'POST',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Cart
-     * @name CartCompleteUpdate
-     * @request PUT:/api/cart/{cartId}/complete
-     * @secure
-     */
-    cartCompleteUpdate: (cartId: number, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/cart/${cartId}/complete`,
-        method: 'PUT',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Cart
-     * @name CartLineItemsCreate
-     * @request POST:/api/cart/{cartId}/line-items
-     * @secure
-     */
-    cartLineItemsCreate: (cartId: number, data: CreateLineItemDto, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/cart/${cartId}/line-items`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Cart
-     * @name CartLineItemsDelete
-     * @request DELETE:/api/cart/line-items/{lineId}
-     * @secure
-     */
-    cartLineItemsDelete: (lineId: number, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/cart/line-items/${lineId}`,
-        method: 'DELETE',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Cart
-     * @name CartCountItemsList
-     * @request GET:/api/cart/count-items
-     * @secure
-     */
-    cartCountItemsList: (params: RequestParams = {}) =>
-      this.request<number, any>({
-        path: `/api/cart/count-items`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Classbon.API
-     * @name SigninCreate
-     * @request POST:/api/signin
-     * @secure
-     */
-    signinCreate: (data: SignInCommand, params: RequestParams = {}) =>
-      this.request<string, any>({
-        path: `/api/signin`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Classbon.API
-     * @name VerifyCreate
-     * @request POST:/api/verify
-     * @secure
-     */
-    verifyCreate: (data: ActivateUserCommand, params: RequestParams = {}) =>
-      this.request<UserInfo, any>({
-        path: `/api/verify`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Classbon.API
-     * @name SendAuthCodeCreate
-     * @request POST:/api/send-auth-code
-     * @secure
-     */
-    sendAuthCodeCreate: (data: SendActivationCodeQuery, params: RequestParams = {}) =>
-      this.request<string, any>({
-        path: `/api/send-auth-code`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Classbon.API
-     * @name SetProfileImageCreate
-     * @request POST:/api/set-profile-image
-     * @secure
-     */
-    setProfileImageCreate: (
-      data: {
-        /** @format binary */
-        profileImage: File;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<number, any>({
-        path: `/api/set-profile-image`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Classbon.API
-     * @name RemoveProfileImageDelete
-     * @request DELETE:/api/remove-profile-image
-     * @secure
-     */
-    removeProfileImageDelete: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/remove-profile-image`,
-        method: 'DELETE',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Classbon.API
-     * @name UpdateProfileCreate
-     * @request POST:/api/update-profile
-     * @secure
-     */
-    updateProfileCreate: (data: UpdateProfileCommand, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/update-profile`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Classbon.API
-     * @name CoursesNewestDetail
-     * @request GET:/api/courses/newest/{count}
-     * @secure
-     */
-    coursesNewestDetail: (count: number, params: RequestParams = {}) =>
-      this.request<CourseCardDTO[], any>({
-        path: `/api/courses/newest/${count}`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Classbon.API
-     * @name CoursesSlugsList
-     * @request GET:/api/courses/slugs
-     * @secure
-     */
-    coursesSlugsList: (params: RequestParams = {}) =>
-      this.request<string[], any>({
-        path: `/api/courses/slugs`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Classbon.API
-     * @name CoursesDetail
-     * @request GET:/api/courses/{slug}
-     * @secure
-     */
-    coursesDetail: (slug: string, params: RequestParams = {}) =>
-      this.request<CourseDetailsDTO, any>({
-        path: `/api/courses/${slug}`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Classbon.API
-     * @name CoursesCommentsDetail
-     * @request GET:/api/courses/{slug}/comments
-     * @secure
-     */
-    coursesCommentsDetail: (
-      slug: string,
-      query: {
-        /** @format int32 */
-        page: number;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<CourseCommentDTO, any>({
-        path: `/api/courses/${slug}/comments`,
+      this.request<CaptchaApiModel, HTTPValidationError>({
+        path: `/users/login_captcha`,
         method: 'GET',
         query: query,
         secure: true,
@@ -1431,52 +563,111 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * No description
+     * @description Get access token using credentials for users. You must provide solved captcha value (_captcha_) and unique identifier of catpcha (_captchaUid_), along with user credentials (_username_ and _password_).**Important note**: _username_ can be either username, email, phone number or national code of user.
      *
-     * @tags Classbon.API
-     * @name CoursesCurriculumDetail
-     * @request GET:/api/courses/{slug}/curriculum
-     * @secure
+     * @tags users
+     * @name LoginForAccessTokenUsersLoginPost
+     * @summary Login For Access Token
+     * @request POST:/users/login
      */
-    coursesCurriculumDetail: (slug: string, params: RequestParams = {}) =>
-      this.request<CourseDetailsCurriculumDTO[], any>({
-        path: `/api/courses/${slug}/curriculum`,
-        method: 'GET',
-        secure: true,
+    loginForAccessTokenUsersLoginPost: (
+      query: {
+        /** Captchauid */
+        captchaUid: number | null;
+        /** Captcha */
+        captcha: string | null;
+      },
+      data: BodyLoginForAccessTokenUsersLoginPost,
+      params: RequestParams = {},
+    ) =>
+      this.request<TokenApiModel, HTTPValidationError>({
+        path: `/users/login`,
+        method: 'POST',
+        query: query,
+        body: data,
+        type: ContentType.UrlEncoded,
         format: 'json',
         ...params,
       }),
 
     /**
-     * No description
+     * @description Get access token using credentials for test user. This method only works for **test** user. For login flow of real users, you must use **login_captcha** and **login** endpoints.
      *
-     * @tags Classbon.API
-     * @name CoursesAddCommentCreate
-     * @request POST:/api/courses/add-comment
-     * @secure
+     * @tags users
+     * @name TestUserAccessTokenUsersTokenPost
+     * @summary Test User Access Token
+     * @request POST:/users/token
      */
-    coursesAddCommentCreate: (data: CreateCourseComment, params: RequestParams = {}) =>
-      this.request<boolean, any>({
-        path: `/api/courses/add-comment`,
+    testUserAccessTokenUsersTokenPost: (data: BodyTestUserAccessTokenUsersTokenPost, params: RequestParams = {}) =>
+      this.request<TokenApiModel, HTTPValidationError>({
+        path: `/users/token`,
         method: 'POST',
         body: data,
-        secure: true,
-        type: ContentType.Json,
+        type: ContentType.UrlEncoded,
         format: 'json',
         ...params,
       }),
 
     /**
-     * No description
+     * @description Get data of current logged in user.
      *
-     * @tags Classbon.API
-     * @name CoursesIsEnrolledDetail
-     * @request GET:/api/courses/{slug}/is-enrolled
+     * @tags users
+     * @name GetCurrentUserUsersMeGet
+     * @summary Get Current User
+     * @request GET:/users/me
      * @secure
      */
-    coursesIsEnrolledDetail: (slug: string, params: RequestParams = {}) =>
-      this.request<boolean, any>({
-        path: `/api/courses/${slug}/is-enrolled`,
+    getCurrentUserUsersMeGet: (params: RequestParams = {}) =>
+      this.request<AressApiUser | AnonymousApiUser, any>({
+        path: `/users/me`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+  };
+  dashboard = {
+    /**
+     * @description Get list of reports.
+     *
+     * @tags dashboard
+     * @name ReportListDashboardReportsGet
+     * @summary Report List
+     * @request GET:/dashboard/reports
+     * @secure
+     */
+    reportListDashboardReportsGet: (
+      query?: {
+        /** Onlyfavorite */
+        onlyFavorite?: boolean | null;
+        /** Onlynew */
+        onlyNew?: boolean | null;
+        /** Onlyhavingvideo */
+        onlyHavingVideo?: boolean | null;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<FinancialReportListItemApiModel[], HTTPValidationError>({
+        path: `/dashboard/reports`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Get list of reports.
+     *
+     * @tags dashboard
+     * @name ReportDetailsDashboardReportsReportIdGet
+     * @summary Report Details
+     * @request GET:/dashboard/reports/{report_id}
+     * @secure
+     */
+    reportDetailsDashboardReportsReportIdGet: (reportId: number, params: RequestParams = {}) =>
+      this.request<FinancialReportDetailsApiModel, HTTPValidationError>({
+        path: `/dashboard/reports/${reportId}`,
         method: 'GET',
         secure: true,
         format: 'json',
@@ -1484,264 +675,53 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * No description
+     * @description Get list of report categories.
      *
-     * @tags Classbon.API
-     * @name CoursesEnrolledCoursesList
-     * @request GET:/api/courses/enrolled-courses
+     * @tags dashboard
+     * @name ReportCategoriesDashboardReportsCategoriesGet
+     * @summary Report Categories
+     * @request GET:/dashboard/reports/categories
+     */
+    reportCategoriesDashboardReportsCategoriesGet: (params: RequestParams = {}) =>
+      this.request<FinancialReportCategoryApiModel[], any>({
+        path: `/dashboard/reports/categories`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Add a report to favorites
+     *
+     * @tags dashboard
+     * @name AddReportToFavoritesDashboardReportsReportIdFavoritePost
+     * @summary Add Report To Favorites
+     * @request POST:/dashboard/reports/{report_id}/favorite
      * @secure
      */
-    coursesEnrolledCoursesList: (params: RequestParams = {}) =>
-      this.request<EnrolledCourseDTO[], any>({
-        path: `/api/courses/enrolled-courses`,
-        method: 'GET',
+    addReportToFavoritesDashboardReportsReportIdFavoritePost: (reportId: number, params: RequestParams = {}) =>
+      this.request<UserReportFavoriteStatus, HTTPValidationError>({
+        path: `/dashboard/reports/${reportId}/favorite`,
+        method: 'POST',
         secure: true,
         format: 'json',
         ...params,
       }),
 
     /**
-     * No description
+     * @description Remove a report from favorites
      *
-     * @tags Classbon.API
-     * @name CoursesAllList
-     * @request GET:/api/courses/all
+     * @tags dashboard
+     * @name RemoveReportFromFavoritesDashboardReportsReportIdFavoriteDelete
+     * @summary Remove Report From Favorites
+     * @request DELETE:/dashboard/reports/{report_id}/favorite
      * @secure
      */
-    coursesAllList: (params: RequestParams = {}) =>
-      this.request<CourseNameDTO[], any>({
-        path: `/api/courses/all`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Classbon.API
-     * @name PictureDetail
-     * @request GET:/api/picture/{id}
-     * @secure
-     */
-    pictureDetail: (id: number, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/picture/${id}`,
-        method: 'GET',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Course Category
-     * @name AdminCourseCategoryListList
-     * @request GET:/api/admin/course-category/list
-     * @secure
-     */
-    adminCourseCategoryListList: (params: RequestParams = {}) =>
-      this.request<AdminCourseCategoryDto[], any>({
-        path: `/api/admin/course-category/list`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Course Category
-     * @name AdminCourseCategoryDetail
-     * @request GET:/api/admin/course-category/{id}
-     * @secure
-     */
-    adminCourseCategoryDetail: (id: number, params: RequestParams = {}) =>
-      this.request<AdminFullCourseCategoryDto, any>({
-        path: `/api/admin/course-category/${id}`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Course Category
-     * @name AdminCourseCategoryDelete
-     * @request DELETE:/api/admin/course-category/{categoryId}
-     * @secure
-     */
-    adminCourseCategoryDelete: (categoryId: number, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/admin/course-category/${categoryId}`,
+    removeReportFromFavoritesDashboardReportsReportIdFavoriteDelete: (reportId: number, params: RequestParams = {}) =>
+      this.request<UserReportFavoriteStatus, HTTPValidationError>({
+        path: `/dashboard/reports/${reportId}/favorite`,
         method: 'DELETE',
         secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Course Category
-     * @name AdminCourseCategoryCreate
-     * @request POST:/api/admin/course-category
-     * @secure
-     */
-    adminCourseCategoryCreate: (
-      data: {
-        model: AdminCreateCourseCategoryDto;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/admin/course-category`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.UrlEncoded,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Course Category
-     * @name AdminCourseCategoryUpdate
-     * @request PUT:/api/admin/course-category
-     * @secure
-     */
-    adminCourseCategoryUpdate: (
-      data: {
-        model: AdminUpdateCourseCategoryDto;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/admin/course-category`,
-        method: 'PUT',
-        body: data,
-        secure: true,
-        type: ContentType.UrlEncoded,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Dashboard
-     * @name DashboardSummaryList
-     * @request GET:/api/dashboard/summary
-     * @secure
-     */
-    dashboardSummaryList: (params: RequestParams = {}) =>
-      this.request<DashboardSummaryDto, any>({
-        path: `/api/dashboard/summary`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Discount
-     * @name DiscountActiveList
-     * @request GET:/api/discount/active
-     * @secure
-     */
-    discountActiveList: (params: RequestParams = {}) =>
-      this.request<DiscountDto, any>({
-        path: `/api/discount/active`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Exceptions
-     * @name BadRequestCreate
-     * @request POST:/api/bad-request
-     * @secure
-     */
-    badRequestCreate: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/bad-request`,
-        method: 'POST',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Exceptions
-     * @name UnauthorizedExeptionCreate
-     * @request POST:/api/unauthorized-exeption
-     * @secure
-     */
-    unauthorizedExeptionCreate: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/unauthorized-exeption`,
-        method: 'POST',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Exceptions
-     * @name UnhandledExceptionCreate
-     * @request POST:/api/unhandled-exception
-     * @secure
-     */
-    unhandledExceptionCreate: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/unhandled-exception`,
-        method: 'POST',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Exceptions
-     * @name ValidationErrorCreate
-     * @request POST:/api/validation-error
-     * @secure
-     */
-    validationErrorCreate: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/validation-error`,
-        method: 'POST',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags User
-     * @name UserSearchCreate
-     * @request POST:/api/user/search/{term}
-     * @secure
-     */
-    userSearchCreate: (term: string, data: SearchUserQuery, params: RequestParams = {}) =>
-      this.request<SearchUserResponseDTO[], any>({
-        path: `/api/user/search/${term}`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
         format: 'json',
         ...params,
       }),

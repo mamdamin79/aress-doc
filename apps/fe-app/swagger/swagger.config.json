@@ -1,7 +1,7 @@
 {
     "inputs": [
       {
-        "inputURL": "https://api.classbon.com/swagger/v1/swagger.json"
+        "inputURL": "http://185.141.213.190:8000/openapi.json"
       }
     ],
     "output": "./swagger.output.json"
