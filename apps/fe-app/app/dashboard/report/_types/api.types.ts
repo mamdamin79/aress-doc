@@ -1,9 +1,9 @@
-interface Category {
+export interface Category {
   title: string;
   identifier: number;
 }
 
-interface Video {
+export interface Video {
   identifier: number;
   mp4Video1080P: string;
   mp4Video1080PSizeBytes: number;
@@ -24,7 +24,7 @@ interface Video {
   thumbnailImage: string;
 }
 
-interface ReportDetailPageApiResponse {
+export interface ReportDetailPageApiResponse {
   identifier: number;
   title: string;
   htmlDescription: string;
@@ -36,4 +36,3 @@ interface ReportDetailPageApiResponse {
   isNew: boolean;
   relatedReports: Report[];
 }
-

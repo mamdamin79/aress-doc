@@ -2,25 +2,36 @@
 import React from 'react';
 import { Button, NewBadge, Heart, Icon } from 'design-system';
 import { TextWithIcon } from 'compositions';
-
-export const ReportOverview: React.FC = () => {
+import { Category } from '../_types/api.types';
+export interface ReportOverviewProps {
+  title?: string;
+  category?: Category;
+  summary?: string;
+  userFavorite?: boolean;
+  isNew?: boolean;
+}
+export const ReportOverview: React.FC<ReportOverviewProps> = ({
+  title,
+  category,
+  summary,
+  userFavorite,
+  isNew,
+}) => {
   return (
     <div className="flex w-full flex-col gap-4">
-      <h3 className="text-right text-2xl font-medium">
-        ورود و خروج سرمایه‌گذاران حقیقی به سهام و درآمد ثابت
-      </h3>
+      <h3 className="text-right text-2xl font-medium">{title}</h3>
       <div className="flex w-full flex-row justify-between text-sm">
         <div className="flex flex-row items-center gap-4">
           <TextWithIcon
             icon={{ name: 'layers-2', size: 'md' }}
-            text="صندوق درآمد ثابت"
+            text={category?.title ?? ''}
           />
-          <NewBadge />
+          {isNew && <NewBadge />}
         </div>
         <div className="flex flex-row items-center gap-3">
           <div className="flex h-8 w-8 items-center justify-center">
             <Heart
-              initialIsliked={false}
+              initialIsliked={userFavorite ?? false}
               onLike={() => console.log('sdasdd')}
             />
           </div>
@@ -34,12 +45,7 @@ export const ReportOverview: React.FC = () => {
       </div>
       <div className="h-0 w-full border border-gray-300"></div>
       <span className="text-md text-right font-medium">معرفی کوتاه:</span>
-      <p className="text-xs font-normal">
-        این گزارش روند ورود و خروج سرمایه‌گذاران حقیقی به دو دسته دارایی را
-        بررسی می‌کند: سهام و درآمد ثابت. به طور خلاصه، میزان سرمایه‌گذاری‌های
-        جدید و برداشت‌های انجام شده در این دو بخش را طی یک دوره زمانی مشخص تحلیل
-        می‌کند تا نوسانات و تمایلات سرمایه‌گذاران حقیقی را نشان دهد.
-      </p>
+      <p className="text-xs font-normal">{summary}</p>
     </div>
   );
 };

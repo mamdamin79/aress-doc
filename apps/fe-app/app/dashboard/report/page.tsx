@@ -1,14 +1,33 @@
-import { Breadcrumb, Icon, ReportCardBase, SectionTitle, Tabs } from 'design-system';
-import Image from 'next/image';
-import fake2 from '../fake2.png';
+import { Breadcrumb, Icon, SectionTitle } from 'design-system';
 import { ReportOverview } from './_components/ReportOverview';
 import { SectionItem } from './_components/SectionUlItem';
 import { VideoPlayerWrapper } from './_components/VideoPlayerWrapper';
 import { ReportsCarouselWrapper } from './_components/ReportsCarouselWrapper';
 import { TabsWrapper } from './_components/TabsWrapper';
 import { ReportCardBaseWrapper } from './_components/ReportCardBaseWrapper';
+import { ReportDetailPageApiResponse } from './_types/api.types';
+async function fetchReport(id: string) {
+  const API_URL = 'http://185.141.213.190:8000/dashboard/reports';
+  const API_TOKEN =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzM4NjQ2MTQ0fQ.QhCmeagk__8emw5bUKy-UD8EGosFyhf42YbLPtf-sOI';
 
-const page = () => {
+  if (!API_URL || !API_TOKEN) {
+    throw new Error('Missing API URL or token');
+  }
+  const res = await fetch(`${API_URL}/${id}`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${API_TOKEN}`,
+    },
+  });
+  if (!res.ok) {
+    return null;
+  }
+  return res.json() as Promise<ReportDetailPageApiResponse>;
+}
+const page = async () => {
+  const REPORT = await fetchReport('1');
   return (
     <div className="mx-auto max-w-[1680px]">
       {/* Breadcrumb */}
@@ -17,8 +36,7 @@ const page = () => {
           items={[
             { title: 'گزارش ها' },
             {
-              title:
-                'ورود و خروج تجمعی سرمایه‌گذاران حقیقی به سهام و درآمد ثابت',
+              title: REPORT?.title,
             },
           ]}
         />
@@ -26,7 +44,7 @@ const page = () => {
 
       <section className="mb-16 flex w-full flex-col-reverse items-center gap-8 px-20 pt-6 xl:flex-row xl:justify-around">
         <div className="flex w-fit flex-col gap-2">
-          <ReportCardBaseWrapper/>
+          <ReportCardBaseWrapper />
 
           <div className="flex w-fit flex-row items-center gap-1 text-sm font-normal">
             <Icon name="info" size="md" />
@@ -38,7 +56,13 @@ const page = () => {
             <span> امکان تغییر تنظیمات پیشفرض پروژه وجود دارد.</span>
           </div>
         </div>
-        <ReportOverview />
+        <ReportOverview
+          title={REPORT?.title}
+          category={REPORT?.category}
+          summary={REPORT?.summary}
+          userFavorite={REPORT?.userFavorite}
+          isNew={REPORT?.isNew}
+        />
       </section>
       <TabsWrapper />
       <section className="flex w-full flex-col items-center px-20" id="0">
