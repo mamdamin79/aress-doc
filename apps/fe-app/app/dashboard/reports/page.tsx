@@ -37,7 +37,7 @@ async function getData(searchParams: any) {
   const res = await fetch(`http://185.141.213.190:8000/dashboard/reports`, {
     cache: 'no-store',
     headers: {
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzM4MjIzNzk1fQ.Pk_sDWxJb5R8dznMUuAknpdFv4rPqr5N0B9SWR77mg8`,
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzM4NjU5OTgwfQ.1CVA43b4s2NSkTD63XP1ywlY9TLlTQZSCYTfawSOIBg`,
       'Content-Type': 'application/json',
     },
   });
