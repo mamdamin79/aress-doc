@@ -5,6 +5,7 @@ import { ReportList } from './_components/ReportsList';
 import { SideBar } from './_components/SideBar';
 import { SearchBar } from './_components/SearchBar';
 import CoursesSlugs from './_components/CourseSlugs';
+import { DashboardService, OpenAPI } from '../../openapi/requests';
 
 const categories = [
   {
@@ -35,22 +36,27 @@ const categories = [
 ];
 
 async function getData(searchParams: any) {
-  const res = await fetch(`http://185.141.213.190:8000/dashboard/reports`, {
-    cache: 'no-store',
-    headers: {
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzM4NjU5OTgwfQ.1CVA43b4s2NSkTD63XP1ywlY9TLlTQZSCYTfawSOIBg`,
-      'Content-Type': 'application/json',
-    },
-  });
+  OpenAPI.HEADERS = {
+    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzM4NjU5OTgwfQ.1CVA43b4s2NSkTD63XP1ywlY9TLlTQZSCYTfawSOIBg`,
+  };
+  const result = await DashboardService.getDashboardReports({});
+  console.log(result);
+  // const res = await fetch(`http://185.141.213.190:8000/dashboard/reports`, {
+  //   cache: 'no-store',
+  //   headers: {
+  //     Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzM4NjU5OTgwfQ.1CVA43b4s2NSkTD63XP1ywlY9TLlTQZSCYTfawSOIBg`,
+  //     'Content-Type': 'application/json',
+  //   },
+  // });
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
 
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error('Failed to fetch data');
-  }
+  // if (!res.ok) {
+  //   // This will activate the closest `error.js` Error Boundary
+  //   throw new Error('Failed to fetch data');
+  // }
 
-  return res.json();
+  // return res.json();
 }
 export default async function ReportMenuPage({ searchParams }: any) {
   // const { isHeaderVisible } = useHeaderVisibility();
@@ -88,7 +94,7 @@ export default async function ReportMenuPage({ searchParams }: any) {
       </div>
       <div className="flex items-start justify-between gap-8">
         <div className="w-[1048px]">
-          <ReportList reports={reports} />
+          {/* <ReportList reports={reports} /> */}
           {/* <Pagination
             currentPage={meta.current_page}
             pageCount={meta.last_page}
@@ -96,7 +102,7 @@ export default async function ReportMenuPage({ searchParams }: any) {
           /> */}
         </div>
         {/* <SideBar categories={categories} /> */}
-        <CoursesSlugs/>
+        <CoursesSlugs />
       </div>
     </div>
   );
