@@ -3,6 +3,7 @@ import React from 'react';
 
 
 export const ReportList: React.FC = ({ reports }: any) => {
+  
   return (
     <div className="flex flex-wrap gap-8">
       {reports.map((report,idx) => (

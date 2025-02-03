@@ -4,7 +4,10 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky"
+    "prepare": "husky",
+    "merge:swagger": "npx openapi-merge-cli --config ./apps/fe-app/swagger/swagger.config.json",
+    "generate:sdk": "npx swagger-typescript-api -p ./apps/fe-app/swagger/swagger.output.json -o ./apps/fe-app/models -n axios.ts",
+    "output:swagger": "npm run merge:swagger && npm run generate:sdk"
   },
   "keywords": [],
   "author": "",
