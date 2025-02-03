@@ -1,7 +1,9 @@
 'use client';
+
 import {
   AddReportButton,
   AutoRotateSwitch,
+  AutoRotationOff,
   HorizontalScrollBar,
 } from 'design-system';
 import React, { useEffect, useRef, useState } from 'react';
@@ -10,8 +12,24 @@ import { DashboardNumberAndName } from './DashboardNumberAndName';
 export const SlidersBox: React.FC = () => {
   const [activeRotate, setActiveRotate] = useState<number | null>(null);
   const [currIndex, setCurrIndex] = useState(0);
+  const [isAutoScrolling, setIsAutoScrolling] = useState(false);
   const slides = 6;
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Handles user manual scrolling
+  const onUserScroll = () => {
+    if (activeRotate !== null && !isAutoScrolling) {
+      setActiveRotate(null);
+    }
+  };
+
+  useEffect(() => {
+    // Scroll event listener
+    window.addEventListener('scroll', onUserScroll);
+    return () => {
+      window.removeEventListener('scroll', onUserScroll);
+    };
+  }, [activeRotate, isAutoScrolling]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -35,11 +53,10 @@ export const SlidersBox: React.FC = () => {
     }
 
     let intervalId: NodeJS.Timeout | null = null;
-
     if (activeRotate !== null) {
       intervalId = setInterval(() => {
         setCurrIndex((prev) => {
-          const nextIndex = (prev + 1) % slides; // Loop back to 0 after the last slide
+          const nextIndex = (prev + 1) % slides;
           handleScroll(nextIndex);
           return nextIndex;
         });
@@ -47,12 +64,12 @@ export const SlidersBox: React.FC = () => {
     }
 
     return () => {
-      if (intervalId) clearInterval(intervalId); // Clear interval on unmount or dependency change
+      if (intervalId) clearInterval(intervalId);
       if (elements) {
         Array.from(elements).forEach((el) => observer.unobserve(el));
       }
     };
-  }, [activeRotate, slides]);
+  }, [activeRotate]);
 
   const handleRotation = (time: number | null) => {
     setActiveRotate(time);
@@ -62,6 +79,8 @@ export const SlidersBox: React.FC = () => {
   const barsNumber = Math.ceil(slides / scrollStep);
 
   const handleScroll = (index: number) => {
+    setIsAutoScrolling(true);
+
     const targetElement = document.getElementById(`slide-${index}`);
     if (targetElement) {
       const blockPosition = scrollStep === 2 ? 'start' : 'center';
@@ -69,6 +88,9 @@ export const SlidersBox: React.FC = () => {
         behavior: 'smooth',
         block: blockPosition,
       });
+
+      // Reset `isAutoScrolling` after a delay
+      setTimeout(() => setIsAutoScrolling(false), 800);
     }
   };
 
@@ -77,7 +99,7 @@ export const SlidersBox: React.FC = () => {
       <div className="flex w-full justify-between">
         <DashboardNumberAndName number={2} title="صندوق کالایی" />
         <AutoRotateSwitch
-          onChange={(item) => handleRotation(item)}
+          onChange={handleRotation}
           rotateOptions={[5, 10, 15]}
           initialValue={activeRotate}
         />
@@ -100,14 +122,17 @@ export const SlidersBox: React.FC = () => {
         </div>
       </section>
 
-      <div className="fixed right-4 top-1/2">
+      <div className="fixed right-4 top-1/2 flex flex-col items-center justify-center gap-2">
         <HorizontalScrollBar
-          onChangeIndex={(index) => handleScroll(index)}
+          onChangeIndex={handleScroll}
           barsNumber={barsNumber}
           externalIndex={currIndex}
           autoRotate={Boolean(activeRotate)}
           autoRotateDuration={activeRotate || undefined}
         />
+        {activeRotate && (
+          <AutoRotationOff onClick={() => setActiveRotate(null)} />
+        )}
       </div>
     </>
   );
