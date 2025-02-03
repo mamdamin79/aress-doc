@@ -1,11 +1,6 @@
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 
-import {
-  Checkbox,
-  Icon,
-  Pagination,
-
-} from 'design-system';
+import { Checkbox, Icon } from 'design-system';
 import { ReportList } from './_components/ReportsList';
 import { SideBar } from './_components/SideBar';
 import { SearchBar } from './_components/SearchBar';
@@ -39,13 +34,13 @@ const categories = [
 ];
 
 async function getData(searchParams: any) {
-
-  const res = await fetch(
-    `http://localhost:8000/api/reports?${new URLSearchParams(searchParams).toString()}`,
-    {
-      cache: 'no-store',
+  const res = await fetch(`http://185.141.213.190:8000/dashboard/reports`, {
+    cache: 'no-store',
+    headers: {
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzM4MjIzNzk1fQ.Pk_sDWxJb5R8dznMUuAknpdFv4rPqr5N0B9SWR77mg8`,
+      'Content-Type': 'application/json',
     },
-  );
+  });
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
 
@@ -58,10 +53,7 @@ async function getData(searchParams: any) {
 }
 export default async function ReportMenuPage({ searchParams }: any) {
   // const { isHeaderVisible } = useHeaderVisibility();
-  const {
-    data: { reports },
-    data: { meta },
-  } = await getData(searchParams);
+  const reports = await getData(searchParams);
 
   return (
     <div className="container mx-auto max-w-7xl">
@@ -96,12 +88,11 @@ export default async function ReportMenuPage({ searchParams }: any) {
       <div className="flex items-start justify-between gap-8">
         <div className="w-[1048px]">
           <ReportList reports={reports} />
-          {/* <Button size='sm' className='rounded-full fixed left-[216px] bottom-[72px]' align='center' isLoading={false} mode='primary'><Icon name='CustomAlpha'/></Button> */}
-          <Pagination
+          {/* <Pagination
             currentPage={meta.current_page}
             pageCount={meta.last_page}
             pageSize={meta.per_page}
-          />
+          /> */}
         </div>
         <SideBar categories={categories} />
       </div>

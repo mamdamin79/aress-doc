@@ -26,3 +26,4 @@ export * from './Tooltip';
 export * from './HeaderMenus';
 export * from './NotesHeading';
 export * from './HeaderMenus/BurgerMenu/HamburgerMenuIcon';
+export * from './ReportsCarousel';

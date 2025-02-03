@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Icon } from '../Icon';
 import Image from 'next/image';
-import { NewBadge, VideoBadge, LikeBadge } from './Badges';
+import { NewBadge, VideoBadge, LikeBadge } from './Badges/Badges';
 import { cn } from '../../../utils/classNames.utils';
 import { Button } from '../Button';
 
@@ -29,31 +29,29 @@ export const ReportCard: React.FC<CardComponentProps> = ({
   image,
   isLiked = false,
 }) => {
-  const [isLikedTemp, setIsLikedTemp] = useState(isLiked);
-
   return (
     <div
       className={cn(
-        `group relative flex flex-col overflow-hidden rounded-3xl border-[3px] border-gray-100 bg-gray-100 transition-all`,
+        `group relative flex flex-col overflow-hidden rounded-3xl border-[3px] border-gray-100 bg-gray-100 transition-all hover:shadow-md`,
         fixedBrief
-          ? 'hover:shadow-7xl h-fit min-h-[507px] w-[508px] items-start'
-          : 'h-[308px] w-[416px] hover:shadow-md',
+          ? 'h-[448px] min-w-[380px] max-w-[512px] items-start'
+          : 'h-[318px] min-w-[304px] max-w-[416px]',
       )}
     >
       {/* Image Section */}
-      <div className="mt-3 px-3">
+      <div className="mt-3 w-full px-3">
         <div
           className={cn(
-            `flex w-full items-center justify-center overflow-hidden rounded-xl shadow-md`,
-            fixedBrief ? 'h-[247px]' : 'h-[200px]',
+            `bg-baseBackground flex w-full items-center justify-center overflow-hidden rounded-xl shadow-md`,
+            fixedBrief ? 'mx-auto h-[192px]' : 'h-[184px]',
           )}
         >
           <Image
-            width={476}
-            height={247}
+            width={408}
+            height={192}
             src={image}
             alt="Content Thumbnail"
-            className="h-full w-full object-cover"
+            className="h-full w-full object-contain"
           />
         </div>
       </div>
@@ -71,11 +69,18 @@ export const ReportCard: React.FC<CardComponentProps> = ({
           `flex flex-col justify-between gap-3 p-4 transition-all duration-500 ease-in group-hover:duration-700`,
           fixedBrief
             ? 'h-[212px] items-baseline'
-            : 'absolute bottom-0 left-0 max-h-[92px] items-end overflow-hidden transition-all ease-in-out group-hover:max-h-[250px]',
+            : 'absolute bottom-6 left-0 max-h-[92px] items-end overflow-hidden transition-all ease-in-out group-hover:max-h-[250px]',
         )}
       >
         <div className="flex h-fit w-fit flex-col gap-2">
-          <p className="text-gray-1000 text-sm font-semibold">{title}</p>
+          <p
+            className={cn(
+              'text-gray-1000 max-h-14 overflow-hidden truncate text-ellipsis text-sm font-medium',
+              fixedBrief ? 'max-w-[508px]' : 'h-[26px] max-w-[416px]',
+            )}
+          >
+            {title}
+          </p>
           <div className="flex flex-row gap-4 text-right text-sm font-medium text-gray-700">
             <span className="flex flex-row items-center gap-1">
               <Icon name="layers-2" key={categoryType} size="md" />
@@ -99,10 +104,8 @@ export const ReportCard: React.FC<CardComponentProps> = ({
               </span>
               <div className="absolute bottom-4 right-0 flex w-full items-center justify-between px-4">
                 <LikeBadge
-                  isLiked={isLikedTemp}
-                  onClick={() => {
-                    setIsLikedTemp(!isLikedTemp);
-                  }}
+                  isLiked={isLiked}
+                  onClick={() => console.log('like')}
                 />
                 <div className="flex h-[38px] origin-left scale-x-[0.3] transform items-center overflow-hidden rounded-[100px] text-xs opacity-0 transition-all duration-300 ease-in-out group-hover:scale-x-100 group-hover:opacity-100">
                   <Button
@@ -124,7 +127,7 @@ export const ReportCard: React.FC<CardComponentProps> = ({
 
           {/* Brief Section (Drawer Animation) */}
           {!fixedBrief && (
-            <span className="-mb-2 line-clamp-4 translate-y-12 transform overflow-hidden text-right text-sm text-gray-600 opacity-0 transition-all duration-500 ease-in-out group-hover:translate-y-0 group-hover:opacity-100">
+            <span className="-mb-2 line-clamp-4 h-fit translate-y-12 transform overflow-hidden text-right text-sm text-gray-600 opacity-0 transition-all duration-500 ease-in-out group-hover:translate-y-0 group-hover:opacity-100">
               {brief}
             </span>
           )}
