@@ -5,7 +5,8 @@ import { ReportList } from './_components/ReportsList';
 import { SideBar } from './_components/SideBar';
 import { SearchBar } from './_components/SearchBar';
 import CoursesSlugs from './_components/CourseSlugs';
-import { DashboardService, OpenAPI } from '../../openapi/requests';
+import { DashboardService, GetDashboardReportsData, OpenAPI } from '../../openapi/requests';
+import { DashboardServiceDeleteDashboardReportsByReportIdFavoriteMutationResult } from '../../openapi/queries';
 
 const categories = [
   {
@@ -35,12 +36,12 @@ const categories = [
   },
 ];
 
-async function getData(searchParams: any) {
+async function getData(searchParams: GetDashboardReportsData) {
   OpenAPI.HEADERS = {
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzM4NjU5OTgwfQ.1CVA43b4s2NSkTD63XP1ywlY9TLlTQZSCYTfawSOIBg`,
+    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzM4NzQ3ODE4fQ.80L6oheMX4xsIOZRDBDlLGdHKZ1xtHGzQ-RlO_574BQ`,
   };
-  const result = await DashboardService.getDashboardReports({});
-  console.log(result);
+  const result = await DashboardService.getDashboardReports({...searchParams,onlyFavorite:true});
+  return result;
   // const res = await fetch(`http://185.141.213.190:8000/dashboard/reports`, {
   //   cache: 'no-store',
   //   headers: {
@@ -58,9 +59,10 @@ async function getData(searchParams: any) {
 
   // return res.json();
 }
-export default async function ReportMenuPage({ searchParams }: any) {
+export default async function ReportMenuPage({ searchParams }: { searchParams: GetDashboardReportsData }) {
   // const { isHeaderVisible } = useHeaderVisibility();
   const reports = await getData(searchParams);
+  console.log(reports);
 
   return (
     <div className="container mx-auto max-w-7xl">
@@ -94,8 +96,8 @@ export default async function ReportMenuPage({ searchParams }: any) {
       </div>
       <div className="flex items-start justify-between gap-8">
         <div className="w-[1048px]">
-          {/* <ReportList reports={reports} /> */}
-          {/* <Pagination
+          <ReportList reports={reports} /> 
+           {/* <Pagination
             currentPage={meta.current_page}
             pageCount={meta.last_page}
             pageSize={meta.per_page}

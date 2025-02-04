@@ -1,8 +1,12 @@
+import { GetDashboardReportsResponse } from 'apps/fe-app/app/openapi/requests';
 import { ReportCard } from 'design-system';
 import React from 'react';
 
+type Props = {
+  reports: GetDashboardReportsResponse;
+}
 
-export const ReportList: React.FC = ({ reports }: any) => {
+export const ReportList: React.FC<Props> = ({ reports }) => {
   
   return (
     <div className="flex flex-wrap gap-8">
