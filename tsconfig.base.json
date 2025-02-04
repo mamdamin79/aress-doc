@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "design-system": ["libs/design-system/src/index.ts"],
-      "@aress-assets/*": ["libs/design-system/src/assets/*"]
+      "@aress-assets/*": ["libs/design-system/src/assets/*"],
+      "@openapi": ["libs/openapi/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,24 +1,30 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import { Icon } from '../Icon';
 import Image from 'next/image';
 import { NewBadge, VideoBadge, LikeBadge } from './Badges/Badges';
 import { cn } from '../../../utils/classNames.utils';
 import { Button } from '../Button';
+import { FinancialReportListItemApiModel } from '@openapi';
 
-export interface CardComponentProps {
-  title: string;
-  summary: string;
-  reportSubscription: string;
-  categoryType: string;
-  newBadge?: boolean;
-  videoBadge?: boolean;
-  image: string;
-  fixedBrief?: boolean;
-  userFavorite?: boolean;
-}
 
-export const ReportCard: React.FC<CardComponentProps> = ({
+// export interface CardComponentProps {
+//   title: string;
+//   summary: string;
+//   reportSubscription: string;
+//   categoryType: string;
+//   newBadge?: boolean;
+//   videoBadge?: boolean;
+//   image: string;
+//   fixedBrief?: boolean;
+//   userFavorite?: boolean;
+// }
+
+
+
+
+
+export const ReportCard: React.FC<FinancialReportListItemApiModel> = ({
   title,
   reportSubscription,
   summary,

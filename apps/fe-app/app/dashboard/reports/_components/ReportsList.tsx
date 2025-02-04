@@ -1,4 +1,4 @@
-import { GetDashboardReportsResponse } from 'apps/fe-app/app/openapi/requests';
+import { GetDashboardReportsResponse } from '@openapi';
 import { ReportCard } from 'design-system';
 import React from 'react';
 
@@ -7,6 +7,7 @@ type Props = {
 }
 
 export const ReportList: React.FC<Props> = ({ reports }) => {
+  console.log(reports[0])
   
   return (
     <div className="flex flex-wrap gap-8">
@@ -14,15 +15,6 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
         <ReportCard
           key={report.identifier}
           {...report}
-          fixedBrief={true}
-          image={report.image}
-          categoryType={report.category.title}
-          isLiked={report.userFavorite}
-          reportSubscription={report.category.title}
-          brief={report.summary}
-          title={report.title}
-          newBadge={report.isNew}
-          videoBadge={report.video}
         />
       ))}
     </div>

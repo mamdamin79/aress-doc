@@ -5,8 +5,7 @@ import { ReportList } from './_components/ReportsList';
 import { SideBar } from './_components/SideBar';
 import { SearchBar } from './_components/SearchBar';
 import CoursesSlugs from './_components/CourseSlugs';
-import { DashboardService, GetDashboardReportsData, OpenAPI } from '../../openapi/requests';
-import { DashboardServiceDeleteDashboardReportsByReportIdFavoriteMutationResult } from '../../openapi/queries';
+import { DashboardService, GetDashboardReportsData, OpenAPI } from '@openapi';
 
 const categories = [
   {
@@ -62,7 +61,6 @@ async function getData(searchParams: GetDashboardReportsData) {
 export default async function ReportMenuPage({ searchParams }: { searchParams: GetDashboardReportsData }) {
   // const { isHeaderVisible } = useHeaderVisibility();
   const reports = await getData(searchParams);
-  console.log(reports);
 
   return (
     <div className="container mx-auto max-w-7xl">
