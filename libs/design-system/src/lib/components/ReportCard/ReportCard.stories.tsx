@@ -15,7 +15,7 @@ type Story = StoryObj<typeof ReportCard>;
 export const SimilarReportsCard: Story = {
   args: {
     title: 'نرخ بازده تا سررسید',
-    brief:
+    summary:
       'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد',
     categoryType: 'سهامی',
     image: chartPNG,
@@ -27,7 +27,7 @@ export const SimilarReportsCard: Story = {
 export const MenuReportsCard: Story = {
   args: {
     title: 'شاخص کل، ورود و خروج سرمایه‌گذار',
-    brief:
+    summary:
       'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد',
     categoryType: 'درآمد ثابت',
     image: chartPNG2,
@@ -35,6 +35,6 @@ export const MenuReportsCard: Story = {
     videoBadge: false,
     reportSubscription: 'گزارش رایگان',
     fixedBrief: true,
-    isLiked: true,
+    userFavorite: true,
   },
 };
