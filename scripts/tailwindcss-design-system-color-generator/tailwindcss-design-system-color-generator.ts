@@ -7,7 +7,7 @@ import * as path from 'path';
 const inputDirPath = path.join(__dirname, 'inputs');
 const outputFilePath = path.join(
   __dirname,
-  './../../libs/design-system/tailwind.config.js',
+  './../../libs/design-system/tailwindColors.ts',
 );
 
 // Type for processing result
@@ -49,37 +49,9 @@ const objectToJavaScript = (obj: any, indent: string = ''): string => {
 const updateTailwindConfig = (newColors: any): void => {
   let fileContent = fs.readFileSync(outputFilePath, 'utf-8');
 
-  // ابتدا بررسی می‌کنیم که آیا رنگ‌ها قبلاً در extend موجود هستند یا نه
-  const extendPattern = /extend\s*:\s*{([^}]*)}/;
-  const extendMatch = fileContent.match(extendPattern);
-
-  if (extendMatch) {
-    let extendContent = extendMatch[0];
-
-    // بررسی می‌کنیم که آیا رنگ‌ها داخل extend موجودند یا نه
-    const colorsPattern = /colors\s*:\s*{[^}]*}/;
-
-    if (colorsPattern.test(extendContent)) {
-      // اگر colors: {} وجود داشته باشد، ابتدا آن را پاک می‌کنیم
-      extendContent = extendContent.replace(
-        colorsPattern,
-        `colors: {\n${objectToJavaScript(newColors, '        ')}\n    }`,
-      );
-      fileContent = fileContent.replace(extendPattern, ` ${extendContent}`);
-    } else {
-      // اگر colors: {} وجود نداشته باشد، رنگ‌ها را اضافه می‌کنیم
-      const updatedExtend =
-        extendContent +
-        `,\n    colors: {\n${objectToJavaScript(newColors, '        ')}\n    }`;
-      fileContent = fileContent.replace(extendPattern, ` ${updatedExtend}`);
-    }
-  } else {
-    // اگر extend موجود نبود، آن را به کل فایل اضافه می‌کنیم
-    const jsContentWithExtend = `     extend: {\n    colors: {\n${objectToJavaScript(newColors, '        ')}\n    }\n }`;
-    fileContent = fileContent + '\n' + jsContentWithExtend;
-  }
-
-  // در نهایت، فایل را بازنویسی می‌کنیم
+  fileContent = '';
+  const jsContentWithExtend = `const colors={\n${objectToJavaScript(newColors, '        ')}\n    }\n export default colors;`;
+  fileContent = fileContent + '\n' + jsContentWithExtend;
   fs.writeFileSync(outputFilePath, fileContent, 'utf-8');
   console.log(`Updated 'extend' section in ${outputFilePath}`);
 };
@@ -174,7 +146,9 @@ updateTailwindConfig(output.colors);
 // ----------------------------- Section 2: CSS Variable Extraction -----------------------------
 
 // Folder path for CSS variable extraction
+
 const inputFolder = path.join(__dirname, 'inputs');
+const primitivesFolder = path.join(__dirname, 'inputs', 'primitives');
 const outputFile = path.join(
   __dirname,
   './../../libs/design-system/.storybook/tailwind-imports.css',
@@ -209,6 +183,23 @@ const clearAndAddVariablesToLayerBase = (
   return cssContent;
 };
 
+const readFilesRecursive = (
+  folderPath: string,
+  fileCallback: (file: string) => void,
+): void => {
+  const files = fs.readdirSync(folderPath);
+  files.forEach((file) => {
+    const fullPath = path.join(folderPath, file);
+    const stat = fs.statSync(fullPath);
+
+    if (stat.isDirectory()) {
+      readFilesRecursive(fullPath, fileCallback);
+    } else if (fullPath.endsWith('.css')) {
+      fileCallback(fullPath);
+    }
+  });
+};
+
 // Process and apply changes to the files
 fs.readdir(inputFolder, (err, files) => {
   if (err) {
@@ -216,25 +207,29 @@ fs.readdir(inputFolder, (err, files) => {
     return;
   }
 
-  const cssFiles = files.filter((file) => file.endsWith('.css'));
-  const darkCssFiles = files.filter((file) => file.endsWith('--dark.css'));
+  const cssFiles: string[] = [];
+  const darkCssFiles: string[] = [];
+
+  readFilesRecursive(inputFolder, (filePath: string) => {
+    if (filePath.endsWith('.css') && !filePath.endsWith('--dark.css')) {
+      cssFiles.push(filePath);
+    } else if (filePath.endsWith('--dark.css')) {
+      darkCssFiles.push(filePath);
+    }
+  });
 
   let outputContent = fs.readFileSync(outputFile, 'utf-8');
   let allVariables: string[] = [];
   let darkVariables: string[] = [];
 
-  cssFiles.forEach((file) => {
-    if (!file.endsWith('--dark.css')) {
-      const filePath = path.join(inputFolder, file);
-      let cssContent = fs.readFileSync(filePath, 'utf-8');
-      cssContent = removeMustacheSyntax(cssContent);
-      const variables = extractCssVariables(cssContent);
-      allVariables = allVariables.concat(variables);
-    }
+  cssFiles.forEach((filePath) => {
+    let cssContent = fs.readFileSync(filePath, 'utf-8');
+    cssContent = removeMustacheSyntax(cssContent);
+    const variables = extractCssVariables(cssContent);
+    allVariables = allVariables.concat(variables);
   });
 
-  darkCssFiles.forEach((file) => {
-    const filePath = path.join(inputFolder, file);
+  darkCssFiles.forEach((filePath) => {
     let cssContent = fs.readFileSync(filePath, 'utf-8');
     cssContent = removeMustacheSyntax(cssContent);
     const variables = extractCssVariables(cssContent);
