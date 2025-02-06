@@ -1,11 +1,16 @@
 'use client';
+import { GetDashboardReportsCategoriesResponse } from '@openapi';
 import { cn } from 'design-system';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export const CategoryList: React.FC = ({ categories }: any) => {
+type Props = {
+  categories: GetDashboardReportsCategoriesResponse;
+};
+
+export const CategoryList: React.FC<Props> = ({ categories }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const handleCategory = (title) => {
+  const handleCategory = (title: string) => {
     const params = new URLSearchParams();
     if (title === 'همه ی گزارش ها') {
       params.delete('category');
@@ -36,7 +41,7 @@ export const CategoryList: React.FC = ({ categories }: any) => {
         <>
           <li
             onClick={() => handleCategory(category.title)}
-            key={category.id}
+            key={category.identifier}
             className={cn(
               'mb-4 flex cursor-pointer items-center gap-2 rounded-md text-sm font-medium text-gray-700',
               {
@@ -51,7 +56,7 @@ export const CategoryList: React.FC = ({ categories }: any) => {
                   category.title === searchParams.get('category'),
               })}
             ></div>
-            {category.title} ({category.quantity})
+            {category.title}
           </li>
         </>
       ))}
