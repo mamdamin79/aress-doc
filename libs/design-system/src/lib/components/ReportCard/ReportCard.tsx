@@ -85,10 +85,12 @@ export const ReportCard: React.FC<CardComponentProps> = ({
               <Icon name="layers-2" key={categoryType} size="md" />
               {categoryType}
             </span>
-            <span className="flex flex-row items-center gap-1">
-              <Icon name="package" key={reportSubscription} size="md" />
-              {reportSubscription}
-            </span>
+            {reportSubscription && (
+              <span className="flex flex-row items-center gap-1">
+                <Icon name="package" key={reportSubscription} size="md" />
+                {reportSubscription}
+              </span>
+            )}
             <div className="flex gap-2">
               {newBadge && <NewBadge />}
               {videoBadge && <VideoBadge />}
