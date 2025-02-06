@@ -2,7 +2,17 @@ export interface Category {
   title: string;
   identifier: number;
 }
-
+export interface IReport {
+  identifier: number;
+  title: string;
+  htmlDescription: string;
+  category: Category;
+  image: string;
+  summary: string;
+  video: Video;
+  userFavorite: boolean;
+  isNew: boolean;
+}
 export interface Video {
   identifier: number;
   mp4Video1080P: string;
@@ -24,15 +34,6 @@ export interface Video {
   thumbnailImage: string;
 }
 
-export interface ReportDetailPageApiResponse {
-  identifier: number;
-  title: string;
-  htmlDescription: string;
-  category: Category;
-  image: string;
-  summary: string;
-  video: Video;
-  userFavorite: boolean;
-  isNew: boolean;
-  relatedReports: Report[];
+export interface ReportDetailPageApiResponse extends IReport {
+  relatedReports: IReport[];
 }

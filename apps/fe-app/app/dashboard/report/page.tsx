@@ -1,4 +1,4 @@
-import { Breadcrumb, Icon, SectionTitle } from 'design-system';
+import { Breadcrumb, Icon, ReportsCarousel, SectionTitle } from 'design-system';
 import { ReportOverview } from './_components/ReportOverview';
 import { SectionItem } from './_components/SectionUlItem';
 import { VideoPlayerWrapper } from './_components/VideoPlayerWrapper';
@@ -114,7 +114,22 @@ const page = async () => {
       </section>
       <section className="flex flex-col gap-12 pt-[112px]" id="2">
         <SectionTitle align="center" level={2} title="گزارش‌های مرتبط" />
-        <ReportsCarouselWrapper />
+        {REPORT?.relatedReports && (
+          <ReportsCarousel
+            cards={REPORT?.relatedReports.map((REPORT) => {
+              return {
+                title: REPORT.title,
+                categoryType: REPORT.category.title,
+                image: REPORT.image,
+                summary: REPORT.summary,
+                fixedBrief: false,
+                newBadge: REPORT.isNew,
+                userFavorite: REPORT.userFavorite,
+                videoBadge: !!REPORT.video,
+              };
+            })}
+          />
+        )}
       </section>
       <div className="mb-6 h-14 w-full border-b border-gray-200"></div>
     </div>
