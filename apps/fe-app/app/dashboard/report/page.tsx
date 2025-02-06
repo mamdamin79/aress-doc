@@ -6,6 +6,8 @@ import { ReportsCarouselWrapper } from './_components/ReportsCarouselWrapper';
 import { TabsWrapper } from './_components/TabsWrapper';
 import { ReportCardBaseWrapper } from './_components/ReportCardBaseWrapper';
 import { ReportDetailPageApiResponse } from './_types/api.types';
+import Markdown from 'react-markdown';
+
 async function fetchReport(id: string) {
   const API_URL = 'http://185.141.213.190:8000/dashboard/reports';
   const API_TOKEN =
@@ -77,37 +79,37 @@ const page = async () => {
       >
         <SectionTitle align="center" level={3} title="اطلاعات بیشتر" />
         <div className="mt-12 flex flex-col items-center justify-center">
-          <ul className="rtl marker:text-brand-600 list-disc text-xl font-medium marker:text-3xl">
-            {/* Section Component */}
-            <SectionItem
-              title="نرخ بازده تا سررسید (Yield to Maturity - YTM)"
-              paragraphs={[
-                `نرخ بازده تا سررسید یا YTM یکی از مفاهیم مهم در ارزیابی اوراق قرضه است. این نرخ نشان‌دهنده نرخ بازده کلی است که سرمایه‌گذار می‌تواند انتظار داشته باشد اگر اوراق قرضه را تا تاریخ سررسید نگه دارد و تمام پرداخت‌ها (شامل کوپن‌ها و بازپرداخت اصل مبلغ) بر اساس شرایط فعلی به‌موقع پرداخت شوند.`,
-                `YTM معیاری است که به‌طور خلاصه تمام جریان‌های نقدی حاصل از اوراق قرضه (شامل پرداخت‌های دوره‌ای کوپن و بازپرداخت اصل مبلغ در سررسید) را در نظر می‌گیرد و آنها را با قیمت فعلی بازار اوراق قرضه تطبیق می‌دهد تا نرخ بازده کلی را محاسبه کند.`,
-              ]}
-            />
-
-            <SectionItem
-              title="چرا YTM مهم است؟"
-              list={[
-                {
-                  subtitle: 'تصمیم‌گیری سرمایه‌گذاری:',
-                  content: `نرخ بازده تا سررسید یا YTM یکی از مفاهیم مهم در ارزیابی اوراق قرضه است. این نرخ نشان‌دهنده نرخ بازده کلی است که سرمایه‌گذار می‌تواند انتظار داشته باشد اگر اوراق قرضه را تا تاریخ سررسید نگه دارد و تمام پرداخت‌ها به‌موقع پرداخت شوند.`,
-                },
-                {
-                  subtitle: 'مقایسه بازده:',
-                  content: `YTM امکان مقایسه اوراق قرضه با سررسیدهای مختلف با بازده‌های کوپن متفاوت را فراهم می‌آورد.`,
-                },
-              ]}
-            />
-
-            <SectionItem
-              title="نحوه محاسبه YTM"
-              paragraphs={[
-                `محاسبه YTM معمولاً با استفاده از فرمول‌های ریاضی است که ممکن است نیاز به استفاده از نرم‌افزارهای مالی داشته باشد. این محاسبات با جستجوی نرخ‌هایی انجام می‌شود.`,
-              ]}
-            />
-          </ul>
+          {/* Section Component */}
+          <Markdown
+            components={{
+              // Custom renderer for the ul element
+              ul: ({ node, ...props }) => (
+                <ul
+                  className="rtl marker:text-brand-600 list-disc text-xl font-medium marker:text-3xl"
+                  {...props}
+                />
+              ),
+              // Custom renderer for h4 (titles)
+              h4: ({ node, ...props }) => (
+                <h4 className="mb-4 text-2xl font-medium" {...props} />
+              ),
+              // Custom renderer for paragraphs
+              p: ({ node, ...props }) => (
+                <p className="text-md mb-4 leading-relaxed" {...props} />
+              ),
+              // Custom renderer for ordered lists
+              ol: ({ node, ...props }) => (
+                <ol
+                  className="list-decimal pr-2.5 text-right leading-relaxed"
+                  {...props}
+                />
+              ),
+              // Custom renderer for list items
+              li: ({ node, ...props }) => <li className="mb-4" {...props} />,
+            }}
+          >
+            {REPORT?.htmlDescription}
+          </Markdown>
         </div>
       </section>
       <section className="flex flex-col gap-12 pt-[112px]" id="2">
