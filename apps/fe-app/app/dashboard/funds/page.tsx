@@ -9,10 +9,12 @@ import {
   OptionsDropdown,
   FundsFilterSection,
   FundsTableRow,
+  FundsTag,
 } from 'design-system';
 import {
   ColumnDef,
   ColumnFiltersState,
+  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -31,6 +33,7 @@ const Funds = () => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [data, setData] = useState<Person[]>(() => makeData(500));
   const [isFilterModal, setIsFilterModal] = useState(false);
+  const [isSettingModal, setIsSettingModal] = useState(false);
 
   const [isScrolled, setIsScrolled] = useState(false);
   const tableRef = useRef<HTMLDivElement>(null);
@@ -130,7 +133,7 @@ const Funds = () => {
     { accessorKey: 'progress', header: 'Profile Progress' },
   ];
 
-  
+
   const table = useReactTable({
     data,
     columns,
@@ -143,7 +146,7 @@ const Funds = () => {
   });
 
   console.log(table?.getRowModel().rows[0].getVisibleCells()[0].getContext().row.original.visits);
-  
+
 
   return (
     <div className="container mx-auto max-w-7xl p-4 px-20">
@@ -235,87 +238,156 @@ const Funds = () => {
       </div>
 
       <div ref={tableRef} className="border-brand-200 mt-4 overflow-y-hidden overflow-x-scroll rounded-xl border-2">
-        <table className="relative w-full text-center">
-          {/* <thead className="border">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr
-                key={headerGroup.id}
-                className="border-brand-200 bg-brand-100 sticky top-0 h-[72px] border"
-              >
-                {headerGroup.headers.map((header, index) => (
-                  <th
-                    className={cn({
-                      'w-64 text-right': index === 0,
-                    })}
-                    key={header.id}
-                    colSpan={header.colSpan}
-                  >
-                    {header.isPlaceholder ? null : (
-                      <>
-                        <div>
-                          <div
-                            className={cn({
-                              'mx-4 flex items-center gap-7': index === 0,
-                            })}
-                          >
-                            {index === 0 && (
-                              <div className="flex items-center gap-2">
-                                <Tooltip title="انتخاب ستون ها">
-                                  <div
-                                    onClick={() => setIsSettingModal(true)}
-                                    className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
-                                  >
-                                    <Icon size="lg" name="settings" />
-                                  </div>
-                                </Tooltip>
-                                <Tooltip title="فیلتر صندوق ها">
-                                  <div
-                                    onClick={() => setIsFilterModal(true)}
-                                    className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
-                                  >
-                                    {Object.values(selectedColumns).filter(
-                                      Boolean,
-                                    ).length ? (
-                                      <div className="absolute -right-1 -top-1">
-                                        <FundsTag color="blue" />
-                                      </div>
-                                    ) : (
-                                      ''
-                                    )}
-                                    <Icon size="lg" name="filter" />
-                                  </div>
-                                </Tooltip>
-                              </div>
-                            )}
-                            <div
-                              onClick={header.column.getToggleSortingHandler()}
-                            >
-                              {flexRender(
-                                header.column.columnDef.header,
-                                header.getContext(),
-                              )}
-                            </div>
-                          </div>
+        <table className="relative overflow-x-scroll w-full text-center">
+          <thead className='bg-red-300 w-[100%]'>
+            <tr
+              className="border-brand-200 break-words bg-brand-100 h-[72px] border"
+            >
+              <th className='w-[300px] bg-brand-100 pr-4 box-border sticky right-0'>
+                <div className="flex items-center gap-2">
+                  <Tooltip title="انتخاب ستون ها">
+                    <div
+                      onClick={() => setIsSettingModal(true)}
+                      className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
+                    >
+                      <Icon size="lg" name="settings" />
+                    </div>
+                  </Tooltip>
+                  <Tooltip title="فیلتر صندوق ها">
+                    <div
+                      onClick={() => setIsFilterModal(true)}
+                      className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
+                    >
+                      {Object.values(selectedColumns).filter(
+                        Boolean,
+                      ).length ? (
+                        <div className="absolute -right-1 -top-1">
+                          <FundsTag color="blue" />
                         </div>
-                      </>
-                    )}
-                  </th>
-                ))}
+                      ) : (
+                        ''
+                      )}
+                      <Icon size="lg" name="filter" />
+                    </div>
+                  </Tooltip>
+                  <span className='font-mdium'>نام صندوق</span>
+                </div>
+              </th>
+              <th className='w-[130px] px-4'>تعداد واحد</th>
+              <th className=' px-4 break-words w-max'>
+                ارزش خالص
+                <br />
+                دارایی ها
+
+              </th>
+              <th className='w-[130px] px-4'>قیمت صدور (ریال)</th>
+              <th className='w-[130px] px-4'>قیمت صدور (ریال)</th>
+              <th className='w-[130px] px-4'>
+                قیمت آماری
+                <br />
+                (ریال)
+              </th>
+              <th className='w-[130px] px-4'>
+                بازده
+                <br />
+                روزانه
+              </th>
+              <th className='w-[130px] px-4'>
+                بازده
+                <br />
+                هفتگی
+              </th>
+            </tr>
+          </thead>
+          <tbody className='w-full'>
+            {table.getRowModel().rows.map((row, index) => (
+              <tr className='group'>
+                <td className='sticky h-full right-0'>
+                  <FundsTableRow
+                    isScrolled={isScrolled}
+                    key={row.id}
+                    name="نام صندوق"
+                    pined={true}
+                    selected={false}
+                    logo="https://s.cafebazaar.ir/images/icons/com.dotin.wepod-36b7a6e5-ed88-4590-ab3e-8811ed799168_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize"
+                  />
+                </td>
+                <td
+                  className={cn('px-4 break-keep',
+                    {
+                      'bg-blue-50 group-hover:bg-blue-100': true,
+                      'bg-blue-200': false,
+                      'group-hover:bg-blue-50': !false && !true,
+                    },)}
+                >
+                  <span className='break-keep'>
+
+                  9,145,411 میلیارد ریال
+                  </span>
+                </td>
+                <td
+                  className={cn('px-4',
+                    {
+                      'bg-blue-50 group-hover:bg-blue-100': true,
+                      'bg-blue-200': false,
+                      'group-hover:bg-blue-50': !false && !true,
+                    },)}
+                >
+                  12
+                </td>
+                <td
+                  className={cn('px-4',
+                    {
+                      'bg-blue-50 group-hover:bg-blue-100': true,
+                      'bg-blue-200': false,
+                      'group-hover:bg-blue-50': !false && !true,
+                    },)}
+                >
+                  12
+                </td>
+                <td
+                  className={cn('px-4',
+                    {
+                      'bg-blue-50 group-hover:bg-blue-100': true,
+                      'bg-blue-200': false,
+                      'group-hover:bg-blue-50': !false && !true,
+                    },)}
+                >
+                  12
+                </td>
+                <td
+                  className={cn('px-4',
+                    {
+                      'bg-blue-50 group-hover:bg-blue-100': true,
+                      'bg-blue-200': false,
+                      'group-hover:bg-blue-50': !false && !true,
+                    },)}
+                >
+                  12
+                </td>
+                <td
+                  className={cn('px-4',
+                    {
+                      'bg-blue-50 group-hover:bg-blue-100': true,
+                      'bg-blue-200': false,
+                      'group-hover:bg-blue-50': !false && !true,
+                    },)}
+                >
+                  12
+                </td>
+                <td
+                  className={cn('px-4',
+                    {
+                      'bg-blue-50 group-hover:bg-blue-100': true,
+                      'bg-blue-200': false,
+                      'group-hover:bg-blue-50': !false && !true,
+                    },)}
+                >
+                  12
+                </td>
               </tr>
             ))}
-          </thead> */}
-          {table.getRowModel().rows.map((row, index) => (
-            <FundsTableRow
-              isScrolled={isScrolled}
-              key={row.id}
-              data={['23333', '333455', '343233', '3444444444', '3343434', '33344', '34444', '4444']}
-              name="نام صندوق"
-              pined={true}
-              selected={false}
-              shadow={false}
-              logo="https://s.cafebazaar.ir/images/icons/com.dotin.wepod-36b7a6e5-ed88-4590-ab3e-8811ed799168_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize"
-            />
-          ))}
+          </tbody>
         </table>
       </div>
 
