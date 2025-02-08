@@ -11,10 +11,10 @@ import {
   FundsTableRow,
   FundsTag,
 } from 'design-system';
+import { funds } from './components/FundsData';
 import {
   ColumnDef,
   ColumnFiltersState,
-  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -36,7 +36,21 @@ const Funds = () => {
   const [isSettingModal, setIsSettingModal] = useState(false);
 
   const [isScrolled, setIsScrolled] = useState(false);
+  const [scrolleLeft, setScrollLeft] = useState<boolean>(false);
+  const [scrollRight, setScrollRight] = useState<boolean>(true);
   const tableRef = useRef<HTMLDivElement>(null);
+
+  const columnsHeaders = [
+    { key: 'unitCount', label: 'تعداد واحد', type: '' },
+    { key: 'netAssetValue', label: 'ارزش خالص', type: 'دارایی‌ها' },
+    { key: 'issuePrice', label: 'قیمت صدور', type: '(ریال)' },
+    { key: 'cancellationPrice', label: 'قیمت ابطال', type: '(ریال)' },
+    { key: 'statisticalPrice', label: 'قیمت آماری', type: '(ریال)' },
+    { key: 'dailyReturn', label: 'بازده', type: 'روزانه' },
+    { key: 'weeklyReturn', label: 'بازده', type: 'هفتگی' },
+    { key: 'moonthReturn', label: 'بازده', type: 'ماهانه' },
+    { key: 'yearRtrund', label: 'بازده', type: 'سالانه' },
+  ];
 
   const [selectedColumns, setSelectedColumns] = useState<SelectedColumnsType>(
     {},
@@ -49,15 +63,22 @@ const Funds = () => {
     }));
   };
 
-
   useEffect(() => {
     const handleScroll = () => {
-      console.log(tableRef?.current);
       if (tableRef.current) {
-        console.log(isScrolled);
+        if (
+          Math.round(tableRef?.current?.scrollLeft) ===
+          (tableRef?.current?.scrollWidth - tableRef?.current?.clientWidth) * -1
+        ) {
+          setScrollRight(false);
+        } else {
+          setScrollRight(true);
+        }
         if (tableRef.current.scrollLeft < 0) {
+          setScrollLeft(true);
           setIsScrolled(true);
         } else {
+          setScrollLeft(false);
           setIsScrolled(false);
         }
       }
@@ -65,16 +86,15 @@ const Funds = () => {
 
     const tableElement = tableRef.current;
     if (tableElement) {
-      tableElement.addEventListener("scroll", handleScroll);
+      tableElement.addEventListener('scroll', handleScroll);
     }
 
     return () => {
       if (tableElement) {
-        tableElement.removeEventListener("scroll", handleScroll);
+        tableElement.removeEventListener('scroll', handleScroll);
       }
     };
   }, [isScrolled]);
-
 
   const sections = [
     {
@@ -96,7 +116,13 @@ const Funds = () => {
     },
     {
       title: 'عملکرد صندوق',
-      options: ['بازده روزانه', 'بازده هفتگی', 'بازده ماهانه', 'بازده سالانه', 'بازه دلخواه'],
+      options: [
+        'بازده روزانه',
+        'بازده هفتگی',
+        'بازده ماهانه',
+        'بازده سالانه',
+        'بازه دلخواه',
+      ],
     },
     {
       title: 'ریسک صندوق',
@@ -133,7 +159,6 @@ const Funds = () => {
     { accessorKey: 'progress', header: 'Profile Progress' },
   ];
 
-
   const table = useReactTable({
     data,
     columns,
@@ -145,14 +170,23 @@ const Funds = () => {
     getPaginationRowModel: getPaginationRowModel(),
   });
 
-  console.log(table?.getRowModel().rows[0].getVisibleCells()[0].getContext().row.original.visits);
+  const handlerRightScrollTable = () => {
+    if (tableRef.current) {
+      tableRef.current.scrollLeft += 100;
+    }
+  };
 
+  const handlerLeftScrollTable = () => {
+    if (tableRef.current) {
+      tableRef.current.scrollLeft -= 100;
+    }
+  };
 
   return (
     <div className="container mx-auto max-w-7xl p-4 px-20">
       <div className="mt-4 flex items-center justify-between">
         <div className="flex w-full items-center justify-start gap-3">
-          <span className="pb-2.5">دسته بندی صندوق‌ها</span>
+          <span className="pb-2.5">دسته بندی صندوق‌ها:</span>
           <Tabs
             variant="shaped"
             onClickTab={(e) => setIndexCategoryTab(e)}
@@ -237,13 +271,26 @@ const Funds = () => {
         </Tooltip>
       </div>
 
-      <div ref={tableRef} className="border-brand-200 mt-4 overflow-y-hidden overflow-x-scroll rounded-xl border-2">
-        <table className="relative overflow-x-scroll w-full text-center">
-          <thead className='bg-red-300 w-[100%]'>
-            <tr
-              className="border-brand-200 break-words bg-brand-100 h-[72px] border"
-            >
-              <th className='w-[300px] bg-brand-100 pr-4 box-border sticky right-0'>
+      <div
+        ref={tableRef}
+        className="border-brand-200 scrollbar-thin scrollbar-track-gray-300 relative mt-4 overflow-y-scroll h-[500px] overflow-x-scroll scroll-smooth rounded-xl border-2"
+      >
+        <table className="relative w-full table-fixed text-center">
+          <thead className="relativ z-50 sticky top-0">
+            <tr className="border-brand-200 bg-brand-100 h-[72px] break-words border">
+              {scrolleLeft && (
+                <button
+                  onClick={handlerRightScrollTable}
+                  className={cn(
+                    'bg-brand-600 sticky right-[330px] top-5 z-50 rounded-md p-1 text-white',
+                  )}
+                >
+                  <Icon name="arrow-right" />
+                </button>
+              )}
+              <th className={cn("bg-brand-100 sticky right-0 box-border w-[320px] pr-4", {
+                'shadow-lg': isScrolled
+              })}>
                 <div className="flex items-center gap-2">
                   <Tooltip title="انتخاب ستون ها">
                     <div
@@ -258,9 +305,7 @@ const Funds = () => {
                       onClick={() => setIsFilterModal(true)}
                       className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
                     >
-                      {Object.values(selectedColumns).filter(
-                        Boolean,
-                      ).length ? (
+                      {Object.values(selectedColumns).filter(Boolean).length ? (
                         <div className="absolute -right-1 -top-1">
                           <FundsTag color="blue" />
                         </div>
@@ -270,118 +315,127 @@ const Funds = () => {
                       <Icon size="lg" name="filter" />
                     </div>
                   </Tooltip>
-                  <span className='font-mdium'>نام صندوق</span>
+                  <span className="font-mdium">نام صندوق</span>
                 </div>
               </th>
-              <th className='w-[130px] px-4'>تعداد واحد</th>
-              <th className=' px-4 break-words w-max'>
-                ارزش خالص
-                <br />
-                دارایی ها
-
-              </th>
-              <th className='w-[130px] px-4'>قیمت صدور (ریال)</th>
-              <th className='w-[130px] px-4'>قیمت صدور (ریال)</th>
-              <th className='w-[130px] px-4'>
-                قیمت آماری
-                <br />
-                (ریال)
-              </th>
-              <th className='w-[130px] px-4'>
-                بازده
-                <br />
-                روزانه
-              </th>
-              <th className='w-[130px] px-4'>
-                بازده
-                <br />
-                هفتگی
-              </th>
+              {columnsHeaders.map((item, index) => (
+                <th className="w-[130px] px-4" key={index}>
+                  {item.label}
+                  <br />
+                  {item.type}
+                </th>
+              ))}
+              {scrollRight && (
+                <div className='sticky left-10 top-5 m-0 p-0 z-50'>
+                  <button
+                    onClick={handlerLeftScrollTable}
+                    className={cn(
+                      'bg-brand-600 rounded-md p-1 text-white',
+                    )}
+                  >
+                    <Icon name="arrow-left" />
+                  </button>
+                </div>
+               )}
             </tr>
           </thead>
-          <tbody className='w-full'>
-            {table.getRowModel().rows.map((row, index) => (
-              <tr className='group'>
-                <td className='sticky h-full right-0'>
+          <tbody className="w-full relative">
+            {table.getRowModel().rows.map((row, index: number) => (
+              <tr key={index} className={cn("group border-none", {
+                'sticky top-20': index > 5 && index < 10
+              })}>
+                <td className="sticky right-0 p-0">
                   <FundsTableRow
                     isScrolled={isScrolled}
                     key={row.id}
-                    name="نام صندوق"
-                    pined={true}
+                    // name="نام صندوق "
+                    name="نیکوکاری جایزه علمی فناوری پیامبر اعظم  ص"
+                    pined={false}
                     selected={false}
                     logo="https://s.cafebazaar.ir/images/icons/com.dotin.wepod-36b7a6e5-ed88-4590-ab3e-8811ed799168_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize"
                   />
                 </td>
+                {scrolleLeft && <td></td>}
                 <td
-                  className={cn('px-4 break-keep',
-                    {
-                      'bg-blue-50 group-hover:bg-blue-100': true,
-                      'bg-blue-200': false,
-                      'group-hover:bg-blue-50': !false && !true,
-                    },)}
+                  className={cn('px-4', {
+                    'bg-blue-50 group-hover:bg-blue-100': false,
+                    'bg-blue-200': false,
+                    'group-hover:bg-blue-50': !false && !false,
+                  })}
                 >
-                  <span className='break-keep'>
-
-                  9,145,411 میلیارد ریال
+                  <span className="whitespace-nowrap text-xs font-medium">
+                    9,145.09
                   </span>
                 </td>
                 <td
-                  className={cn('px-4',
-                    {
-                      'bg-blue-50 group-hover:bg-blue-100': true,
-                      'bg-blue-200': false,
-                      'group-hover:bg-blue-50': !false && !true,
-                    },)}
+                  className={cn('whitespace-nowrap px-4 text-xs font-medium', {
+                    'bg-blue-50 group-hover:bg-blue-100': false,
+                    'bg-blue-200': false,
+                    'group-hover:bg-blue-50': !false && !false,
+                  })}
+                >
+                  9,145.05 میلیارد ریال
+                </td>
+                <td
+                  className={cn('whitespace-nowrap px-4 text-xs font-medium', {
+                    'bg-blue-50 group-hover:bg-blue-100': false,
+                    'bg-blue-200': false,
+                    'group-hover:bg-blue-50': !false && !false,
+                  })}
+                >
+                  9,145.1
+                </td>
+                <td
+                  className={cn('whitespace-nowrap px-4 text-xs font-medium', {
+                    'bg-blue-50 group-hover:bg-blue-100': false,
+                    'bg-blue-200': false,
+                    'group-hover:bg-blue-50': !false && !false,
+                  })}
+                >
+                  89,145,111
+                </td>
+                <td
+                  className={cn('whitespace-nowrap px-4 text-xs font-medium', {
+                    'bg-blue-50 group-hover:bg-blue-100': false,
+                    'bg-blue-200': false,
+                    'group-hover:bg-blue-50': !false && !false,
+                  })}
+                >
+                  89,145,111
+                </td>
+                <td
+                  className={cn('px-4 text-xs font-medium', {
+                    'bg-blue-50 group-hover:bg-blue-100': false,
+                    'bg-blue-200': false,
+                    'group-hover:bg-blue-50': !false && !false,
+                  })}
                 >
                   12
                 </td>
                 <td
-                  className={cn('px-4',
-                    {
-                      'bg-blue-50 group-hover:bg-blue-100': true,
-                      'bg-blue-200': false,
-                      'group-hover:bg-blue-50': !false && !true,
-                    },)}
+                  className={cn('px-4 text-xs font-medium', {
+                    'bg-blue-50 group-hover:bg-blue-100': false,
+                    'bg-blue-200': false,
+                    'group-hover:bg-blue-50': !false && !false,
+                  })}
                 >
                   12
                 </td>
                 <td
-                  className={cn('px-4',
-                    {
-                      'bg-blue-50 group-hover:bg-blue-100': true,
-                      'bg-blue-200': false,
-                      'group-hover:bg-blue-50': !false && !true,
-                    },)}
+                  className={cn('px-4', {
+                    'bg-blue-50 group-hover:bg-blue-100': false,
+                    'bg-blue-200': false,
+                    'group-hover:bg-blue-50': !false && !false,
+                  })}
                 >
                   12
                 </td>
                 <td
-                  className={cn('px-4',
-                    {
-                      'bg-blue-50 group-hover:bg-blue-100': true,
-                      'bg-blue-200': false,
-                      'group-hover:bg-blue-50': !false && !true,
-                    },)}
-                >
-                  12
-                </td>
-                <td
-                  className={cn('px-4',
-                    {
-                      'bg-blue-50 group-hover:bg-blue-100': true,
-                      'bg-blue-200': false,
-                      'group-hover:bg-blue-50': !false && !true,
-                    },)}
-                >
-                  12
-                </td>
-                <td
-                  className={cn('px-4',
-                    {
-                      'bg-blue-50 group-hover:bg-blue-100': true,
-                      'bg-blue-200': false,
-                      'group-hover:bg-blue-50': !false && !true,
-                    },)}
+                  className={cn('px-4 text-xs font-medium', {
+                    'bg-blue-50 group-hover:bg-blue-100': false,
+                    'bg-blue-200': false,
+                    'group-hover:bg-blue-50': !false && !false,
+                  })}
                 >
                   12
                 </td>
@@ -391,10 +445,9 @@ const Funds = () => {
         </table>
       </div>
 
-      <div className="sticky bottom-6 mt-6 flex items-center justify-between">
+      <div className="sticky bottom-6 mt-6 px-4 flex items-center justify-between">
         <div className="rounded-md bg-gray-400 py-2">
           <OptionsDropdown
-
             onChange={(e) => {
               table.setPageSize(Number(e));
             }}
@@ -406,7 +459,7 @@ const Funds = () => {
               checkSelected: true,
             }}
             customTriggerRender={(prop) => (
-              <div className="flex items-center gap-2 px-3">
+              <div className="flex items-center gap-2 px-3 text-xs">
                 <span>تعداد سطر در جدول: </span>
                 {prop.selectedItem.text}
                 <Icon name={prop.isActive ? 'chevron-up' : 'chevron-down'} />
@@ -418,13 +471,14 @@ const Funds = () => {
                   {table.getState().pagination.pageSize *
                     (table.getState().pagination.pageIndex + 1) *
                     table.getPageCount() ===
-                    +prop.text
+                  +prop.text
                     ? 'همه'
                     : prop.text}
                 </span>
               </div>
             )}
             dropDownList={[
+              { text: '5' },
               { text: '10' },
               { text: '25' },
               { text: '50' },
@@ -432,8 +486,8 @@ const Funds = () => {
               {
                 text: String(
                   table.getState().pagination.pageSize *
-                  (table.getState().pagination.pageIndex + 1) *
-                  table.getPageCount(),
+                    (table.getState().pagination.pageIndex + 1) *
+                    table.getPageCount(),
                 ),
               },
             ]}
@@ -448,7 +502,7 @@ const Funds = () => {
             <div>
               {formatNumber(
                 table.getState().pagination.pageSize *
-                (table.getState().pagination.pageIndex + 1),
+                  (table.getState().pagination.pageIndex + 1),
                 { commaSeparated: true },
               )}
               -
@@ -487,10 +541,10 @@ const Funds = () => {
       <Dialog
         open={isFilterModal}
         as="div"
-        className="relative z-20 focus:outline-none"
+        className="relative z-50 focus:outline-none"
         onClose={() => setIsFilterModal(false)}
       >
-        <div className="fixed inset-0 z-20 w-screen overflow-y-auto">
+        <div className="fixed inset-0 z-30 w-screen overflow-y-auto">
           <div className="flex min-h-full items-center justify-center">
             <DialogPanel
               transition
@@ -501,18 +555,19 @@ const Funds = () => {
                   انتخاب سوتون ها (
                   {Object.values(selectedColumns).filter(Boolean).length}/25)
                 </span>
-                {
-                  Object.values(selectedColumns).filter(Boolean).length ?
-                    <span
-                      className="cursor-pointer m-6 text-base font-medium text-red-600"
-                      onClick={resetSelections}
-                    >
-                      بازنشانی به پیشفرض
-                    </span> : ''
-                }
+                {Object.values(selectedColumns).filter(Boolean).length ? (
+                  <span
+                    className="m-6 cursor-pointer text-base font-medium text-red-600"
+                    onClick={resetSelections}
+                  >
+                    بازنشانی به پیشفرض
+                  </span>
+                ) : (
+                  ''
+                )}
               </DialogTitle>
               <hr />
-              <div className='scrollbar-thumb-gray-500 mb-6 scrollbar-thumb-rounded-full scrollbar  h-[550px] scrollbar-track-rounded-full scrollbar-thumb-rounded-full scrollbar-thin scrollbar-track-gray-300 overflow-x-hidden overflow-y-scroll'>
+              <div className="scrollbar-thumb-gray-500 scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-track-gray-300 mb-6 h-[550px] overflow-x-hidden overflow-y-scroll">
                 {sections.map((item, index) => (
                   <div key={item.title}>
                     <FundsFilterSection
@@ -521,16 +576,13 @@ const Funds = () => {
                       selectedColumns={selectedColumns}
                       onToggle={handleToggle}
                     />
-                    {
-                      index + 1 < sections.length &&
-                      <hr />
-                    }
+                    {index + 1 < sections.length && <hr />}
                   </div>
                 ))}
               </div>
               <div
                 onClick={() => setIsFilterModal(false)}
-                className="text-brand-600 absolute -left-2 -top-2 cursor-pointer bg-white rounded-full"
+                className="text-brand-600 absolute -left-2 -top-2 cursor-pointer rounded-full bg-white"
               >
                 <Icon name="circle-x" size="lg_plus" />
               </div>

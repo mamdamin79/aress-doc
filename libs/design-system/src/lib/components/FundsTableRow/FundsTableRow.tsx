@@ -1,7 +1,7 @@
 import { cn } from './../../../utils/classNames.utils';
-import { TableCell } from './FundsTableCell';
 import { Icon } from '../Icon';
 import { OptionsDropdown } from '../OptionsDropdown';
+import { Tooltip } from '../Tooltip';
 
 interface Props {
   name: string;
@@ -21,7 +21,7 @@ export function FundsTableRow({
   return (
     <div
       className={cn(
-        'sticky right-0 w-[300px] flex h-full items-center justify-between bg-white',
+        'sticky right-0 flex w-[320px] items-center justify-between bg-white',
         {
           'shadow-md': isScrolled,
           'bg-blue-50 group-hover:bg-blue-100': pined,
@@ -41,12 +41,16 @@ export function FundsTableRow({
           </div>
         )}
         <div className="flex flex-col gap-1">
-          <span className="text-gray-1000 text-base font-medium">{name}</span>
+          <Tooltip offset={2} position='bottom' title={name}>
+            <p className="text-gray-1000 w-[242px] group-hover:w-[202px] truncate text-base font-medium">{name}</p>
+          </Tooltip>
           <div className="flex items-center gap-1">
             <div className="rounded-sm border bg-purple-100 px-2">
               قابل معامله
             </div>
-            <div className="rounded-sm border border-vividGreen-200 px-2 text-vividGreen-500 bg-vividGreen-100">ETF</div>
+            <div className="border-vividGreen-200 text-vividGreen-500 bg-vividGreen-100 rounded-sm border px-2">
+              ETF
+            </div>
           </div>
         </div>
       </div>
@@ -71,13 +75,16 @@ export function FundsTableRow({
         customTriggerRender={(prop) => {
           return (
             <div
-              className={cn('cursor-pointer hidden group-hover:block rounded-full p-1.5', {
-                'hover:border-brand-600 border border-blue-200': selected,
-                'hover:border-brand-600 border border-blue-100': pined,
-                'hover:border-brand-600 border border-white hover:bg-white':
-                  !selected && !pined,
-                'block': prop.isActive
-              })}
+              className={cn(
+                'hidden cursor-pointer rounded-full p-1.5 group-hover:block',
+                {
+                  'hover:border-brand-600 border border-blue-200': selected,
+                  'hover:border-brand-600 border border-blue-100': pined,
+                  'hover:border-brand-600 border border-white hover:bg-white':
+                    !selected && !pined,
+                  block: prop.isActive,
+                },
+              )}
             >
               <Icon name="ellipsis-vertical" />
             </div>
@@ -90,8 +97,7 @@ export function FundsTableRow({
                 <div
                   className={cn({
                     'rotate-[25deg]':
-                      prop.icon.name === 'pin-off' ||
-                      prop.icon.name === 'pin',
+                      prop.icon.name === 'pin-off' || prop.icon.name === 'pin',
                   })}
                 >
                   <Icon name={prop.icon?.name} size={prop.icon?.size} />
