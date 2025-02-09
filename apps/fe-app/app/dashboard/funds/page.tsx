@@ -63,7 +63,7 @@ const Funds = () => {
     }));
   };
 
-  useEffect(() => {
+  useEffect(() => {    
     const handleScroll = () => {
       if (tableRef.current) {
         if (
@@ -95,6 +95,21 @@ const Funds = () => {
       }
     };
   }, [isScrolled]);
+
+
+  useEffect(() => {
+    const handlerWindowScroll = () => {
+      console.log('tableRef?.current?.offsetTop');
+      
+      
+    }
+
+    window.addEventListener('scroll', handlerWindowScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handlerWindowScroll);
+    }
+  }, [])
 
   const sections = [
     {
@@ -183,7 +198,7 @@ const Funds = () => {
   };
 
   return (
-    <div className="container mx-auto max-w-7xl p-4 px-20">
+    <div className="container relative mx-auto max-w-7xl p-4 px-20">
       <div className="mt-4 flex items-center justify-between">
         <div className="flex w-full items-center justify-start gap-3">
           <span className="pb-2.5">دسته بندی صندوق‌ها:</span>
@@ -273,24 +288,33 @@ const Funds = () => {
 
       <div
         ref={tableRef}
-        className="border-brand-200 scrollbar-thin scrollbar-track-gray-300 relative mt-4 overflow-y-scroll h-[500px] overflow-x-scroll scroll-smooth rounded-xl border-2"
+        className="border-brand-200 scrollbar-thin scrollbar-track-gray-300 mt-4 overflow-x-scroll overflow-y-hidden scroll-smooth rounded-xl border-2"
       >
-        <table className="relative w-full table-fixed text-center">
-          <thead className="relativ z-50 sticky top-0">
+        <table className="w-full table-fixed text-center">
+          <thead className={cn("fixed container top-0 group z-30", `w-[1117px]`)}>
             <tr className="border-brand-200 bg-brand-100 h-[72px] break-words border">
               {scrolleLeft && (
-                <button
-                  onClick={handlerRightScrollTable}
-                  className={cn(
-                    'bg-brand-600 sticky right-[330px] top-5 z-50 rounded-md p-1 text-white',
-                  )}
-                >
-                  <Icon name="arrow-right" />
-                </button>
+                <th className='sticky hidden group-hover:block right-[330px] top-5 z-50'>
+                  <Tooltip title="پیمایش به راست (D)">
+                    <button
+                      onClick={handlerRightScrollTable}
+                      className={cn(
+                        'bg-brand-600 rounded-md p-1 text-white',
+                      )}
+                    >
+                      <Icon name="arrow-right" />
+                    </button>
+                  </Tooltip>
+                </th>
               )}
-              <th className={cn("bg-brand-100 sticky right-0 box-border w-[320px] pr-4", {
-                'shadow-lg': isScrolled
-              })}>
+              <th
+                className={cn(
+                  'bg-brand-100 sticky right-0 box-border w-[320px] pr-4',
+                  {
+                    'shadow-lg': isScrolled,
+                  },
+                )}
+              >
                 <div className="flex items-center gap-2">
                   <Tooltip title="انتخاب ستون ها">
                     <div
@@ -326,24 +350,22 @@ const Funds = () => {
                 </th>
               ))}
               {scrollRight && (
-                <div className='sticky left-10 top-5 m-0 p-0 z-50'>
-                  <button
-                    onClick={handlerLeftScrollTable}
-                    className={cn(
-                      'bg-brand-600 rounded-md p-1 text-white',
-                    )}
-                  >
-                    <Icon name="arrow-left" />
-                  </button>
+                <div className="sticky hidden group-hover:block left-10 top-5 z-50 m-0 p-0">
+                  <Tooltip title="پیمایش به چپ (A)">
+                    <button
+                      onClick={handlerLeftScrollTable}
+                      className={cn('bg-brand-600 rounded-md p-1 text-white')}
+                    >
+                      <Icon name="arrow-left" />
+                    </button>
+                  </Tooltip>
                 </div>
-               )}
+              )}
             </tr>
           </thead>
-          <tbody className="w-full relative">
+          <tbody className="relative w-full">
             {table.getRowModel().rows.map((row, index: number) => (
-              <tr key={index} className={cn("group border-none", {
-                'sticky top-20': index > 5 && index < 10
-              })}>
+              <tr key={index} className={cn('group border-none')}>
                 <td className="sticky right-0 p-0">
                   <FundsTableRow
                     isScrolled={isScrolled}
@@ -355,7 +377,11 @@ const Funds = () => {
                     logo="https://s.cafebazaar.ir/images/icons/com.dotin.wepod-36b7a6e5-ed88-4590-ab3e-8811ed799168_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize"
                   />
                 </td>
-                {scrolleLeft && <td></td>}
+                {scrolleLeft && 
+                
+                <div className='pp-hover:block hidden'>ff</div>
+                
+                }
                 <td
                   className={cn('px-4', {
                     'bg-blue-50 group-hover:bg-blue-100': false,
@@ -445,7 +471,7 @@ const Funds = () => {
         </table>
       </div>
 
-      <div className="sticky bottom-6 mt-6 px-4 flex items-center justify-between">
+      <div className="sticky bottom-6 mt-6 flex items-center justify-between px-4">
         <div className="rounded-md bg-gray-400 py-2">
           <OptionsDropdown
             onChange={(e) => {
@@ -459,7 +485,7 @@ const Funds = () => {
               checkSelected: true,
             }}
             customTriggerRender={(prop) => (
-              <div className="flex items-center gap-2 px-3 text-xs">
+              <div className="flex items-center gap-2 px-3 text-xs font-medium">
                 <span>تعداد سطر در جدول: </span>
                 {prop.selectedItem.text}
                 <Icon name={prop.isActive ? 'chevron-up' : 'chevron-down'} />
@@ -478,7 +504,6 @@ const Funds = () => {
               </div>
             )}
             dropDownList={[
-              { text: '5' },
               { text: '10' },
               { text: '25' },
               { text: '50' },
@@ -539,10 +564,10 @@ const Funds = () => {
         </div>
       </div>
       <Dialog
-        open={isFilterModal}
+        open={isSettingModal}
         as="div"
         className="relative z-50 focus:outline-none"
-        onClose={() => setIsFilterModal(false)}
+        onClose={() => setIsSettingModal(false)}
       >
         <div className="fixed inset-0 z-30 w-screen overflow-y-auto">
           <div className="flex min-h-full items-center justify-center">
@@ -581,7 +606,7 @@ const Funds = () => {
                 ))}
               </div>
               <div
-                onClick={() => setIsFilterModal(false)}
+                onClick={() => setIsSettingModal(false)}
                 className="text-brand-600 absolute -left-2 -top-2 cursor-pointer rounded-full bg-white"
               >
                 <Icon name="circle-x" size="lg_plus" />
