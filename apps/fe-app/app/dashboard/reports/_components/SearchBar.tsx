@@ -1,17 +1,19 @@
-"use client";
-import { Icon, TextField } from 'design-system';
+'use client';
+import { TextField } from 'design-system';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react';
 
 export const SearchBar: React.FC = () => {
-    const router = useRouter();
-    const queries =  useSearchParams().toString()
-    const handleSearch = (value:string | number | readonly string[] | undefined) => {
-        const params = new URLSearchParams(queries);
-        params.set('search', value as string);
-        params.set('page', "1");
-        router.replace(`/dashboard/reports?${params.toString()}`);
-    } 
+  const router = useRouter();
+  const queries = useSearchParams().toString();
+  const handleSearch = (
+    value: string | number | readonly string[] | undefined,
+  ) => {
+    const params = new URLSearchParams(queries);
+    params.set('search', value as string);
+    params.set('page', '1');
+    router.replace(`/dashboard/reports?${params.toString()}`);
+  };
   return (
     <>
       <TextField
