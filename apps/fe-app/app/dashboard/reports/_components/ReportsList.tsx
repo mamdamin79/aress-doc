@@ -1,6 +1,9 @@
 import { GetDashboardReportsResponse } from '@openapi';
 import { ReportCard } from 'design-system';
 import React from 'react';
+import emptyState from '@aress-assets/icons/Empty state.png';
+import Image from 'next/image';
+
 
 type Props = {
   reports: GetDashboardReportsResponse;
@@ -11,11 +14,7 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
     return (
       <div className="flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-medium">گزارشی یافت نشد</h1>
-          <p className="text-gray-500">
-            ممکن است گزارشی وجود نداشته باشد یا شما مجوز دسترسی به آن را نداشته
-            باشید
-          </p>
+         <Image width={500} height={500} src={emptyState} alt="" />
         </div>
       </div>
     );

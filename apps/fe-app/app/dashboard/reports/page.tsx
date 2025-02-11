@@ -5,6 +5,7 @@ import { DashboardService, GetDashboardReportsData, OpenAPI } from '@openapi';
 import { FilterReport } from './_components/FilterReport';
 import { Pagination } from 'design-system';
 
+
 const ITEMS_PER_PAGE = 5;
 
 async function getData(searchParams: GetDashboardReportsData) {

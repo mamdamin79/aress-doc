@@ -30,6 +30,8 @@ export const FilterReport = () => {
     if (newFilter.onlyHavingVideo) params.set('onlyHavingVideo', 'true');
     else params.delete('onlyHavingVideo');
 
+    params.set('page', '1');
+
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
