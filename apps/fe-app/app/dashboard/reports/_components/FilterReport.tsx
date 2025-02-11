@@ -20,10 +20,15 @@ export const FilterReport = () => {
 
   // update url based on filter state
   const updateURL = (newFilter: typeof filter) => {
-    const params = new URLSearchParams();
+    const params = new URLSearchParams(searchParams.toString());
     if (newFilter.onlyFavorite) params.set('onlyFavorite', 'true');
+    else params.delete('onlyFavorite');
+
     if (newFilter.onlyNew) params.set('onlyNew', 'true');
+    else params.delete('onlyNew');
+
     if (newFilter.onlyHavingVideo) params.set('onlyHavingVideo', 'true');
+    else params.delete('onlyHavingVideo');
 
     router.push(`?${params.toString()}`, { scroll: false });
   };

@@ -1,22 +1,13 @@
-import { GetDashboardReportsData, GetDashboardReportsResponse } from '@openapi';
+import { GetDashboardReportsResponse } from '@openapi';
 import { ReportCard } from 'design-system';
 import React from 'react';
 
 type Props = {
   reports: GetDashboardReportsResponse;
-  searchParams: GetDashboardReportsData & {
-    page?: string;
-    category?: string;
-  };
 };
 
-export const ReportList: React.FC<Props> = ({ reports, searchParams }) => {
-  const filteredReports = reports.filter((report) =>
-    searchParams.category
-      ? report.category.title === searchParams.category
-      : report,
-  );
-  if (filteredReports.length === 0) {
+export const ReportList: React.FC<Props> = ({ reports }) => {
+  if (reports.length === 0) {
     return (
       <div className="flex items-center justify-center">
         <div className="text-center">
@@ -32,7 +23,7 @@ export const ReportList: React.FC<Props> = ({ reports, searchParams }) => {
 
   return (
     <div className="flex flex-wrap gap-8">
-      {filteredReports.map((report, idx) => (
+      {reports.map((report, idx) => (
         <ReportCard key={report.identifier} {...report} />
       ))}
     </div>

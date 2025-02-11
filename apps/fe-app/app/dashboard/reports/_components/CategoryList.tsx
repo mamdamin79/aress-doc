@@ -1,17 +1,21 @@
 'use client';
-import { GetDashboardReportsCategoriesResponse } from '@openapi';
+import {
+  GetDashboardReportsCategoriesResponse,
+  GetDashboardReportsResponse,
+} from '@openapi';
 import { cn } from 'design-system';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 type Props = {
   categories: GetDashboardReportsCategoriesResponse;
+  reports: GetDashboardReportsResponse;
 };
 
-export const CategoryList: React.FC<Props> = ({ categories }) => {
+export const CategoryList: React.FC<Props> = ({ categories, reports }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const handleCategory = (title: string) => {
-    const params = new URLSearchParams();
+    const params = new URLSearchParams(searchParams);
     if (title === 'همه ی گزارش ها') {
       params.delete('category');
       router.replace(`/dashboard/reports?${params.toString()}`);
@@ -35,7 +39,7 @@ export const CategoryList: React.FC<Props> = ({ categories }) => {
             'bg-brand-600 h-5 w-1 text-gray-900': !searchParams.get('category'),
           })}
         ></div>
-        همه ی گزارش ها (100)
+        همه ی گزارش ها ({reports.length})
       </li>
       {categories.map((category) => (
         <>
@@ -56,7 +60,13 @@ export const CategoryList: React.FC<Props> = ({ categories }) => {
                   category.title === searchParams.get('category'),
               })}
             ></div>
-            {category.title}
+            {category.title} (
+            {
+              reports.filter(
+                (report) => report.category.title === category.title,
+              ).length
+            }
+            )
           </li>
         </>
       ))}

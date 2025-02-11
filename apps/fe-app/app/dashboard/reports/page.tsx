@@ -19,9 +19,18 @@ async function getData(searchParams: GetDashboardReportsData) {
 export default async function ReportMenuPage({
   searchParams,
 }: {
-  searchParams: GetDashboardReportsData;
+  searchParams: GetDashboardReportsData & {
+    page?: string;
+    category?: string;
+  };
 }) {
   const { reports, categories } = await getData(searchParams);
+
+  const filteredReports = reports.filter((report) =>
+    searchParams.category
+      ? report.category.title === searchParams.category
+      : report,
+  );
 
   return (
     <div className="container mx-auto max-w-7xl">
@@ -32,14 +41,14 @@ export default async function ReportMenuPage({
       </div>
       <div className="flex items-start justify-between gap-8">
         <div className="w-[1048px]">
-          <ReportList searchParams={searchParams} reports={reports} />
+          <ReportList reports={filteredReports} />
           {/* <Pagination
             currentPage={meta.current_page}
             pageCount={meta.last_page}
             pageSize={meta.per_page}
           /> */}
         </div>
-        <SideBar categories={categories} />
+        <SideBar reports={reports} categories={categories} />
       </div>
     </div>
   );
