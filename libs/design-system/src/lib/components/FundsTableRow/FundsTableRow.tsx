@@ -2,6 +2,7 @@ import { cn } from './../../../utils/classNames.utils';
 import { Icon } from '../Icon';
 import { OptionsDropdown } from '../OptionsDropdown';
 import { Tooltip } from '../Tooltip';
+import { useState } from 'react';
 
 interface Props {
   name: string;
@@ -18,6 +19,9 @@ export function FundsTableRow({
   selected,
   isScrolled,
 }: Props) {
+
+  const [isSelected, setIsSelected] = useState(false);
+
   return (
     <div
       className={cn(
@@ -41,8 +45,10 @@ export function FundsTableRow({
           </div>
         )}
         <div className="flex flex-col gap-1">
-          <Tooltip offset={2} position='bottom' title={name}>
-            <p className="text-gray-1000 w-[242px] group-hover:w-[202px] truncate text-base font-medium">{name}</p>
+          <Tooltip offset={2} position='bottom' className='!z-50' title={name}>
+            <p className={cn("text-gray-1000 w-[242px] group-hover:w-[202px] truncate text-base font-medium", {
+              'w-[202px]': isSelected
+            })}>{name}</p>
           </Tooltip>
           <div className="flex items-center gap-1">
             <div className="rounded-sm border bg-purple-100 px-2">
@@ -73,6 +79,7 @@ export function FundsTableRow({
           { text: 'حذف از دیده بان', icon: { name: 'minus', size: 'md' } },
         ]}
         customTriggerRender={(prop) => {
+          setIsSelected(prop.isActive);
           return (
             <div
               className={cn(

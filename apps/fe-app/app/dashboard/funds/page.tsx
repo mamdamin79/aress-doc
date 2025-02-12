@@ -11,7 +11,6 @@ import {
   FundsTableRow,
   FundsTag,
 } from 'design-system';
-import { funds } from './components/FundsData';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -39,6 +38,7 @@ const Funds = () => {
   const [scrolleLeft, setScrollLeft] = useState<boolean>(false);
   const [scrollRight, setScrollRight] = useState<boolean>(true);
   const tableRef = useRef<HTMLDivElement>(null);
+  const [topTableSpace, setTopTableSpace] = useState(0)
 
   const columnsHeaders = [
     { key: 'unitCount', label: 'تعداد واحد', type: '' },
@@ -99,15 +99,17 @@ const Funds = () => {
 
   useEffect(() => {
     const handlerWindowScroll = () => {
-      console.log('tableRef?.current?.offsetTop');
-      
-      
+      if (tableRef?.current && tableRef?.current?.getBoundingClientRect()?.y <= 0) {
+        setTopTableSpace(Math.abs(Math.round(tableRef?.current?.getBoundingClientRect()?.y)))
+      } else {
+        setTopTableSpace(0)
+      }
     }
 
-    window.addEventListener('scroll', handlerWindowScroll);
+    document.addEventListener('scroll', handlerWindowScroll);
 
     return () => {
-      window.removeEventListener('scroll', handlerWindowScroll);
+      document.removeEventListener('scroll', handlerWindowScroll);
     }
   }, [])
 
@@ -196,6 +198,8 @@ const Funds = () => {
       tableRef.current.scrollLeft -= 100;
     }
   };
+
+  const topTab = `top-[${topTableSpace}px]`
 
   return (
     <div className="container relative mx-auto max-w-7xl p-4 px-20">
@@ -291,10 +295,10 @@ const Funds = () => {
         className="border-brand-200 scrollbar-thin scrollbar-track-gray-300 mt-4 overflow-x-scroll overflow-y-hidden scroll-smooth rounded-xl border-2"
       >
         <table className="w-full table-fixed text-center">
-          <thead className={cn("fixed container top-0 group z-30", `w-[1117px]`)}>
+          <thead style={{top: `${topTableSpace}px`}} className={cn("container group sticky z-30", topTab)}>
             <tr className="border-brand-200 bg-brand-100 h-[72px] break-words border">
               {scrolleLeft && (
-                <th className='sticky hidden group-hover:block right-[330px] top-5 z-50'>
+                <th className='sticky hidden group-hover:block right-[330px] mt-5 z-50'>
                   <Tooltip title="پیمایش به راست (D)">
                     <button
                       onClick={handlerRightScrollTable}
@@ -350,7 +354,7 @@ const Funds = () => {
                 </th>
               ))}
               {scrollRight && (
-                <div className="sticky hidden group-hover:block left-10 top-5 z-50 m-0 p-0">
+                <div className="sticky hidden group-hover:block left-10 mt-5 z-50 m-0 p-0">
                   <Tooltip title="پیمایش به چپ (A)">
                     <button
                       onClick={handlerLeftScrollTable}
@@ -365,7 +369,12 @@ const Funds = () => {
           </thead>
           <tbody className="relative w-full">
             {table.getRowModel().rows.map((row, index: number) => (
-              <tr key={index} className={cn('group border-none')}>
+              <tr style={{top: `${topTableSpace + 70}px`}} key={index} className={cn('group border-none bg-white shadow-md', {
+                'sticky z-20': index === 0,
+                'bg-blue-50 group-hover:bg-blue-100': false,
+                'bg-blue-200': false,
+                'group-hover:bg-blue-50': !false && !false,
+              })}>
                 <td className="sticky right-0 p-0">
                   <FundsTableRow
                     isScrolled={isScrolled}
@@ -379,8 +388,7 @@ const Funds = () => {
                 </td>
                 {scrolleLeft && 
                 
-                <div className='pp-hover:block hidden'>ff</div>
-                
+                <div className='pp-hover:block hidden'></div>
                 }
                 <td
                   className={cn('px-4', {
@@ -607,6 +615,47 @@ const Funds = () => {
               </div>
               <div
                 onClick={() => setIsSettingModal(false)}
+                className="text-brand-600 absolute -left-2 -top-2 cursor-pointer rounded-full bg-white"
+              >
+                <Icon name="circle-x" size="lg_plus" />
+              </div>
+            </DialogPanel>
+          </div>
+        </div>
+      </Dialog>
+      <Dialog
+        open={isFilterModal}
+        as="div"
+        className="relative z-50 focus:outline-none"
+        onClose={() => setIsFilterModal(false)}
+      >
+        <div className="fixed inset-0 z-30 w-screen overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center">
+            <DialogPanel
+              transition
+              className="shadow-3xl data-[closed]:transform-[scale(0%)] relative w-full max-w-lg rounded-3xl bg-white duration-300 ease-out data-[closed]:opacity-0"
+            >
+              <DialogTitle className="flex items-center justify-between">
+                <span className="px-6 py-4 text-xl font-medium">
+                  فیلتر صندوق ها
+                </span>
+                {Object.values(selectedColumns).filter(Boolean).length ? (
+                  <span
+                    className="m-6 cursor-pointer text-base font-medium text-red-600"
+                    onClick={resetSelections}
+                  >
+                    بازنشانی فیلتر ها
+                  </span>
+                ) : (
+                  ''
+                )}
+              </DialogTitle>
+              <hr />
+              <div className="scrollbar-thumb-gray-500 scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-track-gray-300 mb-6 h-[550px] overflow-x-hidden overflow-y-scroll">
+                
+              </div>
+              <div
+                onClick={() => setIsFilterModal(false)}
                 className="text-brand-600 absolute -left-2 -top-2 cursor-pointer rounded-full bg-white"
               >
                 <Icon name="circle-x" size="lg_plus" />
