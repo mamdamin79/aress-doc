@@ -46,7 +46,7 @@ export function FundsTableRow({
         )}
         <div className="flex flex-col gap-1">
           <Tooltip offset={2} position='bottom' className='!z-50' title={name}>
-            <p className={cn("text-gray-1000 w-[242px] group-hover:w-[202px] truncate text-base font-medium", {
+            <p className={cn("text-gray-1000 w-[242px] group-hover:w-[202px] truncate text-sm font-medium", {
               'w-[202px]': isSelected
             })}>{name}</p>
           </Tooltip>

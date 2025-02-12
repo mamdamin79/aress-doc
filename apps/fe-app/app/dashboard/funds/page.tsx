@@ -10,6 +10,7 @@ import {
   FundsFilterSection,
   FundsTableRow,
   FundsTag,
+  FilterPopUpSection,
 } from 'design-system';
 import {
   ColumnDef,
@@ -37,8 +38,9 @@ const Funds = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [scrolleLeft, setScrollLeft] = useState<boolean>(false);
   const [scrollRight, setScrollRight] = useState<boolean>(true);
+  const [hoverHeaderTable, setHoverHeaderTable] = useState(false);
   const tableRef = useRef<HTMLDivElement>(null);
-  const [topTableSpace, setTopTableSpace] = useState(0)
+  const [topTableSpace, setTopTableSpace] = useState(0);
 
   const columnsHeaders = [
     { key: 'unitCount', label: 'تعداد واحد', type: '' },
@@ -52,18 +54,56 @@ const Funds = () => {
     { key: 'yearRtrund', label: 'بازده', type: 'سالانه' },
   ];
 
+  const filterList = [
+    { title: 'ویدیو بررسی', options: ['دارد', 'ندارد'] },
+    {
+      title: 'بازه اضافه یک ساله نسبت به شاخص کل',
+      options: [
+        'بازده منفی',
+        'از صفر تا 5 درصد',
+        'از 5 تا 10 درصد',
+        'از 10 تا 20 درصد',
+        'از 20 تا 50 درصد',
+        'بیشتر از 50 درصد',
+      ],
+    },
+    {
+      title: 'بازده یک ساله',
+      options: [
+        'بازده منفی',
+        'از صفر تا 30 درصد',
+        'از 30 تا 50 درصد',
+        'از 50 تا 100 درصد',
+        'از 100 تا 200 درصد',
+        'بیشتر از 200 درصد',
+      ],
+    },
+    {
+      title: 'شیوه سرمایه گذاری',
+      options: ['قابل معامله (ETF)', 'صدور و ابطال'],
+    },
+  ];
+
   const [selectedColumns, setSelectedColumns] = useState<SelectedColumnsType>(
     {},
   );
+  const [selectedOption, setSelectedOption] = useState<SelectedColumnsType>({});
 
-  const handleToggle = (section: string, option: string) => {
+  const handleToggle = (option: string) => {
     setSelectedColumns((prev) => ({
       ...prev,
       [option]: !prev[option],
     }));
   };
 
-  useEffect(() => {    
+  const handlerOptions = (option: string) => {
+    setSelectedOption((prev) => ({
+      ...prev,
+      [option]: !prev[option],
+    }));
+  };
+
+  useEffect(() => {
     const handleScroll = () => {
       if (tableRef.current) {
         if (
@@ -96,22 +136,26 @@ const Funds = () => {
     };
   }, [isScrolled]);
 
-
   useEffect(() => {
     const handlerWindowScroll = () => {
-      if (tableRef?.current && tableRef?.current?.getBoundingClientRect()?.y <= 0) {
-        setTopTableSpace(Math.abs(Math.round(tableRef?.current?.getBoundingClientRect()?.y)))
+      if (
+        tableRef?.current &&
+        tableRef?.current?.getBoundingClientRect()?.y <= 0
+      ) {
+        setTopTableSpace(
+          Math.abs(Math.round(tableRef?.current?.getBoundingClientRect()?.y)),
+        );
       } else {
-        setTopTableSpace(0)
+        setTopTableSpace(0);
       }
-    }
+    };
 
     document.addEventListener('scroll', handlerWindowScroll);
 
     return () => {
       document.removeEventListener('scroll', handlerWindowScroll);
-    }
-  }, [])
+    };
+  }, []);
 
   const sections = [
     {
@@ -189,17 +233,28 @@ const Funds = () => {
 
   const handlerRightScrollTable = () => {
     if (tableRef.current) {
-      tableRef.current.scrollLeft += 100;
+      tableRef.current.scrollLeft += 200;
     }
   };
 
   const handlerLeftScrollTable = () => {
     if (tableRef.current) {
-      tableRef.current.scrollLeft -= 100;
+      tableRef.current.scrollLeft -= 200;
     }
   };
 
-  const topTab = `top-[${topTableSpace}px]`
+  useEffect(() => {
+    const keyboardHandler = (e: KeyboardEvent) => {
+      if (tableRef.current && e.key === 'a') {
+        tableRef.current.scrollLeft -= 200;
+      }
+      if (tableRef.current && e.key === 'd') {
+        tableRef.current.scrollLeft += 200;
+      }
+    };
+
+    document.addEventListener('keypress', keyboardHandler);
+  }, []);
 
   return (
     <div className="container relative mx-auto max-w-7xl p-4 px-20">
@@ -292,32 +347,34 @@ const Funds = () => {
 
       <div
         ref={tableRef}
-        className="border-brand-200 scrollbar-thin scrollbar-track-gray-300 mt-4 overflow-x-scroll overflow-y-hidden scroll-smooth rounded-xl border-2"
+        className="border-brand-200 scrollbar-thin scrollbar-track-gray-300 mt-4 overflow-y-hidden overflow-x-scroll scroll-smooth rounded-xl border-2"
       >
         <table className="w-full table-fixed text-center">
-          <thead style={{top: `${topTableSpace}px`}} className={cn("container group sticky z-30", topTab)}>
+          <thead
+            onMouseEnter={() => setHoverHeaderTable(true)}
+            onMouseLeave={() => setHoverHeaderTable(false)}
+            style={{ top: `${topTableSpace}px` }}
+            className={cn('group container sticky z-30')}
+          >
             <tr className="border-brand-200 bg-brand-100 h-[72px] break-words border">
-              {scrolleLeft && (
-                <th className='sticky hidden group-hover:block right-[330px] mt-5 z-50'>
-                  <Tooltip title="پیمایش به راست (D)">
-                    <button
-                      onClick={handlerRightScrollTable}
-                      className={cn(
-                        'bg-brand-600 rounded-md p-1 text-white',
-                      )}
-                    >
-                      <Icon name="arrow-right" />
-                    </button>
-                  </Tooltip>
-                </th>
-              )}
-              <th
-                className={cn(
-                  'bg-brand-100 sticky right-0 box-border w-[320px] pr-4',
-                  {
-                    'shadow-lg': isScrolled,
-                  },
+              <th className="sticky right-[330px] z-50 mt-5">
+                {scrolleLeft && (
+                  <div className="hidden group-hover:block">
+                    <Tooltip title="پیمایش به راست (D)">
+                      <button
+                        onClick={handlerRightScrollTable}
+                        className={cn('bg-brand-600 rounded-md p-1 text-white')}
+                      >
+                        <Icon name="arrow-right" />
+                      </button>
+                    </Tooltip>
+                  </div>
                 )}
+              </th>
+              <th
+                className={cn('bg-brand-100 sticky right-0 w-[320px] pr-4', {
+                  'shadow-2xl': isScrolled,
+                })}
               >
                 <div className="flex items-center gap-2">
                   <Tooltip title="انتخاب ستون ها">
@@ -343,58 +400,67 @@ const Funds = () => {
                       <Icon size="lg" name="filter" />
                     </div>
                   </Tooltip>
-                  <span className="font-mdium">نام صندوق</span>
+                  <span className="font-mdium text-sm">نام صندوق</span>
                 </div>
               </th>
               {columnsHeaders.map((item, index) => (
-                <th className="w-[130px] px-4" key={index}>
+                <th className="w-[130px] px-4 text-sm font-medium" key={index}>
                   {item.label}
                   <br />
                   {item.type}
                 </th>
               ))}
-              {scrollRight && (
-                <div className="sticky hidden group-hover:block left-10 mt-5 z-50 m-0 p-0">
-                  <Tooltip title="پیمایش به چپ (A)">
-                    <button
-                      onClick={handlerLeftScrollTable}
-                      className={cn('bg-brand-600 rounded-md p-1 text-white')}
-                    >
-                      <Icon name="arrow-left" />
-                    </button>
-                  </Tooltip>
-                </div>
-              )}
+              <th className="sticky left-10 m-0 mt-5">
+                {scrollRight && (
+                  <div className={cn("hidden group-hover:block",)}>
+                    <Tooltip title="پیمایش به چپ (A)">
+                      <button
+                        onClick={handlerLeftScrollTable}
+                        className={cn('bg-brand-600 rounded-md p-1 text-white')}
+                      >
+                        <Icon name="arrow-left" />
+                      </button>
+                    </Tooltip>
+                  </div>
+                )}
+              </th>
             </tr>
           </thead>
           <tbody className="relative w-full">
             {table.getRowModel().rows.map((row, index: number) => (
-              <tr style={{top: `${topTableSpace + 70}px`}} key={index} className={cn('group border-none bg-white shadow-md', {
-                'sticky z-20': index === 0,
-                'bg-blue-50 group-hover:bg-blue-100': false,
-                'bg-blue-200': false,
-                'group-hover:bg-blue-50': !false && !false,
-              })}>
+              <tr
+                style={{ top: `${topTableSpace + 70}px` }}
+                key={index}
+                className={cn('group border-none bg-white shadow-2xl', {
+                  'sticky z-20': index === 0,
+                  'bg-blue-200': false,
+                  'group-hover:bg-blue-50': !false && !false,
+                })}
+              >
                 <td className="sticky right-0 p-0">
                   <FundsTableRow
                     isScrolled={isScrolled}
                     key={row.id}
                     // name="نام صندوق "
                     name="نیکوکاری جایزه علمی فناوری پیامبر اعظم  ص"
-                    pined={false}
+                    pined={index === 0 ? true : false}
                     selected={false}
                     logo="https://s.cafebazaar.ir/images/icons/com.dotin.wepod-36b7a6e5-ed88-4590-ab3e-8811ed799168_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize"
                   />
                 </td>
-                {scrolleLeft && 
-                
-                <div className='pp-hover:block hidden'></div>
-                }
+
                 <td
                   className={cn('px-4', {
-                    'bg-blue-50 group-hover:bg-blue-100': false,
+                    'bg-blue-50 group-hover:bg-blue-100': !index,
                     'bg-blue-200': false,
-                    'group-hover:bg-blue-50': !false && !false,
+                    'group-hover:bg-blue-50': !false && index,
+                  })}
+                ></td>
+                <td
+                  className={cn('px-4', {
+                    'bg-blue-50 group-hover:bg-blue-100': !index,
+                    'bg-blue-200': false,
+                    'group-hover:bg-blue-50': !false && index,
                   })}
                 >
                   <span className="whitespace-nowrap text-xs font-medium">
@@ -402,77 +468,87 @@ const Funds = () => {
                   </span>
                 </td>
                 <td
-                  className={cn('whitespace-nowrap px-4 text-xs font-medium', {
-                    'bg-blue-50 group-hover:bg-blue-100': false,
-                    'bg-blue-200': false,
-                    'group-hover:bg-blue-50': !false && !false,
-                  })}
+                  className={cn(
+                    'mt-5 whitespace-nowrap px-4 text-xs font-medium',
+                    {
+                      'bg-blue-50 group-hover:bg-blue-100': !index,
+                      'bg-blue-200': false,
+                      'group-hover:bg-blue-50': !false && index,
+                    },
+                  )}
                 >
                   9,145.05 میلیارد ریال
                 </td>
                 <td
                   className={cn('whitespace-nowrap px-4 text-xs font-medium', {
-                    'bg-blue-50 group-hover:bg-blue-100': false,
+                    'bg-blue-50 group-hover:bg-blue-100': !index,
                     'bg-blue-200': false,
-                    'group-hover:bg-blue-50': !false && !false,
+                    'group-hover:bg-blue-50': !false && index,
                   })}
                 >
                   9,145.1
                 </td>
                 <td
                   className={cn('whitespace-nowrap px-4 text-xs font-medium', {
-                    'bg-blue-50 group-hover:bg-blue-100': false,
+                    'bg-blue-50 group-hover:bg-blue-100': !index,
                     'bg-blue-200': false,
-                    'group-hover:bg-blue-50': !false && !false,
+                    'group-hover:bg-blue-50': !false && index,
                   })}
                 >
                   89,145,111
                 </td>
                 <td
                   className={cn('whitespace-nowrap px-4 text-xs font-medium', {
-                    'bg-blue-50 group-hover:bg-blue-100': false,
+                    'bg-blue-50 group-hover:bg-blue-100': !index,
                     'bg-blue-200': false,
-                    'group-hover:bg-blue-50': !false && !false,
+                    'group-hover:bg-blue-50': !false && index,
                   })}
                 >
                   89,145,111
                 </td>
                 <td
                   className={cn('px-4 text-xs font-medium', {
-                    'bg-blue-50 group-hover:bg-blue-100': false,
+                    'bg-blue-50 group-hover:bg-blue-100': !index,
                     'bg-blue-200': false,
-                    'group-hover:bg-blue-50': !false && !false,
+                    'group-hover:bg-blue-50': !false && index,
                   })}
                 >
                   12
                 </td>
                 <td
                   className={cn('px-4 text-xs font-medium', {
-                    'bg-blue-50 group-hover:bg-blue-100': false,
+                    'bg-blue-50 group-hover:bg-blue-100': !index,
                     'bg-blue-200': false,
-                    'group-hover:bg-blue-50': !false && !false,
+                    'group-hover:bg-blue-50': !false && index,
                   })}
                 >
                   12
                 </td>
                 <td
                   className={cn('px-4', {
-                    'bg-blue-50 group-hover:bg-blue-100': false,
+                    'bg-blue-50 group-hover:bg-blue-100': !index,
                     'bg-blue-200': false,
-                    'group-hover:bg-blue-50': !false && !false,
+                    'group-hover:bg-blue-50': !false && index,
                   })}
                 >
                   12
                 </td>
                 <td
                   className={cn('px-4 text-xs font-medium', {
-                    'bg-blue-50 group-hover:bg-blue-100': false,
+                    'bg-blue-50 group-hover:bg-blue-100': !index,
                     'bg-blue-200': false,
-                    'group-hover:bg-blue-50': !false && !false,
+                    'group-hover:bg-blue-50': !false && index,
                   })}
                 >
                   12
                 </td>
+                <td
+                  className={cn('', {
+      
+                    
+                    'bg-blue-200': false,
+                  })}
+                ></td>
               </tr>
             ))}
           </tbody>
@@ -585,7 +661,7 @@ const Funds = () => {
             >
               <DialogTitle className="flex items-center justify-between">
                 <span className="p-6 text-xl font-medium">
-                  انتخاب سوتون ها (
+                  انتخاب ستون ها (
                   {Object.values(selectedColumns).filter(Boolean).length}/25)
                 </span>
                 {Object.values(selectedColumns).filter(Boolean).length ? (
@@ -642,7 +718,7 @@ const Funds = () => {
                 {Object.values(selectedColumns).filter(Boolean).length ? (
                   <span
                     className="m-6 cursor-pointer text-base font-medium text-red-600"
-                    onClick={resetSelections}
+                    onClick={() => setSelectedOption({})}
                   >
                     بازنشانی فیلتر ها
                   </span>
@@ -651,14 +727,23 @@ const Funds = () => {
                 )}
               </DialogTitle>
               <hr />
-              <div className="scrollbar-thumb-gray-500 scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-track-gray-300 mb-6 h-[550px] overflow-x-hidden overflow-y-scroll">
-                
-              </div>
               <div
                 onClick={() => setIsFilterModal(false)}
                 className="text-brand-600 absolute -left-2 -top-2 cursor-pointer rounded-full bg-white"
               >
                 <Icon name="circle-x" size="lg_plus" />
+              </div>
+              <div className="my-4 flex h-full w-full flex-col gap-2 px-4">
+                {filterList.map((item, index) => (
+                  <FilterPopUpSection
+                    key={index}
+                    name={item.title}
+                    options={item.options}
+                    reset={() => setSelectedOption({})}
+                    handlerOptonToggle={handlerOptions}
+                    selectedOptons={selectedOption}
+                  />
+                ))}
               </div>
             </DialogPanel>
           </div>
