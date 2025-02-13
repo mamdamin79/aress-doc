@@ -9,5 +9,7 @@ export default meta;
 type Story = StoryObj<typeof LoadingBarPop>;
 
 export const Default: Story = {
-  args: {},
+  args: {
+    status: 'rejected',
+  },
 };
