@@ -14,8 +14,5 @@ export * from './RemovableLabel';
 export * from './ProgressBar';
 export * from './SummaryCell';
 export * from './Button';
-<<<<<<< HEAD
-export * from './Heart'
-=======
+export * from './Heart';
 export * from './NotesHeading';
->>>>>>> main
