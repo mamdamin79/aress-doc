@@ -1,28 +1,8 @@
 import { cn } from 'libs/design-system/src/utils';
 import React, { useState } from 'react';
-import { Icon, IconProps } from '../Icon';
+import { Icon } from '../Icon';
 import { Tooltip } from '../Tooltip';
-
-type TooltipProps = {
-  children?: React.ReactNode;
-  title: string;
-  position?: 'top' | 'right' | 'bottom' | 'left';
-  className?: string;
-};
-
-type DualSwitchItem = {
-  tooltip?: TooltipProps;
-  icon: IconProps;
-};
-
-interface DualSwitchProps {
-  initialIndex?: number;
-  onChange: (value: number) => void;
-  items: DualSwitchItem[];
-  size: 'sm' | 'lg';
-  disabled?: boolean;
-  bgWhite?: boolean;
-}
+import { DualSwitchItem, DualSwitchProps } from './DualSwitch.types';
 
 export const DualSwitch: React.FC<DualSwitchProps> = ({
   initialIndex = 0,
@@ -61,10 +41,14 @@ export const DualSwitch: React.FC<DualSwitchProps> = ({
             : 'border-brand-600 border'
           : '',
       )}
+      role="radiogroup"
+      aria-label="Dual Switch"
     >
       {items.map((item, index) => (
         <Wrapper key={index} item={item}>
           <div
+            role="radio"
+            aria-checked={activeItemIndex === index}
             className={cn(
               'rounded-full bg-white p-[6px]',
               disabled

@@ -16,3 +16,4 @@ export * from './SummaryCell';
 export * from './Button';
 export * from './OptionsListExplorer';
 export * from './DualSwitch';
+export * from './NotesHeading';

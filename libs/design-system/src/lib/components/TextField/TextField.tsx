@@ -167,7 +167,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
         )}
       </div>
       <div
-        className={cn('h-[22px] text-xs', {
+        className={cn('h-[22px] pt-1 text-xs', {
           'text-red-600': isError,
           'text-gray-600': !isError,
           'text-gray-400': disabled,
