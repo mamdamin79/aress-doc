@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Icon } from '../Icon';
-import { DualSwitch, DualSwitchProps } from '../DualSwitch';
+import { DualSwitch } from '../DualSwitch';
+import { DualSwitchProps } from '../DualSwitch/DualSwitch.types';
 import { ReportSettings } from '../ReportSettings';
 import { ContextMenu } from '../ContextMenu';
 import { SlideFromLeft } from './SlideFromLeft';
@@ -24,6 +25,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
 }) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [optionsListOpen, setOptionsListOpen] = useState(false);
+  const [loadingStatus, setLoadingStatus] = useState<null | 'loading' | 'success' | 'failed'>(null)
   return (
     <div className="bg-baseBackground group relative flex w-[616px] flex-col overflow-x-hidden shadow-sm">
       <SlideFromLeft isOpen={settingsOpen}>
