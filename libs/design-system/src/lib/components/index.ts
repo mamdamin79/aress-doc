@@ -17,3 +17,4 @@ export * from './Button';
 export * from './OptionsListExplorer';
 export * from './DualSwitch';
 export * from './NotesHeading';
+export * from './LoadingBarPop';
