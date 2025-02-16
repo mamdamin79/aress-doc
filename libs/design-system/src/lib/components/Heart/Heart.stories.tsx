@@ -17,12 +17,12 @@ export const Default: Story = {
   render: (args) => (
     <div className="w-full mt-20 flex justify-center items-center">
       <Heart
-        initialIsliked={args.initialIsliked}
+        initialIsLiked={args.initialIsLiked}
         onLike={() => console.log('clicked')}
       />
     </div>
   ),
   args: {
-    initialIsliked: isLiked,
+    initialIsLiked: isLiked,
   },
 };
