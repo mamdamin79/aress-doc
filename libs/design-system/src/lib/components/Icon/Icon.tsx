@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { IconName, IconSize } from './Icon.types';
 import { SIZE_VALUES } from './Icon.constants';
 import { Icon as Iconify } from '@iconify/react';
@@ -9,11 +9,13 @@ export interface IconProps {
   size?: IconSize;
 }
 
-export const Icon: React.FC<IconProps> = ({ name, size = 'md' }) => {
-  const isCustomIcon = name.includes('Custom');
+// Memoize the Icon component to avoid unnecessary re-renders
+const IconComponent: React.FC<IconProps> = ({ name, size = 'md' }) => {
+  const isCustomIcon = useMemo(() => name.includes('Custom'), [name]);
+  const iconProps = useMemo(() => ({ name, size }), [name, size]);
 
   return isCustomIcon ? (
-    <CustomIcon name={name} size={size} />
+    <CustomIcon {...iconProps} />
   ) : (
     <Iconify
       icon={`lucide:${name}`}
@@ -22,3 +24,5 @@ export const Icon: React.FC<IconProps> = ({ name, size = 'md' }) => {
     />
   );
 };
+
+export const Icon = React.memo(IconComponent);
