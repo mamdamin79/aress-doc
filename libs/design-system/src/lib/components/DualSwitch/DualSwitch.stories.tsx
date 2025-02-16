@@ -4,13 +4,14 @@ import { useState } from 'react';
 const meta: Meta<typeof DualSwitch> = {
   title: 'Components/DualSwitch',
   component: DualSwitch,
+  tags: ['autodocs'],
 };
 
 export default meta;
 
 type Story = StoryObj<typeof DualSwitch>;
 
-export const bgWhite: Story = {
+export const Default: Story = {
   render: (args) => {
     return (
       <div className="flex w-full justify-center mt-44">
@@ -22,10 +23,13 @@ export const bgWhite: Story = {
     bgWhite: false,
     disabled: false,
     items: [
-      { icon: { name: 'presentation' }, tooltip: {title:'sdsd', position:'bottom'} },
+      {
+        icon: { name: 'presentation' },
+        tooltip: { title: 'tooltip', position: 'bottom' },
+      },
       { icon: { name: 'layout-grid' } },
     ],
-    size: 'md',
-    initialIndex: 0
+    size: 'sm',
+    initialIndex: 0,
   },
 };
