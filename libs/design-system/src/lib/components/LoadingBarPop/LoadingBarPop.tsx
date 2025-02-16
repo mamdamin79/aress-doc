@@ -15,9 +15,9 @@ export const LoadingBarPop = ({
         enter="transition-transform transition-opacity duration-300"
         enterFrom="scale-0 opacity-0"
         enterTo="scale-100 opacity-100"
-        leave="transition-opacity duration-200"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
+        leave="transition-transform transition-opacity duration-200"
+        leaveFrom="scale-100 opacity-100"
+        leaveTo="scale-0 opacity-0"
       >
         <div className="absolute">
           <LoadingSpinner duration={duration ?? 4} />
@@ -29,9 +29,9 @@ export const LoadingBarPop = ({
         enter="transition-transform transition-opacity duration-300"
         enterFrom="scale-0 opacity-0"
         enterTo="scale-100 opacity-100"
-        leave="transition-opacity duration-200"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
+        leave="transition-transform transition-opacity duration-200"
+        leaveFrom="scale-100 opacity-100"
+        leaveTo="scale-0 opacity-0"
       >
         <div className="absolute">
           <SuccessOrFail status={status as 'done' | 'rejected'} />
