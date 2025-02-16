@@ -30,7 +30,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
   const [optionsListOpen, setOptionsListOpen] = useState(false);
   const [loadingStatus, setLoadingStatus] = useState<
     null | 'loading' | 'done' | 'rejected'
-  >('rejected');
+  >(null);
   const returnLoadingStatusText = () => {
     switch (loadingStatus) {
       case 'loading':
@@ -41,10 +41,18 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
         return 'انجام نشد!';
     }
   };
+  const mockLoading = () => {
+    setSettingsOpen(false);
+    setLoadingStatus('loading');
+    setTimeout(() => {
+      setLoadingStatus('done');
+    }, 3000);
+  };
   return (
     <div className="bg-baseBackground group relative flex w-[616px] flex-col overflow-x-hidden shadow-sm">
       <SlideFromLeft isOpen={settingsOpen}>
         <ReportSettings
+          onSubmit={mockLoading}
           onClose={() => setSettingsOpen(false)}
           options={[
             {
@@ -202,6 +210,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                   isLoading={false}
                   mode="secondary"
                   size="md"
+                  onClick={() => setLoadingStatus(null)}
                 >
                   انصراف
                 </Button>

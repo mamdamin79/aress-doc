@@ -17,12 +17,14 @@ type optionProps = {
 
 interface ReportSettingsProps {
   options: optionProps[];
+  onSubmit: () => void;
   onClose: () => void;
 }
 
 export const ReportSettings: React.FC<ReportSettingsProps> = ({
   options,
   onClose,
+  onSubmit,
 }) => {
   return (
     <div className={cn('bg-baseBackground flex h-80 w-[328px] flex-col')}>
@@ -58,7 +60,13 @@ export const ReportSettings: React.FC<ReportSettingsProps> = ({
         >
           انصراف
         </Button>
-        <Button align="center" isLoading={false} mode="primary" size="sm">
+        <Button
+          align="center"
+          isLoading={false}
+          mode="primary"
+          size="sm"
+          onClick={onSubmit}
+        >
           اعمال تغییرات
         </Button>
       </div>
