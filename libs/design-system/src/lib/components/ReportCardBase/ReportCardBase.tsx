@@ -10,6 +10,9 @@ import {
   CategoryItem,
   OptionItem,
 } from '../OptionsListExplorer/OptionsListExplorer.types';
+import { cn } from 'libs/design-system/src/utils';
+import { LoadingBarPop } from '../LoadingBarPop';
+import { Button } from '../Button';
 interface ReportCardBaseProps {
   title: string;
   switchIcons: DualSwitchProps;
@@ -25,7 +28,19 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
 }) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [optionsListOpen, setOptionsListOpen] = useState(false);
-  const [loadingStatus, setLoadingStatus] = useState<null | 'loading' | 'success' | 'failed'>(null)
+  const [loadingStatus, setLoadingStatus] = useState<
+    null | 'loading' | 'done' | 'rejected'
+  >('rejected');
+  const returnLoadingStatusText = () => {
+    switch (loadingStatus) {
+      case 'loading':
+        return 'در حال بارگزاری اطلاعات...';
+      case 'done':
+        return 'انجام شد';
+      case 'rejected':
+        return 'انجام نشد!';
+    }
+  };
   return (
     <div className="bg-baseBackground group relative flex w-[616px] flex-col overflow-x-hidden shadow-sm">
       <SlideFromLeft isOpen={settingsOpen}>
@@ -115,7 +130,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
             <div className="p-1.5">
               <Icon name="info" size="md" />
             </div>
-            <span>{title}</span>
+            <span className={cn(loadingStatus && 'opacity-30')}>{title}</span>
           </div>
           <div className="flex flex-row gap-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <DualSwitch {...switchIcons} />
@@ -161,7 +176,40 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
         </div>
         <div className="absolute bottom-0 w-[592px] border-b group-hover:hidden"></div>
       </div>
-      <div className="bg-baseBackground h-[268px] w-full p-3 pt-2"></div>
+      <div className="bg-baseBackground flex h-[268px] w-full items-center justify-center p-3 pt-2">
+        {loadingStatus && (
+          <div className="flex h-full flex-col items-center justify-between pb-3 pt-16">
+            <div className="flex flex-col items-center justify-center gap-4">
+              <LoadingBarPop status={loadingStatus} />
+              <span>{returnLoadingStatusText()}</span>
+            </div>
+            <div className="flex flex-row gap-2">
+              {loadingStatus === 'rejected' && (
+                <div className="w-fit">
+                  <Button
+                    align="center"
+                    isLoading={false}
+                    mode="primary"
+                    size="md"
+                  >
+                    تلاش مجدد
+                  </Button>
+                </div>
+              )}
+              <div className="w-fit">
+                <Button
+                  align="center"
+                  isLoading={false}
+                  mode="secondary"
+                  size="md"
+                >
+                  انصراف
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
