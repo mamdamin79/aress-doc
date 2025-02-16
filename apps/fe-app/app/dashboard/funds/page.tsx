@@ -354,7 +354,7 @@ const Funds = () => {
             onMouseEnter={() => setHoverHeaderTable(true)}
             onMouseLeave={() => setHoverHeaderTable(false)}
             style={{ top: `${topTableSpace}px` }}
-            className={cn('group container sticky z-30')}
+            className={cn('group sticky container duration-300 z-30')}
           >
             <tr className="border-brand-200 bg-brand-100 h-[72px] break-words border">
               <th className="sticky right-[330px] z-50 mt-5">
@@ -432,7 +432,7 @@ const Funds = () => {
                 style={{ top: `${topTableSpace + 70}px` }}
                 key={index}
                 className={cn('group border-none bg-white shadow-2xl', {
-                  'sticky z-20': index === 0,
+                  'sticky z-20 duration-300': index === 0,
                   'bg-blue-200': false,
                   'group-hover:bg-blue-50': !false && !false,
                 })}

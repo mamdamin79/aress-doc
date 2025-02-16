@@ -50,7 +50,7 @@ export function FundsTableRow({
               'w-[202px]': isSelected
             })}>{name}</p>
           </Tooltip>
-          <div className="flex items-center gap-1">
+          <div className="flex font-medium text-xs items-center gap-1">
             <div className="rounded-sm border bg-purple-100 px-2">
               قابل معامله
             </div>
