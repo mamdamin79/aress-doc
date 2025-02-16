@@ -11,6 +11,7 @@ import {
   FundsTableRow,
   FundsTag,
   FilterPopUpSection,
+  FundsColumn,
 } from 'design-system';
 import {
   ColumnDef,
@@ -347,16 +348,16 @@ const Funds = () => {
 
       <div
         ref={tableRef}
-        className="border-brand-200 scrollbar-thin scrollbar-track-gray-300 mt-4 overflow-y-hidden overflow-x-scroll scroll-smooth rounded-xl border-2"
+        className="border-brand-200 scrollbar-thin scrollbar-track-gray-300 mt-4 overflow-x-scroll  scroll-smooth rounded-xl border-2"
       >
         <table className="w-full table-fixed text-center">
           <thead
             onMouseEnter={() => setHoverHeaderTable(true)}
             onMouseLeave={() => setHoverHeaderTable(false)}
             style={{ top: `${topTableSpace}px` }}
-            className={cn('group sticky container duration-300 z-30')}
+            className={cn('group container sticky z-30 duration-100')}
           >
-            <tr className="border-brand-200 bg-brand-100 h-[72px] break-words border">
+            <tr className="border-brand-200 bg-brand-100 h-[72px] border">
               <th className="sticky right-[330px] z-50 mt-5">
                 {scrolleLeft && (
                   <div className="hidden group-hover:block">
@@ -372,11 +373,13 @@ const Funds = () => {
                 )}
               </th>
               <th
-                className={cn('bg-brand-100 sticky right-0 w-[320px] pr-4', {
-                  'shadow-2xl': isScrolled,
-                })}
+                className='bg-brand-100 overflow-hidden sticky right-0 w-[320px]'
               >
-                <div className="flex items-center gap-2">
+                <div
+                  className={cn('flex h-[72px] w-full items-center gap-2 pr-4', {
+                    'shadow-2xl': isScrolled,
+                  })}
+                >
                   <Tooltip title="انتخاب ستون ها">
                     <div
                       onClick={() => setIsSettingModal(true)}
@@ -404,15 +407,72 @@ const Funds = () => {
                 </div>
               </th>
               {columnsHeaders.map((item, index) => (
-                <th className="w-[130px] px-4 text-sm font-medium" key={index}>
-                  {item.label}
-                  <br />
-                  {item.type}
+                <th className="w-36 text-sm font-medium" key={index}>
+                  <OptionsDropdown
+                    dropDownStyles={{
+                      size: 'md',
+                      anchor: 'bottom start',
+                      bg: 'primary',
+                      emphasize: 'medium',
+                      checkSelected: true,
+                    }}
+                    customOptionRender={(prop) => (
+                      <>
+                        <div className="hover:bg-brand-50 hover:text-brand-800 flex cursor-pointer items-center gap-2 bg-white p-2">
+                          {prop.icon?.name && (
+                            <Icon
+                              name={prop.icon?.name}
+                              size={prop.icon?.size}
+                            />
+                          )}
+                          {prop.text}
+                        </div>
+                        {prop.text === 'مرتب سازی صعودی' && <hr />}
+                      </>
+                    )}
+                    customTriggerRender={() => (
+                      <div className="w-full">
+                        <FundsColumn
+                          size="medium"
+                          type="active-desc"
+                          filterable={index === 0 ? true : false}
+                          title={item.label}
+                          sortType="alphabetical"
+                        ></FundsColumn>
+                      </div>
+                    )}
+                    dropDownList={[
+                      {
+                        text: 'مرتب سازی نزولی',
+                        icon: { name: 'arrow-down-narrow-wide', size: 'md' },
+                      },
+                      {
+                        text: 'مرتب سازی صعودی',
+                        icon: { name: 'arrow-up-narrow-wide', size: 'md' },
+                      },
+                      {
+                        text: 'انتقال به راست',
+                        icon: { name: 'arrow-right', size: 'md' },
+                      },
+                      {
+                        text: 'انتقال به ابتدا',
+                        icon: { name: 'arrow-right-to-line', size: 'md' },
+                      },
+                      {
+                        text: 'انتقال به چپ',
+                        icon: { name: 'arrow-left', size: 'md' },
+                      },
+                      {
+                        text: 'انتقال به انتها',
+                        icon: { name: 'arrow-left-to-line', size: 'md' },
+                      },
+                    ]}
+                  ></OptionsDropdown>
                 </th>
               ))}
               <th className="sticky left-10 m-0 mt-5">
                 {scrollRight && (
-                  <div className={cn("hidden group-hover:block",)}>
+                  <div className={cn('hidden group-hover:block')}>
                     <Tooltip title="پیمایش به چپ (A)">
                       <button
                         onClick={handlerLeftScrollTable}
@@ -437,7 +497,7 @@ const Funds = () => {
                   'group-hover:bg-blue-50': !false && !false,
                 })}
               >
-                <td className="sticky right-0 p-0">
+                <td className="sticky right-0 pr-4 p-0">
                   <FundsTableRow
                     isScrolled={isScrolled}
                     key={row.id}
@@ -544,8 +604,6 @@ const Funds = () => {
                 </td>
                 <td
                   className={cn('', {
-      
-                    
                     'bg-blue-200': false,
                   })}
                 ></td>

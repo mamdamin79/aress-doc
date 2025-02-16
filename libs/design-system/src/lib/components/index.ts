@@ -24,3 +24,4 @@ export * from './FundsTag';
 export * from './FundsFilterSection';
 export * from './FundsTableRow';
 export * from './FilterPopUpSection';
+export * from './FundsColumn';

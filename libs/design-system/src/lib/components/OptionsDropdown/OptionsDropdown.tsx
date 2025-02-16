@@ -44,7 +44,7 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
   return (
     <Listbox value={selectedItem} onChange={handleSelectionChange}>
       <ListboxButton
-        className={cn('outline-none px-3', !dropDownStyles.fixedWidth && 'w-fit')}
+        className={cn('outline-none', !dropDownStyles.fixedWidth && 'w-fit')}
         style={
           dropDownStyles.fixedWidth
             ? { width: `${dropDownStyles.fixedWidth}px` }
@@ -70,7 +70,7 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
       <ListboxOptions
         anchor={dropDownStyles.anchor}
         className={cn(
-          'gap-1 rounded-lg border border-gray-300 outline-none',
+          'gap-1 z-50 rounded-lg border border-gray-300 outline-none',
           !dropDownStyles.fixedWidth && 'w-fit',
         )}
         style={
