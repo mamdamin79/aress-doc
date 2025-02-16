@@ -3,6 +3,8 @@ export * from './IconDialog';
 export * from './Breadcrumb';
 export * from './Icon';
 export * from './SectionTitle';
+export * from './Tabs';
+export * from './ContextMenu';
 export * from './PercentageLabel';
 export * from './Tooltip';
 export * from './FileUpload';
@@ -12,4 +14,8 @@ export * from './RemovableLabel';
 export * from './ProgressBar';
 export * from './SummaryCell';
 export * from './Button';
+<<<<<<< HEAD
 export * from './Heart'
+=======
+export * from './NotesHeading';
+>>>>>>> main

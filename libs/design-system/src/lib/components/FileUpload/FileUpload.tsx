@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from 'react';
 import { Icon } from '../Icon';
 import { FileUploader } from 'react-drag-drop-files';

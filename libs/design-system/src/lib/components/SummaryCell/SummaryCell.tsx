@@ -12,10 +12,10 @@ interface Props {
 
 export function SummaryCell({ label, value, subTitle }: Props) {
   return (
-    <div className="rounded-3xl overflow-hidden cursor-pointer hover:shadow-3xl w-60 relative duration-500 group bg-gray-100 p-6">
-      <div className="bg-gray-50 rounded-full scale-0 duration-500 h-80 w-80 group-hover:scale-[3] absolute top-5 left-28"></div>
+    <div className="hover:shadow-3xl group relative w-60 cursor-pointer overflow-hidden rounded-3xl bg-gray-100 p-6 duration-500">
+      <div className="absolute left-28 top-5 h-80 w-80 scale-0 rounded-full bg-gray-50 duration-500 group-hover:scale-[3]"></div>
 
-      <div className="flex items-center relative z-20 gap-2">
+      <div className="relative z-20 flex items-center gap-2">
         <div className="group-hover:text-brand-600 duration-300">
           <Icon size="lg" name={label.icon} />
         </div>
@@ -23,11 +23,11 @@ export function SummaryCell({ label, value, subTitle }: Props) {
           {label.title}
         </span>
       </div>
-      <div className="mt-5 relative z-20 flex flex-col items-center">
-        <span className="font-semibold text-lg group-hover:font-bold">
+      <div className="relative z-20 mt-5 flex flex-col items-center">
+        <span className="text-lg font-semibold group-hover:font-bold">
           {value}
         </span>
-        <span className="text-sm group-hover:font-medium text-gray-700">
+        <span className="text-sm text-gray-700 group-hover:font-medium">
           {subTitle}
         </span>
       </div>

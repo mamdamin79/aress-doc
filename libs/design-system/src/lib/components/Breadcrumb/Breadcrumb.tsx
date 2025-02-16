@@ -10,25 +10,25 @@ interface Props {
 export function Breadcrumb({ items }: Props) {
   return (
     <nav aria-label="Breadcrumbs" dir="rtl">
-      <ul className="flex items-center gap-1 font-vazirmatn">
+      <ul className="font-vazirmatn flex items-center gap-1">
         {items.map((item: BreadcrumbItem, index: number) => (
           <li
             className={cn(
-              'cursor-pointer font-semibold flex items-center',
+              'flex cursor-pointer items-center font-semibold',
               index + 1 === items.length
                 ? 'text-gray-1000'
-                : 'text-gray-600 hover:text-gray-700'
+                : 'text-gray-600 hover:text-gray-700',
             )}
             key={index}
           >
             <div className="flex items-center">
               {item.icon && <Icon name={item?.icon} size="sm" />}
               {item.link ? (
-                <Link className="text-xs pb-0.5 mx-0.5" href={item.link}>
+                <Link className="mx-0.5 pb-0.5 text-xs" href={item.link}>
                   {item.title}
                 </Link>
               ) : (
-                <span className="text-xs pb-0.5 mx-0.5">{item.title}</span>
+                <span className="mx-0.5 pb-0.5 text-xs">{item.title}</span>
               )}
               {index + 1 !== items.length && (
                 <Icon name="chevron-left" size="sm" />
