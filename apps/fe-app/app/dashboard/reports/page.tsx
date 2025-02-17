@@ -10,7 +10,7 @@ const ITEMS_PER_PAGE = 5;
 
 async function getData(searchParams: GetDashboardReportsData) {
   OpenAPI.HEADERS = {
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzM4OTM0NjY3fQ.n-rwjeSg43FFg7uCfXa1Y9U0pNVtuQoNOTDE6dUeTUk`,
+    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzM5ODgxNjgxfQ.hCdJtZGsZ6yK-s4FqKl2Hgl6RA_pGX1IT3_a6j4zqP0`,
   };
   const [reports, categories] = await Promise.all([
     DashboardService.getDashboardReports({
@@ -56,14 +56,14 @@ export default async function ReportMenuPage({
   );
 
   return (
-    <div className="container mx-auto max-w-7xl">
+    <div className="px-4 mx-auto bg-red-200 container">
       <div className="flex items-center justify-start gap-6">
         <h1 className="text-3xl font-medium">لیست گزارش ها</h1>
         <SearchBar />
         <FilterReport />
       </div>
-      <div className="flex items-start justify-between gap-8">
-        <div className="w-[1048px]">
+      <div className="flex items-start flex-row-reverse justify-between gap-8">
+        <div className="w-full">
           <ReportList reports={paginatedReports} />
           <Pagination
             currentPage={currentPage}

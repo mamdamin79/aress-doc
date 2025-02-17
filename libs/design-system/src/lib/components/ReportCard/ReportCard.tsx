@@ -5,27 +5,29 @@ import Image from 'next/image';
 import { NewBadge, VideoBadge, LikeBadge } from './Badges/Badges';
 import { cn } from '../../../utils/classNames.utils';
 import { Button } from '../Button';
-import { FinancialReportListItemApiModel } from '@openapi';
+import {
+  FinancialReportListItemApiModel,
+  OpenAPI,
+  useDashboardServicePostDashboardReportsByReportIdFavorite,
+} from '@openapi';
 
+export interface CardComponentProps {
+  title: string;
+  summary: string;
+  reportSubscription: string;
+  categoryType: string;
+  newBadge?: boolean;
+  videoBadge?: boolean;
+  image: string;
+  fixedBrief?: boolean;
+  userFavorite?: boolean;
+}
 
-// export interface CardComponentProps {
-//   title: string;
-//   summary: string;
-//   reportSubscription: string;
-//   categoryType: string;
-//   newBadge?: boolean;
-//   videoBadge?: boolean;
-//   image: string;
-//   fixedBrief?: boolean;
-//   userFavorite?: boolean;
-// }
-
-
-
-
-
-export const ReportCard: React.FC<FinancialReportListItemApiModel> = ({
+export const ReportCard: React.FC<
+  FinancialReportListItemApiModel & CardComponentProps
+> = ({
   title,
+  identifier,
   reportSubscription,
   summary,
   fixedBrief = false,
@@ -35,6 +37,13 @@ export const ReportCard: React.FC<FinancialReportListItemApiModel> = ({
   image,
   userFavorite = false,
 }) => {
+  const { mutate: postFavorite } =
+    useDashboardServicePostDashboardReportsByReportIdFavorite({
+    });
+    OpenAPI.HEADERS = {
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzM5ODgxNjgxfQ.hCdJtZGsZ6yK-s4FqKl2Hgl6RA_pGX1IT3_a6j4zqP0`,
+    };
+
   return (
     <div
       className={cn(
@@ -110,8 +119,8 @@ export const ReportCard: React.FC<FinancialReportListItemApiModel> = ({
               </span>
               <div className="absolute bottom-4 right-0 flex w-full items-center justify-between px-4">
                 <LikeBadge
+                  onClick={() => postFavorite({ reportId: identifier })}
                   isLiked={userFavorite}
-                  onClick={() => console.log('like')}
                 />
                 <div className="flex h-[38px] origin-left scale-x-[0.3] transform items-center overflow-hidden rounded-[100px] text-xs opacity-0 transition-all duration-300 ease-in-out group-hover:scale-x-100 group-hover:opacity-100">
                   <Button

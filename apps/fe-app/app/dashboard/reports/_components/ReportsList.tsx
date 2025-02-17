@@ -21,9 +21,9 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
   }
 
   return (
-    <div className="flex flex-wrap gap-8">
+    <div className="flex flex-wrap bg-blue-200 items-start xl:justify-center gap-4">
       {reports.map((report, idx) => (
-        <ReportCard key={report.identifier} {...report} />
+        <ReportCard  fixedBrief={true} key={report.identifier} {...report} />
       ))}
     </div>
   );
