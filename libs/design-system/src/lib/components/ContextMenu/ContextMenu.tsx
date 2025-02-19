@@ -6,11 +6,12 @@ import { Icon } from '../Icon';
 // this pulls out types of menuItem
 type MenuItemsProps = React.ComponentProps<typeof MenuItems>;
 
-type Props = {
+export type Props = {
   children?: ReactNode;
   items: ContextMenuItem[];
   anchor?: MenuItemsProps['anchor']; // using of anchor type of menuItem
 };
+
 
 export const ContextMenu: React.FC<Props> = ({
   items,
