@@ -29,8 +29,8 @@ export const ReportSettings: React.FC<ReportSettingsProps> = ({
   return (
     <div className={cn('bg-baseBackground flex h-80 w-[328px] flex-col')}>
       <div className="text-md w-full py-2 pr-4 font-medium">تنظیمات گزارش</div>
-      <CustomScrollbar
-        className={cn('flex h-[236px] flex-col pl-5 pr-4', 'overflow-y-auto')}
+      <div
+        className={cn('flex h-[236px] flex-col pl-5 pr-4', 'overflow-y-auto custom-scrollbar')}
       >
         {options.map((option: optionProps, index: number) => {
           if (option.type === 'nestedDropdown') {
@@ -49,7 +49,7 @@ export const ReportSettings: React.FC<ReportSettingsProps> = ({
           }
           return null;
         })}
-      </CustomScrollbar>
+      </div>
       <div className="flex w-full flex-row gap-1 text-nowrap pb-4 pl-4 pr-[175px] text-xs font-semibold">
         <Button
           align="center"
