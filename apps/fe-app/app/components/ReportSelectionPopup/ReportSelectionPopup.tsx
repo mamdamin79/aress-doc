@@ -20,7 +20,7 @@ export const ReportSelectionPopup: React.FC<ReportSelectionPopupProps> = ({
   return (
     <Dialog open={isOpen} onClose={() => onClose()} className="relative z-50">
       <div className="flex w-screen items-center justify-center px-8">
-        <DialogPanel className="bg-baseBackground flex max-h-[calc(100vh-4rem)] min-w-[668px] max-w-[1048px] flex-col gap-4 overflow-y-auto rounded-3xl px-6 pb-12 pt-8 shadow-lg">
+        <DialogPanel className="bg-baseBackground custom-scrollbar flex h-[calc(100vh-72px)] max-h-[800px] min-w-[668px] max-w-[1048px] flex-col gap-4 overflow-y-auto rounded-3xl px-6 pb-12 pt-8 shadow-lg">
           <div className="flex flex-row items-center gap-1">
             <Icon name="chevron-right" size="lg" />
             <span className="text-md font-medium">بازگشت به لیست گزارش‌ها</span>
