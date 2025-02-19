@@ -1,13 +1,13 @@
 import { faker } from '@faker-js/faker'
 
 export type Person = {
-  firstName: string
-  lastName: string
-  age: number
-  visits: number
+  unitCount: number
+  profitPerUnit: number
+  netAssetValue: number
+  monstatisticalPriceth: number
+  cancellationPrice: number
+  issuancePrice: number
   progress: number
-  status: 'relationship' | 'complicated' | 'single'
-  subRows?: Person[]
 }
 
 const range = (len: number) => {
@@ -20,16 +20,13 @@ const range = (len: number) => {
 
 const newPerson = (): Person => {
   return {
-    firstName: faker.person.firstName(),
-    lastName: faker.person.lastName(),
-    age: faker.number.int(40),
-    visits: faker.number.int(1000),
+    unitCount: faker.number.int(40),
+    profitPerUnit: faker.number.int(9000000),
+    netAssetValue: faker.number.int(999000000),
+    monstatisticalPriceth: faker.number.int(90000),
+    cancellationPrice: faker.number.int(40),
+    issuancePrice: faker.number.int(1000),
     progress: faker.number.int(100),
-    status: faker.helpers.shuffle<Person['status']>([
-      'relationship',
-      'complicated',
-      'single',
-    ])[0]!,
   }
 }
 
@@ -39,7 +36,6 @@ export function makeData(...lens: number[]) {
     return range(len).map((d): Person => {
       return {
         ...newPerson(),
-        subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined,
       }
     })
   }
