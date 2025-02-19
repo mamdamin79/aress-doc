@@ -20,3 +20,4 @@ export * from './NotesHeading';
 export * from './ReportCard';
 export * from './ReportsCarousel';
 export * from './LoadingBarPop';
+export * from './ReportCardBase';

@@ -13,7 +13,7 @@ import {
 import { cn } from 'libs/design-system/src/utils';
 import { LoadingBarPop } from '../LoadingBarPop';
 import { Button } from '../Button';
-interface ReportCardBaseProps {
+export interface ReportCardBaseProps {
   title: string;
   switchIcons: DualSwitchProps;
   optionsListItems: {
