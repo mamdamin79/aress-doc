@@ -8,5 +8,5 @@ export interface ReportCardBaseProps {
     categories?: CategoryItem[] | null;
     items: OptionItem[];
   };
-  showSettingsOnly?: boolean;
+  compactHeader?: boolean;
 }

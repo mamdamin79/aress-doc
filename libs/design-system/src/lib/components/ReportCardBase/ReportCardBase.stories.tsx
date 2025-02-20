@@ -138,7 +138,7 @@ export const showSettingsOnly: Story = {
     return <ReportCardBase {...args} />;
   },
   args: {
-    showSettingsOnly: true,
+    compactHeader: true,
     title: 'تایتل (اسم گزارش)',
     switchIcons: {
       items: [

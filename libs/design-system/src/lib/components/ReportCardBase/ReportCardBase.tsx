@@ -14,7 +14,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
   title,
   switchIcons,
   optionsListItems,
-  showSettingsOnly = false,
+  compactHeader = false,
 }) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [optionsListOpen, setOptionsListOpen] = useState(false);
@@ -124,7 +124,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
       </SlideFromLeft>
       <div className="relative w-full p-3 pb-2">
         <div className="flex w-full items-center justify-between">
-          {!showSettingsOnly ? (
+          {!compactHeader ? (
             <div className="flex flex-row items-center text-xs font-semibold">
               <div className="p-1.5">
                 <Icon name="info" size="md" />
@@ -138,12 +138,12 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
           <div
             className={cn(
               'flex flex-row gap-2',
-              !showSettingsOnly &&
+              !compactHeader &&
                 'opacity-0 transition-opacity duration-300 group-hover:opacity-100',
             )}
           >
             <DualSwitch {...switchIcons} />
-            {showSettingsOnly ? (
+            {compactHeader ? (
               <div
                 className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-gray-100"
                 onClick={() => setSettingsOpen(true)}
@@ -194,7 +194,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
         <div
           className={cn(
             'absolute bottom-0 w-[592px] border-b',
-            !showSettingsOnly && 'group-hover:hidden',
+            !compactHeader && 'group-hover:hidden',
           )}
         ></div>
       </div>
