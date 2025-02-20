@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { PopupInfo } from './PopupInfo';
+import React, { useState } from 'react';
 const meta: Meta<typeof PopupInfo> = {
   component: PopupInfo,
-
 };
 
 export default meta;
@@ -10,6 +10,34 @@ export default meta;
 type Story = StoryObj<typeof PopupInfo>;
 
 export const Default: Story = {
-  args: {
+  render: () => {
+    const [isOpen, setIsOpen] = useState(false);
+    return (
+      <div>
+        <button onClick={() => setIsOpen(true)}>Open dialog</button>
+        <PopupInfo
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          itemsList={[
+            {
+              title: '1. نمادهای مالی',
+              content: 'k: هزار ریال - M:میلیون ریال - B:میلیارد ریال',
+            },
+            {
+              title: 'ارزش کل خرید حقیقی',
+              content:
+                'مجموع ارزش معاملاتی که توسط سرمایه‌گذاران حقیقی در بازار بورس انجام شده',
+            },
+            {
+              title: 'ارزش کل خرید حقوقی',
+              content:
+                'مجموع ارزش معاملاتی که توسط سرمایه‌گذاران حقوقی (شرکت‌ها، سازمان‌ها و نهادهای مالی) در بازار بورس انجام شده است.',
+            },
+          ]}
+          title="تعاریف مالی به کار رفته."
+        />
+      </div>
+    );
   },
+  args: {},
 };
