@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { NestedDropdown } from '../NestedDropdown';
 import { NestedDropDownProps } from '../NestedDropdown/NestedDropdown.types';
-import { CustomScrollbar } from './CustomScrollBar';
 import { Field, FieldProps } from '../NestedDropdown/Field/Field';
 import { Button } from '../Button';
 import { cn } from 'libs/design-system/src/utils';
