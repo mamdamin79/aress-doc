@@ -4,10 +4,30 @@ import {
   DialogPanel,
   DialogTitle,
 } from '@headlessui/react';
-import { PopupInfoProps } from './PopupInfo.types';
+import { customAccrodionItemProps, PopupInfoProps } from './PopupInfo.types';
 import { Icon } from '../Icon';
 import { Accordion } from '../Accordion';
+import Link from 'next/link';
 
+export const CustomAccrodionItem: React.FC<customAccrodionItemProps> = ({
+  content,
+  link,
+}) => {
+  return (
+    <div className="flex flex-col gap-2 text-gray-600">
+      <div>{content}</div>
+      {link && (
+        <Link
+          href={link}
+          className="flex flex-row items-center justify-end gap-2 text-left text-xs font-semibold"
+        >
+          مطالعه بیشتر
+          <Icon name="arrow-up-left" size="sm" />
+        </Link>
+      )}
+    </div>
+  );
+};
 export const PopupInfo: React.FC<PopupInfoProps> = ({
   itemsList,
   title,
@@ -31,8 +51,14 @@ export const PopupInfo: React.FC<PopupInfoProps> = ({
           <Icon name="book-open-text" />
           <span>{title}</span>
         </DialogTitle>
-        <Description className="rounded-t-4 flex w-[600px] w-full flex-col gap-4">
-          <Accordion items={itemsList} singleOpen={false} />
+        <Description className="rounded-t-4 flex w-[600px] flex-col gap-4">
+          <Accordion
+            items={itemsList.map((item) => ({
+              title: item.title,
+              content: <CustomAccrodionItem {...item} />,
+            }))}
+            singleOpen={false}
+          />
         </Description>
       </DialogPanel>
     </Dialog>

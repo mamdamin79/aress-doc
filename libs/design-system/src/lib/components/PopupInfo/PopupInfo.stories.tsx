@@ -22,6 +22,7 @@ export const Default: Story = {
             {
               title: '1. نمادهای مالی',
               content: 'k: هزار ریال - M:میلیون ریال - B:میلیارد ریال',
+              link: '/',
             },
             {
               title: 'ارزش کل خرید حقیقی',
