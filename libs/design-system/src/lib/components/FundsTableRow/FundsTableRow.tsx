@@ -25,7 +25,7 @@ export function FundsTableRow({
   return (
     <div
       className={cn(
-        'sticky right-0 flex w-[320px] items-center justify-between bg-white',
+        'sticky right-0 flex w-[320px] items-center justify-between rounded-t-md bg-white',
         {
           'shadow-md': isScrolled,
           'bg-blue-50 group-hover:bg-blue-100': pined,

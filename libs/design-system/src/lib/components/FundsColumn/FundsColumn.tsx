@@ -93,11 +93,11 @@ export function FundsColumn({
               name={
                 sortType === 'ranked'
                   ? type === 'active-asc'
-                    ? 'arrow-up-wide-narrow'
-                    : 'arrow-down-wide-narrow'
+                    ? 'arrow-down-wide-narrow'
+                    : 'arrow-up-wide-narrow'
                   : type === 'active-asc'
-                    ? 'arrow-up-z-a'
-                    : 'arrow-down-a-z'
+                    ? 'arrow-down-a-z'
+                    : 'arrow-up-z-a'
               }
             />
           </div>
