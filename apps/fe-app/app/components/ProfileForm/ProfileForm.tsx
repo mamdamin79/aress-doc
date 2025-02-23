@@ -30,7 +30,10 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
     console.log(data);
   };
   return (
-    <div className="flex w-fit flex-col items-center gap-12">
+    <form
+      className="flex w-fit flex-col items-center gap-12"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <ProfileImageAndUpload maxSize={20000000000000} types={['jpg', 'png']} />
       <div className="grid w-[607px] grid-flow-row md:w-[800px] md:grid-cols-2 md:gap-6">
         <Controller
@@ -59,10 +62,11 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
               mergeTitleAndPlaceholder={false}
               mode="outline"
               type="text"
-              trailingIcons={[]}
+              trailingIcons={[{ name: 'eye' }]}
               label="شماره همراه"
               placeholder=""
               isError={!!fieldState.error}
+              readOnly={true}
               supportText={fieldState.error?.message}
               {...field}
             />
@@ -97,6 +101,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
               trailingIcons={[]}
               label="ایمیل"
               placeholder=""
+              readOnly={true}
               isError={!!fieldState.error}
               supportText={fieldState.error?.message}
               {...field}
@@ -114,6 +119,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
               trailingIcons={[]}
               label="نام کاربری"
               placeholder=""
+              readOnly={true}
               isError={!!fieldState.error}
               supportText={fieldState.error?.message}
               {...field}
@@ -122,8 +128,14 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
         />
       </div>
       <div className="-mt-6 flex w-full justify-start">
-        <div className="w-fit">
-          <Button align="center" isLoading={false} mode="primary" size="md">
+        <div className="w-40">
+          <Button
+            align="center"
+            isLoading={isSubmitting}
+            mode="primary"
+            size="md"
+            type="submit"
+          >
             <div className="flex flex-row gap-2">
               <span>تغییر رمز عبور</span>
               <Icon name="key-round" size="lg" />
@@ -131,6 +143,6 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
           </Button>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
