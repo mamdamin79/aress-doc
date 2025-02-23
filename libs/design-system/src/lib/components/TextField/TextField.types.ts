@@ -1,16 +1,17 @@
 import { InputHTMLAttributes } from 'react';
 import { IconProps } from '../Icon';
-import { IconSize } from '../Icon/Icon.types';
+import { IconName, IconSize } from '../Icon/Icon.types';
 
 type TrailingIconType = {
-  name: 'x' | 'eye';
+  name: 'x' | 'eye' | IconName;
   size?: IconSize;
+  onClick?: () => void;
 };
 export type TrailingIcons =
   | []
   | [TrailingIconType]
   | [TrailingIconType, TrailingIconType];
-
+type extendedTrailingIcon = TrailingIcons & {};
 export type textFieldPropsType = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   placeholder?: string;
