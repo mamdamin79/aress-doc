@@ -17,3 +17,4 @@ export * from './Button';
 export * from './NotesHeading';
 export * from './TextField';
 export * from './ProfileImageAndUpload';
+export * from './LoadingBarPop';

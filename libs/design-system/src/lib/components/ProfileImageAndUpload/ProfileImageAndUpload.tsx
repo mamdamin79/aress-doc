@@ -21,6 +21,7 @@ export const ProfileImageAndUpload: React.FC<FileUploadProps> = ({
 }) => {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(image || null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!Array.isArray(types) || types.length === 0) {
@@ -31,8 +32,12 @@ export const ProfileImageAndUpload: React.FC<FileUploadProps> = ({
 
   useEffect(() => {
     if (file) {
+      setIsLoading(true);
       const objectUrl = URL.createObjectURL(file);
       setPreview(objectUrl);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
       return () => URL.revokeObjectURL(objectUrl);
     }
   }, [file]);
@@ -51,6 +56,7 @@ export const ProfileImageAndUpload: React.FC<FileUploadProps> = ({
 
     setFile(selectedFile);
   };
+
   const imageDimension = preview ? 120 : 80;
   return (
     <FileUploader handleChange={handleFileChange} name="file" types={types}>
@@ -64,6 +70,11 @@ export const ProfileImageAndUpload: React.FC<FileUploadProps> = ({
             className={cn('object-cover', preview && `h-[120px] w-[120px]`)}
           />
         </div>
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black bg-opacity-50">
+            <div className="h-10 w-10 animate-spin rounded-full border-4 border-white border-t-transparent"></div>
+          </div>
+        )}
         <div className="bg-baseBackground absolute left-[88px] top-[88px] flex h-10 w-10 items-center justify-center rounded-full text-gray-700 shadow-2xl">
           <Icon name="image-up" size="lg" />
         </div>
