@@ -11,7 +11,6 @@ export type TrailingIcons =
   | []
   | [TrailingIconType]
   | [TrailingIconType, TrailingIconType];
-type extendedTrailingIcon = TrailingIcons & {};
 export type textFieldPropsType = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   placeholder?: string;
