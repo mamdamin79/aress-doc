@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 
 export type Person = {
+  nameFund: string,
   unitCount: number
   profitPerUnit: number
   netAssetValue: number
@@ -20,6 +21,7 @@ const range = (len: number) => {
 
 const newPerson = (): Person => {
   return {
+    nameFund: faker.person.fullName(),
     unitCount: faker.number.int(40),
     profitPerUnit: faker.number.int(9000000),
     netAssetValue: faker.number.int(999000000),

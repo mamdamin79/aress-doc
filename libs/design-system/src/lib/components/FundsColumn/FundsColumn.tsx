@@ -11,9 +11,11 @@ interface Props {
   shadow?: boolean;
   clickFilterd: () => void;
   filtered: boolean;
+  children?: React.ReactNode;
 }
 
 export function FundsColumn({
+  children,
   size,
   title,
   shadow = false,
@@ -30,7 +32,7 @@ export function FundsColumn({
           'w-28': size === 'small',
           'w-36': size === 'medium',
           'w-[200px]': size === 'larg',
-          'w-[312px]': size === 'extraLarg',
+          'w-[335px]': size === 'extraLarg',
           'shadow-4xl': shadow && size === 'extraLarg',
           'bg-pink-200': size === 'extraLarg' && filterable,
           'bg-brand-100': size === 'extraLarg' && !filterable,
@@ -38,9 +40,11 @@ export function FundsColumn({
             !filterable && size !== 'extraLarg',
           'bg-pink-200 hover:bg-pink-300': filterable && size !== 'extraLarg',
         },
-        'text-text-neutral-primary group/first cursor-pointer text-sm font-medium',
+        'text-text-neutral-primary flex itemce group/first cursor-pointer text-sm font-medium',
       )}
     >
+      {children}
+
       <div
         className={cn(
           'relative mx-auto flex h-[72px] items-center justify-center gap-1',

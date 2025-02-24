@@ -59,7 +59,7 @@ export const Tabs: React.FC<Props> = ({
                 {
                   'border-2 border-gray-100': variant === 'shaped',
                   'bg-white': variant === 'shaped' && colorMode === 'inverse',
-                  'bg-gray-100':
+                  'bg-gray-100 border-red-200':
                     variant === 'shaped' && colorMode === 'neutral',
                 },
                 {
@@ -77,7 +77,7 @@ export const Tabs: React.FC<Props> = ({
                     variant === 'lined' && colorMode === 'neutral',
                 },
                 {
-                  'data-[selected]:border-brand-600 data-[selected]:bg-brand-600 hover:border-brand-600 rounded-md border-2 border-white px-2 py-1 text-black data-[selected]:text-white':
+                  'data-[selected]:border-brand-600 border-gray-100 data-[selected]:bg-brand-600 hover:border-brand-600 rounded-md border-2 px-2 py-1 text-black data-[selected]:text-white':
                     variant === 'shaped',
                 },
                 {
