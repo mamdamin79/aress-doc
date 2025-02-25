@@ -1,3 +1,4 @@
+'use client';
 import { Button, Icon, ProfileImageAndUpload, TextField } from 'design-system';
 import { useForm, Controller } from 'react-hook-form';
 
@@ -10,6 +11,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
   nationalID,
   phoneNumber,
   username,
+  image,
 }) => {
   const {
     control,
@@ -34,7 +36,11 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
       className="flex w-fit flex-col items-center gap-12"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <ProfileImageAndUpload maxSize={20000000000000} types={['jpg', 'png']} />
+      <ProfileImageAndUpload
+        maxSize={20000000000000}
+        types={['jpg', 'png']}
+        image={image}
+      />
       <div className="grid w-[607px] grid-flow-row md:w-[800px] md:grid-cols-2 md:gap-6">
         <Controller
           name="fnameAndLname"

@@ -1,7 +1,8 @@
 export interface ProfileFormProps {
-  fnameAndLname: string;
+  fnameAndLname?: string;
   phoneNumber: string;
-  nationalID: number;
-  email: string;
-  username: string;
+  nationalID?: number;
+  email?: string;
+  username?: string;
+  image?: string;
 }
