@@ -272,6 +272,8 @@ importers:
 
   libs/design-system: {}
 
+  libs/openapi: {}
+
 packages:
 
   '@adobe/css-tools@4.4.0':

@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { Icon } from '../Icon';
 import Image from 'next/image';
 import { NewBadge, VideoBadge, LikeBadge } from './Badges/Badges';
@@ -9,6 +9,7 @@ import {
   FinancialReportListItemApiModel,
   OpenAPI,
   useDashboardServicePostDashboardReportsByReportIdFavorite,
+  useDashboardServiceDeleteDashboardReportsByReportIdFavorite,
 } from '@openapi';
 
 export interface CardComponentProps {
@@ -37,12 +38,34 @@ export const ReportCard: React.FC<
   image,
   userFavorite = false,
 }) => {
+  const [isLiked, setIsLiked] = useState(userFavorite);
+
   const { mutate: postFavorite } =
-    useDashboardServicePostDashboardReportsByReportIdFavorite({
-    });
-    OpenAPI.HEADERS = {
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzQwMTM0OTIzfQ.bbcAIpZzPZ-7UupUlZZ2pG1HbBrD2qI_fFSH1VuOkIk`,
-    };
+    useDashboardServicePostDashboardReportsByReportIdFavorite();
+  const { mutate: deleteFavorite } =
+    useDashboardServiceDeleteDashboardReportsByReportIdFavorite();
+
+  OpenAPI.HEADERS = {
+    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzQwNTYxODgxfQ.AYeDmC-D54omX5jI_I78zNx66a98iKBnNzGqXRN5n3U`,
+  };
+
+  const handleLikeToggle = () => {
+    if (isLiked) {
+      deleteFavorite(
+        { reportId: identifier },
+        {
+          onSuccess: () => setIsLiked(false),
+        }
+      );
+    } else {
+      postFavorite(
+        { reportId: identifier },
+        {
+          onSuccess: () => setIsLiked(true),
+        }
+      );
+    }
+  };
 
   return (
     <div
@@ -118,10 +141,7 @@ export const ReportCard: React.FC<
                 {summary}
               </span>
               <div className="absolute bottom-4 right-0 flex w-full items-center justify-between px-4">
-                <LikeBadge
-                  onClick={() => postFavorite({ reportId: identifier })}
-                  isLiked={userFavorite}
-                />
+                <LikeBadge onClick={handleLikeToggle} isLiked={isLiked} />
                 <div className="flex h-[38px] origin-left scale-x-[0.3] transform items-center overflow-hidden rounded-[100px] text-xs opacity-0 transition-all duration-300 ease-in-out group-hover:scale-x-100 group-hover:opacity-100">
                   <Button
                     align="center"

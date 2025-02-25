@@ -10,7 +10,7 @@ const ITEMS_PER_PAGE = 5;
 
 async function getData(searchParams: GetDashboardReportsData) {
   OpenAPI.HEADERS = {
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzQwMTM0OTIzfQ.bbcAIpZzPZ-7UupUlZZ2pG1HbBrD2qI_fFSH1VuOkIk`,
+    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzQwNTYxODgxfQ.AYeDmC-D54omX5jI_I78zNx66a98iKBnNzGqXRN5n3U`,
   };
   const [reports, categories] = await Promise.all([
     DashboardService.getDashboardReports({
