@@ -41,7 +41,7 @@ export const ReportCard: React.FC<
     useDashboardServicePostDashboardReportsByReportIdFavorite({
     });
     OpenAPI.HEADERS = {
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzM5ODgxNjgxfQ.hCdJtZGsZ6yK-s4FqKl2Hgl6RA_pGX1IT3_a6j4zqP0`,
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzQwMTM0OTIzfQ.bbcAIpZzPZ-7UupUlZZ2pG1HbBrD2qI_fFSH1VuOkIk`,
     };
 
   return (
