@@ -23,11 +23,13 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
 
   return (
     <>
-      <div className="flex items-center justify-start gap-2">
-        <SearchBar />
-        <FilterReport />
+      <div className="flex items-center justify-center  bg-blue-100">
+        <div className='w-[380px] flex items-center gap-2'>
+          <SearchBar />
+          <FilterReport />
+        </div>
       </div>
-      <div className="flex flex-wrap items-start gap-4">
+      <div className="grid grid-cols-1 items-center xl:grid-cols-2 gap-4 bg-yellow-100">
         {reports.map((report, idx) => (
           <ReportCard fixedBrief={true} key={report.identifier} {...report} />
         ))}

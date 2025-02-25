@@ -13,7 +13,7 @@ type Props = {
 
 export const SideBar: React.FC<Props> = ({ categories, reports }) => {
   return (
-    <div className="sticky mt-6 h-screen w-[200px]">
+    <div className=" mt-6 h-screen w-[180px]">
       <h1 className="text-3xl sm:text-xl sm:mb-5 font-medium">لیست گزارش ها</h1>
       <div className="mb-4 flex items-center gap-2">
         <Icon name="layers-2" size="lg" />

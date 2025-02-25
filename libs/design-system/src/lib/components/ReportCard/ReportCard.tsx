@@ -72,9 +72,10 @@ export const ReportCard: React.FC<
       className={cn(
         `group relative flex flex-col overflow-hidden rounded-3xl border-[3px] border-gray-100 bg-gray-100 transition-all hover:shadow-md`,
         fixedBrief
-          ? 'h-[448px] min-w-[380px] max-w-[512px] items-start'
+          ? 'h-[448px]  w-[380px] sm:w-[380px] md:w-[512px] items-start'
           : 'h-[318px] min-w-[304px] max-w-[416px]',
       )}
+      // min-w-[380px] 
     >
       {/* Image Section */}
       <div className="mt-3 w-full px-3">

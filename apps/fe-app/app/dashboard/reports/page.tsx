@@ -55,9 +55,9 @@ export default async function ReportMenuPage({
   );
 
   return (
-    <div className="mx-8 bg-red-200 flex items-center justify-center">
-      <div className="flex flex-row-reverse items-start justify-between gap-4">
-        <div className="max-w-[710px]">
+    <div className="mx-8 bg-red-200">
+      <div className="flex flex-row-reverse items-start justify-between gap-4 xl:justify-center">
+        <div className="w-full">
           <ReportList reports={paginatedReports} />
           <Pagination
             currentPage={currentPage}
@@ -65,7 +65,9 @@ export default async function ReportMenuPage({
             pageSize={ITEMS_PER_PAGE}
           />
         </div>
-        <SideBar reports={reports} categories={categories} />
+        <div className='bg-red-400'>
+          <SideBar reports={reports} categories={categories} />
+        </div>
       </div>
     </div>
   );
