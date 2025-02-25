@@ -11,11 +11,9 @@ interface Props {
   shadow?: boolean;
   clickFilterd: () => void;
   filtered: boolean;
-  children?: React.ReactNode;
 }
 
 export function FundsColumn({
-  children,
   size,
   title,
   shadow = false,
@@ -32,7 +30,7 @@ export function FundsColumn({
           'w-28': size === 'small',
           'w-36': size === 'medium',
           'w-[200px]': size === 'larg',
-          'w-[335px]': size === 'extraLarg',
+          'w-[312px]': size === 'extraLarg',
           'shadow-4xl': shadow && size === 'extraLarg',
           'bg-pink-200': size === 'extraLarg' && filterable,
           'bg-brand-100': size === 'extraLarg' && !filterable,
@@ -40,18 +38,16 @@ export function FundsColumn({
             !filterable && size !== 'extraLarg',
           'bg-pink-200 hover:bg-pink-300': filterable && size !== 'extraLarg',
         },
-        'text-text-neutral-primary flex itemce group/first cursor-pointer text-sm font-medium',
+        'text-text-neutral-primary group/first cursor-pointer text-sm font-medium',
       )}
     >
-      {children}
-
       <div
         className={cn(
-          'relative mx-auto flex h-[72px] items-center justify-center gap-1',
+          'relative mx-auto px-1.5 flex h-[72px] w-fit items-center justify-center gap-1',
           {
-            'w-[108px] bg-pink-200 group-hover/first:bg-pink-300':
+            'bg-pink-200 group-hover/first:bg-pink-300':
               size === 'extraLarg' && filterable,
-            'group-hover/first:bg-brand-300 bg-brand-200 w-[108px]':
+            'group-hover/first:bg-brand-300 bg-brand-200':
               size === 'extraLarg' && !filterable,
           },
         )}
@@ -59,7 +55,7 @@ export function FundsColumn({
         <div className={cn(filterable ? 'visible' : 'invisible')}>
           <Icon name="filter" />
         </div>
-        <span onClick={(e) => e.stopPropagation()}>{title}</span>
+        <span>{title}</span>
         {filtered && (
           <div className="bg-brand-600 absolute -bottom-[7px] h-3 w-16 rounded-md"></div>
         )}

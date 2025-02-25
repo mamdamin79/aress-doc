@@ -360,7 +360,7 @@ const Funds = () => {
   return (
     <>
       <div
-        className='right-0 sticky top-0 w-full py-3 z-30 bg-white mx-auto mt-4 flex items-center justify-between px-20'
+        className='right-0 fixed top-0 w-full z-30 bg-white mx-auto pt-8 pb-3 flex items-center justify-between px-20'
       >
         <div className="flex w-full items-center justify-start gap-3">
           <span className="pb-2.5">دسته بندی صندوق‌ها:</span>
@@ -450,13 +450,12 @@ const Funds = () => {
       <div
         className='relative flex w-fit items-center pb-20 transition-all duration-300'>
         <div className="sticky right-0 top-24 z-40 h-screen w-[82px] bg-white"></div>
-        <div className="sticky right-[80px] rounded-full top-24 z-40 h-screen w-4 border-r border-brand-600"></div>
         <div className="w-fit pl-20">
           <div ref={tableRef} className="border-brand-200 rounded-xl border-2">
             <table className="w-full rounded-xl table-fixed bg-white text-center">
-              <thead className="group sticky top-16 z-30 w-full rounded-t-md duration-100">
-                <tr className="border-brand-200 bg-brand-100 h-[72px] rounded-t-md border">
-                  <th className="sticky right-[410px] z-50 mt-5">
+              <thead className="group sticky rounded-md overflow-hidden p-0 m-0 top-[96px] z-30 w-fit duration-100">
+                <tr className="p-0 overflow-hidden rounded-md">
+                  <th className="sticky right-[410px] z-50 p-0 mt-5">
                     {scrolleLeft && (
                       <div className="hidden group-hover:block">
                         <Tooltip title="پیمایش به راست (D)">
@@ -476,7 +475,7 @@ const Funds = () => {
                     return (
                       <>
                         {index === 0 && (
-                          <th className="bg-brand-100 hover:bg-brand-200 sticky right-20 z-10 w-[325px] overflow-hidden">
+                          <th className="bg-brand-100 m-0 overflow-y-hidden rounded-tr-md p-0 sticky right-20 top-0 z-10 w-[312px] shadow-lg">
                             <OptionsDropdown
                               dropDownStyles={{
                                 size: 'md',
@@ -505,9 +504,6 @@ const Funds = () => {
                                     className={cn(
                                       'hover:bg-brand-50 hover:text-brand-800 flex cursor-pointer items-center gap-2 bg-white p-2',
                                       {
-                                        'cursor-default text-gray-100 hover:bg-white hover:text-gray-100':
-                                          prop.text === 'انتقال به ابتدا' ||
-                                          prop.text === 'انتقال به راست' || prop.text ==='انتقال به انتها' || prop.text === 'انتقال به چپ',
                                         'text-brand-800':
                                           (header.column.getIsSorted() ===
                                             'desc' &&
@@ -530,7 +526,7 @@ const Funds = () => {
                                 </>
                               )}
                               customTriggerRender={() => (
-                                <div className="w-full">
+                                <div className="w-full shadow-xl rounded-tr-md">
                                   <FundsColumn
                                     filtered={!!header.column.getIsSorted()}
                                     clickFilterd={() =>
@@ -539,6 +535,7 @@ const Funds = () => {
                                       )
                                     }
                                     size="extraLarg"
+                                    shadow={true}
                                     type={
                                       header.column.getIsSorted() === 'asc'
                                         ? 'active-desc'
@@ -563,7 +560,8 @@ const Funds = () => {
                                         : 'ranked'
                                     }
                                   >
-                                    <div className="flex h-[72px] items-center gap-2 pr-4">
+                                  </FundsColumn>
+                                    <div className="flex absolute top-5 items-center gap-2 pr-4">
                                       <Tooltip title="انتخاب ستون ها">
                                         <div
                                           onClick={() =>
@@ -588,7 +586,6 @@ const Funds = () => {
                                         </div>
                                       </Tooltip>
                                     </div>
-                                  </FundsColumn>
                                 </div>
                               )}
                               dropDownList={[
@@ -606,34 +603,6 @@ const Funds = () => {
                                     size: 'md',
                                   },
                                 },
-                                {
-                                  text: 'انتقال به راست',
-                                  icon: {
-                                    name: 'arrow-right',
-                                    size: 'md',
-                                  },
-                                },
-                                {
-                                  text: 'انتقال به ابتدا',
-                                  icon: {
-                                    name: 'arrow-right-to-line',
-                                    size: 'md',
-                                  },
-                                },
-                                {
-                                  text: 'انتقال به چپ',
-                                  icon: {
-                                    name: 'arrow-left',
-                                    size: 'md',
-                                  },
-                                },
-                                {
-                                  text: 'انتقال به انتها',
-                                  icon: {
-                                    name: 'arrow-left-to-line',
-                                    size: 'md',
-                                  },
-                                },
                               ]}
                             ></OptionsDropdown>
                           </th>
@@ -641,14 +610,15 @@ const Funds = () => {
                         {index >= 1 && (
                           <th
                             className={cn(
-                              'w-[220px] overflow-hidden text-sm font-medium',
+                              'm-0 p-0 overflow-y-hidden text-sm font-medium',
+                              index === updateTableHeaders.length - 1 && 'rounded-tl-md',
                               String(
                                 flexRender(
                                   header.column.columnDef.header,
                                   header.getContext(),
                                 ),
                               ).length > 10
-                                ? 'w-[220px]'
+                                ? 'w-[200px]'
                                 : 'w-36',
                             )}
                             key={header.id}
@@ -763,7 +733,7 @@ const Funds = () => {
                                       </>
                                     )}
                                     customTriggerRender={() => (
-                                      <div className="w-full">
+                                      <div className="w-full !bg-yellow-600">
                                         <FundsColumn
                                           filtered={
                                             !!header.column.getIsSorted()
@@ -885,7 +855,7 @@ const Funds = () => {
                 </tr>
               </thead>
               <tbody className="relative w-full overflow-hidden rounded-b-md">
-                {table.getRowModel().rows.map((row, index) => {
+                {table.getRowModel().rows.map((row, rowIndex) => {
                   return (
                     <tr
                       className={cn('group border-none', {
@@ -898,15 +868,16 @@ const Funds = () => {
                         className={cn({
                           'bg-blue-50 group-hover:bg-blue-100': false,
                           'bg-blue-200': false,
-                          'group-hover:bg-blue-50': !false && index,
+                          'group-hover:bg-blue-50': !false && rowIndex,
                         })}
                       ></td>
                       {row.getVisibleCells().map((cell, index) => {
                         return (
                           <>
                             {index === 0 && (
-                              <td className="sticky right-20 rounded-br-md p-0">
+                              <td className={cn("sticky right-20 overflow-x-hidden p-0 m-0", (rowIndex === table.getRowModel().rows.length - 1) && "rounded-br-md")}>
                                 <FundsTableRow
+                                  className={scrolleLeft ? 'border-r border-brand-200' : 'border-r-0'}
                                   isScrolled={scrolleLeft}
                                   key={row.id}
                                   name={flexRender(

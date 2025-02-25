@@ -10,6 +10,7 @@ interface Props {
   pined: boolean;
   selected: boolean;
   isScrolled: boolean;
+  className?: string;
 }
 
 export function FundsTableRow({
@@ -18,6 +19,7 @@ export function FundsTableRow({
   pined,
   selected,
   isScrolled,
+  className,
 }: Props) {
 
   const [isSelected, setIsSelected] = useState(false);
@@ -26,7 +28,7 @@ export function FundsTableRow({
   return (
     <div
       className={cn(
-        'sticky right-0 rounded-br-md flex w-[325px] items-center justify-between rounded-t-md bg-white',
+        'sticky right-0 flex w-fit items-center justify-between bg-white', className,
         {
           'shadow-md': isScrolled,
           'bg-blue-50 group-hover:bg-blue-100': pined,
@@ -47,7 +49,7 @@ export function FundsTableRow({
         )}
         <div className="flex flex-col gap-1">
           <Tooltip offset={2} position='bottom' className='!z-50' title={name}>
-            <p className={cn("text-gray-1000 w-[242px] group-hover:w-[202px] text-right truncate text-sm font-medium", {
+            <p className={cn("text-gray-1000 w-[235px] group-hover:w-[202px] text-right truncate text-sm font-medium", {
               'w-[202px]': isSelected
             })}>{name}</p>
           </Tooltip>
