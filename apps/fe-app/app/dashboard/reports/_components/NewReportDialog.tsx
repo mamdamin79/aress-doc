@@ -20,6 +20,7 @@ export const NewReportDialog = () => {
           mode="primary"
           size="sm"
           onClick={openDialog}
+          className='rounded-full w-14 h-14'
         >
           {isOpen ? (
             <Icon name="x" size="lg" />

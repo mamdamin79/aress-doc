@@ -5,7 +5,6 @@ import { DashboardService, GetDashboardReportsData, OpenAPI } from '@openapi';
 import { FilterReport } from './_components/FilterReport';
 import { Pagination } from 'design-system';
 
-
 const ITEMS_PER_PAGE = 5;
 
 async function getData(searchParams: GetDashboardReportsData) {
@@ -56,14 +55,9 @@ export default async function ReportMenuPage({
   );
 
   return (
-    <div className="px-4 mx-auto container">
-      <div className="flex items-center justify-start gap-6">
-        <h1 className="text-3xl font-medium">لیست گزارش ها</h1>
-        <SearchBar />
-        <FilterReport />
-      </div>
-      <div className="flex items-start flex-row-reverse justify-between gap-8">
-        <div className="w-full">
+    <div className="mx-8 bg-red-200 flex items-center justify-center">
+      <div className="flex flex-row-reverse items-start justify-between gap-4">
+        <div className="max-w-[710px]">
           <ReportList reports={paginatedReports} />
           <Pagination
             currentPage={currentPage}

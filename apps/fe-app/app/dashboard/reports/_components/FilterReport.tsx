@@ -44,7 +44,7 @@ export const FilterReport = () => {
 
   return (
     <Popover>
-      <PopoverButton className="bg-brand-600 flex h-14 w-14 items-center justify-center rounded-xl text-white outline-none">
+      <PopoverButton className="bg-brand-600 -mb-1 flex h-12 border-none w-12 items-center justify-center rounded-xl text-white outline-none">
         <Icon name="filter" size="lg" />
       </PopoverButton>
       <PopoverPanel

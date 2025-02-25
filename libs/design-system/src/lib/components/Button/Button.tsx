@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import { cn } from '../../../utils';
 import { Icon, IconProps } from '../Icon';
 import { ButtonMode, ButtonSize } from './Button.types';
@@ -30,7 +30,7 @@ export const Button: React.FC<ButtonProps> = ({
       {...props}
       className={cn(
         className,
-        'flex gap-2 group w-full transition-all duration-300 items-center px-2',
+        'group flex w-full items-center gap-2 px-2 transition-all duration-300',
         { 'justify-center': align === 'center' },
         { 'justify-start': align === 'right' },
         { 'cursor-default': disabled },
@@ -72,6 +72,7 @@ export const Button: React.FC<ButtonProps> = ({
           'text-brand-600 active:text-brand-800 active:border-brand-800':
             mode === 'underline' && !isLoading && !disabled,
         },
+        className,
       )}
     >
       {isLoading ? (
@@ -89,7 +90,7 @@ export const Button: React.FC<ButtonProps> = ({
               { 'text-center': align === 'center' },
               mode === 'underline' &&
                 !disabled &&
-                'transition-transform pb-1 group-hover:underline underline-offset-8 group-hover:border-b-brand-600',
+                'group-hover:border-b-brand-600 pb-1 underline-offset-8 transition-transform group-hover:underline',
             )}
           >
             {children}
