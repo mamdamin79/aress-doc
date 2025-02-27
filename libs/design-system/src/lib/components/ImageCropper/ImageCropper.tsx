@@ -32,12 +32,15 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
   const onCropComplete = (croppedArea: CroppedArea, pixels: CroppedArea) => {
     setCroppedAreaPixels(pixels);
   };
+  const [isLoading, setIsLoading] = useState(false);
   const handleSave = async () => {
+    setIsLoading(true);
     if (croppedAreaPixels) {
       const croppedImage = await getCroppedImg(image, croppedAreaPixels);
       if (croppedImage) onChange?.(croppedImage);
       onClose?.();
     }
+    setIsLoading(false);
   };
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -97,7 +100,7 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
                     onZoomChange={setZoom}
                     onCropComplete={onCropComplete}
                     cropShape="round"
-                    showGrid={false}
+                    showGrid={true}
                   />
                 </div>
                 <div className="flex w-full flex-row justify-end gap-2">
@@ -113,8 +116,9 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
                   </div>
                   <div className="w-20">
                     <Button
+                      onClick={handleSave}
                       align="center"
-                      isLoading={false}
+                      isLoading={isLoading}
                       mode="primary"
                       size="md"
                     >

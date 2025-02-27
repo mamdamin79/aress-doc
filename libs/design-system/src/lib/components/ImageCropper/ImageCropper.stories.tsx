@@ -11,6 +11,26 @@ type Story = StoryObj<typeof ImageCropper>;
 
 export const Default: Story = {
   render: () => {
+    // function to download cropped image for test
+    const downloadBlob = async (blobUrl: string, filename: string) => {
+      try {
+        const response = await fetch(blobUrl);
+        const blob = await response.blob();
+
+        const a = document.createElement('a');
+        const objectUrl = URL.createObjectURL(blob);
+
+        a.href = objectUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        URL.revokeObjectURL(objectUrl);
+      } catch (error) {
+        console.error('Error downloading file:', error);
+      }
+    };
     const [isOpen, setIsOpen] = useState(false);
     return (
       <>
@@ -22,8 +42,9 @@ export const Default: Story = {
         </div>
         <ImageCropper
           isOpen={isOpen}
-          image="https://placehold.co/800x600"
+          image="https://picsum.photos/600/400"
           onClose={() => setIsOpen(false)}
+          onChange={(image) => downloadBlob(image as any, 'test')}
         />
       </>
     );
