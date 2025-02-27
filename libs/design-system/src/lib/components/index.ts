@@ -19,3 +19,4 @@ export * from './ProfileImageAndUpload';
 export * from './LoadingBarPop';
 export * from './TextField';
 export * from './BulletList';
+export * from './ImageCropper';

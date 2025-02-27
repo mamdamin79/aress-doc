@@ -1,8 +1,14 @@
 'use client';
-import { Button, Icon, ProfileImageAndUpload, TextField } from 'design-system';
+import {
+  Button,
+  Icon,
+  ImageCropper,
+  ProfileImageAndUpload,
+  TextField,
+} from 'design-system';
 import { useForm, Controller } from 'react-hook-form';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { ProfileFormProps } from './ProfileForm.types';
 
 export const ProfileForm: React.FC<ProfileFormProps> = ({
@@ -26,7 +32,29 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
       username: username,
     },
   });
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [profileImage, setProfileImage] = useState(image);
+  const handleImageUpload = async (croppedImage: string) => {
+    setSelectedImage(null);
+    setIsLoading(true);
+    if (!croppedImage) {
+      console.error('Cropped image is null');
+      return;
+    }
+    try {
+      const response = await fetch(croppedImage);
+      const blob = await response.blob();
+      console.log('Converted Blob:', blob);
+      const objectUrl = URL.createObjectURL(blob);
+      setProfileImage(objectUrl);
+    } catch (error) {
+      console.error('Failed to convert Blob URL to Blob:', error);
+    }
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  };
   const onSubmit = async (data: any) => {
     await new Promise((r) => setTimeout(r, 5000));
     console.log(data);
@@ -37,10 +65,22 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
       onSubmit={handleSubmit(onSubmit)}
     >
       <ProfileImageAndUpload
+        loadingInitial={isLoading}
         maxSize={20000000000000}
         types={['jpg', 'png']}
-        image={image}
+        image={profileImage}
+        onImageSelect={(image) => setSelectedImage(URL.createObjectURL(image))}
       />
+      {selectedImage && (
+        <ImageCropper
+          image={selectedImage}
+          isOpen={!!selectedImage}
+          onChange={(croppedImage) => {
+            handleImageUpload(croppedImage);
+          }}
+        />
+      )}
+
       <div className="grid w-[607px] grid-flow-row md:w-[800px] md:grid-cols-2 md:gap-6">
         <Controller
           name="fnameAndLname"
