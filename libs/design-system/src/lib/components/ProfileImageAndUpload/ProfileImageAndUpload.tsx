@@ -11,6 +11,8 @@ type FileUploadProps = {
   maxSize: number;
   onError?: (errorType: FileUploadErrorType) => void;
   image?: string | null;
+  loadingInitial: boolean;
+  onImageSelect?: (image: Blob) => void;
 };
 
 export const ProfileImageAndUpload: React.FC<FileUploadProps> = ({
@@ -18,10 +20,10 @@ export const ProfileImageAndUpload: React.FC<FileUploadProps> = ({
   maxSize,
   onError,
   image,
+  loadingInitial,
+  onImageSelect,
 }) => {
-  const [file, setFile] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(image || null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(loadingInitial);
 
   useEffect(() => {
     if (!Array.isArray(types) || types.length === 0) {
@@ -29,18 +31,9 @@ export const ProfileImageAndUpload: React.FC<FileUploadProps> = ({
       return;
     }
   }, [types, onError]);
-
   useEffect(() => {
-    if (file) {
-      setIsLoading(true);
-      const objectUrl = URL.createObjectURL(file);
-      setPreview(objectUrl);
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1000);
-      return () => URL.revokeObjectURL(objectUrl);
-    }
-  }, [file]);
+    setIsLoading(loadingInitial);
+  }, [loadingInitial]);
 
   const handleFileChange = (selectedFile: File) => {
     const fileExtension = selectedFile.name.split('.').pop()?.toLowerCase();
@@ -53,21 +46,20 @@ export const ProfileImageAndUpload: React.FC<FileUploadProps> = ({
       onError?.('FILE_TOO_LARGE');
       return;
     }
-
-    setFile(selectedFile);
+    onImageSelect?.(selectedFile);
   };
 
-  const imageDimension = preview ? 120 : 80;
+  const imageDimension = image ? 120 : 80;
   return (
     <FileUploader handleChange={handleFileChange} name="file" types={types}>
       <div className="bg-baseBackground relative h-32 w-32 rounded-full border-2 border-gray-100 p-1">
         <div className="flex h-full w-full items-end justify-center overflow-hidden rounded-full">
           <Image
             alt="profile image"
-            src={preview ? preview : USER_SVG}
+            src={image ? image : USER_SVG}
             width={imageDimension}
             height={imageDimension}
-            className={cn('object-cover', preview && `h-[120px] w-[120px]`)}
+            className={cn('object-cover', image && `h-[120px] w-[120px]`)}
           />
         </div>
         {isLoading && (
