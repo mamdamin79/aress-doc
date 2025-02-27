@@ -12,6 +12,7 @@ import { X } from 'lucide-react';
 import { ImageCropperProps } from './ImageCropper.types';
 import { getCroppedImg } from './ImageCropper.utils';
 import { Button } from '../Button';
+import { Icon } from '../Icon';
 interface CroppedArea {
   width: number;
   height: number;
@@ -34,7 +35,7 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
   const handleSave = async () => {
     if (croppedAreaPixels) {
       const croppedImage = await getCroppedImg(image, croppedAreaPixels);
-      onChange?.(croppedImage);
+      if (croppedImage) onChange?.(croppedImage);
       onClose?.();
     }
   };
@@ -63,20 +64,28 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <DialogPanel className="relative w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <DialogPanel className="relative w-full max-w-md transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <div
+                  onClick={onClose}
+                  className="absolute left-0 top-0 -ml-2 -mt-2 flex items-center justify-center rounded-full shadow-lg"
+                >
+                  <Icon
+                    name="CustomCirlcleX"
+                    key={`CustomCirlcleX`}
+                    size="lg_plus"
+                  />
+                </div>
                 <DialogTitle
                   as="div"
                   className="mb-4 flex items-center justify-between"
                 >
-                  <h3 className="text-lg font-medium leading-6 text-gray-900">
-                    Crop Image
-                  </h3>
-                  <button
-                    onClick={() => onClose?.()}
-                    className="rounded-full p-1 transition-colors hover:bg-gray-100"
-                  >
-                    <X className="h-5 w-5 text-gray-500" />
-                  </button>
+                  <div className="flex flex-col gap-2 text-right">
+                    <h2 className="text-xl font-semibold">برش عکس</h2>
+                    <p className="text-right text-sm font-semibold text-gray-600">
+                      ناحیه‌ای از عکس که می‌خواهید به عنوان تصویر نمایه انتخاب
+                      شود را مشخص کنید.
+                    </p>
+                  </div>
                 </DialogTitle>
                 <div className="relative mb-4 h-64 w-full">
                   <Cropper
@@ -91,7 +100,28 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
                     showGrid={false}
                   />
                 </div>
-                <div className="mt-4 flex justify-end space-x-2">save</div>
+                <div className="flex w-full flex-row justify-end gap-2">
+                  <div className="w-20">
+                    <Button
+                      align="center"
+                      isLoading={false}
+                      mode="secondary"
+                      size="md"
+                    >
+                      انصراف
+                    </Button>
+                  </div>
+                  <div className="w-20">
+                    <Button
+                      align="center"
+                      isLoading={false}
+                      mode="primary"
+                      size="md"
+                    >
+                      ذخیره
+                    </Button>
+                  </div>
+                </div>
               </DialogPanel>
             </TransitionChild>
           </div>
