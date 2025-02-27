@@ -51,26 +51,28 @@ export const ProfileImageAndUpload: React.FC<FileUploadProps> = ({
 
   const imageDimension = image ? 120 : 80;
   return (
-    <FileUploader handleChange={handleFileChange} name="file" types={types}>
-      <div className="bg-baseBackground relative h-32 w-32 rounded-full border-2 border-gray-100 p-1">
-        <div className="flex h-full w-full items-end justify-center overflow-hidden rounded-full">
-          <Image
-            alt="profile image"
-            src={image ? image : USER_SVG}
-            width={imageDimension}
-            height={imageDimension}
-            className={cn('object-cover', image && `h-[120px] w-[120px]`)}
-          />
-        </div>
-        {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black bg-opacity-50">
-            <div className="h-10 w-10 animate-spin rounded-full border-4 border-white border-t-transparent"></div>
+    <div className="outline-none">
+      <FileUploader handleChange={handleFileChange} name="file" types={types}>
+        <div className="bg-baseBackground relative h-32 w-32 rounded-full border-2 border-gray-100 p-1 outline-none">
+          <div className="flex h-full w-full items-end justify-center overflow-hidden rounded-full">
+            <Image
+              alt="profile image"
+              src={image ? image : USER_SVG}
+              width={imageDimension}
+              height={imageDimension}
+              className={cn('object-cover', image && `h-[120px] w-[120px]`)}
+            />
           </div>
-        )}
-        <div className="bg-baseBackground absolute left-[88px] top-[88px] flex h-10 w-10 items-center justify-center rounded-full text-gray-700 shadow-2xl">
-          <Icon name="image-up" size="lg" />
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black bg-opacity-50">
+              <div className="h-10 w-10 animate-spin rounded-full border-4 border-white border-t-transparent"></div>
+            </div>
+          )}
+          <div className="bg-baseBackground absolute left-[88px] top-[88px] flex h-10 w-10 items-center justify-center rounded-full text-gray-700 shadow-2xl">
+            <Icon name="image-up" size="lg" />
+          </div>
         </div>
-      </div>
-    </FileUploader>
+      </FileUploader>
+    </div>
   );
 };
