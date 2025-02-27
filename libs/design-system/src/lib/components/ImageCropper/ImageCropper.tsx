@@ -8,7 +8,6 @@ import {
 } from '@headlessui/react';
 import { Fragment } from 'react';
 import Cropper from 'react-easy-crop';
-import { X } from 'lucide-react';
 import { ImageCropperProps } from './ImageCropper.types';
 import { getCroppedImg } from './ImageCropper.utils';
 import { Button } from '../Button';
