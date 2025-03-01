@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useHeaderVisibility } from '../../../hooks/useHeaderVisiblity';
 import {
   cn,
   Icon,
@@ -31,10 +32,13 @@ type SelectedColumnsType = {
 };
 
 const Funds = () => {
+  const { isHeaderVisible } = useHeaderVisibility();
+
   const [indexCategoryTab, setIndexCategoryTab] = useState(0);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const [data, setData] = useState(() => makeData(500));
+  const [scrollTop, setScrollTop] = useState(0);
 
   const [isFilterModal, setIsFilterModal] = useState(false);
   const [isSettingModal, setIsSettingModal] = useState(false);
@@ -342,10 +346,22 @@ const Funds = () => {
   }, []);
 
   const handleScroll = () => {
-    if (window.scrollX < 0) {
+    const scrollLeft = window.scrollX;
+    const maxScrollLeft =
+      document.documentElement.scrollWidth - window.innerWidth;
+    setScrollTop(window.scrollY);
+      
+
+    if (Math.round(scrollLeft) < 0) {
       setScrollLeft(true);
     } else {
       setScrollLeft(false);
+    }
+
+    if (Math.round(scrollLeft) * -1 >= maxScrollLeft) {
+      setScrollRight(false);
+    } else {
+      setScrollRight(true);
     }
   };
   useEffect(() => {
@@ -360,7 +376,10 @@ const Funds = () => {
   return (
     <>
       <div
-        className='right-0 fixed top-0 w-full z-30 bg-white mx-auto pt-8 pb-3 flex items-center justify-between px-20'
+        className={cn(
+          'fixed right-0 z-30 mx-auto flex w-full items-center justify-between bg-white px-20 pb-3 pt-8 transition-all duration-300',
+          isHeaderVisible ? 'translate-y-0' : '-translate-y-full',
+        )}
       >
         <div className="flex w-full items-center justify-start gap-3">
           <span className="pb-2.5">دسته بندی صندوق‌ها:</span>
@@ -447,473 +466,473 @@ const Funds = () => {
           </div>
         </Tooltip>
       </div>
-      <div
-        className='relative flex w-fit items-center pb-20 transition-all duration-300'>
-        <div className="sticky right-0 top-24 z-40 h-screen w-[82px] bg-white"></div>
-        <div className="w-fit pl-20">
-          <div ref={tableRef} className="border-brand-200 rounded-xl border-2">
-            <table className="w-full rounded-xl table-fixed bg-white text-center">
-              <thead className="group sticky rounded-md overflow-hidden p-0 m-0 top-[96px] z-30 w-fit duration-100">
-                <tr className="p-0 overflow-hidden rounded-md">
-                  <th className="sticky right-[410px] z-50 p-0 mt-5">
-                    {scrolleLeft && (
-                      <div className="hidden group-hover:block">
-                        <Tooltip title="پیمایش به راست (D)">
-                          <button
-                            onClick={() => handlerKeyboardScroll(true)}
-                            className={cn(
-                              'bg-brand-600 rounded-md p-1 text-white',
-                            )}
-                          >
-                            <Icon name="arrow-right" />
-                          </button>
-                        </Tooltip>
-                      </div>
-                    )}
-                  </th>
-                  {updateTableHeaders.map((header, index) => {
-                    return (
-                      <>
-                        {index === 0 && (
-                          <th className="bg-brand-100 m-0 overflow-y-hidden rounded-tr-md p-0 sticky right-20 top-0 z-10 w-[312px] shadow-lg">
-                            <OptionsDropdown
-                              dropDownStyles={{
-                                size: 'md',
-                                anchor: 'bottom start',
-                                bg: 'primary',
-                                emphasize: 'medium',
-                                checkSelected: true,
-                              }}
-                              customOptionRender={(prop) => (
-                                <>
-                                  <div
-                                    onClick={() => {
-                                      if (
-                                        prop.text === 'مرتب سازی نزولی' &&
-                                        header.column.getIsSorted() !== 'desc'
-                                      ) {
-                                        header.column.toggleSorting(true);
-                                      }
-                                      if (
-                                        prop.text === 'مرتب سازی صعودی' &&
-                                        header.column.getIsSorted() !== 'asc'
-                                      ) {
-                                        header.column.toggleSorting(false);
-                                      }
-                                    }}
-                                    className={cn(
-                                      'hover:bg-brand-50 hover:text-brand-800 flex cursor-pointer items-center gap-2 bg-white p-2',
-                                      {
-                                        'text-brand-800':
-                                          (header.column.getIsSorted() ===
-                                            'desc' &&
-                                            prop.text === 'مرتب سازی نزولی') ||
-                                          (header.column.getIsSorted() ===
-                                            'asc' &&
-                                            prop.text === 'مرتب سازی صعودی'),
-                                      },
-                                    )}
-                                  >
-                                    {prop.icon?.name && (
-                                      <Icon
-                                        name={prop.icon?.name}
-                                        size={prop.icon?.size}
-                                      />
-                                    )}
-                                    {prop.text}
-                                  </div>
-                                  {prop.text === 'مرتب سازی صعودی' && <hr />}
-                                </>
-                              )}
-                              customTriggerRender={() => (
-                                <div className="w-full shadow-xl rounded-tr-md">
-                                  <FundsColumn
-                                    filtered={!!header.column.getIsSorted()}
-                                    clickFilterd={() =>
-                                      header.column.getToggleSortingHandler()?.(
-                                        new Event('click'),
-                                      )
-                                    }
-                                    size="extraLarg"
-                                    shadow={true}
-                                    type={
-                                      header.column.getIsSorted() === 'asc'
-                                        ? 'active-desc'
-                                        : header.column.getIsSorted() === 'desc'
-                                          ? 'active-asc'
-                                          : 'inactive'
-                                    }
-                                    filterable={true}
-                                    title={String(
-                                      flexRender(
-                                        header.column.columnDef.header,
-                                        header.getContext(),
-                                      ),
-                                    )}
-                                    sortType={
-                                      (
-                                        columns[index]?.meta as {
-                                          type?: string;
-                                        }
-                                      )?.type === 'text'
-                                        ? 'alphabetical'
-                                        : 'ranked'
-                                    }
-                                  >
-                                  </FundsColumn>
-                                    <div className="flex absolute top-5 items-center gap-2 pr-4">
-                                      <Tooltip title="انتخاب ستون ها">
-                                        <div
-                                          onClick={() =>
-                                            setIsSettingModal(true)
-                                          }
-                                          className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
-                                        >
-                                          {isChanged && (
-                                            <div className="absolute -right-1 -top-1">
-                                              <FundsTag color="blue" />
-                                            </div>
-                                          )}
-                                          <Icon size="lg" name="settings" />
-                                        </div>
-                                      </Tooltip>
-                                      <Tooltip title="فیلتر صندوق ها">
-                                        <div
-                                          onClick={() => setIsFilterModal(true)}
-                                          className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
-                                        >
-                                          <Icon size="lg" name="filter" />
-                                        </div>
-                                      </Tooltip>
-                                    </div>
-                                </div>
-                              )}
-                              dropDownList={[
-                                {
-                                  text: 'مرتب سازی نزولی',
-                                  icon: {
-                                    name: 'arrow-down-narrow-wide',
-                                    size: 'md',
-                                  },
-                                },
-                                {
-                                  text: 'مرتب سازی صعودی',
-                                  icon: {
-                                    name: 'arrow-up-narrow-wide',
-                                    size: 'md',
-                                  },
-                                },
-                              ]}
-                            ></OptionsDropdown>
-                          </th>
-                        )}
-                        {index >= 1 && (
-                          <th
-                            className={cn(
-                              'm-0 p-0 overflow-y-hidden text-sm font-medium',
-                              index === updateTableHeaders.length - 1 && 'rounded-tl-md',
-                              String(
-                                flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext(),
-                                ),
-                              ).length > 10
-                                ? 'w-[200px]'
-                                : 'w-36',
-                            )}
-                            key={header.id}
-                            colSpan={header.colSpan}
-                          >
-                            {index >= 2 && header.isPlaceholder ? null : (
+      <div className="relative flex w-fit items-center pb-20 transition-all duration-300">
+        <div
+          ref={tableRef}
+          className="border-brand-200 mt-24 rounded-xl border-2 border-r-0"
+        >
+          <table className="w-full table-fixed rounded-xl bg-white text-center">
+            <thead
+              className={cn(
+                'group sticky right-0 top-0 z-30 m-0 w-fit rounded-md border-b-2 p-0 duration-300',
+                isHeaderVisible ? scrollTop >= 60 ? 'translate-y-[170px] top-0' : '' : 'translate-y-[80px]',
+              )}
+            >
+              <tr className="overflow-hidden rounded-md p-0">
+                <th className="sticky right-[350px] z-50 mt-5 p-0">
+                  {scrolleLeft && (
+                    <div className="hidden group-hover:block">
+                      <Tooltip title="پیمایش به راست (D)">
+                        <button
+                          onClick={() => handlerKeyboardScroll(true)}
+                          className={cn(
+                            'bg-brand-600 rounded-md p-1 text-white',
+                          )}
+                        >
+                          <Icon name="arrow-right" />
+                        </button>
+                      </Tooltip>
+                    </div>
+                  )}
+                </th>
+                {updateTableHeaders.map((header, index) => {
+                  return (
+                    <>
+                      {index === 0 && (
+                        <th className="bg-brand-100 sticky right-0 top-0 z-10 m-0 w-[312px] overflow-y-hidden rounded-tr-md p-0 shadow-lg">
+                          <OptionsDropdown
+                            dropDownStyles={{
+                              size: 'md',
+                              anchor: 'bottom start',
+                              bg: 'primary',
+                              emphasize: 'medium',
+                              checkSelected: true,
+                            }}
+                            customOptionRender={(prop) => (
                               <>
                                 <div
-                                  {...{
-                                    className: header.column.getCanSort()
-                                      ? 'cursor-pointer select-none'
-                                      : '',
+                                  onClick={() => {
+                                    if (
+                                      prop.text === 'مرتب سازی نزولی' &&
+                                      header.column.getIsSorted() !== 'desc'
+                                    ) {
+                                      header.column.toggleSorting(true);
+                                    }
+                                    if (
+                                      prop.text === 'مرتب سازی صعودی' &&
+                                      header.column.getIsSorted() !== 'asc'
+                                    ) {
+                                      header.column.toggleSorting(false);
+                                    }
                                   }}
+                                  className={cn(
+                                    'hover:bg-brand-50 hover:text-brand-800 flex cursor-pointer items-center gap-2 bg-white p-2',
+                                    {
+                                      'text-brand-800':
+                                        (header.column.getIsSorted() ===
+                                          'desc' &&
+                                          prop.text === 'مرتب سازی نزولی') ||
+                                        (header.column.getIsSorted() ===
+                                          'asc' &&
+                                          prop.text === 'مرتب سازی صعودی'),
+                                    },
+                                  )}
                                 >
-                                  <OptionsDropdown
-                                    dropDownStyles={{
-                                      size: 'md',
-                                      anchor: 'bottom start',
-                                      bg: 'primary',
-                                      emphasize: 'medium',
-                                      checkSelected: true,
-                                    }}
-                                    customOptionRender={(prop) => (
-                                      <>
-                                        <div
-                                          onClick={() => {
-                                            if (
-                                              prop.text === 'انتقال به راست'
-                                            ) {
-                                              moveColumn(
-                                                header.column.id,
-                                                'right',
-                                              );
-                                            }
-                                            if (prop.text === 'انتقال به چپ') {
-                                              moveColumn(
-                                                header.column.id,
-                                                'left',
-                                              );
-                                            }
-                                            if (
-                                              prop.text === 'انتقال به ابتدا'
-                                            ) {
-                                              moveColumn(
-                                                header.column.id,
-                                                'start',
-                                              );
-                                            }
-                                            if (
-                                              prop.text === 'انتقال به انتها'
-                                            ) {
-                                              moveColumn(
-                                                header.column.id,
-                                                'end',
-                                              );
-                                            }
-                                            if (
-                                              prop.text === 'مرتب سازی نزولی' &&
-                                              header.column.getIsSorted() !==
-                                                'desc'
-                                            ) {
-                                              header.column.toggleSorting(true);
-                                            }
-                                            if (
-                                              prop.text === 'مرتب سازی صعودی' &&
-                                              header.column.getIsSorted() !==
-                                                'asc'
-                                            ) {
-                                              header.column.toggleSorting(
-                                                false,
-                                              );
-                                            }
-                                          }}
-                                          className={cn(
-                                            'hover:bg-brand-50 hover:text-brand-800 flex cursor-pointer items-center gap-2 bg-white p-2',
-                                            {
-                                              'cursor-default text-gray-100 hover:bg-white hover:text-gray-100':
-                                                (index === 1 &&
-                                                  (prop.text ===
-                                                    'انتقال به ابتدا' ||
-                                                    prop.text ===
-                                                      'انتقال به راست')) ||
-                                                (index + 1 ===
-                                                  updateTableHeaders.length &&
-                                                  (prop.text ===
-                                                    'انتقال به انتها' ||
-                                                    prop.text ===
-                                                      'انتقال به چپ')),
-                                              'text-brand-800':
-                                                (header.column.getIsSorted() ===
-                                                  'desc' &&
-                                                  prop.text ===
-                                                    'مرتب سازی نزولی') ||
-                                                (header.column.getIsSorted() ===
-                                                  'asc' &&
-                                                  prop.text ===
-                                                    'مرتب سازی صعودی'),
-                                            },
-                                          )}
-                                        >
-                                          {prop.icon?.name && (
-                                            <Icon
-                                              name={prop.icon?.name}
-                                              size={prop.icon?.size}
-                                            />
-                                          )}
-                                          {prop.text}
+                                  {prop.icon?.name && (
+                                    <Icon
+                                      name={prop.icon?.name}
+                                      size={prop.icon?.size}
+                                    />
+                                  )}
+                                  {prop.text}
+                                </div>
+                                {prop.text === 'مرتب سازی صعودی' && <hr />}
+                              </>
+                            )}
+                            customTriggerRender={() => (
+                              <div className="w-full rounded-tr-md shadow-xl">
+                                <FundsColumn
+                                  filtered={!!header.column.getIsSorted()}
+                                  clickFilterd={() =>
+                                    header.column.getToggleSortingHandler()?.(
+                                      new Event('click'),
+                                    )
+                                  }
+                                  size="extraLarg"
+                                  shadow={true}
+                                  type={
+                                    header.column.getIsSorted() === 'asc'
+                                      ? 'active-desc'
+                                      : header.column.getIsSorted() === 'desc'
+                                        ? 'active-asc'
+                                        : 'inactive'
+                                  }
+                                  filterable={true}
+                                  title={String(
+                                    flexRender(
+                                      header.column.columnDef.header,
+                                      header.getContext(),
+                                    ),
+                                  )}
+                                  sortType={
+                                    (
+                                      columns[index]?.meta as {
+                                        type?: string;
+                                      }
+                                    )?.type === 'text'
+                                      ? 'alphabetical'
+                                      : 'ranked'
+                                  }
+                                ></FundsColumn>
+                                <div className="absolute top-5 flex items-center gap-2 pr-4">
+                                  <Tooltip title="انتخاب ستون ها">
+                                    <div
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setIsSettingModal(true);
+                                      }}
+                                      className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
+                                    >
+                                      {isChanged && (
+                                        <div className="absolute -right-1 -top-1">
+                                          <FundsTag color="blue" />
                                         </div>
-                                        {prop.text === 'مرتب سازی صعودی' && (
-                                          <hr />
+                                      )}
+                                      <Icon size="lg" name="settings" />
+                                    </div>
+                                  </Tooltip>
+                                  <Tooltip title="فیلتر صندوق ها">
+                                    <div
+                                      onClick={(e) => {
+                                        setIsFilterModal(true);
+                                        e.stopPropagation();
+                                      }}
+                                      className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
+                                    >
+                                      <Icon size="lg" name="filter" />
+                                    </div>
+                                  </Tooltip>
+                                </div>
+                              </div>
+                            )}
+                            dropDownList={[
+                              {
+                                text: 'مرتب سازی نزولی',
+                                icon: {
+                                  name: 'arrow-down-narrow-wide',
+                                  size: 'md',
+                                },
+                              },
+                              {
+                                text: 'مرتب سازی صعودی',
+                                icon: {
+                                  name: 'arrow-up-narrow-wide',
+                                  size: 'md',
+                                },
+                              },
+                            ]}
+                          ></OptionsDropdown>
+                        </th>
+                      )}
+                      {index >= 1 && (
+                        <th
+                          className={cn(
+                            'm-0 overflow-y-hidden p-0 text-sm font-medium',
+                            index === updateTableHeaders.length - 1 &&
+                              'rounded-tl-md',
+                            String(
+                              flexRender(
+                                header.column.columnDef.header,
+                                header.getContext(),
+                              ),
+                            ).length > 10
+                              ? 'w-[200px]'
+                              : 'w-36',
+                          )}
+                          key={header.id}
+                          colSpan={header.colSpan}
+                        >
+                          {index >= 2 && header.isPlaceholder ? null : (
+                            <>
+                              <div
+                                {...{
+                                  className: header.column.getCanSort()
+                                    ? 'cursor-pointer select-none'
+                                    : '',
+                                }}
+                              >
+                                <OptionsDropdown
+                                  dropDownStyles={{
+                                    size: 'md',
+                                    anchor: 'bottom start',
+                                    bg: 'primary',
+                                    emphasize: 'medium',
+                                    checkSelected: true,
+                                  }}
+                                  customOptionRender={(prop) => (
+                                    <>
+                                      <div
+                                        onClick={() => {
+                                          if (prop.text === 'انتقال به راست') {
+                                            moveColumn(
+                                              header.column.id,
+                                              'right',
+                                            );
+                                          }
+                                          if (prop.text === 'انتقال به چپ') {
+                                            moveColumn(
+                                              header.column.id,
+                                              'left',
+                                            );
+                                          }
+                                          if (prop.text === 'انتقال به ابتدا') {
+                                            moveColumn(
+                                              header.column.id,
+                                              'start',
+                                            );
+                                          }
+                                          if (prop.text === 'انتقال به انتها') {
+                                            moveColumn(header.column.id, 'end');
+                                          }
+                                          if (
+                                            prop.text === 'مرتب سازی نزولی' &&
+                                            header.column.getIsSorted() !==
+                                              'desc'
+                                          ) {
+                                            header.column.toggleSorting(true);
+                                          }
+                                          if (
+                                            prop.text === 'مرتب سازی صعودی' &&
+                                            header.column.getIsSorted() !==
+                                              'asc'
+                                          ) {
+                                            header.column.toggleSorting(false);
+                                          }
+                                        }}
+                                        className={cn(
+                                          'hover:bg-brand-50 hover:text-brand-800 flex cursor-pointer items-center gap-2 bg-white p-2',
+                                          {
+                                            'cursor-default text-gray-100 hover:bg-white hover:text-gray-100':
+                                              (index === 1 &&
+                                                (prop.text ===
+                                                  'انتقال به ابتدا' ||
+                                                  prop.text ===
+                                                    'انتقال به راست')) ||
+                                              (index + 1 ===
+                                                updateTableHeaders.length &&
+                                                (prop.text ===
+                                                  'انتقال به انتها' ||
+                                                  prop.text ===
+                                                    'انتقال به چپ')),
+                                            'text-brand-800':
+                                              (header.column.getIsSorted() ===
+                                                'desc' &&
+                                                prop.text ===
+                                                  'مرتب سازی نزولی') ||
+                                              (header.column.getIsSorted() ===
+                                                'asc' &&
+                                                prop.text ===
+                                                  'مرتب سازی صعودی'),
+                                          },
                                         )}
-                                      </>
-                                    )}
-                                    customTriggerRender={() => (
-                                      <div className="w-full !bg-yellow-600">
-                                        <FundsColumn
-                                          filtered={
-                                            !!header.column.getIsSorted()
-                                          }
-                                          clickFilterd={() =>
-                                            header.column.getToggleSortingHandler()?.(
-                                              new Event('click'),
-                                            )
-                                          }
-                                          size={
-                                            String(
-                                              flexRender(
-                                                header.column.columnDef.header,
-                                                header.getContext(),
-                                              ),
-                                            ).length > 10
-                                              ? 'larg'
-                                              : 'medium'
-                                          }
-                                          type={
-                                            header.column.getIsSorted() ===
-                                            'asc'
-                                              ? 'active-desc'
-                                              : header.column.getIsSorted() ===
-                                                  'desc'
-                                                ? 'active-asc'
-                                                : 'inactive'
-                                          }
-                                          filterable={false}
-                                          title={String(
+                                      >
+                                        {prop.icon?.name && (
+                                          <Icon
+                                            name={prop.icon?.name}
+                                            size={prop.icon?.size}
+                                          />
+                                        )}
+                                        {prop.text}
+                                      </div>
+                                      {prop.text === 'مرتب سازی صعودی' && (
+                                        <hr />
+                                      )}
+                                    </>
+                                  )}
+                                  customTriggerRender={() => (
+                                    <div className="w-full !bg-yellow-600">
+                                      <FundsColumn
+                                        filtered={!!header.column.getIsSorted()}
+                                        clickFilterd={() =>
+                                          header.column.getToggleSortingHandler()?.(
+                                            new Event('click'),
+                                          )
+                                        }
+                                        size={
+                                          String(
                                             flexRender(
                                               header.column.columnDef.header,
                                               header.getContext(),
                                             ),
-                                          )}
-                                          sortType={
-                                            (
-                                              columns[index]?.meta as {
-                                                type?: string;
-                                              }
-                                            )?.type === 'text'
-                                              ? 'alphabetical'
-                                              : 'ranked'
-                                          }
-                                        ></FundsColumn>
-                                      </div>
-                                    )}
-                                    dropDownList={[
-                                      {
-                                        text: 'مرتب سازی نزولی',
-                                        icon: {
-                                          name: 'arrow-down-narrow-wide',
-                                          size: 'md',
-                                        },
-                                      },
-                                      {
-                                        text: 'مرتب سازی صعودی',
-                                        icon: {
-                                          name: 'arrow-up-narrow-wide',
-                                          size: 'md',
-                                        },
-                                      },
-                                      {
-                                        text: 'انتقال به راست',
-                                        icon: {
-                                          name: 'arrow-right',
-                                          size: 'md',
-                                        },
-                                      },
-                                      {
-                                        text: 'انتقال به ابتدا',
-                                        icon: {
-                                          name: 'arrow-right-to-line',
-                                          size: 'md',
-                                        },
-                                      },
-                                      {
-                                        text: 'انتقال به چپ',
-                                        icon: {
-                                          name: 'arrow-left',
-                                          size: 'md',
-                                        },
-                                      },
-                                      {
-                                        text: 'انتقال به انتها',
-                                        icon: {
-                                          name: 'arrow-left-to-line',
-                                          size: 'md',
-                                        },
-                                      },
-                                    ]}
-                                  ></OptionsDropdown>
-                                </div>
-                              </>
-                            )}
-                          </th>
-                        )}
-                      </>
-                    );
-                  })}
-                  <th className="sticky left-10 m-0 mt-5">
-                    {scrollRight && (
-                      <div
-                        onClick={() => handlerKeyboardScroll(false)}
-                        className={cn('hidden group-hover:block')}
-                      >
-                        <Tooltip title="پیمایش به چپ (A)">
-                          <button
-                            className={cn(
-                              'bg-brand-600 rounded-md p-1 text-white',
-                            )}
-                          >
-                            <Icon name="arrow-left" />
-                          </button>
-                        </Tooltip>
-                      </div>
-                    )}
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="relative w-full overflow-hidden rounded-b-md">
-                {table.getRowModel().rows.map((row, rowIndex) => {
-                  return (
-                    <tr
-                      className={cn('group border-none', {
-                        'bg-blue-200': false,
-                        'group-hover:bg-blue-50': !false && !false,
-                      })}
-                      key={row.id}
-                    >
-                      <td
-                        className={cn({
-                          'bg-blue-50 group-hover:bg-blue-100': false,
-                          'bg-blue-200': false,
-                          'group-hover:bg-blue-50': !false && rowIndex,
-                        })}
-                      ></td>
-                      {row.getVisibleCells().map((cell, index) => {
-                        return (
-                          <>
-                            {index === 0 && (
-                              <td className={cn("sticky right-20 overflow-x-hidden p-0 m-0", (rowIndex === table.getRowModel().rows.length - 1) && "rounded-br-md")}>
-                                <FundsTableRow
-                                  className={scrolleLeft ? 'border-r border-brand-200' : 'border-r-0'}
-                                  isScrolled={scrolleLeft}
-                                  key={row.id}
-                                  name={flexRender(
-                                    cell.column.columnDef.cell,
-                                    cell.getContext(),
+                                          ).length > 10
+                                            ? 'larg'
+                                            : 'medium'
+                                        }
+                                        type={
+                                          header.column.getIsSorted() === 'asc'
+                                            ? 'active-desc'
+                                            : header.column.getIsSorted() ===
+                                                'desc'
+                                              ? 'active-asc'
+                                              : 'inactive'
+                                        }
+                                        filterable={false}
+                                        title={String(
+                                          flexRender(
+                                            header.column.columnDef.header,
+                                            header.getContext(),
+                                          ),
+                                        )}
+                                        sortType={
+                                          (
+                                            columns[index]?.meta as {
+                                              type?: string;
+                                            }
+                                          )?.type === 'text'
+                                            ? 'alphabetical'
+                                            : 'ranked'
+                                        }
+                                      ></FundsColumn>
+                                    </div>
                                   )}
-                                  pined={false}
-                                  selected={false}
-                                  logo="https://s.cafebazaar.ir/images/icons/com.dotin.wepod-36b7a6e5-ed88-4590-ab3e-8811ed799168_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize"
-                                />
-                              </td>
-                            )}
-                            {index >= 1 && (
-                              <td
-                                className={cn({
-                                  'bg-blue-50 group-hover:bg-blue-100': false,
-                                  'bg-blue-200': false,
-                                  'group-hover:bg-blue-50': !false && index,
-                                })}
-                                key={cell.id}
-                              >
-                                {flexRender(
+                                  dropDownList={[
+                                    {
+                                      text: 'مرتب سازی نزولی',
+                                      icon: {
+                                        name: 'arrow-down-narrow-wide',
+                                        size: 'md',
+                                      },
+                                    },
+                                    {
+                                      text: 'مرتب سازی صعودی',
+                                      icon: {
+                                        name: 'arrow-up-narrow-wide',
+                                        size: 'md',
+                                      },
+                                    },
+                                    {
+                                      text: 'انتقال به راست',
+                                      icon: {
+                                        name: 'arrow-right',
+                                        size: 'md',
+                                      },
+                                    },
+                                    {
+                                      text: 'انتقال به ابتدا',
+                                      icon: {
+                                        name: 'arrow-right-to-line',
+                                        size: 'md',
+                                      },
+                                    },
+                                    {
+                                      text: 'انتقال به چپ',
+                                      icon: {
+                                        name: 'arrow-left',
+                                        size: 'md',
+                                      },
+                                    },
+                                    {
+                                      text: 'انتقال به انتها',
+                                      icon: {
+                                        name: 'arrow-left-to-line',
+                                        size: 'md',
+                                      },
+                                    },
+                                  ]}
+                                ></OptionsDropdown>
+                              </div>
+                            </>
+                          )}
+                        </th>
+                      )}
+                    </>
+                  );
+                })}
+                <th className="sticky left-10 m-0 mt-5">
+                  {scrollRight && (
+                    <div
+                      onClick={() => handlerKeyboardScroll(false)}
+                      className={cn('hidden group-hover:block')}
+                    >
+                      <Tooltip title="پیمایش به چپ (A)">
+                        <button
+                          className={cn(
+                            'bg-brand-600 rounded-md p-1 text-white',
+                          )}
+                        >
+                          <Icon name="arrow-left" />
+                        </button>
+                      </Tooltip>
+                    </div>
+                  )}
+                </th>
+              </tr>
+            </thead>
+            <tbody className="relative w-full overflow-hidden rounded-b-md">
+              {table.getRowModel().rows.map((row, rowIndex) => {
+                return (
+                  <tr
+                    className={cn('group border-none', {
+                      'bg-blue-200': false,
+                      'group-hover:bg-blue-50': !false && !false,
+                    })}
+                    key={row.id}
+                  >
+                    <td
+                      className={cn({
+                        'bg-blue-50 group-hover:bg-blue-100': false,
+                        'bg-blue-200': false,
+                        'group-hover:bg-blue-50': !false && rowIndex,
+                      })}
+                    ></td>
+                    {row.getVisibleCells().map((cell, index) => {
+                      return (
+                        <>
+                          {index === 0 && (
+                            <td
+                              className={cn(
+                                'sticky right-0 m-0 p-0',
+                                rowIndex ===
+                                  table.getRowModel().rows.length - 1 &&
+                                  'rounded-br-md',
+                              )}
+                            >
+                              <FundsTableRow
+                                isScrolled={scrolleLeft}
+                                key={row.id}
+                                name={flexRender(
                                   cell.column.columnDef.cell,
                                   cell.getContext(),
                                 )}
-                              </td>
-                            )}
-                          </>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                                pined={false}
+                                selected={false}
+                                logo="https://s.cafebazaar.ir/images/icons/com.dotin.wepod-36b7a6e5-ed88-4590-ab3e-8811ed799168_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize"
+                              />
+                            </td>
+                          )}
+                          {index >= 1 && (
+                            <td
+                              className={cn({
+                                'bg-blue-50 group-hover:bg-blue-100': false,
+                                'bg-blue-200': false,
+                                'group-hover:bg-blue-50': !false && index,
+                              })}
+                              key={cell.id}
+                            >
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext(),
+                              )}
+                            </td>
+                          )}
+                        </>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       </div>
 

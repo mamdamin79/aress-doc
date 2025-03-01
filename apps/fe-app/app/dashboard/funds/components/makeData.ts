@@ -19,6 +19,7 @@ export type Person = {
   dailyReturn: number;
   weeklyReturn: number;
   startDate: number;
+  video: string,
 };
 
 const range = (len: number) => {
@@ -31,6 +32,7 @@ const range = (len: number) => {
 
 const newPerson = (): Person => {
   return {
+    video: faker.image.url(),
     nameFund: faker.person.fullName(),
     startDate: faker.date.past().getTime(),
     monthlyReturn: faker.number.int(100),
