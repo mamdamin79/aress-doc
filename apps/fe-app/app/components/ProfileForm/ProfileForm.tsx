@@ -58,7 +58,14 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
     await new Promise((resolve) => setTimeout(resolve, 5000));
     console.log(data);
   };
-
+  enum editDialogVerbs {
+    phoneNumber = 'شماره همراه',
+    username = 'نام کاربری',
+    email = 'ایمیل',
+  }
+  const [iconDialogText, setIconDialogText] = useState<editDialogVerbs>(
+    editDialogVerbs.phoneNumber,
+  );
   return (
     <form
       className="flex w-fit flex-col items-center gap-12"
@@ -84,7 +91,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             isOpen
             mode="success"
             onClose={() => setEditDialog(null)}
-            title="نام کاربری جدید با موفقیت ذخیره شد!"
+            title={`${iconDialogText} جدید با موفقیت ذخیره شد!`}
             message=""
           />
         ) : (
@@ -93,7 +100,11 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             onClose={() => setEditDialog(null)}
             className="w-[500px] p-6"
           >
-            {editDialog === 'phoneNumber' && <ChangeNumber />}
+            {editDialog === 'phoneNumber' && (
+              <ChangeNumber
+                onClose={(success) => setEditDialog(success ? 'success' : null)}
+              />
+            )}
             {editDialog === 'username' && (
               <ChangeUsername
                 onClose={(success) => setEditDialog(success ? 'success' : null)}
