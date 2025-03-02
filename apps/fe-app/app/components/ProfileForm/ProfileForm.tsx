@@ -1,15 +1,20 @@
 'use client';
+
+import React, { useState, useCallback } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import {
   Button,
   Icon,
+  IconDialog,
   ImageCropper,
   ProfileImageAndUpload,
   TextField,
 } from 'design-system';
-import { useForm, Controller } from 'react-hook-form';
-
-import React, { useState } from 'react';
 import { ProfileFormProps } from './ProfileForm.types';
+import { Popup } from '../Popup';
+import { ChangeNumber } from './ChangeNumber';
+import { ChangeUsername } from './ChangeUsername';
+import { ChangeMail } from './ChangeMail';
 
 export const ProfileForm: React.FC<ProfileFormProps> = ({
   email,
@@ -24,41 +29,36 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
     handleSubmit,
     formState: { isSubmitting },
   } = useForm({
-    defaultValues: {
-      fnameAndLname: fnameAndLname,
-      phoneNumber: phoneNumber,
-      nationalID: nationalID,
-      email: email,
-      username: username,
-    },
+    defaultValues: { fnameAndLname, phoneNumber, nationalID, email, username },
   });
+
+  const [editDialog, setEditDialog] = useState<
+    null | 'username' | 'phoneNumber' | 'email' | 'success'
+  >(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [profileImage, setProfileImage] = useState(image);
-  const handleImageUpload = async (croppedImage: string) => {
+
+  const handleImageUpload = useCallback(async (croppedImage: string) => {
+    if (!croppedImage) return console.error('Cropped image is null');
     setSelectedImage(null);
     setIsLoading(true);
-    if (!croppedImage) {
-      console.error('Cropped image is null');
-      return;
-    }
+
     try {
-      const response = await fetch(croppedImage);
-      const blob = await response.blob();
-      console.log('Converted Blob:', blob);
-      const objectUrl = URL.createObjectURL(blob);
-      setProfileImage(objectUrl);
+      const blob = await (await fetch(croppedImage)).blob();
+      setProfileImage(URL.createObjectURL(blob));
     } catch (error) {
       console.error('Failed to convert Blob URL to Blob:', error);
+    } finally {
+      setTimeout(() => setIsLoading(false), 1000);
     }
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-  };
+  }, []);
+
   const onSubmit = async (data: any) => {
-    await new Promise((r) => setTimeout(r, 5000));
+    await new Promise((resolve) => setTimeout(resolve, 5000));
     console.log(data);
   };
+
   return (
     <form
       className="flex w-fit flex-col items-center gap-12"
@@ -66,7 +66,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
     >
       <ProfileImageAndUpload
         loadingInitial={isLoading}
-        maxSize={20000000000000}
+        maxSize={2e13}
         types={['jpg', 'png']}
         image={profileImage}
         onImageSelect={(image) => setSelectedImage(URL.createObjectURL(image))}
@@ -74,104 +74,90 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
       {selectedImage && (
         <ImageCropper
           image={selectedImage}
-          isOpen={!!selectedImage}
-          onChange={(croppedImage) => {
-            handleImageUpload(croppedImage);
-          }}
+          isOpen
+          onChange={handleImageUpload}
         />
       )}
-
+      {editDialog &&
+        (editDialog === 'success' ? (
+          <IconDialog
+            isOpen
+            mode="success"
+            onClose={() => setEditDialog(null)}
+            title="نام کاربری جدید با موفقیت ذخیره شد!"
+            message=""
+          />
+        ) : (
+          <Popup
+            isOpen
+            onClose={() => setEditDialog(null)}
+            className="w-[500px] p-6"
+          >
+            {editDialog === 'phoneNumber' && <ChangeNumber />}
+            {editDialog === 'username' && (
+              <ChangeUsername
+                onClose={(success) => setEditDialog(success ? 'success' : null)}
+              />
+            )}
+            {editDialog === 'email' && (
+              <ChangeMail
+                onClose={(success) => setEditDialog(success ? 'success' : null)}
+              />
+            )}
+          </Popup>
+        ))}
       <div className="grid w-[607px] grid-flow-row md:w-[800px] md:grid-cols-2 md:gap-6">
-        <Controller
-          name="fnameAndLname"
-          control={control}
-          render={({ field, fieldState }) => (
-            <TextField
-              mergeTitleAndPlaceholder={false}
-              mode="outline"
-              type="text"
-              trailingIcons={[]}
-              label="نام و نام خانوادگی"
-              placeholder=""
-              isError={!!fieldState.error}
-              supportText={fieldState.error?.message}
-              readOnly={true}
-              {...field}
-            />
-          )}
-        />
-        <Controller
-          name="phoneNumber"
-          control={control}
-          render={({ field, fieldState }) => (
-            <TextField
-              mergeTitleAndPlaceholder={false}
-              mode="outline"
-              type="text"
-              trailingIcons={[{ name: 'pencil' }]}
-              label="شماره همراه"
-              placeholder=""
-              isError={!!fieldState.error}
-              readOnly={true}
-              supportText={fieldState.error?.message}
-              {...field}
-            />
-          )}
-        />
-        <Controller
-          name="nationalID"
-          control={control}
-          render={({ field, fieldState }) => (
-            <TextField
-              mergeTitleAndPlaceholder={false}
-              mode="outline"
-              type="text"
-              trailingIcons={[]}
-              label="کد ملی"
-              placeholder=""
-              isError={!!fieldState.error}
-              supportText={fieldState.error?.message}
-              readOnly={true}
-              {...field}
-            />
-          )}
-        />
-        <Controller
-          name="email"
-          control={control}
-          render={({ field, fieldState }) => (
-            <TextField
-              mergeTitleAndPlaceholder={false}
-              mode="outline"
-              type="text"
-              trailingIcons={[{ name: 'pencil' }]}
-              label="ایمیل"
-              placeholder=""
-              readOnly={true}
-              isError={!!fieldState.error}
-              supportText={fieldState.error?.message}
-              {...field}
-            />
-          )}
-        />
-        <Controller
-          name="username"
-          control={control}
-          render={({ field, fieldState }) => (
-            <TextField
-              mergeTitleAndPlaceholder={false}
-              mode="outline"
-              type="text"
-              trailingIcons={[{ name: 'pencil' }]}
-              label="نام کاربری"
-              placeholder=""
-              readOnly={true}
-              isError={!!fieldState.error}
-              supportText={fieldState.error?.message}
-              {...field}
-            />
-          )}
-        />
+        {[
+          { name: 'fnameAndLname', label: 'نام و نام خانوادگی' },
+          { name: 'phoneNumber', label: 'شماره همراه', edit: 'phoneNumber' },
+          { name: 'nationalID', label: 'کد ملی' },
+          { name: 'email', label: 'ایمیل', edit: 'email' },
+          { name: 'username', label: 'نام کاربری', edit: 'username' },
+        ].map(({ name, label, edit }) => (
+          <Controller
+            key={name}
+            name={
+              name as
+                | 'email'
+                | 'fnameAndLname'
+                | 'nationalID'
+                | 'phoneNumber'
+                | 'username'
+            }
+            control={control}
+            render={({ field, fieldState }) => (
+              <TextField
+                mergeTitleAndPlaceholder={false}
+                mode="outline"
+                type="text"
+                trailingIcons={
+                  edit
+                    ? [
+                        {
+                          name: 'pencil',
+                          onClick: () =>
+                            setEditDialog(
+                              edit as
+                                | 'email'
+                                | 'phoneNumber'
+                                | 'username'
+                                | 'success'
+                                | null,
+                            ),
+                        },
+                      ]
+                    : []
+                }
+                label={label}
+                placeholder=""
+                readOnly
+                isError={!!fieldState.error}
+                supportText={fieldState.error?.message}
+                {...field}
+              />
+            )}
+          />
+        ))}
       </div>
       <div className="-mt-6 flex w-full justify-start">
         <div className="w-40">
