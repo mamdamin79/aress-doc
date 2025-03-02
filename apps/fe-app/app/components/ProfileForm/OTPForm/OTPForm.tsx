@@ -27,7 +27,8 @@ export const OTPForm = ({
           className="text-brand-600 flex w-1/3 cursor-pointer flex-row justify-end text-sm font-medium"
           onClick={onBackBtn}
         >
-          ویرایش ایمیل <Icon name="chevron-left" size="lg" />
+          {backButtonText}
+          <Icon name="chevron-left" size="lg" />
         </div>
       </div>
       <span className="mt-4 text-sm font-medium">{description}</span>
