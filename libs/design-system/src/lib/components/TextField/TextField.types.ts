@@ -5,6 +5,11 @@ import { IconSize } from '../Icon/Icon.types';
 type TrailingIconType = {
   name: 'x' | 'eye';
   size?: IconSize;
+  onClick?: (value?: string | number | readonly string[]) => void;
+};
+
+type leadingIconType = IconProps & {
+  onClick?: (value?: string | number | readonly string[]) => void;
 };
 export type TrailingIcons =
   | []
@@ -18,6 +23,7 @@ export type textFieldPropsType = InputHTMLAttributes<HTMLInputElement> & {
   isError?: boolean;
   mode: 'filled' | 'outline';
   mergeTitleAndPlaceholder: boolean;
-  leadingIcon?: IconProps;
+  leadingIcon?: leadingIconType;
   trailingIcons: TrailingIcons;
+  longText?: boolean;
 };
