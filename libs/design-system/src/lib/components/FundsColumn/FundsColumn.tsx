@@ -45,9 +45,9 @@ export function FundsColumn({
         className={cn(
           'relative mx-auto px-1.5 flex h-[72px] w-fit items-center justify-center gap-1',
           {
-            'bg-pink-200 group-hover/first:bg-pink-300':
+            'group-hover/first:bg-pink-300':
               size === 'extraLarg' && filterable,
-            'group-hover/first:bg-brand-300 bg-brand-200':
+            'group-hover/first:bg-brand-300':
               size === 'extraLarg' && !filterable,
           },
         )}

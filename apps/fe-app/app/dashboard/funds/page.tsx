@@ -27,10 +27,6 @@ import {
 import { makeData, Person } from './components/makeData';
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 
-type SelectedColumnsType = {
-  [key: string]: boolean;
-};
-
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
 
@@ -38,14 +34,13 @@ const Funds = () => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const [data, setData] = useState(() => makeData(500));
-  const [scrollTop, setScrollTop] = useState(0);
 
   const [isFilterModal, setIsFilterModal] = useState(false);
   const [isSettingModal, setIsSettingModal] = useState(false);
 
   const [scrolleLeft, setScrollLeft] = useState<boolean>(false);
   const [scrollRight, setScrollRight] = useState<boolean>(true);
-  const [scrollX, setScrollX] = useState(false);
+  const [filterOptionsSelected, setFilterOptionsSelected] = useState([]);
   // const [hoverHeaderTable, setHoverHeaderTable] = useState(false);
   const columnVisibility = {
     profitPerUnit: false,
@@ -112,30 +107,6 @@ const Funds = () => {
       options: ['قابل معامله (ETF)', 'صدور و ابطال'],
     },
   ];
-
-  const [selectedOption, setSelectedOption] = useState<SelectedColumnsType>({});
-
-  const handlerOptions = (option: string) => {
-    setSelectedOption((prev) => ({
-      ...prev,
-      [option]: !prev[option],
-    }));
-  };
-
-  const scrollHandler = () => {
-    if (window.scrollY >= 90) {
-      setScrollX(true);
-    } else if (window.scrollY < 89) {
-      setScrollX(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener('scroll', scrollHandler);
-    return () => {
-      document.removeEventListener('scroll', scrollHandler);
-    };
-  }, []);
 
   const columns: ColumnDef<Person>[] = [
     {
@@ -306,7 +277,7 @@ const Funds = () => {
           newHeaders[index],
         ];
       } else if (direction === 'start' && index > 0) {
-        newHeaders.unshift(newHeaders.splice(index, 1)[0]);
+        newHeaders.splice(1, 0, newHeaders.splice(index, 1)[0]);
       } else if (direction === 'end' && index < newHeaders.length - 1) {
         newHeaders.push(newHeaders.splice(index, 1)[0]);
       }
@@ -317,6 +288,15 @@ const Funds = () => {
     });
   };
 
+  useEffect(() => {
+    const scrollToRight = () => {
+      if (tableRef.current) {
+        tableRef.current.scrollLeft = tableRef.current.scrollWidth;
+      }
+    };
+    setTimeout(scrollToRight, 0);
+  }, []);
+
   const isChanged = useMemo(() => {
     return (
       JSON.stringify(table.getState().columnVisibility) !==
@@ -325,19 +305,21 @@ const Funds = () => {
   }, [table.getState().columnVisibility]);
 
   const handlerKeyboardScroll = (right: boolean) => {
-    window.scrollBy({
-      top: 0,
-      left: right ? 100 : -100,
-      behavior: 'smooth',
-    });
+    if (tableRef.current) {
+      if (right) {
+        tableRef.current.scrollLeft += 100;
+      } else tableRef.current.scrollLeft -= 100;
+    }
   };
 
   useEffect(() => {
     const keyboardHandler = (e: KeyboardEvent) => {
-      if (e.key === 'a') {
+      console.log(e);
+      
+      if (e.code === 'KeyA') {
         handlerKeyboardScroll(false);
       }
-      if (e.key === 'd') {
+      if (e.code === 'KeyD') {
         handlerKeyboardScroll(true);
       }
     };
@@ -345,39 +327,26 @@ const Funds = () => {
     document.addEventListener('keypress', keyboardHandler);
   }, []);
 
-  const handleScroll = () => {
-    const scrollLeft = window.scrollX;
-    const maxScrollLeft =
-      document.documentElement.scrollWidth - window.innerWidth;
-    setScrollTop(window.scrollY);
-      
-
-    if (Math.round(scrollLeft) < 0) {
-      setScrollLeft(true);
-    } else {
-      setScrollLeft(false);
-    }
-
-    if (Math.round(scrollLeft) * -1 >= maxScrollLeft) {
-      setScrollRight(false);
-    } else {
-      setScrollRight(true);
-    }
-  };
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-
-    // Clean up the event listener on component unmount
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
+    const handleScroll = () => {
+      if (tableRef.current) {
+        console.log(tableRef?.current?.scrollLeft);
+        
+        const { scrollLeft, scrollWidth, clientWidth } = tableRef.current;
+        setScrollLeft(!(scrollLeft + clientWidth >= scrollWidth - 1));
+      }
     };
-  }, []);
 
+    const table = tableRef.current;
+    table?.addEventListener('scroll', handleScroll);
+
+    return () => table?.removeEventListener('scroll', handleScroll);
+  }, []);
   return (
     <>
       <div
         className={cn(
-          'fixed right-0 z-30 mx-auto flex w-full items-center justify-between bg-white px-20 pb-3 pt-8 transition-all duration-300',
+          'mx-auto flex w-full items-center justify-between bg-white px-8 pb-3 pt-8 transition-all duration-300',
           isHeaderVisible ? 'translate-y-0' : '-translate-y-full',
         )}
       >
@@ -466,20 +435,26 @@ const Funds = () => {
           </div>
         </Tooltip>
       </div>
-      <div className="relative flex w-fit items-center pb-20 transition-all duration-300">
+      <div
+        className={cn(
+          'relative top-0 flex items-center overflow-hidden')}
+      >
         <div
+          dir="ltr"
           ref={tableRef}
-          className="border-brand-200 mt-24 rounded-xl border-2 border-r-0"
+          className="border-brand-200 scroll-smooth table-scroll h-[calc(100vh-178px)] w-screen overflow-scroll border-2 border-r-0"
         >
-          <table className="w-full table-fixed rounded-xl bg-white text-center">
+          <table
+            dir="rtl"
+            className="w-full table-fixed rounded-xl bg-white text-center"
+          >
             <thead
               className={cn(
                 'group sticky right-0 top-0 z-30 m-0 w-fit rounded-md border-b-2 p-0 duration-300',
-                isHeaderVisible ? scrollTop >= 60 ? 'translate-y-[170px] top-0' : '' : 'translate-y-[80px]',
               )}
             >
               <tr className="overflow-hidden rounded-md p-0">
-                <th className="sticky right-[350px] z-50 mt-5 p-0">
+                <th className="sticky right-[270px] z-50 mt-5 p-0">
                   {scrolleLeft && (
                     <div className="hidden group-hover:block">
                       <Tooltip title="پیمایش به راست (D)">
@@ -499,7 +474,9 @@ const Funds = () => {
                   return (
                     <>
                       {index === 0 && (
-                        <th className="bg-brand-100 sticky right-0 top-0 z-10 m-0 w-[312px] overflow-y-hidden rounded-tr-md p-0 shadow-lg">
+                        <th className={cn("bg-red-200 sticky right-0 top-0 z-40 m-0 w-[312px] rounded-tr-md p-0", (
+                          scrolleLeft ? 'shadow' : 'shadow-none'
+                        ))}>
                           <OptionsDropdown
                             dropDownStyles={{
                               size: 'md',
@@ -526,7 +503,7 @@ const Funds = () => {
                                     }
                                   }}
                                   className={cn(
-                                    'hover:bg-brand-50 hover:text-brand-800 flex cursor-pointer items-center gap-2 bg-white p-2',
+                                    'hover:bg-brand-50 hover:text-brand-800 overflow-y-hidden flex cursor-pointer items-center gap-2 bg-white p-2',
                                     {
                                       'text-brand-800':
                                         (header.column.getIsSorted() ===
@@ -550,7 +527,7 @@ const Funds = () => {
                               </>
                             )}
                             customTriggerRender={() => (
-                              <div className="w-full rounded-tr-md shadow-xl">
+                              <div className="w-full rounded-tr-md">
                                 <FundsColumn
                                   filtered={!!header.column.getIsSorted()}
                                   clickFilterd={() =>
@@ -559,7 +536,7 @@ const Funds = () => {
                                     )
                                   }
                                   size="extraLarg"
-                                  shadow={true}
+                                  shadow={scrolleLeft}
                                   type={
                                     header.column.getIsSorted() === 'asc'
                                       ? 'active-desc'
@@ -567,7 +544,7 @@ const Funds = () => {
                                         ? 'active-asc'
                                         : 'inactive'
                                   }
-                                  filterable={true}
+                                  filterable={false}
                                   title={String(
                                     flexRender(
                                       header.column.columnDef.header,
@@ -872,7 +849,9 @@ const Funds = () => {
               {table.getRowModel().rows.map((row, rowIndex) => {
                 return (
                   <tr
-                    className={cn('group border-none', {
+                    className={cn('group border-t border-blue-100',{
+                      'sticky top-[71.5px] z-50 bg-white': rowIndex === 0,
+                      'sticky top-[133px] z-50 bg-white shadow-md': rowIndex === 1,
                       'bg-blue-200': false,
                       'group-hover:bg-blue-50': !false && !false,
                     })}
@@ -931,6 +910,9 @@ const Funds = () => {
                   </tr>
                 );
               })}
+              <tr className='h-[60px]'>
+                <td></td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -1136,29 +1118,14 @@ const Funds = () => {
               transition
               className="shadow-3xl data-[closed]:transform-[scale(0%)] relative w-full max-w-lg rounded-3xl bg-white duration-300 ease-out data-[closed]:opacity-0"
             >
-              <DialogTitle className="flex items-center justify-between">
-                <span className="px-6 py-4 text-xl font-medium">
-                  فیلتر صندوق ها
-                </span>
-              </DialogTitle>
-              <hr />
               <div
                 onClick={() => setIsFilterModal(false)}
-                className="text-brand-600 absolute -left-2 -top-2 cursor-pointer rounded-full bg-white"
-              >
+                className="text-brand-600 absolute z-10 -left-2 -top-2 cursor-pointer rounded-full bg-white"
+              > 
                 <Icon name="circle-x" size="lg_plus" />
               </div>
-              <div className="my-4 flex h-full w-full flex-col gap-2 px-4">
-                {filterList.map((item, index) => (
-                  <FilterPopUpSection
-                    key={index}
-                    name={item.title}
-                    options={item.options}
-                    reset={() => setSelectedOption({})}
-                    handlerOptonToggle={handlerOptions}
-                    selectedOptons={selectedOption}
-                  />
-                ))}
+              <div className="my-4 flex h-full w-full flex-col gap-2">
+                  <FilterPopUpSection filterOptions={filterList} />
               </div>
             </DialogPanel>
           </div>
