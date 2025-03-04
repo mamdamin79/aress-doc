@@ -3,16 +3,23 @@ import { Icon } from '../Icon';
 import { RemovableLabel } from '../RemovableLabel';
 import { Checkbox } from '../Checkbox';
 import { cn } from 'libs/design-system/src/utils';
+import { TextField } from '../TextField';
 
 interface Prop {
   filterOptions: [];
+  searchValue: string;
+  onSearchChange: (value: string) => void;
 }
 
 type SelectedColumnsType = {
   [key: string]: boolean;
 };
 
-export function FilterPopUpSection({ filterOptions }: Prop) {
+export function FilterPopUpSection({
+  filterOptions,
+  searchValue,
+  onSearchChange,
+}: Prop) {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string[]>
@@ -52,7 +59,18 @@ export function FilterPopUpSection({ filterOptions }: Prop) {
         )}
       </div>
       <hr className="h-0.5 bg-gray-100" />
-      <div className="mt-4 flex flex-col gap-6 px-4">
+      <div className="mt-4 px-4">
+        <TextField
+          mode="outline"
+          placeholder=""
+          trailingIcons={[{ name: 'x' }]}
+          mergeTitleAndPlaceholder={false}
+          label="نام صندوق"
+          value={searchValue}
+          onChange={(e) => onSearchChange(e.target.value)}
+        />
+      </div>
+      <div className="mt flex flex-col gap-6 px-4">
         {filterOptions.map(
           (item: { title: string; options: string[] }, index: number) => (
             <div key={index}>
@@ -72,6 +90,7 @@ export function FilterPopUpSection({ filterOptions }: Prop) {
                         (option: string, index: number) => (
                           <div key={index}>
                             <RemovableLabel
+                              item={''}
                               label={option}
                               onClose={() =>
                                 toggleFilterOption(item.title, option)

@@ -15,6 +15,7 @@ import {
   Checkbox,
 } from 'design-system';
 import {
+  Column,
   ColumnDef,
   ColumnFiltersState,
   flexRender,
@@ -40,8 +41,7 @@ const Funds = () => {
 
   const [scrolleLeft, setScrollLeft] = useState<boolean>(false);
   const [scrollRight, setScrollRight] = useState<boolean>(true);
-  const [filterOptionsSelected, setFilterOptionsSelected] = useState([]);
-  // const [hoverHeaderTable, setHoverHeaderTable] = useState(false);
+  const [fundSearchQuery, setFundSearchQuery] = useState<string>('');
   const columnVisibility = {
     profitPerUnit: false,
     investmentPolicy: false,
@@ -252,7 +252,7 @@ const Funds = () => {
 
   useEffect(() => {
     setUpdateTableHeaders([...table.getHeaderGroups()[1].headers]);
-  }, [table.getState().columnOrder, table.getState().columnVisibility]);
+  }, [table.getState().columnVisibility]);
 
   const moveColumn = (
     accessorKey: string,
@@ -342,6 +342,11 @@ const Funds = () => {
 
     return () => table?.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    updateTableHeaders[0].column.setFilterValue(fundSearchQuery)
+  }, [fundSearchQuery, updateTableHeaders])
+
   return (
     <>
       <div
@@ -1125,7 +1130,7 @@ const Funds = () => {
                 <Icon name="circle-x" size="lg_plus" />
               </div>
               <div className="my-4 flex h-full w-full flex-col gap-2">
-                  <FilterPopUpSection filterOptions={filterList} />
+                  <FilterPopUpSection searchValue={fundSearchQuery} onSearchChange={setFundSearchQuery} filterOptions={filterList} />
               </div>
             </DialogPanel>
           </div>
@@ -1134,5 +1139,8 @@ const Funds = () => {
     </>
   );
 };
+
+
+
 
 export default Funds;
