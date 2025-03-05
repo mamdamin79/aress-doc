@@ -40,18 +40,17 @@ export const OTPForm = ({
         </div>
       </div>
       <span className="mt-4 text-sm font-medium">{description}</span>
-      <div dir="ltr" className="flex w-full justify-center">
-        <OtpInput
-          shouldAutoFocus
-          skipDefaultStyles
-          inputStyle="w-[56px] h-14 bg-gray-100 text-center border border-gray-200 rounded-xl"
-          value={otp}
-          onChange={setOtp}
-          numInputs={6}
-          renderSeparator={<div className="w-3"></div>}
-          renderInput={(props) => <input {...props} />}
-        />
-      </div>
+      <OtpInput
+        shouldAutoFocus
+        skipDefaultStyles
+        containerStyle="flex flex-row-reverse w-full gap-2"
+        inputStyle="h-14 flex-1 min-w-0 basis-0 bg-gray-100 text-center border border-gray-200 rounded-xl"
+        value={otp}
+        onChange={setOtp}
+        numInputs={6}
+        renderSeparator={null}
+        renderInput={(props) => <input {...props} />}
+      />
       {waitingTime && (
         <div className="flex flex-row items-center gap-3">
           <div className="border-brand-600 text-brand-600 flex w-20 flex-row items-center justify-center gap-2 rounded-md border py-1 font-medium">

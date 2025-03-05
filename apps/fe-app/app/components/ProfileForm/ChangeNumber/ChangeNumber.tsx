@@ -186,6 +186,7 @@ export const ChangeNumber = ({
       )}
       {stage === ChangeNumberStage.NEW_MAIL && (
         <NewNumber
+          title="شماره همراه جدید"
           phone="+989339123456"
           onSubmit={() => setStage(ChangeNumberStage.OTP)}
         />

@@ -38,7 +38,7 @@ export const OTPForm: React.FC<OTPFormProps> = ({ phoneNumber, onClick }) => {
           <span className="text-sm font-medium">ویرایش شماره</span>
           <Icon name="chevron-left" size="lg" />
         </div>
-      </div>{' '}
+      </div>
       <div className="flex flex-col gap-7">
         <div className="flex flex-row gap-2">
           <Controller
@@ -75,7 +75,6 @@ export const OTPForm: React.FC<OTPFormProps> = ({ phoneNumber, onClick }) => {
               <span className="text-md flex w-fit break-keep">درخواست رمز</span>
             ) : (
               <>
-                {' '}
                 <Icon name="clock" size="md" />
                 <span>1:56</span>
               </>
