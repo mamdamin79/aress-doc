@@ -191,8 +191,8 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             type="button"
           >
             <div className="flex flex-row gap-2">
-              <span>تغییر رمز عبور</span>
               <Icon name="key-round" size="lg" />
+              <span>تغییر رمز عبور</span>
             </div>
           </Button>
         </div>
