@@ -19,7 +19,8 @@ export type Person = {
   dailyReturn: number;
   weeklyReturn: number;
   startDate: number;
-  video: string,
+  hasVideo: boolean,
+  investmentMethod: 'T' | 'I&C';
 };
 
 const range = (len: number) => {
@@ -31,8 +32,10 @@ const range = (len: number) => {
 };
 
 const newPerson = (): Person => {
+  const investmentMethods: ['T', 'I&C'] = ['T', 'I&C'];
   return {
-    video: faker.image.url(),
+    investmentMethod: faker.helpers.arrayElement(investmentMethods),
+    hasVideo: false,
     nameFund: faker.person.fullName(),
     startDate: faker.date.past().getTime(),
     monthlyReturn: faker.number.int(100),

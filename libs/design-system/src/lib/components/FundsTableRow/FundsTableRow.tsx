@@ -11,24 +11,27 @@ interface Props {
   selected: boolean;
   isScrolled: boolean;
   className?: string;
+  hasVideo: boolean;
+  investmentMethod: 'T' | 'I&C';
 }
 
 export function FundsTableRow({
   name,
+  investmentMethod,
+  hasVideo,
   logo,
   pined,
   selected,
   isScrolled,
   className,
 }: Props) {
-
   const [isSelected, setIsSelected] = useState(false);
-    
 
   return (
     <div
       className={cn(
-        'sticky right-0 flex w-fit items-center justify-between bg-white', className,
+        'sticky right-0 min-h-[70px] flex w-fit items-center justify-between bg-white',
+        className,
         {
           'shadow-md': isScrolled,
           'bg-blue-50 group-hover:bg-blue-100': pined,
@@ -48,18 +51,37 @@ export function FundsTableRow({
           </div>
         )}
         <div className="flex flex-col gap-1">
-          <Tooltip offset={2} position='bottom' className='!z-50' title={name}>
-            <p className={cn("text-gray-1000 w-[235px] group-hover:w-[202px] text-right truncate text-sm font-medium", {
-              'w-[202px]': isSelected
-            })}>{name}</p>
+          <Tooltip offset={2} position="bottom" className="!z-50" title={name}>
+            <p
+              className={cn(
+                'text-gray-1000 w-[235px] truncate text-right text-sm font-medium group-hover:w-[202px]',
+                {
+                  'w-[202px]': isSelected,
+                },
+              )}
+            >
+              {name}
+            </p>
           </Tooltip>
-          <div className="flex font-medium text-xs items-center gap-1">
-            <div className="rounded-sm border bg-purple-100 px-2">
-              قابل معامله
-            </div>
-            <div className="border-vividGreen-200 text-vividGreen-500 bg-vividGreen-100 rounded-sm border px-2">
-              ETF
-            </div>
+          <div className="flex items-center gap-1 text-xs font-medium">
+            {investmentMethod === 'T' && (
+              <>
+                <div className="rounded-sm border bg-purple-100 px-2">
+                  قابل معامله
+                </div>
+                <div className="border-vividGreen-200 text-vividGreen-800 bg-vividGreen-100 rounded-sm border px-2 py-0.5">
+                  ETF
+                </div>
+              </>
+            )}
+            <Tooltip title={hasVideo ? 'مشاهده ویدیو' : ''} >
+
+              <div className={cn("bg-vividGreen-100 cursor-pointer text-vividGreen-800 border-vividGreen-200 w-fit rounded-sm border px-2 py-0.5", {
+                'border-gray-100 text-gray-200 bg-white cursor-default': !hasVideo
+              })}>
+                <Icon name="video" />
+              </div>
+                </Tooltip>
           </div>
         </div>
       </div>

@@ -15,7 +15,6 @@ import {
   Checkbox,
 } from 'design-system';
 import {
-  Column,
   ColumnDef,
   ColumnFiltersState,
   flexRender,
@@ -34,7 +33,8 @@ const Funds = () => {
   const [indexCategoryTab, setIndexCategoryTab] = useState(0);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
-  const [data, setData] = useState(() => makeData(500));
+  const [data, setData] = useState(() => makeData(100));
+  
 
   const [isFilterModal, setIsFilterModal] = useState(false);
   const [isSettingModal, setIsSettingModal] = useState(false);
@@ -112,6 +112,9 @@ const Funds = () => {
     {
       header: 'نام صندوق',
       accessorKey: 'nameFund',
+      cell: ({row}) => {
+        return row.original.hasVideo
+      }
     },
     {
       header: 'مشخصات صندوق',
@@ -253,7 +256,7 @@ const Funds = () => {
   useEffect(() => {
     setUpdateTableHeaders([...table.getHeaderGroups()[1].headers]);
   }, [table.getState().columnVisibility]);
-
+ 
   const moveColumn = (
     accessorKey: string,
     direction: 'left' | 'right' | 'start' | 'end',
@@ -294,15 +297,15 @@ const Funds = () => {
         tableRef.current.scrollLeft = tableRef.current.scrollWidth;
       }
     };
-    setTimeout(scrollToRight, 0);
+    requestAnimationFrame(scrollToRight);
   }, []);
 
   const isChanged = useMemo(() => {
-    return (
-      JSON.stringify(table.getState().columnVisibility) !==
-      JSON.stringify(columnVisibility)
+    return !Object.entries(table.getState().columnVisibility).every(
+      ([key, value]) => columnVisibility[key] === value
     );
-  }, [table.getState().columnVisibility]);
+  }, [table.getState().columnVisibility, columnVisibility]);
+
 
   const handlerKeyboardScroll = (right: boolean) => {
     if (tableRef.current) {
@@ -329,9 +332,7 @@ const Funds = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (tableRef.current) {
-        console.log(tableRef?.current?.scrollLeft);
-        
+      if (tableRef.current) {        
         const { scrollLeft, scrollWidth, clientWidth } = tableRef.current;
         setScrollLeft(!(scrollLeft + clientWidth >= scrollWidth - 1));
       }
@@ -345,8 +346,8 @@ const Funds = () => {
 
   useEffect(() => {
     updateTableHeaders[0].column.setFilterValue(fundSearchQuery)
-  }, [fundSearchQuery, updateTableHeaders])
-
+  }, [fundSearchQuery, updateTableHeaders])  
+  
   return (
     <>
       <div
@@ -447,7 +448,7 @@ const Funds = () => {
         <div
           dir="ltr"
           ref={tableRef}
-          className="border-brand-200 scroll-smooth table-scroll h-[calc(100vh-178px)] w-screen overflow-scroll border-2 border-r-0"
+          className="border-brand-200 scroll-smooth table-scroll h-[calc(100vh-178px)] w-screen overflow-auto border-2 border-r-0"
         >
           <table
             dir="rtl"
@@ -479,7 +480,7 @@ const Funds = () => {
                   return (
                     <>
                       {index === 0 && (
-                        <th className={cn("bg-red-200 sticky right-0 top-0 z-40 m-0 w-[312px] rounded-tr-md p-0", (
+                        <th className={cn("bg-red-200 sticky right-0 top-0 z-40 m-0 w-[312px] overflow-y-hidden rounded-tr-md p-0", (
                           scrolleLeft ? 'shadow' : 'shadow-none'
                         ))}>
                           <OptionsDropdown
@@ -855,8 +856,6 @@ const Funds = () => {
                 return (
                   <tr
                     className={cn('group border-t border-blue-100',{
-                      'sticky top-[71.5px] z-50 bg-white': rowIndex === 0,
-                      'sticky top-[133px] z-50 bg-white shadow-md': rowIndex === 1,
                       'bg-blue-200': false,
                       'group-hover:bg-blue-50': !false && !false,
                     })}
@@ -884,10 +883,9 @@ const Funds = () => {
                               <FundsTableRow
                                 isScrolled={scrolleLeft}
                                 key={row.id}
-                                name={flexRender(
-                                  cell.column.columnDef.cell,
-                                  cell.getContext(),
-                                )}
+                                investmentMethod={row.original.investmentMethod}
+                                hasVideo={row.original.hasVideo}
+                                name={row.original.nameFund}
                                 pined={false}
                                 selected={false}
                                 logo="https://s.cafebazaar.ir/images/icons/com.dotin.wepod-36b7a6e5-ed88-4590-ab3e-8811ed799168_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize"

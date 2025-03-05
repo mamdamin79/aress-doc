@@ -11,10 +11,6 @@ interface Prop {
   onSearchChange: (value: string) => void;
 }
 
-type SelectedColumnsType = {
-  [key: string]: boolean;
-};
-
 export function FilterPopUpSection({
   filterOptions,
   searchValue,
@@ -29,8 +25,8 @@ export function FilterPopUpSection({
     setSelectedFilters((prev) => {
       const currentOptions = prev[category] || [];
       const updatedOptions = currentOptions.includes(option)
-        ? currentOptions.filter((item) => item !== option) // حذف گزینه در صورت انتخاب بودن
-        : [...currentOptions, option]; // اضافه کردن گزینه
+        ? currentOptions.filter((item) => item !== option)
+        : [...currentOptions, option];
 
       if (updatedOptions.length === 0) {
         const { [category]: _, ...rest } = prev;
@@ -129,8 +125,7 @@ export function FilterPopUpSection({
               .find(
                 (item: { title: string; option: string[] }) =>
                   item.title === activeFilter,
-              )
-              ?.options.map((item: string, index: number) => (
+              )?.options?.map((item: string, index: number) => (
                 <div className="flex items-center gap-2 p-3" key={index}>
                   <Checkbox
                     checked={
@@ -140,7 +135,9 @@ export function FilterPopUpSection({
                   />
                   <span>{item}</span>
                 </div>
-              ))}
+              ))
+              
+              }
         </div>
       </div>
     </div>
