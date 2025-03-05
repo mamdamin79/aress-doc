@@ -109,6 +109,7 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
                       isLoading={false}
                       mode="secondary"
                       size="md"
+                      onClick={onClose}
                     >
                       انصراف
                     </Button>
