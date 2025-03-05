@@ -15,6 +15,7 @@ import { Popup } from '../Popup';
 import { ChangeNumber } from './ChangeNumber';
 import { ChangeUsername } from './ChangeUsername';
 import { ChangeMail } from './ChangeMail';
+import { ChangePassword } from './ChangePassword';
 
 export const ProfileForm: React.FC<ProfileFormProps> = ({
   email,
@@ -33,7 +34,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
   });
 
   const [editDialog, setEditDialog] = useState<
-    null | 'username' | 'phoneNumber' | 'email' | 'success'
+    null | 'username' | 'phoneNumber' | 'email' | 'password' | 'success'
   >(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -115,6 +116,9 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                 onClose={(success) => setEditDialog(success ? 'success' : null)}
               />
             )}
+            {editDialog === 'password' && (
+              <ChangePassword/>
+            )}
           </Popup>
         ))}
       <div className="grid w-[607px] grid-flow-row md:w-[800px] md:grid-cols-2 md:gap-6">
@@ -170,9 +174,11 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
           />
         ))}
       </div>
+      
       <div className="-mt-6 flex w-full justify-start">
         <div className="w-40">
           <Button
+            onClick={() => setEditDialog('password')}
             align="center"
             isLoading={isSubmitting}
             mode="primary"
