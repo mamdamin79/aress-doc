@@ -55,10 +55,6 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
     }
   }, []);
 
-  const onSubmit = async (data: any) => {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
-    console.log(data);
-  };
   enum editDialogVerbs {
     phoneNumber = 'شماره همراه',
     username = 'نام کاربری',
@@ -68,10 +64,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
     editDialogVerbs.phoneNumber,
   );
   return (
-    <form
-      className="flex w-fit flex-col items-center gap-12"
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <form className="flex w-fit flex-col items-center gap-12">
       <ProfileImageAndUpload
         loadingInitial={isLoading}
         maxSize={2e13}
@@ -116,9 +109,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                 onClose={(success) => setEditDialog(success ? 'success' : null)}
               />
             )}
-            {editDialog === 'password' && (
-              <ChangePassword/>
-            )}
+            {editDialog === 'password' && <ChangePassword />}
           </Popup>
         ))}
       <div className="grid w-[607px] grid-flow-row md:w-[800px] md:grid-cols-2 md:gap-6">
@@ -143,14 +134,26 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             render={({ field, fieldState }) => (
               <TextField
                 mergeTitleAndPlaceholder={false}
-                mode="outline"
+                mode="filled"
                 type="text"
                 trailingIcons={
                   edit
                     ? [
                         {
                           name: 'pencil',
-                          onClick: () =>
+                          onClick: () => {
+                            if (
+                              edit &&
+                              editDialogVerbs[
+                                edit as keyof typeof editDialogVerbs
+                              ]
+                            ) {
+                              setIconDialogText(
+                                editDialogVerbs[
+                                  edit as keyof typeof editDialogVerbs
+                                ],
+                              );
+                            }
                             setEditDialog(
                               edit as
                                 | 'email'
@@ -158,7 +161,8 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                                 | 'username'
                                 | 'success'
                                 | null,
-                            ),
+                            );
+                          },
                         },
                       ]
                     : []
@@ -174,16 +178,16 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
           />
         ))}
       </div>
-      
+
       <div className="-mt-6 flex w-full justify-start">
         <div className="w-40">
           <Button
             onClick={() => setEditDialog('password')}
             align="center"
-            isLoading={isSubmitting}
+            isLoading={false}
             mode="primary"
             size="md"
-            type="submit"
+            type="button"
           >
             <div className="flex flex-row gap-2">
               <span>تغییر رمز عبور</span>

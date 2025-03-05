@@ -16,7 +16,15 @@ export const OTPForm = ({
   onSubmit: (code: string) => void;
 }) => {
   const [otp, setOtp] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const waitingTime = '1:58';
+  const handleSubmit = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      onSubmit?.(otp);
+    }, 1000);
+  };
   return (
     <div className="flex w-full flex-col gap-6 text-right">
       <div className="flex w-full flex-row justify-between">
@@ -58,10 +66,11 @@ export const OTPForm = ({
       <Button
         align="center"
         mode="primary"
-        isLoading={false}
+        isLoading={isLoading}
         size="md"
-        type="submit"
-        onClick={() => onSubmit(otp)}
+        type="button"
+        onClick={handleSubmit}
+        disabled={otp.length !== 6}
       >
         تایید کد
       </Button>
