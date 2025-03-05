@@ -77,6 +77,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
           image={selectedImage}
           isOpen
           onChange={handleImageUpload}
+          onClose={() => setSelectedImage(null)}
         />
       )}
       {editDialog &&

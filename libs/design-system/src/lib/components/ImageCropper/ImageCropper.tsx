@@ -66,7 +66,7 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <DialogPanel className="relative w-full max-w-md transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <DialogPanel className="relative flex w-[500px] transform flex-col gap-6 rounded-2xl border-2 border-gray-200 bg-white p-6 align-middle transition-all">
                 <div
                   onClick={onClose}
                   className="absolute left-0 top-0 -ml-2 -mt-2 flex items-center justify-center rounded-full shadow-lg"
@@ -77,19 +77,16 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
                     size="lg_plus"
                   />
                 </div>
-                <DialogTitle
-                  as="div"
-                  className="mb-4 flex items-center justify-between"
-                >
-                  <div className="flex flex-col gap-2 text-right">
-                    <h2 className="text-xl font-semibold">برش عکس</h2>
-                    <p className="text-right text-sm font-semibold text-gray-600">
-                      ناحیه‌ای از عکس که می‌خواهید به عنوان تصویر نمایه انتخاب
-                      شود را مشخص کنید.
+                <DialogTitle className="flex w-full items-center justify-between">
+                  <div className="flex w-full flex-col gap-6 text-center">
+                    <h2 className="text-md font-medium">برش عکس</h2>
+                    <p className="text-right text-sm font-normal">
+                      ناحیه‌ی دلخواه برای تصویر نمایه را با تنظیم کادر تعیین
+                      کنید.
                     </p>
                   </div>
                 </DialogTitle>
-                <div className="relative mb-4 h-64 w-full">
+                <div className="relative h-[304px] w-full">
                   <Cropper
                     image={image}
                     crop={crop}
@@ -109,6 +106,7 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
                       isLoading={false}
                       mode="secondary"
                       size="md"
+                      onClick={onClose}
                     >
                       انصراف
                     </Button>
