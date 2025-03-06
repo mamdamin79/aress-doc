@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useCallback } from 'react';
-import { useForm, Controller } from 'react-hook-form';
 import {
   Button,
   Icon,
@@ -25,14 +24,6 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
   username,
   image,
 }) => {
-  const {
-    control,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm({
-    defaultValues: { fnameAndLname, phoneNumber, nationalID, email, username },
-  });
-
   const [editDialog, setEditDialog] = useState<
     null | 'username' | 'phoneNumber' | 'email' | 'password' | 'success'
   >(null);
@@ -63,8 +54,9 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
   const [iconDialogText, setIconDialogText] = useState<editDialogVerbs>(
     editDialogVerbs.phoneNumber,
   );
+
   return (
-    <form className="flex w-fit flex-col items-center gap-12">
+    <div className="flex w-fit flex-col items-center gap-12">
       <ProfileImageAndUpload
         loadingInitial={isLoading}
         maxSize={2e13}
@@ -115,71 +107,67 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
         ))}
       <div className="grid w-[607px] grid-flow-row md:w-[800px] md:grid-cols-2 md:gap-6">
         {[
-          { name: 'fnameAndLname', label: 'نام و نام خانوادگی' },
-          { name: 'phoneNumber', label: 'شماره همراه', edit: 'phoneNumber' },
-          { name: 'nationalID', label: 'کد ملی' },
-          { name: 'email', label: 'ایمیل', edit: 'email' },
-          { name: 'username', label: 'نام کاربری', edit: 'username' },
-        ].map(({ name, label, edit }) => (
-          <Controller
+          {
+            name: 'fnameAndLname',
+            label: 'نام و نام خانوادگی',
+            value: fnameAndLname,
+          },
+          {
+            name: 'phoneNumber',
+            label: 'شماره همراه',
+            value: phoneNumber,
+            edit: 'phoneNumber',
+          },
+          { name: 'nationalID', label: 'کد ملی', value: nationalID },
+          { name: 'email', label: 'ایمیل', value: email, edit: 'email' },
+          {
+            name: 'username',
+            label: 'نام کاربری',
+            value: username,
+            edit: 'username',
+          },
+        ].map(({ name, label, value, edit }) => (
+          <TextField
             key={name}
-            name={
-              name as
-                | 'email'
-                | 'fnameAndLname'
-                | 'nationalID'
-                | 'phoneNumber'
-                | 'username'
+            mergeTitleAndPlaceholder={false}
+            mode="filled"
+            type="text"
+            trailingIcons={
+              edit
+                ? [
+                    {
+                      name: 'pencil',
+                      onClick: () => {
+                        if (
+                          edit &&
+                          editDialogVerbs[edit as keyof typeof editDialogVerbs]
+                        ) {
+                          setIconDialogText(
+                            editDialogVerbs[
+                              edit as keyof typeof editDialogVerbs
+                            ],
+                          );
+                        }
+                        setEditDialog(
+                          edit as
+                            | 'email'
+                            | 'phoneNumber'
+                            | 'username'
+                            | 'success'
+                            | null,
+                        );
+                      },
+                    },
+                  ]
+                : []
             }
-            control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                mergeTitleAndPlaceholder={false}
-                mode="filled"
-                type="text"
-                trailingIcons={
-                  edit
-                    ? [
-                        {
-                          name: 'pencil',
-                          onClick: () => {
-                            if (
-                              edit &&
-                              editDialogVerbs[
-                                edit as keyof typeof editDialogVerbs
-                              ]
-                            ) {
-                              setIconDialogText(
-                                editDialogVerbs[
-                                  edit as keyof typeof editDialogVerbs
-                                ],
-                              );
-                            }
-                            setEditDialog(
-                              edit as
-                                | 'email'
-                                | 'phoneNumber'
-                                | 'username'
-                                | 'success'
-                                | null,
-                            );
-                          },
-                        },
-                      ]
-                    : []
-                }
-                label={label}
-                placeholder=""
-                readOnly
-                isError={!!fieldState.error}
-                supportText={fieldState.error?.message}
-                {...field}
-              />
-            )}
+            label={label}
+            placeholder=""
+            readOnly
+            value={value}
           />
         ))}
       </div>
-
       <div className="-mt-6 flex w-full justify-start">
         <div className="w-40">
           <Button
@@ -197,6 +185,6 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
           </Button>
         </div>
       </div>
-    </form>
+    </div>
   );
 };
