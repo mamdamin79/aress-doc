@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { startTransition, useEffect, useRef, useState, useTransition } from 'react';
 import { useHeaderVisibility } from '../../../hooks/useHeaderVisiblity';
 import {
   cn,
@@ -15,7 +15,6 @@ import {
   Checkbox,
 } from 'design-system';
 import {
-  ColumnDef,
   ColumnFiltersState,
   flexRender,
   getCoreRowModel,
@@ -24,214 +23,28 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { makeData, Person } from './components/makeData';
+import { makeData } from './components/makeData';
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
+import { columns, columnVisibility, filterList } from './FundsTable.constants';
 
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
-
   const [indexCategoryTab, setIndexCategoryTab] = useState(0);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-
-  const [data, setData] = useState(() => makeData(100));
-  
-
+  const [data, setData] = useState(() => makeData(5000));
   const [isFilterModal, setIsFilterModal] = useState(false);
   const [isSettingModal, setIsSettingModal] = useState(false);
-
   const [scrolleLeft, setScrollLeft] = useState<boolean>(false);
   const [scrollRight, setScrollRight] = useState<boolean>(true);
   const [fundSearchQuery, setFundSearchQuery] = useState<string>('');
-  const columnVisibility = {
-    profitPerUnit: false,
-    investmentPolicy: false,
-    fundCategory: false,
-    trustee: false,
-    fundManager: false,
-    liquidityGuarantor: false,
-    auditor: false,
-    participationBonds: false,
-    bankDeposit: false,
-    commodityDeposit: false,
-    cash: false,
-    otherStocks: false,
-    otherAssets: false,
-    statisticalPrice: false,
-    customRangeReturn: false,
-    customRangeAlpha: false,
-    weeklyStdDev: false,
-    customRangeStdDev: false,
-    weeklyMaxDrawdown: false,
-    customRangeMaxDrawdown: false,
-    weeklyLeverage: false,
-    monthlyLeverage: false,
-    quarterlyLeverage: false,
-    yearlyLeverage: false,
-    customRangeLeverage: false,
-    weeklySharpeRatio: false,
-    monthlySharpeRatio: false,
-    quarterlySharpeRatio: false,
-    customRangeSharpeRatio: false,
-    weeklyInfoRatio: false,
-    monthlyInfoRatio: false,
-    quarterlyInfoRatio: false,
-    customRangeInfoRatio: false,
-  };
   const tableRef = useRef<HTMLDivElement>(null);
-  const filterList = [
-    { title: 'ویدیو بررسی', options: ['دارد', 'ندارد'] },
-    {
-      title: 'بازه اضافه یک ساله نسبت به شاخص کل',
-      options: [
-        'بازده منفی',
-        'از صفر تا 5 درصد',
-        'از 5 تا 10 درصد',
-        'از 10 تا 20 درصد',
-        'از 20 تا 50 درصد',
-        'بیشتر از 50 درصد',
-      ],
-    },
-    {
-      title: 'بازده یک ساله',
-      options: [
-        'بازده منفی',
-        'از صفر تا 30 درصد',
-        'از 30 تا 50 درصد',
-        'از 50 تا 100 درصد',
-        'از 100 تا 200 درصد',
-        'بیشتر از 200 درصد',
-      ],
-    },
-    {
-      title: 'شیوه سرمایه گذاری',
-      options: ['قابل معامله (ETF)', 'صدور و ابطال'],
-    },
-  ];
-
-  const columns: ColumnDef<Person>[] = [
-    {
-      header: 'نام صندوق',
-      accessorKey: 'nameFund',
-      cell: ({row}) => {
-        return row.original.hasVideo
-      }
-    },
-    {
-      header: 'مشخصات صندوق',
-      columns: [
-        { accessorKey: 'unitCount', header: 'تعداد واحد' },
-        { accessorKey: 'startDate', header: 'تاریخ آغاز فعالیت' },
-        { accessorKey: 'profitPerUnit', header: 'سود هر واحد صندوق' },
-        { accessorKey: 'netAssetValue', header: 'کل ارزش خالص دارایی‌ها' },
-        { accessorKey: 'investmentPolicy', header: 'سیاست سرمایه‌گذاری' },
-        { accessorKey: 'fundCategory', header: 'دسته‌بندی صندوق' },
-      ],
-    },
-    {
-      header: 'ارکان صندوق',
-      columns: [
-        { accessorKey: 'trustee', header: 'متولی' },
-        { accessorKey: 'fundManager', header: 'مدیر صندوق' },
-        { accessorKey: 'liquidityGuarantor', header: 'ضامن نقدشوندگی' },
-        { accessorKey: 'auditor', header: 'حسابرس' },
-      ],
-    },
-    {
-      header: 'سهم پرتفوی صندوق',
-      columns: [
-        { accessorKey: 'participationBonds', header: 'اوراق مشارکت' },
-        { accessorKey: 'bankDeposit', header: 'سپرده بانکی' },
-        { accessorKey: 'commodityDeposit', header: 'گواهی سپرده کالایی' },
-        { accessorKey: 'cash', header: 'وجه نقد' },
-        { accessorKey: 'otherStocks', header: 'سایر سهام' },
-        { accessorKey: 'otherAssets', header: 'سایر دارایی‌ها' },
-      ],
-    },
-    {
-      header: 'قیمت',
-      columns: [
-        { accessorKey: 'statisticalPrice', header: 'آماری' },
-        { accessorKey: 'cancellationPrice', header: 'ابطال' },
-        { accessorKey: 'issuancePrice', header: 'صدور' },
-      ],
-    },
-    {
-      header: 'بازده',
-      columns: [
-        { accessorKey: 'dailyReturn', header: 'روزانه' },
-        { accessorKey: 'weeklyReturn', header: 'هفتگی' },
-        { accessorKey: 'monthlyReturn', header: 'ماهانه' },
-        { accessorKey: 'quarterlyReturn', header: 'سه ماهه' },
-        { accessorKey: 'yearlyReturn', header: 'یک ساله' },
-        { accessorKey: 'customRangeReturn', header: 'بازه دلخواه' },
-      ],
-    },
-    {
-      header: 'آلفا',
-      columns: [
-        { accessorKey: 'dailyAlpha', header: 'روزانه' },
-        { accessorKey: 'weeklyAlpha', header: 'هفتگی' },
-        { accessorKey: 'monthlyAlpha', header: 'ماهانه' },
-        { accessorKey: 'quarterlyAlpha', header: 'سه ماهه' },
-        { accessorKey: 'yearlyAlpha', header: 'یک ساله' },
-        { accessorKey: 'customRangeAlpha', header: 'بازه دلخواه' },
-      ],
-    },
-    {
-      header: 'انحراف معیار',
-      columns: [
-        { accessorKey: 'weeklyStdDev', header: 'هفتگی' },
-        { accessorKey: 'monthlyStdDev', header: 'ماهانه' },
-        { accessorKey: 'quarterlyStdDev', header: 'سه ماهه' },
-        { accessorKey: 'yearlyStdDev', header: 'یک ساله' },
-        { accessorKey: 'customRangeStdDev', header: 'بازه دلخواه' },
-      ],
-    },
-    {
-      header: 'بیشترین ریزش',
-      columns: [
-        { accessorKey: 'weeklyMaxDrawdown', header: 'هفتگی' },
-        { accessorKey: 'monthlyMaxDrawdown', header: 'ماهانه' },
-        { accessorKey: 'quarterlyMaxDrawdown', header: 'سه ماهه' },
-        { accessorKey: 'yearlyMaxDrawdown', header: 'یک ساله' },
-        { accessorKey: 'customRangeMaxDrawdown', header: 'بازه دلخواه' },
-      ],
-    },
-    {
-      header: 'میانگین اهرم',
-      columns: [
-        { accessorKey: 'weeklyLeverage', header: 'هفتگی' },
-        { accessorKey: 'monthlyLeverage', header: 'ماهانه' },
-        { accessorKey: 'quarterlyLeverage', header: 'سه ماهه' },
-        { accessorKey: 'yearlyLeverage', header: 'یک ساله' },
-        { accessorKey: 'customRangeLeverage', header: 'بازه دلخواه' },
-      ],
-    },
-    {
-      header: 'نسبت شارپ',
-      columns: [
-        { accessorKey: 'weeklySharpeRatio', header: 'هفتگی' },
-        { accessorKey: 'monthlySharpeRatio', header: 'ماهانه' },
-        { accessorKey: 'quarterlySharpeRatio', header: 'سه ماهه' },
-        { accessorKey: 'yearlySharpeRatio', header: 'یک ساله' },
-        { accessorKey: 'customRangeSharpeRatio', header: 'بازه دلخواه' },
-      ],
-    },
-    {
-      header: 'نسبت اطلاعاتی',
-      columns: [
-        { accessorKey: 'weeklyInfoRatio', header: 'هفتگی' },
-        { accessorKey: 'monthlyInfoRatio', header: 'ماهانه' },
-        { accessorKey: 'quarterlyInfoRatio', header: 'سه ماهه' },
-        { accessorKey: 'yearlyInfoRatio', header: 'یک ساله' },
-        { accessorKey: 'customRangeInfoRatio', header: 'بازه دلخواه' },
-      ],
-    },
-  ];
+  const [selectedFilters, setSelectedFilters] = useState<
+    Record<string, string[]>
+  >({});
 
   const table = useReactTable({
     data,
-    columns,
+    columns: columns,
     state: { columnFilters },
     initialState: {
       columnVisibility,
@@ -249,14 +62,17 @@ const Funds = () => {
     getPaginationRowModel: getPaginationRowModel(),
   });
 
+
   const [updateTableHeaders, setUpdateTableHeaders] = useState(
     table.getHeaderGroups()[1].headers,
   );
 
+  const columnVisibilityHeader = table.getState().columnVisibility;
+
   useEffect(() => {
     setUpdateTableHeaders([...table.getHeaderGroups()[1].headers]);
-  }, [table.getState().columnVisibility]);
- 
+  }, [columnVisibilityHeader, table]);
+
   const moveColumn = (
     accessorKey: string,
     direction: 'left' | 'right' | 'start' | 'end',
@@ -291,21 +107,13 @@ const Funds = () => {
     });
   };
 
-  useEffect(() => {
-    const scrollToRight = () => {
-      if (tableRef.current) {
-        tableRef.current.scrollLeft = tableRef.current.scrollWidth;
-      }
-    };
-    requestAnimationFrame(scrollToRight);
-  }, []);
+  const isChanged = false;
 
-  const isChanged = useMemo(() => {
-    return !Object.entries(table.getState().columnVisibility).every(
-      ([key, value]) => columnVisibility[key] === value
-    );
-  }, [table.getState().columnVisibility, columnVisibility]);
-
+  // const isChanged = useMemo(() => {
+  //   return !Object.entries(table.getState().columnVisibility).every(
+  //     ([key, value]) => columnVisibility[key] === value
+  //   );
+  // }, [table.getState().columnVisibility]);
 
   const handlerKeyboardScroll = (right: boolean) => {
     if (tableRef.current) {
@@ -316,9 +124,23 @@ const Funds = () => {
   };
 
   useEffect(() => {
+    const handleScroll = () => {
+      if (tableRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = tableRef.current;
+        setScrollLeft(!(scrollLeft + clientWidth >= scrollWidth - 1));
+      }
+    };
+
+    const scrollToRight = () => {
+      if (tableRef.current) {
+        tableRef.current.scrollLeft = tableRef.current.scrollWidth;
+      }
+    };
+    requestAnimationFrame(scrollToRight);
+    const table = tableRef.current;
+    table?.addEventListener('scroll', handleScroll);
+
     const keyboardHandler = (e: KeyboardEvent) => {
-      console.log(e);
-      
       if (e.code === 'KeyA') {
         handlerKeyboardScroll(false);
       }
@@ -328,26 +150,16 @@ const Funds = () => {
     };
 
     document.addEventListener('keypress', keyboardHandler);
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (tableRef.current) {        
-        const { scrollLeft, scrollWidth, clientWidth } = tableRef.current;
-        setScrollLeft(!(scrollLeft + clientWidth >= scrollWidth - 1));
-      }
-    };
-
-    const table = tableRef.current;
-    table?.addEventListener('scroll', handleScroll);
 
     return () => table?.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
-    updateTableHeaders[0].column.setFilterValue(fundSearchQuery)
-  }, [fundSearchQuery, updateTableHeaders])  
-  
+    startTransition(() => {
+      updateTableHeaders[0].column.setFilterValue(fundSearchQuery);
+    });
+  }, [fundSearchQuery, updateTableHeaders]);
+
   return (
     <>
       <div
@@ -441,14 +253,11 @@ const Funds = () => {
           </div>
         </Tooltip>
       </div>
-      <div
-        className={cn(
-          'relative top-0 flex items-center overflow-hidden')}
-      >
+      <div className={cn('relative top-0 flex items-center overflow-hidden')}>
         <div
           dir="ltr"
           ref={tableRef}
-          className="border-brand-200 scroll-smooth table-scroll h-[calc(100vh-178px)] w-screen overflow-auto border-2 border-r-0"
+          className="border-brand-200 table-scroll h-[calc(100vh-178px)] w-screen overflow-auto scroll-smooth border-2 border-r-0"
         >
           <table
             dir="rtl"
@@ -480,9 +289,12 @@ const Funds = () => {
                   return (
                     <>
                       {index === 0 && (
-                        <th className={cn("bg-red-200 sticky right-0 top-0 z-40 m-0 w-[312px] overflow-y-hidden rounded-tr-md p-0", (
-                          scrolleLeft ? 'shadow' : 'shadow-none'
-                        ))}>
+                        <th
+                          className={cn(
+                            'sticky right-0 top-0 z-40 m-0 w-[312px] overflow-y-hidden rounded-tr-md bg-red-200 p-0',
+                            scrolleLeft ? 'shadow' : 'shadow-none',
+                          )}
+                        >
                           <OptionsDropdown
                             dropDownStyles={{
                               size: 'md',
@@ -509,7 +321,7 @@ const Funds = () => {
                                     }
                                   }}
                                   className={cn(
-                                    'hover:bg-brand-50 hover:text-brand-800 overflow-y-hidden flex cursor-pointer items-center gap-2 bg-white p-2',
+                                    'hover:bg-brand-50 hover:text-brand-800 flex cursor-pointer items-center gap-2 overflow-y-hidden bg-white p-2',
                                     {
                                       'text-brand-800':
                                         (header.column.getIsSorted() ===
@@ -550,7 +362,9 @@ const Funds = () => {
                                         ? 'active-asc'
                                         : 'inactive'
                                   }
-                                  filterable={false}
+                                  filterable={columnFilters.some(
+                                    (filterItem) => filterItem.id === header.id,
+                                  )}
                                   title={String(
                                     flexRender(
                                       header.column.columnDef.header,
@@ -592,6 +406,10 @@ const Funds = () => {
                                       }}
                                       className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
                                     >
+                                      {Object.entries(selectedFilters).length >
+                                        0 && (
+                                        <div className="absolute z-30 -right-1 border-2 border-white box-content -top-1 rounded-full bg-pink-600 w-2.5 h-2.5"></div>
+                                      )}
                                       <Icon size="lg" name="filter" />
                                     </div>
                                   </Tooltip>
@@ -852,68 +670,78 @@ const Funds = () => {
               </tr>
             </thead>
             <tbody className="relative w-full overflow-hidden rounded-b-md">
-              {table.getRowModel().rows.map((row, rowIndex) => {
-                return (
-                  <tr
-                    className={cn('group border-t border-blue-100',{
-                      'bg-blue-200': false,
-                      'group-hover:bg-blue-50': !false && !false,
-                    })}
-                    key={row.id}
-                  >
-                    <td
-                      className={cn({
-                        'bg-blue-50 group-hover:bg-blue-100': false,
+              {table.getRowModel().rows.length ? (
+                table.getRowModel().rows.map((row, rowIndex) => {
+                  return (
+                    <tr
+                      className={cn('group border-t border-blue-100', {
                         'bg-blue-200': false,
-                        'group-hover:bg-blue-50': !false && rowIndex,
+                        'group-hover:bg-blue-50': !false && !false,
                       })}
-                    ></td>
-                    {row.getVisibleCells().map((cell, index) => {
-                      return (
-                        <>
-                          {index === 0 && (
-                            <td
-                              className={cn(
-                                'sticky right-0 m-0 p-0',
-                                rowIndex ===
-                                  table.getRowModel().rows.length - 1 &&
-                                  'rounded-br-md',
-                              )}
-                            >
-                              <FundsTableRow
-                                isScrolled={scrolleLeft}
-                                key={row.id}
-                                investmentMethod={row.original.investmentMethod}
-                                hasVideo={row.original.hasVideo}
-                                name={row.original.nameFund}
-                                pined={false}
-                                selected={false}
-                                logo="https://s.cafebazaar.ir/images/icons/com.dotin.wepod-36b7a6e5-ed88-4590-ab3e-8811ed799168_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize"
-                              />
-                            </td>
-                          )}
-                          {index >= 1 && (
-                            <td
-                              className={cn({
-                                'bg-blue-50 group-hover:bg-blue-100': false,
-                                'bg-blue-200': false,
-                                'group-hover:bg-blue-50': !false && index,
-                              })}
-                              key={cell.id}
-                            >
-                              {flexRender(
-                                cell.column.columnDef.cell,
-                                cell.getContext(),
-                              )}
-                            </td>
-                          )}
-                        </>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-              <tr className='h-[60px]'>
+                      key={row.id}
+                    >
+                      <td
+                        className={cn({
+                          'bg-blue-50 group-hover:bg-blue-100': false,
+                          'bg-blue-200': false,
+                          'group-hover:bg-blue-50': !false && rowIndex,
+                        })}
+                      ></td>
+                      {row.getVisibleCells().map((cell, index) => {
+                        return (
+                          <>
+                            {index === 0 && (
+                              <td
+                                className={cn(
+                                  'sticky right-0 m-0 p-0',
+                                  rowIndex ===
+                                    table.getRowModel().rows.length - 1 &&
+                                    'rounded-br-md',
+                                )}
+                              >
+                                <FundsTableRow
+                                  isScrolled={scrolleLeft}
+                                  key={row.id}
+                                  investmentMethod={
+                                    row.original.investmentMethod
+                                  }
+                                  hasVideo={row.original.hasVideo}
+                                  name={row.original.nameFund}
+                                  pined={false}
+                                  selected={false}
+                                  logo="https://s.cafebazaar.ir/images/icons/com.dotin.wepod-36b7a6e5-ed88-4590-ab3e-8811ed799168_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize"
+                                />
+                              </td>
+                            )}
+                            {index >= 1 && (
+                              <td
+                                className={cn({
+                                  'bg-blue-50 group-hover:bg-blue-100': false,
+                                  'bg-blue-200': false,
+                                  'group-hover:bg-blue-50': !false && index,
+                                })}
+                                key={cell.id}
+                              >
+                                {flexRender(
+                                  cell.column.columnDef.cell,
+                                  cell.getContext(),
+                                )}
+                              </td>
+                            )}
+                          </>
+                        );
+                      })}
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr className="fixed right-[calc(50%-150px)] mt-5 w-full text-gray-600">
+                  <td className="text-sm">
+                    صندوقی یافت نشد! لطفا فیلتر هارا بازنشانی کنید.
+                  </td>
+                </tr>
+              )}
+              <tr className="h-[60px] bg-red-300">
                 <td></td>
               </tr>
             </tbody>
@@ -925,7 +753,9 @@ const Funds = () => {
         <div className="rounded-md bg-gray-400 py-2">
           <OptionsDropdown
             onChange={(e) => {
-              table.setPageSize(Number(e));
+              startTransition(() => {
+                table.setPageSize(Number(e));
+              })
             }}
             dropDownStyles={{
               bg: 'primary',
@@ -1020,7 +850,7 @@ const Funds = () => {
         className="relative z-50 focus:outline-none"
         onClose={() => setIsSettingModal(false)}
       >
-        <div className="fixed inset-0 z-30 w-screen overflow-y-auto">
+        <div className="fixed inset-0 z-30 w-screen overflow-y-auto backdrop-blur">
           <div className="flex min-h-full items-center justify-center">
             <DialogPanel
               transition
@@ -1115,7 +945,7 @@ const Funds = () => {
         className="relative z-50 focus:outline-none"
         onClose={() => setIsFilterModal(false)}
       >
-        <div className="fixed inset-0 z-30 w-screen overflow-y-auto">
+        <div className="fixed inset-0 z-30 w-screen overflow-y-auto backdrop-blur">
           <div className="flex min-h-full items-center justify-center">
             <DialogPanel
               transition
@@ -1123,12 +953,18 @@ const Funds = () => {
             >
               <div
                 onClick={() => setIsFilterModal(false)}
-                className="text-brand-600 absolute z-10 -left-2 -top-2 cursor-pointer rounded-full bg-white"
-              > 
+                className="text-brand-600 absolute -left-2 -top-2 z-10 cursor-pointer rounded-full bg-white"
+              >
                 <Icon name="circle-x" size="lg_plus" />
               </div>
               <div className="my-4 flex h-full w-full flex-col gap-2">
-                  <FilterPopUpSection searchValue={fundSearchQuery} onSearchChange={setFundSearchQuery} filterOptions={filterList} />
+                <FilterPopUpSection
+                  searchValue={fundSearchQuery}
+                  onSearchChange={setFundSearchQuery}
+                  filterOptions={filterList}
+                  selectedFilters={selectedFilters}
+                  onFilterChange={setSelectedFilters}
+                />
               </div>
             </DialogPanel>
           </div>
@@ -1137,8 +973,5 @@ const Funds = () => {
     </>
   );
 };
-
-
-
 
 export default Funds;

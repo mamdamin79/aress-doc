@@ -35,7 +35,7 @@ const newPerson = (): Person => {
   const investmentMethods: ['T', 'I&C'] = ['T', 'I&C'];
   return {
     investmentMethod: faker.helpers.arrayElement(investmentMethods),
-    hasVideo: false,
+    hasVideo: faker.datatype.boolean(),
     nameFund: faker.person.fullName(),
     startDate: faker.date.past().getTime(),
     monthlyReturn: faker.number.int(100),
