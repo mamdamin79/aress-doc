@@ -40,7 +40,7 @@ export const columnVisibility = {
 export const filterList = [
   { title: 'ویدیو بررسی', options: ['دارد', 'ندارد'], singleSelect: true },
   {
-    singleSelec: false,
+    singleSelect: false,
     title: 'بازه اضافه یک ساله نسبت به شاخص کل',
     options: [
       'بازده منفی',
@@ -52,7 +52,7 @@ export const filterList = [
     ],
   },
   {
-    singleSelec: false,
+    singleSelect: false,
     title: 'بازده یک ساله',
     options: [
       'بازده منفی',

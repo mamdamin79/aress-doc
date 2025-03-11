@@ -1,5 +1,11 @@
 'use client';
-import React, { startTransition, useEffect, useRef, useState, useTransition } from 'react';
+import React, {
+  startTransition,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useHeaderVisibility } from '../../../hooks/useHeaderVisiblity';
 import {
   cn,
@@ -9,7 +15,6 @@ import {
   formatNumber,
   OptionsDropdown,
   FundsTableRow,
-  FundsTag,
   FilterPopUpSection,
   FundsColumn,
   Checkbox,
@@ -31,13 +36,15 @@ const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
   const [indexCategoryTab, setIndexCategoryTab] = useState(0);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [data, setData] = useState(() => makeData(5000));
+  const [data, setData] = useState(() => makeData(500));
   const [isFilterModal, setIsFilterModal] = useState(false);
   const [isSettingModal, setIsSettingModal] = useState(false);
   const [scrolleLeft, setScrollLeft] = useState<boolean>(false);
   const [scrollRight, setScrollRight] = useState<boolean>(true);
   const [fundSearchQuery, setFundSearchQuery] = useState<string>('');
   const tableRef = useRef<HTMLDivElement>(null);
+  const [watchList, setWatchList] = useState<string[]>([]);
+  const [pineWatchLis, setPineWatchList] = useState<string[]>([]);
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string[]>
   >({});
@@ -61,7 +68,6 @@ const Funds = () => {
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
-
 
   const [updateTableHeaders, setUpdateTableHeaders] = useState(
     table.getHeaderGroups()[1].headers,
@@ -107,13 +113,11 @@ const Funds = () => {
     });
   };
 
-  const isChanged = false;
-
-  // const isChanged = useMemo(() => {
-  //   return !Object.entries(table.getState().columnVisibility).every(
-  //     ([key, value]) => columnVisibility[key] === value
-  //   );
-  // }, [table.getState().columnVisibility]);
+  const isChanged = useMemo(() => {
+    return !Object.entries(table.getState().columnVisibility).every(
+      ([key, value]) => columnVisibility[key] === value,
+    );
+  }, [table.getState().columnVisibility]);
 
   const handlerKeyboardScroll = (right: boolean) => {
     if (tableRef.current) {
@@ -121,6 +125,14 @@ const Funds = () => {
         tableRef.current.scrollLeft += 100;
       } else tableRef.current.scrollLeft -= 100;
     }
+  };
+
+  const toggleWatchList = (fund: { id: string }) => {
+    setWatchList((prev) =>
+      prev.includes(fund.id)
+        ? prev.filter((id: string) => id !== fund.id)
+        : [...prev, fund.id],
+    );
   };
 
   useEffect(() => {
@@ -290,8 +302,9 @@ const Funds = () => {
                     <>
                       {index === 0 && (
                         <th
+                          key={index}
                           className={cn(
-                            'sticky right-0 top-0 z-40 m-0 w-[312px] overflow-y-hidden rounded-tr-md bg-red-200 p-0',
+                            'sticky right-0 top-0 z-40 m-0 w-[312px] overflow-y-hidden p-0',
                             scrolleLeft ? 'shadow' : 'shadow-none',
                           )}
                         >
@@ -345,7 +358,7 @@ const Funds = () => {
                               </>
                             )}
                             customTriggerRender={() => (
-                              <div className="w-full rounded-tr-md">
+                              <div className="rounde w-full">
                                 <FundsColumn
                                   filtered={!!header.column.getIsSorted()}
                                   clickFilterd={() =>
@@ -382,7 +395,7 @@ const Funds = () => {
                                   }
                                 ></FundsColumn>
                                 <div className="absolute top-5 flex items-center gap-2 pr-4">
-                                  <Tooltip title="انتخاب ستون ها">
+                                  <Tooltip title="انتخاب ستون‌ها">
                                     <div
                                       onClick={(e) => {
                                         e.stopPropagation();
@@ -391,14 +404,12 @@ const Funds = () => {
                                       className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
                                     >
                                       {isChanged && (
-                                        <div className="absolute -right-1 -top-1">
-                                          <FundsTag color="blue" />
-                                        </div>
+                                        <div className="absolute -right-1 -top-1 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
                                       )}
                                       <Icon size="lg" name="settings" />
                                     </div>
                                   </Tooltip>
-                                  <Tooltip title="فیلتر صندوق ها">
+                                  <Tooltip title="فیلتر صندوق‌ها">
                                     <div
                                       onClick={(e) => {
                                         setIsFilterModal(true);
@@ -406,9 +417,10 @@ const Funds = () => {
                                       }}
                                       className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
                                     >
-                                      {Object.entries(selectedFilters).length >
-                                        0 && (
-                                        <div className="absolute z-30 -right-1 border-2 border-white box-content -top-1 rounded-full bg-pink-600 w-2.5 h-2.5"></div>
+                                      {(Object.entries(selectedFilters).length >
+                                        0 ||
+                                        fundSearchQuery) && (
+                                        <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
                                       )}
                                       <Icon size="lg" name="filter" />
                                     </div>
@@ -439,8 +451,6 @@ const Funds = () => {
                         <th
                           className={cn(
                             'm-0 overflow-y-hidden p-0 text-sm font-medium',
-                            index === updateTableHeaders.length - 1 &&
-                              'rounded-tl-md',
                             String(
                               flexRender(
                                 header.column.columnDef.header,
@@ -450,7 +460,7 @@ const Funds = () => {
                               ? 'w-[200px]'
                               : 'w-36',
                           )}
-                          key={header.id}
+                          key={index}
                           colSpan={header.colSpan}
                         >
                           {index >= 2 && header.isPlaceholder ? null : (
@@ -670,78 +680,241 @@ const Funds = () => {
               </tr>
             </thead>
             <tbody className="relative w-full overflow-hidden rounded-b-md">
-              {table.getRowModel().rows.length ? (
-                table.getRowModel().rows.map((row, rowIndex) => {
-                  return (
-                    <tr
-                      className={cn('group border-t border-blue-100', {
-                        'bg-blue-200': false,
-                        'group-hover:bg-blue-50': !false && !false,
-                      })}
-                      key={row.id}
-                    >
-                      <td
-                        className={cn({
-                          'bg-blue-50 group-hover:bg-blue-100': false,
-                          'bg-blue-200': false,
-                          'group-hover:bg-blue-50': !false && rowIndex,
-                        })}
-                      ></td>
-                      {row.getVisibleCells().map((cell, index) => {
-                        return (
-                          <>
-                            {index === 0 && (
-                              <td
-                                className={cn(
-                                  'sticky right-0 m-0 p-0',
-                                  rowIndex ===
-                                    table.getRowModel().rows.length - 1 &&
-                                    'rounded-br-md',
+              {indexCategoryTab === 0 ? (
+                table.getRowModel().rows.length ? (
+                  (() => {
+                    const pinnedRows = table
+                      .getRowModel()
+                      .rows.filter((row) => row.getIsPinned());
+                    const lastPinnedRowId = pinnedRows.length
+                      ? pinnedRows[pinnedRows.length - 1].id
+                      : null;
+
+                    const allRows = [
+                      ...pinnedRows,
+                      ...table
+                        .getRowModel()
+                        .rows.filter((row) => !row.getIsPinned()),
+                    ];
+
+                    return allRows.map((row, rowIndex) => {
+                      const pinnedIndex = pinnedRows.findIndex(
+                        (pinnedRow) => pinnedRow.id === row.id,
+                      );
+                      const topValue =
+                        pinnedIndex !== -1
+                          ? `${(pinnedIndex + 1) * 70}px`
+                          : 'auto';
+
+                      return (
+                        <tr
+                          style={{ top: topValue }}
+                          className={cn(
+                            'group border-t border-blue-100',
+                            row.getIsPinned() && `sticky z-30`,
+                            {
+                              'shadow-2xl': row.id === lastPinnedRowId,
+                              'bg-blue-200': false,
+                              'group-hover:bg-blue-50': !false && !false,
+                            },
+                          )}
+                          key={row.id}
+                        >
+                          <td
+                            className={cn({
+                              'bg-blue-50 group-hover:bg-blue-100': false,
+                              'bg-blue-200': false,
+                              'group-hover:bg-blue-50': !false && rowIndex,
+                            })}
+                          ></td>
+                          {row.getVisibleCells().map((cell, index) => {
+                            return (
+                              <React.Fragment key={cell.id}>
+                                {index === 0 && (
+                                  <td className="sticky right-0 m-0 p-0">
+                                    <FundsTableRow
+                                      tag={false}
+                                      category={
+                                        watchList.includes(row.id)
+                                          ? 'watchlist'
+                                          : 'stocks'
+                                      }
+                                      canPin={
+                                        pinnedRows.length <= 2 ? true : false
+                                      }
+                                      toggleWatchList={() =>
+                                        toggleWatchList({ id: row.id })
+                                      }
+                                      pinedFunction={() =>
+                                        pinnedRows.length <= 2 &&
+                                        row.pin('top', true)
+                                      }
+                                      unPinedFunction={() => row.pin(false)}
+                                      isScrolled={scrolleLeft}
+                                      investmentMethod={
+                                        row.original.investmentMethod
+                                      }
+                                      hasVideo={row.original.hasVideo}
+                                      name={row.original.nameFund}
+                                      pined={row.getIsPinned()}
+                                      selected={false}
+                                      logo={row.original.logo}
+                                    />
+                                  </td>
                                 )}
-                              >
-                                <FundsTableRow
-                                  isScrolled={scrolleLeft}
-                                  key={row.id}
-                                  investmentMethod={
-                                    row.original.investmentMethod
-                                  }
-                                  hasVideo={row.original.hasVideo}
-                                  name={row.original.nameFund}
-                                  pined={false}
-                                  selected={false}
-                                  logo="https://s.cafebazaar.ir/images/icons/com.dotin.wepod-36b7a6e5-ed88-4590-ab3e-8811ed799168_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize"
-                                />
-                              </td>
-                            )}
-                            {index >= 1 && (
-                              <td
-                                className={cn({
-                                  'bg-blue-50 group-hover:bg-blue-100': false,
-                                  'bg-blue-200': false,
-                                  'group-hover:bg-blue-50': !false && index,
-                                })}
-                                key={cell.id}
-                              >
-                                {flexRender(
-                                  cell.column.columnDef.cell,
-                                  cell.getContext(),
+                                {index >= 1 && (
+                                  <td
+                                    className={cn({
+                                      'bg-blue-50 group-hover:bg-blue-100':
+                                        row.getIsPinned(),
+                                      'bg-blue-200': false,
+                                      'group-hover:bg-blue-50':
+                                        !row.getIsPinned(),
+                                    })}
+                                  >
+                                    {flexRender(
+                                      cell.column.columnDef.cell,
+                                      cell.getContext(),
+                                    )}
+                                  </td>
                                 )}
-                              </td>
-                            )}
-                          </>
-                        );
-                      })}
-                    </tr>
-                  );
-                })
+                              </React.Fragment>
+                            );
+                          })}
+                        </tr>
+                      );
+                    });
+                  })()
+                ) : (
+                  <tr className="fixed right-[calc(50%-150px)] mt-5 w-full text-gray-600">
+                    <td className="text-sm">
+                      صندوقی یافت نشد! لطفا فیلتر هارا بازنشانی کنید.
+                    </td>
+                  </tr>
+                )
+              ) : watchList.length > 0 ? (
+                table.getRowModel().rows.length ? (
+                  (() => {
+                    const pinnedRows = table
+                      .getRowModel()
+                      .rows.filter((row) => pineWatchLis.includes(row.id));
+
+                    const allRows = [
+                      ...pinnedRows,
+                      ...table
+                        .getRowModel()
+                        .rows.filter((row) => !pineWatchLis.includes(row.id)),
+                    ];
+
+                    const filteredRows = allRows.filter((row) =>
+                      watchList.includes(row.id),
+                    );
+
+                    return filteredRows.map((row, rowIndex) => {
+                      const pinnedIndex = pinnedRows.findIndex(
+                        (pinnedRow) => pinnedRow.id === row.id,
+                      );
+                      const topValue =
+                        pinnedIndex !== -1
+                          ? `${(pinnedIndex + 1) * 70}px`
+                          : 'auto';
+
+                      return (
+                        <tr
+                          style={{ top: topValue }}
+                          className={cn(
+                            'bord group border-blue-100',
+                            pineWatchLis.includes(row.id) && `sticky z-50`,
+                            {
+                              'shadow-2xl': pineWatchLis.includes(row.id),
+                              'bg-blue-200': false,
+                              'group-hover:bg-blue-50': !false && !false,
+                            },
+                          )}
+                          key={row.id}
+                        >
+                          <td
+                            className={cn({
+                              'bg-blue-50 group-hover:bg-blue-100': false,
+                              'bg-blue-200': false,
+                              'group-hover:bg-blue-50': !false && rowIndex,
+                            })}
+                          ></td>
+                          {row.getVisibleCells().map((cell, index) => {
+                            return (
+                              <React.Fragment key={cell.id}>
+                                {index === 0 && (
+                                  <td className="sticky right-0 m-0 p-0">
+                                    <FundsTableRow
+                                      tag={true}
+                                      category="watchlist"
+                                      canPin={
+                                        pineWatchLis.length <= 2 ? true : false
+                                      }
+                                      toggleWatchList={() =>
+                                        toggleWatchList({ id: row.id })
+                                      }
+                                      pinedFunction={() =>
+                                        pineWatchLis.length <= 2 &&
+                                        setPineWatchList([
+                                          ...pineWatchLis,
+                                          row.id,
+                                        ])
+                                      }
+                                      unPinedFunction={() =>
+                                        setPineWatchList((prev) =>
+                                          prev.filter((id) => id !== row.id),
+                                        )
+                                      }
+                                      isScrolled={scrolleLeft}
+                                      investmentMethod={
+                                        row.original.investmentMethod
+                                      }
+                                      hasVideo={row.original.hasVideo}
+                                      name={row.original.nameFund}
+                                      pined={pineWatchLis.includes(row.id)}
+                                      selected={false}
+                                      logo={row.original.logo}
+                                    />
+                                  </td>
+                                )}
+                                {index >= 1 && (
+                                  <td
+                                    className={cn({
+                                      'bg-blue-50 group-hover:bg-blue-100':
+                                        pineWatchLis.includes(row.id),
+                                      'bg-blue-200': false,
+                                      'group-hover:bg-blue-50':
+                                        !pineWatchLis.includes(row.id),
+                                    })}
+                                  >
+                                    {flexRender(
+                                      cell.column.columnDef.cell,
+                                      cell.getContext(),
+                                    )}
+                                  </td>
+                                )}
+                              </React.Fragment>
+                            );
+                          })}
+                        </tr>
+                      );
+                    });
+                  })()
+                ) : (
+                  <tr className="fixed right-[calc(50%-150px)] mt-5 w-full text-gray-600">
+                    <td className="text-sm">
+                      صندوقی یافت نشد! لطفا فیلتر هارا بازنشانی کنید.
+                    </td>
+                  </tr>
+                )
               ) : (
                 <tr className="fixed right-[calc(50%-150px)] mt-5 w-full text-gray-600">
-                  <td className="text-sm">
-                    صندوقی یافت نشد! لطفا فیلتر هارا بازنشانی کنید.
-                  </td>
+                  <td className="text-sm">صندوقی در دیده بان وجود ندارد.</td>
                 </tr>
               )}
-              <tr className="h-[60px] bg-red-300">
+
+              <tr className="h-[60px]">
                 <td></td>
               </tr>
             </tbody>
@@ -755,7 +928,7 @@ const Funds = () => {
             onChange={(e) => {
               startTransition(() => {
                 table.setPageSize(Number(e));
-              })
+              });
             }}
             dropDownStyles={{
               bg: 'primary',
@@ -800,7 +973,7 @@ const Funds = () => {
         </div>
 
         <span className="rounded-md bg-gray-300 px-3 py-2 text-xs font-medium">
-          مجموعه ارزش خالص دارایی ها: 10,986,249.09
+          مجموعه ارزش خالص دارایی‌ها : 10,986,249.09
         </span>
         <div className="flex items-center gap-2 rounded-md bg-gray-400 px-3 py-2">
           <span className="text-gray-1000 flex items-center gap-1 text-xs font-medium">
@@ -850,7 +1023,8 @@ const Funds = () => {
         className="relative z-50 focus:outline-none"
         onClose={() => setIsSettingModal(false)}
       >
-        <div className="fixed inset-0 z-30 w-screen overflow-y-auto backdrop-blur">
+        <div className="fixed inset-0 z-30 w-screen overflow-y-auto">
+          <div className="absolute right-0 top-0 h-screen w-screen bg-black opacity-[0.15]"></div>
           <div className="flex min-h-full items-center justify-center">
             <DialogPanel
               transition
@@ -865,7 +1039,7 @@ const Funds = () => {
                         .filter((col) => col.getIsVisible()).length === 25,
                   })}
                 >
-                  انتخاب ستون ها (
+                  انتخاب ستون‌ها (
                   {
                     table
                       .getAllLeafColumns()
@@ -918,7 +1092,7 @@ const Funds = () => {
                                   item.toggleVisibility(!item.getIsVisible());
                                 }
                               }}
-                              content={item.columnDef.header}
+                              content={item.columnDef.header?.toString()}
                               checked={item.getIsVisible()}
                             />
                           )}
@@ -945,11 +1119,12 @@ const Funds = () => {
         className="relative z-50 focus:outline-none"
         onClose={() => setIsFilterModal(false)}
       >
-        <div className="fixed inset-0 z-30 w-screen overflow-y-auto backdrop-blur">
+        <div className="fixed inset-0 z-30 w-screen overflow-y-auto">
+          <div className="absolute right-0 top-0 h-screen w-screen bg-black opacity-[0.15]"></div>
           <div className="flex min-h-full items-center justify-center">
             <DialogPanel
               transition
-              className="shadow-3xl data-[closed]:transform-[scale(0%)] relative w-full max-w-lg rounded-3xl bg-white duration-300 ease-out data-[closed]:opacity-0"
+              className="shadow-3xl data-[closed]:transform-[scale(0%)] relative z-20 w-full max-w-lg rounded-3xl bg-white duration-300 ease-out data-[closed]:opacity-0"
             >
               <div
                 onClick={() => setIsFilterModal(false)}
