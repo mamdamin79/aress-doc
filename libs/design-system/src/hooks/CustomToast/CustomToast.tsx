@@ -1,11 +1,10 @@
 import { toast } from 'react-hot-toast';
 import { bgIcon, icons, styleToasts } from './CustomToast.constants';
 import { cn } from '../../utils';
-import React, { useState, useEffect, useId } from 'react';
+import { useState, useEffect } from 'react';
 import { ProgressToastProps } from './ProgressToast.types';
 import { Icon } from '../../lib/components/Icon';
 import { Button } from '../../lib/components/Button';
-import { LucideUndo2 } from 'lucide-react';
 
 interface Props {
   message: string;
@@ -47,11 +46,11 @@ export function CustomToast() {
     console.log(leadingAction);
     return (
       <div
-        className={`animate-toast bg-brand-1000 relative flex h-[50px] w-fit transform-gpu items-center justify-center overflow-hidden rounded-lg transition-all duration-500 ease-in-out`}
+        className={`animate-toast bg-brand-1000 relative !z-50 flex h-[50px] w-fit transform-gpu items-center justify-center overflow-hidden rounded-lg transition-all duration-500 ease-in-out`}
       >
         <div className="flex w-full items-center gap-2 px-2">
           {leadingAction && (
-            <span className="flex h-[32px] items-center justify-center text-yellow-500">
+            <span onClick={leadingAction.onClick} className="flex h-[32px] items-center justify-center text-yellow-500">
               <Icon {...leadingAction.iconProps} key={'icon'} />
             </span>
           )}

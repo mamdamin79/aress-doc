@@ -1,4 +1,3 @@
-import { FooterLite } from '../(layout)/(footer-lite)';
 import { Header } from '../(layout)/(header)';
 
 export default function DashboardLayout({
@@ -11,7 +10,6 @@ export default function DashboardLayout({
     <>
       <Header/>
       {children}
-      {/* <FooterLite /> */}
     </>
   );
 }

@@ -149,12 +149,7 @@ const Funds = () => {
       }
     };
 
-    const scrollToRight = () => {
-      if (tableRef.current) {
-        tableRef.current.scrollLeft = tableRef.current.scrollWidth;
-      }
-    };
-    requestAnimationFrame(scrollToRight);
+
     const table = tableRef.current;
     table?.addEventListener('scroll', handleScroll);
 
@@ -164,10 +159,10 @@ const Funds = () => {
       }
       if (e.code === 'KeyD') {
         handlerKeyboardScroll(true);
+        document.addEventListener('keypress', keyboardHandler);
       }
     };
 
-    document.addEventListener('keypress', keyboardHandler);
 
     return () => table?.removeEventListener('scroll', handleScroll);
   }, []);
@@ -271,14 +266,13 @@ const Funds = () => {
           </div>
         </Tooltip>
       </div>
-      <div className={cn('relative top-0 flex items-center overflow-hidden')}>
+      <div dir='ltr' className={cn('relative top-0 flex items-center overflow-hidden')}>
         <div
-          dir="ltr"
           ref={tableRef}
           className="border-brand-200 table-scroll h-[calc(100vh-178px)] w-screen overflow-auto scroll-smooth border-2 border-r-0"
         >
           <table
-            dir="rtl"
+          dir='rtl'
             className="w-full table-fixed rounded-xl bg-white text-center"
           >
             <thead
@@ -287,7 +281,7 @@ const Funds = () => {
               )}
             >
               <tr className="overflow-hidden rounded-md p-0">
-                <th className="sticky right-[270px] z-50 mt-5 p-0">
+                <th className="sticky right-[270px] z-40 mt-5 p-0">
                   {isScrollAtStart && (
                     <div className="hidden group-hover:block">
                       <Tooltip title="پیمایش به راست (D)">
@@ -752,7 +746,6 @@ const Funds = () => {
                                         toggleWatchList({ id: row.id })
                                       }
                                       pinedFunction={() =>
-                                        pinnedRows.length <= 2 &&
                                         row.pin('top', true)
                                       }
                                       unPinedFunction={() => row.pin(false)}
@@ -830,7 +823,7 @@ const Funds = () => {
                           style={{ top: topValue }}
                           className={cn(
                             'bord group border-blue-100',
-                            pineWatchLis.includes(row.id) && `sticky z-50`,
+                            pineWatchLis.includes(row.id) && `sticky z-40`,
                             {
                               'shadow-2xl': pineWatchLis.includes(row.id),
                               'bg-blue-200': false,
@@ -861,7 +854,6 @@ const Funds = () => {
                                         toggleWatchList({ id: row.id })
                                       }
                                       pinedFunction={() =>
-                                        pineWatchLis.length <= 2 &&
                                         setPineWatchList([
                                           ...pineWatchLis,
                                           row.id,
@@ -928,7 +920,7 @@ const Funds = () => {
         </div>
       </div>
 
-      <div className="fixed bottom-6 right-0 z-50 mt-6 flex w-full justify-between px-8">
+      <div className="fixed bottom-6 right-0 mt-6 flex w-full justify-between px-8">
         <div className="rounded-md bg-gray-400 py-2">
           <OptionsDropdown
             onChange={(e) => {

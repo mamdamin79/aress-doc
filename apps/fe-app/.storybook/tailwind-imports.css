@@ -246,3 +246,7 @@
 html {
   direction: rtl;
 }
+
+.table-scroll, table { 
+  writing-mode: vertical-rl;
+}

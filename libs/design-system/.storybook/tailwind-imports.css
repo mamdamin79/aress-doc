@@ -295,6 +295,12 @@
 html {
   direction: rtl;
 }
+.table-scroll { 
+  writing-mode: sideways-rl;
+}
+table {
+  writing-mode: horizontal-tb;
+}
 input[type='password']::-ms-reveal,
 input[type='password']::-ms-clear,
 input[type='password']::-webkit-password-eye {

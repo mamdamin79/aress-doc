@@ -3,6 +3,8 @@ import { Icon } from '../Icon';
 import { OptionsDropdown } from '../OptionsDropdown';
 import { Tooltip } from '../Tooltip';
 import { useState } from 'react';
+import { CustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
+import { Toaster } from 'react-hot-toast';
 
 interface Props {
   name: string;
@@ -39,6 +41,8 @@ export function FundsTableRow({
 }: Props) {
   const [isSelected, setIsSelected] = useState(false);
 
+  const { showProgressToast, showToast } = CustomToast();
+
   return (
     <div
       className={cn(
@@ -65,40 +69,74 @@ export function FundsTableRow({
           <div className="h-8 w-8 overflow-hidden rounded-full">
             <img src={logo} alt="logo fund" />
           </div>
-          <div
-            className='absolute right-4 top-9 transition-all duration-500 group-hover/img:-translate-x-[13px] group-hover/img:-translate-y-[19.5px]'
-          >
-            <div
-              onClick={() => {
-                pined ? unPinedFunction() : pinedFunction();
-              }}
-              className={cn(
-                'hidden h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white text-blue-700 duration-500 group-hover/img:flex',
-                {
-                  flex: pined,
-                },
-              )}
+          <div className="absolute right-4 top-9 transition-all duration-500 group-hover/img:-translate-x-[13px] group-hover/img:-translate-y-[19.5px]">
+            <Tooltip
+              position='top'
+              title={
+                canPin
+                  ? pined
+                    ? 'برداشتن سنجاق'
+                    : 'سنجاق کردن صندوق'
+                  : pined
+                    ? 'برداشتن سنجاق'
+                    : ''
+              }
             >
               <div
-                className={cn("flex items-center justify-center", {
-                  'group-hover/img:hidden': pined,
-                })}
-              >
-                <Icon name="pin" size="md" />
-              </div>
+                onClick={() => {
+                  if (!canPin && !pined)
+                    showToast({
+                      message:
+                        'حداکثر میتوانید ۳ صندوق را در هر دسته بندی پین کنید.',
+                      type: 'warning',
+                    });
+                  if (canPin && !pined) {
+                    pinedFunction();
+                    showProgressToast({
+                      title: 'صندوق مورد نظر سنجاق شد.',
+                      timeout: 3000,
+                    });
+                  }
 
-              {pined && (
+                  if (pined) {
+                    unPinedFunction();
+                    showProgressToast({
+                      title: 'صندوق از لیست سنجاق شده‌ها خارج شد.',
+                      timeout: 3000,
+                      leadingAction: {
+                        iconProps: { name: 'undo-2', size: 'sm' },
+                        onClick: () => pinedFunction(),
+                      },
+                    });
+                  }
+                }}
+                className={cn(
+                  'hidden h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white text-blue-700 duration-500 group-hover/img:flex',
+                  {
+                    flex: pined,
+                  },
+                )}
+              >
                 <div
-                  className="hidden items-center justify-center group-hover/img:flex"
+                  className={cn('flex items-center justify-center', {
+                    'group-hover/img:hidden': pined,
+                    'text-gray-100 rotate-45': !canPin && !pined
+                  })}
                 >
-                  <Icon name="pin-off" size="md" />
+                  <Icon name="pin" size="md" />
                 </div>
-              )}
-            </div>
+
+                {pined && (
+                  <div className="hidden items-center justify-center group-hover/img:flex">
+                    <Icon name="pin-off" size="md" />
+                  </div>
+                )}
+              </div>
+            </Tooltip>
           </div>
         </div>
         <div className="flex flex-col gap-1">
-          <Tooltip offset={2} position="bottom" className="!z-50" title={name}>
+          <Tooltip offset={2} position="bottom" className="!z-40" title={name}>
             <p
               className={cn(
                 'text-gray-1000 w-[235px] truncate text-right text-sm font-medium group-hover:w-[202px]',
@@ -187,8 +225,28 @@ export function FundsTableRow({
           return (
             <div
               onClick={() => {
-                prop.text === 'سنجاق کردن' && pinedFunction();
-                prop.text === 'برداشتن سنجاق' && unPinedFunction();
+                if (!canPin && prop.text === 'سنجاق کردن') {
+                  return;
+                }
+                if (prop.text === 'سنجاق کردن') {
+                  pinedFunction();
+                  showProgressToast({
+                    timeout: 5000,
+                    title: 'صندوق مورد نظر سنجاق شد.',
+                  });
+                }
+                if (prop.text === 'برداشتن سنجاق') {
+                  unPinedFunction();
+                  showProgressToast({
+                    title: 'صندوق از لیست سنجاق شده‌ها خارج شد.',
+                    timeout: 3000,
+                    leadingAction: {
+                      iconProps: { name: 'undo-2', size: 'sm' },
+                      onClick: () => pinedFunction(),
+                    },
+                  });
+                }
+
                 (prop.text === 'اضافه کردن به دیده بان' ||
                   prop.text === 'حذف از دیده بان') &&
                   toggleWatchList();
@@ -216,6 +274,12 @@ export function FundsTableRow({
           );
         }}
       ></OptionsDropdown>
+      <Toaster
+        position="bottom-center"
+        containerStyle={{
+          bottom: 70,
+        }}
+      />
     </div>
   );
 }
