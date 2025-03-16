@@ -39,8 +39,8 @@ const Funds = () => {
   const [data, setData] = useState(() => makeData(500));
   const [isFilterModal, setIsFilterModal] = useState(false);
   const [isSettingModal, setIsSettingModal] = useState(false);
-  const [scrolleLeft, setScrollLeft] = useState<boolean>(false);
-  const [scrollRight, setScrollRight] = useState<boolean>(true);
+  const [isScrollAtStart, setIsScrollAtStart] = useState<boolean>(false);
+  const [isScrollAtEnd, setIsScrollAtEnd] = useState<boolean>(true);
   const [fundSearchQuery, setFundSearchQuery] = useState<string>('');
   const tableRef = useRef<HTMLDivElement>(null);
   const [watchList, setWatchList] = useState<string[]>([]);
@@ -139,7 +139,13 @@ const Funds = () => {
     const handleScroll = () => {
       if (tableRef.current) {
         const { scrollLeft, scrollWidth, clientWidth } = tableRef.current;
-        setScrollLeft(!(scrollLeft + clientWidth >= scrollWidth - 1));
+
+        if (scrollLeft === 0) {          
+          setIsScrollAtEnd(false)
+        } else setIsScrollAtEnd(true)
+        
+        
+        setIsScrollAtStart(!(scrollLeft + clientWidth >= scrollWidth - 1));
       }
     };
 
@@ -282,7 +288,7 @@ const Funds = () => {
             >
               <tr className="overflow-hidden rounded-md p-0">
                 <th className="sticky right-[270px] z-50 mt-5 p-0">
-                  {scrolleLeft && (
+                  {isScrollAtStart && (
                     <div className="hidden group-hover:block">
                       <Tooltip title="پیمایش به راست (D)">
                         <button
@@ -305,7 +311,7 @@ const Funds = () => {
                           key={index}
                           className={cn(
                             'sticky right-0 top-0 z-40 m-0 w-[312px] overflow-y-hidden p-0',
-                            scrolleLeft ? 'shadow' : 'shadow-none',
+                            isScrollAtStart ? 'shadow' : 'shadow-none',
                           )}
                         >
                           <OptionsDropdown
@@ -367,7 +373,7 @@ const Funds = () => {
                                     )
                                   }
                                   size="extraLarg"
-                                  shadow={scrolleLeft}
+                                  shadow={isScrollAtStart}
                                   type={
                                     header.column.getIsSorted() === 'asc'
                                       ? 'active-desc'
@@ -660,7 +666,7 @@ const Funds = () => {
                   );
                 })}
                 <th className="sticky left-10 m-0 mt-5">
-                  {scrollRight && (
+                  {isScrollAtEnd && (
                     <div
                       onClick={() => handlerKeyboardScroll(false)}
                       className={cn('hidden group-hover:block')}
@@ -750,13 +756,13 @@ const Funds = () => {
                                         row.pin('top', true)
                                       }
                                       unPinedFunction={() => row.pin(false)}
-                                      isScrolled={scrolleLeft}
+                                      isScrolled={isScrollAtStart}
                                       investmentMethod={
                                         row.original.investmentMethod
                                       }
                                       hasVideo={row.original.hasVideo}
                                       name={row.original.nameFund}
-                                      pined={row.getIsPinned()}
+                                      pined={Boolean(row.getIsPinned())}
                                       selected={false}
                                       logo={row.original.logo}
                                     />
@@ -866,7 +872,7 @@ const Funds = () => {
                                           prev.filter((id) => id !== row.id),
                                         )
                                       }
-                                      isScrolled={scrolleLeft}
+                                      isScrolled={isScrollAtStart}
                                       investmentMethod={
                                         row.original.investmentMethod
                                       }

@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Person } from "./components/makeData";
 
-export const columnVisibility = {
+export const columnVisibility:  Record<string, boolean>  = {
   profitPerUnit: false,
   investmentPolicy: false,
   fundCategory: false,

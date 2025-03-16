@@ -66,13 +66,7 @@ export function FundsTableRow({
             <img src={logo} alt="logo fund" />
           </div>
           <div
-            className={cn(
-              'absolute right-4 top-9 transition-all duration-500',
-              {
-                'group-hover/img:-translate-x-[13px] group-hover/img:-translate-y-[19.5px]':
-                  pined,
-              },
-            )}
+            className='absolute right-4 top-9 transition-all duration-500 group-hover/img:-translate-x-[13px] group-hover/img:-translate-y-[19.5px]'
           >
             <div
               onClick={() => {
@@ -88,7 +82,6 @@ export function FundsTableRow({
               <div
                 className={cn("flex items-center justify-center", {
                   'group-hover/img:hidden': pined,
-                  'scale-0 group-hover/img:scale-100 duration-300 transition-all': !pined
                 })}
               >
                 <Icon name="pin" size="md" />
