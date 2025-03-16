@@ -1,0 +1,19 @@
+version: '3.8'
+# docker compose up -d --build design-system-storybook
+
+services:
+  design-system-storybook:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "6009:6009"
+    command: ["npx", "http-server", "./libs/design-system/storybook-static", "-p", "6009"]
+
+  fe-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.fe-app
+    ports:
+      - "3000:3000"
+    command: ["pnpm", "run", "start", "-p", "3000"]
