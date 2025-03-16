@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ToastDemo } from './ToastDemo';
+import { Toaster } from 'react-hot-toast';
+import { CustomToast } from './CustomToast';
 
 // Meta configuration for the Toast component in Storybook
 const meta: Meta<typeof ToastDemo> = {
@@ -39,5 +41,65 @@ export const Warning: Story = {
     message:
       'بعد از اتمام زمان‌بندی میتوانید برای ارسال مجدد رمز یک‌بار مصرف اقدام کنید.',
     type: 'warning',
+  },
+};
+
+export const trailing: Story = {
+  render: (args) => {
+    const { showProgressToast } = CustomToast();
+    return (
+      <>
+        <div
+          className="w-fit cursor-pointer rounded-md border p-2"
+          onClick={() => {
+            showProgressToast({
+              title: 'گزارش جایگذاری شد.',
+              trailingAction: {
+                ButtonProps: {
+                  align: 'center',
+                  isLoading: false,
+                  mode: 'primary',
+                  size: 'sm',
+                  children: 'برو به داشبورد',
+                },
+                onClick: () => console.log('Trailing action clicked'),
+              },
+              timeout: 5000,
+            });
+          }}
+        >
+          show toast
+        </div>
+        <Toaster />
+      </>
+    );
+  },
+};
+export const leading: Story = {
+  render: (args) => {
+    const { showProgressToast } = CustomToast();
+    return (
+      <>
+        <div
+          className="w-fit cursor-pointer rounded-md border p-2"
+          onClick={() => {
+            showProgressToast({
+              title: 'گزارش حذف شد.',
+              leadingAction: {
+                iconProps: {
+                  name: 'undo-2',
+                  size: 'lg',
+                },
+                onClick: () => console.log('leading action clicked'),
+              },
+              timeout: 5000,
+            });
+          }}
+        >
+          show toast
+        </div>
+        <Toaster />
+      </>
+    );
   },
 };
