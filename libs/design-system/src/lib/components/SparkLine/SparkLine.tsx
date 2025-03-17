@@ -1,79 +1,36 @@
 import React, { useEffect, useRef } from 'react';
 import Highcharts, { Options, Chart } from 'highcharts';
+import { defaultOptions, SPARKLINE_CONSTANTS } from './SparkLine.constants';
 
-interface SparkLineProps {
-  options?: Options;
+export interface SparkLineProps {
   data: number[];
-  trend: 'positive' | 'negative'; // Add the trend prop
+  trend: 'positive' | 'negative';
+  options?: Options;
+  width?: number;
+  height?: number;
 }
-
-const defaultOptions: Options = {
-  chart: {
-    backgroundColor: 'transparent',
-    borderWidth: 0,
-    type: 'area',
-    margin: [2, 0, 2, 0],
-    style: {
-      overflow: 'visible',
-    },
-  },
-  title: {
-    text: '',
-  },
-  credits: {
-    enabled: false,
-  },
-  xAxis: {
-    visible: false,
-  },
-  yAxis: {
-    visible: false,
-  },
-  legend: {
-    enabled: false,
-  },
-  tooltip: {
-    enabled: false,
-  },
-  plotOptions: {
-    series: {
-      animation: false,
-      lineWidth: 2,
-      shadow: false,
-      states: {
-        hover: {
-          enabled: false,
-          lineWidth: 1,
-        },
-      },
-      marker: {
-        enabled: false,
-      },
-    },
-  },
-  series: [
-    {
-      data: [],
-      type: 'area',
-    },
-  ],
-};
 
 export const SparkLine: React.FC<SparkLineProps> = ({
   options,
   data,
   trend,
+  height,
+  width,
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const chartRef = useRef<Chart | null>(null);
-
+  const chartWidth = width ?? SPARKLINE_CONSTANTS.DIMENSIONS.DEFAULT_WIDTH;
+  const chartHeight = height ?? SPARKLINE_CONSTANTS.DIMENSIONS.DEFAULT_HEIGHT;
   useEffect(() => {
     if (containerRef.current) {
-      const lineColor = trend === 'positive' ? '#00822D' : '#DD1919';
+      const lineColor =
+        trend === 'positive'
+          ? SPARKLINE_CONSTANTS.COLORS.POSITIVE
+          : SPARKLINE_CONSTANTS.COLORS.NEGATIVE;
       const mergedOptions = Highcharts.merge(defaultOptions, {
         chart: {
-          width: 88,
-          height: 44,
+          width: chartWidth,
+          height: chartHeight,
         },
         series: [
           {
@@ -91,7 +48,7 @@ export const SparkLine: React.FC<SparkLineProps> = ({
         chartRef.current.destroy();
       }
     };
-  }, [options, trend]);
+  }, [options, trend, chartWidth, chartHeight]);
 
   useEffect(() => {
     if (chartRef.current && data) {
@@ -99,5 +56,15 @@ export const SparkLine: React.FC<SparkLineProps> = ({
     }
   }, [data]);
 
-  return <div ref={containerRef} className="h-11 w-[88px]"></div>;
+  return (
+    <div
+      ref={containerRef}
+      style={{
+        width: chartWidth + 'px',
+        height: chartHeight + 'px',
+      }}
+      role="img"
+      aria-label={`${trend} trend sparkline chart`}
+    ></div>
+  );
 };
