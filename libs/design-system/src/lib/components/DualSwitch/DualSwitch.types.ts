@@ -14,9 +14,9 @@ export type DualSwitchItem = {
 
 export interface DualSwitchProps {
   initialIndex?: number;
-  onChange: (value: number) => void;
+  onChange?: (value: number) => void;
   items: DualSwitchItem[];
-  size: 'sm' | 'lg';
+  size?: 'sm' | 'lg';
   disabled?: boolean;
   bgWhite?: boolean;
 }

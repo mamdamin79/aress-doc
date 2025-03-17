@@ -8,7 +8,7 @@ export const DualSwitch: React.FC<DualSwitchProps> = ({
   initialIndex = 0,
   onChange,
   items,
-  size,
+  size='sm',
   disabled = false,
   bgWhite = false,
 }) => {
@@ -16,7 +16,7 @@ export const DualSwitch: React.FC<DualSwitchProps> = ({
 
   const handleSwitchClick = (itemIndex: number) => {
     setActiveItemIndex(itemIndex);
-    onChange(itemIndex);
+    onChange?.(itemIndex);
   };
 
   const Wrapper: React.FC<{
