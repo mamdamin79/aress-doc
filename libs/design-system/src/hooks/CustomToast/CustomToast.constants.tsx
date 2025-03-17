@@ -22,3 +22,6 @@ export const bgIcon = {
   error: 'bg-red-600',
   warning: 'bg-yellow-600',
 };
+
+// Default timeout for progress toast
+export const DEFAULT_TOAST_TIMEOUT = 700;

@@ -1,5 +1,10 @@
 import { toast } from 'react-hot-toast';
-import { bgIcon, icons, styleToasts } from './CustomToast.constants';
+import {
+  bgIcon,
+  icons,
+  styleToasts,
+  DEFAULT_TOAST_TIMEOUT,
+} from './CustomToast.constants';
 import { cn } from '../../utils';
 import { ProgressToast, ProgressToastProps } from './ProgressToast';
 import { CustomToastTypes } from './CustomToast.types';
@@ -23,7 +28,7 @@ const showToast = ({ message, type }: Props) => {
       role="alert"
       aria-live="assertive"
       className={cn(
-        'text-gray-1000 relative -top-96 scale-0 transform-gpu rounded-xl border-[1.5px] p-3 font-medium transition-all duration-500 ease-in-out',
+        'text-gray-1000 relative -top-96 scale-0 transform-gpu cursor-pointer rounded-xl border-[1.5px] p-3 font-medium transition-all duration-500 ease-in-out',
         t.visible ? 'animate-toast top-0 scale-95' : 'opacity-0',
         styleToasts[type],
       )}
@@ -42,7 +47,7 @@ const showProgressToast = ({
   title,
   trailingAction,
   leadingAction,
-  timeout = 700,
+  timeout = DEFAULT_TOAST_TIMEOUT,
 }: ProgressToastProps): ReturnType<typeof toast.custom> => {
   const id = toast.custom(
     (t) => (
