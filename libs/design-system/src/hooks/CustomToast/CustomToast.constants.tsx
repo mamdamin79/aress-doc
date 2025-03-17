@@ -8,7 +8,7 @@ export const icons = {
   warning: <TriangleAlert strokeWidth={1.8} className="h-5 w-5" />,
 };
 
-// styles for diffrent modes toast
+// styles for different modes toast
 export const styleToasts = {
   info: 'bg-blue-100 border-blue-400',
   success: 'bg-green-100 border-green-400',

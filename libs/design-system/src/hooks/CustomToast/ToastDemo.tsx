@@ -1,12 +1,13 @@
 import { Toaster } from 'react-hot-toast';
-import { CustomToast } from './CustomToast';
+import { useCustomToast } from './CustomToast';
+import { CustomToastTypes } from './CustomToast.types';
 
 interface Props {
   message: string;
-  type: 'error' | 'success' | 'info' | 'warning';
+  type: CustomToastTypes;
 }
 export function ToastDemo({ message, type }: Props) {
-  const { showToast } = CustomToast();
+  const { showToast } = useCustomToast();
   return (
     <>
       <div
