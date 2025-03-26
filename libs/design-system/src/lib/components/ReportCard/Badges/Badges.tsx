@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { cn } from '../../../../utils/classNames.utils';
 import { Icon as Iconify } from '@iconify/react';
 import { Icon } from '../../Icon';
@@ -13,7 +13,7 @@ export const NewBadge = () => {
 export const VideoBadge = () => {
   return (
     <div className="bg-vividGreen-700 flex h-[22px] w-[37px] items-center justify-center rounded-[100px] p-2 text-xs font-medium text-white">
-      <Icon name="video" key="video" size="md" />
+      <Icon name="video" size="md" />
     </div>
   );
 };
@@ -22,16 +22,17 @@ interface LikeBadgeProps {
   onClick: (isLiked: boolean) => void;
 }
 export const LikeBadge = ({ isLiked, onClick }: LikeBadgeProps) => {
-  const [isLikedInner, setIsLikedInner] = useState(isLiked);
+  const [isLikedState, setIsLikedState] = useState(isLiked);
   const handleLiked = () => {
-    onClick(isLikedInner);
-    setIsLikedInner(!isLikedInner);
+    const nextState = !isLikedState;
+    setIsLikedState(nextState);
+    onClick(nextState);
   };
   return (
     <div
       className={cn(
         `flex h-[36px] w-[36px] cursor-pointer items-center justify-center rounded-full bg-white p-2 text-red-600 transition-colors hover:bg-red-100`,
-        isLiked ? 'fill-red-600' : '',
+        isLikedState ? 'fill-red-600' : '',
       )}
       onClick={handleLiked}
     >
@@ -39,7 +40,7 @@ export const LikeBadge = ({ isLiked, onClick }: LikeBadgeProps) => {
         icon={'lucide:heart'}
         width={16}
         height={16}
-        className={isLikedInner ? '[&>*]:fill-red-600' : ''}
+        className={isLikedState ? '[&>*]:fill-red-600' : ''}
       />
     </div>
   );
