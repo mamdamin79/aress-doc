@@ -5,10 +5,11 @@ import {
   Transition,
   TransitionChild,
 } from '@headlessui/react';
-import { cn, Icon } from 'design-system';
+import { cn } from 'libs/design-system/src/utils';
+import { Icon } from '../Icon';
 
 export interface DialogProps {
-  isOpen: boolean;
+  isOpen?: boolean;
   onClose: () => void;
   children?: React.ReactNode;
   className?: string;
@@ -22,7 +23,12 @@ export const Dialog: React.FC<DialogProps> = ({
 }) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <HeadlessDialog as="div" className="relative z-50" onClose={onClose}>
+      <HeadlessDialog
+        as="div"
+        className="relative z-50"
+        aria-label="Close dialog"
+        onClose={onClose}
+      >
         <TransitionChild
           as={Fragment}
           enter="ease-out duration-300"
