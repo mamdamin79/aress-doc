@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Dialog,
   DialogPanel,
@@ -8,31 +8,29 @@ import {
 } from '@headlessui/react';
 import { Fragment } from 'react';
 import Cropper from 'react-easy-crop';
-import { ImageCropperProps } from './ImageCropper.types';
+import { CroppedArea, ImageCropperProps } from './ImageCropper.types';
 import { getCroppedImg } from './ImageCropper.utils';
 import { Button } from '../Button';
 import { Icon } from '../Icon';
-interface CroppedArea {
-  width: number;
-  height: number;
-  x: number;
-  y: number;
-}
+
 export const ImageCropper: React.FC<ImageCropperProps> = ({
   image,
   onChange,
   onClose,
-  isOpen,
+  isOpen = false,
 }) => {
   const [crop, setCrop] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState<number>(1);
   const [croppedAreaPixels, setCroppedAreaPixels] =
     useState<CroppedArea | null>(null);
-  const onCropComplete = (croppedArea: CroppedArea, pixels: CroppedArea) => {
-    setCroppedAreaPixels(pixels);
-  };
+  const onCropComplete = useCallback(
+    (croppedArea: CroppedArea, pixels: CroppedArea) => {
+      setCroppedAreaPixels(pixels);
+    },
+    [],
+  );
   const [isLoading, setIsLoading] = useState(false);
-  const handleSave = async () => {
+  const handleSave = useCallback(async () => {
     setIsLoading(true);
     if (croppedAreaPixels) {
       const croppedImage = await getCroppedImg(image, croppedAreaPixels);
@@ -40,10 +38,15 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
       onClose?.();
     }
     setIsLoading(false);
-  };
+  }, [croppedAreaPixels, image, onChange, onClose]);
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-50" onClose={() => onClose?.()}>
+      <Dialog
+        as="div"
+        className="relative z-50"
+        onClose={() => onClose?.()}
+        aria-labelledby="crop-image-title"
+      >
         <TransitionChild
           as={Fragment}
           enter="ease-out duration-300"
@@ -80,6 +83,7 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
                 <DialogTitle
                   as="div"
                   className="mb-4 flex items-center justify-between"
+                  id="crop-image-title"
                 >
                   <div className="flex flex-col gap-2 text-right">
                     <h2 className="text-xl font-semibold">برش عکس</h2>
