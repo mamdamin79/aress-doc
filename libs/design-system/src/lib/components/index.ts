@@ -16,3 +16,4 @@ export * from './SummaryCell';
 export * from './Button';
 export * from './NotesHeading';
 export * from './PopupInfo';
+export * from './Dialog';
