@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { CardComponentProps, ReportCard } from '../ReportCard';
+import { ReportCardProps, ReportCard } from '../ReportCard';
 import 'keen-slider/keen-slider.min.css';
 import { useKeenSlider } from 'keen-slider/react';
 import { cn } from '../../../utils/classNames.utils';
 import { Icon } from '../Icon';
 import { DotIndicator } from './DotIndicator';
-
+import { CARD_WIDTH, GAP_WIDTH, MAX_SLIDES } from './ReportCard.constants';
 interface ReportsCarouselProps {
-  cards: CardComponentProps[];
+  cards: ReportCardProps[];
 }
-
-const GAP_WIDTH = 16;
-const MAX_SLIDES = 4;
-const CARD_WIDTH = 416;
 
 export const ReportsCarousel: React.FC<ReportsCarouselProps> = ({ cards }) => {
   const [slidesPerView, setSlidesPerView] = useState<number>(4);
@@ -26,8 +22,6 @@ export const ReportsCarousel: React.FC<ReportsCarouselProps> = ({ cards }) => {
       },
       slideChanged(s) {
         setCurrentIndex(s.track.details.rel);
-        console.log(slidesPerView);
-        console.log(s.track.details.rel);
       },
       created(s) {
         setCurrentIndex(s.track.details.rel);
@@ -43,8 +37,6 @@ export const ReportsCarousel: React.FC<ReportsCarouselProps> = ({ cards }) => {
       setSlidesPerView(Math.max(1, Math.min(MAX_SLIDES, possibleSlides)));
     };
     updateSlidesPerView();
-    window.addEventListener('resize', updateSlidesPerView);
-    return () => window.removeEventListener('resize', updateSlidesPerView);
   }, [instanceRef]);
 
   const handleNavigation = (direction: 'next' | 'prev') => {
