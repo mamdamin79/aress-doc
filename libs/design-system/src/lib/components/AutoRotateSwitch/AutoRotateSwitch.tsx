@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Icon } from '../Icon';
 import { cn } from 'libs/design-system/src/utils';
 import { AutoRotateProps } from './AutoRotateSwitch.types';
@@ -11,23 +11,27 @@ export const AutoRotateSwitch: React.FC<AutoRotateProps> = ({
   disabled = false,
 }) => {
   const [activeRotateOption, setActiveRotateOption] = useState<number | null>(
-    initialValue ? initialValue : null,
+    initialValue ?? null,
   );
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOptionsMenuOpen, setIsOptionsMenuOpen] = useState(false);
 
-  const handleMouseEnter = () => {
-    if (!disabled && !activeRotateOption) setIsOpen(true);
-  };
+  const handleMouseEnter = useCallback(() => {
+    if (!disabled && !activeRotateOption) setIsOptionsMenuOpen(true);
+  }, [disabled, activeRotateOption]);
 
   const handleMouseLeave = () => {
-    if (!disabled) setIsOpen(false);
+    if (!disabled) setIsOptionsMenuOpen(false);
   };
 
-  const changeActiveOption = (option: number | null) => {
-    setIsOpen(false);
-    setActiveRotateOption(option);
-    onChange(option);
-  };
+  const changeActiveOption = useCallback(
+    (option: number | null) => {
+      setIsOptionsMenuOpen(false);
+      setActiveRotateOption(option);
+      onChange(option);
+    },
+    [onChange],
+  );
+
   useEffect(() => {
     setActiveRotateOption(initialValue ?? null);
   }, [initialValue]);
@@ -36,7 +40,7 @@ export const AutoRotateSwitch: React.FC<AutoRotateProps> = ({
     <div
       key={option}
       className={cn(
-        'hover:bg-brand-200 flex h-8 w-8 items-center justify-center rounded-full transition-colors',
+        'hover:bg-brand-200 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-colors',
         activeRotateOption === option &&
           'bg-brand-600 hover:bg-brand-600 text-white',
       )}
@@ -55,7 +59,7 @@ export const AutoRotateSwitch: React.FC<AutoRotateProps> = ({
       <div
         className={cn(
           'invisible flex h-full -translate-x-7 select-none flex-row-reverse items-center justify-center gap-1 rounded-full border border-gray-400 p-1 font-medium opacity-0 transition-all duration-300',
-          isOpen &&
+          isOptionsMenuOpen &&
             'group-hover:visible group-hover:translate-x-0 group-hover:opacity-100',
         )}
       >
@@ -65,10 +69,12 @@ export const AutoRotateSwitch: React.FC<AutoRotateProps> = ({
         className={cn(
           'border-brand-600 flex h-10 flex-row items-center justify-center gap-1 rounded-full border px-[6px] transition-all',
           activeRotateOption ? 'bg-brand-600 p-1 text-white' : 'w-10',
-          isOpen && activeRotateOption && 'border-red-600 bg-red-600',
+          isOptionsMenuOpen &&
+            activeRotateOption &&
+            'border-red-600 bg-red-600',
         )}
       >
-        {activeRotateOption && !disabled && !isOpen && (
+        {activeRotateOption && !disabled && !isOptionsMenuOpen && (
           <div className="bg-brand-600 hover:bg-brand-600 flex h-8 w-8 items-center justify-center rounded-full text-white">
             {activeRotateOption}s
           </div>
