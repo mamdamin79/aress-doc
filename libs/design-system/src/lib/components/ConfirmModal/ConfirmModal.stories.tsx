@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import ConfirmModal from './ConfirmModal';
+import {ConfirmModal} from './ConfirmModal';
 import { ConfirmModalProps } from './ConfirmModal.types';
 
 const meta: Meta<typeof ConfirmModal> = {

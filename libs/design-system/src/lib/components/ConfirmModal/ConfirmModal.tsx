@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react';
 
-import { Icon } from '../Icon';
 import { ConfirmModalProps } from './ConfirmModal.types';
 import { Button } from '../Button';
 import { Checkbox } from '../Checkbox';
@@ -8,7 +7,7 @@ import { cn } from '../../../utils/classNames.utils';
 import { Dialog } from '../Dialog';
 import { TextField } from '../TextField';
 
-const CustomComponent: React.FC<ConfirmModalProps> = ({
+export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   title,
   input,
   checkBoxText,
@@ -53,20 +52,22 @@ const CustomComponent: React.FC<ConfirmModalProps> = ({
                 placeholder={input.placeholder}
                 mergeTitleAndPlaceholder={false}
                 mode="outline"
+                id="confirm-modal-input"
                 trailingIcons={[]}
               />
             </div>
           )}
           {/* Checkbox */}
-          {/* {checkBoxText && (
-              <Field className="flex items-center text-sm font-medium">
-                <Checkbox
-                  checked={checked}
-                  onChange={() => setChecked(!checked)}
-                ></Checkbox>
-                <Label>{checkBoxText}</Label>
-              </Field>
-            )} */}
+          {checkBoxText && (
+            <div className="flex items-center text-sm font-medium">
+              <Checkbox
+                checked={checked}
+                id="confirm-modal-checkbox"
+                onChange={() => setChecked(!checked)}
+              ></Checkbox>
+              <label htmlFor="confirm-modal-checkbox">{checkBoxText}</label>
+            </div>
+          )}
           {/* Handle Submit or Cancel */}
           <div className="flex justify-end gap-2">
             <div className="min-w-14">
@@ -104,5 +105,3 @@ const CustomComponent: React.FC<ConfirmModalProps> = ({
     </Dialog>
   );
 };
-
-export default CustomComponent;
