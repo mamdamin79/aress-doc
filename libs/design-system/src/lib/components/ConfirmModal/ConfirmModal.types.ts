@@ -1,8 +1,8 @@
 export type ConfirmModalProps = {
   title: string;
   input?: {
-    label: string;
-    placeholder: string;
+    label?: string;
+    placeholder?: string;
   };
   checkBoxText?: string;
   confirmButtonText: string;
