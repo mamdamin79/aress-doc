@@ -247,9 +247,28 @@ export function FundsTableRow({
                   });
                 }
 
-                (prop.text === 'اضافه کردن به دیده بان' ||
-                  prop.text === 'حذف از دیده بان') &&
-                  toggleWatchList();
+                
+                  if(prop.text === 'اضافه کردن به دیده بان')
+                  {
+                    toggleWatchList();
+                    showProgressToast({
+                      title: 'صندوق مورد نظر به دیده بان اضافه شد.',
+                      timeout: 3000,
+                    });
+                  }
+                  if (prop.text === 'حذف از دیده بان') {
+                    showProgressToast({
+                      title: 'صندوق مورد نظر از دیده بان حذف شد.',
+                      timeout: 3000,
+                      leadingAction: {
+                        iconProps: { name: 'undo-2', size: 'sm' },
+                        onClick: () => toggleWatchList(),
+                      },
+                    });
+                    toggleWatchList();
+                  }
+                  
+                    
               }}
               className={cn(
                 'flex cursor-pointer items-center gap-2 bg-white px-3 py-2',

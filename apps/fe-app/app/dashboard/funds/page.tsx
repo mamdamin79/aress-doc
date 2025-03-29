@@ -139,13 +139,15 @@ const Funds = () => {
     const handleScroll = () => {
       if (tableRef.current) {
         const { scrollLeft, scrollWidth, clientWidth } = tableRef.current;
-
-        if (scrollLeft === 0) {          
-          setIsScrollAtEnd(false)
-        } else setIsScrollAtEnd(true)
         
+        if (Math.round(scrollLeft) === 0) {          
+          setIsScrollAtStart(false)
+        } else if (scrollLeft < 0) setIsScrollAtStart(true)
         
-        setIsScrollAtStart(!(scrollLeft + clientWidth >= scrollWidth - 1));
+          console.log(Math.round(scrollLeft * -1) + clientWidth, scrollWidth);
+          
+        
+        setIsScrollAtEnd(Math.round(scrollLeft * -1) + clientWidth <= scrollWidth - 1);
       }
     };
 
@@ -159,10 +161,10 @@ const Funds = () => {
       }
       if (e.code === 'KeyD') {
         handlerKeyboardScroll(true);
-        document.addEventListener('keypress', keyboardHandler);
       }
     };
-
+    
+    document.addEventListener('keypress', keyboardHandler);
 
     return () => table?.removeEventListener('scroll', handleScroll);
   }, []);
@@ -281,7 +283,7 @@ const Funds = () => {
               )}
             >
               <tr className="overflow-hidden rounded-md p-0">
-                <th className="sticky right-[270px] z-40 mt-5 p-0">
+                <th className="sticky right-[270px] z-50 mt-5 p-0">
                   {isScrollAtStart && (
                     <div className="hidden group-hover:block">
                       <Tooltip title="پیمایش به راست (D)">
