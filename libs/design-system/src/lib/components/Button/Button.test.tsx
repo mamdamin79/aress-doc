@@ -1,6 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Button } from './Button';
-import { describe } from 'node:test';
 import '@testing-library/jest-dom';
 
 describe('Button component', () => {
@@ -36,8 +35,6 @@ describe('Button component', () => {
   });
 
   test('renders loading spinner when isLoading is true, no click or hover effect', () => {
-    const handleClick = jest.fn();
-
     const { container } = render(
       <Button
         mode="primary"
@@ -129,5 +126,27 @@ describe('Button component', () => {
 
     const rightText = rightContainer.querySelectorAll('.text-right');
     expect(rightText.length).toBeGreaterThan(0);
+  });
+
+  test('calls onClick handler when button is clicked', () => {
+    const handleClick = jest.fn();
+
+    render(
+      <Button
+        mode="primary"
+        size="md"
+        align="center"
+        isLoading={false}
+        disabled={false}
+        onClick={handleClick}
+      >
+        Click me
+      </Button>,
+    );
+
+    const buttonElement = screen.getByRole('button');
+    fireEvent.click(buttonElement);
+
+    expect(handleClick).toHaveBeenCalledTimes(1);
   });
 });
