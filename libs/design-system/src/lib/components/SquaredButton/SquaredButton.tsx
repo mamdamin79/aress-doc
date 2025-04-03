@@ -5,14 +5,16 @@ import { Icon, IconProps } from '../Icon';
 export interface SquaredButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icons: [IconProps, IconProps] | [IconProps];
-  badge: {
+  badge?: {
     enabled: boolean;
     text?: string;
   };
 }
 
 export const SquaredButton: React.FC<SquaredButtonProps> = ({
-  badge,
+  badge={
+    enabled:false
+  },
   icons,
 }) => {
   return (
