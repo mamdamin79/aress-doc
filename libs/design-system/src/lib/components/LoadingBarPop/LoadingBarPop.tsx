@@ -1,12 +1,13 @@
 import { Transition } from '@headlessui/react';
 import { LoadingSpinner, SuccessOrFail } from './LoadedStatuses';
 
-export const LoadingBarPop = ({
-  status,
-  duration,
-}: {
+interface LoadingBarPopProps {
   status: 'loading' | 'done' | 'rejected';
   duration?: number;
+}
+export const LoadingBarPop: React.FC<LoadingBarPopProps> = ({
+  status = 'loading',
+  duration = 4,
 }) => {
   return (
     <div className="relative flex h-12 w-12 items-center justify-center">
@@ -20,7 +21,7 @@ export const LoadingBarPop = ({
         leaveTo="scale-0 opacity-0"
       >
         <div className="absolute">
-          <LoadingSpinner duration={duration ?? 4} />
+          <LoadingSpinner duration={duration} />
         </div>
       </Transition>
 
@@ -33,7 +34,10 @@ export const LoadingBarPop = ({
         leaveFrom="scale-100 opacity-100"
         leaveTo="scale-0 opacity-0"
       >
-        <div className="absolute">
+        <div
+          className="absolute"
+          aria-hidden={!(status === 'done' || status === 'rejected')}
+        >
           <SuccessOrFail status={status as 'done' | 'rejected'} />
         </div>
       </Transition>
