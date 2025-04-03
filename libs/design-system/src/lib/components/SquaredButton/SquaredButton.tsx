@@ -12,8 +12,8 @@ export interface SquaredButtonProps
 }
 
 export const SquaredButton: React.FC<SquaredButtonProps> = ({
-  badge={
-    enabled:false
+  badge = {
+    enabled: false,
   },
   icons,
 }) => {
