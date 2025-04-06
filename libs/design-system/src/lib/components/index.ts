@@ -15,4 +15,7 @@ export * from './ProgressBar';
 export * from './SummaryCell';
 export * from './Button';
 export * from './NotesHeading';
+export * from './HeadProfile';
+export * from './FundsTag';
+export * from './AddReportButton';
 export * from './LoadingBarPop';
