@@ -12,7 +12,14 @@ export type CustomIconName =
   | 'CustomClock'
   | 'CustomCircularUser'
   | 'CustomCirlcleX'
-  | 'CustomAlpha';
+  | 'CustomAlpha'
+  | 'CustomPinLinear'
+  | 'CustomPlayLinear'
+  | 'CustomPinOffLinear'
+  | 'CustomPinOffFill'
+  | 'CustomPlayFill'
+  | 'CustomPinFill'
+  | 'CustomGold';
 
 // this is a type of all valid icon names from lucide
 export type IconName = keyof typeof dynamicIconImports | CustomIconName;

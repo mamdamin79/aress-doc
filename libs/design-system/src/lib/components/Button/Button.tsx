@@ -25,42 +25,43 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   return (
     <button
+      disabled={disabled}
       {...props}
       className={cn(
-        'flex gap-2 group w-full transition-all duration-300 items-center px-2',
+        'group flex w-full items-center gap-2 px-2 py-2 transition-all duration-300',
         { 'justify-center': align === 'center' },
         { 'justify-start': align === 'right' },
         { 'cursor-default': disabled },
-        { 'rounded-lg h-12': size === 'md' },
-        { 'rounded-md h-[38px]': size === 'sm' },
+        { 'h-12 rounded-lg': size === 'md' },
+        { 'h-[38px] rounded-md': size === 'sm' },
         { 'bg-brand-300 text-white': mode === 'primary' && disabled },
         {
           'bg-brand-600 text-white':
             mode === 'primary' && isLoading && !disabled,
         },
         {
-          'bg-brand-600 active:bg-brand-800 text-white hover:bg-brand-700':
+          'bg-brand-600 active:bg-brand-800 hover:bg-brand-700 text-white':
             mode === 'primary' && !isLoading && !disabled,
         },
         {
-          'border-brand-300 border text-brand-300':
+          'border-brand-300 text-brand-300 border':
             mode === 'secondary' && disabled,
         },
         {
-          'border border-brand-600 text-brand-600':
+          'border-brand-600 text-brand-600 border':
             mode === 'secondary' && isLoading && !disabled,
         },
         {
-          'bg-white active:bg-brand-800 border border-brand-600 text-brand-600 hover:bg-brand-700 hover:text-white':
+          'active:bg-brand-800 border-brand-600 text-brand-600 hover:bg-brand-700 border bg-white hover:text-white':
             mode === 'secondary' && !isLoading && !disabled,
         },
         { 'text-brand-300': mode === 'text' && disabled },
         {
-          'text-brand-600 border border-brand-600':
+          'text-brand-600 border-brand-600 border':
             mode === 'text' && isLoading && !disabled,
         },
         {
-          'text-brand-600 active:text-brand-800 active:border-brand-800 hover:border hover:border-brand-600':
+          'text-brand-600 active:text-brand-800 active:border-brand-800 hover:border-brand-600 hover:border':
             mode === 'text' && !isLoading && !disabled,
         },
         { 'text-brand-300': mode === 'underline' && disabled },
@@ -68,12 +69,12 @@ export const Button: React.FC<ButtonProps> = ({
         {
           'text-brand-600 active:text-brand-800 active:border-brand-800':
             mode === 'underline' && !isLoading && !disabled,
-        }
+        },
       )}
     >
       {isLoading ? (
         <div>
-          <div className="animate-spin w-fit mx-auto">
+          <div className="mx-auto w-fit animate-spin">
             <Icon name="loader-circle" />
           </div>
         </div>
@@ -86,7 +87,7 @@ export const Button: React.FC<ButtonProps> = ({
               { 'text-center': align === 'center' },
               mode === 'underline' &&
                 !disabled &&
-                'transition-transform pb-1 group-hover:underline underline-offset-8 group-hover:border-b-brand-600'
+                'group-hover:border-b-brand-600 pb-1 underline-offset-8 transition-transform group-hover:underline',
             )}
           >
             {children}
