@@ -17,3 +17,4 @@ export * from './Button';
 export * from './NotesHeading';
 export * from './HeadProfile';
 export * from './FundsTag';
+export * from './AddReportButton';
