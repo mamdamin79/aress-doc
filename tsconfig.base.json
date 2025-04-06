@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "design-system": ["libs/design-system/src/index.ts"]
+      "design-system": ["libs/design-system/src/index.ts"],
+      "@aress-assets/*": ["libs/design-system/src/assets/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]
