@@ -2,10 +2,10 @@ import { Info, Check, TriangleAlert, CircleX } from 'lucide-react';
 
 // this icons for toast types
 export const icons = {
-  info: <Info strokeWidth={1.8} className="w-5 h-5" />,
-  success: <Check strokeWidth={1.8} className="w-5 h-5" />,
-  error: <CircleX strokeWidth={1.8} className="w-5 h-5" />,
-  warning: <TriangleAlert strokeWidth={1.8} className="w-5 h-5" />,
+  info: <Info strokeWidth={1.8} className="h-5 w-5" />,
+  success: <Check strokeWidth={1.8} className="h-5 w-5" />,
+  error: <CircleX strokeWidth={1.8} className="h-5 w-5" />,
+  warning: <TriangleAlert strokeWidth={1.8} className="h-5 w-5" />,
 };
 
 // styles for diffrent modes toast
