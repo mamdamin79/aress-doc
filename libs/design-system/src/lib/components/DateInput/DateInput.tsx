@@ -74,6 +74,7 @@ export const DateInput: React.FC<Props> = ({
   const [isArrowKeyPressed, setIsArrowKeyPressed] = useState(false);
 
   const isMiladi = (date: string) => moment(date, 'YYYY-MM-DD', true);
+  const [activeInput, setActiveInput] = useState(active);
   const isJalali = (date: string) => moment(date, 'jYYYY/jM/jD');
 
   useEffect(() => {
@@ -126,6 +127,11 @@ export const DateInput: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, defaultValue]);
 
+  useEffect(() => {
+    setActiveInput(active);
+  }, [active]);
+  console.log(activeInput);
+
   // focus day input
   useEffect(() => {
     if (!day) {
@@ -140,7 +146,7 @@ export const DateInput: React.FC<Props> = ({
       if (isMiladi(min).isValid()) {
         setMinDate({
           day: isMiladi(min).date(),
-          month: isMiladi(min).month(),
+          month: isMiladi(min).month() + 1,
           year: isMiladi(min).year(),
         });
       }
@@ -177,7 +183,7 @@ export const DateInput: React.FC<Props> = ({
       if (miladiDate.isValid()) {
         setMaxDate({
           day: miladiDate.date(),
-          month: miladiDate.month(),
+          month: miladiDate.month() + 1,
           year: miladiDate.year(),
         });
       }
@@ -224,6 +230,14 @@ export const DateInput: React.FC<Props> = ({
     // Check for minimum date constraints
     if (minDate.year && minDate.month && minDate.day) {
       if (year < minDate.year) tempMinError = true;
+      console.log(
+        'year =>',
+        year,
+        minDate.year,
+        'month =>',
+        month,
+        minDate.month
+      );
       if (year === minDate.year && month === minDate.month && e < minDate.day) {
         tempMinError = true;
       }
@@ -552,7 +566,6 @@ export const DateInput: React.FC<Props> = ({
     if (!day) return '';
     return String(day).length === 1 ? `0${day}` : day;
   };
-
   const formatMonth = (month: number | null | undefined) => {
     if (!month) return '';
     return String(month).length === 1 ? `0${month}` : month;
@@ -653,113 +666,116 @@ export const DateInput: React.FC<Props> = ({
   };
 
   return (
-    <div>
-      <div
-        className={cn(
-          'w-40 rounded-md bg-white border-2 flex items-center gap-1 py-2 px-4',
-          {
-            'border-red-600':
-              errors?.maxError ||
-              errors?.minError ||
-              duplicateInputError ||
-              invalidEndDate ||
-              invalidStartDate,
-            'border-brand-600':
-              active &&
-              focus &&
-              !errors?.maxError &&
-              !errors?.minError &&
-              !duplicateInputError &&
-              !invalidEndDate &&
-              !invalidStartDate,
-            'border-gray-500':
-              year &&
-              day &&
-              month &&
-              !focus &&
-              !errors.maxError &&
-              !errors.minError &&
-              !duplicateInputError &&
-              !invalidEndDate &&
-              !invalidStartDate,
-          }
-        )}
-      >
-        {active ? (
-          <>
-            <input
-              dir="rtl"
-              onClick={() => {
-                if (active) setActiveIndex(1);
-                dayRef?.current?.setSelectionRange(2, 2);
-              }}
-              disabled={!active}
-              ref={dayRef}
-              value={formatDay(day)}
-              onChange={(e) => changeDayInput(+e.target.value, true)}
-              type="text"
-              placeholder="روز"
-              className={cn(
-                'w-5 outline-none pb-0.5 -mx-1 placeholder:text-black block',
-                activeIndex === 1 && active && 'bg-blue-200'
-              )}
-            />
-            /
-            <input
-              dir="rtl"
-              disabled={!active}
-              onClick={() => {
-                setActiveIndex(2);
-                monthRef?.current?.setSelectionRange(2, 2);
-              }}
-              ref={monthRef}
-              value={formatMonth(month)}
-              onChange={(e) => changeMonthInput(+e.target.value, true)}
-              type="text"
-              placeholder="ماه"
-              className={cn(
-                'w-5 outline-none pb-0.5 px-0 -mx-1 placeholder:text-black block',
-                activeIndex === 2 && active && 'bg-blue-200'
-              )}
-            />
-            /
-            <input
-              dir="rtl"
-              disabled={!active}
-              onClick={() => {
-                setActiveIndex(3);
-                yearRef?.current?.setSelectionRange(
-                  yearRef?.current?.value.length,
-                  yearRef?.current?.value.length
-                );
-              }}
-              ref={yearRef}
-              value={formatYear(year)}
-              onChange={(e) => changeYearInput(+e.target.value, true)}
-              type="text"
-              placeholder="سال"
-              className={cn(
-                'w-10 outline-none -mx-1 pb-0.5 placeholder:text-black block',
-                activeIndex === 3 && active && 'bg-blue-200'
-              )}
-            />
-            {day && month && year ? (
-              <div
-                onClick={() => {
-                  clearInputDate();
-                }}
-                className="cursor-pointer mr-4"
-              >
-                <Icon name="x" size="lg" />
-              </div>
-            ) : (
-              ''
+    <div
+      className={cn(
+        'w-40 rounded-md bg-white border-2 flex items-center gap-1 py-2 px-4',
+        {
+          'border-red-600':
+            errors?.maxError ||
+            errors?.minError ||
+            duplicateInputError ||
+            invalidEndDate ||
+            invalidStartDate,
+          'border-brand-600':
+            active &&
+            focus &&
+            !errors?.maxError &&
+            !errors?.minError &&
+            !duplicateInputError &&
+            !invalidEndDate &&
+            !invalidStartDate,
+          'border-gray-500':
+            year &&
+            day &&
+            month &&
+            !focus &&
+            !errors.maxError &&
+            !errors.minError &&
+            !duplicateInputError &&
+            !invalidEndDate &&
+            !invalidStartDate,
+        }
+      )}
+    >
+      {activeInput ? (
+        <>
+          <input
+            dir="rtl"
+            onClick={() => {
+              if (active) setActiveIndex(1);
+              dayRef?.current?.setSelectionRange(2, 2);
+            }}
+            disabled={!active}
+            ref={dayRef}
+            value={formatDay(day)}
+            onChange={(e) => changeDayInput(+e.target.value, true)}
+            type="text"
+            placeholder="روز"
+            className={cn(
+              'w-5 outline-none pb-0.5 -mx-1 placeholder:text-black block',
+              activeIndex === 1 && active && 'bg-blue-200'
             )}
-          </>
-        ) : (
-          <span className="text-md text-gray-700">{placeholder}</span>
-        )}
-      </div>
+          />
+          /
+          <input
+            dir="rtl"
+            disabled={!active}
+            onClick={() => {
+              setActiveIndex(2);
+              monthRef?.current?.setSelectionRange(2, 2);
+            }}
+            ref={monthRef}
+            value={formatMonth(month)}
+            onChange={(e) => changeMonthInput(+e.target.value, true)}
+            type="text"
+            placeholder="ماه"
+            className={cn(
+              'w-5 outline-none pb-0.5 px-0 -mx-1 placeholder:text-black block',
+              activeIndex === 2 && active && 'bg-blue-200'
+            )}
+          />
+          /
+          <input
+            dir="rtl"
+            disabled={!active}
+            onClick={() => {
+              setActiveIndex(3);
+              yearRef?.current?.setSelectionRange(
+                yearRef?.current?.value.length,
+                yearRef?.current?.value.length
+              );
+            }}
+            ref={yearRef}
+            value={formatYear(year)}
+            onChange={(e) => changeYearInput(+e.target.value, true)}
+            type="text"
+            placeholder="سال"
+            className={cn(
+              'w-10 outline-none -mx-1 pb-0.5 placeholder:text-black block',
+              activeIndex === 3 && active && 'bg-blue-200'
+            )}
+          />
+          {day && month && year ? (
+            <div
+              onClick={() => {
+                clearInputDate();
+              }}
+              className="cursor-pointer mr-4"
+            >
+              <Icon name="x" size="lg" />
+            </div>
+          ) : (
+            ''
+          )}
+        </>
+      ) : (
+        <span
+          onClick={() => active && setActiveInput(!active)}
+          className="text-md text-gray-700"
+        >
+          {placeholder}
+        </span>
+      )}
     </div>
   );
 };

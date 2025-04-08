@@ -20,6 +20,7 @@ export const Miladi: Story = {
     focus: true,
     active: true,
     defaultValue: '',
+    placeholder: 'انتخاب تاریخ',
   },
   render: function Success(args) {
     const [{ value }, updateArgs] = useArgs();
