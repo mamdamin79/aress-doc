@@ -8,7 +8,6 @@ export const TextField: React.FC<textFieldPropsType> = ({
   label,
   placeholder,
   supportText,
-  onSearchInput,
   isError = false,
   mode = 'filled',
   mergeTitleAndPlaceholder = false,
