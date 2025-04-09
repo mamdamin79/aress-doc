@@ -80,7 +80,9 @@ export const ReportCard: React.FC<ReportCardProps> = ({
           <p
             className={cn(
               'text-gray-1000 text-md max-h-14 overflow-hidden truncate text-ellipsis font-medium',
-              fixedBrief ? 'max-w-[508px]' : 'h-[26px] max-w-[416px]',
+              fixedBrief
+                ? 'max-w-[508px]'
+                : 'h-[26px] max-w-[416px] font-semibold',
             )}
           >
             {title}
