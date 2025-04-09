@@ -28,9 +28,10 @@ export function BulletList({ items, textColor = 'dark' }: Props) {
             key={index}
           >
             {/* Icon or bullet based on status */}
-            {status === 'normal' && (
-              <span className="bg-gray-1000 mt-2.5 h-1 w-1 rounded-full"></span>
-            )}
+            {!status ||
+              (status === 'normal' && (
+                <span className="bg-gray-1000 mt-2.5 h-1 w-1 rounded-full"></span>
+              ))}
             {status === 'success' && (
               <div className="mt-1">
                 <Icon name="check" size="sm" />
