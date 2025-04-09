@@ -13,13 +13,16 @@ export const CustomAccordionItem: React.FC<CustomAccordionItemProps> = ({
     <div className="flex flex-col gap-2 text-gray-600">
       <div className="text-right">{content}</div>
       {link && (
+        <div className='flex items-center justify-end'>
         <Link
-          href={link}
-          className="flex flex-row items-center justify-end gap-2 text-left text-xs font-semibold transition-colors hover:text-black hover:underline hover:underline-offset-8"
+        href={link}
+        className="flex flex-row items-center w-fit gap-2 text-left text-xs font-semibold transition-colors hover:text-black hover:underline hover:underline-offset-8"
         >
+
           {POPUP_INFO_CONSTANTS.READ_MORE_TEXT}
           <Icon name="arrow-up-left" size="sm" />
         </Link>
+            </div>
       )}
     </div>
   );
