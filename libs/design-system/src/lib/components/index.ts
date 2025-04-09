@@ -22,3 +22,4 @@ export * from './FundsTag';
 export * from './AddReportButton';
 export * from './LoadingBarPop';
 export * from './SparkLine';
+export * from './ImageCropper';
