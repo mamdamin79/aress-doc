@@ -1,18 +1,11 @@
 import React, { useCallback, useState } from 'react';
-import {
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-  Transition,
-  TransitionChild,
-} from '@headlessui/react';
-import { Fragment } from 'react';
 import Cropper from 'react-easy-crop';
 import { CroppedArea, ImageCropperProps } from './ImageCropper.types';
 import { getCroppedImg } from './ImageCropper.utils';
 import { Button } from '../Button';
 import { Icon } from '../Icon';
 import { SUBTITLE, TITLE } from './ImageCropper.constants';
+import { DialogPanel } from '@headlessui/react';
 
 export const ImageCropper: React.FC<ImageCropperProps> = ({
   image,
@@ -41,98 +34,60 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
     setIsLoading(false);
   }, [croppedAreaPixels, image, onChange, onClose]);
   return (
-    <Transition appear show={isOpen} as={Fragment}>
-      <Dialog
-        as="div"
-        className="relative z-50"
-        onClose={() => onClose?.()}
-        aria-labelledby="crop-image-title"
+    <DialogPanel className="relative w-full max-w-md transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+      <div
+        onClick={onClose}
+        className="absolute left-0 top-0 -ml-2 -mt-2 flex items-center justify-center rounded-full shadow-lg"
       >
-        <TransitionChild
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-black/25 backdrop-blur-sm" />
-        </TransitionChild>
-        <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4">
-            <TransitionChild
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            >
-              <DialogPanel className="relative w-full max-w-md transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <div
-                  onClick={onClose}
-                  className="absolute left-0 top-0 -ml-2 -mt-2 flex items-center justify-center rounded-full shadow-lg"
-                >
-                  <Icon
-                    name="CustomCirlcleX"
-                    key={`CustomCirlcleX`}
-                    size="lg_plus"
-                  />
-                </div>
-                <DialogTitle
-                  as="div"
-                  className="mb-4 flex items-center justify-between"
-                  id="crop-image-title"
-                >
-                  <div className="flex w-full flex-col gap-6">
-                    <h2 className="text-md text-center font-medium">{TITLE}</h2>
-                    <p className="text-right text-sm font-normal">{SUBTITLE}</p>
-                  </div>
-                </DialogTitle>
-                <div className="relative mb-4 h-64 w-full">
-                  <Cropper
-                    image={image}
-                    crop={crop}
-                    zoom={zoom}
-                    aspect={1}
-                    onCropChange={setCrop}
-                    onZoomChange={setZoom}
-                    onCropComplete={onCropComplete}
-                    cropShape="round"
-                    showGrid={true}
-                  />
-                </div>
-                <div className="flex w-full flex-row justify-end gap-2">
-                  <div className="w-20">
-                    <Button
-                      align="center"
-                      isLoading={false}
-                      mode="secondary"
-                      size="sm"
-                      onClick={onClose}
-                    >
-                      انصراف
-                    </Button>
-                  </div>
-                  <div className="w-20">
-                    <Button
-                      onClick={handleSave}
-                      align="center"
-                      isLoading={isLoading}
-                      mode="primary"
-                      size="sm"
-                    >
-                      ذخیره
-                    </Button>
-                  </div>
-                </div>
-              </DialogPanel>
-            </TransitionChild>
-          </div>
+        <Icon name="CustomCirlcleX" key={`CustomCirlcleX`} size="lg_plus" />
+      </div>
+      <DialogTitle
+        as="div"
+        className="mb-4 flex items-center justify-between"
+        id="crop-image-title"
+      >
+        <div className="flex w-full flex-col gap-6">
+          <h2 className="text-md text-center font-medium">{TITLE}</h2>
+          <p className="text-right text-sm font-normal">{SUBTITLE}</p>
         </div>
-      </Dialog>
-    </Transition>
+      </DialogTitle>
+      <div className="relative mb-4 h-64 w-full">
+        <Cropper
+          image={image}
+          crop={crop}
+          zoom={zoom}
+          aspect={1}
+          onCropChange={setCrop}
+          onZoomChange={setZoom}
+          onCropComplete={onCropComplete}
+          cropShape="round"
+          showGrid={true}
+        />
+      </div>
+      <div className="flex w-full flex-row justify-end gap-2">
+        <div className="w-20">
+          <Button
+            align="center"
+            isLoading={false}
+            mode="secondary"
+            size="sm"
+            onClick={onClose}
+          >
+            انصراف
+          </Button>
+        </div>
+        <div className="w-20">
+          <Button
+            onClick={handleSave}
+            align="center"
+            isLoading={isLoading}
+            mode="primary"
+            size="sm"
+          >
+            ذخیره
+          </Button>
+        </div>
+      </div>
+    </DialogPanel>
   );
 };
