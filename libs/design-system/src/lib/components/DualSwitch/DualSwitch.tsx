@@ -8,7 +8,7 @@ export const DualSwitch: React.FC<DualSwitchProps> = ({
   initialIndex = 0,
   onChange,
   items,
-  size='sm',
+  size = 'sm',
   disabled = false,
   bgWhite = false,
 }) => {
@@ -53,8 +53,8 @@ export const DualSwitch: React.FC<DualSwitchProps> = ({
               'rounded-full bg-white p-[6px]',
               disabled
                 ? activeItemIndex === index
-                  ? 'bg-brand-300 text-white'
-                  : 'text-gray-400'
+                  ? 'bg-brand-300 cursor-default text-white'
+                  : 'cursor-default text-gray-400'
                 : activeItemIndex === index
                   ? 'bg-brand-600 text-white transition-colors'
                   : '',
