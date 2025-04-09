@@ -1,6 +1,6 @@
 import { IconProps } from "../Icon";
 
-export interface NestedDropdownItem {
+export interface NestedDropdownItemProps {
     title: string;
     icon: IconProps
     status: 'normal' | 'opened' | 'error';
@@ -11,6 +11,6 @@ export interface NestedDropdownItem {
   
   export interface NestedDropDownProps {
     title: string;
-    subFields: NestedDropdownItem[]; // Ensure children is an array of NestedDropdownItem objects
+    items: NestedDropdownItemProps[]; // Ensure children is an array of NestedDropdownItem objects
   }
   
