@@ -36,7 +36,7 @@ export const ContextMenu: React.FC<Props> = ({
       <MenuItems
         transition
         anchor={anchor}
-        className="w-[180px] [--anchor-gap:8px] shadow-7xl border  rounded-xl border-gray-300 bg-white  text-sm  transition duration-200 ease-out focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
+        className="shadow-7xl w-[180px] rounded-xl border border-gray-300 bg-white text-sm transition duration-200 ease-out [--anchor-gap:8px] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
       >
         {items.map((item) => (
           <>
@@ -48,9 +48,9 @@ export const ContextMenu: React.FC<Props> = ({
                 disabled={item.disabled}
                 onClick={item.onClick}
                 className={cn(
-                  'group  hover:bg-brand-100 text-sm text-gray-1000 font-medium flex w-full items-center gap-2 p-2 pr-3',
+                  'hover:bg-brand-100 text-gray-1000 group flex w-full items-center gap-2 p-2 pr-3 text-sm font-medium',
                   item.isActive && 'bg-brand-50 text-brand-800',
-                  item.disabled && 'text-gray-400 pointer-events-none',
+                  item.disabled && 'pointer-events-none text-gray-400',
                 )}
               >
                 <Icon name={item.icon} size="md" />
