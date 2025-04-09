@@ -82,12 +82,17 @@ export const NestedDropdown: React.FC<NestedDropDownProps> = ({
         </div>
         {/* Render dynamic children */}
         {items?.map((child: NestedDropdownItemProps, index) => (
-          <div key={index} className={`pr-${index * 2}`}>
+          <div
+            key={index}
+            style={{
+              paddingRight: `${index * 8}px`,
+            }}
+          >
             <NestedDropdownItem
               icon={child.icon}
               status={child.status}
               title={child.title}
-              onClick={child.onClick}
+              onClick={()=> child.onClick}
               selectedOption={child.selectedOption}
               placeHolder={child.placeHolder}
             />

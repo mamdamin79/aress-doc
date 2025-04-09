@@ -2,18 +2,7 @@ import React from 'react';
 import { Icon, IconProps } from '../../Icon';
 import { cn } from 'libs/design-system/src/utils';
 import { Tooltip } from '../../Tooltip';
-
-export interface NestedDropdownItemProps {
-  title: string;
-  status: 'normal' | 'opened' | 'error';
-  icon: IconProps;
-  onClick: () => void;
-  activeIcon?: IconProps;
-  placeHolder?: string;
-  selectedOption?: string;
-  hasTooltip?: boolean;
-  hasChildren?: boolean;
-}
+import { NestedDropdownItemProps } from '../NestedDropdown.types';
 
 interface WrapperProps {
   children: React.ReactNode;
