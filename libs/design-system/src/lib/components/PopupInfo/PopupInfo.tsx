@@ -15,7 +15,7 @@ export const CustomAccordionItem: React.FC<CustomAccordionItemProps> = ({
       {link && (
         <Link
           href={link}
-          className="flex flex-row items-center justify-end gap-2 text-left text-xs font-semibold"
+          className="flex flex-row items-center justify-end gap-2 text-left text-xs font-semibold transition-colors hover:text-black hover:underline hover:underline-offset-8"
         >
           {POPUP_INFO_CONSTANTS.READ_MORE_TEXT}
           <Icon name="arrow-up-left" size="sm" />
