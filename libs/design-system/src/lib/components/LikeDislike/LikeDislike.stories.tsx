@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import LikeDislike from './LikeDislike';
+import { LikeDislike } from './LikeDislike';
 import { LikeDislikeProps } from './LikeDislike.types';
 const meta: Meta<typeof LikeDislike> = {
   component: LikeDislike,
