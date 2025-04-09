@@ -79,7 +79,7 @@ export const ReportCard: React.FC<ReportCardProps> = ({
         <div className="flex h-fit w-fit flex-col gap-2">
           <p
             className={cn(
-              'text-gray-1000 max-h-14 overflow-hidden truncate text-ellipsis text-sm font-medium',
+              'text-gray-1000 text-md max-h-14 overflow-hidden truncate text-ellipsis font-medium',
               fixedBrief ? 'max-w-[508px]' : 'h-[26px] max-w-[416px]',
             )}
           >
