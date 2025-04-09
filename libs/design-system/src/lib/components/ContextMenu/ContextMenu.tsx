@@ -38,10 +38,10 @@ export const ContextMenu: React.FC<Props> = ({
         anchor={anchor}
         className="shadow-7xl w-[180px] rounded-xl border border-gray-300 bg-white text-sm transition duration-200 ease-out [--anchor-gap:8px] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
       >
-        {items.map((item) => (
-          <>
+        {items.map((item, index) => (
+          <React.Fragment key={index}>
             {item.dividerBefore && (
-              <div className="w-full border border-gray-200"></div>
+              <hr className="w-full border border-gray-200" />
             )}
             <MenuItem>
               <button
@@ -57,7 +57,7 @@ export const ContextMenu: React.FC<Props> = ({
                 {item.title}
               </button>
             </MenuItem>
-          </>
+          </React.Fragment>
         ))}
       </MenuItems>
     </Menu>
