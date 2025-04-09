@@ -1,8 +1,8 @@
 import Logo from '@aress-assets/icons/Logo.svg';
 import AbstractLine from '@aress-assets/icons/Abstract.svg';
-import Instagram from '@aress-assets/icons/instagram.svg';
+import Instagram from '@aress-assets/icons/lite_instagram.svg';
 import Linkedin from '@aress-assets/icons/lite-linkedin.svg';
-import telegram from '@aress-assets/icons/telegram-2.svg';
+import telegram from '@aress-assets/icons/lite_telegram.svg';
 import Link from 'next/link';
 import Image from 'next/image';
 
