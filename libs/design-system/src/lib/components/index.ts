@@ -29,3 +29,4 @@ export * from './ConfirmModal';
 export * from './ReportCard';
 export * from './ReportsCarousel';
 export * from './ProfileImageAndUpload';
+export * from './AutoRotateSwitch';
