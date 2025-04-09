@@ -3,18 +3,17 @@ import Cropper from 'react-easy-crop';
 import { CroppedArea, ImageCropperProps } from './ImageCropper.types';
 import { getCroppedImg } from './ImageCropper.utils';
 import { Button } from '../Button';
-import { Icon } from '../Icon';
 import { SUBTITLE, TITLE } from './ImageCropper.constants';
-import { DialogPanel } from '@headlessui/react';
+import { Dialog } from '../Dialog';
 
 export const ImageCropper: React.FC<ImageCropperProps> = ({
   image,
   onChange,
-  onClose,
-  isOpen = false,
 }) => {
   const [crop, setCrop] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState<number>(1);
+  const [isOpen, setIsOpen] = useState(false);
+
   const [croppedAreaPixels, setCroppedAreaPixels] =
     useState<CroppedArea | null>(null);
   const onCropComplete = useCallback(
@@ -29,20 +28,13 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
     if (croppedAreaPixels) {
       const croppedImage = await getCroppedImg(image, croppedAreaPixels);
       if (croppedImage) onChange?.(croppedImage);
-      onClose?.();
+      setIsOpen(false);
     }
     setIsLoading(false);
-  }, [croppedAreaPixels, image, onChange, onClose]);
+  }, [croppedAreaPixels, image, onChange]);
   return (
-    <DialogPanel className="relative w-full max-w-md transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+    <Dialog isOpen={isOpen} onClose={() => setIsOpen(false)}>
       <div
-        onClick={onClose}
-        className="absolute left-0 top-0 -ml-2 -mt-2 flex items-center justify-center rounded-full shadow-lg"
-      >
-        <Icon name="CustomCirlcleX" key={`CustomCirlcleX`} size="lg_plus" />
-      </div>
-      <DialogTitle
-        as="div"
         className="mb-4 flex items-center justify-between"
         id="crop-image-title"
       >
@@ -50,7 +42,7 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
           <h2 className="text-md text-center font-medium">{TITLE}</h2>
           <p className="text-right text-sm font-normal">{SUBTITLE}</p>
         </div>
-      </DialogTitle>
+      </div>
       <div className="relative mb-4 h-64 w-full">
         <Cropper
           image={image}
@@ -71,7 +63,8 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
             isLoading={false}
             mode="secondary"
             size="sm"
-            onClick={onClose}
+            onClick={() => setIsOpen(false)}
+            theme="brand"
           >
             انصراف
           </Button>
@@ -83,11 +76,12 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
             isLoading={isLoading}
             mode="primary"
             size="sm"
+            theme="brand"
           >
             ذخیره
           </Button>
         </div>
       </div>
-    </DialogPanel>
+    </Dialog>
   );
 };
