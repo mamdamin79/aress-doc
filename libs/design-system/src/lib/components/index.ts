@@ -26,3 +26,5 @@ export * from './LoadingBarPop';
 export * from './SparkLine';
 export * from './ImageCropper';
 export * from './ConfirmModal';
+export * from './ReportCard';
+export * from './ReportsCarousel';
