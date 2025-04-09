@@ -10,13 +10,11 @@ import { TextField } from '../TextField';
 export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   title,
   input,
-  checkBoxText,
-  confirmButtonText,
-  cancelButtonText,
+  checkBoxText = 'باز کردن در تب جدید',
   onConfirm,
-  onCancel,
+  isOpen,
+  onClose,
 }) => {
-  const [isOpen, setIsOpen] = useState(true);
   const [inputValue, setInputValue] = useState('');
   const [checked, setChecked] = useState(false);
   const isWithInput = typeof input !== 'undefined';
@@ -28,17 +26,12 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
       } else {
         onConfirm({ checked, input: inputValue });
       }
-      setIsOpen(false);
+      onClose?.();
     },
     [inputValue, checked, onConfirm, isWithInput],
   );
-
-  const handleCancel = useCallback(() => {
-    if (onCancel) onCancel();
-    setIsOpen(false);
-  }, [onCancel]);
   return (
-    <Dialog isOpen={isOpen} onClose={handleCancel}>
+    <Dialog isOpen={isOpen} onClose={() => onClose?.()}>
       <div className="w-[472px] text-right">
         <form onSubmit={handleConfirm} className="flex flex-col gap-4">
           <div className="text-lg font-semibold">{title}</div>
@@ -76,10 +69,10 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
                 isLoading={false}
                 size="sm"
                 mode="secondary"
-                onClick={handleCancel}
+                onClick={() => onClose?.()}
                 type="button"
               >
-                {cancelButtonText}
+                انصراف
               </Button>
             </div>
             <div className="min-w-14">
@@ -96,7 +89,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
                     : 'bg-brand-600 hover:bg-brand-700',
                 )}
               >
-                {confirmButtonText}
+                ذخیره
               </Button>
             </div>
           </div>

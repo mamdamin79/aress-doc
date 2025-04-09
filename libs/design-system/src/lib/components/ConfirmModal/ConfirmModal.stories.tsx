@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
-import {ConfirmModal} from './ConfirmModal';
+import { ConfirmModal } from './ConfirmModal';
 import { ConfirmModalProps } from './ConfirmModal.types';
+import { useState } from 'react';
 
 const meta: Meta<typeof ConfirmModal> = {
   component: ConfirmModal,
@@ -13,9 +14,15 @@ type Story = StoryObj<typeof ConfirmModal>;
 
 export const withInput: Story = {
   render: (args: ConfirmModalProps) => {
+    const [isOpen, setIsOpen] = useState(false);
     return (
       <div className="my-20 flex items-center justify-center bg-gray-100 py-20">
-        <ConfirmModal {...args} />
+        <button onClick={() => setIsOpen(true)}>open modal</button>
+        <ConfirmModal
+          {...args}
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+        />
       </div>
     );
   },
@@ -26,8 +33,6 @@ export const withInput: Story = {
       placeholder: 'نام مد نظر خود را وارد کنید ...',
     },
     checkBoxText: 'باز کردن در تب جدید',
-    confirmButtonText: 'ذخیره',
-    cancelButtonText: 'انصراف',
     onConfirm: ({ checked, input }) => {
       console.log(checked);
       console.log(input);
@@ -41,9 +46,16 @@ export const withoutInput: Story = {
     chromatic: { disableSnapshot: true },
   },
   render: (args: ConfirmModalProps) => {
+    const [isOpen, setIsOpen] = useState(false);
+
     return (
-      <div className="my-20 flex items-center justify-center bg-gray-100 h-[100px]">
-        <ConfirmModal {...args} />
+      <div className="my-20 flex h-[100px] items-center justify-center bg-gray-100">
+        <button onClick={() => setIsOpen(true)}>open modal</button>
+        <ConfirmModal
+          {...args}
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+        />
       </div>
     );
   },
@@ -52,8 +64,6 @@ export const withoutInput: Story = {
     input: {
       label: 'آیا مطمئن هستید که می‌خواهید «اسلاید ۱» را حذف کنید؟',
     },
-    confirmButtonText: 'بله',
-    cancelButtonText: 'خیر',
     onConfirm: ({ checked, input }) => {
       console.log(checked);
       console.log(input);
