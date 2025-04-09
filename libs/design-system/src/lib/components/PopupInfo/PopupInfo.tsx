@@ -36,6 +36,7 @@ export const PopupInfo: React.FC<PopupInfoProps> = ({
       onClose={onClose}
       isOpen={isOpen}
       aria-labelledby="popup-info-title"
+      className="bg-gray-100"
     >
       <div className="flex flex-row items-center gap-2 px-4 py-3 text-xl font-medium">
         <Icon name="book-open-text" />
