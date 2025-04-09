@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Cropper from 'react-easy-crop';
 import { CroppedArea, ImageCropperProps } from './ImageCropper.types';
 import { getCroppedImg } from './ImageCropper.utils';
@@ -9,10 +9,11 @@ import { Dialog } from '../Dialog';
 export const ImageCropper: React.FC<ImageCropperProps> = ({
   image,
   onChange,
+  isOpen = false,
+  onClose,
 }) => {
   const [crop, setCrop] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState<number>(1);
-  const [isOpen, setIsOpen] = useState(false);
 
   const [croppedAreaPixels, setCroppedAreaPixels] =
     useState<CroppedArea | null>(null);
@@ -28,12 +29,12 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
     if (croppedAreaPixels) {
       const croppedImage = await getCroppedImg(image, croppedAreaPixels);
       if (croppedImage) onChange?.(croppedImage);
-      setIsOpen(false);
+      onClose?.();
     }
     setIsLoading(false);
   }, [croppedAreaPixels, image, onChange]);
   return (
-    <Dialog isOpen={isOpen} onClose={() => setIsOpen(false)}>
+    <Dialog isOpen={isOpen} onClose={() => onClose?.()} className="w-[500px]">
       <div
         className="mb-4 flex items-center justify-between"
         id="crop-image-title"
@@ -63,7 +64,7 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
             isLoading={false}
             mode="secondary"
             size="sm"
-            onClick={() => setIsOpen(false)}
+            onClick={() => onClose?.()}
             theme="brand"
           >
             انصراف
