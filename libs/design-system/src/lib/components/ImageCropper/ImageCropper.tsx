@@ -12,6 +12,7 @@ import { CroppedArea, ImageCropperProps } from './ImageCropper.types';
 import { getCroppedImg } from './ImageCropper.utils';
 import { Button } from '../Button';
 import { Icon } from '../Icon';
+import { SUBTITLE, TITLE } from './ImageCropper.constants';
 
 export const ImageCropper: React.FC<ImageCropperProps> = ({
   image,
@@ -85,12 +86,9 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
                   className="mb-4 flex items-center justify-between"
                   id="crop-image-title"
                 >
-                  <div className="flex flex-col gap-2 text-right">
-                    <h2 className="text-xl font-semibold">برش عکس</h2>
-                    <p className="text-right text-sm font-semibold text-gray-600">
-                      ناحیه‌ای از عکس که می‌خواهید به عنوان تصویر نمایه انتخاب
-                      شود را مشخص کنید.
-                    </p>
+                  <div className="flex w-full flex-col gap-6">
+                    <h2 className="text-md text-center font-medium">{TITLE}</h2>
+                    <p className="text-right text-sm font-normal">{SUBTITLE}</p>
                   </div>
                 </DialogTitle>
                 <div className="relative mb-4 h-64 w-full">
@@ -112,7 +110,7 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
                       align="center"
                       isLoading={false}
                       mode="secondary"
-                      size="md"
+                      size="sm"
                       onClick={onClose}
                     >
                       انصراف
@@ -124,7 +122,7 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
                       align="center"
                       isLoading={isLoading}
                       mode="primary"
-                      size="md"
+                      size="sm"
                     >
                       ذخیره
                     </Button>
