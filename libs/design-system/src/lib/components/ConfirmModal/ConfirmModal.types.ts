@@ -5,8 +5,6 @@ export type ConfirmModalProps = {
     placeholder?: string;
   };
   checkBoxText?: string;
-  confirmButtonText: string;
-  cancelButtonText: string;
   onConfirm: ({ checked, input }: { checked: boolean; input?: string }) => void;
   isOpen: boolean;
   onClose?: () => void;
