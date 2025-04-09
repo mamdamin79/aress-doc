@@ -14,10 +14,10 @@ export function FooterLite() {
           <Image width={251} height={72} src={Logo} className="h-[72px] w-[251px]" alt="logo" />
         </Link>
         <div className="mt-8 grid grid-cols-4 gap-4 lg:grid-cols-5 grid-rows-4 md:grid-rows-2 lg:grid-rows-1 items-start">
-          <Link className="col-span-1 row-start-1 text-3xl font-medium" href="/">
+          <Link className="col-span-1 row-start-1 h-fit text-3xl font-medium" href="/">
             ارتباط با ما
           </Link>
-          <div className="col-span-4 h-fit md:col-span-1 row-start-2 md:row-start-2 lg:row-start-1 flex flex-col gap-2">
+          <div className="col-span-4 h-fit md:col-span-1 row-start-4 md:row-start-2 lg:row-start-1 flex flex-col gap-2">
             <span className="text-gray-1000 text-lg">شبکه های اجتماعی:‌</span>
             <div className="flex items-center gap-6">
               <Link href='/'>
@@ -53,7 +53,7 @@ export function FooterLite() {
             <span className="text-gray-1000 text-lg">تلفن پشتیبانی:‌</span>
             <span className="text-gray-700">021-8091607</span>
           </div>
-          <div className="col-span-4 h-fit md:col-span-2 flex row-start-4 md:row-start-2 lg:row-start-1 flex-col gap-2">
+          <div className="col-span-4 h-fit md:col-span-2 flex row-start-2 md:row-start-2 lg:row-start-1 flex-col gap-2">
             <span className="text-gray-1000 text-lg">آدرس پستی:</span>
             <p className="break-words text-gray-700">
               آدرس پستی: تهران. یوسف آباد. بین خیابان ۶۳ و ۶۵. پلاک ۴۸۵. واحد ۹۲
@@ -71,7 +71,7 @@ export function FooterLite() {
         width={100}
         height={200}
         src={AbstractLine}
-        className="absolute lg:top-10 top-20 w-[1400px] lg:w-[2200px] opacity-[0.1]"
+        className="absolute h-[300px] lg:top-10 top-20 w-[1400px] lg:w-[2200px] opacity-[0.1]"
         alt="Abstract Line"
       />
     </div>
