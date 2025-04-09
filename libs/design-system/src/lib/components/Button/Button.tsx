@@ -10,7 +10,7 @@ export interface ButtonProps
   size: ButtonSize;
   mode: ButtonMode;
   align: 'center' | 'right';
-  theme: 'brand' | 'error';
+  theme?: 'brand' | 'error';
 }
 
 export const Button: React.FC<ButtonProps> = ({
