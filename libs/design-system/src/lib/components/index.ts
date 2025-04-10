@@ -17,6 +17,7 @@ export * from './Button';
 export * from './BulletList';
 export * from './DualSwitch';
 export * from './NotesHeading';
+export * from './PopupInfo';
 export * from './Dialog';
 export * from './SquaredButton';
 export * from './HeadProfile';
