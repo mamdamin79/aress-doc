@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import { ContextMenuItem } from './ContextMenu.types';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { Icon } from '../Icon';
+import { cn } from '../../../utils/classNames.utils';
 
 // this pulls out types of menuItem
 type MenuItemsProps = React.ComponentProps<typeof MenuItems>;
@@ -35,18 +36,28 @@ export const ContextMenu: React.FC<Props> = ({
       <MenuItems
         transition
         anchor={anchor}
-        className="shadow-7xl w-[180px] rounded-xl border-[1.5px] border-gray-300 bg-white text-sm transition duration-200 ease-out [--anchor-gap:8px] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
+        className="shadow-7xl w-[180px] rounded-xl border border-gray-300 bg-white text-sm transition duration-200 ease-out [--anchor-gap:8px] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
       >
-        {items.map((item) => (
-          <MenuItem>
-            <button
-              onClick={item.onClick}
-              className="hover:bg-brand-100 text-gray-1000 group flex w-full items-center gap-2 p-2 pr-3 text-sm font-medium"
-            >
-              <Icon name={item.icon} size="md" />
-              {item.title}
-            </button>
-          </MenuItem>
+        {items.map((item, index) => (
+          <React.Fragment key={index}>
+            {item.dividerBefore && (
+              <hr className="w-full border border-gray-200" />
+            )}
+            <MenuItem>
+              <button
+                disabled={item.disabled}
+                onClick={item.onClick}
+                className={cn(
+                  'hover:bg-brand-100 text-gray-1000 group flex w-full items-center gap-2 p-2 pr-3 text-sm font-medium',
+                  item.isActive && 'bg-brand-50 text-brand-800',
+                  item.disabled && 'pointer-events-none text-gray-400',
+                )}
+              >
+                <Icon name={item.icon} size="md" />
+                {item.title}
+              </button>
+            </MenuItem>
+          </React.Fragment>
         ))}
       </MenuItems>
     </Menu>
