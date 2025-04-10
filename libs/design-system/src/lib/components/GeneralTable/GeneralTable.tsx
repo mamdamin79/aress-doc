@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { TableRow, TableProps } from './GeneralTable.types';
 import { cn } from 'libs/design-system/src/utils';
 import { getCellBackgroundColor } from './GeneralTable.utils';
-import { SeperatorLine } from './TableComponents';
+import { SeparatorLine } from './TableComponents';
 
 export const GeneralTable: React.FC<TableProps<TableRow>> = ({
   data,
@@ -38,7 +38,7 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
     data.map((row, rowIndex) => {
       if ('type' in row && row.type === 'separator') {
         return (
-          <SeperatorLine
+          <SeparatorLine
             colSpan={schema.length}
             label={row.label}
             key={rowIndex}
@@ -128,7 +128,12 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
         ></div>
       )}
 
-      <table className="min-w-full rounded-t-xl" ref={tableRef}>
+      <table
+        className="min-w-full rounded-t-xl"
+        ref={tableRef}
+        role="grid"
+        aria-label="Financial Records Table"
+      >
         <thead className="bg-transparent text-md font-medium h-16 after:content-[''] after:block after:h-4">
           <tr>
             {schema.map((column, index) => (

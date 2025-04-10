@@ -6,7 +6,23 @@ import {
   TableRow,
 } from 'design-system';
 
-
+// Constants
+const STDDEV_ROW_INDEX = 10;
+const AVERAGE_ROW_INDEX = 9;
+const PERSIAN_MONTHS = [
+  'فروردین',
+  'اردیبهشت',
+  'خرداد',
+  'تیر',
+  'مرداد',
+  'شهریور',
+  'مهر',
+  'آبان',
+  'آذر',
+  'دی',
+  'بهمن',
+  'اسفند',
+] as const;
 
 const sharedStyle = 'h-[40px] flex items-center w-full mt-4 ml-4 rounded-sm';
 export const schema: Column<TableRow>[] = [
@@ -15,28 +31,13 @@ export const schema: Column<TableRow>[] = [
     header: 'سال',
     headerDivider: 'left',
   },
-  ...[
-    'فروردین',
-    'اردیبهشت',
-    'خرداد',
-    'تیر',
-    'مرداد',
-    'شهریور',
-    'مهر',
-    'آبان',
-    'آذر',
-    'دی',
-    'بهمن',
-    'اسفند',
-  ].map((month) => ({
+  ...PERSIAN_MONTHS.map((month) => ({
     key: month,
     header: month,
     render: ({
       colIndex,
       hoveredCol,
       hoveredRow,
-      matchingCol,
-      matchingRow,
       rowIndex,
       value,
       format,
@@ -48,8 +49,6 @@ export const schema: Column<TableRow>[] = [
         colIndex,
         hoveredCol,
         hoveredRow,
-        matchingCol,
-        matchingRow,
         format,
         //custom formatting
         {
@@ -61,11 +60,11 @@ export const schema: Column<TableRow>[] = [
         cn(
           sharedStyle,
           'justify-center min-w-[50px]',
-          rowIndex === 10
+          rowIndex === STDDEV_ROW_INDEX
             ? 'bg-gray-100'
             : ((hoveredCol !== null && hoveredCol !== colIndex) ||
                   (hoveredRow !== null && hoveredRow !== rowIndex)) &&
-                rowIndex !== 9
+                rowIndex !== AVERAGE_ROW_INDEX
               ? 'transparent'
               : valueBasedBg,
         ),

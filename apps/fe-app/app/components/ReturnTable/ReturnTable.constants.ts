@@ -1,5 +1,4 @@
 import {
-  addFormatsToRows,
   cn,
   Column,
   renderCell,
@@ -8,11 +7,14 @@ import {
   TableRow,
 } from 'design-system';
 
-const generateYearKeys = (sampleData:RowData<TableRow>) : string[] => {
+const generateYearKeys = (sampleData: RowData<TableRow>): string[] => {
   return Object.keys(sampleData).filter(
     (key) =>
-      key !== 'name' && key !== 'average' && key !== 'stdDev' && key !== 'format',
-  )
+      key !== 'name' &&
+      key !== 'average' &&
+      key !== 'stdDev' &&
+      key !== 'format',
+  );
 };
 
 const sharedStyle = 'h-16 flex items-center min-w-[100px] w-full';
@@ -29,12 +31,9 @@ export const schema = (sampleData: RowData<TableRow>): Column<TableRow>[] => [
       colIndex,
       hoveredCol,
       hoveredRow,
-      matchingCol,
-      matchingRow,
       rowIndex,
       value,
       format,
-      valueBasedBg,
     }: RenderCellProps<TableRow>) => {
       return renderCell(
         value as string,
@@ -42,8 +41,6 @@ export const schema = (sampleData: RowData<TableRow>): Column<TableRow>[] => [
         colIndex,
         hoveredCol,
         hoveredRow,
-        matchingCol,
-        matchingRow,
         format,
         {
           precision: 0,
@@ -51,9 +48,8 @@ export const schema = (sampleData: RowData<TableRow>): Column<TableRow>[] => [
           type: 'percent',
         },
         cn(
-          'min-w-[133px]',
+          'min-w-[133px] justify-center',
           value && Number(value) > 0 ? 'text-green-600' : 'text-red-600',
-          'justify-center',
           [4, 5].includes(rowIndex) && 'text-gray-1000',
           hoveredCol !== null
             ? hoveredCol === colIndex
@@ -78,8 +74,6 @@ export const schema = (sampleData: RowData<TableRow>): Column<TableRow>[] => [
       colIndex,
       hoveredCol,
       hoveredRow,
-      matchingCol,
-      matchingRow,
       rowIndex,
       value,
       format,
@@ -90,8 +84,6 @@ export const schema = (sampleData: RowData<TableRow>): Column<TableRow>[] => [
         colIndex,
         hoveredCol,
         hoveredRow,
-        matchingCol,
-        matchingRow,
         format,
         {
           precision: 0,
@@ -122,12 +114,9 @@ export const schema = (sampleData: RowData<TableRow>): Column<TableRow>[] => [
       colIndex,
       hoveredCol,
       hoveredRow,
-      matchingCol,
-      matchingRow,
       rowIndex,
       value,
       format,
-      valueBasedBg,
     }: RenderCellProps<TableRow>) => {
       return renderCell(
         value as string,
@@ -135,8 +124,6 @@ export const schema = (sampleData: RowData<TableRow>): Column<TableRow>[] => [
         colIndex,
         hoveredCol,
         hoveredRow,
-        matchingCol,
-        matchingRow,
         format,
         {
           precision: 0,

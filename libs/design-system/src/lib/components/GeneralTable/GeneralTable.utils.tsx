@@ -26,8 +26,6 @@ export const renderCell = (
   colIndex: number,
   hoveredCol: number | null,
   hoveredRow: number | null,
-  matchingCol: number | null,
-  matchingRow: number | null,
   rowFormat?: TableCellFormat,
   customFormat?: TableCellFormat,
   cellStyle?: string,
@@ -66,8 +64,3 @@ export const getCellBackgroundColor = (value: number | null): string => {
 
   return ''; // Default fallback
 };
-
-interface rowsKeysProps {
-  name: string;
-  [key: string]: string | null;
-}

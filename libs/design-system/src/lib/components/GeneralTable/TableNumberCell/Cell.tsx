@@ -1,6 +1,6 @@
 import React from 'react';
 import { NumberCellProps } from './CellProps';
-import { FourlevelIndicatorProps } from './FourlevelIndicator';
+import { FourlevelIndicator } from './FourlevelIndicator';
 import { cn } from 'libs/design-system/src/utils';
 
 export const Cell: React.FC<NumberCellProps> = ({
@@ -17,8 +17,6 @@ export const Cell: React.FC<NumberCellProps> = ({
 
   // Handle number values
   if (typeof value === 'number') {
-    value = Number(value);
-
     if (value === 0) {
       return <div className={cn(cellStyle, valueBasedBg)}>0</div>;
     }
@@ -26,7 +24,7 @@ export const Cell: React.FC<NumberCellProps> = ({
     if (format === 'quarterSymbol') {
       return (
         <div className={cellStyle}>
-          <FourlevelIndicatorProps value={value} grayMode={grayMode} />
+          <FourlevelIndicator value={value} grayMode={grayMode} />
         </div>
       );
     }
@@ -39,8 +37,8 @@ export const Cell: React.FC<NumberCellProps> = ({
 
       const signedValue = format.signed
         ? value > 0
-          ? `${formattedValue}`
-          : `${formattedValue.replace('-', '')} -`
+          ? `${formattedValue} +`
+          : `${Math.abs(value).toFixed(format.precision)} -` // Use proper minus sign
         : formattedValue;
 
       return <div className={cn(cellStyle, valueBasedBg)}>{signedValue}</div>;
