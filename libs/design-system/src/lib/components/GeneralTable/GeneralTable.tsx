@@ -1,8 +1,9 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { TableRow, TableProps } from './GeneralTable.types';
 import { cn } from 'libs/design-system/src/utils';
-import { findExtremes, getCellBackgroundColor } from './GeneralTable.utils';
+import { getCellBackgroundColor } from './GeneralTable.utils';
+import { SeperatorLine } from './TableComponents';
 
 export const GeneralTable: React.FC<TableProps<TableRow>> = ({
   data,
@@ -15,20 +16,19 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
   const [hoveredCol, setHoveredCol] = useState<number | null>(null);
   const [matchingRow, setMatchingRow] = useState<number | null>(null);
   const [matchingCol, setMatchingCol] = useState<number | null>(null);
-  const [tableDimensions, setTableDimensions] = useState({
-    width: 0,
-    height: 0,
-  });
-
   const tableRef = useRef<HTMLTableElement>(null);
 
-  useEffect(() => {
-    if (tableRef.current) {
-      const { offsetWidth: width, offsetHeight: height } = tableRef.current;
-      setTableDimensions({ width, height });
+  const tableDimensions = useMemo(() => {
+    if (!tableRef.current) {
+      return { width: 0, height: 0 };
     }
-  }, []);
+    const { offsetWidth: width, offsetHeight: height } = tableRef.current;
+    return { width, height };
+  }, [tableRef.current]);
 
+  // We define a function to set both matchingCol and matchingRow
+  // Difference between hovered and matching is set when we hover on a cell
+  // but hover is set when we hover on a row or column header(keys)
   const setMatchings = (col: number | null, row: number | null) => {
     setMatchingCol(col);
     setMatchingRow(row);
@@ -38,45 +38,43 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
     data.map((row, rowIndex) => {
       if ('type' in row && row.type === 'separator') {
         return (
-          <tr key={`separator-${rowIndex}`}>
-            <td colSpan={schema.length} className="font-semibold">
-              <div className="bg-gray-200 h-[1px] mt-3"></div>
-              {row.label || ''}
-            </td>
-          </tr>
+          <SeperatorLine
+            colSpan={schema.length}
+            label={row.label}
+            key={rowIndex}
+          />
         );
       }
-
       return (
         <tr
           key={rowIndex}
           className={cn(striped && rowIndex % 2 === 1 ? 'bg-gray-50' : '')}
         >
-          {schema.map((column, cellIndex) => {
-            const cellValue = row[column.key as keyof TableRow];
+          {schema.map((column, colIndex) => {
+            const value = row[column.key as keyof TableRow];
             const isHoveredOrMatching =
               matchingRow === rowIndex || hoveredRow === rowIndex;
 
             return (
               <td
-                key={cellIndex}
+                key={colIndex}
                 className={cn(
                   'w-fit',
-                  cellIndex === 0 && 'pr-6',
+                  colIndex === 0 && 'pr-6',
                   tableDataStyleClasses,
                 )}
                 onMouseEnter={() =>
-                  cellIndex === 0
+                  colIndex === 0
                     ? setHoveredRow(rowIndex)
-                    : setMatchings(cellIndex, rowIndex)
+                    : setMatchings(colIndex, rowIndex)
                 }
                 onMouseLeave={() =>
-                  cellIndex === 0
+                  colIndex === 0
                     ? setHoveredRow(null)
                     : setMatchings(null, null)
                 }
               >
-                {cellIndex === 0 ? (
+                {colIndex === 0 ? (
                   <div
                     className={cn(
                       'w-fit pr-[6px] pl-[6px] h-[30px] rounded-sm flex items-center',
@@ -84,32 +82,32 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
                     )}
                   >
                     {column.render
-                      ? column.render(
-                          cellValue,
+                      ? column.render({
+                          value,
                           rowIndex,
-                          cellIndex,
+                          colIndex,
                           hoveredCol,
                           hoveredRow,
                           matchingCol,
                           matchingRow,
-                          row.format,
-                        )
-                      : cellValue}
+                          format: row.format,
+                        })
+                      : value}
                   </div>
                 ) : column.render ? (
-                  column.render(
-                    cellValue,
-                    rowIndex,
-                    cellIndex,
+                  column.render({
+                    colIndex,
                     hoveredCol,
                     hoveredRow,
                     matchingCol,
                     matchingRow,
-                    row.format,
-                    getCellBackgroundColor(cellValue),
-                  )
+                    rowIndex,
+                    value,
+                    format: row.format,
+                    valueBasedBg: getCellBackgroundColor(value),
+                  })
                 ) : (
-                  cellValue
+                  value
                 )}
               </td>
             );

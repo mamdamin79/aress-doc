@@ -1,10 +1,10 @@
 import { Column, GeneralTable, RowData, TableRow } from 'design-system';
 import React from 'react';
-interface ReturnTableProps {
+interface ColoredAnalysisTableProps {
   data: RowData<TableRow>[];
   schema: Column<TableRow>[];
 }
-export const ColoredAnalysisTable: React.FC<ReturnTableProps> = ({
+export const ColoredAnalysisTable: React.FC<ColoredAnalysisTableProps> = ({
   data,
   schema,
 }) => {

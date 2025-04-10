@@ -1,20 +1,20 @@
 import { TableCellFormat } from './TableNumberCell';
-
+export interface RenderCellProps<T> {
+  value: T[keyof T];
+  rowIndex: number;
+  colIndex: number;
+  hoveredCol: number | null;
+  hoveredRow: number | null;
+  matchingCol: number | null;
+  matchingRow: number | null;
+  format?: TableCellFormat;
+  valueBasedBg?: string;
+}
 export interface Column<T = unknown> {
   key: keyof T;
   header: string;
   headerDivider?: 'left' | 'right' | 'both';
-  render?: (
-    value: T[keyof T],
-    rowIndex: number,
-    colIndex: number,
-    hoveredCol: number | null,
-    hoveredRow: number | null,
-    matchingCol: number | null,
-    matchingRow: number | null,
-    format?: TableCellFormat,
-    valueBasedBg?: string,
-  ) => React.ReactNode;
+  render?: (props: RenderCellProps<T>) => React.ReactNode;
 }
 
 export type Separator = { type: 'separator'; label?: string };

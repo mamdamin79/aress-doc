@@ -4,6 +4,4 @@ export const toPersianNumeral = (num: number | string): string => {
     return ('' + num).replace(/[0-9]/g, (t) => '٠١٢٣٤٥٦٧٨٩'[+t]);
   } else return num;
 };
-type CellValue = number | null;
-
 

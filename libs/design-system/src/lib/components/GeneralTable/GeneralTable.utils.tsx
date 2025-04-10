@@ -71,38 +71,3 @@ interface rowsKeysProps {
   name: string;
   [key: string]: string | null;
 }
-export const findExtremes = (data: rowsKeysProps[]) => {
-  let highestPositive = -Infinity;
-  let lowestPositive = Infinity;
-  let highestNegative = -Infinity;
-  let lowestNegative = Infinity;
-
-  data.forEach((row) => {
-    Object.keys(row).forEach((key) => {
-      if (key !== 'name' && row[key] !== null) {
-        const value = parseInt(row[key] as string);
-
-        if (value >= 0) {
-          if (value > highestPositive) highestPositive = value;
-          if (value < lowestPositive) lowestPositive = value;
-        } else {
-          if (value > highestNegative) highestNegative = value;
-          if (value < lowestNegative) lowestNegative = value;
-        }
-      }
-    });
-  });
-
-  // If no positive or negative values found, reset to a default value
-  if (highestPositive === -Infinity) highestPositive = 0;
-  if (lowestPositive === Infinity) lowestPositive = 0;
-  if (highestNegative === -Infinity) highestNegative = 0;
-  if (lowestNegative === Infinity) lowestNegative = 0;
-
-  return {
-    highestPositive,
-    lowestPositive,
-    highestNegative,
-    lowestNegative,
-  };
-};
