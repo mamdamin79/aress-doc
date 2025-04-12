@@ -4,6 +4,7 @@ export interface CategoryItem {
 }
 
 export interface OptionItem {
+  id: number | string;
   title: string;
   priceChangePercent?: number;
   priceRials?: number;

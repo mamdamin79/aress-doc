@@ -13,6 +13,8 @@ interface Props {
   search?: {
     placeholder: string;
   };
+  selectedItemId?: number | string;
+  emptyStateMessage?: string;
   items: {
     categories?: CategoryItem[] | null;
     items: OptionItem[];
@@ -23,7 +25,9 @@ export function OptionsListExplorer({
   title,
   onBackButtonClick,
   search,
+  emptyStateMessage = 'صندوقی یافت نشد...',
   onSearch,
+  selectedItemId,
   items,
 }: Props) {
   const [checkedItem, setCheckedItem] = useState(0);
@@ -33,10 +37,21 @@ export function OptionsListExplorer({
   const itemsToShow =
     items.items.length > 10 ? filteredItems.slice(0, 3) : filteredItems;
 
-  const handlerInput = (value: string) => {
+  const handleInputChange = (value: string) => {
     setInputValue(value);
     onSearch(value);
   };
+
+  useEffect(() => {
+    if (selectedItemId) {
+      const item = items.items.find(
+        (item: OptionItem) => item.id === selectedItemId,
+      );
+      if (item) {
+        setCheckedItem(+item.id);
+      }
+    }
+  }, [items.items, selectedItemId]);
 
   useEffect(() => {
     const filterListByTitle = (title: string) => {
@@ -63,7 +78,7 @@ export function OptionsListExplorer({
     }
   }, [inputValue, activeTab, items.items]);
 
-  const handlerActiveTab = (tabId: number) => {
+  const handleTabChange = (tabId: number) => {
     setActiveTab(tabId);
     setCheckedItem(0);
   };
@@ -79,13 +94,14 @@ export function OptionsListExplorer({
         'w-[500px] bg-white',
       )}
     >
-      <div
+      <button
+        aria-label="Go back"
         onClick={onBackButtonClick}
-        className="text-gray-1000 flex w-fit cursor-pointer items-center gap-1 px-4 py-2.5"
+        className="text-gray-1000 flex w-fit cursor-pointer items-center gap-1 bg-transparent px-4 py-2.5"
       >
         <Icon name="chevron-right" />
         <span className="text-sm font-medium">{title}</span>
-      </div>
+      </button>
       {!items.categories && items.items.length < 10 && (
         <div className="my-4 h-0.5 w-full bg-gray-300"></div>
       )}
@@ -93,8 +109,8 @@ export function OptionsListExplorer({
         <div className="mx-4 -mt-8 pb-2">
           <TextField
             value={inputValue}
-            onChange={(e) => handlerInput(e.target.value)}
-            placeholder={search?.placeholder}
+            onChange={(e) => handleInputChange(e.target.value)}
+            placeholder={search?.placeholder || 'جستجو کنید...'}
             mode="outline"
             leadingIcon={{
               name: 'search',
@@ -111,7 +127,7 @@ export function OptionsListExplorer({
             tabs={items.categories}
             bgWhite
             mode="rounded"
-            onClickTab={(id) => handlerActiveTab(id)}
+            onClickTab={(id) => handleTabChange(id)}
           />
         </div>
       )}
@@ -126,12 +142,12 @@ export function OptionsListExplorer({
         >
           {itemsToShow.map((item: OptionItem, index: number) => (
             <div
-              onClick={() => setCheckedItem(index + 1)}
+              onClick={() => setCheckedItem(+item.id)}
               className={cn(
                 'flex h-14 w-full cursor-pointer justify-between border-b border-gray-200 px-4 py-3 last:border-b-0',
-                { 'bg-brand-100': checkedItem === index + 1 },
+                { 'bg-brand-100': checkedItem === item.id },
               )}
-              key={index}
+              key={item.id}
             >
               <div className="flex items-center gap-1">
                 <div
@@ -167,7 +183,7 @@ export function OptionsListExplorer({
           ))}
         </div>
       ) : (
-        <p className="mt-3 px-4">صندوقی یافت نشد...</p>
+        <p className="mt-3 px-4">{emptyStateMessage}</p>
       )}
     </div>
   );
