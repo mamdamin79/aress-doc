@@ -2,13 +2,14 @@ import { Meta, StoryObj } from '@storybook/react';
 import { OptionsDropdown } from './OptionsDropdown';
 const meta: Meta<typeof OptionsDropdown> = {
   component: OptionsDropdown,
+  tags: ['autodocs'],
 };
 
 export default meta;
 
 type Story = StoryObj<typeof OptionsDropdown>;
 
-export const withbadge: Story = {
+export const Withbadge: Story = {
   render: (args) => (
     <div className="w-28">
       <OptionsDropdown {...args} />
@@ -40,7 +41,7 @@ export const withbadge: Story = {
     },
   },
 };
-export const withIcon: Story = {
+export const WithIcon: Story = {
   render: (args) => (
     <div>
       <OptionsDropdown {...args} />
@@ -69,7 +70,7 @@ export const withIcon: Story = {
     },
   },
 };
-export const fixedWidth: Story = {
+export const FixedWidth: Story = {
   render: (args) => (
     <div>
       <OptionsDropdown {...args} />
@@ -99,7 +100,7 @@ export const fixedWidth: Story = {
     },
   },
 };
-export const withCheck: Story = {
+export const WithCheck: Story = {
   render: (args) => (
     <div>
       <OptionsDropdown {...args} />
@@ -126,7 +127,7 @@ export const withCheck: Story = {
     },
   },
 };
-export const customTriggerRender: Story = {
+export const CustomTriggerRender: Story = {
   render: (args) => (
     <div>
       <OptionsDropdown {...args} />
@@ -163,7 +164,7 @@ export const customTriggerRender: Story = {
     },
   },
 };
-export const customOptionsRender: Story = {
+export const CustomOptionsRender: Story = {
   render: (args) => (
     <div>
       <OptionsDropdown {...args} />
@@ -189,7 +190,7 @@ export const customOptionsRender: Story = {
       checkSelected: true,
     },
     customOptionRender(props) {
-      return <div className="w-60">{props.text}</div>;
+      return <div className="w-64">{props.text}</div>;
     },
   },
 };
