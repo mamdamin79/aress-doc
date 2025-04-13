@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { LoginForm } from './LoginForm';
+import { set } from 'react-hook-form';
 
 // Meta configuration for the LoginForm component in Storybook
 const meta: Meta<typeof LoginForm> = {
@@ -20,8 +21,13 @@ export const Default: Story = {
     </div>
   ),
   args: {
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      return new Promise((resolve) =>
+        setTimeout(() => {
+          console.log(values);
+          resolve();
+        }, 1500),
+      );
     },
   },
 };
