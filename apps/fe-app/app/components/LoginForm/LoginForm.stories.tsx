@@ -20,7 +20,8 @@ export const Default: Story = {
     </div>
   ),
   args: {
-    title: 'ورود به آرسس ترمینال',
-    onClick: () => console.log('clicked'),
+    onSubmit: (values) => {
+      console.log(values);
+    },
   },
 };
