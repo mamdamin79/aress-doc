@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import React from 'react';
-import { ProfileSidebarProps } from './ProfileSidebar.types';
 import { OptionsDropdownOption } from '../OptionsDropdown';
 const UserSVG = () => (
   <svg
@@ -14,6 +13,12 @@ const UserSVG = () => (
     <path d="M20 21a8 8 0 0 0-16 0" />
   </svg>
 );
+export interface ProfileSidebarProps {
+  image?: string;
+  title?: string;
+  subTitle?: string;
+  activeIndex?: number | null;
+}
 
 export const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
   image,
