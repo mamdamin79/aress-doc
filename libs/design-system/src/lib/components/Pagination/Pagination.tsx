@@ -11,9 +11,8 @@ export const Pagination: React.FC<PaginationProps> = ({
   pageCount,
   onPageChange,
   pageSize,
-  currentPage
+  currentPage,
 }) => {
-
   const startPost = (currentPage - 1) * pageSize + 1;
   const endPost = Math.min(currentPage * pageSize, pageCount * pageSize);
 
@@ -25,7 +24,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         breakLabel="..."
         pageCount={pageCount}
         marginPagesDisplayed={2}
-        forcePage={currentPage-1}
+        forcePage={currentPage - 1}
         pageRangeDisplayed={3}
         onPageChange={onPageChange}
         containerClassName="flex text-gray-1000 items-center justify-center space-x-2 mt-4"
@@ -39,8 +38,8 @@ export const Pagination: React.FC<PaginationProps> = ({
         disabledClassName="opacity-50 cursor-not-allowed pointer-events-none"
         breakClassName="flex items-center justify-center"
       />
-    <div className="text-center text-sm font-vazirmatn font-medium mt-2 text-gray-600">
-       {startPost} - {endPost} از {pageCount * pageSize} گزارش
+      <div className="font-vazirmatn mt-2 text-center text-sm font-medium text-gray-600">
+        {startPost} - {endPost} از {pageCount * pageSize} گزارش
       </div>
     </div>
   );
