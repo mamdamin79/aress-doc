@@ -1,28 +1,16 @@
 import moment from 'moment';
 import { cn } from '../../../utils';
 import { useEffect, useRef, useState } from 'react';
-import { CustomDate } from './DateInput.types';
+import { CustomDate, DatePickerProps } from './DateInput.types';
 import { Icon } from '../Icon';
-
-interface Props {
-  defaultValue?: string;
-  onChange: (value: string | Date) => void;
-  mode: 'jalali' | 'miladi';
-  min?: string;
-  max?: string;
-  active: boolean;
-  focus: boolean;
-  invalidStartDate: string;
-  invalidEndDate: string;
-  duplicateInputError: string;
-  clearDate: () => void;
-  errors: {
-    minError: boolean;
-    maxError: boolean;
-  };
-  placeholder: string;
-  errorHandler: (e: { minError: boolean; maxError: boolean }) => void;
-}
+import { DateFieldInput } from './DateFieldInput';
+import { formatDay, formatMonth, formatYear } from './DateInput.utils';
+import {
+  dayRegex,
+  isJalali,
+  monthRegex,
+  yearRegex,
+} from './DateInput.constants';
 
 const isCustomDate = (value: unknown): value is CustomDate => {
   return (
@@ -36,17 +24,16 @@ const isCustomDate = (value: unknown): value is CustomDate => {
     typeof (value as CustomDate).year === 'number'
   );
 };
-export const DateInput: React.FC<Props> = ({
+export const DateInput: React.FC<DatePickerProps> = ({
   defaultValue,
-  invalidEndDate,
-  invalidStartDate,
   duplicateInputError,
   errorHandler,
   focus,
   placeholder,
+  minErrorText,
+  maxErrorText,
   errors,
   onChange,
-  mode,
   clearDate,
   min,
   max,
@@ -72,23 +59,12 @@ export const DateInput: React.FC<Props> = ({
   const monthRef = useRef<HTMLInputElement | null>(null);
   const yearRef = useRef<HTMLInputElement | null>(null);
   const [isArrowKeyPressed, setIsArrowKeyPressed] = useState(false);
-
-  const isMiladi = (date: string) => moment(date, 'YYYY-MM-DD', true);
-  const [activeInput, setActiveInput] = useState(active);
-  const isJalali = (date: string) => moment(date, 'jYYYY/jM/jD');
+  const [activeInput, setActiveInput] = useState(active || false);
 
   useEffect(() => {
     if (defaultValue) {
       if (typeof defaultValue?.trim() === 'string') {
-        if (mode === 'miladi' && isMiladi(defaultValue).isValid()) {
-          const dateMiladi = isMiladi(defaultValue);
-          changeDayInput(dateMiladi.date());
-          changeMonthInput(dateMiladi.month() + 1);
-          changeYearInput(dateMiladi.year());
-          dayRef.current?.blur();
-        }
-
-        if (mode === 'jalali' && isJalali(defaultValue).isValid()) {
+        if (isJalali(defaultValue).isValid()) {
           const dateJalali = isJalali(defaultValue);
           changeDayInput(dateJalali.date());
           changeMonthInput(dateJalali.month() + 1);
@@ -125,12 +101,7 @@ export const DateInput: React.FC<Props> = ({
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode, defaultValue]);
-
-  useEffect(() => {
-    setActiveInput(active);
-  }, [active]);
-  console.log(activeInput);
+  }, [defaultValue]);
 
   // focus day input
   useEffect(() => {
@@ -142,16 +113,7 @@ export const DateInput: React.FC<Props> = ({
 
   // set min date
   useEffect(() => {
-    if (min && mode === 'miladi') {
-      if (isMiladi(min).isValid()) {
-        setMinDate({
-          day: isMiladi(min).date(),
-          month: isMiladi(min).month() + 1,
-          year: isMiladi(min).year(),
-        });
-      }
-    }
-    if (min && mode === 'jalali') {
+    if (min) {
       if (isJalali(min).isValid()) {
         if (isJalali(min).month() + 1 > 6) {
           if (isJalali(min).date() > 31) {
@@ -167,77 +129,52 @@ export const DateInput: React.FC<Props> = ({
               year: isJalali(min).year(),
             });
         }
-        setMinDate({
-          day: isMiladi(min).date(),
-          month: isMiladi(min).month() + 1,
-          year: isMiladi(min).year(),
-        });
       }
     }
-  }, [min, mode]);
+  }, [min]);
 
   // set max date
   useEffect(() => {
     if (max) {
-      const miladiDate = isMiladi(max);
-      if (miladiDate.isValid()) {
+      const shamsiDate = isJalali(max);
+      if (shamsiDate.isValid()) {
+        if (shamsiDate.month() + 1 > 6) {
+          if (shamsiDate.date() > 31) {
+            setMaxDate({
+              day: 31,
+              month: shamsiDate.month() + 1,
+              year: shamsiDate.year(),
+            });
+          } else {
+            setMaxDate({
+              day: shamsiDate.date(),
+              month: shamsiDate.month() + 1,
+              year: shamsiDate.year(),
+            });
+          }
+        }
         setMaxDate({
-          day: miladiDate.date(),
-          month: miladiDate.month() + 1,
-          year: miladiDate.year(),
+          day: shamsiDate.date(),
+          month: shamsiDate.month() + 1,
+          year: shamsiDate.year(),
         });
       }
-      if (mode === 'jalali') {
-        const shamsiDate = isJalali(max);
-        if (shamsiDate.isValid()) {
-          if (shamsiDate.month() + 1 > 6) {
-            if (shamsiDate.date() > 31) {
-              setMaxDate({
-                day: 31,
-                month: shamsiDate.month() + 1,
-                year: shamsiDate.year(),
-              });
-            } else {
-              setMaxDate({
-                day: shamsiDate.date(),
-                month: shamsiDate.month() + 1,
-                year: shamsiDate.year(),
-              });
-            }
-          }
-          setMaxDate({
-            day: shamsiDate.date(),
-            month: shamsiDate.month() + 1,
-            year: shamsiDate.year(),
-          });
-        }
-      }
     }
-  }, [max, mode]);
+  }, [max]);
 
   let tempMinError = false;
   let tempMaxError = false;
 
   // Function handler to change the input day value
   const changeDayInput = (e: number, arrowChange?: boolean) => {
-    const regex = /^(?:[1-9]|[12][0-9]|3[01])?$/;
-
     // Validate day input (1-31)
-    if (regex.test(String(e))) {
+    if (dayRegex.test(String(e))) {
       setDay(e);
     }
 
     // Check for minimum date constraints
     if (minDate.year && minDate.month && minDate.day) {
       if (year < minDate.year) tempMinError = true;
-      console.log(
-        'year =>',
-        year,
-        minDate.year,
-        'month =>',
-        month,
-        minDate.month
-      );
       if (year === minDate.year && month === minDate.month && e < minDate.day) {
         tempMinError = true;
       }
@@ -253,39 +190,12 @@ export const DateInput: React.FC<Props> = ({
     }
 
     // Handle specific day constraints for Jalali calendar
-    if (mode === 'jalali' && month) {
+    if (month) {
       if (month > 6 && e === 31) setDay(30);
       if (month > 6 && month <= 8 && e === 31) setDay(30);
-      if (regex.test(String(e)) && day !== 31) {
+      if (dayRegex.test(String(e)) && day !== 31) {
         setDay(e);
       }
-    }
-
-    // Handle specific day constraints for Miladi (Gregorian) calendar
-    if (mode === 'miladi') {
-      if (
-        String(year).length === 4 &&
-        month === 2 &&
-        moment([year]).isLeapYear() &&
-        /^(?:[1-9]|1[0-9]|2[0-9])?$/.test(String(e))
-      )
-        setDay(e);
-      if (
-        String(year).length === 4 &&
-        month === 2 &&
-        !moment([year]).isLeapYear() &&
-        /^(?:[1-9]|1[0-9]|2[0-8])?$/.test(String(e))
-      )
-        setDay(e);
-      if (
-        String(year).length === 4 &&
-        ((month && month === 6) ||
-          month === 11 ||
-          month === 4 ||
-          month === 9) &&
-        e === 31
-      )
-        setDay(30);
     }
 
     // Move focus to the next input field when day input is two digits and arrow change occurs
@@ -317,16 +227,14 @@ export const DateInput: React.FC<Props> = ({
     }
 
     // Handle day overflow (e.g., 31st in months with 30 days)
-    if ((e === 31 || (e && isCustomDate(e) && e.day === 31)) && month > 6)
+    if ((e === 31 || (e && isCustomDate(e) && e === 31)) && month > 6)
       setDay(30);
   };
 
   // Function handler to change the input month value
   const changeMonthInput = (e: number, arrowChange?: boolean) => {
-    const regex = /^(0?[1-9]|1[0-2])?$/;
-
     // Validate month input
-    if (regex.test(String(e))) {
+    if (monthRegex.test(String(e))) {
       setMonth(e);
     }
 
@@ -399,49 +307,27 @@ export const DateInput: React.FC<Props> = ({
     }
 
     // Handle leap year and specific month-day constraints for Jalali calendar
-    if (mode === 'jalali') {
-      if (
-        String(year).length === 4 &&
-        e === 12 &&
-        !moment([year]).isLeapYear() &&
-        day > 30
-      )
-        setDay(30);
-      if (
-        String(year).length === 4 &&
-        e === 12 &&
-        moment([year]).isLeapYear() &&
-        day > 29
-      ) {
-        setDay(29);
-      }
-      if (e > 6 && e < 12 && day === 31 && mode) setDay(30);
+    if (
+      String(year).length === 4 &&
+      e === 12 &&
+      !moment([year]).isLeapYear() &&
+      day > 30
+    )
+      setDay(30);
+    if (
+      String(year).length === 4 &&
+      e === 12 &&
+      moment([year]).isLeapYear() &&
+      day > 29
+    ) {
+      setDay(29);
     }
-
-    // Handle leap year and specific month-day constraints for Gregorian calendar (Miladi)
-    if (mode === 'miladi') {
-      if (
-        String(year).length === 4 &&
-        moment([year]).isLeapYear() &&
-        e === 2 &&
-        day > 28
-      ) {
-        setDay(29);
-      } else if (
-        String(year).length === 4 &&
-        !moment([year]).isLeapYear() &&
-        e === 2 &&
-        day > 28
-      ) {
-        setDay(28);
-      }
-      if ((e === 6 || e === 11 || e === 4 || e === 9) && day === 31) setDay(30);
-    }
+    if (e > 6 && e < 12 && day === 31) setDay(30);
   };
 
   // Function handler to change the input year value
   const changeYearInput = (e: number, arrowChangg?: boolean) => {
-    if (/^\d{0,4}$/.test(String(e))) {
+    if (yearRegex.test(String(e))) {
       setYear(e);
     }
 
@@ -512,72 +398,27 @@ export const DateInput: React.FC<Props> = ({
       }
     }
 
-    // Handle leap year and specific month-day constraints for the Gregorian (Miladi) calendar
-    if (mode === 'miladi') {
-      if (
-        String(e).length === 4 &&
-        ((month && month === 6) ||
-          month === 11 ||
-          month === 4 ||
-          month === 9) &&
-        day === 31
-      ) {
-        setDay(30);
-      }
-      if (
-        String(e).length === 4 &&
-        moment([e]).isLeapYear() &&
-        month === 2 &&
-        day > 28
-      ) {
-        setDay(29);
-      } else if (
-        String(e).length === 4 &&
-        !moment([e]).isLeapYear() &&
-        month === 2 &&
-        day > 28
-      ) {
-        setDay(28);
-      }
-    }
-
     // Handle leap year and specific month-day constraints for the Jalali calendar
-    if (mode === 'jalali') {
-      if (String(e).length === 4 && day === 31 && month && month > 6)
-        setDay(30);
-      if (
-        String(e).length === 4 &&
-        !moment([year]).isLeapYear() &&
-        month === 12 &&
-        day === 31
-      )
-        setDay(30);
-      if (
-        String(e).length === 4 &&
-        moment([year]).isLeapYear() &&
-        month === 12 &&
-        (day === 31 || day === 30)
-      )
-        setDay(29);
-    }
-  };
-
-  const formatDay = (day: number | null | undefined) => {
-    if (!day) return '';
-    return String(day).length === 1 ? `0${day}` : day;
-  };
-  const formatMonth = (month: number | null | undefined) => {
-    if (!month) return '';
-    return String(month).length === 1 ? `0${month}` : month;
-  };
-  const formatYear = (year: number | null | undefined) => {
-    if (!year) return '';
-    return String(year).padStart(4, '0');
+    if (String(e).length === 4 && day === 31 && month && month > 6) setDay(30);
+    if (
+      String(e).length === 4 &&
+      !moment([year]).isLeapYear() &&
+      month === 12 &&
+      day === 31
+    )
+      setDay(30);
+    if (
+      String(e).length === 4 &&
+      moment([year]).isLeapYear() &&
+      month === 12 &&
+      (day === 31 || day === 30)
+    )
+      setDay(29);
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const keydownHandler = (e: KeyboardEvent) => {
-    if (activeIndex && active) {
+    if (activeIndex && activeIndex) {
       if (e.key === 'ArrowLeft') {
         setIsArrowKeyPressed(false);
         if (activeIndex === 1) {
@@ -666,116 +507,118 @@ export const DateInput: React.FC<Props> = ({
   };
 
   return (
-    <div
-      className={cn(
-        'w-40 rounded-md bg-white border-2 flex items-center gap-1 py-2 px-4',
-        {
-          'border-red-600':
-            errors?.maxError ||
-            errors?.minError ||
-            duplicateInputError ||
-            invalidEndDate ||
-            invalidStartDate,
-          'border-brand-600':
-            active &&
-            focus &&
-            !errors?.maxError &&
-            !errors?.minError &&
-            !duplicateInputError &&
-            !invalidEndDate &&
-            !invalidStartDate,
-          'border-gray-500':
-            year &&
-            day &&
-            month &&
-            !focus &&
-            !errors.maxError &&
-            !errors.minError &&
-            !duplicateInputError &&
-            !invalidEndDate &&
-            !invalidStartDate,
-        }
-      )}
-    >
-      {activeInput ? (
-        <>
-          <input
-            dir="rtl"
-            onClick={() => {
-              if (active) setActiveIndex(1);
-              dayRef?.current?.setSelectionRange(2, 2);
-            }}
-            disabled={!active}
-            ref={dayRef}
-            value={formatDay(day)}
-            onChange={(e) => changeDayInput(+e.target.value, true)}
-            type="text"
-            placeholder="روز"
-            className={cn(
-              'w-5 outline-none pb-0.5 -mx-1 placeholder:text-black block',
-              activeIndex === 1 && active && 'bg-blue-200'
-            )}
-          />
-          /
-          <input
-            dir="rtl"
-            disabled={!active}
-            onClick={() => {
-              setActiveIndex(2);
-              monthRef?.current?.setSelectionRange(2, 2);
-            }}
-            ref={monthRef}
-            value={formatMonth(month)}
-            onChange={(e) => changeMonthInput(+e.target.value, true)}
-            type="text"
-            placeholder="ماه"
-            className={cn(
-              'w-5 outline-none pb-0.5 px-0 -mx-1 placeholder:text-black block',
-              activeIndex === 2 && active && 'bg-blue-200'
-            )}
-          />
-          /
-          <input
-            dir="rtl"
-            disabled={!active}
-            onClick={() => {
-              setActiveIndex(3);
-              yearRef?.current?.setSelectionRange(
-                yearRef?.current?.value.length,
-                yearRef?.current?.value.length
-              );
-            }}
-            ref={yearRef}
-            value={formatYear(year)}
-            onChange={(e) => changeYearInput(+e.target.value, true)}
-            type="text"
-            placeholder="سال"
-            className={cn(
-              'w-10 outline-none -mx-1 pb-0.5 placeholder:text-black block',
-              activeIndex === 3 && active && 'bg-blue-200'
-            )}
-          />
-          {day && month && year ? (
-            <div
+    <div>
+      <div
+        className={cn(
+          'w-40 rounded-md bg-white border-2 flex items-center gap-1 py-2 px-4',
+          {
+            'border-red-600':
+              (day && month && year && errors.minError) ||
+              errors?.maxError ||
+              duplicateInputError,
+            'border-brand-600':
+              activeIndex &&
+              focus &&
+              !errors?.maxError &&
+              !errors?.minError &&
+              !duplicateInputError,
+            'border-gray-500':
+              year &&
+              day &&
+              month &&
+              !focus &&
+              !errors.maxError &&
+              !errors.minError &&
+              !duplicateInputError,
+          }
+        )}
+      >
+        {activeInput ? (
+          <>
+            <DateFieldInput
+              activeInput={activeInput}
               onClick={() => {
-                clearInputDate();
+                if (activeIndex) setActiveIndex(1);
+                dayRef?.current?.setSelectionRange(2, 2);
               }}
-              className="cursor-pointer mr-4"
-            >
-              <Icon name="x" size="lg" />
-            </div>
-          ) : (
-            ''
-          )}
-        </>
-      ) : (
-        <span
-          onClick={() => active && setActiveInput(!active)}
-          className="text-md text-gray-700"
-        >
-          {placeholder}
-        </span>
-      )}
+              ref={dayRef}
+              value={formatDay(day)}
+              onChange={(e) => changeDayInput(+e.target.value, true)}
+              placeholder="روز"
+              className={cn(
+                'w-5',
+                activeIndex === 1 && activeIndex && 'bg-blue-200'
+              )}
+            />
+            /
+            <DateFieldInput
+              activeInput={activeInput}
+              onClick={() => {
+                setActiveIndex(2);
+                monthRef?.current?.setSelectionRange(2, 2);
+              }}
+              ref={monthRef}
+              value={formatMonth(month)}
+              onChange={(e) => changeMonthInput(+e.target.value, true)}
+              placeholder="ماه"
+              className={cn(
+                'w-5 ',
+                activeIndex === 2 && activeIndex && 'bg-blue-200'
+              )}
+            />
+            /
+            <DateFieldInput
+              activeInput={activeInput}
+              onClick={() => {
+                setActiveIndex(3);
+                yearRef?.current?.setSelectionRange(
+                  yearRef?.current?.value.length,
+                  yearRef?.current?.value.length
+                );
+              }}
+              ref={yearRef}
+              value={formatYear(year)}
+              onChange={(e) => changeYearInput(+e.target.value, true)}
+              placeholder="سال"
+              className={cn(
+                'w-10',
+                activeIndex === 3 && activeIndex && 'bg-blue-200'
+              )}
+            />
+            {day && month && year ? (
+              <div
+                onClick={() => {
+                  clearInputDate();
+                }}
+                className="cursor-pointer mr-4"
+              >
+                <Icon name="x" size="lg" />
+              </div>
+            ) : (
+              ''
+            )}
+          </>
+        ) : (
+          <span
+            onClick={() => active === undefined && setActiveInput(true)}
+            className="text-md text-gray-700 select-none"
+          >
+            {placeholder}
+          </span>
+        )}
+      </div>
+      <div>
+        {errors?.minError && day && year && month ? (
+          <div className="text-red-600 text-xs">{minErrorText}</div>
+        ) : (
+          ''
+        )}
+        {errors?.maxError && day && year && month ? (
+          <div className="text-red-600 text-xs">{maxErrorText}</div>
+        ) : (
+          ''
+        )}
+      </div>
     </div>
   );
 };
