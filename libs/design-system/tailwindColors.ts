@@ -64,7 +64,7 @@ const colors = {
         },
         red: {
           600: {
-            20: 'var(--coloropacity-border-accent-red-600-20%)',
+            '20per': 'var(--coloropacity-border-accent-red-600-20per)',
           },
         },
         yellow: {

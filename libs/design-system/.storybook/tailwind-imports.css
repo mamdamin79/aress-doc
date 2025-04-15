@@ -723,6 +723,9 @@ input[type='password']::-webkit-password-eye {
     --coloropacity-border-accent-blue-600-20per: var(
       --coloropacity-blue-blue-600-light-20per
     );
+    --coloropacity-border-accent-red-600-20per: var(
+      --coloropacity-red-red-600-light-20per
+    );
     --coloropacity-border-accent-yellow-600-20per: var(
       --coloropacity-yellow-yellow-600-light-20per
     );
@@ -1338,6 +1341,9 @@ input[type='password']::-webkit-password-eye {
     );
     --coloropacity-border-accent-blue-600-20per: var(
       --coloropacity-blue-blue-600-dark-20per
+    );
+    --coloropacity-border-accent-red-600-20per: var(
+      --coloropacity-red-red-600-dark-20per
     );
     --coloropacity-border-accent-yellow-600-20per: var(
       --coloropacity-yellow-yellow-600-dark-20per
