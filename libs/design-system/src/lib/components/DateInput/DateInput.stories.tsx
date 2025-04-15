@@ -12,7 +12,7 @@ export default meta;
 
 type Story = StoryObj<typeof DateInput>;
 
-export const Jalali: Story = {
+export const ControlledDateInput: Story = {
   args: {
     min: '',
     clearDate: () => console.log('clearDate'),
