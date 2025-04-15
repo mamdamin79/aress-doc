@@ -5,131 +5,53 @@
 --color-button-brand-border-disable: var(--color-border-brand-disable-300);
 --color-button-brand-border-loading: var(--color-border-brand-primary-600);
 --color-button-brand-surface-hover: var(--color-surface-brand-700-contrast);
---color-button-brand-surface-pressed: var(
-  --color-surface-brand-800-highcontrast
-);
+--color-button-brand-surface-pressed: var(--color-surface-brand-800-highcontrast);
 --color-button-brand-surface-disable: var(--color-surface-brand-300-disable);
 --color-button-brand-surface-loading: var(--color-surface-brand-600-primary);
 --color-button-brand-label-onsurface: var(--color-text-neutral-white);
---color-button-brand-label-ondisablesurface: var(
-  --color-text-neutral-oncoloreddisable
-);
+--color-button-brand-label-ondisablesurface: var(--color-text-neutral-oncoloreddisable);
 --color-button-brand-label-plain-default: var(--color-text-brand-primary-600);
 --color-button-brand-label-plain-hover: var(--color-text-brand-contrast-700);
---color-button-brand-label-plain-pressed: var(
-  --color-text-brand-highcontrast-800
-);
+--color-button-brand-label-plain-pressed: var(--color-text-brand-highcontrast-800);
 --color-button-brand-label-plain-disable: var(--color-text-brand-disable-300);
 --color-button-brand-label-plain-loading: var(--color-text-brand-primary-600);
---color-button-error-surface-default: var(
-  --color-surface-message-error-600-primary
-);
---color-button-error-border-default: var(
-  --color-border-message-error-primary-600
-);
---color-button-error-border-hover: var(
-  --color-border-message-error-contrast-700
-);
---color-button-error-border-pressed: var(
-  --color-border-message-error-highcontrast-800
-);
---color-button-error-border-disable: var(
-  --color-border-message-error-disable-300
-);
---color-button-error-border-loading: var(
-  --color-border-message-error-primary-600
-);
---color-button-error-surface-hover: var(
-  --color-surface-message-error-700-contrast
-);
---color-button-error-surface-pressed: var(
-  --color-surface-message-error-800-highcontrast
-);
---color-button-error-surface-disable: var(
-  --color-surface-message-error-300-disable
-);
---color-button-error-surface-loading: var(
-  --color-surface-message-error-600-primary
-);
+--color-button-error-surface-default: var(--color-surface-message-error-600-primary);
+--color-button-error-border-default: var(--color-border-message-error-primary-600);
+--color-button-error-border-hover: var(--color-border-message-error-contrast-700);
+--color-button-error-border-pressed: var(--color-border-message-error-highcontrast-800);
+--color-button-error-border-disable: var(--color-border-message-error-disable-300);
+--color-button-error-border-loading: var(--color-border-message-error-primary-600);
+--color-button-error-surface-hover: var(--color-surface-message-error-700-contrast);
+--color-button-error-surface-pressed: var(--color-surface-message-error-800-highcontrast);
+--color-button-error-surface-disable: var(--color-surface-message-error-300-disable);
+--color-button-error-surface-loading: var(--color-surface-message-error-600-primary);
 --color-button-error-label-onsurface: var(--color-text-neutral-white);
---color-button-error-label-ondisablesurface: var(
-  --color-text-neutral-oncoloreddisable
-);
---color-button-error-label-plain-default: var(
-  --color-text-message-error-primary-600
-);
---color-button-error-label-plain-hover: var(
-  --color-text-message-error-contrast-700
-);
---color-button-error-label-plain-pressed: var(
-  --color-text-message-error-highcontrast-800
-);
---color-button-error-label-plain-disable: var(
-  --color-text-message-error-disable-300
-);
---color-button-error-label-plain-loading: var(
-  --color-text-message-error-primary-600
-);
---color-button-success-surface-default: var(
-  --color-surface-message-success-600-primary
-);
---color-button-success-border-default: var(
-  --color-border-message-success-primary-600
-);
---color-button-success-border-hover: var(
-  --color-border-message-success-contrast-700
-);
---color-button-success-border-pressed: var(
-  --color-border-message-success-highcontrast-800
-);
---color-button-success-border-disable: var(
-  --color-border-message-success-disable-300
-);
---color-button-success-surface-hover: var(
-  --color-surface-message-success-700-contrast
-);
---color-button-success-border-loading: var(
-  --color-border-message-success-primary-600
-);
---color-button-success-surface-pressed: var(
-  --color-surface-message-success-800-highcontrast
-);
---color-button-success-surface-disable: var(
-  --color-surface-message-success-300-disable
-);
+--color-button-error-label-ondisablesurface: var(--color-text-neutral-oncoloreddisable);
+--color-button-error-label-plain-default: var(--color-text-message-error-primary-600);
+--color-button-error-label-plain-hover: var(--color-text-message-error-contrast-700);
+--color-button-error-label-plain-pressed: var(--color-text-message-error-highcontrast-800);
+--color-button-error-label-plain-disable: var(--color-text-message-error-disable-300);
+--color-button-error-label-plain-loading: var(--color-text-message-error-primary-600);
+--color-button-success-surface-default: var(--color-surface-message-success-600-primary);
+--color-button-success-border-default: var(--color-border-message-success-primary-600);
+--color-button-success-border-hover: var(--color-border-message-success-contrast-700);
+--color-button-success-border-pressed: var(--color-border-message-success-highcontrast-800);
+--color-button-success-border-disable: var(--color-border-message-success-disable-300);
+--color-button-success-surface-hover: var(--color-surface-message-success-700-contrast);
+--color-button-success-border-loading: var(--color-border-message-success-primary-600);
+--color-button-success-surface-pressed: var(--color-surface-message-success-800-highcontrast);
+--color-button-success-surface-disable: var(--color-surface-message-success-300-disable);
 --color-button-success-label-onsurface: var(--color-text-neutral-white);
---color-button-success-label-ondisablesurface: var(
-  --color-text-neutral-oncoloreddisable
-);
---color-button-success-label-plain-default: var(
-  --color-text-message-success-primary-600
-);
---color-button-success-label-plain-hover: var(
-  --color-text-message-success-contrast-700
-);
---color-button-success-label-plain-pressed: var(
-  --color-text-message-success-highcontrast-800
-);
---color-button-success-label-plain-disable: var(
-  --color-text-message-success-disable-300
-);
---color-button-success-label-plain-loading: var(
-  --color-text-message-success-primary-600
-);
---color-button-success-surface-loading: var(
-  --color-surface-message-success-600-primary
-);
---color-videoplayer-progressbar-base: var(
-  --coloropacity-gray-gray-300-light-50per
-);
---color-videoplayer-fullscreen-videoselection-surface: var(
-  --coloropacity-gray-gray-900-light-90per
-);
---color-videoplayer-fullscreen-videoselection-border: var(
-  --coloropacity-base-white-20per
-);
---color-videoplayer-settingspopup-surface: var(
-  --coloropacity-gray-gray-900-light-90per
-);
+--color-button-success-label-ondisablesurface: var(--color-text-neutral-oncoloreddisable);
+--color-button-success-label-plain-default: var(--color-text-message-success-primary-600);
+--color-button-success-label-plain-hover: var(--color-text-message-success-contrast-700);
+--color-button-success-label-plain-pressed: var(--color-text-message-success-highcontrast-800);
+--color-button-success-label-plain-disable: var(--color-text-message-success-disable-300);
+--color-button-success-label-plain-loading: var(--color-text-message-success-primary-600);
+--color-button-success-surface-loading: var(--color-surface-message-success-600-primary);
+--color-videoplayer-progressbar-base: var(--coloropacity-gray-gray-300-light-50per);
+--color-videoplayer-fullscreen-videoselection-surface: var(--coloropacity-gray-gray-900-light-90per);
+--color-videoplayer-fullscreen-videoselection-border: var(--coloropacity-base-white-20per);
+--color-videoplayer-settingspopup-surface: var(--coloropacity-gray-gray-900-light-90per);
 --color-videoplayer-settingspopup-divider: var(--color-gray-gray-700-light);
 --color-videoplayer-settingspopup-border: var(--coloropacity-base-black-20per);
