@@ -1,18 +1,8 @@
 import Image from 'next/image';
 import React from 'react';
 import { ProfileSidebarOption } from './ProfileSidebarOption';
-const UserSVG = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="44"
-    height="44"
-    viewBox="0 0 24 24"
-    fill="#CACDD3"
-  >
-    <circle cx="12" cy="8" r="5" />
-    <path d="M20 21a8 8 0 0 0-16 0" />
-  </svg>
-);
+import UserSVG from '../../../assets/icons/profile-vector-large.svg';
+import { cn } from 'libs/design-system/src/utils';
 export interface ProfileSidebarProps {
   image?: string;
   title?: string;
@@ -29,17 +19,16 @@ export const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
       <div className="flex flex-row items-center gap-3">
         <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-100 p-1">
           <div className="flex h-12 w-12 flex-col items-center justify-end overflow-hidden rounded-xl bg-white">
-            {image ? (
-              <Image
-                alt="profile image"
-                src={image}
-                width={48}
-                height={48}
-                className="h-12 w-12 object-contain"
-              />
-            ) : (
-              <UserSVG />
-            )}
+            <Image
+              alt="profile image"
+              src={image ? image : UserSVG}
+              width={48}
+              height={48}
+              className={cn(
+                'h-12 w-12 object-contain',
+                !image && 'translate-y-2',
+              )}
+            />
           </div>
         </div>
         <div className="flex flex-col">
