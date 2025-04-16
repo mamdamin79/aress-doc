@@ -32,3 +32,4 @@ export * from './ReportCard';
 export * from './ReportsCarousel';
 export * from './ProfileImageAndUpload';
 export * from './AutoRotateSwitch';
+export * from './FundsColumn';
