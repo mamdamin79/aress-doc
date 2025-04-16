@@ -152,7 +152,7 @@ export function OptionsListExplorer({
               <div className="flex items-center gap-1">
                 <div
                   className={cn('text-brand-700 invisible', {
-                    visible: checkedItem === index + 1,
+                    visible: checkedItem === item.id,
                   })}
                 >
                   <Icon name="check" />
@@ -174,7 +174,7 @@ export function OptionsListExplorer({
                 {typeof item.priceChangePercent === 'number' && (
                   <PercentageLabel
                     value={item.priceChangePercent}
-                    key={index}
+                    key={`${item.id}-percentage`}
                     size="normal"
                   />
                 )}
