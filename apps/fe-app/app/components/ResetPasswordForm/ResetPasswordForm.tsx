@@ -19,7 +19,6 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
     defaultValues: {
       nationalCode: '',
       phoneNumber: '',
-      captcha: '',
     },
   });
 
