@@ -2,7 +2,7 @@ import { Icon } from '../Icon';
 import { cn } from './../../../utils';
 
 interface Props {
-  size: 'small' | 'medium' | 'larg' | 'extraLarg';
+  size: 'small' | 'medium' | 'large' | 'extraLarg';
   title: string;
   sortType: 'alphabetical' | 'ranked';
   filterable: boolean;
@@ -24,7 +24,7 @@ export function FundsColumn({
         {
           'w-28': size === 'small',
           'w-36': size === 'medium',
-          'w-[200px]': size === 'larg',
+          'w-[200px]': size === 'large',
           'w-[312px]': size === 'extraLarg',
           'shadow-4xl': shadow && size === 'extraLarg',
           'bg-pink-200': size === 'extraLarg' && filterable,
@@ -52,6 +52,14 @@ export function FundsColumn({
         </div>
         {title}
         <div
+          role="columnheader"
+          aria-sort={
+            type === 'active-asc'
+              ? 'ascending'
+              : type === 'active-desc'
+                ? 'descending'
+                : 'none'
+          }
           className={cn({
             'invisible text-[#545962] group-hover:visible': type === 'inactive',
           })}
