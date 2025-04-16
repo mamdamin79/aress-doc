@@ -46,6 +46,19 @@ export const PlayerActions: React.FC<Props> = React.memo(
       }
     };
 
+    const handleVolumeBarClick = (event: React.MouseEvent<HTMLDivElement>) => {
+      if (!volumeBarRef.current) return;
+
+      const rect = volumeBarRef.current.getBoundingClientRect();
+      const offsetX = event.clientX - rect.left;
+      const newVolume = Math.min(Math.max(offsetX / rect.width, 0), 1);
+
+      if (muted && newVolume > 0) {
+        toggleMute();
+      }
+      setVolume(newVolume);
+    };
+
     return (
       <>
         <button className="hidden items-center justify-center p-1 text-white transition-all duration-300 sm:flex">
@@ -135,7 +148,10 @@ export const PlayerActions: React.FC<Props> = React.memo(
             </Tooltip>
           )}
           <Tooltip title="میزان صدا" offset={56}>
-            <div className="relative hidden w-16 transition-all duration-300 ease-in-out group-hover:block group-hover:opacity-100">
+            <div
+              className="relative hidden w-16 transition-all duration-300 ease-in-out group-hover:block group-hover:opacity-100"
+              onClick={handleVolumeBarClick}
+            >
               <progress
                 ref={volumeBarRef}
                 dir="ltr"
@@ -159,6 +175,7 @@ export const PlayerActions: React.FC<Props> = React.memo(
                     className={`bg-brand-600 duration-250 absolute -top-[5px] left-0 z-30 h-[12px] w-[12px] cursor-pointer rounded-full transition-colors ${
                       isDragging && 'bg-brand-800'
                     }`}
+                    onClick={(e) => e.stopPropagation()}
                   />
                 </Draggable>
               </div>
