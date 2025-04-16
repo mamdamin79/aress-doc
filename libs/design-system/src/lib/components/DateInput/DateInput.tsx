@@ -3,7 +3,6 @@ import { cn } from '../../../utils';
 import { useEffect, useRef, useState } from 'react';
 import { CustomDate, DatePickerProps } from './DateInput.types';
 import { Icon } from '../Icon';
-import { DateFieldInput } from './DateFieldInput';
 import { formatDay, formatMonth, formatYear } from './DateInput.utils';
 import {
   dayRegex,
@@ -45,14 +44,14 @@ export const DateInput: React.FC<DatePickerProps> = ({
   const [year, setYear] = useState<number>(0);
 
   const [minDate, setMinDate] = useState({
-    day,
-    month,
-    year,
+    day: 0,
+    month: 0,
+    year: 0,
   });
   const [maxDate, setMaxDate] = useState({
-    day,
-    month,
-    year,
+    day: 0,
+    month: 0,
+    year: 0,
   });
 
   const dayRef = useRef<HTMLInputElement | null>(null);
@@ -535,8 +534,8 @@ export const DateInput: React.FC<DatePickerProps> = ({
       >
         {activeInput ? (
           <>
-            <DateFieldInput
-              activeInput={activeInput}
+            <input
+              disabled={!activeInput}
               onClick={() => {
                 if (activeIndex) setActiveIndex(1);
                 dayRef?.current?.setSelectionRange(2, 2);
@@ -546,13 +545,13 @@ export const DateInput: React.FC<DatePickerProps> = ({
               onChange={(e) => changeDayInput(+e.target.value, true)}
               placeholder="روز"
               className={cn(
-                'w-5',
+                'w-5 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
                 activeIndex === 1 && activeIndex && 'bg-blue-200'
               )}
             />
             /
-            <DateFieldInput
-              activeInput={activeInput}
+            <input
+              disabled={!activeInput}
               onClick={() => {
                 setActiveIndex(2);
                 monthRef?.current?.setSelectionRange(2, 2);
@@ -562,13 +561,13 @@ export const DateInput: React.FC<DatePickerProps> = ({
               onChange={(e) => changeMonthInput(+e.target.value, true)}
               placeholder="ماه"
               className={cn(
-                'w-5 ',
+                'w-5 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
                 activeIndex === 2 && activeIndex && 'bg-blue-200'
               )}
             />
             /
-            <DateFieldInput
-              activeInput={activeInput}
+            <input
+              disabled={!activeInput}
               onClick={() => {
                 setActiveIndex(3);
                 yearRef?.current?.setSelectionRange(
@@ -581,7 +580,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
               onChange={(e) => changeYearInput(+e.target.value, true)}
               placeholder="سال"
               className={cn(
-                'w-10',
+                'w-10 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
                 activeIndex === 3 && activeIndex && 'bg-blue-200'
               )}
             />
