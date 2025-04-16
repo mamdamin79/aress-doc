@@ -117,7 +117,7 @@ export const PlayerActions: React.FC<Props> = React.memo(
             <Icon size="sm" name="skip-forward" />
           </span>
         </button>
-        <div className="group relative flex items-center space-x-2">
+        <div className="group relative flex items-center space-x-2 px-2">
           {muted ? (
             <Tooltip offset={48} title="(m) فعال کردن صدا" className="!z-30">
               <button
@@ -172,7 +172,7 @@ export const PlayerActions: React.FC<Props> = React.memo(
                   onStop={handleDragStop}
                 >
                   <div
-                    className={`bg-brand-600 duration-250 absolute -top-[5px] left-0 z-30 h-[12px] w-[12px] cursor-pointer rounded-full transition-colors ${
+                    className={`bg-brand-600 duration-250 absolute -top-1 left-0 z-30 h-3 w-3 cursor-pointer rounded-full transition-colors ${
                       isDragging && 'bg-brand-800'
                     }`}
                     onClick={(e) => e.stopPropagation()}

@@ -8,20 +8,19 @@ import { cn } from '../../../utils/classNames.utils';
 import { PlayerProgressBar } from './ControlPanel/PlayerProgressBar';
 import videoLogo from '../../../assets/images/videoLogo.svg';
 import Image from 'next/image';
-import { PlayList, video } from '../PlayList';
+import { PlayList } from '../PlayList';
+import { Video, VideoQuality } from './VideoPlayer.types';
 
 type Props = {
-  qualities: {
-    src: string;
-    label: string;
-  }[];
+  qualities: VideoQuality[];
   poster?: string;
   className?: string;
   title: string;
   src: string;
-  setSelectedVideo: React.Dispatch<React.SetStateAction<video>>;
-  videos: video[];
-  selectedVideo: video;
+  spriteBaseUrl?: string;
+  setSelectedVideo: React.Dispatch<React.SetStateAction<Video>>;
+  videos: Video[];
+  selectedVideo: Video;
 };
 
 const MemoizedTitle = React.memo(
@@ -49,6 +48,7 @@ const MemoizedTitle = React.memo(
 export const VideoPlayer: React.FC<Props> = ({
   qualities,
   poster = '',
+  spriteBaseUrl,
   title,
   className,
   src,
@@ -184,7 +184,14 @@ export const VideoPlayer: React.FC<Props> = ({
           {<Image src={videoLogo} width={100} height={100} alt="logo" />}
         </span>
       )}
-      <video src={src} className="h-full w-full" poster={''} ref={videoRef} />
+      <div className="aspect-video w-full">
+        <video
+          src={src}
+          className="h-full w-full"
+          poster={poster}
+          ref={videoRef}
+        />
+      </div>
       <div
         className={cn(
           'absolute inset-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-transparent to-transparent transition-all duration-700 ease-in-out',
@@ -214,6 +221,7 @@ export const VideoPlayer: React.FC<Props> = ({
               videoRef={videoRef}
               progress={progress}
               seek={seek}
+              spriteBaseUrl={spriteBaseUrl}
             />
           </div>
           {/* controls */}

@@ -2,22 +2,23 @@ import React, { useRef, useState } from 'react';
 import Draggable from 'react-draggable';
 import { PlayerThumbnail } from '../PlayerThumbnail';
 
-type Props = {
+interface PlayerProgressBarProps {
   duration: number;
   progress: number;
   seek: (newProgress: number) => void;
   currentTime: number;
   videoRef: React.RefObject<HTMLVideoElement>;
   bufferedTime: number;
-};
+  spriteBaseUrl?: string;
+}
 
-export const PlayerProgressBar: React.FC<Props> = ({
+export const PlayerProgressBar: React.FC<PlayerProgressBarProps> = ({
   seek,
   progress,
   duration,
   videoRef,
   bufferedTime,
-  currentTime,
+  spriteBaseUrl,
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const progressBarRef = useRef<HTMLProgressElement>(null);
@@ -47,6 +48,7 @@ export const PlayerProgressBar: React.FC<Props> = ({
     setIsDragging(true);
   };
 
+  // throttle this func
   const handleDrag = (e: any, data: any) => {
     if (progressBarRef.current) {
       const progressBarWidth = progressBarRef.current.offsetWidth;
@@ -70,7 +72,7 @@ export const PlayerProgressBar: React.FC<Props> = ({
         ref={progressBarRef}
         dir="ltr"
         max="100"
-        className="w-full z-20 cursor-pointer h-1.5 relative -top-[10px] rounded-full  appearance-none [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-bar]:bg-transparent [&::-webkit-progress-value]:bg-brand-600 [&::-webkit-progress-value]:rounded-full"
+        className="[&::-webkit-progress-value]:bg-brand-600 relative -top-[10px] z-20 h-1.5 w-full cursor-pointer appearance-none rounded-full [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-bar]:bg-transparent [&::-webkit-progress-value]:rounded-full"
         value={progress}
         onClick={handleSeek}
         onMouseMove={handleMouseMove}
@@ -80,14 +82,15 @@ export const PlayerProgressBar: React.FC<Props> = ({
         duration={duration}
         hoverTime={hoverTime}
         videoRef={videoRef}
+        spriteBaseUrl={spriteBaseUrl}
       />
       <progress
         dir="ltr"
         max="100"
-        className="w-full  h-1.5 z-10 absolute mx-auto left-0 top-0  rounded-full  appearance-none [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-bar]:bg-gray-300/50 [&::-webkit-progress-value]:bg-white [&::-webkit-progress-value]:rounded-full"
+        className="absolute left-0 top-0 z-10 mx-auto h-1.5 w-full appearance-none rounded-full [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-bar]:bg-gray-300/50 [&::-webkit-progress-value]:rounded-full [&::-webkit-progress-value]:bg-white"
         value={bufferedTime}
       ></progress>
-      <div className=" w-full h-1.5 absolute  top-0 -left-[3px]">
+      <div className="absolute -left-[3px] top-0 h-1.5 w-full">
         <Draggable
           axis="x"
           bounds="parent"
@@ -100,7 +103,7 @@ export const PlayerProgressBar: React.FC<Props> = ({
           onStop={handleDragStop} // Ensures position on release
         >
           <div
-            className={`bg-brand-600 left-0 z-30 cursor-pointer w-[20px] h-[20px] rounded-full absolute -top-[8px] transition-colors duration-250 ${
+            className={`bg-brand-600 duration-250 absolute -top-[8px] left-0 z-30 h-[20px] w-[20px] cursor-pointer rounded-full transition-colors ${
               isDragging && 'bg-brand-800'
             }`}
           ></div>
