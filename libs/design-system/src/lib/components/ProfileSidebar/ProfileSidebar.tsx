@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import React from 'react';
-import { OptionsDropdownOption } from '../OptionsDropdown';
+import { ProfileSidebarOption } from './ProfileSidebarOption';
 const UserSVG = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -17,14 +17,12 @@ export interface ProfileSidebarProps {
   image?: string;
   title?: string;
   subTitle?: string;
-  activeIndex?: number | null;
 }
 
 export const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
   image,
   subTitle,
   title,
-  activeIndex,
 }) => {
   return (
     <div className="flex w-[264px] flex-col gap-4 rounded-3xl border-2 border-gray-100 p-4">
@@ -45,18 +43,18 @@ export const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
           </div>
         </div>
         <div className="flex flex-col">
-          <span className="text-md">{title}</span>
-          <span className="text-sm text-gray-600">{subTitle}</span>
+          <span className="text-md font-semibold">{title}</span>
+          <span className="text-sm font-medium text-gray-600">{subTitle}</span>
         </div>
       </div>
-      <div className="w-full border border-gray-200"></div>
-      <div className="flex w-full flex-col">
-        <OptionsDropdownOption
+      <div className="w-full border-t border-gray-200"></div>
+      <div className="flex w-full flex-col gap-2">
+        <ProfileSidebarOption
           text="حساب کاربری"
           icon={{ name: 'user' }}
-          isActive={activeIndex === 0}
+          isActive
         />
-        <OptionsDropdownOption
+        <ProfileSidebarOption
           text="خروج از حساب کاربری"
           icon={{ name: 'power' }}
         />

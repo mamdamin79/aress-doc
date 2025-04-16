@@ -12,7 +12,6 @@ export const withPic: Story = {
   args: {
     title: 'علی محمدی',
     subTitle: '09179151234',
-    activeIndex: 0,
     image: 'https://placehold.co/600x600',
   },
 };
@@ -20,6 +19,5 @@ export const withoutPic: Story = {
   args: {
     title: 'علی محمدی',
     subTitle: '09179151234',
-    activeIndex: 0,
   },
 };
