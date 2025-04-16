@@ -7,7 +7,7 @@ import * as path from 'path';
 const inputDirPath = path.join(__dirname, 'inputs');
 const outputFilePath = path.join(
   __dirname,
-  './../../libs/design-system/tailwindColors.ts',
+  './../../shared/tailwind/tailwindColors.ts',
 );
 
 // Type for processing result
