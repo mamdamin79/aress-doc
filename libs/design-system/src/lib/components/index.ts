@@ -14,6 +14,7 @@ export * from './RemovableLabel';
 export * from './ProgressBar';
 export * from './SummaryCell';
 export * from './Button';
+export * from './TextField';
 export * from './BulletList';
 export * from './DualSwitch';
 export * from './NotesHeading';
