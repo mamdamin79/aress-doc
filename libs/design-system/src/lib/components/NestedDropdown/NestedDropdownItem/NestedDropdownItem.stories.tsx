@@ -12,7 +12,7 @@ export default meta;
 type Story = StoryObj<typeof NestedDropdownItem>;
 
 // A default story for the Header component
-export const normal: Story = {
+export const Normal: Story = {
   render: (args) => (
     <div className="w-[292px]">
       <NestedDropdownItem {...args} />
@@ -26,7 +26,7 @@ export const normal: Story = {
   },
 };
 
-export const opened: Story = {
+export const Opened: Story = {
   render: (args) => (
     <div className="w-[292px]">
       <NestedDropdownItem {...args} />
@@ -39,7 +39,7 @@ export const opened: Story = {
     activeIcon: { name: 'list-minus', size: 'md' },
   },
 };
-export const selectedOption: Story = {
+export const SelectedOption: Story = {
   render: (args) => (
     <div className="w-[292px]">
       <NestedDropdownItem {...args} />
@@ -53,7 +53,7 @@ export const selectedOption: Story = {
     hasTooltip: true,
   },
 };
-export const error: Story = {
+export const Error: Story = {
   render: (args) => (
     <div className="w-[292px]">
       <NestedDropdownItem {...args} />

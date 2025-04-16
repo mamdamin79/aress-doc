@@ -29,7 +29,7 @@ const Wrapper: React.FC<WrapperProps> = ({
 
 export const NestedDropdownItem: React.FC<NestedDropdownItemProps> = ({
   title,
-  status,
+  status = 'normal',
   icon,
   onClick,
   activeIcon,
