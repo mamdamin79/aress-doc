@@ -14,9 +14,19 @@ type Story = StoryObj<typeof NewPasswordForm>;
 // A default story for the NewPassword component
 
 export const Default: Story = {
-  render: () => (
+  render: (args) => (
     <div className="w-[528px]">
-      <NewPasswordForm onClick={() => console.log('clicked')} />
+      <NewPasswordForm {...args} />
     </div>
   ),
+  args: {
+    onSubmit: async (values) => {
+      return new Promise((resolve) =>
+        setTimeout(() => {
+          console.log(values);
+          resolve();
+        }, 1500),
+      );
+    },
+  },
 };
