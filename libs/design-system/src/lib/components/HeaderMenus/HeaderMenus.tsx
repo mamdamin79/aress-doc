@@ -7,8 +7,8 @@ import { dropdownType, MenuItem } from './HeaderMenus.types';
 import { cn } from '../../../../src/utils/classNames.utils';
 import Link from 'next/link';
 import { MultiLevelDropdown } from './MultiLevelDropDown';
-import { useClickAway, useWindowSize } from '@uidotdev/usehooks';
 import { BurgerMenu } from './BurgerMenu';
+import { useClickAway, useWindowSize } from '@uidotdev/usehooks';
 
 interface MenuProps {
   menuItems: MenuItem[];
