@@ -1,3 +1,4 @@
+'use client';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Icon } from '../Icon';
 import { cn } from 'libs/design-system/src/utils';

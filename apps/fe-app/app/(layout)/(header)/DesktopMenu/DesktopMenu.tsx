@@ -1,20 +1,18 @@
 'use client';
 import { Popover, PopoverButton } from '@headlessui/react';
 import React, { useEffect, useState } from 'react';
-import { Icon } from '../Icon';
-import { MenuTiles } from '../MenuTiles';
-import { dropdownType, MenuItem } from './HeaderMenus.types';
-import { cn } from '../../../../src/utils/classNames.utils';
+import { dropdownType, MenuItem } from './DesktopMenu.types';
 import Link from 'next/link';
 import { MultiLevelDropdown } from './MultiLevelDropDown';
-import { BurgerMenu } from './BurgerMenu';
-import { useClickAway, useWindowSize } from '@uidotdev/usehooks';
+import { useClickAway, useWindowSize, useThrottle } from '@uidotdev/usehooks';
+import { cn, Icon, MenuTiles } from 'design-system';
+import { MENU_ITEM_APPROX_WIDTH } from './DesktopMenu.constants';
 
 interface MenuProps {
   menuItems: MenuItem[];
 }
 
-export const HeaderMenus: React.FC<MenuProps> = ({ menuItems }) => {
+export const DesktopMenu: React.FC<MenuProps> = ({ menuItems }) => {
   const [activeSubMenu, setActiveSubMenu] = useState<null | dropdownType>(null);
   const [showMoreMenu, setShowMoreMenu] = useState(false);
   const [menus, setMenus] = useState<{
@@ -29,21 +27,22 @@ export const HeaderMenus: React.FC<MenuProps> = ({ menuItems }) => {
   });
 
   const { width } = useWindowSize();
+  const throttledWidth = useThrottle(width, 200);
 
   useEffect(() => {
-    if (!width) return;
+    if (!throttledWidth || menuItems.length === 0) return;
 
-    const itemsToRemove = width <= 1440 ? Math.floor((1440 - width) / 100) : 0;
-    if (itemsToRemove === 0) {
+    const maxVisibleItems = Math.floor(throttledWidth / MENU_ITEM_APPROX_WIDTH);
+
+    if (maxVisibleItems >= menuItems.length) {
       setMenus({ main: menuItems, more: [] });
     } else {
-      const removedItems = menuItems.slice(-itemsToRemove);
       setMenus({
-        main: menuItems.slice(0, -itemsToRemove),
-        more: removedItems,
+        main: menuItems.slice(0, maxVisibleItems),
+        more: menuItems.slice(maxVisibleItems),
       });
     }
-  }, [width, menuItems]);
+  }, [throttledWidth, menuItems]);
 
   const handleTabClick = (index: number) => {
     setActiveTab(index);
@@ -54,14 +53,14 @@ export const HeaderMenus: React.FC<MenuProps> = ({ menuItems }) => {
       <div className="flex h-fit w-fit max-w-[272px] flex-col gap-2 py-4 text-right">
         {item.dropdown?.map((dropdownItem, dropdownItemIndex) => (
           <div
-            key={dropdownItemIndex}
+            key={`dropdown-item-${dropdownItemIndex}`}
             className={cn(
               'flex flex-col',
               dropdownItem.children[0]?.isDashboard ? 'gap-2' : '',
             )}
           >
             <div className="flex flex-row items-center gap-2 pr-4 text-sm font-normal text-gray-600">
-              {dropdownItem.groupLabel}
+              {dropdownItem.groupLabel && dropdownItem.groupLabel}
               {dropdownItem.counter && (
                 <>
                   <span> ({dropdownItem.children.length}/8) </span>
@@ -72,7 +71,7 @@ export const HeaderMenus: React.FC<MenuProps> = ({ menuItems }) => {
             {dropdownItem.children.map(
               (subItemChildren, subItemChildrenIndex) => (
                 <div
-                  key={subItemChildrenIndex}
+                  key={`dropdown-children-${subItemChildrenIndex}`}
                   className="relative flex justify-center"
                 >
                   <MenuTiles
@@ -89,7 +88,7 @@ export const HeaderMenus: React.FC<MenuProps> = ({ menuItems }) => {
   );
 
   const renderMenuItem = (item: MenuItem, index: number) => (
-    <Popover key={item.text} className="group relative h-[40px]">
+    <Popover key={item.text} className="group relative h-10">
       <PopoverButton
         className={cn(
           'text-shadow-sm flex items-center gap-2 py-1 font-normal outline-none transition-colors',
@@ -114,7 +113,7 @@ export const HeaderMenus: React.FC<MenuProps> = ({ menuItems }) => {
             <span>{item.text}</span>
           )}
           <div
-            className={`bg-brand-600 absolute bottom-0 left-0 right-0 mx-auto -mb-2 h-[6px] w-6 rounded-full ${
+            className={`bg-brand-600 absolute bottom-0 left-0 right-0 mx-auto -mb-2 h-1.5 w-6 rounded-full ${
               activeTab === index ? 'group-hover:block' : 'hidden'
             }`}
           />
@@ -132,37 +131,33 @@ export const HeaderMenus: React.FC<MenuProps> = ({ menuItems }) => {
 
   return (
     <>
-      {width && width >= 1024 ? (
-        <div className="flex items-center gap-5 text-nowrap">
-          {menus.main.map((item, index) => renderMenuItem(item, index))}
-          {menus.more.length > 0 && (
-            <div className="relative flex flex-col" ref={ref}>
-              <div
-                className={cn(
-                  'mb-2 h-8 select-none rounded-full p-1 text-lg font-extrabold transition-colors',
-                  showMoreMenu ? 'text-gray-1000 bg-gray-100' : 'text-gray-600',
-                )}
-                onClick={() => setShowMoreMenu(!showMoreMenu)}
-              >
-                <div className="flex h-6 w-6 items-center justify-center pb-1">
-                  ...
-                </div>
-              </div>
-              <div className={cn(showMoreMenu ? 'block' : 'hidden')}>
-                <MultiLevelDropdown
-                  fixedropDown={true}
-                  activeMenu={true}
-                  setActiveSubMenu={setActiveSubMenu}
-                  activeSubMenu={activeSubMenu}
-                  menuItems={menus.more}
-                />
+      <div className="flex items-center gap-5 text-nowrap">
+        {menus.main.map((item, index) => renderMenuItem(item, index))}
+        {menus.more.length > 0 && (
+          <div className="relative flex flex-col" ref={ref}>
+            <div
+              className={cn(
+                'mb-2 h-8 select-none rounded-full p-1 text-lg font-extrabold transition-colors',
+                showMoreMenu ? 'text-gray-1000 bg-gray-100' : 'text-gray-600',
+              )}
+              onClick={() => setShowMoreMenu(!showMoreMenu)}
+            >
+              <div className="flex h-6 w-6 items-center justify-center pb-1">
+                ...
               </div>
             </div>
-          )}
-        </div>
-      ) : (
-        <BurgerMenu menuItems={menuItems} />
-      )}
+            <div className={cn(showMoreMenu ? 'block' : 'hidden')}>
+              <MultiLevelDropdown
+                fixedDropdown
+                activeMenu
+                setActiveSubMenu={setActiveSubMenu}
+                activeSubMenu={activeSubMenu}
+                menuItems={menus.more}
+              />
+            </div>
+          </div>
+        )}
+      </div>
     </>
   );
 };

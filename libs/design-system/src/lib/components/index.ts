@@ -33,4 +33,4 @@ export * from './ReportsCarousel';
 export * from './ProfileImageAndUpload';
 export * from './AutoRotateSwitch';
 export * from './FundsColumn';
-export * from './HeaderMenus';
+export * from './MenuTiles';

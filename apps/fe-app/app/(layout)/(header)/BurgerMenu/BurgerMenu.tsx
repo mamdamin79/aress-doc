@@ -1,19 +1,17 @@
+'use client';
 import { Popover, PopoverButton } from '@headlessui/react';
 import React, { useState } from 'react';
-import { Icon } from '../../Icon';
-import { MenuTiles } from '../../MenuTiles';
-import { cn } from '../../../../../src/utils/classNames.utils';
 import { useClickAway } from '@uidotdev/usehooks';
 import { HamburgerMenuIcon } from './HamburgerMenuIcon';
-import { dropdownType, MenuItem } from '../HeaderMenus.types';
-import { MultiLevelDropdown } from '../MultiLevelDropDown';
+import { dropdownType, MenuItem } from '../DesktopMenu/DesktopMenu.types';
+import { MultiLevelDropdown } from '../DesktopMenu/MultiLevelDropDown';
 
 interface MenuProps {
   menuItems: MenuItem[];
 }
 
 export const BurgerMenu: React.FC<MenuProps> = ({ menuItems }) => {
-  const [activeMenu, setActiveMenu] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSubMenu, setActiveSubMenu] = React.useState<null | dropdownType>(
     null,
   );
@@ -21,21 +19,21 @@ export const BurgerMenu: React.FC<MenuProps> = ({ menuItems }) => {
     closeAll();
   });
   const closeAll = () => {
-    setActiveMenu(false);
+    setIsMenuOpen(false);
     setActiveSubMenu(null);
   };
   return (
-    <div className="flex items-center text-nowrap">
-      <Popover className="group relative h-[40px]" ref={ref}>
+    <div className="flex items-center text-nowrap bg-white">
+      <Popover className="group relative h-10" ref={ref}>
         <PopoverButton
           as="div"
           className="outline-none"
-          onClick={() => (activeMenu ? closeAll() : setActiveMenu(true))}
+          onClick={() => (isMenuOpen ? closeAll() : setIsMenuOpen(true))}
         >
-          <HamburgerMenuIcon open={activeMenu} />
+          <HamburgerMenuIcon open={isMenuOpen} />
         </PopoverButton>
         <MultiLevelDropdown
-          activeMenu={activeMenu}
+          activeMenu={isMenuOpen}
           activeSubMenu={activeSubMenu}
           menuItems={menuItems}
           setActiveSubMenu={setActiveSubMenu}
