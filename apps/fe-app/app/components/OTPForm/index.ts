@@ -1,1 +1,1 @@
-export * from './OTPForm';
+export * from './OTPForm'
