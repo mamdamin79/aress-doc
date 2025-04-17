@@ -30,5 +30,6 @@ export const withCheck: Story = {
   args: {
     withCheck: true,
     text: 'متن نمونه',
+    isActive: true,
   },
 };
