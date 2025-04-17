@@ -14,12 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <Header />
-        <div className="h-screen"></div>
-        {children}
-        <FooterLite />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
