@@ -13,7 +13,7 @@ export const fileUpload: Story = {
   render: (args) => {
     return (
       <div className="my-20 flex items-center justify-center">
-        <FileUpload {...args} onError={(msg: string) => alert(msg)} />
+        <FileUpload {...args} onError={(msg: string) => console.log(msg)} />
       </div>
     );
   },
