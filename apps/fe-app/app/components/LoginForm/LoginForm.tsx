@@ -2,36 +2,24 @@
 import { useForm, Controller } from 'react-hook-form';
 import { Button, Checkbox, TextField } from 'design-system';
 import Link from 'next/link';
-
-export const LoginForm = () => {
+import { validateNationalCode, validatePhoneNumber } from './LoginForm.utils';
+import { LoginFormValues } from './LoginForm.types';
+export interface LoginFormProps {
+  onSubmit: (values: LoginFormValues) => void;
+}
+export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm({
+  } = useForm<LoginFormValues>({
     defaultValues: {
       username: '',
       password: '',
+      remember: false,
     },
   });
 
-  const onSubmit = async (data: any) => {
-    await new Promise((r) => setTimeout(r, 5000));
-    console.log(data);
-  };
-
-  const validateNationalCode = (code: string): boolean => {
-    if (code.length !== 10 || !/^\d+$/.test(code)) return false;
-
-    const check = +code[9];
-    const sum =
-      code
-        .split('')
-        .slice(0, 9)
-        .reduce((acc, num, idx) => acc + +num * (10 - idx), 0) % 11;
-
-    return (sum < 2 && check === sum) || (sum >= 2 && check + sum === 11);
-  };
   return (
     <form
       dir="rtl"
@@ -50,12 +38,10 @@ export const LoginForm = () => {
                 message: 'این فیلد اجباری است.',
               },
               validate: (value) => {
-                const isNationalCode =
-                  /^[0-9]{10}$/.test(value) && validateNationalCode(value);
-                const isPhoneNumber = /^09[0-9]{9}$/.test(value);
-                // const isUsername = /^[a-zA-Z0-9_]{3,}$/.test(value);
-
-                if (!isNationalCode && !isPhoneNumber) {
+                if (
+                  !validateNationalCode(value) &&
+                  !validatePhoneNumber(value)
+                ) {
                   return 'لطفاً کد ملی، شماره تماس یا نام کاربری معتبر وارد کنید.';
                 }
 
@@ -105,8 +91,17 @@ export const LoginForm = () => {
         </div>
         <div className="flex flex-col justify-center gap-4">
           <div className="flex flex-row">
-            <Checkbox onChange={() => console.log('checked')} />
-            <span className="text-sm font-medium">مرا به خاطر بسپار</span>
+            <Controller
+              name="remember"
+              control={control}
+              render={({ field }) => (
+                <Checkbox checked={field.value} onChange={field.onChange} />
+              )}
+            />
+
+            <label className="text-sm font-medium" htmlFor="remember">
+              مرا به خاطر بسپار
+            </label>
           </div>
           <Button
             align="center"
