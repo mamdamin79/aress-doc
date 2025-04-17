@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect, useState } from 'react';
 import { Icon } from '../Icon';
 import { FileUploader } from 'react-drag-drop-files';
@@ -8,12 +9,14 @@ type FileUploadProps = {
   types: string[];
   maxSize: number;
   onError?: (errorType: FileUploadErrorType) => void;
+  onChange?: (file: File | null) => void;
 };
 
 export const FileUpload: React.FC<FileUploadProps> = ({
   types,
   maxSize,
   onError,
+  onChange,
 }) => {
   const [file, setFile] = useState<File | null>(null);
 
@@ -27,56 +30,60 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   }, [types, onError]);
 
   const handleFileChange = (selectedFile: File) => {
-    const fileExtension = selectedFile.name.split('.').pop();
-    if (!!fileExtension && !types.includes(fileExtension)) {
+    const fileExtension = selectedFile.name.split('.').pop()?.toLowerCase();
+    // Check if the file type is valid
+    if (fileExtension && !types.includes(fileExtension)) {
       onError?.('INVALID_FILE_TYPE');
       return;
     }
 
+    // Check if the file size exceeds the limit
     if (selectedFile.size > maxSize) {
       onError?.('FILE_TOO_LARGE');
       return;
     }
-    console.log('valid');
+
+    // File is valid
     setFile(selectedFile);
+    onChange?.(selectedFile);
   };
 
   const clearFile = (e: React.MouseEvent) => {
     setFile(null);
+    onChange?.(null);
   };
 
   return (
     <>
       {file && (
-        <button onClick={clearFile} className="cursor-pointer z-10 ml-[-40px]">
+        <button onClick={clearFile} className="z-10 ml-[-40px] cursor-pointer">
           <Icon name="trash-2" size="lg" />
         </button>
       )}
 
       <FileUploader handleChange={handleFileChange} name="file" types={types}>
         <div
-          className={`group border-2 hover:border-brand-600 hover rounded-md p-[15px_16px] flex items-center gap-2 relative w-full max-w-[384px] transition-all text- ${
+          className={`hover:border-brand-600 hover text- group relative flex w-full max-w-[384px] items-center gap-2 rounded-md border-2 p-[15px_16px] transition-all ${
             file ? 'border-gray-200 pr-12' : 'border-dashed border-gray-300'
           }`}
         >
           {!file && (
-            <div className="text-gray-500 group-hover:text-brand-700">
+            <div className="group-hover:text-brand-700 text-gray-500">
               <Icon name="paperclip" size="lg" />
             </div>
           )}
           <div
             className={`${
               file ? '' : 'group-hover:text-brand-700'
-            } text-gray-500 text-sm font-vazirmatn font-medium text-right shrink-0 flex flex-row gap-2 w-full`}
+            } font-vazirmatn flex w-full shrink-0 flex-row gap-2 text-right text-sm font-medium text-gray-500`}
           >
-            {' '}
             {file ? (
               <span
                 style={{ direction: 'ltr' }}
-                className="max-w-[235px] text-gray-1000 font-medium truncate"
+                className="text-gray-1000 max-w-[235px] truncate font-medium"
               >
                 {file.name}
-                <span className="text-gray-600 text-xs ml-2">
+                <span className="ml-2 text-xs text-gray-600">
                   {formatFileSize(file)}
                 </span>
               </span>

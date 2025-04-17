@@ -8,22 +8,22 @@ interface Props {
 
 export function ProgressBar({ progressBarItems, activeIndex }: Props) {
   return (
-    <div className="flex relative py-10 justify-between items-center">
-      <div className="w-full flex justify-center items-start">
+    <div className="relative flex items-center justify-between py-10">
+      <div className="flex w-full items-start justify-center">
         {progressBarItems.map((item, index) => (
-          <div className="grid grid-cols-12 w-96" key={index}>
+          <div className="grid w-96 grid-cols-12" key={index}>
             {index + 1 < progressBarItems.length && (
-              <div className="w-full col-span-12 mr-[51%] -mt-2 -z-50 overflow-hidden relative -ml-1 h-2">
-                <div className="w-full -ml-1 h-full bg-gray-200 absolute"></div>
+              <div className="relative -z-50 col-span-12 -ml-1 -mt-2 mr-[51%] h-2 w-full overflow-hidden">
+                <div className="absolute -ml-1 h-full w-full bg-gray-200"></div>
                 <div
                   className={cn(
-                    'w-full h-full absolute',
+                    'absolute h-full w-full',
                     activeIndex > index && 'bg-brand-600 animate-progressBar',
                   )}
                 ></div>
               </div>
             )}
-            <div className="relative w-full col-start-1 col-span-12 flex flex-col items-center justify-center">
+            <div className="relative col-span-12 col-start-1 flex w-full flex-col items-center justify-center">
               {activeIndex === index ? (
                 <ProgressCircle mode="active" />
               ) : activeIndex > index ? (
@@ -33,8 +33,8 @@ export function ProgressBar({ progressBarItems, activeIndex }: Props) {
               )}
               <div
                 className={cn(
-                  'mr-6 w-full col-span-12 break-keep font-medium text-md text-center mt-5',
-                  activeIndex < index && 'text-gray-600 text-sm',
+                  'text-md col-span-12 mr-6 mt-5 w-full break-keep text-center font-medium',
+                  activeIndex < index && 'text-sm text-gray-600',
                 )}
               >
                 {item}
