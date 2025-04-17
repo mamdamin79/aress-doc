@@ -141,7 +141,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
             {/* First Row */}
             <div
               className="flex w-full items-center justify-start overflow-x-hidden"
-              key={`${item.title}-index-${index}`}
+              key={item.title + item.changeValue}
             >
               <PrimarySection
                 primaryText={{
