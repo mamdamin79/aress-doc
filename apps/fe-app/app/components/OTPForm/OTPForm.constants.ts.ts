@@ -1,1 +1,1 @@
-export const DEFAULT_COUNTDOWN_SECONDS = 5;
+export const DEFAULT_COUNTDOWN_SECONDS = 120;
