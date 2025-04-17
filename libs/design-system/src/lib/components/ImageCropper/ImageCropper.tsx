@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
+'use client';
+import React, { useCallback, useState } from 'react';
 import Cropper from 'react-easy-crop';
 import { CroppedArea, ImageCropperProps } from './ImageCropper.types';
 import { getCroppedImg } from './ImageCropper.utils';

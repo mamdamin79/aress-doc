@@ -1,17 +1,17 @@
 import { BulletList, NotesHeading, SectionTitle } from 'design-system';
 import React from 'react';
-import { LoginForm } from '../../components/LoginForm';
 import TERMINAL_LOGIN from '@aress-assets/icons/TerminalLogin.svg';
 import Image from 'next/image';
+import { FormWrapper } from './_components';
 
-const login = () => {
+const LoginPage = () => {
   return (
     <div className="h-[100vh]">
       <div className="flex w-full flex-col items-center justify-center gap-10 pt-10">
         <SectionTitle align="center" level={1} title={'خوش آمدید!'} />
-        <div className="flex w-full flex-row gap-20 px-[152px]">
+        <div className="flex w-full gap-20 px-[152px]">
           <div className="mt-[72px] w-1/2">
-            <LoginForm />
+            <FormWrapper />
           </div>
           <div className="flex w-1/2 flex-col gap-4 pt-10">
             <Image
@@ -36,7 +36,7 @@ const login = () => {
                       title: `هیچ‌وقت اطلاعات حساب کاربری خود را با دیگران به اشتراک نگذارید.`,
                     },
                     {
-                      title: ` همچنین، توصیه می‌کنیم که شیوه‌نامه خدمات ما را به دقت مطالعه فرمایید.`,
+                      title: `همچنین، توصیه می‌کنیم که شیوه‌نامه خدمات ما را به دقت مطالعه فرمایید.`,
                     },
                   ]}
                 />
@@ -49,4 +49,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default LoginPage;
