@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect, useRef } from 'react';
 import Highcharts, { Options, Chart } from 'highcharts';
 import { defaultOptions, SPARKLINE_CONSTANTS } from './SparkLine.constants';

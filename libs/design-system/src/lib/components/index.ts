@@ -36,5 +36,4 @@ export * from './FundsColumn';
 export * from './ProfileSidebar';
 export * from './NestedDropdown';
 export * from './OptionsDropdown';
-export * from './Tooltip';
 export * from './GeneralTable'
