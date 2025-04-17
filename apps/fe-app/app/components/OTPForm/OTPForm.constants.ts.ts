@@ -1,0 +1,1 @@
+export const DEFAULT_COUNTDOWN_SECONDS = 5;
