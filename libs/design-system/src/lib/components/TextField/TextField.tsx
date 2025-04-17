@@ -156,9 +156,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
                 />
               </button>
             );
-          }
-
-          if (icon.name === 'x') {
+          } else if (icon.name === 'x') {
             return inputValue ? (
               <button
                 type="button"
@@ -168,17 +166,17 @@ export const TextField: React.FC<textFieldPropsType> = ({
                 <Icon size={icon.size} name={icon.name} />
               </button>
             ) : null;
+          } else {
+            return (
+              <button
+                type="button"
+                className={isDisabled}
+                onMouseDown={icon.onClick}
+              >
+                <Icon size={icon.size} name={icon.name} />
+              </button>
+            );
           }
-
-          return (
-            <button
-              type="button"
-              className={isDisabled}
-              onMouseDown={icon.onClick}
-            >
-              <Icon size={icon.size} name={icon.name} />
-            </button>
-          );
         })}
       </div>
       <div

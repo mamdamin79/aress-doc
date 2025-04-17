@@ -70,6 +70,17 @@ export const PasswordToggle: Story = {
     supportText: 'رمز عبور خود را وارد کنید',
   },
 };
+export const CustomTrailingIcon: Story = {
+  args: {
+    ...Default.args,
+    trailingIcons: [
+      {
+        name: 'pencil',
+        onClick: () => alert('clicked'),
+      },
+    ],
+  },
+};
 
 export const WithoutIcons: Story = {
   args: {
