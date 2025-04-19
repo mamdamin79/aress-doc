@@ -1,28 +1,30 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { describe } from 'node:test';
 import { Checkbox } from './Checkbox';
 import '@testing-library/jest-dom';
 
 describe('Checkbox Component', () => {
-  const noop = () => {
-    return null;
-  };
-
   test('should not be clickable when disabled', () => {
+    const mockOnChange = jest.fn();
+
     render(
-      <Checkbox disabled={true} onChange={noop} content="Test Checkbox" />,
+      <Checkbox disabled={true} onChange={mockOnChange} content="Test Checkbox" />,
     );
 
     const checkbox = screen.getByRole('checkbox');
     const label = screen.getByText('Test Checkbox');
 
     expect(checkbox).toHaveAttribute('aria-checked', 'false');
-
     expect(label).toHaveClass('text-gray-400');
+
+    // کلیک باید بی‌اثر باشه
+    fireEvent.click(checkbox);
+    expect(mockOnChange).not.toHaveBeenCalled();
   });
 
   test('should change aria-checked to true when clicked and enabled', () => {
-    render(<Checkbox onChange={noop} content="Test Checkbox" />);
+    const mockOnChange = jest.fn();
+
+    render(<Checkbox onChange={mockOnChange} content="Test Checkbox" />);
 
     const checkbox = screen.getByRole('checkbox');
 
@@ -30,6 +32,7 @@ describe('Checkbox Component', () => {
 
     fireEvent.click(checkbox);
 
+    expect(mockOnChange).toHaveBeenCalledTimes(1);
     expect(checkbox).toHaveAttribute('aria-checked', 'true');
   });
 });
