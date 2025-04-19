@@ -31,12 +31,14 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
   const clearStartDate = () => {
     setStartDate('');
     setEndDate('');
+    setFocuseEndInput(false);
+    setActiveEndInput(false);
   };
 
   const clearEndDate = () => {
     setEndDate('');
   };
-
+  
   function getPersianMonthDays(year: number, month: number) {
     const daysInMonth = jalaali.jalaaliMonthLength(year, month);
     const firstDayGregorian = jalaali.toGregorian(year, month, 1);
@@ -111,11 +113,11 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
     ...updatedCurrentMonthDays(nextDays),
   ];
 
-  const updateStartInput = (date: string) => {    
-    // setStartDate({day: +date.slice(7, 8), month: +date.slice(5, 7), year: +date.slice(0, 4)});
+  const updateStartInput = (date: string) => {
+    setStartDate({day: +date.slice(8, 10), month: +date.slice(5, 7), year: +date.slice(0, 4)}, true);
   };
   const updateEndInput = (date: string) => {    
-    // setEndDate({day: +date.slice(9, 10), month: +date.slice(5, 7), year: +date.slice(0, 4)});
+    setEndDate({day: +date.slice(8, 10), month: +date.slice(5, 7), year: +date.slice(0, 4)}, true);
   };
 
   // Render TitleTooltip
@@ -171,6 +173,49 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
     ]
   );
 
+  const errorHandler = ({ minError, maxError }: ErrorState) => {    
+    setErrors({
+      start: { minError, maxError },
+      end: { minError, maxError },
+    });
+  }
+
+  const textErrorHandler = ({start, end}: {start: ErrorState, end: ErrorState}): {startInputText: string, endInputText: string} => {
+    let startInputText = '';
+    let endInputText = '';
+    if (start.minError) {
+      startInputText = 'تاریخ شروع نمیتواند کمتر از حداقل تاریخ مجاز باشد';
+    }
+    if (start.maxError) {
+      startInputText = 'تاریخ شروع نمیتواند بیشتر از حداکثر تاریخ مجاز باشد';
+    }
+    if (end.minError) {
+      endInputText = 'تاریخ پایان نمیتواند کمتر از حداقل تاریخ مجاز باشد';
+    }
+    if (end.maxError) {
+      endInputText = 'تاریخ پایان نمیتواند بیشتر از حداکثر تاریخ مجاز باشد';
+    }
+    if (startDate?.year === endDate?.year && startDate?.month === endDate?.month && startDate?.day === endDate?.day) {
+      endInputText = 'تاریخ شروع نمیتواند برابر با تاریخ پایان باشد';
+      startInputText = 'تاریخ شروع نمیتواند برابر با تاریخ پایان باشد';
+    }
+
+    if (startDate?.year === endDate?.year && startDate?.month === endDate?.month && startDate && endDate && startDate?.day > endDate?.day) {
+      startInputText = 'تاریخ شروع نمیتواند بیشتر از تاریخ پایان باشد';
+    }
+    if (startDate?.year === endDate?.year && startDate?.month === endDate?.month && endDate && startDate && startDate?.day > endDate?.day) {
+      endInputText = 'تاریخ پایان نمیتواند کمتر از تاریخ شروع باشد';
+    }
+
+
+    
+    
+
+    return {startInputText, endInputText};
+  }
+
+  
+
   const close = useMemo(
     () => (
       <div
@@ -197,7 +242,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
             <div className="flex flex-col gap-1">
               <div className="flex gap-2 text-md items-center font-vazirmatn justify-center">
                 <div className="flex flex-col gap-1 items-start">
-                  <span>تاریخ شروع بازه:</span>
+                  <span className='select-none'>تاریخ شروع بازه:</span>
                   <div
                     onClick={() => {
                       setActiveStartInput(true);
@@ -209,26 +254,23 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                     }}
                   >
                     <DateInput
-                      invalidStartDate={validEndDateS}
-                      invalidEndDate={validEndDateS}
-                      mosaviDate={areInputsEqual}
+                      errorText={textErrorHandler(errors).startInputText}
+                      errorHandler={errorHandler}
                       placeholder="تاریخ شروع"
                       active={activeStartInput}
-                      onChange={updateStartInput}
+                      onChange={(e) => updateStartInput(e.toString())}
                       clearDate={clearStartDate}
                       errors={errors.start}
-                      focuse={focuseStartInput}
-                      // errorHandler={errorHandler}
-                      mode="jalali"
+                      focus={focuseStartInput}
                       min={min}
                       max={max}
                       defaultValue={`${startDate?.year}-${startDate?.month}-${startDate?.day}`}
                     />
                   </div>
                 </div>
-                <div className="w-2.5 h-0.5 mt-7 bg-gray-500"></div>
+                <div className="w-2.5 h-0.5 bg-gray-500"></div>
                 <div className="gap-1 flex-col flex items-start">
-                  <span>تاریخ پایان بازه:</span>
+                  <span className='select-none'>تاریخ پایان بازه:</span>
                   <div
                     onClick={() => {
                       if (startDate) {
@@ -239,20 +281,17 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                     }}
                   >
                     <DateInput
-                      invalidStartDate={validStartDate}
-                      invalidEndDate={validEndDateS}
-                      mosaviDate={areInputsEqual}
-                      focuse={focuseEndInput}
+                      errorText={textErrorHandler(errors).endInputText}
+                      focus={focuseEndInput}
+                      errorHandler={errorHandler}
                       placeholder="تاریخ پایان"
                       active={activeEndInput}
-                      onChange={updateEndInput}
                       errors={errors.end}
+                      onChange={(e) => updateEndInput(e.toString())}
                       clearDate={clearEndDate}
-                      // errorHandler={endErrorHandler}
-                      mode="jalali"
                       min={min}
                       max={max}
-                      defaultValue={`${endDate?.year}-${endDate?.month}-${endDate?.day}`}
+                      defaultValue={endDate ? `${endDate?.year}-${endDate?.month}-${endDate?.day}` : ''}
                     />
                   </div>
                 </div>
@@ -414,6 +453,10 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                   >
                     {listMonth.map((item, index) => (
                       <option
+                      disabled={
+                        max.slice(0, 4) === calendars[1].slice(0, 4) &&
+                        index +1 > +max.slice(5, 7)
+                      }
                         selected={index + 1 === +calendars[1].slice(5, 7)}
                         key={index + 1}
                         value={index + 1}
@@ -487,13 +530,13 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                                       day: day.day,
                                       month: +calendars[0].slice(5, 7),
                                       year: +calendars[0].slice(0, 4),
-                                    });
+                                    }, false);
                                   } else if (focuseEndInput) {
                                     setEndDate({
                                       day: day.day,
                                       month: +calendars[0].slice(5, 7),
                                       year: +calendars[0].slice(0, 4),
-                                    });
+                                    }, false);
                                   }
                                 }
                               }}
@@ -580,13 +623,13 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                                       day: day.day,
                                       month: +calendars[1].slice(5, 7),
                                       year: +calendars[1].slice(0, 4),
-                                    });
+                                    }, false);
                                   } else if (focuseEndInput) {
                                     setEndDate({
                                       day: day.day,
                                       month: +calendars[1].slice(5, 7),
                                       year: +calendars[1].slice(0, 4),
-                                    });
+                                    }, false);
                                   }
                                 }
                               }}
