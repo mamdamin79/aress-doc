@@ -5,18 +5,35 @@ import { Icon, IconProps } from '../Icon';
 export interface SquaredButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icons: [IconProps, IconProps] | [IconProps];
-  badge: {
+  badge?: {
     enabled: boolean;
     text?: string;
   };
+  onClick?: () => void;
 }
 
 export const SquaredButton: React.FC<SquaredButtonProps> = ({
-  badge,
+  badge = {
+    enabled: false,
+  },
   icons,
+  onClick,
+  ...props
 }) => {
+  const [currentIcons, setCurrentIcons] = React.useState(icons);
+
+  const handleClick = () => {
+    if (currentIcons.length === 2) {
+      setCurrentIcons([currentIcons[1], currentIcons[0]]);
+    }
+    onClick?.();
+  };
   return (
-    <button className="bg-brand-100 group relative flex h-10 w-10 items-center justify-center rounded-lg p-1 shadow-2xl">
+    <button
+      {...props}
+      onClick={handleClick}
+      className="bg-brand-100 group relative flex h-10 w-10 items-center justify-center rounded-lg p-1 shadow-2xl"
+    >
       {/* Button content */}
       <div className="bg-brand-600 group-hover:bg-brand-700 flex h-8 w-8 cursor-pointer overflow-hidden rounded-md text-white transition-colors">
         <div
@@ -26,11 +43,17 @@ export const SquaredButton: React.FC<SquaredButtonProps> = ({
               'h-full translate-y-0 justify-center group-hover:-translate-y-0',
           )}
         >
-          {icons[0] && (
-            <Icon name={icons[0].name} size={icons[0].size ?? 'lg'} />
+          {currentIcons[0] && (
+            <Icon
+              name={currentIcons[0].name}
+              size={currentIcons[0].size ?? 'lg'}
+            />
           )}
-          {icons[1] && (
-            <Icon name={icons[1].name} size={icons[1].size ?? 'lg'} />
+          {currentIcons[1] && (
+            <Icon
+              name={currentIcons[1].name}
+              size={currentIcons[1].size ?? 'lg'}
+            />
           )}
         </div>
       </div>
