@@ -9,7 +9,12 @@ import {
   ProfileImageAndUpload,
   TextField,
 } from 'design-system';
-import { ProfileFormProps } from './ProfileForm.types';
+import {
+  editDialogStatus,
+  editDialogVerbs,
+  FormSchemaType,
+  ProfileFormProps,
+} from './ProfileForm.types';
 import { Popup } from '../Popup';
 import { ChangeNumber } from './ChangeNumber';
 import { ChangeUsername } from './ChangeUsername';
@@ -24,9 +29,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
   username,
   image,
 }) => {
-  const [editDialog, setEditDialog] = useState<
-    null | 'username' | 'phoneNumber' | 'email' | 'password' | 'success'
-  >(null);
+  const [editDialog, setEditDialog] = useState<editDialogStatus>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [profileImage, setProfileImage] = useState(image);
@@ -46,15 +49,30 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
     }
   }, []);
 
-  enum editDialogVerbs {
-    phoneNumber = 'شماره همراه',
-    username = 'نام کاربری',
-    email = 'ایمیل',
-  }
   const [iconDialogText, setIconDialogText] = useState<editDialogVerbs>(
     editDialogVerbs.phoneNumber,
   );
-
+  const formSchema: FormSchemaType[] = [
+    {
+      name: 'fnameAndLname',
+      label: 'نام و نام خانوادگی',
+      value: fnameAndLname,
+    },
+    {
+      name: 'phoneNumber',
+      label: 'شماره همراه',
+      value: phoneNumber,
+      edit: 'phoneNumber',
+    },
+    { name: 'nationalID', label: 'کد ملی', value: nationalID },
+    { name: 'email', label: 'ایمیل', value: email, edit: 'email' },
+    {
+      name: 'username',
+      label: 'نام کاربری',
+      value: username,
+      edit: 'username',
+    },
+  ];
   return (
     <div className="flex w-fit flex-col items-center gap-12">
       <ProfileImageAndUpload
@@ -106,27 +124,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
           </Popup>
         ))}
       <div className="grid w-[607px] grid-flow-row md:w-[800px] md:grid-cols-2 md:gap-6">
-        {[
-          {
-            name: 'fnameAndLname',
-            label: 'نام و نام خانوادگی',
-            value: fnameAndLname,
-          },
-          {
-            name: 'phoneNumber',
-            label: 'شماره همراه',
-            value: phoneNumber,
-            edit: 'phoneNumber',
-          },
-          { name: 'nationalID', label: 'کد ملی', value: nationalID },
-          { name: 'email', label: 'ایمیل', value: email, edit: 'email' },
-          {
-            name: 'username',
-            label: 'نام کاربری',
-            value: username,
-            edit: 'username',
-          },
-        ].map(({ name, label, value, edit }) => (
+        {formSchema.map(({ name, label, value, edit }) => (
           <TextField
             key={name}
             mergeTitleAndPlaceholder={false}
@@ -148,14 +146,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                             ],
                           );
                         }
-                        setEditDialog(
-                          edit as
-                            | 'email'
-                            | 'phoneNumber'
-                            | 'username'
-                            | 'success'
-                            | null,
-                        );
+                        setEditDialog(edit);
                       },
                     },
                   ]

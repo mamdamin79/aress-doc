@@ -1,34 +1,36 @@
-import { Button, Icon, IconDialog, TextField } from 'design-system';
+import { Button, TextField } from 'design-system';
 import React, { useState } from 'react';
-import { OTPForm } from '../OTPForm';
-import { InputPassword } from '../ChangeNumber';
+import { InputPasswordForm } from '../ChangeNumber';
 import { Controller, useForm } from 'react-hook-form';
+import { OTPForm } from '../../OTPForm';
 
 const SectionHeader = ({ title }: { title: string }) => (
   <span className="text-md text-center font-medium">{title}</span>
 );
-
-const NewMail = ({
+interface NewMailFormValues {
+  email: string;
+}
+const NewMailForm = ({
   email,
   onSubmit,
 }: {
   email?: string;
-  onSubmit?: () => void;
+  onSubmit?: (email: NewMailFormValues) => void;
 }) => {
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm({
+  } = useForm<NewMailFormValues>({
     defaultValues: {
-      password: '',
+      email: '',
     },
   });
 
-  const onSaveData = async (data: any) => {
+  const onSaveData = async (data: NewMailFormValues) => {
     await new Promise((r) => setTimeout(r, 2000));
     console.log(data);
-    onSubmit?.();
+    onSubmit?.(data);
   };
   return (
     <form
@@ -45,7 +47,7 @@ const NewMail = ({
         <span className="font-medium">ایمیل فعلی: </span> {email}
       </span>
       <Controller
-        name="password"
+        name="email"
         control={control}
         rules={{
           required: {
@@ -103,11 +105,12 @@ export const ChangeMail = ({
   onClose?: (success?: boolean) => void;
 }) => {
   const [stage, setStage] = useState<ChangeMailStage | null>(0);
+  const [newMail, setNewMail] = useState<string | null>(null);
 
   return (
     <>
       {stage === ChangeMailStage.PASSWORD && (
-        <InputPassword
+        <InputPasswordForm
           onSubmit={() => setStage(ChangeMailStage.NEW_MAIL)}
           title="ایمیل جدید"
           subTitle="جهت تغییر ایمیل، ابتدا رمز فعلی خود را وارد کنید.
@@ -115,16 +118,17 @@ export const ChangeMail = ({
         />
       )}
       {stage === ChangeMailStage.NEW_MAIL && (
-        <NewMail
+        <NewMailForm
           email="sinapir2@gmail.com"
-          onSubmit={() => setStage(ChangeMailStage.OTP)}
+          onSubmit={(data) => {
+            setNewMail(data.email);
+            setStage(ChangeMailStage.OTP);
+          }}
         />
       )}
       {stage === ChangeMailStage.OTP && (
         <OTPForm
-          backButtonText="ویرایش ایمیل"
-          description="کد تایید ارسال شده به sinapir2@gmail.com را وارد کنید.
-"
+          description={`کد تایید ارسال شده به ${newMail} را وارد کنید.`}
           onBackBtn={() => setStage(ChangeMailStage.NEW_MAIL)}
           title="ایمیل جدید"
           onSubmit={() => {

@@ -1,12 +1,15 @@
-import { Button, Icon, IconDialog, TextField } from 'design-system';
+import { Button, TextField } from 'design-system';
 import React, { useState } from 'react';
-import { OTPForm } from '../OTPForm';
 import { Controller, useForm } from 'react-hook-form';
+import { OTPForm } from '../../OTPForm';
 
 const SectionHeader = ({ title }: { title: string }) => (
   <span className="text-md text-center font-medium">{title}</span>
 );
-export const InputPassword = ({
+interface InputPasswordFormValues {
+  password: string;
+}
+export const InputPasswordForm = ({
   onSubmit,
   title,
   subTitle,
@@ -19,15 +22,14 @@ export const InputPassword = ({
     control,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm({
+  } = useForm<InputPasswordFormValues>({
     defaultValues: {
       password: '',
     },
   });
 
-  const onSaveData = async (data: any) => {
+  const onSaveData = async (data: InputPasswordFormValues) => {
     await new Promise((r) => setTimeout(r, 2000));
-    console.log(data);
     onSubmit?.();
   };
   return (
@@ -74,29 +76,31 @@ export const InputPassword = ({
   );
 };
 
+interface NewNumberFormValues {
+  phoneNumber: string;
+}
 const NewNumber = ({
   phone,
   onSubmit,
   title,
 }: {
   phone?: string;
-  onSubmit?: () => void;
+  onSubmit?: (phoneNumber: NewNumberFormValues) => void;
   title?: string;
 }) => {
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm({
+  } = useForm<NewNumberFormValues>({
     defaultValues: {
       phoneNumber: '',
     },
   });
 
-  const onSaveData = async (data: any) => {
+  const onSaveData = async (data: NewNumberFormValues) => {
     await new Promise((r) => setTimeout(r, 2000));
-    console.log(data);
-    onSubmit?.();
+    onSubmit?.(data);
   };
   return (
     <form
@@ -110,7 +114,10 @@ const NewNumber = ({
         <div className="text-brand-600 flex w-1/3 flex-row justify-end text-sm font-medium"></div>
       </div>
       <span className="mt-4 text-sm">
-        <span className="font-medium">شماره همراه فعلی: </span> {phone}
+        <span className="text-right font-medium">شماره همراه فعلی: </span>
+        <span className="text-left" dir="ltr">
+          {phone}
+        </span>
       </span>
       <Controller
         name="phoneNumber"
@@ -159,7 +166,7 @@ const NewNumber = ({
 
 enum ChangeNumberStage {
   PASSWORD = 0,
-  NEW_MAIL = 1,
+  NEW_NUMBER = 1,
   OTP = 2,
 }
 
@@ -169,34 +176,35 @@ export const ChangeNumber = ({
   onClose?: (success?: boolean) => void;
 }) => {
   const [stage, setStage] = useState<ChangeNumberStage | null>(0);
+  const [newNumber, setNewNumber] = useState<null | string>(null);
   const onSaveData = async (code: string) => {
-    await new Promise((r) => setTimeout(r, 2000));
-    console.log(code);
+    await new Promise((r) => setTimeout(r, 1000));
     onClose?.();
   };
   return (
     <>
       {stage === ChangeNumberStage.PASSWORD && (
-        <InputPassword
-          onSubmit={() => setStage(ChangeNumberStage.NEW_MAIL)}
+        <InputPasswordForm
+          onSubmit={() => setStage(ChangeNumberStage.NEW_NUMBER)}
           title="شماره همراه جدید"
           subTitle="جهت تغییر شماره همراه، ابتدا رمز فعلی خود را وارد کنید.
 "
         />
       )}
-      {stage === ChangeNumberStage.NEW_MAIL && (
+      {stage === ChangeNumberStage.NEW_NUMBER && (
         <NewNumber
           title="شماره همراه جدید"
           phone="+989339123456"
-          onSubmit={() => setStage(ChangeNumberStage.OTP)}
+          onSubmit={(data) => {
+            setStage(ChangeNumberStage.OTP);
+            setNewNumber(data.phoneNumber);
+          }}
         />
       )}
       {stage === ChangeNumberStage.OTP && (
         <OTPForm
-          backButtonText="ویرایش شماره همراه"
-          description="کد تایید ارسال شده به +989339123456 را وارد کنید.
-"
-          onBackBtn={() => setStage(ChangeNumberStage.NEW_MAIL)}
+          description={`کد تایید ارسال شده به ${newNumber} را وارد کنید.`}
+          onBackBtn={() => setStage(ChangeNumberStage.NEW_NUMBER)}
           title="شماره همراه جدید"
           onSubmit={(code) => {
             onSaveData(code);

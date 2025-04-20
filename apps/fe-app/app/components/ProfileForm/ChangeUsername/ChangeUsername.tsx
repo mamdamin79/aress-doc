@@ -1,11 +1,14 @@
 import { Button, TextField } from 'design-system';
 import React, { useState } from 'react';
-import { InputPassword } from '../ChangeNumber';
+import { InputPasswordForm } from '../ChangeNumber';
 import { Controller, useForm } from 'react-hook-form';
 const SectionHeader = ({ title }: { title: string }) => (
   <span className="text-md text-center font-medium">{title}</span>
 );
-const NewUsername = ({
+interface NewUsernameFormValues {
+  username: string;
+}
+const NewUsernameForm = ({
   username,
   onSubmit,
 }: {
@@ -16,15 +19,14 @@ const NewUsername = ({
     control,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm({
+  } = useForm<NewUsernameFormValues>({
     defaultValues: {
       username: '',
     },
   });
 
-  const onSaveData = async (data: any) => {
+  const onSaveData = async (data: NewUsernameFormValues) => {
     await new Promise((r) => setTimeout(r, 2000));
-    console.log(data);
     onSubmit?.();
   };
   return (
@@ -90,14 +92,14 @@ export const ChangeUsername: React.FC<{
   return (
     <>
       {stage === ChangeUsernameStage.PASSWORD && (
-        <InputPassword
+        <InputPasswordForm
           title="نام کاربری جدید"
           subTitle="جهت تغییر نام کاربری، ابتدا رمز فعلی خود را وارد کنید."
           onSubmit={() => setStage(ChangeUsernameStage.NEW_USERNAME)}
         />
       )}
       {stage === ChangeUsernameStage.NEW_USERNAME && (
-        <NewUsername username="sinapir" onSubmit={() => onClose?.(true)} />
+        <NewUsernameForm username="sinapir" onSubmit={() => onClose?.(true)} />
       )}
     </>
   );

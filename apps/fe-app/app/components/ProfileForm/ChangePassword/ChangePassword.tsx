@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { OTPForm } from '../OTPForm';
 import { NewPasswordForm } from '../../NewPasswordForm';
+import { OTPForm } from '../../OTPForm';
 enum ChangeNumberStage {
   OTP = 0,
   NEW_PASSWORD = 1,
@@ -17,7 +17,6 @@ export const ChangePassword = ({
     <>
       {stage === ChangeNumberStage.OTP && (
         <OTPForm
-          backButtonText="کد تایید را وارد کنید"
           description="جهت تغییر رمز عبور، ابتدا کد تایید ارسال شده به شماره 09339133227 را وارد کنید."
           onBackBtn={() => onClose?.(false)}
           title="کد تایید را وارد کنید"
@@ -27,7 +26,10 @@ export const ChangePassword = ({
         />
       )}
       {stage === ChangeNumberStage.NEW_PASSWORD && (
-        <NewPasswordForm onClick={() => onClose?.(true)} />
+        <NewPasswordForm
+          onSubmit={(values) => onClose?.(true)}
+          isStandAlone={false}
+        />
       )}
     </>
   );
