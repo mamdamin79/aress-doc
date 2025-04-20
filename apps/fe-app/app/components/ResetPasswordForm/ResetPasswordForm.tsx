@@ -2,36 +2,26 @@
 import { useForm, Controller } from 'react-hook-form';
 import { Button, TextField } from 'design-system';
 import Link from 'next/link';
-
-export const ResetPasswordForm = ({ onClick }: { onClick: () => void }) => {
+import { ResetPasswordFormValues } from './ResetPasswordForm.types';
+import { validateNationalCode } from './ResetPasswordForm.utils';
+import { validatePhoneNumber } from '../LoginForm/LoginForm.utils';
+export interface ResetPasswordFormProps {
+  onSubmit: (values: ResetPasswordFormValues) => void;
+}
+export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
+  onSubmit,
+}) => {
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm({
+  } = useForm<ResetPasswordFormValues>({
     defaultValues: {
       nationalCode: '',
       phoneNumber: '',
     },
   });
 
-  const onSubmit = async (data: any) => {
-    await new Promise((r) => setTimeout(r, 5000));
-    onClick();
-  };
-
-  const validateNationalCode = (code: string): boolean => {
-    if (code.length !== 10 || !/^\d+$/.test(code)) return false;
-
-    const check = +code[9];
-    const sum =
-      code
-        .split('')
-        .slice(0, 9)
-        .reduce((acc, num, idx) => acc + +num * (10 - idx), 0) % 11;
-
-    return (sum < 2 && check === sum) || (sum >= 2 && check + sum === 11);
-  };
   return (
     <form
       dir="rtl"
@@ -50,13 +40,9 @@ export const ResetPasswordForm = ({ onClick }: { onClick: () => void }) => {
                 message: 'این فیلد اجباری است.',
               },
               validate: (value) => {
-                const isNationalCode =
-                  /^[0-9]{10}$/.test(value) && validateNationalCode(value);
-
-                if (!isNationalCode) {
+                if (!validateNationalCode(value)) {
                   return 'لطفا یک کد ملی معتبر وارد کنید.';
                 }
-
                 return true;
               },
             }}
@@ -83,12 +69,9 @@ export const ResetPasswordForm = ({ onClick }: { onClick: () => void }) => {
                 message: 'این فیلد اجباری است.',
               },
               validate: (value) => {
-                const isPhoneNumber = /^09[0-9]{9}$/.test(value);
-
-                if (!isPhoneNumber) {
+                if (!validatePhoneNumber(value)) {
                   return 'لطفا یک  شماره همراه معتبر وارد کنید.';
                 }
-
                 return true;
               },
             }}

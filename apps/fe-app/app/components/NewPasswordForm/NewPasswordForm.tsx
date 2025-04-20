@@ -2,32 +2,40 @@
 import { useForm, Controller } from 'react-hook-form';
 import { BulletList, Button, TextField } from 'design-system';
 import Link from 'next/link';
-import { useState } from 'react';
-
-export const NewPasswordForm = ({ onClick }: { onClick: () => void }) => {
+import { useMemo, useState } from 'react';
+import { NewPasswordFormValues } from './NewPasswordForm.types';
+import {
+  LOWERCASE_UPPERCASE_REGEX,
+  MIN_PASSWORD_LENGTH,
+  NUMBER_SPECIAL_CHAR_REGEX,
+} from './NewPasswordForm.constants';
+export interface NewPasswordFormProps {
+  onSubmit: (values: NewPasswordFormValues) => void;
+}
+export const NewPasswordForm: React.FC<NewPasswordFormProps> = ({
+  onSubmit,
+}) => {
   const {
     control,
     handleSubmit,
     watch,
     formState: { isSubmitting },
-  } = useForm({
+  } = useForm<NewPasswordFormValues>({
     defaultValues: {
       password: '',
       passwordRepeated: '',
     },
     mode: 'onChange',
   });
-
-  const onSubmit = async (data: any) => {
-    await new Promise((r) => setTimeout(r, 5000));
-    onClick();
-  };
-  const [formValidations, setFormValidations] = useState({
-    lowerAndUpperCase: false,
-    numberOrSpecialChar: false,
-    minLength: false,
-  });
-  const [inputChangeStart, setInputChangeStart] = useState(false);
+  const passwordValue = watch('password');
+  const validations = useMemo(
+    () => ({
+      minLength: passwordValue.length >= MIN_PASSWORD_LENGTH,
+      lowerAndUpperCase: LOWERCASE_UPPERCASE_REGEX.test(passwordValue),
+      numberOrSpecialChar: NUMBER_SPECIAL_CHAR_REGEX.test(passwordValue),
+    }),
+    [passwordValue],
+  );
   return (
     <form
       dir="rtl"
@@ -47,46 +55,8 @@ export const NewPasswordForm = ({ onClick }: { onClick: () => void }) => {
                   message: 'این فیلد اجباری است.',
                 },
 
-                validate: (value) => {
-                  setInputChangeStart(true);
-                  if (value.length > 8) {
-                    setFormValidations((prev) => ({
-                      ...prev,
-                      minLength: true,
-                    }));
-                  } else {
-                    setFormValidations((prev) => ({
-                      ...prev,
-                      minLength: false,
-                    }));
-                  }
-                  if (/(?=.*[a-z])(?=.*[A-Z])/.test(value)) {
-                    setFormValidations((prev) => ({
-                      ...prev,
-                      lowerAndUpperCase: true,
-                    }));
-                  } else {
-                    setFormValidations((prev) => ({
-                      ...prev,
-                      lowerAndUpperCase: false,
-                    }));
-                  }
-                  if (
-                    /^(?=.*[0-9])|(?=.*[@#$%^&*()_+=[$${};':"\\|,.<>/?])/.test(
-                      value,
-                    )
-                  ) {
-                    setFormValidations((prev) => ({
-                      ...prev,
-                      numberOrSpecialChar: true,
-                    }));
-                  } else {
-                    setFormValidations((prev) => ({
-                      ...prev,
-                      numberOrSpecialChar: false,
-                    }));
-                  }
-                  return true;
+                validate: () => {
+                  return Object.values(validations).every(Boolean);
                 },
               }}
               render={({ field, fieldState }) => (
@@ -113,25 +83,25 @@ export const NewPasswordForm = ({ onClick }: { onClick: () => void }) => {
                 items={[
                   {
                     title: 'شامل حروف بزرگ و کوچک',
-                    status: !inputChangeStart
+                    status: !passwordValue
                       ? 'normal'
-                      : formValidations.lowerAndUpperCase
+                      : validations.lowerAndUpperCase
                         ? 'success'
                         : 'error',
                   },
                   {
                     title: 'شامل اعداد یا علائم ویژه',
-                    status: !inputChangeStart
+                    status: !passwordValue
                       ? 'normal'
-                      : formValidations.numberOrSpecialChar
+                      : validations.numberOrSpecialChar
                         ? 'success'
                         : 'error',
                   },
                   {
                     title: 'حداقل 8 کاراکتر',
-                    status: !inputChangeStart
+                    status: !passwordValue
                       ? 'normal'
-                      : formValidations.minLength
+                      : validations.minLength
                         ? 'success'
                         : 'error',
                   },
@@ -186,7 +156,7 @@ export const NewPasswordForm = ({ onClick }: { onClick: () => void }) => {
             تایید
           </Button>
           <Link
-            href="/forgot"
+            href="/login"
             className="text-brand-600 text-md text-center font-medium"
           >
             بازگشت به صفحه ورود

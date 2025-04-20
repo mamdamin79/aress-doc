@@ -246,3 +246,8 @@
 html {
   direction: rtl;
 }
+input[type='password']::-ms-reveal,
+input[type='password']::-ms-clear,
+input[type='password']::-webkit-password-eye {
+  display: none;
+}

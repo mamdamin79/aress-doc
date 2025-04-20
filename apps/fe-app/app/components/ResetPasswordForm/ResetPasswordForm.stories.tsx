@@ -14,9 +14,19 @@ type Story = StoryObj<typeof ResetPasswordForm>;
 // A default story for the ResetPasswordForm component
 
 export const Default: Story = {
-  render: () => (
+  render: (args) => (
     <div className="w-[528px]">
-      <ResetPasswordForm onClick={() => console.log('clicked')} />
+      <ResetPasswordForm {...args} />
     </div>
   ),
+  args: {
+    onSubmit: async (values) => {
+      return new Promise((resolve) =>
+        setTimeout(() => {
+          console.log(values);
+          resolve();
+        }, 1500),
+      );
+    },
+  },
 };
