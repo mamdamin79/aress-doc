@@ -139,3 +139,57 @@ export const DifferentPosition: Story = {
     ],
   },
 };
+
+export const ExtendedForFundsTable: Story = {
+  render: (args) => (
+    <div className="fixed flex items-center justify-center">
+      <ContextMenu anchor="bottom start" {...args}>
+        <Icon name="ellipsis" />
+      </ContextMenu>
+    </div>
+  ),
+  args: {
+    items: [
+      {
+        icon: 'calendar-range',
+        title: 'تغییر بازه زمانی',
+        onClick: () => console.log('تنظیمات گزارش'),
+      },
+      {
+        dividerBefore: true,
+        icon: 'arrow-down-wide-narrow',
+        title: 'مرتب سازی نزولی',
+        onClick: () => console.log('مرتب سازی نزولی'),
+      },
+      {
+        isActive: true,
+        icon: 'arrow-up-narrow-wide',
+        title: 'مرتب سازی صعودی',
+        onClick: () => console.log('مرتب سازی صعودی'),
+      },
+      {
+        dividerBefore: true,
+        icon: 'arrow-right',
+        title: 'انتقال به راست',
+        onClick: () => console.log('انتقال به راست'),
+      },
+      {
+        icon: 'arrow-right-to-line',
+        title: 'انتقال به ابتدا',
+        onClick: () => console.log('انتقال به ابتدا'),
+      },
+      {
+        disabled: true,
+        icon: 'arrow-left',
+        title: 'انتقال به چپ',
+        onClick: () => console.log('انتقال به چپ'),
+      },
+      {
+        disabled: true,
+        icon: 'arrow-left-to-line',
+        title: 'انتقال به انتها',
+        onClick: () => console.log('انتقال به انتها'),
+      },
+    ],
+  },
+};

@@ -1,16 +1,18 @@
-import { IconProps } from "../Icon";
+import { IconProps } from '../Icon';
 
-export interface NestedDropdownItem {
-    title: string;
-    icon: IconProps
-    status: 'normal' | 'opened' | 'error';
-    selectedOption?: string;
-    placeHolder?: string;
-    onClick: () => void;
-  }
-  
-  export interface NestedDropDownProps {
-    title: string;
-    subFields: NestedDropdownItem[]; // Ensure children is an array of NestedDropdownItem objects
-  }
-  
+export interface NestedDropdownItemProps {
+  title: string;
+  status?: 'normal' | 'opened' | 'error';
+  icon: IconProps;
+  onClick?: () => void;
+  activeIcon?: IconProps;
+  placeHolder?: string;
+  selectedOption?: string;
+  hasTooltip?: boolean;
+  hasChildren?: boolean;
+}
+
+export interface NestedDropdownProps  {
+  title: string;
+  items: NestedDropdownItemProps[];
+}
