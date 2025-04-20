@@ -8,14 +8,22 @@ import { useHeaderVisibility } from '../../../hooks';
 import { DESKTOP_BREAKPOINT } from './Header.constants';
 import { BurgerMenu } from './BurgerMenu';
 import { DesktopMenu } from './DesktopMenu';
-import { MenuData } from './HeaderDataFull';
+import { MenuData } from './HeaderDataLite';
 import { useWindowScroll } from '@uidotdev/usehooks';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export const HeaderMenu: React.FC = () => {
   const { width } = useWindowSize();
+  const pathname = usePathname();
+  const links = MenuData.map((menuItem) => menuItem.link);
+  const activeTabIndex = MenuData.map((menuItem) => menuItem.link).indexOf(
+    pathname,
+  );
+
   if (typeof width !== 'number') return null;
   return width >= DESKTOP_BREAKPOINT ? (
-    <DesktopMenu menuItems={MenuData} />
+    <DesktopMenu menuItems={MenuData} activeTab={activeTabIndex} />
   ) : (
     <BurgerMenu menuItems={MenuData} />
   );
@@ -38,34 +46,28 @@ export const Header: React.FC = () => {
         )}
       >
         <div className="mt-1 flex flex-row gap-6">
-          <Image
-            src={PRODUCT_LOGO}
-            width={48}
-            height={48}
-            className="h-12 w-12 object-contain"
-            alt="product logo"
-          />
-         <HeaderMenu/>
+          <Link href={'/'}>
+            <Image
+              src={PRODUCT_LOGO}
+              width={48}
+              height={48}
+              className="h-12 w-12 object-contain"
+              alt="product logo"
+            />
+          </Link>
+
+          <HeaderMenu />
         </div>
 
         <div className="flex flex-row gap-3">
           <SquaredButton
-            icons={[{ name: 'moon' }, { name: 'sun' }]}
+            icons={[{ name: 'sun' }, { name: 'moon' }]}
             badge={{ enabled: false }}
-          />
-          <SquaredButton
-            icons={[{ name: 'bell' }]}
-            badge={{ enabled: true, text: '3' }}
           />
           <HeadProfile profileImage="https://picsum.photos/200" />
         </div>
       </div>
-      {/* hidden div */}
       <div className={cn('invisible', `h-[80px]`)}></div>
-
-      {/* craete a new comp */}
     </div>
   );
 };
-
-
