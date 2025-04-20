@@ -3,17 +3,14 @@ import { BulletList, NotesHeading, ProgressBar } from 'design-system';
 import React, { useState } from 'react';
 import RESET_PASSWORD from '@aress-assets/icons/ResetPassword.svg';
 import Image from 'next/image';
-import { ResetPasswordForm } from '../../components/ResetPasswordForm';
-import { OTPForm } from '../../components/OTPForm';
-import { NewPasswordForm } from '../../components/NewPasswordForm';
+import { NewPasswordForm, OTPForm, ResetPasswordForm } from '../components';
 
-const login = () => {
+const ForgotPasswordPage = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   return (
     <div className="h-[100vh]">
       <div className="flex w-full flex-col items-center justify-center pt-10">
         <div className="-mt-9 w-[680px]">
-          {' '}
           <ProgressBar
             activeIndex={activeIndex}
             progressBarItems={[
@@ -27,16 +24,13 @@ const login = () => {
         <div className="flex w-full flex-row gap-20 px-[152px]">
           <div className="mt-[72px] w-1/2">
             {activeIndex === 0 && (
-              <ResetPasswordForm onClick={() => setActiveIndex(1)} />
+              <ResetPasswordForm onSubmit={() => setActiveIndex(1)} />
             )}
             {activeIndex === 1 && (
-              <OTPForm
-                onClick={() => setActiveIndex(2)}
-                phoneNumber="09339133225"
-              />
+              <OTPForm onSubmit={() => setActiveIndex(2)} />
             )}
             {activeIndex === 2 && (
-              <NewPasswordForm onClick={() => alert('logged in')} />
+              <NewPasswordForm onSubmit={() => alert('logged in')} />
             )}
           </div>
           <div className="flex w-1/2 flex-col gap-4 pt-10">
@@ -68,4 +62,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default ForgotPasswordPage;
