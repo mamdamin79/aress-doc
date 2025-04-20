@@ -2,10 +2,24 @@
 import React from 'react';
 import Image from 'next/image';
 import PRODUCT_LOGO from '@aress-assets/icons/product_logo.svg';
-import { Breadcrumb, cn, HeadProfile, SquaredButton } from 'design-system';
-import { HeaderMenuWrapper } from './_components/HeaderMenuWrapper';
+import { useWindowSize } from '@uidotdev/usehooks';
+import { cn, HeadProfile, SquaredButton } from 'design-system';
 import { useHeaderVisibility } from '../../../hooks';
+import { DESKTOP_BREAKPOINT } from './Header.constants';
+import { BurgerMenu } from './BurgerMenu';
+import { DesktopMenu } from './DesktopMenu';
+import { MenuData } from './HeaderDataFull';
 import { useWindowScroll } from '@uidotdev/usehooks';
+
+export const HeaderMenu: React.FC = () => {
+  const { width } = useWindowSize();
+  if (typeof width !== 'number') return null;
+  return width >= DESKTOP_BREAKPOINT ? (
+    <DesktopMenu menuItems={MenuData} />
+  ) : (
+    <BurgerMenu menuItems={MenuData} />
+  );
+};
 export const Header: React.FC = () => {
   const { isHeaderVisible } = useHeaderVisibility();
   const [{ y: scrollY }] = useWindowScroll();
@@ -31,7 +45,7 @@ export const Header: React.FC = () => {
             className="h-12 w-12 object-contain"
             alt="product logo"
           />
-          <HeaderMenuWrapper />
+         <HeaderMenu/>
         </div>
 
         <div className="flex flex-row gap-3">
@@ -53,3 +67,5 @@ export const Header: React.FC = () => {
     </div>
   );
 };
+
+

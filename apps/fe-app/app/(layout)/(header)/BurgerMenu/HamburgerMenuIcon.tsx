@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 interface HamburgerMenuIconProps {
   open: boolean;
 }
@@ -8,6 +8,7 @@ export const HamburgerMenuIcon: React.FC<HamburgerMenuIconProps> = ({
   return (
     <div className="relative mb-2 flex h-8 w-8 items-center justify-center">
       <button
+        aria-label={open ? 'Close menu' : 'Open menu'}
         id="menu-toggle"
         className={`relative h-[24px] w-[24px] outline-none`}
       >

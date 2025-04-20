@@ -1,15 +1,14 @@
 import React from 'react';
-import { dropdownType, MenuItem } from './HeaderMenus.types';
+import { dropdownType, MenuItem } from './DesktopMenu.types';
 import { cn } from 'libs/design-system/src/utils';
-import { MenuTiles } from '../MenuTiles';
-import { Icon } from '../Icon';
+import { Icon, MenuTiles } from 'design-system';
 
 export interface MultiLevelDropdownProps {
   menuItems: MenuItem[];
   activeMenu: boolean;
   activeSubMenu: dropdownType | null;
   setActiveSubMenu: (dropdown: dropdownType | null) => void;
-  fixedropDown?: boolean;
+  fixedDropdown?: boolean;
 }
 
 export const MultiLevelDropdown: React.FC<MultiLevelDropdownProps> = ({
@@ -17,7 +16,7 @@ export const MultiLevelDropdown: React.FC<MultiLevelDropdownProps> = ({
   activeMenu,
   activeSubMenu,
   setActiveSubMenu,
-  fixedropDown,
+  fixedDropdown,
 }) => {
   const handleMouseEnter = (dropdown: dropdownType | undefined) => {
     setActiveSubMenu(dropdown || null);
@@ -27,10 +26,10 @@ export const MultiLevelDropdown: React.FC<MultiLevelDropdownProps> = ({
     <div
       className={cn(
         'shadow-8xl shadow-offset-y-10 absolute z-10 flex flex-row overflow-hidden rounded-xl border border-gray-300 bg-white',
-        { hidden: !activeMenu, '-right-52': fixedropDown },
+        { hidden: !activeMenu, '-right-52': fixedDropdown },
       )}
     >
-      <div className="bg-baseBackground flex h-fit w-fit max-w-[272px] flex-col gap-2 border-r border-gray-300 py-2 text-right">
+      <div className="bg-baseBackground flex h-full w-fit max-w-[272px] flex-col gap-2 border-r border-gray-300 py-2 text-right">
         {menuItems.map((firstLayer, index) => (
           <div key={index} className="flex flex-col">
             <div
@@ -50,7 +49,7 @@ export const MultiLevelDropdown: React.FC<MultiLevelDropdownProps> = ({
       {activeSubMenu && (
         <div
           className={cn(
-            'flex h-fit w-fit max-w-[272px] flex-col gap-2 rounded-l-xl border-r border-gray-300 py-2 text-right',
+            'flex w-fit max-w-[272px] flex-col gap-2 rounded-l-xl border-r border-gray-300 py-2 text-right',
             activeSubMenu ? 'visible' : 'invisible',
             activeSubMenu[0]?.groupLabel && 'py-4',
           )}
@@ -58,7 +57,7 @@ export const MultiLevelDropdown: React.FC<MultiLevelDropdownProps> = ({
           {activeSubMenu.map((dropdownItem, dropdownItemIndex) => (
             <div key={dropdownItemIndex} className="flex flex-col">
               <div className="bg-baseBackground flex flex-row items-center gap-2 pr-4 text-sm font-normal text-gray-600">
-                {dropdownItem.groupLabel}
+                {dropdownItem.groupLabel && dropdownItem.groupLabel}
                 {dropdownItem.counter && (
                   <>
                     <span> ({dropdownItem.children.length}/8) </span>
