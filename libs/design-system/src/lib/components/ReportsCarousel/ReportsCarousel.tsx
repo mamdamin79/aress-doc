@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect, useState } from 'react';
 import { ReportCardProps, ReportCard } from '../ReportCard';
 import 'keen-slider/keen-slider.min.css';
@@ -37,16 +38,16 @@ export const ReportsCarousel: React.FC<ReportsCarouselProps> = ({ cards }) => {
       const possibleSlides = (containerWidth + 20) / (CARD_WIDTH + GAP_WIDTH);
       setSlidesPerView(Math.max(1, Math.min(MAX_SLIDES, possibleSlides)));
     };
-    
+
     // Initial calculation
     updateSlidesPerView();
-    
+
     // Create debounced resize handler
     const debouncedResizeHandler = debounce(updateSlidesPerView, 250);
-    
+
     // Add resize event listener
     window.addEventListener('resize', debouncedResizeHandler);
-    
+
     // Clean up event listener on component unmount
     return () => {
       window.removeEventListener('resize', debouncedResizeHandler);

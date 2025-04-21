@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useState, useRef } from 'react';
 
 export const LoadingSpinner = ({ duration }: { duration: number }) => {
@@ -7,7 +8,7 @@ export const LoadingSpinner = ({ duration }: { duration: number }) => {
 
   useEffect(() => {
     const totalSteps = 100;
-    const totalDuration = duration * 1000; 
+    const totalDuration = duration * 1000;
 
     const animate = (timestamp: number) => {
       if (!startTimeRef.current) {
