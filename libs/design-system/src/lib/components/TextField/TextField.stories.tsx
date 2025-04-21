@@ -21,14 +21,9 @@ export const Default: Story = {
     leadingIcon: {
       name: 'user-round',
       size: 'lg',
-      onClick: () => console.log('clicked on leadingIcon'),
     },
     trailingIcons: [
-      {
-        name: 'x',
-        size: 'md',
-        onClick: () => console.log('clicked on X leading icon'),
-      },
+      { name: 'x', size: 'md' },
       { name: 'eye', size: 'md' },
     ],
     disabled: false,
@@ -73,6 +68,17 @@ export const PasswordToggle: Story = {
     ...Default.args,
     type: 'password',
     supportText: 'رمز عبور خود را وارد کنید',
+  },
+};
+export const CustomTrailingIcon: Story = {
+  args: {
+    ...Default.args,
+    trailingIcons: [
+      {
+        name: 'pencil',
+        onClick: () => alert('clicked'),
+      },
+    ],
   },
 };
 
