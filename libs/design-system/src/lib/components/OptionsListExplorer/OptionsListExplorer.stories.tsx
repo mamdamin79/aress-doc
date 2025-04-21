@@ -12,7 +12,7 @@ export default meta;
 type Story = StoryObj<typeof OptionsListExplorer>;
 
 // A default story for the OptionsListExplorer component
-export const Default: Story = {
+export const DontCategory: Story = {
   render: (args) => {
     return (
       <div className="bg-[#EFF0F2] p-10">
@@ -31,32 +31,6 @@ export const Default: Story = {
     },
     onBackButtonClick: () => console.log('click to back'),
     items: {
-      categories: [
-        {
-          id: 1,
-          title: 'همه',
-        },
-        {
-          id: 2,
-          title: 'سهامی',
-        },
-        {
-          id: 3,
-          title: 'درآمد ثابت',
-        },
-        {
-          id: 4,
-          title: 'کالایی',
-        },
-        {
-          id: 5,
-          title: 'مختلط',
-        },
-        {
-          id: 6,
-          title: 'دیده بان',
-        },
-      ],
       items: [
         {
           id: 1,
@@ -125,219 +99,12 @@ export const Default: Story = {
           priceRials: 33000,
           type: 'کالایی',
         },
-        {
-          id: 10,
-          title: 'برق',
-          categoryId: 3,
-          priceChangePercent: 4.0,
-          priceRials: 15000,
-          type: 'درآمد ثابت',
-        },
-        {
-          id: 11,
-          title: 'برق',
-          categoryId: 3,
-          priceChangePercent: 4.0,
-          priceRials: 15000,
-          type: 'درآمد ثابت',
-        },
-        {
-          id: 12,
-          title: 'شیمیایی',
-          categoryId: 4,
-          priceChangePercent: 5.0,
-          priceRials: 33000,
-          type: 'کالایی',
-        },
-        {
-          id: 13,
-          title: 'سنگ آهن',
-          categoryId: 2,
-          priceChangePercent: -0.8,
-          priceRials: 42000,
-          type: 'سهامی',
-        },
-        {
-          id: 14,
-          title: 'پلاستیک',
-          categoryId: 5,
-          priceChangePercent: 2.0,
-          priceRials: 15000,
-          type: 'مختلط',
-        },
-        {
-          id: 15,
-          title: 'فلزات',
-          categoryId: 6,
-          priceChangePercent: 1.8,
-          priceRials: 25000,
-          type: 'دیده بان',
-        },
-        {
-          id: 16,
-          title: 'صنعتی',
-          categoryId: 6,
-          priceChangePercent: 3.2,
-          priceRials: 19000,
-          type: 'دیده بان',
-        },
-        {
-          id: 17,
-          title: 'گلابی',
-          categoryId: 2,
-          priceChangePercent: -0.5,
-          priceRials: 21000,
-          type: 'سهامی',
-        },
-        {
-          id: 18,
-          title: 'شیشه',
-          categoryId: 3,
-          priceChangePercent: 3.4,
-          priceRials: 27000,
-          type: 'درآمد ثابت',
-        },
-        {
-          id: 19,
-          title: 'داروسازی',
-          categoryId: 4,
-          priceChangePercent: 4.7,
-          priceRials: 22000,
-          type: 'کالایی',
-        },
-        {
-          id: 20,
-          title: 'ماشین آلات',
-          categoryId: 3,
-          priceChangePercent: -1.0,
-          priceRials: 33000,
-          type: 'درآمد ثابت',
-        },
-        {
-          id: 21,
-          title: 'نساجی',
-          categoryId: 5,
-          priceChangePercent: 0.9,
-          priceRials: 30000,
-          type: 'مختلط',
-        },
-        {
-          id: 22,
-          title: 'کیمیا',
-          categoryId: 3,
-          priceChangePercent: 3.2,
-          priceRials: 41000,
-          type: 'درآمد ثابت',
-        },
-        {
-          id: 23,
-          title: 'بافتی',
-          categoryId: 3,
-          priceChangePercent: 2.0,
-          priceRials: 37000,
-          type: 'درآمد ثابت',
-        },
-        {
-          id: 24,
-          title: 'معدن',
-          categoryId: 6,
-          priceChangePercent: -3.0,
-          priceRials: 26000,
-          type: 'دیده بان',
-        },
-        {
-          id: 25,
-          title: 'برند',
-          categoryId: 4,
-          priceChangePercent: 1.4,
-          priceRials: 25000,
-          type: 'کالایی',
-        },
-        {
-          id: 26,
-          title: 'سرامیک',
-          categoryId: 3,
-          priceChangePercent: 0.6,
-          priceRials: 34000,
-          type: 'درآمد ثابت',
-        },
-        {
-          id: 27,
-          title: 'الکترونیک',
-          categoryId: 3,
-          priceChangePercent: 2.5,
-          priceRials: 36000,
-          type: 'درآمد ثابت',
-        },
-        {
-          id: 28,
-          title: 'نفت',
-          categoryId: 3,
-          priceChangePercent: 3.5,
-          priceRials: 42000,
-          type: 'درآمد ثابت',
-        },
-        {
-          id: 29,
-          title: 'چوب',
-          categoryId: 2,
-          priceChangePercent: -2.0,
-          priceRials: 25000,
-          type: 'سهامی',
-        },
-        {
-          title: 'توسعه',
-          id: 30,
-          priceChangePercent: 4.8,
-          priceRials: 19000,
-          type: 'شرکتی',
-        },
-        {
-          id: 31,
-          title: 'لوازم خانگی',
-          categoryId: 4,
-          priceChangePercent: 1.1,
-          priceRials: 22000,
-          type: 'کالایی',
-        },
-        {
-          id: 32,
-          title: 'مبلمان',
-          categoryId: 6,
-          priceChangePercent: 3.3,
-          priceRials: 33000,
-          type: 'دیده بان',
-        },
-        {
-          id: 33,
-          title: 'برق',
-          categoryId: 5,
-          priceChangePercent: 2.9,
-          priceRials: 31000,
-          type: 'مختلط',
-        },
-        {
-          id: 34,
-          title: 'کاشی',
-          categoryId: 3,
-          priceChangePercent: -0.3,
-          priceRials: 23000,
-          type: 'خصوصی',
-        },
-        {
-          id: 35,
-          title: 'فولاد',
-          categoryId: 4,
-          priceChangePercent: 2.4,
-          priceRials: 37000,
-          type: 'کالایی',
-        },
       ],
     },
   },
 };
 
-export const Search: Story = {
+export const Category: Story = {
   render: (args) => {
     return (
       <div className="bg-[#EFF0F2] p-10">
