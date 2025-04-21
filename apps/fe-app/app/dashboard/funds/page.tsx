@@ -259,9 +259,9 @@ const Funds = () => {
                   y2="18.0637"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#18884F" />
-                  <stop offset="0.5" stop-color="#117E43" />
-                  <stop offset="1" stop-color="#0B6631" />
+                  <stop stopColor="#18884F" />
+                  <stop offset="0.5" stopColor="#117E43" />
+                  <stop offset="1" stopColor="#0B6631" />
                 </linearGradient>
               </defs>
             </svg>
@@ -452,7 +452,7 @@ const Funds = () => {
                       {index >= 1 && (
                         <th
                           className={cn(
-                            'm-0 overflow-y-hidden p-0 text-sm font-medium',
+                            'm-0 overflow-y-hidden p-0 h-[70px] !bg-red-300 text-sm font-medium',
                             String(
                               flexRender(
                                 header.column.columnDef.header,
@@ -712,7 +712,7 @@ const Funds = () => {
                         <tr
                           style={{ top: topValue }}
                           className={cn(
-                            'group border-t border-blue-100',
+                            'group border-t h-[60px] border-blue-100',
                             row.getIsPinned() && `sticky z-30`,
                             {
                               'shadow-2xl': row.id === lastPinnedRowId,

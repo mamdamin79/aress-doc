@@ -38,7 +38,7 @@ export function FundsColumn({
             !filterable && size !== 'extraLarg',
           'bg-pink-200 hover:bg-pink-300': filterable && size !== 'extraLarg',
         },
-        'text-text-neutral-primary group/first cursor-pointer text-sm font-medium',
+        'text-text-neutral-primary group/first h-full cursor-pointer text-sm font-medium',
       )}
     >
       <div

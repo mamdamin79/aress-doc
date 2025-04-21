@@ -46,7 +46,7 @@ export function FundsTableRow({
   return (
     <div
       className={cn(
-        'sticky right-0 flex min-h-[70px] w-fit items-center justify-between bg-white',
+        'sticky right-0 flex border-t border-blue-100 min-h-[70px] w-fit items-center justify-between bg-white',
         className,
         {
           'shadow-md': isScrolled,
