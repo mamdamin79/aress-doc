@@ -98,3 +98,16 @@ export const MergedTitleAndPlaceholder: Story = {
     supportText: 'برچسب و پلیس‌هولدر ترکیب شده‌اند',
   },
 };
+
+export const TextArea: Story = {
+  args: {
+    ...Default.args,
+    mergeTitleAndPlaceholder: false,
+    label: 'شرح گزارش',
+    placeholder:
+      'میتواند شامل محور افقی و عمودی روابط آماری و ریاضی و تشریح مدل های مالی باشد...',
+    longText: true,
+    trailingIcons: [],
+    leadingIcon: undefined,
+  },
+};

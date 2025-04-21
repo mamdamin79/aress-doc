@@ -18,6 +18,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
   onChange,
   value,
   className,
+  longText = false,
   ...rest
 }) => {
   const [internalValue, setInternalValue] = useState('');
@@ -28,6 +29,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
   const id = useId();
 
   const inputValue = value ?? internalValue;
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInternalValue(e.target.value);
@@ -92,17 +94,52 @@ export const TextField: React.FC<textFieldPropsType> = ({
 
       {leadingIcon && (
         <div
-          className={cn('pointer-events-none absolute right-4 top-10', {
+          className={cn('absolute right-4 top-10', {
             'text-gray-400': disabled,
             'top-[42px]': leadingIcon?.size === 'md',
           })}
         >
           {leadingIcon && (
-            <Icon name={leadingIcon.name} size={leadingIcon.size || 'lg'} />
+            <div
+              onClick={() =>
+                leadingIcon.onClick && leadingIcon?.onClick(inputValue)
+              }
+            >
+              <Icon name={leadingIcon.name} size={leadingIcon.size || 'lg'} />
+            </div>
           )}
         </div>
       )}
-
+      {longText ? (
+        <textarea
+          id={id}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          onChange={handleInputChange}
+          value={inputValue}
+          disabled={disabled}
+          className={cn(
+            'text-md h-[50px] w-full resize-none rounded-xl border p-2 font-normal outline-none transition-colors duration-150',
+            {
+              'border-inherit bg-transparent opacity-100 placeholder:text-gray-400':
+                disabled,
+              'placeholder:text-gray-500': !disabled,
+              'pl-20': trailingIcons.length === 2,
+              'pl-10': trailingIcons.length === 1,
+              'bg-gray-100': mode === 'filled' && !disabled,
+              'hover:bg-gray-300': mode === 'filled' && !disabled && !isFocused,
+              'cursor-not-allowed !bg-gray-50': disabled && mode === 'filled',
+              'border-red-600 focus:border-[2.5px]': isError && !disabled,
+              'focus:border-brand-600 border-gray-300 focus:border-2 focus:outline-none':
+                !isError && !disabled,
+              'pr-12': leadingIcon,
+              'h-[134px]': longText,
+            },
+          )}
+          placeholder={mergeTitleAndPlaceholder ? '' : placeholder}
+          {...(rest as React.TextareaHTMLAttributes<HTMLTextAreaElement>)}
+        ></textarea>
+      ) : (
       <input
         id={id}
         {...rest}
