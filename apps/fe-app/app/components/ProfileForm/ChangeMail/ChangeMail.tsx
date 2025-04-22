@@ -114,6 +114,7 @@ export const ChangeMail = ({
           onSubmit={() => setStage(ChangeMailStage.NEW_MAIL)}
           title="ایمیل جدید"
           subTitle="جهت تغییر ایمیل، ابتدا رمز فعلی خود را وارد کنید.
+          
 "
         />
       )}
@@ -129,6 +130,7 @@ export const ChangeMail = ({
       {stage === ChangeMailStage.OTP && (
         <OTPForm
           description={`کد تایید ارسال شده به ${newMail} را وارد کنید.`}
+          backBtnLabel='ویرایش ایمیل'
           onBackBtn={() => setStage(ChangeMailStage.NEW_MAIL)}
           title="ایمیل جدید"
           onSubmit={() => {

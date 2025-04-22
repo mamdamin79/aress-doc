@@ -205,6 +205,7 @@ export const ChangeNumber = ({
         <OTPForm
           description={`کد تایید ارسال شده به ${newNumber} را وارد کنید.`}
           onBackBtn={() => setStage(ChangeNumberStage.NEW_NUMBER)}
+          backBtnLabel="ویرایش شماره"
           title="شماره همراه جدید"
           onSubmit={(code) => {
             onSaveData(code);

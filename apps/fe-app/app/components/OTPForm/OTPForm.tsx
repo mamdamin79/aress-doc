@@ -1,3 +1,4 @@
+'use client';
 import { Button, cn, Icon } from 'design-system';
 import React, { useState, useEffect } from 'react';
 import OtpInput from 'react-otp-input';
@@ -10,6 +11,7 @@ export interface OTPFormProps {
   onSubmit: (code: string) => void;
   className?: string;
   onResendCode?: () => void;
+  backBtnLabel?: string;
 }
 
 export const OTPForm: React.FC<OTPFormProps> = ({
@@ -19,6 +21,7 @@ export const OTPForm: React.FC<OTPFormProps> = ({
   title = 'کد تایید را وارد کنید',
   className,
   onResendCode,
+  backBtnLabel = 'ویرایش',
 }) => {
   const [otp, setOtp] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -72,7 +75,7 @@ export const OTPForm: React.FC<OTPFormProps> = ({
               className="text-brand-600 flex w-1/3 cursor-pointer flex-row justify-end text-sm font-medium"
               onClick={onBackBtn}
             >
-              ویرایش شماره
+              {backBtnLabel}
               <Icon name="chevron-left" size="lg" />
             </div>
           </>
