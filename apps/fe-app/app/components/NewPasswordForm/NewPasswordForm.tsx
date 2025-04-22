@@ -60,9 +60,15 @@ export const NewPasswordForm: React.FC<NewPasswordFormProps> = ({
                   message: 'این فیلد اجباری است.',
                 },
 
-                validate: () => {
-                  return Object.values(validations).every(Boolean);
+                validate: (value) => {
+                  const v = {
+                    minLength: value.length >= MIN_PASSWORD_LENGTH,
+                    lowerAndUpperCase: LOWERCASE_UPPERCASE_REGEX.test(value),
+                    numberOrSpecialChar: NUMBER_SPECIAL_CHAR_REGEX.test(value),
+                  };
+                  return Object.values(v).every(Boolean) || 'رمز عبور معتبر نیست';
                 },
+                
               }}
               render={({ field, fieldState }) => (
                 <TextField
