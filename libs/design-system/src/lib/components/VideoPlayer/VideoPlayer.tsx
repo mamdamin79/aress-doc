@@ -1,4 +1,4 @@
-'use client';
+"use client"
 import { useVideo } from '../../../hooks/UseVideo';
 import React, { useEffect, useRef, useState } from 'react';
 import { Icon } from '../Icon';

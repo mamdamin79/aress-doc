@@ -108,42 +108,42 @@ export const ReportCard: React.FC<ReportCardProps> = ({
             </div>
           </div>
 
-          {/* summary Section fixed */}
-          {fixedBrief && (
-            <>
-              <span className="line-clamp-3 text-right text-sm text-gray-600">
-                {summary}
-              </span>
-              <div className="absolute bottom-4 right-0 flex w-full items-center justify-between px-4">
-                <LikeBadge isLiked={userFavorite} onClick={() => onLike?.()} />
-                <div className="flex h-[38px] origin-left scale-x-[0.3] transform items-center overflow-hidden rounded-[100px] text-xs opacity-0 transition-all duration-300 ease-in-out group-hover:scale-x-100 group-hover:opacity-100">
-                  <Link href={link ?? '/'}>
-                    <Button
-                      align="center"
-                      isLoading={false}
-                      mode="primary"
-                      size="md"
-                      className="w-fit"
-                    >
-                      <div className="flex items-center gap-2 whitespace-nowrap opacity-0 transition-colors duration-100 group-hover:opacity-100">
-                        مشاهده گزارش
-                        <Icon name="arrow-left" size="md" />
-                      </div>
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </>
-          )}
-
-          {/* summary Section (Drawer Animation) */}
-          {!fixedBrief && (
-            <span className="-mb-2 line-clamp-4 h-fit translate-y-12 transform overflow-hidden text-right text-sm text-gray-600 opacity-0 transition-all duration-500 ease-in-out group-hover:translate-y-0 group-hover:opacity-100">
-              {summary}
-            </span>
-          )}
-        </div>
+{/* summary Section fixed */}
+{fixedBrief && (
+  <>
+    <span className="line-clamp-3 text-right text-sm text-gray-600">
+      {summary}
+    </span>
+    <div className="absolute bottom-4 right-0 flex w-full items-center justify-between px-4">
+      <LikeBadge isLiked={userFavorite} onClick={() => onLike?.()} />
+      <div className="flex h-[38px] origin-left scale-x-[0.3] transform items-center overflow-hidden rounded-[100px] text-xs opacity-0 transition-all duration-300 ease-in-out group-hover:scale-x-100 group-hover:opacity-100">
+        <Link href={link ?? '/'}>
+          <Button
+            align="center"
+            isLoading={false}
+            mode="primary"
+            size="md"
+            className="w-fit"
+          >
+            <div className="flex items-center gap-2 whitespace-nowrap opacity-0 transition-colors duration-100 group-hover:opacity-100">
+              مشاهده گزارش
+              <Icon name="arrow-left" size="md" />
+            </div>
+          </Button>
+        </Link>
       </div>
     </div>
-  );
+  </>
+)}
+
+{/* summary Section (Drawer Animation) */}
+{!fixedBrief && (
+  <span className="-mb-2 line-clamp-4 h-fit translate-y-12 transform overflow-hidden text-right text-sm text-gray-600 opacity-0 transition-all duration-500 ease-in-out group-hover:translate-y-0 group-hover:opacity-100">
+    {summary}
+  </span>
+)}
+</div>
+</div>
+</div>
+);
 };

@@ -1,4 +1,4 @@
-'use client';
+"use client"
 import moment from 'moment';
 import { cn } from '../../../utils';
 import { useEffect, useRef, useState } from 'react';
