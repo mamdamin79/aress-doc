@@ -14,14 +14,15 @@ export * from './RemovableLabel';
 export * from './ProgressBar';
 export * from './SummaryCell';
 export * from './Button';
-export * from './TextField';
-export * from './BulletList';
 export * from './DualSwitch';
-export * from './NotesHeading';
-export * from './PopupInfo';
-export * from './Dialog';
 export * from './SquaredButton';
 export * from './HeadProfile';
+export * from './TextField';
+export * from './BulletList';
+export * from './NotesHeading';
+export * from './OptionsDropdown';
+export * from './PopupInfo';
+export * from './Dialog';
 export * from './FundsTag';
 export * from './AddReportButton';
 export * from './LoadingBarPop';
@@ -36,4 +37,13 @@ export * from './FundsColumn';
 export * from './ProfileSidebar';
 export * from './NestedDropdown';
 export * from './OptionsDropdown';
+<<<<<<< HEAD
 export * from './GeneralTable'
+=======
+export * from './GeneralTable';
+export * from './MenuTiles';
+export * from './OptionsListExplorer';
+export * from './FundsSidebar';
+export * from './DualSwitch';
+export * from './DateInput';
+>>>>>>> main
