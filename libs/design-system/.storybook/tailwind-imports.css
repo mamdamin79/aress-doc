@@ -300,3 +300,13 @@ input[type='password']::-ms-clear,
 input[type='password']::-webkit-password-eye {
   display: none;
 }
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  background-color: #d8dbe1;
+  border-radius: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #8c9096;
+  position: sticky;
+  border-radius: 8px;
+}

@@ -27,7 +27,7 @@ export const Default: Story = {
 
       const handlePageChange = (selectedItem: { selected: number }) => {
         setCurrentPage(selectedItem.selected + 1);
-        args.onPageChange(selectedItem); 
+        args.onPageChange(selectedItem);
       };
 
       return (
@@ -42,4 +42,3 @@ export const Default: Story = {
     return <PaginationWrapper />;
   },
 };
-
