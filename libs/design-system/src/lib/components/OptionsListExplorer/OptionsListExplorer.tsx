@@ -100,13 +100,13 @@ export function OptionsListExplorer({
         className="text-gray-1000 flex w-fit cursor-pointer items-center gap-1 bg-transparent px-4 py-2.5"
       >
         <Icon name="chevron-right" />
-        <span className="text-sm font-medium">{title}</span>
+        <span className="mt-1 text-sm font-medium">{title}</span>
       </button>
       {!items.categories && items.items.length < 10 && (
         <div className="my-4 h-0.5 w-full bg-gray-300"></div>
       )}
       {items.items.length > 10 && (
-        <div className="mx-4 -mt-8 pb-2">
+        <div className="mx-4 -mt-6 pb-2">
           <TextField
             value={inputValue}
             onChange={(e) => handleInputChange(e.target.value)}
@@ -122,11 +122,15 @@ export function OptionsListExplorer({
         </div>
       )}
       {items.categories && (
-        <div className="mx-4">
+        <div className="mx-4 -mt-2">
           <Tabs
-            tabs={items.categories}
-            bgWhite
-            mode="rounded"
+            tabs={items.categories.map((category) => ({
+              title: category.title,
+              id: String(category.id),
+            }))}
+            colorMode="neutral"
+            variant="rounded"
+            activeTab={activeTab}
             onClickTab={(id) => handleTabChange(id)}
           />
         </div>
