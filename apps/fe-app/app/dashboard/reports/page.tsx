@@ -1,15 +1,13 @@
 import { ReportList } from './_components/ReportsList';
 import { SideBar } from './_components/SideBar';
-import { SearchBar } from './_components/SearchBar';
 import { DashboardService, GetDashboardReportsData, OpenAPI } from '@openapi';
-import { FilterReport } from './_components/FilterReport';
 import { Pagination } from 'design-system';
 
 const ITEMS_PER_PAGE = 5;
 
 async function getData(searchParams: GetDashboardReportsData) {
   OpenAPI.HEADERS = {
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzQwNTYxODgxfQ.AYeDmC-D54omX5jI_I78zNx66a98iKBnNzGqXRN5n3U`,
+    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzQ1NDE2MjY5fQ.fYoeXOvstJcWxcoExDW1fwwmvzi0L7aXqgO_3viizU0`,
   };
   const [reports, categories] = await Promise.all([
     DashboardService.getDashboardReports({
@@ -55,8 +53,8 @@ export default async function ReportMenuPage({
   );
 
   return (
-    <div className="mx-8 bg-red-200">
-      <div className="flex flex-row-reverse items-start justify-between gap-4 xl:justify-center">
+    <div className="mx-8 md:flex md:justify-center xl:block ">
+      <div className="flex md:max-w-[772px] xl:max-w-full flex-row-reverse items-start justify-between gap-4 xl:justify-center">
         <div className="w-full">
           <ReportList reports={paginatedReports} />
           <Pagination
@@ -65,7 +63,7 @@ export default async function ReportMenuPage({
             pageSize={ITEMS_PER_PAGE}
           />
         </div>
-        <div className='bg-red-400'>
+        <div className=''>
           <SideBar reports={reports} categories={categories} />
         </div>
       </div>
