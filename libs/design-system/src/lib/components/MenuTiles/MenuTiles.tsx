@@ -92,7 +92,7 @@ const TextContainer = ({
   <div className="text-right">
     <p
       className={cn(
-        'font-semibold text-sm',
+        'text-sm font-semibold',
         isActive && !isDashboard ? 'text-brand-700' : 'text-gray-1000',
         !isActive && (isDisabled ? 'text-gray-400' : 'text-gray-1000'),
       )}
@@ -171,10 +171,10 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
       ) : (
         <>
           <div
-            className={`absolute my-auto -right-[1.5px] top-0 bottom-0 transition-all ${
+            className={`absolute -right-[1.5px] bottom-0 top-0 my-auto transition-all ${
               isActive
-                ? 'bg-brand-600 rounded-tl-[3px] rounded-bl-[3px] w-[4px] h-5'
-                : 'bg-brand-400 rounded-lg w-[2px] h-4 group-hover:bg-brand-600 group-hover:h-5'
+                ? 'bg-brand-600 h-5 w-[4px] rounded-bl-[3px] rounded-tl-[3px]'
+                : 'bg-brand-400 group-hover:bg-brand-600 h-4 w-[2px] rounded-lg group-hover:h-5'
             }`}
           />
 

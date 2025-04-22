@@ -10,16 +10,16 @@ import { MENU_ITEM_APPROX_WIDTH } from './DesktopMenu.constants';
 
 interface MenuProps {
   menuItems: MenuItem[];
+  activeTab: number;
 }
 
-export const DesktopMenu: React.FC<MenuProps> = ({ menuItems }) => {
+export const DesktopMenu: React.FC<MenuProps> = ({ menuItems,activeTab }) => {
   const [activeSubMenu, setActiveSubMenu] = useState<null | dropdownType>(null);
   const [showMoreMenu, setShowMoreMenu] = useState(false);
   const [menus, setMenus] = useState<{
     main: MenuItem[];
     more: MenuItem[];
   }>({ main: menuItems, more: [] });
-  const [activeTab, setActiveTab] = useState(0);
 
   const ref = useClickAway<HTMLDivElement>(() => {
     setActiveSubMenu(null);
@@ -44,9 +44,6 @@ export const DesktopMenu: React.FC<MenuProps> = ({ menuItems }) => {
     }
   }, [throttledWidth, menuItems]);
 
-  const handleTabClick = (index: number) => {
-    setActiveTab(index);
-  };
 
   const renderDropdownMenu = (item: MenuItem, index: number) => (
     <div className="bg-baseBackground shadow-offset-y-10 shadow-8xl absolute z-10 flex hidden flex-row rounded-xl border-2 border-gray-300 group-hover:block">
@@ -99,7 +96,6 @@ export const DesktopMenu: React.FC<MenuProps> = ({ menuItems }) => {
               : 'group-hover:text-gray-700',
           activeTab === index ? 'text-gray-1000 font-medium' : 'text-gray-600',
         )}
-        onClick={() => handleTabClick(index)}
       >
         <div className="relative">
           {item.dropdown && (
