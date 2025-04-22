@@ -228,6 +228,11 @@ module.exports = {
           1000: 'rgb(var(--color-vivid-green-1000))',
         },
       },
+      screens: {
+        '3xl': '1680px',
+        '4xl': '1920px',
+        '5xl': '2560px',
+      },
     },
     plugins: [],
   },

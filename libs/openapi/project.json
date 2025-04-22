@@ -1,0 +1,15 @@
+{
+    "name": "openapi",
+    "sourceRoot": "libs/openapi/src",
+    "projectType": "library",
+    "targets": {
+      "build": {
+        "executor": "@nrwl/js:tsc",
+        "outputs": ["{workspaceRoot}/dist/libs/openapi"],
+        "options": {
+          "tsConfig": "libs/openapi/tsconfig.json"
+        }
+      }
+    }
+  }
+  

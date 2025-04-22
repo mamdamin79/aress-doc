@@ -1,4 +1,4 @@
-'use client';
+"use client"
 import React, { useEffect, useState } from 'react';
 import { ReportCardProps, ReportCard } from '../ReportCard';
 import 'keen-slider/keen-slider.min.css';
