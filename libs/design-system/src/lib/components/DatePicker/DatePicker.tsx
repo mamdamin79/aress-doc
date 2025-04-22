@@ -15,7 +15,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
   const [validStartDate, setValidStartDate] = useState('');
   const [titleTooltip, setTitleTooltip] = useState('');
   const [dateHover, setDateHover] = useState<DateType | null>();
-  const [areInputsEqual, setAreInputsEqual] = useState('');
+  const [areInputsEqual, setAreInputsEqual] = useState(false);
   const [focuseEndInput, setFocuseEndInput] = useState(false);
   const [focuseStartInput, setFocuseStartInput] = useState(true);
   const [activeStartInput, setActiveStartInput] = useState(true);
@@ -38,7 +38,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
   const clearEndDate = () => {
     setEndDate('');
   };
-  
+
   function getPersianMonthDays(year: number, month: number) {
     const daysInMonth = jalaali.jalaaliMonthLength(year, month);
     const firstDayGregorian = jalaali.toGregorian(year, month, 1);
@@ -114,10 +114,23 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
   ];
 
   const updateStartInput = (date: string) => {
-    setStartDate({day: +date.slice(8, 10), month: +date.slice(5, 7), year: +date.slice(0, 4)}, true);
+    if (
+      (startDate?.year === endDate?.year && startDate?.month === endDate?.month && startDate && endDate && startDate?.day > endDate?.day)
+      || (startDate?.year === endDate?.year && startDate?.month === endDate?.month && endDate && startDate && (startDate?.day > endDate?.day || startDate?.day === endDate.day))) {
+      setAreInputsEqual(true);
+    } else setAreInputsEqual(false);
+    if (+date.slice(8, 10) <= 31) {
+      setStartDate({ day: +date.slice(8, 10), month: +date.slice(5, 7), year: +date.slice(0, 4) }, true);
+    }
   };
-  const updateEndInput = (date: string) => {    
-    setEndDate({day: +date.slice(8, 10), month: +date.slice(5, 7), year: +date.slice(0, 4)}, true);
+  const updateEndInput = (date: string) => {
+    if ((startDate?.year === endDate?.year && startDate?.month === endDate?.month && startDate && endDate && startDate?.day > endDate?.day)
+      || (startDate?.year === endDate?.year && startDate?.month === endDate?.month && endDate && startDate && (startDate?.day > endDate?.day || startDate?.day === endDate.day))) {
+      setAreInputsEqual(true);
+    } else setAreInputsEqual(false);
+    if (+date.slice(8, 10) <= 31) {
+      setEndDate({ day: +date.slice(8, 10), month: +date.slice(5, 7), year: +date.slice(0, 4) }, true);
+    }
   };
 
   // Render TitleTooltip
@@ -173,14 +186,14 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
     ]
   );
 
-  const errorHandler = ({ minError, maxError }: ErrorState) => {    
+  const errorHandler = ({ minError, maxError }: ErrorState) => {
     setErrors({
       start: { minError, maxError },
       end: { minError, maxError },
     });
   }
 
-  const textErrorHandler = ({start, end}: {start: ErrorState, end: ErrorState}): {startInputText: string, endInputText: string} => {
+  const textErrorHandler = ({ start, end }: { start: ErrorState, end: ErrorState }): { startInputText: string, endInputText: string } => {
     let startInputText = '';
     let endInputText = '';
     if (start.minError) {
@@ -206,15 +219,10 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
     if (startDate?.year === endDate?.year && startDate?.month === endDate?.month && endDate && startDate && startDate?.day > endDate?.day) {
       endInputText = 'تاریخ پایان نمیتواند کمتر از تاریخ شروع باشد';
     }
-
-
-    
-    
-
-    return {startInputText, endInputText};
+    return { startInputText, endInputText };
   }
 
-  
+
 
   const close = useMemo(
     () => (
@@ -254,6 +262,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                     }}
                   >
                     <DateInput
+                      equalInput={areInputsEqual}
                       errorText={textErrorHandler(errors).startInputText}
                       errorHandler={errorHandler}
                       placeholder="تاریخ شروع"
@@ -281,6 +290,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                     }}
                   >
                     <DateInput
+                      equalInput={areInputsEqual}
                       errorText={textErrorHandler(errors).endInputText}
                       focus={focuseEndInput}
                       errorHandler={errorHandler}
@@ -295,35 +305,6 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                     />
                   </div>
                 </div>
-              </div>
-
-              <div className="h-4">
-                {/* <span className="text-red-600 mr-40 font-medium text-xs">
-                      {focuseStartInput &&
-                        (startErrors.minError
-                          ? 'تاریخ شروع وارد شده کمتر از حداقل تاریخ مجاز است.'
-                          : startErrors.maxError
-                          ? 'تاریخ شروع وارد شده بیشتر از حداکثر تاریخ مجاز است.'
-                          : invalidStartDate ||
-                            (mosvaiDate &&
-                              !endErrors.maxError &&
-                              !endErrors.minError &&
-                              mosvaiDate))}
-                    </span> */}
-                {/* <span className="text-red-600 mr-[180px] font-medium text-xs">
-                      {focuseEndInput &&
-                        (endErrors.minError
-                          ? 'تاریخ پایان وارد شده کمتر از حداقل تاریخ مجاز است.'
-                          : endErrors.maxError
-                          ? 'تاریخ پایان وارد شده بیشتر از حداکثر تاریخ مجاز است.'
-                          : invalidEndDate ||
-                            (mosvaiDate &&
-                              !endErrors.maxError &&
-                              !endErrors.minError &&
-                              !startErrors.minError &&
-                              !startErrors.maxError &&
-                              mosvaiDate))}
-                    </span> */}
               </div>
             </div>
 
@@ -409,7 +390,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
               </div>
               <div className="flex items-center gap-6">
                 <div className="flex gap-1">
-                  {/* <select
+                  <select
                     onChange={(e) =>
                       setCurrentDate(
                         `${e.target.value}-${calendars[0].slice(
@@ -438,8 +419,8 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                         {item}
                       </option>
                     ))}
-                  </select> */}
-                  <DropDown width={72} menuItems={years} selectedItem={calendars[1].slice(0, 4)} onSelect={(e) => setCurrentDate(`${e}-${calendars[0].slice(5, 7)}-${calendars[0].slice(7, 8)}`)} />
+                  </select>
+                  {/* <DropDown width={72} menuItems={years} selectedItem={calendars[1].slice(0, 4)} onSelect={(e) => setCurrentDate(`${e}-${calendars[0].slice(5, 7)}-${calendars[0].slice(7, 8)}`)} /> */}
                   <select
                     onChange={(e) => {
                       setCurrentDate(
@@ -453,10 +434,10 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                   >
                     {listMonth.map((item, index) => (
                       <option
-                      disabled={
-                        max.slice(0, 4) === calendars[1].slice(0, 4) &&
-                        index +1 > +max.slice(5, 7)
-                      }
+                        disabled={
+                          max.slice(0, 4) === calendars[1].slice(0, 4) &&
+                          index + 1 > +max.slice(5, 7)
+                        }
                         selected={index + 1 === +calendars[1].slice(5, 7)}
                         key={index + 1}
                         value={index + 1}
@@ -641,7 +622,6 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                                 +calendars[1].slice(5, 7) > 6 && day.day === 30 && '!rounded-l-full',
                                 isLastDayOfWeek(index).lastDayIndex === index && '!rounded-l-full',
                                 dateHover && `${dateHover.year}${dateHover.month < 10 ? `0${dateHover.month}` : dateHover.month}${dateHover.day < 10 ? `0${dateHover.day}` : dateHover.day}` > `${calendars[0].slice(0, 4)}${calendars[1].slice(5, 7)}${day.day < 10 ? `0${day.day}` : day.day}` && isDateAfterStartOrEnd({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) && focuseEndInput && day.day === 31 || isLastDayOfWeek(index).lastDayIndex === index ? '!border-l-2 !rounded-l-full' : (day.day === 1 || isLastDayOfWeek(index).firstDayIndex === index) && '!border-r-2',
-
                                 {
                                   'hover:border-none text-gray-400 cursor-default':
                                     !isDateInRange({
@@ -705,7 +685,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                   }
                 }}
                 className={cn(
-                  'px-2 bg-brand-300 cursor-default py-1 rounded-md text-white',
+                  'px-2 select-none bg-brand-300 cursor-default py-1 rounded-md text-white',
                   {
                     'cursor-pointer bg-brand-500':
                       startDate &&
@@ -732,7 +712,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                 !areInputsEqual &&
                 !validStartDate &&
                 !validEndDateS && (
-                  <div className="flex justify-start w-fit gap-2 px-2 pt-1.5 bg-white rounded-sm items-center">
+                  <div className="flex select-none justify-start w-fit gap-2 px-2 pt-1.5 bg-white rounded-sm items-center">
                     <span className="text-sm">بازه دلخواه:</span>
                     {DateDifference(
                       `${startDate.year}-${startDate.month}-${startDate.day}`,

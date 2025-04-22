@@ -11,6 +11,7 @@ export interface DatePickerProps {
   max?: string;
   active?: boolean;
   errorText: string;
+  equalInput: boolean;
   focus: boolean;
   clearDate: () => void;
   errors: {

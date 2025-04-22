@@ -27,6 +27,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
   defaultValue,
   errorHandler,
   focus,
+  equalInput,
   placeholder,
   errorText,
   errors,
@@ -230,7 +231,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
       onChange(
         `${String(year).length === 4 && year}-${
           month < 10 ? `0${month}` : month
-        }-${e < 10 ? `0${e}` : e}`
+        }-${e < 10 ? `0${e}` : (month > 6 && e === 31) ? 30 : e }`
       );
     }
     if (!e) {
@@ -462,6 +463,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
         }
       }
       if (e.key === 'ArrowUp') {
+        e.preventDefault();
         if (activeIndex === 3) {
           changeYearInput(year ? year + 1 : 1);
         }
@@ -476,6 +478,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
         setIsArrowKeyPressed(false);
       }
       if (e.key === 'ArrowDown') {
+        e.preventDefault();
         if (activeIndex === 1) {
           changeDayInput(day ? (day >= 1 && day <= 31 ? day - 1 : 2) : 0);
           setIsArrowKeyPressed(false);
@@ -493,6 +496,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
       }
     }
   };
+  
 
   useEffect(() => {
     if (isArrowKeyPressed) {
@@ -522,27 +526,31 @@ export const DateInput: React.FC<DatePickerProps> = ({
           if (active) {
             setFocusInput(true);
             setFocusInput(true);
+            setActiveIndex(1);
           }
         }}
         className={cn(
-          'w-40 rounded-md bg-white border-2 flex items-center gap-1 py-2 px-4',
+          'w-40 rounded-md bg-white select-none border-2 flex items-center gap-1 py-2 px-4',
           {
             'border-red-600':
-              (day && month && year) && (
+              (day && month && year) && focusInput && (
                 errors.minError ||
+                equalInput ||
                 errors?.maxError
               ),
             'border-brand-600':
               focusInput &&
               !errors?.maxError &&
-              !errors?.minError,
+              !errors?.minError && 
+              !equalInput,
             'border-gray-500':
               year &&
               day &&
               month &&
               !focusInput &&
               !errors.maxError &&
-              !errors.minError
+              !errors.minError &&
+              !equalInput
           }
         )}
       >
@@ -626,10 +634,10 @@ export const DateInput: React.FC<DatePickerProps> = ({
           </span>
         )}
       </div>
-      <div className={cn('invisible absolute', {
+      <div className={cn('invisible h-[22px]', {
         'visible': day && month && year && focusInput
       })}>
-          <div className="text-red-600 my-1 text-xs h-[22px]">{errorText}</div>
+          <div className="text-red-600 my-1 absolute text-xs">{errorText}</div>
       </div>
     </div>
   );
