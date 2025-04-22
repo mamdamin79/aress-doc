@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ReportSettings } from './ReportSettings';
-import { useState } from 'react';
+import { useState } from 'react'; // Import useState
 
 // Meta configuration for the ReportSettings component in Storybook
 const meta: Meta<typeof ReportSettings> = {
@@ -12,18 +12,26 @@ const meta: Meta<typeof ReportSettings> = {
 export default meta;
 
 type Story = StoryObj<typeof ReportSettings>;
+const ReportSettingsWrapper = ({ args }: { args: any }) => {
+  const [isOpen, setIsOpen] = useState(false); // Use useState for isOpen
 
+  const toggleOpen = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <div onClick={toggleOpen}>
+      {/* Pass isOpen state if ReportSettings needs it, otherwise remove */}
+      <ReportSettings {...args} isOpen={isOpen} />
+      <span>open</span>
+    </div>
+  );
+};
 // A default story for the ReportSettings component
 export const Default: Story = {
-  render: (args) => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    return (
-      <div onClick={() => setIsOpen(!isOpen)}>
-        <ReportSettings {...args} isOpen={isOpen} />
-        <span>open</span>
-      </div>
-    );
+  render: function Render(args) {
+    // Define a wrapper component using useState
+    return <ReportSettingsWrapper args={args} />;
   },
   args: {
     options: [
@@ -31,7 +39,7 @@ export const Default: Story = {
         type: 'nestedDropdown',
         props: {
           title: 'مبنای ارزش معاملات',
-          subFields: [
+          items: [
             {
               title: 'نوع بازار:',
               icon: { name: 'square-mouse-pointer', size: 'sm' },

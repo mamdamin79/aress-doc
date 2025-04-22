@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { NestedDropdown } from '../NestedDropdown';
-import { NestedDropDownProps } from '../NestedDropdown/NestedDropdown.types';
 import { Field, FieldProps } from '../NestedDropdown/Field/Field';
 import { Button } from '../Button';
 import { cn } from 'libs/design-system/src/utils';
+import { NestedDropdownProps } from '../NestedDropdown/NestedDropdown.types';
 
 type optionProps = {
   type:
@@ -11,7 +11,7 @@ type optionProps = {
     | 'extendedSelection'
     | 'categorizedSelection'
     | 'nestedDropdown';
-  props: NestedDropDownProps | FieldProps;
+  props: NestedDropdownProps | FieldProps;
 };
 
 interface ReportSettingsProps {
@@ -29,14 +29,17 @@ export const ReportSettings: React.FC<ReportSettingsProps> = ({
     <div className={cn('bg-baseBackground flex h-80 w-[328px] flex-col')}>
       <div className="text-md w-full py-2 pr-4 font-medium">تنظیمات گزارش</div>
       <div
-        className={cn('flex h-[236px] flex-col pl-5 pr-4', 'overflow-y-auto custom-scrollbar')}
+        className={cn(
+          'flex h-[236px] flex-col pl-5 pr-4',
+          'custom-scrollbar overflow-y-auto overflow-x-hidden',
+        )}
       >
         {options.map((option: optionProps, index: number) => {
           if (option.type === 'nestedDropdown') {
             return (
               <NestedDropdown
                 key={index}
-                {...(option.props as NestedDropDownProps)}
+                {...(option.props as NestedDropdownProps)}
               />
             );
           } else if (option.type === 'basicSelection') {
