@@ -307,3 +307,15 @@
 html {
   direction: rtl;
 }
+input[type='password']::-ms-reveal,
+input[type='password']::-ms-clear,
+input[type='password']::-webkit-password-eye {
+  display: none;
+}
+.hidescrollbar {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+.hidescrollbar::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
+}

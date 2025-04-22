@@ -33,6 +33,8 @@ export const Default: Story = {
       updateArgs({ isOpen: false });
     }
 
+    
+    
     function setDateRange(start: DateType, end: DateType) {
       updateArgsDateRange({ dateRange: { start, end } });
     }
@@ -41,8 +43,8 @@ export const Default: Story = {
       <DatePicker
         dateRange={dateRange}
         setDateRange={(start, end) => setDateRange(start, end)}
-        max="1400-05-25"
-        min="1300-05-25"
+        max="1400-12-25"
+        min="1300-01-25"
         isOpen={isOpen}
         onClose={onCloseDatePicer}
       />

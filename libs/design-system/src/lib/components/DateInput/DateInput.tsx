@@ -186,19 +186,25 @@ export const DateInput: React.FC<DatePickerProps> = ({
 
     // Check for minimum date constraints
     if (minDate.year && minDate.month && minDate.day) {
-      // if (year < minDate.year) tempMinError = true;
-      if (year === minDate.year && month === minDate.month && e < minDate.day) {
+      if (
+        year + String(month).padStart(2, '0') + String(e).padStart(2, '0') <
+        minDate.year +
+          String(minDate.month).padStart(2, '0') +
+          String(minDate.day).padStart(2, '0')
+      ) {
         tempMinError = true;
-      }
+      } else tempMinError = false;
     }
     // Check for maximum date constraints
     if (maxDate.year && maxDate.month && maxDate.day) {
-      if (year === maxDate.year && month === maxDate.month && e > maxDate.day) {
+      if (
+        year + String(month).padStart(2, '0') + String(e).padStart(2, '0') >
+        maxDate.year +
+          String(maxDate.month).padStart(2, '0') +
+          String(maxDate.day).padStart(2, '0')
+      ) {
         tempMaxError = true;
-      } else {
-        tempMaxError = false;
-      }
-      if (year > maxDate.year) tempMaxError = true;
+      } else tempMaxError = false;
     }
 
     // Handle specific day constraints for Jalali calendar
@@ -231,7 +237,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
       onChange(
         `${String(year).length === 4 && year}-${
           month < 10 ? `0${month}` : month
-        }-${e < 10 ? `0${e}` : (month > 6 && e === 31) ? 30 : e }`
+        }-${e < 10 ? `0${e}` : e}`
       );
     }
     if (!e) {
@@ -249,44 +255,27 @@ export const DateInput: React.FC<DatePickerProps> = ({
     if (monthRegex.test(String(e))) {
       setMonth(e);
     }
-
-    // Check for maximum date constraints
-    if (maxDate.month && maxDate.year && maxDate.day) {
-      if (maxDate.month === e && year === maxDate.year && day > maxDate.day) {
-        tempMaxError = true;
-      }
-      if (e > maxDate.month && year === maxDate.year) {
-        tempMaxError = true;
-      }
-
-      if (year && year > maxDate.year) tempMaxError = true;
-
-      // if (year === maxDate.year && e < maxDate.month) tempMaxError = false;
-    }
-
     // Check for minimum date constraints
-    if (minDate.month && minDate.year && minDate.day) {
-      if (minDate.month === e && year === minDate.year && day < minDate.day) {
-        tempMinError = true;
-      }
-      if (e < minDate.month && year === minDate.year) {
-        tempMinError = true;
-      }
-
-      if (!year || !month) tempMinError = true;
-
-      if (year && year > minDate.year) tempMinError = false;
-      if (year && year < minDate.year) tempMinError = true;
-      if (year && year === minDate.year && e > minDate.month) {
-        tempMinError = false;
-      }
+    if (minDate.year && minDate.month && minDate.day) {
       if (
-        year &&
-        year === minDate.year &&
-        e === minDate.month &&
-        day >= minDate.day
-      )
-        tempMinError = false;
+        year + String(e).padStart(2, '0') + String(day).padStart(2, '0') <
+        minDate.year +
+          String(minDate.month).padStart(2, '0') +
+          String(minDate.day).padStart(2, '0')
+      ) {
+        tempMinError = true;
+      } else tempMinError = false;
+    }
+    // Check for maximum date constraints
+    if (maxDate.year && maxDate.month && maxDate.day) {
+      if (
+        year + String(e).padStart(2, '0') + String(day).padStart(2, '0') >
+        maxDate.year +
+          String(maxDate.month).padStart(2, '0') +
+          String(maxDate.day).padStart(2, '0')
+      ) {
+        tempMaxError = true;
+      } else tempMaxError = false;
     }
 
     // Reset month if no value is provided
@@ -337,40 +326,31 @@ export const DateInput: React.FC<DatePickerProps> = ({
     if (e > 6 && e < 12 && day === 31) setDay(30);
   };
 
-  // Function handler to change the input year value
   const changeYearInput = (e: number, arrowChangg?: boolean) => {
     if (yearRegex.test(String(e))) {
       setYear(e);
     }
-
-    
-
     // Check for minimum date constraints
     if (minDate.year && minDate.month && minDate.day) {
-      if (e === minDate.year && month === minDate.month && day < minDate.day) {
+      if (
+        e + String(month).padStart(2, '0') + String(day).padStart(2, '0') <
+        minDate.year +
+          String(minDate.month).padStart(2, '0') +
+          String(minDate.day).padStart(2, '0')
+      ) {
         tempMinError = true;
-      }
-      if (e === minDate.year && day >= minDate.day && month < minDate.month) {
-        tempMinError = true;
-      }
-
-      if (e > minDate.year) tempMinError = false;
-
-      if (e < minDate.year) tempMinError = true;
+      } else tempMinError = false;
     }
-
     // Check for maximum date constraints
     if (maxDate.year && maxDate.month && maxDate.day) {
-      if (e === maxDate.year && month === maxDate.month && day > maxDate.day) {
+      if (
+        year + String(e).padStart(2, '0') + String(day).padStart(2, '0') >
+        maxDate.year +
+          String(maxDate.month).padStart(2, '0') +
+          String(maxDate.day).padStart(2, '0')
+      ) {
         tempMaxError = true;
-      }
-
-      if (e === maxDate.year && day <= maxDate.day && month > maxDate.month) {
-        tempMaxError = true;
-      }
-      if (e > maxDate.year) tempMaxError = true;
-
-      if (e < maxDate.year) tempMaxError = false;
+      } else tempMaxError = false;
     }
 
     // Handle errors related to minimum and maximum date constraints
@@ -526,11 +506,11 @@ export const DateInput: React.FC<DatePickerProps> = ({
           if (active) {
             setFocusInput(true);
             setFocusInput(true);
-            setActiveIndex(1);
+            if (!activeIndex) setActiveIndex(1);
           }
         }}
         className={cn(
-          'w-40 rounded-md bg-white select-none border-2 flex items-center gap-1 py-2 px-4',
+          'w-40 rounded-md bg-white border-white select-none border-2 flex items-center gap-1 py-2 px-4',
           {
             'border-red-600':
               (day && month && year) && focusInput && (
@@ -568,7 +548,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
               placeholder="روز"
               className={cn(
                 'w-5 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
-                activeIndex === 1 && activeIndex && 'bg-blue-200'
+                activeIndex === 1 && focusInput && 'bg-blue-200'
               )}
             />
             /
@@ -584,7 +564,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
               placeholder="ماه"
               className={cn(
                 'w-5 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
-                activeIndex === 2 && activeIndex && 'bg-blue-200'
+                activeIndex === 2 && focusInput && 'bg-blue-200'
               )}
             />
             /
@@ -603,7 +583,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
               placeholder="سال"
               className={cn(
                 'w-10 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
-                activeIndex === 3 && activeIndex && 'bg-blue-200'
+                activeIndex === 3 && focusInput && 'bg-blue-200'
               )}
             />
             {day && month && year ? (
@@ -628,7 +608,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
                 setActiveIndex(1);
               }
             }}
-            className="text-md text-gray-700 select-none"
+            className="text-md text-gray-700 py-0.5 select-none"
           >
             {placeholder}
           </span>

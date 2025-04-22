@@ -9,6 +9,7 @@ type Props = {
   title: string;
   position?: 'top' | 'right' | 'bottom' | 'left';
   className?: string;
+  offset?: number;
 };
 
 export const Tooltip: React.FC<Props> = ({
@@ -16,6 +17,7 @@ export const Tooltip: React.FC<Props> = ({
   title,
   className,
   position = 'top',
+  offset = 4,
 }) => {
   const id = useId();
   return (
@@ -30,11 +32,12 @@ export const Tooltip: React.FC<Props> = ({
         noArrow
         place={position}
         positionStrategy="fixed"
-        offset={4}
+        offset={offset}
         content={title}
+        style={{ padding: '0 8px' }}
         className={cn(
-          'bg-gray-1000 shadow-5xl rounded-xs text-white font-medium font-vazirmatn text-sm',
-          className
+          'bg-gray-1000/85 shadow-5xl rounded-xs font-vazirmatn text-sm font-medium text-white',
+          className,
         )}
       ></ReactTooltip>
     </>

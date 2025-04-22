@@ -1,5 +1,5 @@
 import { cn } from '../../../utils/classNames.utils';
-import { useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import { Icon } from '../Icon';
 import { DateInput } from '../DateInput';
 import { usePersianCalendar } from 'libs/design-system/src/hooks/DayPicker';
@@ -8,11 +8,9 @@ import { DateDifference, updatedCurrentMonthDays } from './DatePicker.utils';
 import { Props, ErrorState, DateType } from './DatePicker.types';
 import { listMonth, weekdayNames, weeksTitle } from './DatePicker.constansts';
 import { Tooltip } from '../Tooltip';
-import { DropDown } from '../DropDown';
+import { OptionsDropdown } from '../OptionsDropdown';
 
 export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
-  const [validEndDateS, setValidEndDate] = useState('');
-  const [validStartDate, setValidStartDate] = useState('');
   const [titleTooltip, setTitleTooltip] = useState('');
   const [dateHover, setDateHover] = useState<DateType | null>();
   const [areInputsEqual, setAreInputsEqual] = useState(false);
@@ -120,7 +118,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
       setAreInputsEqual(true);
     } else setAreInputsEqual(false);
     if (+date.slice(8, 10) <= 31) {
-      setStartDate({ day: +date.slice(8, 10), month: +date.slice(5, 7), year: +date.slice(0, 4) }, true);
+      setStartDate({ day: +date.slice(8, 10), month: +date.slice(5, 7), year: +date.slice(0, 4) });
     }
   };
   const updateEndInput = (date: string) => {
@@ -129,7 +127,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
       setAreInputsEqual(true);
     } else setAreInputsEqual(false);
     if (+date.slice(8, 10) <= 31) {
-      setEndDate({ day: +date.slice(8, 10), month: +date.slice(5, 7), year: +date.slice(0, 4) }, true);
+      setEndDate({ day: +date.slice(8, 10), month: +date.slice(5, 7), year: +date.slice(0, 4)});
     }
   };
 
@@ -185,6 +183,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
       max,
     ]
   );
+  
 
   const errorHandler = ({ minError, maxError }: ErrorState) => {
     setErrors({
@@ -198,27 +197,30 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
     let endInputText = '';
     if (start.minError) {
       startInputText = 'تاریخ شروع نمیتواند کمتر از حداقل تاریخ مجاز باشد';
-    }
+    } else startInputText = '';
     if (start.maxError) {
       startInputText = 'تاریخ شروع نمیتواند بیشتر از حداکثر تاریخ مجاز باشد';
-    }
+    } else startInputText = '';
     if (end.minError) {
       endInputText = 'تاریخ پایان نمیتواند کمتر از حداقل تاریخ مجاز باشد';
-    }
+    } else endInputText = '';
     if (end.maxError) {
       endInputText = 'تاریخ پایان نمیتواند بیشتر از حداکثر تاریخ مجاز باشد';
-    }
+    } else endInputText = '';
     if (startDate?.year === endDate?.year && startDate?.month === endDate?.month && startDate?.day === endDate?.day) {
       endInputText = 'تاریخ شروع نمیتواند برابر با تاریخ پایان باشد';
       startInputText = 'تاریخ شروع نمیتواند برابر با تاریخ پایان باشد';
+    } else {
+      startInputText = '',
+      endInputText = '';
     }
 
     if (startDate?.year === endDate?.year && startDate?.month === endDate?.month && startDate && endDate && startDate?.day > endDate?.day) {
       startInputText = 'تاریخ شروع نمیتواند بیشتر از تاریخ پایان باشد';
-    }
+    } else startInputText = '';
     if (startDate?.year === endDate?.year && startDate?.month === endDate?.month && endDate && startDate && startDate?.day > endDate?.day) {
       endInputText = 'تاریخ پایان نمیتواند کمتر از تاریخ شروع باشد';
-    }
+    }else endInputText = '';
     return { startInputText, endInputText };
   }
 
@@ -250,7 +252,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
             <div className="flex flex-col gap-1">
               <div className="flex gap-2 text-md items-center font-vazirmatn justify-center">
                 <div className="flex flex-col gap-1 items-start">
-                  <span className='select-none'>تاریخ شروع بازه:</span>
+                  <span className='select-none font-medium text-sm'>تاریخ شروع بازه:</span>
                   <div
                     onClick={() => {
                       setActiveStartInput(true);
@@ -279,7 +281,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                 </div>
                 <div className="w-2.5 h-0.5 bg-gray-500"></div>
                 <div className="gap-1 flex-col flex items-start">
-                  <span className='select-none'>تاریخ پایان بازه:</span>
+                  <span className='select-none text-sm font-medium'>تاریخ پایان بازه:</span>
                   <div
                     onClick={() => {
                       if (startDate) {
@@ -311,144 +313,155 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
             {/* select drop down */}
             <div className="w-full flex justify-between items-center">
               <div className="flex gap-6 items-center">
-                <div
-                  onClick={() => setCurrentDate(-1)}
-                  className={cn(
-                    'bg-white hover:border-2 border-brand-600 cursor-pointer rounded-full w-10 h-10 flex items-center justify-center text-black',
-                    {
-                      'bg-gray-200 hover:border-none cursor-default':
-                        min.slice(0, 4) === calendars[0].slice(0, 4) &&
-                        min.slice(5, 7) >= calendars[0].slice(5, 7),
-                    }
-                  )}
-                >
-                  <Icon name="chevron-right" size="lg" />
-                </div>
+                <ChevronButton min={min} calendars={calendars} setCurrentDate={setCurrentDate} />
                 {close}
-                <div className="flex items-center gap-1">
-                  <select
-                    onChange={(e) =>
+                <div className="relative">
+                  <div className="absolute -top-6 items-center right-[85px] gap-1 z-50">
+                    <OptionsDropdown
+                    initialSelectedIndex={+calendars[0].slice(5, 7) - 1}
+                    customOptionRender={({isActive, text}) => (
+                      <div className={cn('flex cursor-pointer px-1 py-1 hover:bg-brand-50 font-normal items-center', {
+                        'bg-brand-100': isActive
+                      })}>
+                        <div className='text-brand-700 w-6'>
+                        {isActive && (
+                            <Icon name='check' size='md' />
+                          )}
+                          </div>
+                        {text}
+                      </div>
+                    )}
+                    customTriggerRender={(_) => (
+                      <div className='bg-white py-2.5 flex font-semibold items-center justify-between px-2 rounded-md w-[92px]'>
+                        {listMonth[parseInt(calendars[0].slice(5, 7), 10) - 1]}
+                        <Icon name='chevron-down' size='md' />
+                      </div>
+                        )}
+                      onChange={(_, id) => {
                       setCurrentDate(
-                        `${e.target.value}-${calendars[0].slice(
+                        `${calendars[0].slice(0, 4)}-${id && id < 10
+                          ? `0${id}`
+                          : id
+                        }-${calendars[0].slice(8, 9)}`)
+                    }} 
+                    dropDownStyles={{checkSelected: true,size: 'lg' }} 
+                    dropDownList={listMonth.map((month, index) => ({text: month, id: index + 1}))} />
+                  </div>
+                  <div className="absolute -top-6 items-center gap-1  z-50">
+                  <OptionsDropdown
+                    customTriggerRender={() =>
+                      <div className={cn('text-sm bg-white font-semibold items-center cursor-pointer w-20 py-2.5 flex rounded-md justify-center gap-0.5 text-center hover:bg-brand-50', {
+                      })}>
+                        {calendars[0].slice(0, 4)}
+                        <Icon name="chevron-down" size='md' />
+                      </div>
+                    }
+                    customOptionRender={(item) => 
+                      <div className={cn('text-sm bg-white cursor-pointer w-20 py-2 flex justify-center font-normal gap-0.5 text-center hover:bg-brand-50', {
+                        'bg-brand-100': item.text.includes(calendars[0].slice(0, 4)),
+                      })}>
+                      <div className='text-brand-700'>
+                        {+item.text === +calendars[0].slice(0, 4) && <Icon name="check"/>}
+                      </div>
+                        {item.text}
+                      </div>} 
+                    onChange={(selectedItem) => {                      
+                      setCurrentDate(
+                        `${selectedItem}-${calendars[0].slice(
                           5,
                           7
                         )}-${calendars[0].slice(8, 9)}`
                       )
                     }
-                    className="w-16 outline-none font-semibold text-base text-center py-1.5 cursor-pointer rounded-md"
-                  >
-                    {years.map((item) => (
-                      <option
-                        className={cn({
-                          'bg-brand-300':
-                            min.slice(0, 4) === calendars[0].slice(0, 4) &&
-                            item === +calendars[0].slice(0, 4),
-                        })}
-                        disabled={
-                          min.slice(0, 4) === calendars[0].slice(0, 4) &&
-                          item < +min.slice(5, 7)
-                        }
-                        selected={item === +calendars[0].slice(0, 4)}
-                        key={item}
-                        value={item}
-                      >
-                        {item}
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    onChange={(e) => {
-                      setCurrentDate(
-                        `${calendars[0].slice(0, 4)}-${+e.target.value < 10
-                          ? `0${e.target.value}`
-                          : e.target.value
-                        }-${calendars[0].slice(8, 9)}`
-                      );
-                    }}
-                    className="w-24 outline-none font-semibold text-base text-center py-1.5 cursor-pointer rounded-md"
-                  >
-                    {listMonth.map((item, index) => (
-                      <option
-                        className={cn({
-                          'bg-brand-300':
-                            min.slice(0, 4) === calendars[0].slice(0, 4) &&
-                            index + 1 === +calendars[0].slice(5, 7),
-                        })}
-                        disabled={
-                          min.slice(0, 4) === calendars[0].slice(0, 4) &&
-                          index + 1 < +min.slice(5, 7)
-                        }
-                        selected={index + 1 === +calendars[0].slice(5, 7)}
-                        key={index + 1}
-                        value={index + 1}
-                      >
-                        {item}
-                      </option>
-                    ))}
-                  </select>
+                    } 
+                      dropDownStyles={{checkSelected: true, size: 'lg' }} 
+                      dropDownList={years.map((year) => ({text: String(year)}))} />
                 </div>
-              </div>
-              <div className="flex items-center gap-6">
-                <div className="flex gap-1">
-                  <select
-                    onChange={(e) =>
-                      setCurrentDate(
-                        `${e.target.value}-${calendars[0].slice(
-                          5,
-                          7
-                        )}-${calendars[0].slice(8, 9)}`
-                      )
-                    }
-                    className="w-16 outline-none font-semibold text-base text-center py-1.5 cursor-pointer rounded-md"
-                  >
-                    {years.map((item) => (
-                      <option
-                        className={cn({
-                          'bg-brand-300':
-                            min.slice(0, 4) === calendars[1].slice(0, 4) &&
-                            item === +calendars[1].slice(0, 4),
-                        })}
-                        disabled={
-                          min.slice(0, 4) === calendars[1].slice(0, 4) &&
-                          item < +min.slice(5, 7)
-                        }
-                        selected={item === +calendars[1].slice(0, 4)}
-                        key={item}
-                        value={item}
-                      >
-                        {item}
-                      </option>
-                    ))}
-                  </select>
-                  {/* <DropDown width={72} menuItems={years} selectedItem={calendars[1].slice(0, 4)} onSelect={(e) => setCurrentDate(`${e}-${calendars[0].slice(5, 7)}-${calendars[0].slice(7, 8)}`)} /> */}
-                  <select
-                    onChange={(e) => {
-                      setCurrentDate(
-                        `${calendars[1].slice(0, 4)}-${+e.target.value < 10
-                          ? +`0${+e.target.value - 1}`
-                          : +e.target.value - 1
-                        }-${calendars[1].slice(8, 9)}`
-                      );
-                    }}
-                    className="w-28 text-base font-semibold py-1.5 text-center outline-none px-2 cursor-pointer rounded-md"
-                  >
-                    {listMonth.map((item, index) => (
-                      <option
-                        disabled={
-                          max.slice(0, 4) === calendars[1].slice(0, 4) &&
-                          index + 1 > +max.slice(5, 7)
-                        }
-                        selected={index + 1 === +calendars[1].slice(5, 7)}
-                        key={index + 1}
-                        value={index + 1}
-                      >
-                        {item}
-                      </option>
-                    ))}
-                  </select>
-                  {/* <DropDown width={104} menuItems={listMonth} selectedItem={'آبان'} onSelect={(e) => console.log(e)} /> */}
                 </div>
 
+              </div>
+
+
+
+
+
+
+
+
+
+
+              <div className="flex items-center relative gap-6">
+                <div className="absolute top-0 gap-1 -right-[100px] z-50">
+                <OptionsDropdown
+                    customTriggerRender={() =>
+                      <div className={cn('text-sm font-semibold bg-white items-center cursor-pointer w-20 py-2.5 flex rounded-md justify-center gap-0.5 text-center hover:bg-brand-50', {
+                      })}>
+                        {calendars[1].slice(0, 4)}
+                        <Icon name="chevron-down" size='md' />
+                      </div>
+                    }
+                    customOptionRender={(item) => 
+                      <div className={cn('text-sm bg-white cursor-pointer font-normal w-20 py-2 flex justify-center gap-0.5 text-center hover:bg-brand-50', {
+                        'bg-brand-100': item.text.includes(calendars[1].slice(0, 4)),
+                      })}>
+                      <div className='text-brand-700'>
+                        {+item.text === +calendars[1].slice(0, 4) && <Icon name="check"/>}
+                      </div>
+                        {item.text}
+                      </div>} 
+                    onChange={(selectedItem) => {                      
+                      setCurrentDate(
+                        `${selectedItem}-${calendars[1].slice(
+                          5,
+                          7
+                        )}-${calendars[0].slice(8, 9)}`
+                      )
+                    }
+                    } 
+                      dropDownStyles={{checkSelected: true, size: 'lg' }} 
+                      dropDownList={years.map((year) => ({text: String(year)}))} />
+                </div>
+                <div className="absolute top-0 gap-1 left-[150px] z-50">
+                <OptionsDropdown
+                    initialSelectedIndex={+calendars[1].slice(5, 7) - 1}
+                    customOptionRender={({isActive, text}) => (
+                      <div className={cn('flex cursor-pointer px-1 py-1 hover:bg-brand-50 font-normal items-center', {
+                        'bg-brand-100': isActive
+                      })}>
+                        <div className='text-brand-700 w-6'>
+                        {isActive && (
+                            <Icon name='check' size='md' />
+                          )}
+                          </div>
+                        {text}
+                      </div>
+                    )}
+                    customTriggerRender={(_) => (
+                      <div className='bg-white py-2.5 flex font-semibold items-center justify-between px-2 rounded-md w-[92px]'>
+                        {listMonth[parseInt(calendars[1].slice(5, 7), 10) - 1]}
+                        <Icon name='chevron-down' size='md' />
+                      </div>
+                        )}
+                      onChange={(_, id) => {
+                      setCurrentDate(
+                        `${calendars[1].slice(0, 4)}-${id && id < 10
+                          ? `0${id}`
+                          : id
+                        }-${calendars[1].slice(8, 9)}`)
+                    }} 
+                    dropDownStyles={{checkSelected: true,size: 'lg' }} 
+                    dropDownList={listMonth.map((month, index) => ({text: month, id: index}))} />
+              </div>
+
+
+
+
+
+
+
+
+
+              
                 <div
                   onClick={() => setCurrentDate(+1)}
                   className={cn(
@@ -485,6 +498,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                 {startDays.map((day, index) => {
                   return (
                     <div
+                      key={index}
                       onMouseEnter={() => {
                         if (day.status === 'current') {
                           moseEnterCell({
@@ -511,13 +525,13 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                                       day: day.day,
                                       month: +calendars[0].slice(5, 7),
                                       year: +calendars[0].slice(0, 4),
-                                    }, false);
+                                    });
                                   } else if (focuseEndInput) {
                                     setEndDate({
                                       day: day.day,
                                       month: +calendars[0].slice(5, 7),
                                       year: +calendars[0].slice(0, 4),
-                                    }, false);
+                                    });
                                   }
                                 }
                               }}
@@ -575,7 +589,6 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
               <div className="w-[310px] h-[260px] grid grid-cols-7">
                 {endMonth.map((day, index) => {
                   return (
-
                     <div
                       onMouseEnter={() => {
                         if (day.status === 'current') {
@@ -604,13 +617,13 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                                       day: day.day,
                                       month: +calendars[1].slice(5, 7),
                                       year: +calendars[1].slice(0, 4),
-                                    }, false);
+                                    });
                                   } else if (focuseEndInput) {
                                     setEndDate({
                                       day: day.day,
                                       month: +calendars[1].slice(5, 7),
                                       year: +calendars[1].slice(0, 4),
-                                    }, false);
+                                    });
                                   }
                                 }
                               }}
@@ -623,7 +636,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                                 isLastDayOfWeek(index).lastDayIndex === index && '!rounded-l-full',
                                 dateHover && `${dateHover.year}${dateHover.month < 10 ? `0${dateHover.month}` : dateHover.month}${dateHover.day < 10 ? `0${dateHover.day}` : dateHover.day}` > `${calendars[0].slice(0, 4)}${calendars[1].slice(5, 7)}${day.day < 10 ? `0${day.day}` : day.day}` && isDateAfterStartOrEnd({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) && focuseEndInput && day.day === 31 || isLastDayOfWeek(index).lastDayIndex === index ? '!border-l-2 !rounded-l-full' : (day.day === 1 || isLastDayOfWeek(index).firstDayIndex === index) && '!border-r-2',
                                 {
-                                  'hover:border-none text-gray-400 cursor-default':
+                                  'hover:border-none !text-gray-400 cursor-default':
                                     !isDateInRange({
                                       day: day.day,
                                       month: +calendars[1].slice(5, 7),
@@ -637,7 +650,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                                   'border-t-2 border-b-2 pl-[4px] border-brand-300 w-11 rounded-none': dateHover && `${dateHover.year}${dateHover.month < 10 ? `0${dateHover.month}` : dateHover.month}${dateHover.day < 10 ? `0${dateHover.day}` : dateHover.day}` > `${calendars[1].slice(0, 4)}${calendars[1].slice(5, 7)}${day.day < 10 ? `0${day.day}` : day.day}` && isDateAfterStartOrEnd({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) && focuseEndInput,
                                 },
                                 {
-                                  'bg-brand-200 pl-[4px] mx-auto w-11 group hover:bg-brand-200 rounded-none hover:border-none text-brand-800 ': isDateBetweenStartAndEnd({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) && !isStartDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) && !isEndDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) })
+                                  'bg-brand-200 pl-[4px] mx-auto w-11 group hover:bg-brand-200 rounded-none hover:border-none text-brand-800': isDateBetweenStartAndEnd({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) && !isStartDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) && !isEndDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) })
                                 },
                                 {
                                   'text-white bg-brand-600 w-10': isStartDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) || isEndDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) })
@@ -675,17 +688,18 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                   if (
                     startDate &&
                     endDate &&
-                    !errors.end &&
-                    !errors.start &&
-                    !areInputsEqual &&
-                    !validStartDate &&
-                    !validEndDateS
+                    !errors.end.minError &&
+                    !errors.end.maxError &&
+                    !errors.start.maxError &&
+                    !errors.start.minError &&
+                    !areInputsEqual
                   ) {
+                    
                     setDateRange(startDate, endDate);
                   }
                 }}
                 className={cn(
-                  'px-2 select-none bg-brand-300 cursor-default py-1 rounded-md text-white',
+                  'px-2 select-none bg-brand-300 cursor-default py-1 font-medium rounded-md text-white',
                   {
                     'cursor-pointer bg-brand-500':
                       startDate &&
@@ -694,9 +708,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                       !errors.end.minError &&
                       !errors.start.maxError &&
                       !errors.start.minError &&
-                      !areInputsEqual &&
-                      !validStartDate &&
-                      !validEndDateS,
+                      !areInputsEqual 
                   }
                 )}
               >
@@ -709,16 +721,16 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                 !errors.end.minError &&
                 !errors.start.maxError &&
                 !errors.start.minError &&
-                !areInputsEqual &&
-                !validStartDate &&
-                !validEndDateS && (
+                !areInputsEqual && (
                   <div className="flex select-none justify-start w-fit gap-2 px-2 pt-1.5 bg-white rounded-sm items-center">
                     <span className="text-sm">بازه دلخواه:</span>
-                    {DateDifference(
-                      `${startDate.year}-${startDate.month}-${startDate.day}`,
-                      `${endDate.year}-${endDate.month}-${endDate.day}`
-                    )}
-                    <span className="font-medium text-sm text-gray-1000">
+                    <span className='font-medium'>
+                      {DateDifference(
+                        `${startDate.year}-${startDate.month}-${startDate.day}`,
+                        `${endDate.year}-${endDate.month}-${endDate.day}`
+                      )}
+                    </span>
+                    <span className="font-medium text-sm -mr-1 text-gray-1000">
                       روز
                     </span>
                   </div>
@@ -730,3 +742,34 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
     </div>
   );
 }
+interface ChevronButtonProps {
+  min: string;
+  calendars: string[];
+  setCurrentDate: (val: number) => void;
+}
+
+const ChevronButton: React.FC<ChevronButtonProps> = memo(({ min, calendars, setCurrentDate }) => {
+  const isDisabled =
+    min.slice(0, 4) === calendars[0].slice(0, 4) &&
+    min.slice(5, 7) >= calendars[0].slice(5, 7);
+
+  const handleClick = () => {
+    if (!isDisabled) {
+      setCurrentDate(-1);
+    }
+  };
+
+  return (
+    <div
+      onClick={handleClick}
+      className={cn(
+        'bg-white hover:border-2 border-brand-600 cursor-pointer rounded-full w-10 h-10 flex items-center justify-center text-black',
+        {
+          'bg-gray-200 hover:border-none cursor-default': isDisabled,
+        }
+      )}
+    >
+      <Icon name="chevron-right" size="lg" />
+    </div>
+  );
+});

@@ -53,7 +53,7 @@ const usePersianCalendar = (min: DateObject, max: DateObject) => {
   );
 
   const setStartDate = useCallback(
-    (date: DateObject | '', fromInput?: boolean) => {      
+    (date: DateObject | '',) => {      
       if (date) {
         if (
           endDate &&
@@ -61,9 +61,10 @@ const usePersianCalendar = (min: DateObject, max: DateObject) => {
             (date.year === endDate.year && date.month > endDate.month) ||
             (date.year === endDate.year &&
               date.month === endDate.month &&
-              date.day >= endDate.day)) && !fromInput
+              date.day >= endDate.day))
         ) {
           setEndDateRaw(null);
+        setStartDateRaw(date);
         }        
         setStartDateRaw(date);
       } else setStartDateRaw(null);
@@ -72,20 +73,20 @@ const usePersianCalendar = (min: DateObject, max: DateObject) => {
   );
 
   const setEndDate = useCallback(
-    (date: DateObject | '', fromInput?: boolean) => {
+    (date: DateObject | '',) => {
       if (date) {
         if (
-          !startDate ||
-          date.year < startDate.year ||
-          (date.year === startDate.year && date.month < startDate.month) ||
-          (date.year === startDate.year &&
-            date.month === startDate.month &&
-            date.day <= startDate.day) && !fromInput
+          startDate &&
+          (date.year < startDate.year ||
+          (startDate && date.year === startDate.year && date.month < startDate.month)
+          ||
+          (startDate && date.year === startDate.year && date.month === startDate.month && date.day <= startDate.day) 
+          
+        )
         ) {
           setEndDateRaw(null);
           setStartDateRaw(date);
-        }
-        setEndDateRaw(date);
+        } else setEndDateRaw(date);
       } else setEndDateRaw(null);
     },
     [startDate]
