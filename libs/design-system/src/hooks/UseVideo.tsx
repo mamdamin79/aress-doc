@@ -1,4 +1,3 @@
-'use client';
 import { useCallback, useEffect, useReducer, useRef } from 'react';
 import Hls from 'hls.js'; // Import HLS.js
 
