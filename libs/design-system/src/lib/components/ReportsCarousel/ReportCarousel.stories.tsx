@@ -122,7 +122,11 @@ export const Default: Story = {
 export const DotIndicatorStory: Story = {
   render: () => (
     <div className="mt-28 flex w-full justify-center">
-      <DotIndicator totalLength={3} currentIndex={1} />
+      <DotIndicator
+        setIndex={(i) => console.log(i)}
+        totalLength={3}
+        currentIndex={1}
+      />
     </div>
   ),
 };

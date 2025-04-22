@@ -11,10 +11,12 @@ export interface ButtonProps
   size: ButtonSize;
   mode: ButtonMode;
   align: 'center' | 'right';
+  theme?: 'brand' | 'error';
 }
 
 export const Button: React.FC<ButtonProps> = ({
   mode,
+  theme = 'brand',
   size,
   disabled,
   align,
@@ -27,9 +29,9 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   return (
     <button
+      disabled={disabled}
       {...props}
       className={cn(
-        className,
         'group flex w-full items-center gap-2 px-2 transition-all duration-300',
         { 'justify-center': align === 'center' },
         { 'justify-start': align === 'right' },

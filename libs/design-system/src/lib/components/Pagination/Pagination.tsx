@@ -21,11 +21,10 @@ export const Pagination: React.FC<PaginationProps> = ({
   const endPost = Math.min(currentPage * pageSize, pageCount * pageSize);
 
   const handlePageChange = (selectedItem: { selected: number }) => {
-    const selectedPage = selectedItem.selected + 1; // صفحه انتخاب‌شده
+    const selectedPage = selectedItem.selected + 1;
     const newSearchParams = new URLSearchParams(searchParams.toString());
     newSearchParams.set('page', selectedPage.toString());
 
-    // به‌روزرسانی URL
     router.push(`?${newSearchParams.toString()}`);
   };
 
