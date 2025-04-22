@@ -8,6 +8,7 @@ import {
   ImageCropper,
   ProfileImageAndUpload,
   TextField,
+  Dialog,
 } from 'design-system';
 import {
   editDialogStatus,
@@ -15,7 +16,6 @@ import {
   FormSchemaType,
   ProfileFormProps,
 } from './ProfileForm.types';
-import { Popup } from '../Popup';
 import { ChangeNumber } from './ChangeNumber';
 import { ChangeUsername } from './ChangeUsername';
 import { ChangeMail } from './ChangeMail';
@@ -100,7 +100,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             message=""
           />
         ) : (
-          <Popup
+          <Dialog
             isOpen
             onClose={() => setEditDialog(null)}
             className="w-[500px] p-6"
@@ -120,8 +120,10 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                 onClose={(success) => setEditDialog(success ? 'success' : null)}
               />
             )}
-            {editDialog === 'password' && <ChangePassword />}
-          </Popup>
+            {editDialog === 'password' && (
+              <ChangePassword phone={phoneNumber} />
+            )}
+          </Dialog>
         ))}
       <div className="grid w-[607px] grid-flow-row md:w-[800px] md:grid-cols-2 md:gap-6">
         {formSchema.map(({ name, label, value, edit }) => (

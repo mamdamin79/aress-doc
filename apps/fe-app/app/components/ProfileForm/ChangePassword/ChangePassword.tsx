@@ -5,11 +5,13 @@ enum ChangeNumberStage {
   OTP = 0,
   NEW_PASSWORD = 1,
 }
-
-export const ChangePassword = ({
-  onClose,
-}: {
+interface ChangePasswordProps {
   onClose?: (success?: boolean) => void;
+  phone: string;
+}
+export const ChangePassword: React.FC<ChangePasswordProps> = ({
+  phone,
+  onClose,
 }) => {
   const [stage, setStage] = useState<ChangeNumberStage | null>(0);
 
@@ -17,8 +19,7 @@ export const ChangePassword = ({
     <>
       {stage === ChangeNumberStage.OTP && (
         <OTPForm
-          description="جهت تغییر رمز عبور، ابتدا کد تایید ارسال شده به شماره 09339133227 را وارد کنید."
-          onBackBtn={() => onClose?.(false)}
+          description={`جهت تغییر رمز عبور، ابتدا کد تایید ارسال شده به شماره ${phone} را وارد کنید.`}
           title="کد تایید را وارد کنید"
           onSubmit={() => {
             setStage(ChangeNumberStage.NEW_PASSWORD);
