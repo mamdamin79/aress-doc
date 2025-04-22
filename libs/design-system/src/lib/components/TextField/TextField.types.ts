@@ -7,15 +7,19 @@ type TrailingIconType = {
   size?: IconSize;
   onClick?: () => void;
 };
+
+type leadingIconType = IconProps & {
+  onClick?: (value?: string | number | readonly string[]) => void;
+};
 export type TrailingIcons =
   | []
   | [TrailingIconType]
   | [TrailingIconType, TrailingIconType];
+
 export type textFieldPropsType = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   placeholder?: string;
   supportText?: string;
-  onSearchInput?: (value: string) => void;
   isError?: boolean;
   mode: 'filled' | 'outline';
   mergeTitleAndPlaceholder: boolean;
