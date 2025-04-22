@@ -37,13 +37,9 @@ export * from './FundsColumn';
 export * from './ProfileSidebar';
 export * from './NestedDropdown';
 export * from './OptionsDropdown';
-<<<<<<< HEAD
-export * from './GeneralTable'
-=======
 export * from './GeneralTable';
 export * from './MenuTiles';
 export * from './OptionsListExplorer';
 export * from './FundsSidebar';
 export * from './DualSwitch';
 export * from './DateInput';
->>>>>>> main
