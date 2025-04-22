@@ -15,7 +15,6 @@ export * from './ProgressBar';
 export * from './SummaryCell';
 export * from './Button';
 export * from './ReportCard';
-export * from './Heart';
 export * from './NotesHeading';
 export * from './SquaredButton';
 export * from './HeadProfile';
