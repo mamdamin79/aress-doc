@@ -1,3 +1,4 @@
+
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
@@ -16,13 +17,7 @@
         "name": "next"
       }
     ],
-    "types": ["jest", "node"],
-    "baseUrl": "../../",
-    "paths": {
-      "design-system": ["libs/design-system/src/index.ts"],
-      "@aress-assets/*": ["libs/design-system/src/assets/*"],
-      "compositions": ["apps/fe-app/compositions/index.ts"]
-    }
+    "types": ["jest", "node"]
   },
   "include": [
     "**/*.ts",
