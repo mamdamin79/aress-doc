@@ -1,17 +1,73 @@
 'use client';
-import { useWindowSize } from '@uidotdev/usehooks';
 import React from 'react';
+import Image from 'next/image';
+import PRODUCT_LOGO from '@aress-assets/icons/product_logo.svg';
+import { useWindowSize } from '@uidotdev/usehooks';
+import { cn, HeadProfile, SquaredButton } from 'design-system';
+import { useHeaderVisibility } from '../../../hooks';
 import { DESKTOP_BREAKPOINT } from './Header.constants';
 import { BurgerMenu } from './BurgerMenu';
 import { DesktopMenu } from './DesktopMenu';
-import { MenuData } from './HeaderDataFull';
+import { MenuData } from './HeaderDataLite';
+import { useWindowScroll } from '@uidotdev/usehooks';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-export const Header: React.FC = () => {
+export const HeaderMenu: React.FC = () => {
   const { width } = useWindowSize();
+  const pathname = usePathname();
+  const links = MenuData.map((menuItem) => menuItem.link);
+  const activeTabIndex = MenuData.map((menuItem) => menuItem.link).indexOf(
+    pathname,
+  );
+
   if (typeof width !== 'number') return null;
   return width >= DESKTOP_BREAKPOINT ? (
-    <DesktopMenu menuItems={MenuData} />
+    <DesktopMenu menuItems={MenuData} activeTab={activeTabIndex} />
   ) : (
     <BurgerMenu menuItems={MenuData} />
+  );
+};
+export const Header: React.FC = () => {
+  const { isHeaderVisible } = useHeaderVisibility();
+  const [{ y: scrollY }] = useWindowScroll();
+  const currentScrollY = scrollY ?? 0;
+
+  return (
+    <div>
+      {/* Always fixed top header */}
+      <div
+        className={cn(
+          'fixed right-0 top-0 z-40 flex w-full flex-row items-center justify-between border-b-2 bg-white px-8 pb-3 pt-4 transition-transform duration-300',
+          currentScrollY === 0
+            ? 'border-gray-300'
+            : 'border-gray-200 shadow-sm',
+          isHeaderVisible ? 'translate-y-0' : '-translate-y-full',
+        )}
+      >
+        <div className="mt-1 flex flex-row gap-6">
+          <Link href={'/'}>
+            <Image
+              src={PRODUCT_LOGO}
+              width={48}
+              height={48}
+              className="h-12 w-12 object-contain"
+              alt="product logo"
+            />
+          </Link>
+
+          <HeaderMenu />
+        </div>
+
+        <div className="flex flex-row gap-3">
+          <SquaredButton
+            icons={[{ name: 'sun' }, { name: 'moon' }]}
+            badge={{ enabled: false }}
+          />
+          <HeadProfile profileImage="https://picsum.photos/200" />
+        </div>
+      </div>
+      <div className={cn('invisible', `h-[80px]`)}></div>
+    </div>
   );
 };

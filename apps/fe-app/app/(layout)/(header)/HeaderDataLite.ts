@@ -3,6 +3,7 @@ import { MenuItem } from './DesktopMenu/DesktopMenu.types';
 export const MenuData: MenuItem[] = [
   {
     text: 'داشبورد مدیریتی',
+    link: '/',
     dropdown: [
       {
         groupLabel: 'گزینه‌ها',
@@ -73,10 +74,10 @@ export const MenuData: MenuItem[] = [
   },
   {
     text: 'گزارش‌ها',
-    link: '#',
+    link: '/reports',
   },
   {
     text: 'صندوق های سرمایه گذاری',
-    link: '#',
+    link: 'investment_funds',
   },
 ];
