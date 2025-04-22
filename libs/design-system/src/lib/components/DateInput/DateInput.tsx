@@ -1,3 +1,4 @@
+'use client';
 import moment from 'moment';
 import { cn } from '../../../utils';
 import { useEffect, useRef, useState } from 'react';
@@ -91,7 +92,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
                 dateJalali.date() < 10
                   ? `0${dateJalali.date()}`
                   : dateJalali.date()
-              }`
+              }`,
             );
           }
           dayRef.current?.blur();
@@ -224,7 +225,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
       onChange(
         `${String(year).length === 4 && year}-${
           month < 10 ? `0${month}` : month
-        }-${e < 10 ? `0${e}` : e}`
+        }-${e < 10 ? `0${e}` : e}`,
       );
     }
     if (!e) {
@@ -279,7 +280,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
       onChange(
         `${String(year).length === 4 && year}-${e < 10 ? `0${e}` : e}-${
           day < 10 ? `0${day}` : day
-        }`
+        }`,
       );
     }
 
@@ -356,7 +357,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
       onChange(
         `${String(e).length === 4 && e}-${month < 10 ? `0${month}` : month}-${
           day < 10 ? `0${day}` : day
-        }`
+        }`,
       );
     }
 
@@ -437,7 +438,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
         }
         if (activeIndex === 2) {
           changeMonthInput(
-            month ? (month >= 1 && month < 12 ? month + 1 : month) : 1
+            month ? (month >= 1 && month < 12 ? month + 1 : month) : 1,
           );
         }
         if (activeIndex === 1) {
@@ -457,7 +458,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
         }
         if (activeIndex === 2) {
           changeMonthInput(
-            month ? (month >= 1 && month <= 12 ? month - 1 : 0) : 0
+            month ? (month >= 1 && month <= 12 ? month - 1 : 0) : 0,
           );
           setIsArrowKeyPressed(false);
         }
@@ -494,7 +495,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
     <div>
       <div
         className={cn(
-          'w-40 rounded-md bg-white border-2 flex items-center gap-1 py-2 px-4',
+          'flex w-40 items-center gap-1 rounded-md border-2 bg-white px-4 py-2',
           {
             'border-red-600':
               (day && month && year && errors.minError) ||
@@ -514,7 +515,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
               !errors.maxError &&
               !errors.minError &&
               !duplicateInputError,
-          }
+          },
         )}
       >
         {activeInput ? (
@@ -530,8 +531,8 @@ export const DateInput: React.FC<DatePickerProps> = ({
               onChange={(e) => changeDayInput(+e.target.value, true)}
               placeholder="روز"
               className={cn(
-                'w-5 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
-                activeIndex === 1 && activeIndex && 'bg-blue-200'
+                '-mx-1 block w-5 border-none pb-0.5 outline-none placeholder:text-black',
+                activeIndex === 1 && activeIndex && 'bg-blue-200',
               )}
             />
             /
@@ -546,8 +547,8 @@ export const DateInput: React.FC<DatePickerProps> = ({
               onChange={(e) => changeMonthInput(+e.target.value, true)}
               placeholder="ماه"
               className={cn(
-                'w-5 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
-                activeIndex === 2 && activeIndex && 'bg-blue-200'
+                '-mx-1 block w-5 border-none pb-0.5 outline-none placeholder:text-black',
+                activeIndex === 2 && activeIndex && 'bg-blue-200',
               )}
             />
             /
@@ -557,7 +558,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
                 setActiveIndex(3);
                 yearRef?.current?.setSelectionRange(
                   yearRef?.current?.value.length,
-                  yearRef?.current?.value.length
+                  yearRef?.current?.value.length,
                 );
               }}
               ref={yearRef}
@@ -565,8 +566,8 @@ export const DateInput: React.FC<DatePickerProps> = ({
               onChange={(e) => changeYearInput(+e.target.value, true)}
               placeholder="سال"
               className={cn(
-                'w-10 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
-                activeIndex === 3 && activeIndex && 'bg-blue-200'
+                '-mx-1 block w-10 border-none pb-0.5 outline-none placeholder:text-black',
+                activeIndex === 3 && activeIndex && 'bg-blue-200',
               )}
             />
             {day && month && year ? (
@@ -574,7 +575,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
                 onClick={() => {
                   clearInputDate();
                 }}
-                className="cursor-pointer mr-4"
+                className="mr-4 cursor-pointer"
               >
                 <Icon name="x" size="lg" />
               </div>
@@ -585,7 +586,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
         ) : (
           <span
             onClick={() => active === undefined && setActiveInput(true)}
-            className="text-md text-gray-700 select-none"
+            className="text-md select-none text-gray-700"
           >
             {placeholder}
           </span>
@@ -593,12 +594,12 @@ export const DateInput: React.FC<DatePickerProps> = ({
       </div>
       <div>
         {errors?.minError && day && year && month ? (
-          <div className="text-red-600 text-xs">{minErrorText}</div>
+          <div className="text-xs text-red-600">{minErrorText}</div>
         ) : (
           ''
         )}
         {errors?.maxError && day && year && month ? (
-          <div className="text-red-600 text-xs">{maxErrorText}</div>
+          <div className="text-xs text-red-600">{maxErrorText}</div>
         ) : (
           ''
         )}

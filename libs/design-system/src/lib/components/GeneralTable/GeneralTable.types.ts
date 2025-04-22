@@ -1,4 +1,4 @@
-import { TableCellFormat } from './TableNumberCell';
+import { type TableCellFormat } from './TableNumberCell';
 export interface RenderCellProps<T> {
   value: T[keyof T];
   rowIndex: number;

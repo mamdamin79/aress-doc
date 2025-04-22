@@ -75,7 +75,8 @@ export const SlidersBox: React.FC = () => {
     setActiveRotate(time);
   };
 
-  const scrollStep = window.innerWidth >= 1280 ? 2 : 1;
+  const scrollStep =
+    typeof window !== 'undefined' && window.innerWidth >= 1280 ? 2 : 1;
   const barsNumber = Math.ceil(slides / scrollStep);
 
   const handleScroll = (index: number) => {
@@ -116,7 +117,7 @@ export const SlidersBox: React.FC = () => {
               id={`slide-${index}`}
               className="shadow-6xl h-[336px] overflow-hidden rounded-2xl border-2 border-gray-200"
             >
-              <AddReportButton onClick={() => {}} />
+              <AddReportButton onClick={() => console.log('add')} />
             </div>
           ))}
         </div>
