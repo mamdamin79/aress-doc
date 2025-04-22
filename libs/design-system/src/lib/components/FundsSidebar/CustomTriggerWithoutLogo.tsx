@@ -11,7 +11,7 @@ export const CustomTriggerWithoutLogo: React.FC<{
         'flex w-full cursor-pointer flex-row items-center justify-between gap-1 rounded-md border-2 border-transparent px-2 transition-colors',
         'h-[34px] text-sm',
         isActive
-          ? 'border-brand-600 border-2 bg-white'
+          ? 'border-brand-600 bg-white'
           : 'bg-white hover:bg-gray-100',
       )}
     >

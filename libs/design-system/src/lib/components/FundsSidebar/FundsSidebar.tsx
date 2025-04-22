@@ -16,9 +16,17 @@ export interface FundsSidebarProps {
     };
     changeValue: number;
   }[];
+  onCategoryChange: (category: string) => void;
+  onSortOptionChange: (selectedSort: string) => void;
+  onTimeframeChange: (selectedTimeframe: string) => void;
 }
 
-export const FundsSidebar: React.FC<FundsSidebarProps> = ({ data }) => {
+export const FundsSidebar: React.FC<FundsSidebarProps> = ({
+  data,
+  onCategoryChange,
+  onSortOptionChange,
+  onTimeframeChange,
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState<number>(0);
   const listContainerRef = useRef<HTMLDivElement>(null);
@@ -58,6 +66,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({ data }) => {
       >
         <div className="flex w-full justify-center">
           <OptionsDropdown
+            onChange={onCategoryChange}
             dropDownList={[
               { text: 'سهامی', tag: { color: 'green' } },
               { text: 'کالایی', tag: { color: 'yellow' } },
@@ -75,6 +84,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({ data }) => {
         </div>
         <div className="flex w-full flex-row items-center justify-between px-4 pb-3 pt-2">
           <OptionsDropdown
+            onChange={onSortOptionChange}
             dropDownList={[
               {
                 text: 'بیشترین بازدهی',
@@ -98,6 +108,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({ data }) => {
             )}
           />
           <OptionsDropdown
+            onChange={onTimeframeChange}
             dropDownList={[
               { text: 'روزانه' },
               { text: 'هفتگی' },
@@ -126,10 +137,13 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({ data }) => {
         ref={listContainerRef}
         onScroll={handleScroll}
       >
-        {data.map((item) => (
+        {data.map((item, index) => (
           <>
             {/* First Row */}
-            <div className="flex w-full items-center justify-start overflow-x-hidden">
+            <div
+              className="flex w-full items-center justify-start overflow-x-hidden"
+              key={item.title + item.changeValue}
+            >
               <PrimarySection
                 primaryText={{
                   mode: 'neutral',

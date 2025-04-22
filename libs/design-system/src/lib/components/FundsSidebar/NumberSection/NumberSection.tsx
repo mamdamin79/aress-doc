@@ -1,5 +1,4 @@
 import { cn } from '../../../../utils/classNames.utils';
-import React from 'react';
 import { formatNumber } from '../../../../utils/number-utils';
 export const NumberSection = ({ value }: { value: number }) => {
   const formattedNumber = Number(
@@ -19,7 +18,7 @@ export const NumberSection = ({ value }: { value: number }) => {
       )}
     >
       ٪ {formattedNumber > 0 && '+'}
-      {value}
+      {formattedNumber}
     </div>
   );
 };

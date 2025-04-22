@@ -1,10 +1,9 @@
 import React from 'react';
-import { dropDownCell } from '../OptionsDropdown.types';
 import { cn } from '../../../../utils/index';
 import { Icon } from '../../Icon';
 import { FundsTag } from '../../FundsTag';
-
-export const OptionsDropdownOption: React.FC<dropDownCell> = ({
+import { DropdownCell } from '../OptionsDropdown.types';
+export const OptionsDropdownOption: React.FC<DropdownCell> = ({
   text,
   tag,
   icon,

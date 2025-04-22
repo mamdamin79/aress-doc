@@ -1,8 +1,15 @@
 import { AnchorProps } from '@headlessui/react/dist/internal/floating';
 import { IconProps } from '../Icon';
 import { FundsTagProps } from '../FundsTag';
-
-export interface dropDownCell {
+export type DropdownBg = 'primary' | 'secondary';
+export type DropdownSize = 'sm' | 'md' | 'lg';
+export type DropdownEmphasize = 'medium' | 'high';
+export interface TriggerProps {
+  isActive: boolean;
+  selectedItem: DropdownCell;
+  dropDownStyles?: DropDownStyle;
+}
+export interface DropdownCell {
   text: string;
   tag?: FundsTagProps;
   icon?: IconProps;
@@ -10,11 +17,11 @@ export interface dropDownCell {
   withCheck?: boolean;
 }
 
-export interface dropDownStyle {
-  size: 'sm' | 'md' | 'lg';
-  bg: 'primary' | 'secondary';
-  emphasize: 'medium' | 'high';
+export interface DropDownStyle {
+  size?: DropdownSize;
+  bg?: DropdownBg;
+  emphasize?: DropdownEmphasize;
   checkSelected?: boolean;
-  anchor: AnchorProps;
+  anchor?: AnchorProps;
   fixedWidth?: number;
 }
