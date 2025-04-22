@@ -13,6 +13,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      transitionDuration: {
+        4000: '4000ms',
+      },
       borderWidth: {
         1.5: '1.5px',
       },
