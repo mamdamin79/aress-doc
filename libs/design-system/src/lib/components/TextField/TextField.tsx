@@ -30,10 +30,11 @@ export const TextField: React.FC<textFieldPropsType> = ({
 
   const inputValue = value ?? internalValue;
 
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setInternalValue(e.target.value);
-    onChange?.(e); // if you want to use the value in the parent component
+    onChange?.(e as React.ChangeEvent<HTMLInputElement>); // if you want to use the value in the parent component
   };
 
   const handleClearInput = (e: MouseEvent<HTMLButtonElement>) => {
@@ -140,34 +141,35 @@ export const TextField: React.FC<textFieldPropsType> = ({
           {...(rest as React.TextareaHTMLAttributes<HTMLTextAreaElement>)}
         ></textarea>
       ) : (
-      <input
-        id={id}
-        {...rest}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        type={visibleCharacter ? 'text' : 'password'}
-        value={inputValue}
-        disabled={disabled}
-        onChange={handleInputChange}
-        className={cn(
-          'text-md h-[50px] w-full rounded-xl border p-2 font-normal outline-none transition-colors duration-150',
-          {
-            'border-inherit bg-transparent opacity-100 placeholder:text-gray-400':
-              disabled,
-            'placeholder:text-gray-500': !disabled,
-            'pl-20': trailingIcons.length === 2,
-            'pl-10': trailingIcons.length === 1,
-            'bg-gray-100': mode === 'filled' && !disabled,
-            'hover:bg-gray-300': mode === 'filled' && !disabled && !isFocused,
-            'cursor-not-allowed !bg-gray-50': disabled && mode === 'filled',
-            'border-red-600 focus:border-[2.5px]': isError && !disabled,
-            'focus:border-brand-600 border-gray-300 focus:border-2 focus:outline-none':
-              !isError && !disabled,
-            'pr-12': leadingIcon,
-          },
-        )}
-        placeholder={mergeTitleAndPlaceholder ? '' : placeholder}
-      />
+        <input
+          id={id}
+          {...rest}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          type={visibleCharacter ? 'text' : 'password'}
+          value={inputValue}
+          disabled={disabled}
+          onChange={handleInputChange}
+          className={cn(
+            'text-md h-[50px] w-full rounded-xl border p-2 font-normal outline-none transition-colors duration-150',
+            {
+              'border-inherit bg-transparent opacity-100 placeholder:text-gray-400':
+                disabled,
+              'placeholder:text-gray-500': !disabled,
+              'pl-20': trailingIcons.length === 2,
+              'pl-10': trailingIcons.length === 1,
+              'bg-gray-100': mode === 'filled' && !disabled,
+              'hover:bg-gray-300': mode === 'filled' && !disabled && !isFocused,
+              'cursor-not-allowed !bg-gray-50': disabled && mode === 'filled',
+              'border-red-600 focus:border-[2.5px]': isError && !disabled,
+              'focus:border-brand-600 border-gray-300 focus:border-2 focus:outline-none':
+                !isError && !disabled,
+              'pr-12': leadingIcon,
+            },
+          )}
+          placeholder={mergeTitleAndPlaceholder ? '' : placeholder}
+        />
+      )}
 
       <div
         className={cn(

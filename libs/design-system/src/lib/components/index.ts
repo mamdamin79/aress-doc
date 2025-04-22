@@ -24,6 +24,10 @@ export * from './Pagination';
 export * from './Tooltip';
 export * from './NotesHeading';
 export * from './ReportsCarousel';
+export * from './VideoPlayer';
+export * from './Tooltip';
+export * from './SharePopUp';
+export * from './LikeDislike';
 export * from './Tooltip';
 export * from './NotesHeading';
 export * from './SquaredButton';
@@ -56,4 +60,3 @@ export * from './DualSwitch';
 export * from './DateInput';
 export * from './HeaderMenus/BurgerMenu/HamburgerMenuIcon';
 export * from './HeaderMenus';
-
