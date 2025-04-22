@@ -19,7 +19,7 @@ export type Person = {
   dailyReturn: number;
   weeklyReturn: number;
   startDate: number;
-  hasVideo: boolean,
+  hasVideo: boolean;
   logo: string;
   investmentMethod: 'T' | 'I&C';
 };
@@ -34,12 +34,16 @@ const range = (len: number) => {
 
 const newPerson = (): Person => {
   const investmentMethods: ['T', 'I&C'] = ['T', 'I&C'];
+  const fixedNow = new Date('2020-01-01').getTime(); // fixed reference point to avoid hydration error
+
   return {
     investmentMethod: faker.helpers.arrayElement(investmentMethods),
     hasVideo: faker.datatype.boolean(),
     logo: faker.image.avatar(),
     nameFund: faker.person.fullName(),
-    startDate: faker.date.past().getTime(),
+    startDate:
+      fixedNow -
+      faker.number.int({ min: 0, max: 1000 * 60 * 60 * 24 * 365 * 5 }), // deterministic
     monthlyReturn: faker.number.int(100),
     quarterlyReturn: faker.number.int(100),
     yearlyReturn: faker.number.int(100),
@@ -60,9 +64,12 @@ const newPerson = (): Person => {
 };
 
 export function makeData(...lens: number[]) {
+  // Use the same seed every time this function runs
+  faker.seed(123);
+
   const makeDataLevel = (depth = 0): Person[] => {
     const len = lens[depth]!;
-    return range(len).map((d): Person => {
+    return range(len).map((): Person => {
       return {
         ...newPerson(),
       };
