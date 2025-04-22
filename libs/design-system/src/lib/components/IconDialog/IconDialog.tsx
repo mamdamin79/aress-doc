@@ -29,7 +29,7 @@ export function IconDialog({ title, message, onClose, isOpen, mode }: Props) {
         <div className="flex min-h-full items-center justify-center p-4">
           <DialogPanel
             transition
-            className="data-[closed]:transform-[scale(1)] relative flex h-60 w-96 flex-col items-center rounded-3xl px-6 pb-6 pt-16 shadow-lg duration-300 ease-out data-[closed]:scale-50 data-[closed]:opacity-0"
+            className="data-[closed]:transform-[scale(1)] bg-baseBackground relative flex h-60 w-96 flex-col items-center rounded-3xl px-6 pb-6 pt-16 shadow-lg duration-300 ease-out data-[closed]:scale-50 data-[closed]:opacity-0"
           >
             <div
               className={cn(

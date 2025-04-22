@@ -1,22 +1,41 @@
-import { useEffect, useState } from 'react';
+'use client'
+import { useEffect, useState, useRef } from 'react';
 
 export const LoadingSpinner = ({ duration }: { duration: number }) => {
   const [progress, setProgress] = useState(0);
+  const requestRef = useRef<number>();
+  const startTimeRef = useRef<number>();
 
   useEffect(() => {
-    const totalSteps = 100; // Number of steps to complete the progress (100%)
-    const intervalTime = (duration * 1000) / totalSteps; // Convert duration to milliseconds and divide by steps
+    const totalSteps = 100;
+    const totalDuration = duration * 1000;
 
-    let start = 0;
-    const interval = setInterval(() => {
-      start += 1;
-      setProgress(start);
-      if (start >= totalSteps) clearInterval(interval);
-    }, intervalTime);
+    const animate = (timestamp: number) => {
+      if (!startTimeRef.current) {
+        startTimeRef.current = timestamp;
+      }
 
-    return () => clearInterval(interval);
-  }, [duration]); // Re-run effect if duration changes
+      const elapsed = timestamp - startTimeRef.current;
+      const currentProgress = Math.min(
+        Math.floor((elapsed / totalDuration) * totalSteps),
+        totalSteps,
+      );
 
+      setProgress(currentProgress);
+
+      if (currentProgress < totalSteps) {
+        requestRef.current = requestAnimationFrame(animate);
+      }
+    };
+
+    requestRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (requestRef.current) {
+        cancelAnimationFrame(requestRef.current);
+      }
+    };
+  }, [duration]);
   return (
     <div className="relative h-12 w-12">
       <div

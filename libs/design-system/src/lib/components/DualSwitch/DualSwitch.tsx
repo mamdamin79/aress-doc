@@ -1,3 +1,4 @@
+'use client';
 import { cn } from 'libs/design-system/src/utils';
 import React, { useState } from 'react';
 import { Icon } from '../Icon';
@@ -8,7 +9,7 @@ export const DualSwitch: React.FC<DualSwitchProps> = ({
   initialIndex = 0,
   onChange,
   items,
-  size,
+  size = 'sm',
   disabled = false,
   bgWhite = false,
 }) => {
@@ -16,7 +17,7 @@ export const DualSwitch: React.FC<DualSwitchProps> = ({
 
   const handleSwitchClick = (itemIndex: number) => {
     setActiveItemIndex(itemIndex);
-    onChange(itemIndex);
+    onChange?.(itemIndex);
   };
 
   const Wrapper: React.FC<{
@@ -53,8 +54,8 @@ export const DualSwitch: React.FC<DualSwitchProps> = ({
               'rounded-full bg-white p-[6px]',
               disabled
                 ? activeItemIndex === index
-                  ? 'bg-brand-300 text-white'
-                  : 'text-gray-400'
+                  ? 'bg-brand-300 cursor-default text-white'
+                  : 'cursor-default text-gray-400'
                 : activeItemIndex === index
                   ? 'bg-brand-600 text-white transition-colors'
                   : '',
