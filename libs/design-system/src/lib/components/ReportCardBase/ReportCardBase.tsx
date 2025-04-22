@@ -49,7 +49,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
               type: 'nestedDropdown',
               props: {
                 title: 'مبنای ارزش معاملات',
-                subFields: [
+                items: [
                   {
                     title: 'نوع بازار:',
                     icon: { name: 'square-mouse-pointer', size: 'sm' },
@@ -98,7 +98,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                 icon: { name: 'square-mouse-pointer', size: 'sm' },
                 status: 'normal',
                 selectedOption: 'مشترک افق روشن سرمایه‌گذاری بانک نوین',
-                onClick: () => console.log('hi'),
+                onClick: () => setOptionsListOpen(true),
               },
             },
             {
@@ -108,7 +108,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                 icon: { name: 'square-mouse-pointer', size: 'sm' },
                 status: 'normal',
                 selectedOption: 'کل اوراق',
-                onClick: () => console.log('hi'),
+                onClick: () => setOptionsListOpen(true),
               },
             },
           ]}

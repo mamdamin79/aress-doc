@@ -1,9 +1,12 @@
 import React from 'react';
 import { NestedDropdown } from '../NestedDropdown';
-import { Field, FieldProps } from '../NestedDropdown/Field/Field';
 import { Button } from '../Button';
 import { cn } from 'libs/design-system/src/utils';
-import { NestedDropdownProps } from '../NestedDropdown/NestedDropdown.types';
+import {
+  NestedDropdownItemProps,
+  NestedDropdownProps,
+} from '../NestedDropdown/NestedDropdown.types';
+import { NestedDropdownItem } from '../NestedDropdown/NestedDropdownItem';
 
 type optionProps = {
   type:
@@ -11,7 +14,7 @@ type optionProps = {
     | 'extendedSelection'
     | 'categorizedSelection'
     | 'nestedDropdown';
-  props: NestedDropdownProps | FieldProps;
+  props: NestedDropdownProps | NestedDropdownItemProps;
 };
 
 interface ReportSettingsProps {
@@ -45,7 +48,9 @@ export const ReportSettings: React.FC<ReportSettingsProps> = ({
           } else if (option.type === 'basicSelection') {
             return (
               <div className="mb-4" key={index}>
-                <Field {...(option.props as FieldProps)} />
+                <NestedDropdownItem
+                  {...(option.props as NestedDropdownItemProps)}
+                />
               </div>
             );
           }
