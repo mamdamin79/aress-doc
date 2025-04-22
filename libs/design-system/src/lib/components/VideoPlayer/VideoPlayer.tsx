@@ -7,7 +7,7 @@ import { PlayerActions } from './ControlPanel/PlayerActions';
 import { PlayerOptions } from './ControlPanel/PlayerOptions';
 import { cn } from '../../../utils/classNames.utils';
 import { PlayerProgressBar } from './ControlPanel/PlayerProgressBar';
-import videoLogo from '../../../assets/images/videoLogo.svg';
+import videoLogo from '../../../assets/icons/logo.svg';
 import Image from 'next/image';
 import { PlayList, video } from '../PlayList';
 

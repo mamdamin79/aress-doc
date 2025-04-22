@@ -225,6 +225,11 @@ module.exports = {
         },
         white: 'rgb(var(--color-white))',
       },
+      screens: {
+        '3xl': '1680px',
+        '4xl': '1920px',
+        '5xl': '2560px',
+      },
     },
   },
   plugins: [],
