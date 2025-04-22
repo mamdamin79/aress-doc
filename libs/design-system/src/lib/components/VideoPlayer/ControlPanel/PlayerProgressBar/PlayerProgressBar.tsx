@@ -1,3 +1,4 @@
+'use client'
 import React, { useRef, useState } from 'react';
 import Draggable from 'react-draggable';
 import { PlayerThumbnail } from '../PlayerThumbnail';

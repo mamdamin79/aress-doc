@@ -1,4 +1,5 @@
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 import { Icon } from '../Icon';
 import Image from 'next/image';
 import { NewBadge, VideoBadge, LikeBadge } from './Badges/Badges';

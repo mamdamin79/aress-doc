@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useState } from 'react';
 import { OptionItem, CategoryItem } from './OptionsListExplorer.types';
 import { cn, formatNumber } from '../../../utils';
