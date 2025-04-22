@@ -1,6 +1,6 @@
 'use client';
 import { useVideo } from '../../../hooks/UseVideo';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Icon } from '../Icon';
 import { VideoTimer } from './ControlPanel/VideoTimer';
 import { PlayerActions } from './ControlPanel/PlayerActions';
@@ -59,6 +59,8 @@ export const VideoPlayer: React.FC<Props> = ({
 }) => {
   const [showControlPanel, setShowControlPanel] = useState(true);
   const [showPlayList, setShowPlayList] = useState(false);
+  const playListRef = useRef<HTMLDivElement>(null);
+
   const {
     play,
     videoRef,
@@ -107,9 +109,26 @@ export const VideoPlayer: React.FC<Props> = ({
     };
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isFullscreen &&
+        showPlayList &&
+        playListRef.current &&
+        !playListRef.current.contains(event.target as Node)
+      ) {
+        setShowPlayList(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isFullscreen, showPlayList]);
+
   return (
     <div
-      // onContextMenu={(e) => e.preventDefault()}
       className={cn(
         `relative h-full w-full overflow-hidden rounded-md shadow-md ${className}`,
         {
@@ -120,6 +139,7 @@ export const VideoPlayer: React.FC<Props> = ({
     >
       {isFullscreen && (
         <div
+          ref={playListRef}
           className={cn(
             'absolute right-0 z-50 transition-all duration-300 ease-in-out',
             {
