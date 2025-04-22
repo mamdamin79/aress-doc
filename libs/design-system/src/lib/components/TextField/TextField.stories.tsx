@@ -18,8 +18,14 @@ export const Default: Story = {
     isError: false,
     mode: 'filled',
     mergeTitleAndPlaceholder: true,
-    leadingIcon: 'user-round',
-    trailingIcons: ['x', 'eye'],
+    leadingIcon: {
+      name: 'user-round',
+      size: 'lg',
+    },
+    trailingIcons: [
+      { name: 'x', size: 'md' },
+      { name: 'eye', size: 'md' },
+    ],
     disabled: false,
     type: 'text',
     className: 'w-[320px]',
@@ -31,6 +37,21 @@ export const WithError: Story = {
     ...Default.args,
     isError: true,
     supportText: 'خطا: فیلد دارای مشکل است',
+  },
+};
+
+export const OTP: Story = {
+  args: {
+    label: 'لطفا رمز یکبار مصرف ارسال شده به شماره 09124109520 را وارد کنید',
+    placeholder: '- - - - - -',
+    supportText: 'رمز ارسال شده تا 5 دقیقه دیگر معتبر است',
+    isError: false,
+    mode: 'filled',
+    trailingIcons: [],
+    mergeTitleAndPlaceholder: false,
+    disabled: false,
+    type: 'text',
+    className: 'w-[380px]',
   },
 };
 
@@ -49,6 +70,17 @@ export const PasswordToggle: Story = {
     supportText: 'رمز عبور خود را وارد کنید',
   },
 };
+export const CustomTrailingIcon: Story = {
+  args: {
+    ...Default.args,
+    trailingIcons: [
+      {
+        name: 'pencil',
+        onClick: () => alert('clicked'),
+      },
+    ],
+  },
+};
 
 export const WithoutIcons: Story = {
   args: {
@@ -64,5 +96,18 @@ export const MergedTitleAndPlaceholder: Story = {
     mergeTitleAndPlaceholder: true,
     label: 'نام کاربری',
     supportText: 'برچسب و پلیس‌هولدر ترکیب شده‌اند',
+  },
+};
+
+export const TextArea: Story = {
+  args: {
+    ...Default.args,
+    mergeTitleAndPlaceholder: false,
+    label: 'شرح گزارش',
+    placeholder:
+      'میتواند شامل محور افقی و عمودی روابط آماری و ریاضی و تشریح مدل های مالی باشد...',
+    longText: true,
+    trailingIcons: [],
+    leadingIcon: undefined,
   },
 };
