@@ -332,7 +332,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
     // Check for maximum date constraints
     if (maxDate.year && maxDate.month && maxDate.day) {
       if (
-        year + String(e).padStart(2, '0') + String(day).padStart(2, '0') >
+        e + String(moment).padStart(2, '0') + String(day).padStart(2, '0') >
         maxDate.year +
           String(maxDate.month).padStart(2, '0') +
           String(maxDate.day).padStart(2, '0')
