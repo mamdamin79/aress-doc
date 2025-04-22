@@ -2,16 +2,10 @@
 import React, { useState } from 'react';
 import { Icon } from '../Icon';
 import Image from 'next/image';
-import Link from 'next/link';
 import { NewBadge, VideoBadge, LikeBadge } from './Badges/Badges';
 import { cn } from '../../../utils/classNames.utils';
 import { Button } from '../Button';
-import {
-  FinancialReportListItemApiModel,
-  OpenAPI,
-  useDashboardServicePostDashboardReportsByReportIdFavorite,
-  useDashboardServiceDeleteDashboardReportsByReportIdFavorite,
-} from '@openapi';
+import Link from 'next/link';
 
 export interface ReportCardProps {
   title: string;
@@ -25,14 +19,10 @@ export interface ReportCardProps {
   userFavorite?: boolean;
   link?: string;
   onLike?: () => void;
-  identifier?: string;
 }
 
-export const ReportCard: React.FC<
-  FinancialReportListItemApiModel & ReportCardProps
-> = ({
+export const ReportCard: React.FC<ReportCardProps> = ({
   title,
-  identifier,
   reportSubscription,
   summary,
   fixedBrief = false,
@@ -44,41 +34,12 @@ export const ReportCard: React.FC<
   link,
   onLike,
 }) => {
-  const [isLiked, setIsLiked] = useState(userFavorite);
-
-  const { mutate: postFavorite } =
-    useDashboardServicePostDashboardReportsByReportIdFavorite();
-  const { mutate: deleteFavorite } =
-    useDashboardServiceDeleteDashboardReportsByReportIdFavorite();
-
-  OpenAPI.HEADERS = {
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzQwNTYxODgxfQ.AYeDmC-D54omX5jI_I78zNx66a98iKBnNzGqXRN5n3U`,
-  };
-
-  const handleLikeToggle = () => {
-    if (isLiked) {
-      deleteFavorite(
-        { reportId: identifier },
-        {
-          onSuccess: () => setIsLiked(false),
-        }
-      );
-    } else {
-      postFavorite(
-        { reportId: identifier },
-        {
-          onSuccess: () => setIsLiked(true),
-        }
-      );
-    }
-  };
-
   return (
     <div
       className={cn(
         `group relative flex flex-col overflow-hidden rounded-3xl border-[3px] border-gray-100 bg-gray-100 transition-all hover:shadow-md`,
         fixedBrief
-          ? 'h-[448px]  w-[380px] sm:w-[380px] md:w-[512px] items-start'
+          ? 'h-[448px] min-w-[380px] max-w-[512px] items-start'
           : 'h-[318px] min-w-[304px] max-w-[416px]',
       )}
     >
@@ -100,7 +61,7 @@ export const ReportCard: React.FC<
         </div>
       </div>
 
-      {/* Overlay for non-fixedBrief */}
+      {/* Info Section */}
       <div
         className={cn(
           `w-full`,
@@ -108,8 +69,6 @@ export const ReportCard: React.FC<
             'absolute bottom-0 left-0 h-full overflow-hidden bg-gradient-to-b from-[rgba(255,255,255,0)] via-white to-[rgba(255,255,255,1)] opacity-0 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:duration-500',
         )}
       ></div>
-
-      {/* Info Section */}
       <div
         className={cn(
           `flex flex-col justify-between gap-3 p-4 transition-all duration-500 ease-in group-hover:duration-700`,
@@ -136,6 +95,7 @@ export const ReportCard: React.FC<
                 {categoryType}
               </span>
             )}
+
             {reportSubscription && (
               <span className="flex flex-row items-center gap-1">
                 <Icon name="package" key={reportSubscription} size="md" />
@@ -148,42 +108,42 @@ export const ReportCard: React.FC<
             </div>
           </div>
 
-          {/* Summary & Like (Fixed Brief) */}
-          {fixedBrief && (
-            <>
-              <span className="line-clamp-3 text-right text-sm text-gray-600">
-                {summary}
-              </span>
-              <div className="absolute bottom-4 right-0 flex w-full items-center justify-between px-4">
-                <LikeBadge onClick={handleLikeToggle} isLiked={isLiked} />
-                <div className="flex h-[38px] origin-left scale-x-[0.3] transform items-center overflow-hidden rounded-[100px] text-xs opacity-0 transition-all duration-300 ease-in-out group-hover:scale-x-100 group-hover:opacity-100">
-                  <Link href={link ?? '/'}>
-                    <Button
-                      align="center"
-                      isLoading={false}
-                      mode="primary"
-                      size="md"
-                      className="w-fit"
-                    >
-                      <div className="flex items-center gap-2 whitespace-nowrap opacity-0 transition-colors duration-100 group-hover:opacity-100">
-                        مشاهده گزارش
-                        <Icon name="arrow-left" size="md" />
-                      </div>
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </>
-          )}
-
-          {/* Summary (Drawer) */}
-          {!fixedBrief && (
-            <span className="-mb-2 line-clamp-4 h-fit translate-y-12 transform overflow-hidden text-right text-sm text-gray-600 opacity-0 transition-all duration-500 ease-in-out group-hover:translate-y-0 group-hover:opacity-100">
-              {summary}
-            </span>
-          )}
-        </div>
+{/* summary Section fixed */}
+{fixedBrief && (
+  <>
+    <span className="line-clamp-3 text-right text-sm text-gray-600">
+      {summary}
+    </span>
+    <div className="absolute bottom-4 right-0 flex w-full items-center justify-between px-4">
+      <LikeBadge isLiked={userFavorite} onClick={() => onLike?.()} />
+      <div className="flex h-[38px] origin-left scale-x-[0.3] transform items-center overflow-hidden rounded-[100px] text-xs opacity-0 transition-all duration-300 ease-in-out group-hover:scale-x-100 group-hover:opacity-100">
+        <Link href={link ?? '/'}>
+          <Button
+            align="center"
+            isLoading={false}
+            mode="primary"
+            size="md"
+            className="w-fit"
+          >
+            <div className="flex items-center gap-2 whitespace-nowrap opacity-0 transition-colors duration-100 group-hover:opacity-100">
+              مشاهده گزارش
+              <Icon name="arrow-left" size="md" />
+            </div>
+          </Button>
+        </Link>
       </div>
     </div>
-  );
+  </>
+)}
+
+{/* summary Section (Drawer Animation) */}
+{!fixedBrief && (
+  <span className="-mb-2 line-clamp-4 h-fit translate-y-12 transform overflow-hidden text-right text-sm text-gray-600 opacity-0 transition-all duration-500 ease-in-out group-hover:translate-y-0 group-hover:opacity-100">
+    {summary}
+  </span>
+)}
+</div>
+</div>
+</div>
+);
 };

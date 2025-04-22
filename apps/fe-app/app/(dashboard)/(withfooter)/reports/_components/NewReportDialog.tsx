@@ -65,7 +65,7 @@ export const NewReportDialog = () => {
                 <FileUpload types={['xls', 'xlsx']} maxSize={1000000000} />
               </div>
               <div className="mb-8">
-                <Checkbox content="در مورد تشریح جزئیات گزارش احتیاج دارم با من تماس گرفته شود." />
+                <Checkbox onChange={()=>console.log("checked")} content="در مورد تشریح جزئیات گزارش احتیاج دارم با من تماس گرفته شود." />
               </div>
               <Button
                 align="center"

@@ -13,9 +13,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      screens: {
-        '3xl': '1920px', 
-      },
       keyframes: {
         progressBar: {
           '0%': { transform: 'translateX(100%)' },

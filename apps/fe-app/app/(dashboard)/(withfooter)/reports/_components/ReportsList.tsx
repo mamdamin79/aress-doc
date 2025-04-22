@@ -31,7 +31,7 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
       </div>
       <div className="grid grid-cols-1 items-center xl:grid-cols-2 3xl:grid-cols-3 gap-4">
         {reports.map((report, idx) => (
-          <ReportCard categoryType={report.category.title} reportSubscription='رایگان' fixedBrief={true} key={report.identifier} {...report} />
+          <ReportCard  categoryType={report.category.title} reportSubscription='رایگان' fixedBrief={true} key={report.identifier} {...report} />
         ))}
       </div>
     </>
