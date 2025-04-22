@@ -64,15 +64,23 @@ export const OTPForm: React.FC<OTPFormProps> = ({
   return (
     <div className={cn('flex w-[462px] flex-col gap-6 text-right', className)}>
       <div className="flex w-full flex-row justify-between">
-        <span className="w-1/3"></span>
-        <span className="text-md text-center font-medium">{title}</span>
-        <div
-          className="text-brand-600 flex w-1/3 cursor-pointer flex-row justify-end text-sm font-medium"
-          onClick={onBackBtn}
-        >
-          ویرایش شماره
-          <Icon name="chevron-left" size="lg" />
-        </div>
+        {onBackBtn ? (
+          <>
+            <span className="w-1/3"></span>
+            <span className="text-md text-center font-medium">{title}</span>
+            <div
+              className="text-brand-600 flex w-1/3 cursor-pointer flex-row justify-end text-sm font-medium"
+              onClick={onBackBtn}
+            >
+              ویرایش شماره
+              <Icon name="chevron-left" size="lg" />
+            </div>
+          </>
+        ) : (
+          <span className="text-md w-full text-center font-medium">
+            {title}
+          </span>
+        )}
       </div>
       <span className="mt-4 text-sm font-medium">{description}</span>
       <OtpInput
