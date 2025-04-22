@@ -1,11 +1,31 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ToastDemo } from './ToastDemo';
+import { Toaster } from 'react-hot-toast';
+import { useCustomToast } from './CustomToast';
 
 // Meta configuration for the Toast component in Storybook
+// Add more detailed documentation
 const meta: Meta<typeof ToastDemo> = {
-  title: 'Components/Toast', // Defines the title in Storybook's UI
-  component: ToastDemo, // Links to the actual component
-  tags: ['autodocs'], // Optional: Add any additional tags for better categorization
+  title: 'Components/Toast',
+  component: ToastDemo,
+  tags: ['autodocs'],
+  parameters: {
+    docs: {
+      description: {
+        component: 'Toast component for displaying notifications with different styles and actions.',
+      },
+    },
+  },
+  argTypes: {
+    message: {
+      description: 'The message to display in the toast',
+      control: 'text',
+    },
+    type: {
+      description: 'The type of toast which determines its styling',
+      control: { type: 'select', options: ['info', 'success', 'error', 'warning'] },
+    },
+  },
 };
 
 export default meta;
@@ -39,5 +59,65 @@ export const Warning: Story = {
     message:
       'بعد از اتمام زمان‌بندی میتوانید برای ارسال مجدد رمز یک‌بار مصرف اقدام کنید.',
     type: 'warning',
+  },
+};
+
+export const trailing: Story = {
+  render: (args) => {
+    const { showProgressToast } = useCustomToast();
+    return (
+      <>
+        <div
+          className="w-fit cursor-pointer rounded-md border p-2"
+          onClick={() => {
+            showProgressToast({
+              title: 'گزارش جایگذاری شد.',
+              trailingAction: {
+                ButtonProps: {
+                  align: 'center',
+                  isLoading: false,
+                  mode: 'primary',
+                  size: 'sm',
+                  children: 'برو به داشبورد',
+                },
+                onClick: () => console.log('Trailing action clicked'),
+              },
+              timeout: 5000,
+            });
+          }}
+        >
+          show toast
+        </div>
+        <Toaster />
+      </>
+    );
+  },
+};
+export const leading: Story = {
+  render: (args) => {
+    const { showProgressToast } = useCustomToast();
+    return (
+      <>
+        <div
+          className="w-fit cursor-pointer rounded-md border p-2"
+          onClick={() => {
+            showProgressToast({
+              title: 'گزارش حذف شد.',
+              leadingAction: {
+                iconProps: {
+                  name: 'undo-2',
+                  size: 'lg',
+                },
+                onClick: () => console.log('leading action clicked'),
+              },
+              timeout: 5000,
+            });
+          }}
+        >
+          show toast
+        </div>
+        <Toaster />
+      </>
+    );
   },
 };

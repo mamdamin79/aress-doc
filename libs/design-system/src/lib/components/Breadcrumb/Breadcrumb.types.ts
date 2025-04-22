@@ -1,4 +1,4 @@
-import { IconName } from '../IconComponent/Icon.types';
+import { IconName } from '../Icon/Icon.types';
 
 // this type for BreadcrumbItem
 export interface BreadcrumbItem {
