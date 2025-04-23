@@ -1,5 +1,5 @@
 import { cn } from '../../../utils/classNames.utils';
-import { memo, useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Icon } from '../Icon';
 import { DateInput } from '../DateInput';
 import { usePersianCalendar } from 'libs/design-system/src/hooks/DayPicker';
@@ -112,21 +112,31 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
   ];
 
   const updateStartInput = (date: string) => {
+    const dateFormat = date.slice(0, 4) + String(date.slice(5, 7)) + String(date.slice(8, 10));
+    const minDate = min.slice(0, 4) + String(min.slice(5, 7)) + String(min.slice(8, 10));
+    const maxDate = max.slice(0, 4) + String(max.slice(5, 7)) + String(max.slice(8, 10));
     if (
       (startDate?.year === endDate?.year && startDate?.month === endDate?.month && startDate && endDate && startDate?.day > endDate?.day)
       || (startDate?.year === endDate?.year && startDate?.month === endDate?.month && endDate && startDate && (startDate?.day > endDate?.day || startDate?.day === endDate.day))) {
       setAreInputsEqual(true);
     } else setAreInputsEqual(false);
-    if (+date.slice(8, 10) <= 31) {
+    if (+date.slice(8, 10) <= 31 && dateFormat >= minDate && dateFormat <= maxDate) {
       setStartDate({ day: +date.slice(8, 10), month: +date.slice(5, 7), year: +date.slice(0, 4) });
     }
   };
   const updateEndInput = (date: string) => {
+    const dateFormat = date.slice(0, 4) + String(date.slice(5, 7)) + String(date.slice(8, 10));
+    const minDate = min.slice(0, 4) + String(min.slice(5, 7)) + String(min.slice(8, 10));
+    const maxDate = max.slice(0, 4) + String(max.slice(5, 7)) + String(max.slice(8, 10));
     if ((startDate?.year === endDate?.year && startDate?.month === endDate?.month && startDate && endDate && startDate?.day > endDate?.day)
       || (startDate?.year === endDate?.year && startDate?.month === endDate?.month && endDate && startDate && (startDate?.day > endDate?.day || startDate?.day === endDate.day))) {
       setAreInputsEqual(true);
     } else setAreInputsEqual(false);
-    if (+date.slice(8, 10) <= 31) {
+    if (+date.slice(8, 10) <= 31 && dateFormat >= minDate && dateFormat <= maxDate) {         
+      setErrors({
+        start: { minError: false, maxError: false },
+        end: { minError: false, maxError: false },
+      });  
       setEndDate({ day: +date.slice(8, 10), month: +date.slice(5, 7), year: +date.slice(0, 4)});
     }
   };
@@ -134,14 +144,11 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
   // Render TitleTooltip
   const moseEnterCell = useCallback(
     (date: DateType) => {
-
       if (isDateInRange(date)) {
         const formatDate = (date: DateType | null) => {
           return `${date?.year}${date?.month && date.month < 10 ? `0${date.month}` : date?.month}${date?.day && date.day < 10 ? `0${date?.day}` : date?.day}`;
         };
-
         setDateHover(date);
-
         if (!startDate && focuseStartInput) {
           setTitleTooltip('تاریخ شروع');
         }
@@ -192,39 +199,45 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
     });
   }
 
-  const textErrorHandler = ({ start, end }: { start: ErrorState, end: ErrorState }): { startInputText: string, endInputText: string } => {
+  const textErrorHandler = (
+    { start, end }: { start: ErrorState; end: ErrorState }
+  ): { startInputText: string; endInputText: string } => {
     let startInputText = '';
-    let endInputText = '';
+    let endInputText = ''; 
+  
+    // start validation
     if (start.minError) {
       startInputText = 'تاریخ شروع نمیتواند کمتر از حداقل تاریخ مجاز باشد';
-    } else startInputText = '';
-    if (start.maxError) {
+    } else if (start.maxError) {
       startInputText = 'تاریخ شروع نمیتواند بیشتر از حداکثر تاریخ مجاز باشد';
-    } else startInputText = '';
+    }
+  
+    // end validation
     if (end.minError) {
       endInputText = 'تاریخ پایان نمیتواند کمتر از حداقل تاریخ مجاز باشد';
-    } else endInputText = '';
-    if (end.maxError) {
+    } else if (end.maxError) {
       endInputText = 'تاریخ پایان نمیتواند بیشتر از حداکثر تاریخ مجاز باشد';
     } else endInputText = '';
-    if (startDate?.year === endDate?.year && startDate?.month === endDate?.month && startDate?.day === endDate?.day) {
-      endInputText = 'تاریخ شروع نمیتواند برابر با تاریخ پایان باشد';
-      startInputText = 'تاریخ شروع نمیتواند برابر با تاریخ پایان باشد';
-    } else {
-      startInputText = '',
-      endInputText = '';
+  
+    // start and end validation
+    if (
+      startDate &&
+      endDate &&
+      startDate.year === endDate.year &&
+      startDate.month === endDate.month
+    ) {
+      if (startDate.day === endDate.day) {
+        const msg = 'تاریخ شروع نمیتواند برابر با تاریخ پایان باشد';
+        startInputText = msg;
+        endInputText = msg;
+      } else if (startDate.day > endDate.day) {
+        startInputText = 'تاریخ شروع نمیتواند بیشتر از تاریخ پایان باشد';
+        endInputText = 'تاریخ پایان نمیتواند کمتر از تاریخ شروع باشد';
+      }
     }
-
-    if (startDate?.year === endDate?.year && startDate?.month === endDate?.month && startDate && endDate && startDate?.day > endDate?.day) {
-      startInputText = 'تاریخ شروع نمیتواند بیشتر از تاریخ پایان باشد';
-    } else startInputText = '';
-    if (startDate?.year === endDate?.year && startDate?.month === endDate?.month && endDate && startDate && startDate?.day > endDate?.day) {
-      endInputText = 'تاریخ پایان نمیتواند کمتر از تاریخ شروع باشد';
-    }else endInputText = '';
+  
     return { startInputText, endInputText };
-  }
-
-
+  };
 
   const close = useMemo(
     () => (
@@ -313,7 +326,20 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
             {/* select drop down */}
             <div className="w-full flex justify-between items-center">
               <div className="flex gap-6 items-center">
-                <ChevronButton min={min} calendars={calendars} setCurrentDate={setCurrentDate} />
+                {/* <ChevronButton min={min} calendars={calendars} setCurrentDate={setCurrentDate} /> */}
+                <div
+                  onClick={() => setCurrentDate(-1)}
+                  className={cn(
+                    'bg-white hover:border-2 border-brand-600 flex items-center justify-center w-10 h-10 cursor-pointer rounded-full text-black',
+                    {
+                      'bg-gray-200 hover:border-none cursor-default':
+                      min.slice(0, 4) === calendars[0].slice(0, 4) &&
+                      min.slice(5, 7) >= calendars[0].slice(5, 7),
+                    }
+                  )}
+                >
+                  <Icon name="chevron-right" size="lg" />
+                </div>
                 {close}
                 <div className="relative">
                   <div className="absolute -top-6 items-center right-[85px] gap-1 z-50">
@@ -348,49 +374,39 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                     dropDownList={listMonth.map((month, index) => ({text: month, id: index + 1}))} />
                   </div>
                   <div className="absolute -top-6 items-center gap-1  z-50">
-                  <OptionsDropdown
-                    customTriggerRender={() =>
-                      <div className={cn('text-sm bg-white font-semibold items-center cursor-pointer w-20 py-2.5 flex rounded-md justify-center gap-0.5 text-center hover:bg-brand-50', {
-                      })}>
-                        {calendars[0].slice(0, 4)}
-                        <Icon name="chevron-down" size='md' />
-                      </div>
-                    }
-                    customOptionRender={(item) => 
-                      <div className={cn('text-sm bg-white cursor-pointer w-20 py-2 flex justify-center font-normal gap-0.5 text-center hover:bg-brand-50', {
-                        'bg-brand-100': item.text.includes(calendars[0].slice(0, 4)),
-                      })}>
-                      <div className='text-brand-700'>
-                        {+item.text === +calendars[0].slice(0, 4) && <Icon name="check"/>}
-                      </div>
-                        {item.text}
-                      </div>} 
-                    onChange={(selectedItem) => {                      
-                      setCurrentDate(
-                        `${selectedItem}-${calendars[0].slice(
-                          5,
-                          7
-                        )}-${calendars[0].slice(8, 9)}`
-                      )
-                    }
-                    } 
-                      dropDownStyles={{checkSelected: true, size: 'lg' }} 
-                      dropDownList={years.map((year) => ({text: String(year)}))} />
-                </div>
+                    <OptionsDropdown
+                      customTriggerRender={() =>
+                        <div className={cn('text-sm bg-white font-semibold items-center cursor-pointer w-20 py-2.5 flex rounded-md justify-center gap-0.5 text-center hover:bg-brand-50', {
+                        })}>
+                          {calendars[0].slice(0, 4)}
+                          <Icon name="chevron-down" size='md' />
+                        </div>
+                      }
+                      customOptionRender={(item) => 
+                        <div className={cn('text-sm bg-white cursor-pointer w-20 py-2 flex justify-center font-normal gap-0.5 text-center hover:bg-brand-50', {
+                          'bg-brand-100': item.text.includes(calendars[0].slice(0, 4)),
+                        })}>
+                        <div className='text-brand-700'>
+                          {+item.text === +calendars[0].slice(0, 4) && <Icon name="check"/>}
+                        </div>
+                          {item.text}
+                        </div>} 
+                      onChange={(selectedItem) => {                      
+                        setCurrentDate(
+                          `${selectedItem}-${calendars[0].slice(
+                            5,
+                            7
+                          )}-${calendars[0].slice(8, 9)}`
+                        )
+                      }
+                      } 
+                        dropDownStyles={{checkSelected: true, size: 'lg' }} 
+                        dropDownList={years.map((year) => ({text: String(year)}))} />
+                  </div>
                 </div>
 
               </div>
-
-
-
-
-
-
-
-
-
-
-              <div className="flex items-center relative gap-6">
+               <div className="flex items-center relative gap-6">
                 <div className="absolute top-0 gap-1 -right-[100px] z-50">
                 <OptionsDropdown
                     customTriggerRender={() =>
@@ -451,17 +467,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                     }} 
                     dropDownStyles={{checkSelected: true,size: 'lg' }} 
                     dropDownList={listMonth.map((month, index) => ({text: month, id: index}))} />
-              </div>
-
-
-
-
-
-
-
-
-
-              
+                </div>
                 <div
                   onClick={() => setCurrentDate(+1)}
                   className={cn(
@@ -476,6 +482,8 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                   <Icon name="chevron-left" size="lg" />
                 </div>
               </div>
+
+
             </div>
             <div className="flex items-center justify-between gap-10">
               <div className="col-span-7 w-1/2 items-start row-start-1 flex mb-3 justify-between px-5">
@@ -742,34 +750,3 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
     </div>
   );
 }
-interface ChevronButtonProps {
-  min: string;
-  calendars: string[];
-  setCurrentDate: (val: number) => void;
-}
-
-const ChevronButton: React.FC<ChevronButtonProps> = memo(({ min, calendars, setCurrentDate }) => {
-  const isDisabled =
-    min.slice(0, 4) === calendars[0].slice(0, 4) &&
-    min.slice(5, 7) >= calendars[0].slice(5, 7);
-
-  const handleClick = () => {
-    if (!isDisabled) {
-      setCurrentDate(-1);
-    }
-  };
-
-  return (
-    <div
-      onClick={handleClick}
-      className={cn(
-        'bg-white hover:border-2 border-brand-600 cursor-pointer rounded-full w-10 h-10 flex items-center justify-center text-black',
-        {
-          'bg-gray-200 hover:border-none cursor-default': isDisabled,
-        }
-      )}
-    >
-      <Icon name="chevron-right" size="lg" />
-    </div>
-  );
-});
