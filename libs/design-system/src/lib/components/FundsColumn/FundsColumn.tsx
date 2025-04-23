@@ -3,7 +3,7 @@ import { Tooltip } from '../Tooltip';
 import { cn } from './../../../utils';
 
 interface Props {
-  size: 'small' | 'medium' | 'larg' | 'extraLarg';
+  size: 'small' | 'medium' | 'large' | 'extraLarg';
   title: string;
   sortType: 'alphabetical' | 'ranked';
   filterable: boolean;
@@ -29,7 +29,7 @@ export function FundsColumn({
         {
           'w-28': size === 'small',
           'w-36': size === 'medium',
-          'w-[200px]': size === 'larg',
+          'w-[200px]': size === 'large',
           'w-[312px]': size === 'extraLarg',
           'shadow-4xl': shadow && size === 'extraLarg',
           'bg-pink-200': size === 'extraLarg' && filterable,
@@ -65,15 +65,13 @@ export function FundsColumn({
               ? type === 'inactive'
                 ? 'مرتب سازی نزولی'
                 : type === 'active-asc'
-                  ? 'مرتب سازی صعودی'
-                  : 'حالت پیشفرض (بدون مرتب سازی)'
-              : type === 'inactive'
-                ? 'مرتب سازی نزولی'
-                : type === 'active-asc'
-                  ? 'حالت پیشفرض (بدون مرتب سازی)'
-                  : 'مرتب سازی صعودی'
-          }
-        >
+                ? 'مرتب سازی صعودی'
+                : 'حالت پیشفرض (بدون مرتب سازی)'
+            : type === 'inactive'
+              ? 'مرتب سازی نزولی'
+              : type === 'active-asc'
+                ? 'حالت پیشفرض (بدون مرتب سازی)'
+                : 'مرتب سازی صعودی'}>
           <div
             onClick={(e) => {
               e.stopPropagation();

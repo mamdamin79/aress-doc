@@ -13,6 +13,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      transitionDuration: {
+        4000: '4000ms',
+      },
       borderWidth: {
         1.5: '1.5px',
       },
@@ -224,6 +227,11 @@ module.exports = {
           900: 'rgb(var(--color-vivid-green-900))',
           1000: 'rgb(var(--color-vivid-green-1000))',
         },
+      },
+      screens: {
+        '3xl': '1680px',
+        '4xl': '1920px',
+        '5xl': '2560px',
       },
     },
     plugins: [],

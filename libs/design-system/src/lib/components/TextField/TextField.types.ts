@@ -1,11 +1,11 @@
 import { InputHTMLAttributes } from 'react';
 import { IconProps } from '../Icon';
-import { IconSize } from '../Icon/Icon.types';
+import { IconName, IconSize } from '../Icon/Icon.types';
 
 type TrailingIconType = {
-  name: 'x' | 'eye';
+  name: 'x' | 'eye' | IconName;
   size?: IconSize;
-  onClick?: (value?: string | number | readonly string[]) => void;
+  onClick?: () => void;
 };
 
 type leadingIconType = IconProps & {

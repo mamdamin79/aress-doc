@@ -1,4 +1,5 @@
 import './global.css';
+import ReactQueryProvider from './providers/ReactQueryProvider';
 
 export const metadata = {
   title: 'Welcome to apps/fe-app',
@@ -12,7 +13,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <ReactQueryProvider>
+        <body>{children}</body>
+      </ReactQueryProvider>
     </html>
   );
 }

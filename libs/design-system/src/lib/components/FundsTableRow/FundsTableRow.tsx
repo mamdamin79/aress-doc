@@ -3,7 +3,7 @@ import { Icon } from '../Icon';
 import { OptionsDropdown } from '../OptionsDropdown';
 import { Tooltip } from '../Tooltip';
 import { useState } from 'react';
-import { CustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
+import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
 import { Toaster } from 'react-hot-toast';
 
 interface Props {
@@ -39,14 +39,14 @@ export function FundsTableRow({
   isScrolled,
   className,
 }: Props) {
-  const [isSelected, setIsSelected] = useState(false);
+  const [isDropdownActive, setIsDropdownActive] = useState(false);
 
-  const { showProgressToast, showToast } = CustomToast();
+  const { showProgressToast, showToast } = useCustomToast();
 
   return (
     <div
       className={cn(
-        'sticky right-0 flex border-t border-blue-100 min-h-[70px] w-fit items-center justify-between bg-white',
+        'sticky right-0 flex min-h-[70px] w-fit items-center justify-between border-t border-blue-100 bg-white',
         className,
         {
           'shadow-md': isScrolled,
@@ -71,7 +71,7 @@ export function FundsTableRow({
           </div>
           <div className="absolute right-4 top-9 transition-all duration-500 group-hover/img:-translate-x-[13px] group-hover/img:-translate-y-[19.5px]">
             <Tooltip
-              position='top'
+              position="top"
               title={
                 canPin
                   ? pined
@@ -120,7 +120,7 @@ export function FundsTableRow({
                 <div
                   className={cn('flex items-center justify-center', {
                     'group-hover/img:hidden': pined,
-                    'text-gray-100 rotate-45': !canPin && !pined
+                    'rotate-45 text-gray-100': !canPin && !pined,
                   })}
                 >
                   <Icon name="pin" size="md" />
@@ -141,7 +141,7 @@ export function FundsTableRow({
               className={cn(
                 'text-gray-1000 w-[235px] truncate text-right text-sm font-medium group-hover:w-[202px]',
                 {
-                  'w-[202px]': isSelected,
+                  'w-[202px]': isDropdownActive,
                 },
               )}
             >
@@ -203,7 +203,9 @@ export function FundsTableRow({
           },
         ]}
         customTriggerRender={(prop) => {
-          setIsSelected(prop.isActive);
+          if (isDropdownActive !== prop.isActive) {
+            queueMicrotask(() => setIsDropdownActive(prop.isActive));
+          }
           return (
             <div
               className={cn(
@@ -247,28 +249,24 @@ export function FundsTableRow({
                   });
                 }
 
-                
-                  if(prop.text === 'اضافه کردن به دیده بان')
-                  {
-                    toggleWatchList();
-                    showProgressToast({
-                      title: 'صندوق مورد نظر به دیده بان اضافه شد.',
-                      timeout: 3000,
-                    });
-                  }
-                  if (prop.text === 'حذف از دیده بان') {
-                    showProgressToast({
-                      title: 'صندوق مورد نظر از دیده بان حذف شد.',
-                      timeout: 3000,
-                      leadingAction: {
-                        iconProps: { name: 'undo-2', size: 'sm' },
-                        onClick: () => toggleWatchList(),
-                      },
-                    });
-                    toggleWatchList();
-                  }
-                  
-                    
+                if (prop.text === 'اضافه کردن به دیده بان') {
+                  toggleWatchList();
+                  showProgressToast({
+                    title: 'صندوق مورد نظر به دیده بان اضافه شد.',
+                    timeout: 3000,
+                  });
+                }
+                if (prop.text === 'حذف از دیده بان') {
+                  showProgressToast({
+                    title: 'صندوق مورد نظر از دیده بان حذف شد.',
+                    timeout: 3000,
+                    leadingAction: {
+                      iconProps: { name: 'undo-2', size: 'sm' },
+                      onClick: () => toggleWatchList(),
+                    },
+                  });
+                  toggleWatchList();
+                }
               }}
               className={cn(
                 'flex cursor-pointer items-center gap-2 bg-white px-3 py-2',

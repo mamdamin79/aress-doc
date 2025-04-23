@@ -301,7 +301,7 @@ const Funds = () => {
                 </th>
                 {updateTableHeaders.map((header, index) => {
                   return (
-                    <>
+                    <React.Fragment key={index}>
                       {index === 0 && (
                         <th
                           key={index}
@@ -578,7 +578,7 @@ const Funds = () => {
                                               header.getContext(),
                                             ),
                                           ).length > 10
-                                            ? 'larg'
+                                            ? 'large'
                                             : 'medium'
                                         }
                                         type={
@@ -658,7 +658,7 @@ const Funds = () => {
                           )}
                         </th>
                       )}
-                    </>
+                    </React.Fragment>
                   );
                 })}
                 <th className="sticky left-10 m-0 mt-5">

@@ -246,7 +246,11 @@
 html {
   direction: rtl;
 }
-
 .table-scroll, table { 
   writing-mode: vertical-rl;
+}
+input[type='password']::-ms-reveal,
+input[type='password']::-ms-clear,
+input[type='password']::-webkit-password-eye {
+  display: none;
 }

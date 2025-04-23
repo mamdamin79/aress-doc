@@ -1,7 +1,7 @@
 import { cn } from '../../../utils/classNames.utils';
 import React from 'react';
 export interface FundsTagProps {
-  color: 'purple' | 'blue' | 'green' | 'yellow';
+  color: 'purple' | 'blue' | 'green' | 'yellow' | 'pink';
 }
 export const FundsTag: React.FC<FundsTagProps> = ({ color }) => {
   return (
@@ -12,6 +12,8 @@ export const FundsTag: React.FC<FundsTagProps> = ({ color }) => {
         color === 'blue' && 'bg-blue-600',
         color === 'purple' && 'bg-purple-600',
         color === 'yellow' && 'bg-yellow-600',
+        color === 'yellow' && 'bg-yellow-600',
+        color === 'pink' && 'bg-pink-600',
       )}
     ></div>
   );

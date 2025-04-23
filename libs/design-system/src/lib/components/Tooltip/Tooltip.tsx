@@ -23,10 +23,7 @@ export const Tooltip: React.FC<Props> = ({
   return (
     <>
       {/* wrapper */}
-      <div
-        data-tooltip-id={id}
-        className="relative cursor-pointer"
-      >
+      <div data-tooltip-id={id} className="relative cursor-pointer">
         {/* here is the component that need a tooltip */}
         {children}
       </div>
@@ -34,7 +31,7 @@ export const Tooltip: React.FC<Props> = ({
         id={id}
         noArrow
         place={position}
-        positionStrategy="fixed"
+        // positionStrategy="fixed"
         offset={offset}
         content={title}
         style={{ padding: '0 8px' }}

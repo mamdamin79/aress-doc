@@ -180,35 +180,44 @@ export const TextField: React.FC<textFieldPropsType> = ({
           },
         )}
       >
-        {trailingIcons.map((icon) =>
-          icon.name === 'eye' ? (
-            <button
-              key={icon.name}
-              type="button"
-              className={cn({ 'text-gray-400': disabled })}
-              onMouseDown={(e) => handleCharacterVisibility(e)}
-            >
-              <Icon
-                size={icon.size}
-                name={visibleCharacter ? 'eye-off' : icon.name}
-              />
-            </button>
-          ) : (
-            inputValue && (
+        {trailingIcons.map((icon) => {
+          const isDisabled = cn({ 'text-gray-400': disabled });
+
+          if (icon.name === 'eye') {
+            return (
               <button
-                key={icon.name}
                 type="button"
-                className={cn({ 'text-gray-400': disabled })}
-                onMouseDown={(e) => {
-                  handleClearInput(e);
-                  icon.onClick?.(inputValue);
-                }}
+                className={isDisabled}
+                onMouseDown={(e) => handleCharacterVisibility(e)}
+              >
+                <Icon
+                  size={icon.size}
+                  name={visibleCharacter ? 'eye-off' : icon.name}
+                />
+              </button>
+            );
+          } else if (icon.name === 'x') {
+            return inputValue ? (
+              <button
+                type="button"
+                className={isDisabled}
+                onMouseDown={(e) => handleClearInput(e)}
               >
                 <Icon size={icon.size} name={icon.name} />
               </button>
-            )
-          ),
-        )}
+            ) : null;
+          } else {
+            return (
+              <button
+                type="button"
+                className={isDisabled}
+                onMouseDown={icon.onClick}
+              >
+                <Icon size={icon.size} name={icon.name} />
+              </button>
+            );
+          }
+        })}
       </div>
       <div
         className={cn('h-[22px] pt-1 text-xs', {

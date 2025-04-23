@@ -1,13 +1,31 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ToastDemo } from './ToastDemo';
 import { Toaster } from 'react-hot-toast';
-import { CustomToast } from './CustomToast';
+import { useCustomToast } from './CustomToast';
 
 // Meta configuration for the Toast component in Storybook
+// Add more detailed documentation
 const meta: Meta<typeof ToastDemo> = {
-  title: 'Components/Toast', // Defines the title in Storybook's UI
-  component: ToastDemo, // Links to the actual component
-  tags: ['autodocs'], // Optional: Add any additional tags for better categorization
+  title: 'Components/Toast',
+  component: ToastDemo,
+  tags: ['autodocs'],
+  parameters: {
+    docs: {
+      description: {
+        component: 'Toast component for displaying notifications with different styles and actions.',
+      },
+    },
+  },
+  argTypes: {
+    message: {
+      description: 'The message to display in the toast',
+      control: 'text',
+    },
+    type: {
+      description: 'The type of toast which determines its styling',
+      control: { type: 'select', options: ['info', 'success', 'error', 'warning'] },
+    },
+  },
 };
 
 export default meta;
@@ -46,7 +64,7 @@ export const Warning: Story = {
 
 export const trailing: Story = {
   render: (args) => {
-    const { showProgressToast } = CustomToast();
+    const { showProgressToast } = useCustomToast();
     return (
       <>
         <div
@@ -77,7 +95,7 @@ export const trailing: Story = {
 };
 export const leading: Story = {
   render: (args) => {
-    const { showProgressToast } = CustomToast();
+    const { showProgressToast } = useCustomToast();
     return (
       <>
         <div

@@ -1,3 +1,4 @@
+'use client';
 import {
   Checkbox as CheckboxHeadlessUIProps,
   Field,
@@ -17,6 +18,7 @@ export function Checkbox(props: CheckboxProps) {
   return (
     <Field className="flex items-center gap-2">
       <CheckboxHeadlessUIProps
+        aria-roledescription="checkbox"
         {...props}
         className="group w-fit"
         id={props.id ?? unikId}

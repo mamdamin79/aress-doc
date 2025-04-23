@@ -1,3 +1,4 @@
+'use client';
 import { cn } from '../../../utils';
 import { Icon, IconProps } from '../Icon';
 import { ButtonMode, ButtonSize } from './Button.types';
@@ -10,24 +11,28 @@ export interface ButtonProps
   size: ButtonSize;
   mode: ButtonMode;
   align: 'center' | 'right';
+  theme?: 'brand' | 'error';
 }
 
 export const Button: React.FC<ButtonProps> = ({
   mode,
+  theme = 'brand',
   size,
   disabled,
   align,
   iconRight,
   isLoading,
   iconLeft,
+  className,
   children,
   ...props
 }) => {
   return (
     <button
+      disabled={disabled}
       {...props}
       className={cn(
-        'group flex w-full items-center gap-2 px-2 py-2 transition-all duration-300',
+        'group flex w-full items-center gap-2 px-2 transition-all duration-300',
         { 'justify-center': align === 'center' },
         { 'justify-start': align === 'right' },
         { 'cursor-default': disabled },
@@ -69,6 +74,7 @@ export const Button: React.FC<ButtonProps> = ({
           'text-brand-600 active:text-brand-800 active:border-brand-800':
             mode === 'underline' && !isLoading && !disabled,
         },
+        className,
       )}
     >
       {isLoading ? (

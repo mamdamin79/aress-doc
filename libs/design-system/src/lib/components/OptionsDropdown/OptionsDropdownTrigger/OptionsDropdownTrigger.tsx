@@ -1,21 +1,26 @@
 import React from 'react';
 import { cn } from '../../../../utils/index';
 import { Icon } from '../../Icon';
-import { dropDownCell } from '../OptionsDropdown.types';
+import {
+  DropdownBg,
+  DropdownCell,
+  DropdownEmphasize,
+  DropdownSize,
+} from '../OptionsDropdown.types';
 import { FundsTag } from '../../FundsTag';
-export interface triggerCell extends dropDownCell {
-  size: 'sm' | 'md' | 'lg';
-  bg: 'primary' | 'secondary';
-  emphasize: 'medium' | 'high';
+export interface triggerCell extends Omit<DropdownCell, 'withCheck'> {
+  size?: DropdownSize;
+  bg?: DropdownBg;
+  emphasize?: DropdownEmphasize;
 }
 export const OptionsDropdownTrigger: React.FC<triggerCell> = ({
   text,
   tag,
   icon,
   isActive,
-  bg,
-  emphasize,
-  size,
+  bg = 'primary',
+  emphasize = 'medium',
+  size = 'md',
 }) => {
   const detectBgStylings = () => {
     if (bg === 'primary') {
