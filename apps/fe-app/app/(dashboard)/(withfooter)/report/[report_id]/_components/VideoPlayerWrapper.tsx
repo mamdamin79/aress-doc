@@ -9,9 +9,9 @@ const videoURL = [
   '/videos/Cinematic Forest-720.mp4',
   '/videos/Cinematic Forest-360.mp4',
 ];
-import { video } from 'libs/design-system/src/lib/components/PlayList';
+import { type Video } from 'design-system';
 export const VideoPlayerWrapper: React.FC = () => {
-  const videos: video[] = [
+  const videos: Video[] = [
     {
       qualities: [
         {
@@ -28,7 +28,6 @@ export const VideoPlayerWrapper: React.FC = () => {
         },
       ],
       title: 'چالش های روزمره در مدیریت یک صندوق سرمایه گذاری',
-      poster: 'https://api.classbon.com/api/picture/20219',
       src: videoURL[1],
       date: '1403/09/22',
     },
@@ -48,12 +47,11 @@ export const VideoPlayerWrapper: React.FC = () => {
         },
       ],
       title: 'چالش های روزمره در مدیریت یک صندوق سرمایه گذاری',
-      poster: 'https://api.classbon.com/api/picture/20219',
       src: videoURL[4],
       date: '1403/11/22',
     },
   ];
-  const [selectedVideo, setSelectedVideo] = useState<video>(videos[0]);
+  const [selectedVideo, setSelectedVideo] = useState<Video>(videos[0]);
 
   return (
     <div className="flex items-center justify-center gap-4">
