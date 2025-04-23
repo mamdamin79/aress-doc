@@ -5,29 +5,20 @@ import { ReportCardBaseWrapper } from './_components/ReportCardBaseWrapper';
 import { ReportDetailPageApiResponse } from './_types/api.types';
 import Markdown from 'react-markdown';
 import { VideoPlayerWrapper } from './_components/VideoPlayerWrapper';
+import { DashboardService, OpenAPI } from '@openapi';
 
-async function fetchReport(id: string) {
-  const API_URL = 'http://185.141.213.190:8000/dashboard/reports';
-  const API_TOKEN =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzM4NjQ2MTQ0fQ.QhCmeagk__8emw5bUKy-UD8EGosFyhf42YbLPtf-sOI';
+async function getData(id: number) {
+  OpenAPI.HEADERS = {
+    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzQ1NDE2MjY5fQ.fYoeXOvstJcWxcoExDW1fwwmvzi0L7aXqgO_3viizU0`,
+  };
 
-  if (!API_URL || !API_TOKEN) {
-    throw new Error('Missing API URL or token');
-  }
-  const res = await fetch(`${API_URL}/${id}`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${API_TOKEN}`,
-    },
-  });
-  if (!res.ok) {
-    return null;
-  }
-  return res.json() as Promise<ReportDetailPageApiResponse>;
+  const user = (await DashboardService.getDashboardReportsByReportId({
+    reportId: id,
+  })) as ReportDetailPageApiResponse;
+  return user;
 }
 const page = async () => {
-  const REPORT = await fetchReport('1');
+  const REPORT = await getData(1);
   return (
     <div className="mx-auto max-w-[1680px]">
       {/* Breadcrumb */}
