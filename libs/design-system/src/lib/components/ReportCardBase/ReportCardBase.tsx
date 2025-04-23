@@ -39,7 +39,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
     }, 3000);
   };
   return (
-    <div className="bg-baseBackground group relative flex w-[616px] flex-col overflow-x-hidden shadow-sm">
+    <div className="bg-baseBackground group relative flex w-[616px] flex-col overflow-hidden shadow-sm">
       <SlideFromLeft isOpen={settingsOpen}>
         <ReportSettings
           onSubmit={mockLoading}
