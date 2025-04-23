@@ -8,6 +8,9 @@ import {
 } from 'design-system';
 import React, { useEffect, useRef, useState } from 'react';
 import { DashboardNumberAndName } from './DashboardNumberAndName';
+import Image from 'next/image';
+import { ReportSelectionPopup } from '../../../components';
+import { tempData } from './ReportCardTestData';
 
 export const SlidersBox: React.FC = () => {
   const [activeRotate, setActiveRotate] = useState<number | null>(null);
@@ -94,7 +97,15 @@ export const SlidersBox: React.FC = () => {
       setTimeout(() => setIsAutoScrolling(false), 800);
     }
   };
-
+  const Images = [
+    '/charts/Report 6.png',
+    '/charts/Report 7.png',
+    '/charts/Report 8.png',
+    '/charts/Report 9.png',
+    '/charts/Report 10.png',
+  ];
+  const [isReportSelectionPopupOpen, setIsReportSelectionPopupOpen] =
+    useState(false);
   return (
     <>
       <div className="flex w-full justify-between">
@@ -110,16 +121,24 @@ export const SlidersBox: React.FC = () => {
           ref={containerRef}
           className="grid w-[616px] grid-cols-1 gap-6 xl:w-[1256px] xl:grid-cols-2"
         >
-          {Array.from({ length: slides }).map((_, index) => (
+          {Images.map((imageURL, index) => (
             <div
+              className="relative h-[336px] w-full overflow-hidden rounded-2xl"
               key={index}
-              data-index={index}
-              id={`slide-${index}`}
-              className="shadow-6xl h-[336px] overflow-hidden rounded-2xl border-2 border-gray-200"
             >
-              <AddReportButton onClick={() => console.log('add')} />
+              <Image
+                fill
+                src={imageURL}
+                alt="slider-image"
+                className="h-full w-full object-cover"
+              />
             </div>
           ))}
+          <div className="shadow-6xl h-[336px] overflow-hidden rounded-2xl border-2 border-gray-200">
+            <AddReportButton
+              onClick={() => setIsReportSelectionPopupOpen(true)}
+            />
+          </div>
         </div>
       </section>
 
@@ -135,6 +154,16 @@ export const SlidersBox: React.FC = () => {
           <AutoRotationOff onClick={() => setActiveRotate(null)} />
         )}
       </div>
+      <ReportSelectionPopup
+        isOpen={isReportSelectionPopupOpen}
+        category="درآمد ثابت"
+        isNew
+        onClose={() => setIsReportSelectionPopupOpen(false)}
+        summary="این گزارش نرخ بازده تا سررسید (YTM) اوراق با درآمد ثابت را به نمایش گذاشته است. این نرخ به ساختار اقتصادی کشور مربوط می‌باشد و اگر تغییرات شدید نرخ با عدم تغییر ساختار اقتصادی همراه باشد به میانگین تاریخی خود باز می‌گردد."
+        title="سهم تاثیر بازدهی صنایع در شاخص"
+        video
+        report={tempData}
+      />
     </>
   );
 };
