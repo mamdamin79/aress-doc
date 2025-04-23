@@ -1,6 +1,7 @@
-import { Footer } from './(layout)/(footer)';
+import { FooterLite } from './(layout)/(footer-lite)';
+import { Header } from './(layout)/(header)';
 import './global.css';
-import { cn, Header } from 'design-system';
+import ReactQueryProvider from './providers/ReactQueryProvider';
 
 export const metadata = {
   title: 'Welcome to apps/fe-app',
@@ -14,11 +15,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={cn('sdfsdf', 'dfsdfs')}>
-        <Header />
-        {children}
-        <Footer />
-      </body>
+      <ReactQueryProvider>
+        <body>{children}</body>
+      </ReactQueryProvider>
     </html>
   );
 }

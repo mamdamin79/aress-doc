@@ -1,0 +1,1079 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Aress FDP",
+    "summary": "API Docs for Aress API",
+    "description": "\nAress API helps you get data from Aress Server. 🚀\nThere are several routes:\n\n## Users\nEndpoints for captcha, login, signup, and user data are in this section\n",
+    "version": "0.0.1"
+  },
+  "tags": [
+    {
+      "name": "users",
+      "description": "Operations with users. In order to **login** for a user, first you must get **captcha** using _/users/login_captcha_ endpoint. Each captcha has a unique identifier and a value, which is _base64_ encoded format of image or audio. Then user must solve captcha value and send it along with his/her credentials to _/users/login_ endpoint. You can use **Authorize** button on top of this page to login for test user."
+    }
+  ],
+  "paths": {
+    "/users/login_captcha": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Captcha For Login",
+        "description": "Get captcha for a user. Captcha can be an **image** or an **audio**, depending on the **captchaType** param. In case of an image, you can also pass **captchaWidth** and **captchaHeight** for customizing the size of generated image.",
+        "operationId": "captcha_for_login_users_login_captcha_get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "captchaWidth",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 50,
+              "default": 280,
+              "title": "Captchawidth"
+            }
+          },
+          {
+            "name": "captchaHeight",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 50,
+              "default": 90,
+              "title": "Captchaheight"
+            }
+          },
+          {
+            "name": "captchaType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/CaptchaType"
+                }
+              ],
+              "default": "image",
+              "title": "Captchatype"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaptchaApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Login For Access Token",
+        "description": "Get access token using credentials for users. You must provide solved captcha value (_captcha_) and unique identifier of catpcha (_captchaUid_), along with user credentials (_username_ and _password_).**Important note**: _username_ can be either username, email, phone number or national code of user.",
+        "operationId": "login_for_access_token_users_login_post",
+        "parameters": [
+          {
+            "name": "captchaUid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Captchauid"
+            }
+          },
+          {
+            "name": "captcha",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Captcha"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_login_for_access_token_users_login_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/token": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Test User Access Token",
+        "description": "Get access token using credentials for test user. This method only works for **test** user. For login flow of real users, you must use **login_captcha** and **login** endpoints.",
+        "operationId": "test_user_access_token_users_token_post",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_test_user_access_token_users_token_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/me": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get Current User",
+        "description": "Get data of current logged in user.",
+        "operationId": "get_current_user_users_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/AressApiUser"
+                    },
+                    {
+                      "$ref": "#/components/schemas/AnonymousApiUser"
+                    }
+                  ],
+                  "title": "Response Get Current User Users Me Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/dashboard/reports": {
+      "get": {
+        "tags": [
+          "dashboard"
+        ],
+        "summary": "Report List",
+        "description": "Get list of reports.",
+        "operationId": "report_list_dashboard_reports_get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "onlyFavorite",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Onlyfavorite"
+            }
+          },
+          {
+            "name": "onlyNew",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Onlynew"
+            }
+          },
+          {
+            "name": "onlyHavingVideo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Onlyhavingvideo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FinancialReportListItemApiModel"
+                  },
+                  "title": "Response Report List Dashboard Reports Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/reports/{report_id}": {
+      "get": {
+        "tags": [
+          "dashboard"
+        ],
+        "summary": "Report Details",
+        "description": "Get list of reports.",
+        "operationId": "report_details_dashboard_reports__report_id__get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "report_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Report Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FinancialReportDetailsApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/reports/categories": {
+      "get": {
+        "tags": [
+          "dashboard"
+        ],
+        "summary": "Report Categories",
+        "description": "Get list of report categories.",
+        "operationId": "report_categories_dashboard_reports_categories_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/FinancialReportCategoryApiModel"
+                  },
+                  "type": "array",
+                  "title": "Response Report Categories Dashboard Reports Categories Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/reports/{report_id}/favorite": {
+      "post": {
+        "tags": [
+          "dashboard"
+        ],
+        "summary": "Add Report To Favorites",
+        "description": "Add a report to favorites",
+        "operationId": "add_report_to_favorites_dashboard_reports__report_id__favorite_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "report_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Report Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserReportFavoriteStatus"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "dashboard"
+        ],
+        "summary": "Remove Report From Favorites",
+        "description": "Remove a report from favorites",
+        "operationId": "remove_report_from_favorites_dashboard_reports__report_id__favorite_delete",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "report_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Report Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserReportFavoriteStatus"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AnonymousApiUser": {
+        "properties": {},
+        "type": "object",
+        "title": "AnonymousApiUser"
+      },
+      "AressApiUser": {
+        "properties": {
+          "identifier": {
+            "type": "integer",
+            "title": "Identifier",
+            "description": "Unique identifier of user"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username",
+            "description": "Username for the user"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email",
+            "description": "Email for the user."
+          },
+          "phoneNumber": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Phonenumber",
+            "description": "Phone number of the user."
+          },
+          "nationalCode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nationalcode",
+            "description": "National code of the user."
+          },
+          "active": {
+            "type": "boolean",
+            "title": "Active",
+            "description": "Whether this user is active or not, is always \"true\" for logged in user."
+          }
+        },
+        "type": "object",
+        "required": [
+          "identifier",
+          "username",
+          "email",
+          "phoneNumber",
+          "nationalCode",
+          "active"
+        ],
+        "title": "AressApiUser"
+      },
+      "Body_login_for_access_token_users_login_post": {
+        "properties": {
+          "grant_type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "password"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grant Type"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "scope": {
+            "type": "string",
+            "title": "Scope",
+            "default": ""
+          },
+          "client_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Secret"
+          }
+        },
+        "type": "object",
+        "required": [
+          "username",
+          "password"
+        ],
+        "title": "Body_login_for_access_token_users_login_post"
+      },
+      "Body_test_user_access_token_users_token_post": {
+        "properties": {
+          "grant_type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "password"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grant Type"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "scope": {
+            "type": "string",
+            "title": "Scope",
+            "default": ""
+          },
+          "client_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Secret"
+          }
+        },
+        "type": "object",
+        "required": [
+          "username",
+          "password"
+        ],
+        "title": "Body_test_user_access_token_users_token_post"
+      },
+      "CaptchaApiModel": {
+        "properties": {
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "uid": {
+            "type": "integer",
+            "title": "Uid"
+          },
+          "required": {
+            "type": "boolean",
+            "title": "Required"
+          }
+        },
+        "type": "object",
+        "required": [
+          "value",
+          "uid",
+          "required"
+        ],
+        "title": "CaptchaApiModel"
+      },
+      "CaptchaType": {
+        "type": "string",
+        "enum": [
+          "image",
+          "audio"
+        ],
+        "title": "CaptchaType"
+      },
+      "FinancialReportCategoryApiModel": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "identifier": {
+            "type": "integer",
+            "title": "Identifier",
+            "description": "Unique identifier of report category"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "identifier"
+        ],
+        "title": "FinancialReportCategoryApiModel"
+      },
+      "FinancialReportDetailsApiModel": {
+        "properties": {
+          "identifier": {
+            "type": "integer",
+            "title": "Identifier",
+            "description": "Unique identifier of report"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "category": {
+            "$ref": "#/components/schemas/FinancialReportCategoryApiModel"
+          },
+          "image": {
+            "type": "string",
+            "title": "Image"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "htmlDescription": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Htmldescription"
+          },
+          "video": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/VideoApiModel"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "userFavorite": {
+            "type": "boolean",
+            "title": "Userfavorite",
+            "default": false
+          },
+          "isNew": {
+            "type": "boolean",
+            "title": "Isnew",
+            "default": false
+          },
+          "relatedReports": {
+            "items": {
+              "$ref": "#/components/schemas/FinancialReportListItemApiModel"
+            },
+            "type": "array",
+            "title": "Relatedreports"
+          }
+        },
+        "type": "object",
+        "required": [
+          "identifier",
+          "title",
+          "category",
+          "image",
+          "summary",
+          "htmlDescription",
+          "video",
+          "relatedReports"
+        ],
+        "title": "FinancialReportDetailsApiModel"
+      },
+      "FinancialReportListItemApiModel": {
+        "properties": {
+          "identifier": {
+            "type": "integer",
+            "title": "Identifier",
+            "description": "Unique identifier of report"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "category": {
+            "$ref": "#/components/schemas/FinancialReportCategoryApiModel"
+          },
+          "image": {
+            "type": "string",
+            "title": "Image"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "video": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/VideoApiModel"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "userFavorite": {
+            "type": "boolean",
+            "title": "Userfavorite",
+            "default": false
+          },
+          "isNew": {
+            "type": "boolean",
+            "title": "Isnew",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "identifier",
+          "title",
+          "category",
+          "image",
+          "summary",
+          "video"
+        ],
+        "title": "FinancialReportListItemApiModel"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "TokenApiModel": {
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "title": "Access Token"
+          },
+          "token_type": {
+            "type": "string",
+            "title": "Token Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "access_token",
+          "token_type"
+        ],
+        "title": "TokenApiModel"
+      },
+      "UserReportFavoriteStatus": {
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "title": "Userid"
+          },
+          "reportId": {
+            "type": "integer",
+            "title": "Reportid"
+          },
+          "isFavorite": {
+            "type": "boolean",
+            "title": "Isfavorite"
+          }
+        },
+        "type": "object",
+        "required": [
+          "userId",
+          "reportId",
+          "isFavorite"
+        ],
+        "title": "UserReportFavoriteStatus"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "VideoApiModel": {
+        "properties": {
+          "identifier": {
+            "type": "integer",
+            "title": "Identifier",
+            "description": "Unique identifier of video"
+          },
+          "mp4Video1080P": {
+            "type": "string",
+            "title": "Mp4Video1080P",
+            "description": "Url of mp4 video file in 1080p"
+          },
+          "mp4Video1080PSizeBytes": {
+            "type": "integer",
+            "title": "Mp4Video1080Psizebytes",
+            "description": "Size of 1080p mp4 video file in bytes"
+          },
+          "mp4Video720P": {
+            "type": "string",
+            "title": "Mp4Video720P",
+            "description": "Url of mp4 video file in 720p"
+          },
+          "mp4Video720PSizeBytes": {
+            "type": "integer",
+            "title": "Mp4Video720Psizebytes",
+            "description": "Size of 720p mp4 video file in bytes"
+          },
+          "mp4Video480P": {
+            "type": "string",
+            "title": "Mp4Video480P",
+            "description": "Url of mp4 video file in 480p"
+          },
+          "mp4Video480PSizeBytes": {
+            "type": "integer",
+            "title": "Mp4Video480Psizebytes",
+            "description": "Size of 480p mp4 video file in bytes"
+          },
+          "mp4Video360P": {
+            "type": "string",
+            "title": "Mp4Video360P",
+            "description": "Url of mp4 video file in 360p"
+          },
+          "mp4Video360PSizeBytes": {
+            "type": "integer",
+            "title": "Mp4Video360Psizebytes",
+            "description": "Size of 360p mp4 video file in bytes"
+          },
+          "mp4Video240P": {
+            "type": "string",
+            "title": "Mp4Video240P",
+            "description": "Url of mp4 video file in 240p"
+          },
+          "mp4Video240PSizeBytes": {
+            "type": "integer",
+            "title": "Mp4Video240Psizebytes",
+            "description": "Size of 240p mp4 video file in bytes"
+          },
+          "durationInSeconds": {
+            "type": "number",
+            "title": "Durationinseconds",
+            "description": "Duration of video in seconds"
+          },
+          "poster1080P": {
+            "type": "string",
+            "title": "Poster1080P",
+            "description": "Poster (placeholder) image of video in medium size (1920x1080)"
+          },
+          "poster720P": {
+            "type": "string",
+            "title": "Poster720P",
+            "description": "Poster (placeholder) image of video in medium size (1280x720)"
+          },
+          "poster480P": {
+            "type": "string",
+            "title": "Poster480P",
+            "description": "Poster (placeholder) image of video in medium size (854x480)"
+          },
+          "poster360P": {
+            "type": "string",
+            "title": "Poster360P",
+            "description": "Poster (placeholder) image of video in medium size (640x360)"
+          },
+          "poster240P": {
+            "type": "string",
+            "title": "Poster240P",
+            "description": "Poster (placeholder) image of video in medium size (426x240)"
+          },
+          "thumbnailImage": {
+            "type": "string",
+            "title": "Thumbnailimage",
+            "description": "Thumbnail of video"
+          }
+        },
+        "type": "object",
+        "required": [
+          "identifier",
+          "mp4Video1080P",
+          "mp4Video1080PSizeBytes",
+          "mp4Video720P",
+          "mp4Video720PSizeBytes",
+          "mp4Video480P",
+          "mp4Video480PSizeBytes",
+          "mp4Video360P",
+          "mp4Video360PSizeBytes",
+          "mp4Video240P",
+          "mp4Video240PSizeBytes",
+          "durationInSeconds",
+          "poster1080P",
+          "poster720P",
+          "poster480P",
+          "poster360P",
+          "poster240P",
+          "thumbnailImage"
+        ],
+        "title": "VideoApiModel"
+      }
+    },
+    "securitySchemes": {
+      "OAuth2PasswordBearer": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "scopes": {},
+            "tokenUrl": "users/token"
+          }
+        }
+      }
+    }
+  }
+}

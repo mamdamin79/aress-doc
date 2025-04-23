@@ -12,6 +12,9 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: true,
   },
+  images: {
+    domains: ["placehold.co","picsum.photos"],
+  },
   transpilePackages: ['lucide-react'], // add this
 };
 
