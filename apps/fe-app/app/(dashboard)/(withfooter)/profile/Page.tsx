@@ -1,7 +1,7 @@
 import React from 'react';
 import { ProfileSidebar } from 'design-system';
 import { AressApiUser, OpenAPI, UsersService } from '@openapi';
-import { ProfileForm } from 'apps/fe-app/app/components';
+import { ProfileForm } from '../../../components';
 async function getData() {
   OpenAPI.HEADERS = {
     Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzQ1NDE2MjY5fQ.fYoeXOvstJcWxcoExDW1fwwmvzi0L7aXqgO_3viizU0`,

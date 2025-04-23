@@ -34,20 +34,20 @@ export const VideoPlayerWrapper: React.FC = () => {
     {
       qualities: [
         {
-          src: videoURL[3],
+          src: videoURL[0],
           label: '1080',
         },
         {
-          src: videoURL[4],
+          src: videoURL[1],
           label: '720',
         },
         {
-          src: videoURL[5],
+          src: videoURL[2],
           label: '360',
         },
       ],
       title: 'چالش های روزمره در مدیریت یک صندوق سرمایه گذاری',
-      src: videoURL[4],
+      src: videoURL[0],
       date: '1403/11/22',
     },
   ];
