@@ -4,22 +4,20 @@ import { cn } from '../../../../../utils/classNames.utils';
 import { PLAYBACK_RATES } from './PlayerOptions.constants';
 import { Tooltip } from '../../../Tooltip';
 import { SharePopUp } from '../../../SharePopUp';
+import { VideoQuality } from '../../VideoPlayer.types';
 
 type Props = {
   quality: {
     src: string;
     label: string;
   };
-  changeQuality: (quality: { src: string; label: string }) => void;
+  changeQuality: (quality: VideoQuality) => void;
   fullScreen: () => void;
   pictureInPicture: () => void;
   setPlaybackRate: (rate: number) => void;
   playBackRate: number;
   isFullscreen: boolean;
-  qualities: {
-    src: string;
-    label: string;
-  }[];
+  qualities: VideoQuality[];
 };
 
 export const PlayerOptions: React.FC<Props> = React.memo(
@@ -31,7 +29,6 @@ export const PlayerOptions: React.FC<Props> = React.memo(
     qualities,
     quality,
     changeQuality,
-    isFullscreen,
   }) => {
     const [open, setOpen] = useState(false);
     const [openRate, setOpenRate] = useState(false);
@@ -81,14 +78,14 @@ export const PlayerOptions: React.FC<Props> = React.memo(
             <button
               onClick={() => setOpen(!open)}
               className={cn(
-                'text-white relative flex items-center justify-center p-1 mt-1   duration-300 transition-all',
-                { 'rotate-12': open }
+                'relative mt-1 flex items-center justify-center p-1 text-white transition-all duration-300',
+                { 'rotate-12': open },
               )}
             >
-              <span className="sm:block hidden">
+              <span className="hidden sm:block">
                 <Icon name="settings" />
               </span>
-              <span className="sm:hidden block">
+              <span className="block sm:hidden">
                 <Icon size="sm" name="settings" />
               </span>
             </button>
@@ -97,9 +94,9 @@ export const PlayerOptions: React.FC<Props> = React.memo(
             <div
               dir="rtl"
               className={cn(
-                'w-60 overflow-hidden bg-gray-900/90 z-20 border-gray-700 opacity-0 rounded-md transition-all duration-300  ease-in-out border-[1.5px] absolute bottom-20 -right-20',
+                'absolute -right-20 bottom-20 z-20 w-60 overflow-hidden rounded-md border-[1.5px] border-gray-700 bg-gray-900/90 opacity-0 transition-all duration-300 ease-in-out',
                 { 'opacity-100': open },
-                { 'pointer-events-none': !open }
+                { 'pointer-events-none': !open },
               )}
               style={{
                 maxHeight: openRate || openQuality ? '400px' : '100px',
@@ -108,34 +105,34 @@ export const PlayerOptions: React.FC<Props> = React.memo(
               <div
                 onClick={() => setOpenRate(true)}
                 className={cn(
-                  'p-3 cursor-pointer group flex w-full items-center justify-between transition-all relative right-0 duration-700 ',
+                  'group relative right-0 flex w-full cursor-pointer items-center justify-between p-3 transition-all duration-700',
                   { 'absolute right-full opacity-0 duration-200': openRate },
-                  { 'absolute right-full opacity-0 duration-200': openQuality }
+                  { 'absolute right-full opacity-0 duration-200': openQuality },
                 )}
               >
-                <span className="flex-row-reverse gap-2 items-center font-medium text-white text-sm flex justify-between ">
+                <span className="flex flex-row-reverse items-center justify-between gap-2 text-sm font-medium text-white">
                   سرعت پخش
-                  <span className="sm:block hidden">
+                  <span className="hidden sm:block">
                     <Icon name="circle-gauge" />
                   </span>
-                  <span className="sm:hidden block">
+                  <span className="block sm:hidden">
                     <Icon size="sm" name="circle-gauge" />
                   </span>
                 </span>
-                <span className="text-white flex items-center gap-1">
+                <span className="flex items-center gap-1 text-white">
                   {playBackRate}
-                  <span className="sm:block hidden">
+                  <span className="hidden sm:block">
                     <Icon name="chevron-left" />
                   </span>
-                  <span className="sm:hidden block">
+                  <span className="block sm:hidden">
                     <Icon size="sm" name="chevron-left" />
                   </span>
                 </span>
               </div>
               <div
                 className={cn(
-                  ' w-full text-white relative h-24 overflow-auto md:h-full transition-all  duration-700 bottom-0  right-full',
-                  { 'relative right-0 ': openRate }
+                  'relative bottom-0 right-full h-24 w-full overflow-auto text-white transition-all duration-700 md:h-full',
+                  { 'relative right-0': openRate },
                 )}
                 style={{
                   maxHeight: openRate ? '500px' : '0',
@@ -145,14 +142,14 @@ export const PlayerOptions: React.FC<Props> = React.memo(
                   <li
                     onClick={() => setOpenRate(false)}
                     className={cn(
-                      'hover:bg-gray-800/80 transition-colors duration-700 py-2 cursor-pointer flex gap-2 pr-3'
+                      'flex cursor-pointer gap-2 py-2 pr-3 transition-colors duration-700 hover:bg-gray-800/80',
                     )}
                   >
                     <span>
-                      <span className="sm:block hidden">
+                      <span className="hidden sm:block">
                         <Icon name="chevron-right" />
                       </span>
-                      <span className="sm:hidden block">
+                      <span className="block sm:hidden">
                         <Icon size="sm" name="chevron-right" />
                       </span>
                     </span>
@@ -162,16 +159,16 @@ export const PlayerOptions: React.FC<Props> = React.memo(
                     <li
                       onClick={() => setPlaybackRate(item)}
                       className={cn(
-                        'hover:bg-gray-800/80 transition-colors duration-700 py-2 cursor-pointer flex gap-2 pr-10',
-                        { 'pr-3': playBackRate === item }
+                        'flex cursor-pointer gap-2 py-2 pr-10 transition-colors duration-700 hover:bg-gray-800/80',
+                        { 'pr-3': playBackRate === item },
                       )}
                     >
                       {playBackRate === item && (
                         <span>
-                          <span className="sm:block hidden">
+                          <span className="hidden sm:block">
                             <Icon name="check" />
                           </span>
-                          <span className="sm:hidden block">
+                          <span className="block sm:hidden">
                             <Icon size="sm" name="check" />
                           </span>
                         </span>
@@ -184,33 +181,33 @@ export const PlayerOptions: React.FC<Props> = React.memo(
               <div
                 onClick={() => setOpenQuality(true)}
                 className={cn(
-                  'p-3 cursor-pointer group flex w-full items-center justify-between transition-all  relative right-0 duration-700 ',
+                  'group relative right-0 flex w-full cursor-pointer items-center justify-between p-3 transition-all duration-700',
                   {
-                    'scale-y-100 absolute right-full opacity-0 duration-200 ':
+                    'absolute right-full scale-y-100 opacity-0 duration-200':
                       openRate,
                   },
                   {
-                    'scale-y-100 absolute right-full opacity-0 duration-200':
+                    'absolute right-full scale-y-100 opacity-0 duration-200':
                       openQuality,
-                  }
+                  },
                 )}
               >
-                <span className="flex-row-reverse gap-2 items-center font-medium text-white text-sm flex justify-between ">
+                <span className="flex flex-row-reverse items-center justify-between gap-2 text-sm font-medium text-white">
                   کیفیت
-                  <span className="sm:block hidden">
+                  <span className="hidden sm:block">
                     <Icon name="sliders-horizontal" />
                   </span>
-                  <span className="sm:hidden block">
+                  <span className="block sm:hidden">
                     <Icon size="sm" name="sliders-horizontal" />
                   </span>
                 </span>
-                <span className="text-white flex items-center gap-1">
+                <span className="flex items-center gap-1 text-white">
                   {quality.label}
                   <span>
-                    <span className="sm:block hidden">
+                    <span className="hidden sm:block">
                       <Icon name="chevron-left" />
                     </span>
-                    <span className="sm:hidden block">
+                    <span className="block sm:hidden">
                       <Icon size="sm" name="chevron-left" />
                     </span>
                   </span>
@@ -219,9 +216,9 @@ export const PlayerOptions: React.FC<Props> = React.memo(
 
               <div
                 className={cn(
-                  ' w-full text-white relative h-24 md:h-full overflow-auto bottom-0 transition-all  duration-700 opacity-0 right-full',
-                  { 'scale-y-100 opacity-0 right-full relative ': openRate },
-                  { 'scale-y-100 right-0 opacity-100 relative': openQuality }
+                  'relative bottom-0 right-full h-24 w-full overflow-auto text-white opacity-0 transition-all duration-700 md:h-full',
+                  { 'relative right-full scale-y-100 opacity-0': openRate },
+                  { 'relative right-0 scale-y-100 opacity-100': openQuality },
                 )}
                 style={{
                   maxHeight: openQuality ? '500px' : '0',
@@ -231,14 +228,14 @@ export const PlayerOptions: React.FC<Props> = React.memo(
                   <li
                     onClick={() => setOpenQuality(false)}
                     className={cn(
-                      'hover:bg-gray-800/80 transition-colors duration-700 py-2 cursor-pointer flex gap-2 pr-3'
+                      'flex cursor-pointer gap-2 py-2 pr-3 transition-colors duration-700 hover:bg-gray-800/80',
                     )}
                   >
                     <span>
-                      <span className="sm:block hidden">
+                      <span className="hidden sm:block">
                         <Icon name="chevron-right" />
                       </span>
-                      <span className="sm:hidden block">
+                      <span className="block sm:hidden">
                         <Icon size="sm" name="chevron-right" />
                       </span>
                     </span>
@@ -248,16 +245,16 @@ export const PlayerOptions: React.FC<Props> = React.memo(
                     <li
                       onClick={() => changeQuality(item)}
                       className={cn(
-                        'hover:bg-gray-800/80 transition-colors duration-700 py-2 cursor-pointer flex gap-2 pr-10',
-                        { 'pr-3': quality.label === item.label }
+                        'flex cursor-pointer gap-2 py-2 pr-10 transition-colors duration-700 hover:bg-gray-800/80',
+                        { 'pr-3': quality.label === item.label },
                       )}
                     >
                       {quality.label === item.label && (
                         <span>
-                          <span className="sm:block hidden">
+                          <span className="hidden sm:block">
                             <Icon name="check" />
                           </span>
-                          <span className="sm:hidden block">
+                          <span className="block sm:hidden">
                             <Icon size="sm" name="check" />
                           </span>
                         </span>
@@ -272,39 +269,39 @@ export const PlayerOptions: React.FC<Props> = React.memo(
         </div>
         <Tooltip
           offset={48}
-          className="!z-30 !right-1"
+          className="!right-1 !z-30"
           title="(i) picture-in-picture حالت"
         >
           <button
             onClick={pictureInPicture}
-            className="text-white flex items-center justify-center p-1  duration-300 transition-all"
+            className="flex items-center justify-center p-1 text-white transition-all duration-300"
           >
-            <span className="sm:block hidden">
+            <span className="hidden sm:block">
               <Icon name="picture-in-picture-2" />
             </span>
-            <span className="sm:hidden block">
+            <span className="block sm:hidden">
               <Icon size="sm" name="picture-in-picture-2" />
             </span>
           </button>
         </Tooltip>
         <Tooltip
           offset={48}
-          className="!z-30 !right-1"
+          className="!right-1 !z-30"
           title="(f) حالت تمام صفحه "
         >
           <button
             onClick={fullScreen}
-            className="text-white flex items-center justify-center p-1  duration-300 transition-all"
+            className="flex items-center justify-center p-1 text-white transition-all duration-300"
           >
-            <span className="sm:block hidden">
+            <span className="hidden sm:block">
               <Icon name="fullscreen" />
             </span>
-            <span className="sm:hidden block">
+            <span className="block sm:hidden">
               <Icon size="sm" name="fullscreen" />
             </span>
           </button>
         </Tooltip>
       </div>
     );
-  }
+  },
 );

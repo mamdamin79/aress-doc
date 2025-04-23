@@ -4,7 +4,7 @@ import { AressApiUser, OpenAPI, UsersService } from '@openapi';
 import { ProfileForm } from 'apps/fe-app/app/components';
 async function getData() {
   OpenAPI.HEADERS = {
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzQxMzM1NzMyfQ.nICY2AM83yNpJSr1y0-dgnbx_dl9xPY_Xy5ucj9kC9s`,
+    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzQ1NDE2MjY5fQ.fYoeXOvstJcWxcoExDW1fwwmvzi0L7aXqgO_3viizU0`,
   };
 
   const user = (await UsersService.getUsersMe()) as AressApiUser;
