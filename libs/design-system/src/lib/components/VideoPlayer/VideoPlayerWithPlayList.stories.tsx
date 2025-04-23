@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { Meta, StoryFn } from '@storybook/react';
 import { VideoPlayer } from './VideoPlayer';
-import { PlayList, video } from '../PlayList';
+import { PlayList } from '../PlayList';
 import video1080 from '../../../assets/videos/The Breathtaking Beauty of Nature1080p.mp4';
 import video720 from '../../../assets/videos/The Breathtaking Beauty of Nature720p.mp4';
 import video360 from '../../../assets/videos/The Breathtaking Beauty of Nature360p.mp4';
 import video1080forest from '../../../assets/videos/Cinematic Forest-1080.mp4';
 import video720forest from '../../../assets/videos/Cinematic Forest-720.mp4';
 import video360forest from '../../../assets/videos/Cinematic Forest-360.mp4';
+import { Video } from './VideoPlayer.types';
 
 export default {
   title: 'Components/VideoPlayerWithPlaylist',
@@ -15,7 +16,7 @@ export default {
 } as Meta;
 
 export const Default: StoryFn = () => {
-  const videos: video[] = [
+  const videos: Video[] = [
     {
       qualities: [
         {
@@ -57,15 +58,15 @@ export const Default: StoryFn = () => {
       date: '1403/11/22',
     },
   ];
-  const [selectedVideo, setSelectedVideo] = useState<video>(videos[0]);
+  const [selectedVideo, setSelectedVideo] = useState<Video>(videos[0]);
 
   return (
-    <div className="flex flex-row-reverse gap-6  max-w-7xl container mx-auto">
+    <div className="container mx-auto flex max-w-7xl flex-row-reverse gap-6">
       <VideoPlayer
         videos={videos}
         setSelectedVideo={setSelectedVideo}
         {...selectedVideo}
-        className="w-full h-[459px]"
+        className="h-[459px] w-full"
         selectedVideo={selectedVideo}
       />
       <PlayList
