@@ -1,8 +1,8 @@
 'use client';
 import { useForm, Controller } from 'react-hook-form';
-import { BulletList, Button, TextField } from 'design-system';
+import { BulletList, Button, cn, TextField } from 'design-system';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { NewPasswordFormValues } from './NewPasswordForm.types';
 import {
   LOWERCASE_UPPERCASE_REGEX,
@@ -11,9 +11,11 @@ import {
 } from './NewPasswordForm.constants';
 export interface NewPasswordFormProps {
   onSubmit: (values: NewPasswordFormValues) => void;
+  isStandAlone?: boolean;
 }
 export const NewPasswordForm: React.FC<NewPasswordFormProps> = ({
   onSubmit,
+  isStandAlone = true,
 }) => {
   const {
     control,
@@ -39,7 +41,10 @@ export const NewPasswordForm: React.FC<NewPasswordFormProps> = ({
   return (
     <form
       dir="rtl"
-      className="flex w-full flex-col gap-6 rounded-3xl border border-gray-300 p-6"
+      className={cn(
+        'flex w-full flex-col gap-6 rounded-3xl',
+        isStandAlone && 'border border-gray-300 p-6',
+      )}
       onSubmit={handleSubmit(onSubmit)}
     >
       <h3 className="text-center text-xl font-medium">بازنشانی رمز عبور</h3>
@@ -55,9 +60,15 @@ export const NewPasswordForm: React.FC<NewPasswordFormProps> = ({
                   message: 'این فیلد اجباری است.',
                 },
 
-                validate: () => {
-                  return Object.values(validations).every(Boolean);
+                validate: (value) => {
+                  const v = {
+                    minLength: value.length >= MIN_PASSWORD_LENGTH,
+                    lowerAndUpperCase: LOWERCASE_UPPERCASE_REGEX.test(value),
+                    numberOrSpecialChar: NUMBER_SPECIAL_CHAR_REGEX.test(value),
+                  };
+                  return Object.values(v).every(Boolean) || 'رمز عبور معتبر نیست';
                 },
+                
               }}
               render={({ field, fieldState }) => (
                 <TextField
@@ -155,12 +166,14 @@ export const NewPasswordForm: React.FC<NewPasswordFormProps> = ({
           >
             تایید
           </Button>
-          <Link
-            href="/login"
-            className="text-brand-600 text-md text-center font-medium"
-          >
-            بازگشت به صفحه ورود
-          </Link>
+          {isStandAlone && (
+            <Link
+              href="/login"
+              className="text-brand-600 text-md text-center font-medium"
+            >
+              بازگشت به صفحه ورود
+            </Link>
+          )}
         </div>
       </div>
     </form>
