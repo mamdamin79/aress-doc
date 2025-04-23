@@ -6,15 +6,16 @@ type Props = {
   hoverTime: number | null;
   duration: number;
   videoRef: React.RefObject<HTMLVideoElement>;
+  spriteBaseUrl?: string;
 };
 
 export const PlayerThumbnail: React.FC<Props> = React.memo(
-  ({ hoverTime, duration }) => {
+  ({ hoverTime, duration, spriteBaseUrl }) => {
     const thumbnailPreviewRef = useRef<HTMLDivElement>(null);
 
     const getSpriteSrc = (time: number) => {
       const spriteIndex = Math.floor(time / 50);
-      return `https://i.ytimg.com/sb/IUN664s7N-c/storyboard3_L2/M${spriteIndex}.jpg?sqp=-oaymwENSDfyq4qpAwVwAcABBqLzl_8DBgj1q72HBg==&sigh=rs%24AOn4CLBhd7rnvFipMzPBtjexgttEKWrSKA`;
+      return `${spriteBaseUrl}/M${spriteIndex}.jpg`;
     };
 
     const frameWidth = 160;
@@ -25,7 +26,7 @@ export const PlayerThumbnail: React.FC<Props> = React.memo(
     const currentFrame = hoverTime
       ? Math.min(
           Math.floor(((hoverTime % 50) / 50) * totalFrames),
-          totalFrames - 1
+          totalFrames - 1,
         )
       : null;
 
@@ -34,11 +35,15 @@ export const PlayerThumbnail: React.FC<Props> = React.memo(
         style={{
           left: `${(hoverTime / duration) * 100}%`,
         }}
-        className={cn("absolute -top-32 translate-x-[-50%] ",{"translate-x-[-100%]":hoverTime/duration*100 > 90},{"translate-x-[0%]":hoverTime/duration*100 < 10})}
+        className={cn(
+          'absolute -top-32 translate-x-[-50%]',
+          { 'translate-x-[-100%]': (hoverTime / duration) * 100 > 90 },
+          { 'translate-x-[0%]': (hoverTime / duration) * 100 < 10 },
+        )}
       >
         <div
           ref={thumbnailPreviewRef}
-          className="relative bg-black border-[1.5px] shadow-3xl rounded-md  border-white"
+          className="shadow-3xl relative rounded-md border-[1.5px] border-white bg-black"
           style={{
             width: frameWidth,
             height: frameHeight,
@@ -48,10 +53,10 @@ export const PlayerThumbnail: React.FC<Props> = React.memo(
             }px ${-Math.floor(currentFrame / rowFrames) * frameHeight}px`,
           }}
         ></div>
-        <div className="relative mx-auto text-center text-sm font-medium mt-2  text-white">
+        <div className="relative mx-auto mt-2 text-center text-sm font-medium text-white">
           {secondsToHHMMSS(hoverTime)}
         </div>
       </div>
     ) : null;
-  }
+  },
 );

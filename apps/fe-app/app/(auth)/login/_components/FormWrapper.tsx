@@ -1,8 +1,8 @@
 'use client';
 import React from 'react';
-import { LoginForm } from '../../components';
 import { useRouter } from 'next/navigation';
-import { LoginFormValues } from '../../components/LoginForm/LoginForm.types';
+import { LoginForm } from '../../../components';
+import { LoginFormValues } from '../../../components/LoginForm/LoginForm.types';
 
 export const FormWrapper: React.FC = () => {
   const router = useRouter();

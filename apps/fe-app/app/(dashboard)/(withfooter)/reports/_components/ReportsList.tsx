@@ -24,14 +24,21 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
   return (
     <>
       <div className="flex items-center justify-center">
-        <div className='w-[380px] flex items-center gap-2'>
+        <div className="flex w-[380px] items-center gap-2">
           <SearchBar />
           <FilterReport />
         </div>
       </div>
-      <div className="grid grid-cols-1 items-center xl:grid-cols-2 3xl:grid-cols-3 gap-4">
+      <div className="3xl:grid-cols-3 grid grid-cols-1 items-center gap-4 xl:grid-cols-2">
         {reports.map((report, idx) => (
-          <ReportCard  categoryType={report.category.title} reportSubscription='رایگان' fixedBrief={true} key={report.identifier} {...report} />
+          <ReportCard
+            link="/report/1"
+            categoryType={report.category.title}
+            reportSubscription="رایگان"
+            fixedBrief={true}
+            key={report.identifier}
+            {...report}
+          />
         ))}
       </div>
     </>

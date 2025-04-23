@@ -43,8 +43,8 @@ export const NestedDropdownItem: React.FC<NestedDropdownItemProps> = ({
       <div
         className={cn(
           'flex h-10 w-full items-center justify-between rounded-md border border-gray-300 px-2 transition-colors',
-          status === 'normal' && 'hover:border-1.5 hover:border-gray-500',
-          status === 'error' && 'border-1.5 border-red-600',
+          status === 'normal' && 'hover:border-gray-500',
+          status === 'error' && 'border-red-600',
           status === 'opened' && 'border-brand-600 border-2',
         )}
         onClick={onClick}
@@ -62,7 +62,7 @@ export const NestedDropdownItem: React.FC<NestedDropdownItemProps> = ({
             <span className="font-normal text-gray-500">{placeHolder}</span>
           )}
           {selectedOption && (
-            <span className="text-gray-1000 truncate font-normal">
+            <span className="text-gray-1000 max-w-[190px] overflow-hidden truncate whitespace-nowrap font-normal">
               {selectedOption}
             </span>
           )}

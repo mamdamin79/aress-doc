@@ -3,7 +3,7 @@ import { BulletList, NotesHeading, ProgressBar } from 'design-system';
 import React, { useState } from 'react';
 import RESET_PASSWORD from '@aress-assets/icons/ResetPassword.svg';
 import Image from 'next/image';
-import { NewPasswordForm, OTPForm, ResetPasswordForm } from '../components';
+import { NewPasswordForm, OTPForm, ResetPasswordForm } from '../../components';
 
 const ForgotPasswordPage = () => {
   const [activeIndex, setActiveIndex] = useState(0);
