@@ -1,30 +1,20 @@
 import React, { useState } from 'react';
 import { Icon } from '../Icon';
 import { DualSwitch } from '../DualSwitch';
-import { DualSwitchProps } from '../DualSwitch/DualSwitch.types';
 import { ReportSettings } from '../ReportSettings';
 import { ContextMenu } from '../ContextMenu';
 import { SlideFromLeft } from './SlideFromLeft';
 import { OptionsListExplorer } from '../OptionsListExplorer';
-import {
-  CategoryItem,
-  OptionItem,
-} from '../OptionsListExplorer/OptionsListExplorer.types';
 import { cn } from 'libs/design-system/src/utils';
 import { LoadingBarPop } from '../LoadingBarPop';
 import { Button } from '../Button';
-export interface ReportCardBaseProps {
-  title: string;
-  switchIcons: DualSwitchProps;
-  optionsListItems: {
-    categories?: CategoryItem[] | null;
-    items: OptionItem[];
-  };
-}
+import { ReportCardBaseProps } from './ReportCardBase.types';
+
 export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
   title,
   switchIcons,
   optionsListItems,
+  compactHeader = false,
 }) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [optionsListOpen, setOptionsListOpen] = useState(false);
@@ -45,11 +35,11 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
     setSettingsOpen(false);
     setLoadingStatus('loading');
     setTimeout(() => {
-      setLoadingStatus('done');
+      setLoadingStatus('rejected');
     }, 3000);
   };
   return (
-    <div className="bg-baseBackground group relative flex w-[616px] flex-col overflow-x-hidden shadow-sm">
+    <div className="bg-baseBackground group relative flex w-[616px] flex-col overflow-hidden shadow-sm">
       <SlideFromLeft isOpen={settingsOpen}>
         <ReportSettings
           onSubmit={mockLoading}
@@ -59,34 +49,34 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
               type: 'nestedDropdown',
               props: {
                 title: 'مبنای ارزش معاملات',
-                subFields: [
+                items: [
                   {
                     title: 'نوع بازار:',
                     icon: { name: 'square-mouse-pointer', size: 'sm' },
                     status: 'normal',
                     selectedOption: 'کل بازار',
-                    onClick: () => console.log('نوع بازار clicked'),
+                    onClick: () => setOptionsListOpen(true),
                   },
                   {
                     title: 'صنعت:',
                     icon: { name: 'square-mouse-pointer', size: 'sm' },
                     status: 'normal',
                     selectedOption: 'کانی‌ های فلزی',
-                    onClick: () => console.log('صنعت clicked'),
+                    onClick: () => setOptionsListOpen(true),
                   },
                   {
                     title: 'صنعت:',
                     icon: { name: 'square-mouse-pointer', size: 'sm' },
                     status: 'normal',
                     selectedOption: 'کانی‌ های فلزی',
-                    onClick: () => console.log('صنعت clicked'),
+                    onClick: () => setOptionsListOpen(true),
                   },
                   {
                     title: 'ابزار مالی:',
                     icon: { name: 'square-mouse-pointer', size: 'sm' },
                     status: 'error',
                     placeHolder: 'یک مورد را انتخاب کنید...',
-                    onClick: () => console.log('ابزار مالی clicked'),
+                    onClick: () => setOptionsListOpen(true),
                   },
                 ],
               },
@@ -108,7 +98,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                 icon: { name: 'square-mouse-pointer', size: 'sm' },
                 status: 'normal',
                 selectedOption: 'مشترک افق روشن سرمایه‌گذاری بانک نوین',
-                onClick: () => console.log('hi'),
+                onClick: () => setOptionsListOpen(true),
               },
             },
             {
@@ -118,7 +108,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                 icon: { name: 'square-mouse-pointer', size: 'sm' },
                 status: 'normal',
                 selectedOption: 'کل اوراق',
-                onClick: () => console.log('hi'),
+                onClick: () => setOptionsListOpen(true),
               },
             },
           ]}
@@ -134,55 +124,79 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
       </SlideFromLeft>
       <div className="relative w-full p-3 pb-2">
         <div className="flex w-full items-center justify-between">
-          <div className="flex flex-row items-center text-xs font-semibold">
-            <div className="p-1.5">
-              <Icon name="info" size="md" />
+          {!compactHeader ? (
+            <div className="flex flex-row items-center text-xs font-semibold">
+              <div className="p-1.5">
+                <Icon name="info" size="md" />
+              </div>
+              <span className={cn(loadingStatus && 'opacity-30')}>{title}</span>
             </div>
-            <span className={cn(loadingStatus && 'opacity-30')}>{title}</span>
-          </div>
-          <div className="flex flex-row gap-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-            <DualSwitch {...switchIcons} />
+          ) : (
+            <div></div>
+          )}
 
-            <ContextMenu
-              anchor="bottom end"
-              items={[
-                {
-                  icon: 'settings',
-                  title: 'تنظیمات گزارش',
-                  onClick: () => setSettingsOpen(true),
-                },
-                {
-                  icon: 'share-2',
-                  title: 'اشتراک گذاری',
-                  onClick: () => console.log('اشتراک گذاری'),
-                },
-                {
-                  icon: 'square-arrow-out-up-right',
-                  title: 'هدایت به نسخه مادر',
-                  onClick: () => console.log('تنظیمات گزارش'),
-                },
-                {
-                  icon: 'info',
-                  title: 'اطلاعات بیشتر',
-                  onClick: () => console.log('اطلاعات بیشتر'),
-                },
-                {
-                  icon: 'repeat',
-                  title: 'جایگزینی گزارش',
-                  onClick: () => console.log('جایگزینی گزارش'),
-                },
-                {
-                  icon: 'trash-2',
-                  title: 'حذف گزارش از این فضا',
-                  onClick: () => console.log('حذف گزارش از این فضا'),
-                },
-              ]}
-            >
-              <Icon name="ellipsis-vertical" size="md" />
-            </ContextMenu>
+          <div
+            className={cn(
+              'flex flex-row gap-2',
+              !compactHeader &&
+                'opacity-0 transition-opacity duration-300 group-hover:opacity-100',
+            )}
+          >
+            <DualSwitch {...switchIcons} />
+            {compactHeader ? (
+              <div
+                className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-gray-100"
+                onClick={() => setSettingsOpen(true)}
+              >
+                <Icon name="settings" size="md" />
+              </div>
+            ) : (
+              <ContextMenu
+                anchor="bottom end"
+                items={[
+                  {
+                    icon: 'settings',
+                    title: 'تنظیمات گزارش',
+                    onClick: () => setSettingsOpen(true),
+                  },
+                  {
+                    icon: 'share-2',
+                    title: 'اشتراک گذاری',
+                    onClick: () => console.log('اشتراک گذاری'),
+                  },
+                  {
+                    icon: 'square-arrow-out-up-right',
+                    title: 'هدایت به نسخه مادر',
+                    onClick: () => console.log('تنظیمات گزارش'),
+                  },
+                  {
+                    icon: 'info',
+                    title: 'اطلاعات بیشتر',
+                    onClick: () => console.log('اطلاعات بیشتر'),
+                  },
+                  {
+                    icon: 'repeat',
+                    title: 'جایگزینی گزارش',
+                    onClick: () => console.log('جایگزینی گزارش'),
+                  },
+                  {
+                    icon: 'trash-2',
+                    title: 'حذف گزارش از این فضا',
+                    onClick: () => console.log('حذف گزارش از این فضا'),
+                  },
+                ]}
+              >
+                <Icon name="ellipsis-vertical" size="md" />
+              </ContextMenu>
+            )}
           </div>
         </div>
-        <div className="absolute bottom-0 w-[592px] border-b group-hover:hidden"></div>
+        <div
+          className={cn(
+            'absolute bottom-0 w-[592px] border-b',
+            !compactHeader && 'group-hover:hidden',
+          )}
+        ></div>
       </div>
       <div className="bg-baseBackground flex h-[268px] w-full items-center justify-center p-3 pt-2">
         {loadingStatus && (

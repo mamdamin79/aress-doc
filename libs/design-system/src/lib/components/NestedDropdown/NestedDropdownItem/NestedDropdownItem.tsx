@@ -59,10 +59,10 @@ export const NestedDropdownItem: React.FC<NestedDropdownItemProps> = ({
             {title}
           </span>
           {placeHolder && !selectedOption && (
-            <span className="font-normal text-gray-500">{placeHolder}</span>
+            <span className="font-normal text-gray-500 ">{placeHolder}</span>
           )}
           {selectedOption && (
-            <span className="text-gray-1000 truncate font-normal">
+            <span className="text-gray-1000 truncate font-normal whitespace-nowrap overflow-hidden max-w-[190px]">
               {selectedOption}
             </span>
           )}
