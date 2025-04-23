@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useReducer, useRef } from 'react';
 import Hls from 'hls.js'; // Import HLS.js
+import { VideoQuality } from './types';
 
 interface videoState {
   isPlaying: boolean;
@@ -47,7 +48,7 @@ type videoAction =
   | {
       type: 'SET_RESET';
       src: string;
-      qualities: { src: string; label: string }[];
+      qualities: VideoQuality[];
     };
 
 const videoReducer = (state: videoState, action: videoAction): videoState => {
@@ -438,12 +439,9 @@ export const useVideo = (
 
   const play = useCallback(() => videoRef.current?.play(), []);
   const pause = useCallback(() => videoRef.current?.pause(), []);
-  const changeQuality = useCallback(
-    (quality: { src: string; label: string }) => {
-      dispatch({ type: 'SET_QUALITY', quality });
-    },
-    [],
-  );
+  const changeQuality = useCallback((quality: VideoQuality) => {
+    dispatch({ type: 'SET_QUALITY', quality });
+  }, []);
 
   const pictureInPicture = useCallback(
     () => videoRef.current?.requestPictureInPicture(),

@@ -2,22 +2,15 @@ import React, { useRef, useState } from 'react';
 import { Icon } from '../Icon';
 import { secondsToHHMMSS } from '../../../utils/time';
 import { cn } from '../../../utils/classNames.utils';
+import { Video } from '../VideoPlayer/VideoPlayer.types';
 
 type PlayListPropsType = {
-  videos: video[];
+  videos: Video[];
   playListTitle: string;
   isFullscreen: boolean;
   setShowPlayList?: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedVideo: React.Dispatch<React.SetStateAction<video>>;
-  selectedVideo: video;
-};
-
-export type video = {
-  src: string;
-  title: string;
-  date: string;
-  poster?: string;
-  qualities: { src: string; label: string }[];
+  setSelectedVideo: React.Dispatch<React.SetStateAction<Video>>;
+  selectedVideo: Video;
 };
 
 export const PlayList: React.FC<PlayListPropsType> = ({
@@ -31,8 +24,8 @@ export const PlayList: React.FC<PlayListPropsType> = ({
   return (
     <div>
       {isFullscreen ? (
-        <div className="bg-gray-900/90 transition-all duration-300 text-white h-screen w-[440px]">
-          <div className="flex items-center px-6 pb-2 pt-8 justify-between text-xl font-medium">
+        <div className="h-screen w-[440px] bg-gray-900/90 text-white transition-all duration-300">
+          <div className="flex items-center justify-between px-6 pb-2 pt-8 text-xl font-medium">
             <span>{playListTitle}</span>
             <div
               onMouseUp={() => setShowPlayList && setShowPlayList(false)}
@@ -41,10 +34,11 @@ export const PlayList: React.FC<PlayListPropsType> = ({
               <Icon name="x" size="lg" />
             </div>
           </div>
-          <div className="pt-12 px-6">
+          <div className="px-6 pt-12">
             {videos.map((video, index) => (
               <PlayListCell
                 qualities={video.qualities}
+                key={index}
                 poster={video.poster}
                 index={index}
                 date={video.date}
@@ -53,13 +47,14 @@ export const PlayList: React.FC<PlayListPropsType> = ({
                 isFullscreen={isFullscreen}
                 setSelectedVideo={setSelectedVideo}
                 selectedVideo={selectedVideo}
+                spriteBaseUrl={video.spriteBaseUrl}
               />
             ))}
           </div>
         </div>
       ) : (
-        <div className="rounded-3xl h-[459px] font-medium text-lg text-gray-1000 border-1.5 border-gray-300  overflow-auto w-[440px] ">
-          <div className="p-6 border-b-1.5 border-gray-300">
+        <div className="text-gray-1000 border-1.5 h-[459px] w-[440px] overflow-auto rounded-3xl border-gray-300 text-lg font-medium">
+          <div className="border-b-1.5 border-gray-300 p-6">
             {playListTitle}
           </div>
           <div className="p-6">
@@ -74,6 +69,7 @@ export const PlayList: React.FC<PlayListPropsType> = ({
                 isFullscreen={isFullscreen}
                 setSelectedVideo={setSelectedVideo}
                 selectedVideo={selectedVideo}
+                spriteBaseUrl={video.spriteBaseUrl}
               />
             ))}
           </div>
@@ -84,11 +80,11 @@ export const PlayList: React.FC<PlayListPropsType> = ({
 };
 
 const PlayListCell: React.FC<
-  video & {
+  Video & {
     index: number;
     isFullscreen?: boolean;
-    setSelectedVideo: React.Dispatch<React.SetStateAction<video>>;
-    selectedVideo: video;
+    setSelectedVideo: React.Dispatch<React.SetStateAction<Video>>;
+    selectedVideo: Video;
   }
 > = ({
   date,
@@ -105,7 +101,7 @@ const PlayListCell: React.FC<
   const titleContainer = useRef<HTMLDivElement>(null);
   const handleLoadedMetadata = (
     index: number,
-    event: React.SyntheticEvent<HTMLVideoElement>
+    event: React.SyntheticEvent<HTMLVideoElement>,
   ) => {
     const videoElement = event.currentTarget;
     const duration = videoElement.duration; // Duration in seconds
@@ -115,26 +111,26 @@ const PlayListCell: React.FC<
   return (
     <div
       className={cn(
-        'group rounded-lg bg-gray-100 gap-1 p-3 mb-3 flex items-center hover:bg-gray-200 transition-colors duration-300 cursor-pointer',
+        'group mb-3 flex cursor-pointer items-center gap-1 rounded-lg bg-gray-100 p-3 transition-colors duration-300 hover:bg-gray-200',
         {
           'bg-black/30 hover:bg-white/20': isFullscreen,
         },
         {
           'bg-brand-600': selectedVideo.src === src,
-        }
+        },
       )}
       key={`title-${title}`}
       onClick={() => setSelectedVideo({ src, title, date, qualities })}
     >
       <span
         className={cn(
-          'text-md min-w-5 text-center  text-gray-1000 font-medium',
+          'text-md text-gray-1000 min-w-5 text-center font-medium',
           {
             'text-white': isFullscreen,
           },
           {
             'text-white': selectedVideo.src === src,
-          }
+          },
         )}
       >
         <span className={cn({ hidden: selectedVideo.src === src })}>
@@ -146,7 +142,7 @@ const PlayListCell: React.FC<
           </span>
         )}
       </span>
-      <div className="flex relative items-center justify-between gap-3">
+      <div className="relative flex items-center justify-between gap-3">
         <video
           poster={poster ? poster : ''}
           className="rounded-sm"
@@ -155,18 +151,18 @@ const PlayListCell: React.FC<
           src={src}
           onLoadedMetadata={(event) => handleLoadedMetadata(index, event)}
         ></video>
-        <span className="absolute group-hover:opacity-100 opacity-0 transition-all duration-300 right-10  text-white ">
+        <span className="absolute right-10 text-white opacity-0 transition-all duration-300 group-hover:opacity-100">
           <Icon name="play" />
         </span>
         {durations[index] && (
-          <span className="text-white bg-black/55 px-1 absolute right-1 rounded-xs  bottom-1 font-medium text-xs">
+          <span className="rounded-xs absolute bottom-1 right-1 bg-black/55 px-1 text-xs font-medium text-white">
             {durations[index]}
           </span>
         )}
         <div>
           <div
             className={cn(
-              'text-gray-1000 p-2 pr-1 font-medium text-sm overflow-hidden text-ellipsis w-[230px] relative whitespace-nowrap ',
+              'text-gray-1000 relative w-[230px] overflow-hidden text-ellipsis whitespace-nowrap p-2 pr-1 text-sm font-medium',
               {
                 'text-white': isFullscreen,
               },
@@ -175,13 +171,13 @@ const PlayListCell: React.FC<
               },
               {
                 'text-white': selectedVideo.src === src,
-              }
+              },
             )}
           >
             <div
               ref={titleContainer}
               className={cn(
-                'inline-block text-ellipsis whitespace-nowrap transform transition-transform duration-1000 ease-in-out group-hover:translate-x-[calc(100%-222px)]',
+                'inline-block transform text-ellipsis whitespace-nowrap transition-transform duration-1000 ease-in-out group-hover:translate-x-[calc(100%-222px)]',
                 {
                   'group-hover:translate-x-0':
                     titleContainer.current &&
@@ -191,7 +187,7 @@ const PlayListCell: React.FC<
                   'duration-4000':
                     titleContainer.current &&
                     titleContainer.current?.offsetWidth > 400,
-                }
+                },
               )}
             >
               {title}
@@ -199,14 +195,14 @@ const PlayListCell: React.FC<
           </div>
           <span
             className={cn(
-              'text-gray-600  font-medium text-xs flex items-center gap-1',
+              'flex items-center gap-1 text-xs font-medium text-gray-600',
               { 'text-white': isFullscreen },
               {
                 'text-white': selectedVideo.src === src,
               },
               {
                 'group-hover:text-gray-600': !isFullscreen,
-              }
+              },
             )}
           >
             <Icon name="calendar-days" /> {date}

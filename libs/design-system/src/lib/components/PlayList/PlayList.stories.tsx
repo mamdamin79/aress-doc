@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Meta, StoryFn } from '@storybook/react';
-import { PlayList, video } from './PlayList';
+import { PlayList } from './PlayList';
 import video1080 from '../../../assets/videos/The Breathtaking Beauty of Nature1080p.mp4';
 import video1080forest from '../../../assets/videos/Cinematic Forest-1080.mp4';
+import { Video } from '../VideoPlayer/VideoPlayer.types';
 
 export default {
   title: 'Components/PlayList',
@@ -10,7 +11,7 @@ export default {
 } as Meta;
 
 export const Default: StoryFn = () => {
-  const videos: video[] = [
+  const videos: Video[] = [
     {
       qualities: [],
       title:
@@ -28,7 +29,7 @@ export const Default: StoryFn = () => {
       date: '1403/11/22',
     },
   ];
-  const [selectedVideo, setSelectedVideo] = useState<video>(videos[0]);
+  const [selectedVideo, setSelectedVideo] = useState<Video>(videos[0]);
 
   return (
     <div className="flex items-center justify-center">
