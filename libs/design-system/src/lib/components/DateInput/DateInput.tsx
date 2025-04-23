@@ -26,12 +26,11 @@ const isCustomDate = (value: unknown): value is CustomDate => {
 };
 export const DateInput: React.FC<DatePickerProps> = ({
   defaultValue,
-  duplicateInputError,
   errorHandler,
   focus,
+  equalInput,
   placeholder,
-  minErrorText,
-  maxErrorText,
+  errorText,
   errors,
   onChange,
   clearDate,
@@ -54,21 +53,21 @@ export const DateInput: React.FC<DatePickerProps> = ({
     month: 0,
     year: 0,
   });
-
   const dayRef = useRef<HTMLInputElement | null>(null);
   const monthRef = useRef<HTMLInputElement | null>(null);
   const yearRef = useRef<HTMLInputElement | null>(null);
   const [isArrowKeyPressed, setIsArrowKeyPressed] = useState(false);
   const [activeInput, setActiveInput] = useState(active || false);
+  const [focusInput, setFocusInput] = useState(focus || false);  
 
   useEffect(() => {
     if (defaultValue) {
       if (typeof defaultValue?.trim() === 'string') {
         if (isJalali(defaultValue).isValid()) {
           const dateJalali = isJalali(defaultValue);
-          changeDayInput(dateJalali.date());
-          changeMonthInput(dateJalali.month() + 1);
-          changeYearInput(dateJalali.year());
+          setDay(dateJalali.date());
+          setMonth(dateJalali.month() + 1);
+          setYear(dateJalali.year());
           if (day && month && year) {
             if (
               max &&
@@ -98,10 +97,23 @@ export const DateInput: React.FC<DatePickerProps> = ({
           dayRef.current?.blur();
         }
       }
+    } else {
+      setDay(0);
+      setMonth(0);
+      setYear(0);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValue]);
+
+  useEffect(() => {
+    setActiveInput(!!active);
+  }, [active]);
+
+  useEffect(() => {
+    if (!focus) setActiveIndex(null);
+    setFocusInput(focus);
+  }, [focus]);
 
   // focus day input
   useEffect(() => {
@@ -122,12 +134,13 @@ export const DateInput: React.FC<DatePickerProps> = ({
               month: isJalali(min).month() + 1,
               year: isJalali(min).year(),
             });
-          } else
-            setMinDate({
-              day: isJalali(min).date(),
-              month: isJalali(min).month() + 1,
-              year: isJalali(min).year(),
-            });
+          }
+        } else {
+          setMinDate({
+            day: isJalali(min).date(),
+            month: isJalali(min).month() + 1,
+            year: isJalali(min).year(),
+          });
         }
       }
     }
@@ -314,7 +327,6 @@ export const DateInput: React.FC<DatePickerProps> = ({
     if (e > 6 && e < 12 && day === 31) setDay(30);
   };
 
-  // Function handler to change the input year value
   const changeYearInput = (e: number, arrowChangg?: boolean) => {
     if (yearRegex.test(String(e))) {
       setYear(e);
@@ -333,7 +345,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
     // Check for maximum date constraints
     if (maxDate.year && maxDate.month && maxDate.day) {
       if (
-        e + String(moment).padStart(2, '0') + String(day).padStart(2, '0') >
+        year + String(e).padStart(2, '0') + String(day).padStart(2, '0') >
         maxDate.year +
           String(maxDate.month).padStart(2, '0') +
           String(maxDate.day).padStart(2, '0')
@@ -465,6 +477,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
       }
     }
   };
+  
 
   useEffect(() => {
     if (isArrowKeyPressed) {
@@ -479,10 +492,6 @@ export const DateInput: React.FC<DatePickerProps> = ({
     };
   }, [isArrowKeyPressed, activeIndex, day, month, year, keydownHandler]);
 
-  useEffect(() => {
-    if (!focus) setActiveIndex(null);
-  }, [focus]);
-
   const clearInputDate = () => {
     setDay(0);
     setMonth(0);
@@ -494,28 +503,36 @@ export const DateInput: React.FC<DatePickerProps> = ({
   return (
     <div>
       <div
+        onClick={() => {
+          if (active) {
+            setFocusInput(true);
+            setFocusInput(true);
+            if (!activeIndex) setActiveIndex(1);
+          }
+        }}
         className={cn(
-          'flex w-40 items-center gap-1 rounded-md border-2 bg-white px-4 py-2',
+          'w-40 rounded-md bg-white border-white select-none border-2 flex items-center gap-1 py-2 px-4',
           {
             'border-red-600':
-              (day && month && year && errors.minError) ||
-              errors?.maxError ||
-              duplicateInputError,
+              (day && month && year) && focusInput && (
+                errors.minError ||
+                equalInput ||
+                errors?.maxError
+              ),
             'border-brand-600':
-              activeIndex &&
-              focus &&
+              focusInput &&
               !errors?.maxError &&
-              !errors?.minError &&
-              !duplicateInputError,
+              !errors?.minError && 
+              !equalInput,
             'border-gray-500':
               year &&
               day &&
               month &&
-              !focus &&
+              !focusInput &&
               !errors.maxError &&
               !errors.minError &&
-              !duplicateInputError,
-          },
+              !equalInput
+          }
         )}
       >
         {activeInput ? (
@@ -531,8 +548,8 @@ export const DateInput: React.FC<DatePickerProps> = ({
               onChange={(e) => changeDayInput(+e.target.value, true)}
               placeholder="روز"
               className={cn(
-                '-mx-1 block w-5 border-none pb-0.5 outline-none placeholder:text-black',
-                activeIndex === 1 && activeIndex && 'bg-blue-200',
+                'w-5 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
+                activeIndex === 1 && focusInput && 'bg-blue-200'
               )}
             />
             /
@@ -547,8 +564,8 @@ export const DateInput: React.FC<DatePickerProps> = ({
               onChange={(e) => changeMonthInput(+e.target.value, true)}
               placeholder="ماه"
               className={cn(
-                '-mx-1 block w-5 border-none pb-0.5 outline-none placeholder:text-black',
-                activeIndex === 2 && activeIndex && 'bg-blue-200',
+                'w-5 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
+                activeIndex === 2 && focusInput && 'bg-blue-200'
               )}
             />
             /
@@ -566,8 +583,8 @@ export const DateInput: React.FC<DatePickerProps> = ({
               onChange={(e) => changeYearInput(+e.target.value, true)}
               placeholder="سال"
               className={cn(
-                '-mx-1 block w-10 border-none pb-0.5 outline-none placeholder:text-black',
-                activeIndex === 3 && activeIndex && 'bg-blue-200',
+                'w-10 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
+                activeIndex === 3 && focusInput && 'bg-blue-200'
               )}
             />
             {day && month && year ? (
@@ -585,24 +602,23 @@ export const DateInput: React.FC<DatePickerProps> = ({
           </>
         ) : (
           <span
-            onClick={() => active === undefined && setActiveInput(true)}
-            className="text-md select-none text-gray-700"
+            onClick={() => {
+              if (active === undefined) {
+                setActiveInput(true);
+                setFocusInput(true);
+                setActiveIndex(1);
+              }
+            }}
+            className="text-md text-gray-700 py-0.5 select-none"
           >
             {placeholder}
           </span>
         )}
       </div>
-      <div>
-        {errors?.minError && day && year && month ? (
-          <div className="text-xs text-red-600">{minErrorText}</div>
-        ) : (
-          ''
-        )}
-        {errors?.maxError && day && year && month ? (
-          <div className="text-xs text-red-600">{maxErrorText}</div>
-        ) : (
-          ''
-        )}
+      <div className={cn('invisible h-[22px]', {
+        'visible': day && month && year && focusInput
+      })}>
+          <div className="text-red-600 my-1 absolute text-xs">{errorText}</div>
       </div>
     </div>
   );

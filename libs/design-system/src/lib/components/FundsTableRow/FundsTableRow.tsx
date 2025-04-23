@@ -151,7 +151,7 @@ export function FundsTableRow({
           <div className="flex items-center gap-1 text-xs font-medium">
             {investmentMethod === 'T' && (
               <>
-                <div className="rounded-sm border bg-purple-100 px-2">
+                <div className="rounded-sm border py-0.5 bg-purple-100 px-2">
                   قابل معامله
                 </div>
                 <div className="border-vividGreen-200 text-vividGreen-800 bg-vividGreen-100 rounded-sm border px-2 py-0.5">
@@ -162,7 +162,7 @@ export function FundsTableRow({
             <Tooltip title={hasVideo ? 'مشاهده ویدیو' : ''}>
               <div
                 className={cn(
-                  'bg-vividGreen-100 text-vividGreen-800 border-vividGreen-200 w-fit cursor-pointer rounded-sm border px-2 py-0.5',
+                  'bg-vividGreen-100 h-7 text-vividGreen-800 border-vividGreen-200 w-fit cursor-pointer rounded-sm border px-2 py-0.5',
                   {
                     'cursor-default border-gray-100 bg-white text-gray-200':
                       !hasVideo,

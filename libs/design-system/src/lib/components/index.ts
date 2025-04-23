@@ -50,3 +50,4 @@ export * from './Tabs';
 export * from './TextField';
 export * from './Tooltip';
 export * from './VideoPlayer';
+export * from './DatePicker';

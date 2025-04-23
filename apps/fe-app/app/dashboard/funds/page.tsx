@@ -11,6 +11,7 @@ import {
   cn,
   Icon,
   Tabs,
+  DatePicker,
   Tooltip,
   formatNumber,
   OptionsDropdown,
@@ -31,7 +32,6 @@ import {
 import { makeData } from './components/makeData';
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import { columns, columnVisibility, filterList } from './FundsTable.constants';
-
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
   const [indexCategoryTab, setIndexCategoryTab] = useState(0);
@@ -48,6 +48,8 @@ const Funds = () => {
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string[]>
   >({});
+
+  const [customColl, setCustomColl] = useState<{active: boolean, date: string}>({active: false, date: ''})
 
   const table = useReactTable({
     data,
@@ -452,7 +454,7 @@ const Funds = () => {
                       {index >= 1 && (
                         <th
                           className={cn(
-                            'm-0 overflow-y-hidden p-0 h-[70px] !bg-red-300 text-sm font-medium',
+                            'm-0 overflow-y-hidden p-0 h-[70px] text-sm font-medium',
                             String(
                               flexRender(
                                 header.column.columnDef.header,
@@ -1020,7 +1022,7 @@ const Funds = () => {
       <Dialog
         open={isSettingModal}
         as="div"
-        className="relative z-50 focus:outline-none"
+        className="relative z-40 focus:outline-none"
         onClose={() => setIsSettingModal(false)}
       >
         <div className="fixed inset-0 z-30 w-screen overflow-y-auto">
@@ -1072,6 +1074,9 @@ const Funds = () => {
                           {item && (
                             <Checkbox
                               onChange={() => {
+                                if (item.columnDef.header?.toString() === 'بازه دلخواه') {
+                                  setCustomColl({active: true, date: ''})
+                                }
                                 if (
                                   table
                                     .getAllLeafColumns()
@@ -1141,6 +1146,32 @@ const Funds = () => {
                   onFilterChange={setSelectedFilters}
                 />
               </div>
+            </DialogPanel>
+          </div>
+        </div>
+      </Dialog>
+      <Dialog
+        open={customColl.active}
+        as="div"
+        className="relative z-50 focus:outline-none"
+        onClose={() => setCustomColl({active: false, date: ''})}
+      >
+        <div className="fixed inset-0 z-30 w-screen flex justify-center overflow-y-auto">
+          <div className="absolute right-0 top-0 h-screen w-screen bg-black opacity-[0.15]"></div>
+          <div className="flex min-h-full w-screen items-center justify-center">
+            <DialogPanel
+              transition
+              className="shadow-3xl data-[closed]:transform-[scale(0%)] relative z-20 rounded-3xl mx-auto duration-300 ease-out data-[closed]:opacity-0"
+            >
+                <DatePicker 
+                isOpen={customColl.active} 
+                onClose={() => setCustomColl({active: false, date: ''})} 
+                dateRange={{end: '1404-12-12', start: '1300-01-12'}} 
+                max='1404-12-12'
+                min='1300-01-12'
+                setDateRange={(date) => {
+                  setCustomColl({active: false, date: 'date'});
+                }} ></DatePicker>
             </DialogPanel>
           </div>
         </div>
