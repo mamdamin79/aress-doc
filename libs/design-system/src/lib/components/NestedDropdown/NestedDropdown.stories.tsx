@@ -11,17 +11,16 @@ export default meta;
 
 type Story = StoryObj<typeof NestedDropdown>;
 
-
 // A default story for the Header component
 export const Default: Story = {
   render: (args) => (
-    <div className="w-full mt-24 flex justify-center items-center">
+    <div className="mt-24 flex w-full items-center justify-center">
       <NestedDropdown {...args} />
     </div>
   ),
   args: {
     title: 'مبنای ارزش معاملات',
-    subFields: [
+    items: [
       {
         title: 'نوع بازار:',
         icon: { name: 'square-mouse-pointer', size: 'sm' },

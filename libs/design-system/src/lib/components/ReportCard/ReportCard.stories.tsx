@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ReportCard } from './ReportCard';
 import chartPNG from '../../../assets/chart.png';
 import chartPNG2 from '../../../assets/chart2.png';
-// Meta configuration for the RemovableLabel component in Storybook
 const meta: Meta<typeof ReportCard> = {
   title: 'Components/ReportCard',
   component: ReportCard,

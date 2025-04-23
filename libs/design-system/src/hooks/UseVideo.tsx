@@ -1,4 +1,3 @@
-'use client';
 import { useCallback, useEffect, useReducer, useRef } from 'react';
 import Hls from 'hls.js'; // Import HLS.js
 
@@ -192,7 +191,6 @@ export const useVideo = (
     error: null,
     src: src,
   });
-  console.log(state.isPlaying);
 
   useEffect(() => {
     const video = videoRef.current!;
@@ -468,10 +466,40 @@ export const useVideo = (
 
   const setVolume = useCallback((volume: number) => {
     if (videoRef.current) {
-      videoRef.current.volume = volume;
-      dispatch({ type: 'SET_VOLUME', volume });
+      const clampedVolume = Math.min(Math.max(volume, 0), 1);
+      videoRef.current.volume = clampedVolume;
+      dispatch({ type: 'SET_VOLUME', volume: clampedVolume });
     }
   }, []);
+
+  const handleVolumeChange = useCallback(
+    (e: MouseEvent, progressBar: HTMLElement) => {
+      const rect = progressBar.getBoundingClientRect();
+      const clickPosition = e.clientX - rect.left;
+      const newVolume = Math.min(Math.max(clickPosition / rect.width, 0), 1);
+      setVolume(newVolume);
+    },
+    [setVolume],
+  );
+
+  const startVolumeDrag = useCallback(
+    (e: React.MouseEvent<HTMLElement>, progressBar: HTMLElement) => {
+      e.preventDefault();
+
+      const handleMouseMove = (e: MouseEvent) => {
+        handleVolumeChange(e, progressBar);
+      };
+
+      const handleMouseUp = () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    },
+    [handleVolumeChange],
+  );
 
   const toggleMute = useCallback(() => {
     if (videoRef.current) {

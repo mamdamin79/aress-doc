@@ -1,4 +1,4 @@
-'use client';
+"use client"
 import React, { useState, useCallback } from 'react';
 import { LikeDislikeProps } from './LikeDislike.types';
 import { Icon } from '../Icon';
