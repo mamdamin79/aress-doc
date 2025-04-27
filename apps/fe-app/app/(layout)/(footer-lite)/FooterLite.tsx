@@ -1,4 +1,4 @@
-import Logo from '@aress-assets/icons/Logo.svg';
+import Logo from '@aress-assets/icons/logo.svg';
 import AbstractLine from '@aress-assets/icons/Abstract.svg';
 import Instagram from '@aress-assets/icons/lite_instagram.svg';
 import Linkedin from '@aress-assets/icons/lite-linkedin.svg';
