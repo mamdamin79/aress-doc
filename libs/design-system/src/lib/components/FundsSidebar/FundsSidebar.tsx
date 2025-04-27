@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import React, { useRef, useState, useEffect } from 'react';
 import { OptionsDropdown } from '../OptionsDropdown';
 import { PrimarySection } from './PrimarySection';
@@ -126,22 +126,31 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
         <div className="w-full px-4">
           <div className="h-0.5 w-full rounded-md bg-gray-300"></div>
         </div>
-        <div className="grid w-full grid-cols-[1fr_88px_60px] px-4 py-2 text-xs font-medium text-gray-600">
+        <div className="grid w-full grid-cols-[1fr_88px_60px] gap-4 px-4 py-2 text-xs font-medium text-gray-600">
           <div className="text-right">نام صندوق</div>
           <div className="text-center">نمودار</div>
           <div className="text-left">بازده</div>
         </div>
       </div>
       <div
-        className="custom-scrollbar grid w-full grid-cols-[1fr_88px_60px] gap-4 overflow-y-scroll px-4"
+        className="custom-scrollbar grid w-full grid-cols-[60px_88px_1fr] gap-4 overflow-y-scroll px-4"
         ref={listContainerRef}
         onScroll={handleScroll}
+        dir="ltr"
       >
         {data.map((item, index) => (
           <>
-            {/* First Row */}
+            <div className="flex w-[60px] items-center justify-start pt-2">
+              <NumberSection value={item.changeValue} />
+            </div>
+            <div className="flex w-[88px] items-center justify-center">
+              <SparkLine
+                data={item.chartData.data}
+                trend={item.chartData.trend}
+              />
+            </div>
             <div
-              className="flex w-full items-center justify-start overflow-x-hidden"
+              className="flex w-full items-center justify-end overflow-x-hidden"
               key={item.title + item.changeValue}
             >
               <PrimarySection
@@ -150,15 +159,6 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
                   text: item.title,
                 }}
               />
-            </div>
-            <div className="flex w-[88px] items-center justify-center">
-              <SparkLine
-                data={item.chartData.data}
-                trend={item.chartData.trend}
-              />
-            </div>
-            <div className="flex w-[60px] items-center justify-end pt-2">
-              <NumberSection value={item.changeValue} />
             </div>
           </>
         ))}

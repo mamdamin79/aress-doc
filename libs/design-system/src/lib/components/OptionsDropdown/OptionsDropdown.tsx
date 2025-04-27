@@ -77,6 +77,7 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
         }
       </ListboxButton>
       <ListboxOptions
+        modal={false}
         anchor={dropDownStyles.anchor}
         className={cn(
           'bg-baseBackground shadow-7xl mt-1 gap-1 rounded-lg border border-gray-300 p-1 outline-none',
