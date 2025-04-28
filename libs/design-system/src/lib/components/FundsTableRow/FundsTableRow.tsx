@@ -1,3 +1,4 @@
+'use client'
 import { cn } from './../../../utils/classNames.utils';
 import { Icon } from '../Icon';
 import { OptionsDropdown } from '../OptionsDropdown';
