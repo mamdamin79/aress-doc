@@ -1116,11 +1116,14 @@ const Funds = () => {
                 ))}
               </div>
               <div
-                onClick={() => setIsSettingModal(false)}
-                className="text-brand-600 absolute -left-2 -top-2 cursor-pointer rounded-full bg-white"
-              >
-                <Icon name="circle-x" size="lg_plus" />
-              </div>
+                  onClick={() => setIsSettingModal(false)}
+                  className="text-brand-600 absolute w-[28px] h-[28px] -left-2 -top-2 z-10 cursor-pointer rounded-full bg-white"
+                >
+                  <div className='-mt-0.5'>
+
+                  <Icon name="circle-x" size="lg_plus" />
+                  </div>
+                </div>
             </DialogPanel>
           </div>
         </div>
@@ -1141,9 +1144,12 @@ const Funds = () => {
               <div className='w-full bg-white h-[620px] overflow-y-auto overflow-x-hidden'>
                 <div
                   onClick={() => setIsFilterModal(false)}
-                  className="text-brand-600 absolute -left-2 -top-2 z-10 cursor-pointer rounded-full bg-white"
+                  className="text-brand-600 absolute w-[28px] h-[28px] -left-2 -top-2 z-10 cursor-pointer rounded-full bg-white"
                 >
+                  <div className='-mt-0.5'>
+
                   <Icon name="circle-x" size="lg_plus" />
+                  </div>
                 </div>
                 <div className="my-4 flex w-full flex-col gap-2">
                   <FilterPopUpSection
