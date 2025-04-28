@@ -74,9 +74,6 @@ export const columns: ColumnDef<Person>[] = [
   {
     header: 'نام صندوق',
     accessorKey: 'nameFund',
-    cell: ({ row }) => {
-      return row.original.hasVideo;
-    },
   },
   {
     header: 'مشخصات صندوق',

@@ -13,7 +13,6 @@ interface Props {
   selected: boolean;
   isScrolled: boolean;
   className?: string;
-  hasVideo: boolean;
   investmentMethod: 'T' | 'I&C';
   pinedFunction: () => void;
   category: 'stocks' | 'watchlist';
@@ -26,7 +25,6 @@ interface Props {
 export function FundsTableRow({
   name,
   investmentMethod,
-  hasVideo,
   tag,
   toggleWatchList,
   unPinedFunction,
@@ -69,16 +67,21 @@ export function FundsTableRow({
           <div className="h-8 w-8 overflow-hidden rounded-full">
             <img src={logo} alt="logo fund" />
           </div>
-          <div className="absolute right-4 top-9 transition-all duration-500 group-hover/img:-translate-x-[13px] group-hover/img:-translate-y-[19.5px]">
+          
+          <div className={cn("absolute right-4 top-9 transition-all duration-500 group-hover/img:-translate-x-[12.5px] group-hover/img:-translate-y-[32.5px]", {
+            'group-hover/img:-translate-y-[19.5px]': investmentMethod === 'T',
+            'top-5 group-hover/img:top-9': investmentMethod !== 'T' && pined,
+          })}>
             <Tooltip
+              className='z-50'
               position="top"
               title={
                 canPin
                   ? pined
-                    ? 'برداشتن سنجاق'
-                    : 'سنجاق کردن صندوق'
+                    ? 'برداشتن پین'
+                    : 'پین کردن صندوق'
                   : pined
-                    ? 'برداشتن سنجاق'
+                    ? 'برداشتن پین'
                     : ''
               }
             >
@@ -93,7 +96,7 @@ export function FundsTableRow({
                   if (canPin && !pined) {
                     pinedFunction();
                     showProgressToast({
-                      title: 'صندوق مورد نظر سنجاق شد.',
+                      title: 'صندوق مورد نظر پین شد.',
                       timeout: 3000,
                     });
                   }
@@ -101,7 +104,7 @@ export function FundsTableRow({
                   if (pined) {
                     unPinedFunction();
                     showProgressToast({
-                      title: 'صندوق از لیست سنجاق شده‌ها خارج شد.',
+                      title: 'صندوق از لیست پین شده‌ها خارج شد.',
                       timeout: 3000,
                       leadingAction: {
                         iconProps: { name: 'undo-2', size: 'sm' },
@@ -111,7 +114,7 @@ export function FundsTableRow({
                   }
                 }}
                 className={cn(
-                  'hidden h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white text-blue-700 duration-500 group-hover/img:flex',
+                  'hidden h-[33px] w-[33px] cursor-pointer items-center justify-center rounded-full bg-white text-blue-700 duration-500 group-hover/img:flex',
                   {
                     flex: pined,
                   },
@@ -136,7 +139,7 @@ export function FundsTableRow({
           </div>
         </div>
         <div className="flex flex-col gap-1">
-          <Tooltip offset={2} position="bottom" className="!z-40" title={name}>
+          <Tooltip offset={2} position="bottom" className="!z-50" title={name}>
             <p
               className={cn(
                 'text-gray-1000 w-[235px] truncate text-right text-sm font-medium group-hover:w-[202px]',
@@ -150,28 +153,10 @@ export function FundsTableRow({
           </Tooltip>
           <div className="flex items-center gap-1 text-xs font-medium">
             {investmentMethod === 'T' && (
-              <>
-                <div className="rounded-sm border py-0.5 bg-purple-100 px-2">
-                  قابل معامله
-                </div>
                 <div className="border-vividGreen-200 text-vividGreen-800 bg-vividGreen-100 rounded-sm border px-2 py-0.5">
                   ETF
                 </div>
-              </>
             )}
-            <Tooltip title={hasVideo ? 'مشاهده ویدیو' : ''}>
-              <div
-                className={cn(
-                  'bg-vividGreen-100 h-7 text-vividGreen-800 border-vividGreen-200 w-fit cursor-pointer rounded-sm border px-2 py-0.5',
-                  {
-                    'cursor-default border-gray-100 bg-white text-gray-200':
-                      !hasVideo,
-                  },
-                )}
-              >
-                <Icon name="video" />
-              </div>
-            </Tooltip>
           </div>
         </div>
       </div>
@@ -188,7 +173,7 @@ export function FundsTableRow({
           { text: 'مشاهده ویدیو', icon: { name: 'video', size: 'md' } },
           { text: 'نشان دار کردن', icon: { name: 'target', size: 'md' } },
           {
-            text: pined ? 'برداشتن سنجاق' : 'سنجاق کردن',
+            text: pined ? 'برداشتن پین' : 'پین کردن',
             icon: { name: pined ? 'pin-off' : 'pin', size: 'md' },
           },
           {
@@ -227,20 +212,20 @@ export function FundsTableRow({
           return (
             <div
               onClick={() => {
-                if (!canPin && prop.text === 'سنجاق کردن') {
+                if (!canPin && prop.text === 'پین کردن') {
                   return;
                 }
-                if (prop.text === 'سنجاق کردن') {
+                if (prop.text === 'پین کردن') {
                   pinedFunction();
                   showProgressToast({
                     timeout: 5000,
-                    title: 'صندوق مورد نظر سنجاق شد.',
+                    title: 'صندوق مورد نظر پین شد.',
                   });
                 }
-                if (prop.text === 'برداشتن سنجاق') {
+                if (prop.text === 'برداشتن پین') {
                   unPinedFunction();
                   showProgressToast({
-                    title: 'صندوق از لیست سنجاق شده‌ها خارج شد.',
+                    title: 'صندوق از لیست پین شده‌ها خارج شد.',
                     timeout: 3000,
                     leadingAction: {
                       iconProps: { name: 'undo-2', size: 'sm' },
@@ -272,7 +257,7 @@ export function FundsTableRow({
                 'flex cursor-pointer items-center gap-2 bg-white px-3 py-2',
                 {
                   'cursor-default text-gray-100':
-                    !canPin && prop.text === 'سنجاق کردن',
+                    !canPin && prop.text === 'پین کردن',
                 },
               )}
             >

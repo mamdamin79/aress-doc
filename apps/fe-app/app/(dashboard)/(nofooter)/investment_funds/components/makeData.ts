@@ -19,7 +19,6 @@ export type Person = {
   dailyReturn: number;
   weeklyReturn: number;
   startDate: number;
-  hasVideo: boolean;
   logo: string;
   investmentMethod: 'T' | 'I&C';
 };
@@ -38,7 +37,6 @@ const newPerson = (): Person => {
 
   return {
     investmentMethod: faker.helpers.arrayElement(investmentMethods),
-    hasVideo: faker.datatype.boolean(),
     logo: faker.image.avatar(),
     nameFund: faker.person.fullName(),
     startDate:

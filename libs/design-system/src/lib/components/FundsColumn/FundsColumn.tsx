@@ -38,12 +38,12 @@ export function FundsColumn({
             !filterable && size !== 'extraLarg',
           'bg-pink-200 hover:bg-pink-300': filterable && size !== 'extraLarg',
         },
-        'text-text-neutral-primary group/first h-full cursor-pointer text-sm font-medium',
+        'text-text-neutral-primary group/first cursor-pointer text-sm font-medium',
       )}
     >
       <div
         className={cn(
-          'relative mx-auto px-1.5 flex h-[72px] w-fit items-center justify-center gap-1',
+          'relative mx-auto px-1.5 flex h-[75px] w-fit items-center justify-center gap-1',
           {
             'group-hover/first:bg-pink-300':
               size === 'extraLarg' && filterable,
@@ -57,7 +57,7 @@ export function FundsColumn({
         </div>
         <span>{title}</span>
         {filtered && (
-          <div className="bg-brand-600 absolute -bottom-[7px] h-3 w-16 rounded-md"></div>
+          <div className="bg-brand-600 absolute -bottom-[2px] h-3 w-16 rounded-md"></div>
         )}
         <Tooltip
           title={

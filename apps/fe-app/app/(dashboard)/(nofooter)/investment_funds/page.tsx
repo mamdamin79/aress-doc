@@ -138,6 +138,7 @@ const Funds = () => {
   };
 
   useEffect(() => {
+    document.body.style.overflow = "hidden";
     const handleScroll = () => {
       if (tableRef.current) {
         const { scrollLeft, scrollWidth, clientWidth } = tableRef.current;
@@ -312,6 +313,14 @@ const Funds = () => {
                             isScrollAtStart ? 'shadow' : 'shadow-none',
                           )}
                         >
+                                                       <div
+                                {...{
+                                  className: header.column.getCanSort()
+                                    ? 'cursor-pointer h-[70px] select-none'
+                                    : '',
+                                }}
+                              >
+
                           <OptionsDropdown
                             dropDownStyles={{
                               size: 'md',
@@ -449,12 +458,14 @@ const Funds = () => {
                               },
                             ]}
                           ></OptionsDropdown>
+                              </div>
+
                         </th>
                       )}
                       {index >= 1 && (
                         <th
                           className={cn(
-                            'm-0 overflow-y-hidden p-0 h-[70px] text-sm font-medium',
+                            'm-0 overflow-y-hidden p-0 text-sm font-medium',
                             String(
                               flexRender(
                                 header.column.columnDef.header,
@@ -468,11 +479,10 @@ const Funds = () => {
                           colSpan={header.colSpan}
                         >
                           {index >= 2 && header.isPlaceholder ? null : (
-                            <>
                               <div
                                 {...{
                                   className: header.column.getCanSort()
-                                    ? 'cursor-pointer select-none'
+                                    ? 'cursor-pointer h-[72px] select-none'
                                     : '',
                                 }}
                               >
@@ -656,7 +666,6 @@ const Funds = () => {
                                   ]}
                                 ></OptionsDropdown>
                               </div>
-                            </>
                           )}
                         </th>
                       )}
@@ -714,7 +723,7 @@ const Funds = () => {
                         <tr
                           style={{ top: topValue }}
                           className={cn(
-                            'group border-t h-[60px] border-blue-100',
+                            'group border-t h-[60px] -top-4 border-blue-100',
                             row.getIsPinned() && `sticky z-30`,
                             {
                               'shadow-2xl': row.id === lastPinnedRowId,
@@ -757,7 +766,6 @@ const Funds = () => {
                                       investmentMethod={
                                         row.original.investmentMethod
                                       }
-                                      hasVideo={row.original.hasVideo}
                                       name={row.original.nameFund}
                                       pined={Boolean(row.getIsPinned())}
                                       selected={false}
@@ -826,7 +834,7 @@ const Funds = () => {
                         <tr
                           style={{ top: topValue }}
                           className={cn(
-                            'bord group border-blue-100',
+                            'border group border-blue-100',
                             pineWatchLis.includes(row.id) && `sticky z-40`,
                             {
                               'shadow-2xl': pineWatchLis.includes(row.id),
@@ -847,7 +855,7 @@ const Funds = () => {
                             return (
                               <React.Fragment key={cell.id}>
                                 {index === 0 && (
-                                  <td className="sticky right-0 m-0 p-0">
+                                  <td className="sticky z-40 right-0 m-0 p-0">
                                     <FundsTableRow
                                       tag={true}
                                       category="watchlist"
@@ -872,7 +880,6 @@ const Funds = () => {
                                       investmentMethod={
                                         row.original.investmentMethod
                                       }
-                                      hasVideo={row.original.hasVideo}
                                       name={row.original.nameFund}
                                       pined={pineWatchLis.includes(row.id)}
                                       selected={false}
@@ -1131,20 +1138,22 @@ const Funds = () => {
               transition
               className="shadow-3xl data-[closed]:transform-[scale(0%)] relative z-20 w-full max-w-lg rounded-3xl bg-white duration-300 ease-out data-[closed]:opacity-0"
             >
-              <div
-                onClick={() => setIsFilterModal(false)}
-                className="text-brand-600 absolute -left-2 -top-2 z-10 cursor-pointer rounded-full bg-white"
-              >
-                <Icon name="circle-x" size="lg_plus" />
-              </div>
-              <div className="my-4 flex h-full w-full flex-col gap-2">
-                <FilterPopUpSection
-                  searchValue={fundSearchQuery}
-                  onSearchChange={setFundSearchQuery}
-                  filterOptions={filterList}
-                  selectedFilters={selectedFilters}
-                  onFilterChange={setSelectedFilters}
-                />
+              <div className='w-full bg-white h-[620px] overflow-y-auto overflow-x-hidden'>
+                <div
+                  onClick={() => setIsFilterModal(false)}
+                  className="text-brand-600 absolute -left-2 -top-2 z-10 cursor-pointer rounded-full bg-white"
+                >
+                  <Icon name="circle-x" size="lg_plus" />
+                </div>
+                <div className="my-4 flex w-full flex-col gap-2">
+                  <FilterPopUpSection
+                    searchValue={fundSearchQuery}
+                    onSearchChange={setFundSearchQuery}
+                    filterOptions={filterList}
+                    selectedFilters={selectedFilters}
+                    onFilterChange={setSelectedFilters}
+                  />
+                </div>
               </div>
             </DialogPanel>
           </div>
