@@ -191,6 +191,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
     ]
   );
   
+  
 
   const errorHandler = ({ minError, maxError }: ErrorState) => {
     setErrors({
@@ -288,7 +289,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                       focus={focuseStartInput}
                       min={min}
                       max={max}
-                      defaultValue={`${startDate?.year}-${startDate?.month}-${startDate?.day}`}
+                      defaultValue={startDate ? `${startDate?.year}-${String(startDate?.month).padStart(2, '0')}-${String(startDate?.day).padStart(2, '0')}` : ''}
                     />
                   </div>
                 </div>
@@ -316,7 +317,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                       clearDate={clearEndDate}
                       min={min}
                       max={max}
-                      defaultValue={endDate ? `${endDate?.year}-${endDate?.month}-${endDate?.day}` : ''}
+                      defaultValue={endDate ? `${endDate?.year}-${String(endDate?.month).padStart(2, '0')}-${String(endDate?.day).padStart(2, '0')}` : ''}
                     />
                   </div>
                 </div>
@@ -616,7 +617,6 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                             <div
                               onClick={() => {
                                 if (isDateInRange({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) })) {
-
                                   if (focuseStartInput) {
                                     setFocuseStartInput(false);
                                     setFocuseEndInput(true);
@@ -626,7 +626,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                                       month: +calendars[1].slice(5, 7),
                                       year: +calendars[1].slice(0, 4),
                                     });
-                                  } else if (focuseEndInput) {
+                                  } else if (focuseEndInput) {                                    
                                     setEndDate({
                                       day: day.day,
                                       month: +calendars[1].slice(5, 7),

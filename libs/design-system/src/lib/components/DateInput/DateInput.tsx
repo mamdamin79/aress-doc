@@ -61,12 +61,10 @@ export const DateInput: React.FC<DatePickerProps> = ({
 
   useEffect(() => {
     if (defaultValue) {
-      if (typeof defaultValue?.trim() === 'string') {
-        if (isJalali(defaultValue).isValid()) {
-          const dateJalali = isJalali(defaultValue);
-          setDay(dateJalali.date());
-          setMonth(dateJalali.month() + 1);
-          setYear(dateJalali.year());
+      if (typeof defaultValue?.trim() === 'string') {          
+          setDay(+defaultValue.slice(8, 10));
+          setMonth(+defaultValue.slice(5, 7));
+          setYear(+defaultValue.slice(0, 4));
           if (day && month && year) {
             if (
               max &&
@@ -81,20 +79,9 @@ export const DateInput: React.FC<DatePickerProps> = ({
               errorHandler({ minError: true, maxError: false });
             }
 
-            onChange(
-              `${dateJalali.year()}-${
-                dateJalali.month() + 1 < 10
-                  ? `0${dateJalali.month() + 1}`
-                  : dateJalali.month() + 1
-              }-${
-                dateJalali.date() < 10
-                  ? `0${dateJalali.date()}`
-                  : dateJalali.date()
-              }`
-            );
+            onChange(defaultValue);
           }
           dayRef.current?.blur();
-        }
       }
     } else {
       setDay(0);
