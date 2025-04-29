@@ -49,7 +49,10 @@ const Funds = () => {
     Record<string, string[]>
   >({});
 
-  const [customColl, setCustomColl] = useState<{active: boolean, date: string}>({active: false, date: ''})
+  const [customColl, setCustomColl] = useState<{
+    active: boolean;
+    date: string;
+  }>({ active: false, date: '' });
 
   const table = useReactTable({
     data,
@@ -138,22 +141,19 @@ const Funds = () => {
   };
 
   useEffect(() => {
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
     const handleScroll = () => {
       if (tableRef.current) {
         const { scrollLeft, scrollWidth, clientWidth } = tableRef.current;
-        
-        if (Math.round(scrollLeft) === 0) {          
-          setIsScrollAtStart(false)
-        } else if (scrollLeft < 0) setIsScrollAtStart(true)
-        
-          console.log(Math.round(scrollLeft * -1) + clientWidth, scrollWidth);
-          
-        
-        setIsScrollAtEnd(Math.round(scrollLeft * -1) + clientWidth <= scrollWidth - 1);
+
+        if (Math.round(scrollLeft) === 0) {
+          setIsScrollAtStart(false);
+        } else if (scrollLeft < 0) setIsScrollAtStart(true);
+        setIsScrollAtEnd(
+          Math.round(scrollLeft * -1) + clientWidth <= scrollWidth - 1,
+        );
       }
     };
-
 
     const table = tableRef.current;
     table?.addEventListener('scroll', handleScroll);
@@ -165,8 +165,15 @@ const Funds = () => {
       if (e.code === 'KeyD') {
         handlerKeyboardScroll(true);
       }
+
+      if (e.code === 'KeyS') {
+        tableRef?.current?.scrollBy({top: 100, behavior: 'smooth'});
+      }
+      if (e.code === 'KeyW') {
+        tableRef?.current?.scrollBy({top: -100, behavior: 'smooth'});
+      }
     };
-    
+
     document.addEventListener('keypress', keyboardHandler);
 
     return () => table?.removeEventListener('scroll', handleScroll);
@@ -271,13 +278,16 @@ const Funds = () => {
           </div>
         </Tooltip>
       </div>
-      <div dir='ltr' className={cn('relative top-0 flex items-center overflow-hidden')}>
+      <div
+        dir="ltr"
+        className={cn('relative top-0 flex items-center overflow-hidden')}
+      >
         <div
           ref={tableRef}
           className="border-brand-200 table-scroll h-[calc(100vh-178px)] w-screen overflow-auto scroll-smooth border-2 border-r-0"
         >
           <table
-          dir='rtl'
+            dir="rtl"
             className="w-full table-fixed rounded-xl bg-white text-center"
           >
             <thead
@@ -296,7 +306,7 @@ const Funds = () => {
                             'bg-brand-600 rounded-md p-1 text-white',
                           )}
                         >
-                          <Icon name="arrow-right" />
+                          <Icon name="arrow-right" size='lg' />
                         </button>
                       </Tooltip>
                     </div>
@@ -313,153 +323,153 @@ const Funds = () => {
                             isScrollAtStart ? 'shadow' : 'shadow-none',
                           )}
                         >
-                                                       <div
-                                {...{
-                                  className: header.column.getCanSort()
-                                    ? 'cursor-pointer h-[70px] select-none'
-                                    : '',
-                                }}
-                              >
-
-                          <OptionsDropdown
-                            dropDownStyles={{
-                              size: 'md',
-                              anchor: 'bottom start',
-                              bg: 'primary',
-                              emphasize: 'medium',
-                              checkSelected: true,
+                          <div
+                            {...{
+                              className: header.column.getCanSort()
+                                ? 'cursor-pointer h-[70px] select-none'
+                                : '',
                             }}
-                            customOptionRender={(prop) => (
-                              <>
-                                <div
-                                  onClick={() => {
-                                    if (
-                                      prop.text === 'مرتب سازی نزولی' &&
-                                      header.column.getIsSorted() !== 'desc'
-                                    ) {
-                                      header.column.toggleSorting(true);
-                                    }
-                                    if (
-                                      prop.text === 'مرتب سازی صعودی' &&
-                                      header.column.getIsSorted() !== 'asc'
-                                    ) {
-                                      header.column.toggleSorting(false);
-                                    }
-                                  }}
-                                  className={cn(
-                                    'hover:bg-brand-50 hover:text-brand-800 flex cursor-pointer items-center gap-2 overflow-y-hidden bg-white p-2',
-                                    {
-                                      'text-brand-800':
-                                        (header.column.getIsSorted() ===
-                                          'desc' &&
-                                          prop.text === 'مرتب سازی نزولی') ||
-                                        (header.column.getIsSorted() ===
-                                          'asc' &&
-                                          prop.text === 'مرتب سازی صعودی'),
-                                    },
-                                  )}
-                                >
-                                  {prop.icon?.name && (
-                                    <Icon
-                                      name={prop.icon?.name}
-                                      size={prop.icon?.size}
-                                    />
-                                  )}
-                                  {prop.text}
-                                </div>
-                                {prop.text === 'مرتب سازی صعودی' && <hr />}
-                              </>
-                            )}
-                            customTriggerRender={() => (
-                              <div className="rounde w-full">
-                                <FundsColumn
-                                  filtered={!!header.column.getIsSorted()}
-                                  clickFilterd={() =>
-                                    header.column.getToggleSortingHandler()?.(
-                                      new Event('click'),
-                                    )
-                                  }
-                                  size="extraLarg"
-                                  shadow={isScrollAtStart}
-                                  type={
-                                    header.column.getIsSorted() === 'asc'
-                                      ? 'active-desc'
-                                      : header.column.getIsSorted() === 'desc'
-                                        ? 'active-asc'
-                                        : 'inactive'
-                                  }
-                                  filterable={columnFilters.some(
-                                    (filterItem) => filterItem.id === header.id,
-                                  )}
-                                  title={String(
-                                    flexRender(
-                                      header.column.columnDef.header,
-                                      header.getContext(),
-                                    ),
-                                  )}
-                                  sortType={
-                                    (
-                                      columns[index]?.meta as {
-                                        type?: string;
+                          >
+                            <OptionsDropdown
+                              dropDownStyles={{
+                                size: 'md',
+                                anchor: 'bottom start',
+                                bg: 'primary',
+                                emphasize: 'medium',
+                                checkSelected: true,
+                              }}
+                              customOptionRender={(prop) => (
+                                <>
+                                  <div
+                                    onClick={() => {
+                                      if (
+                                        prop.text === 'مرتب سازی نزولی' &&
+                                        header.column.getIsSorted() !== 'desc'
+                                      ) {
+                                        header.column.toggleSorting(true);
                                       }
-                                    )?.type === 'text'
-                                      ? 'alphabetical'
-                                      : 'ranked'
-                                  }
-                                ></FundsColumn>
-                                <div className="absolute top-5 flex items-center gap-2 pr-4">
-                                  <Tooltip title="انتخاب ستون‌ها">
-                                    <div
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        setIsSettingModal(true);
-                                      }}
-                                      className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
-                                    >
-                                      {isChanged && (
-                                        <div className="absolute -right-1 -top-1 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
-                                      )}
-                                      <Icon size="lg" name="settings" />
-                                    </div>
-                                  </Tooltip>
-                                  <Tooltip title="فیلتر صندوق‌ها">
-                                    <div
-                                      onClick={(e) => {
-                                        setIsFilterModal(true);
-                                        e.stopPropagation();
-                                      }}
-                                      className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
-                                    >
-                                      {(Object.entries(selectedFilters).length >
-                                        0 ||
-                                        fundSearchQuery) && (
-                                        <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
-                                      )}
-                                      <Icon size="lg" name="filter" />
-                                    </div>
-                                  </Tooltip>
-                                </div>
-                              </div>
-                            )}
-                            dropDownList={[
-                              {
-                                text: 'مرتب سازی نزولی',
-                                icon: {
-                                  name: 'arrow-down-narrow-wide',
-                                  size: 'md',
-                                },
-                              },
-                              {
-                                text: 'مرتب سازی صعودی',
-                                icon: {
-                                  name: 'arrow-up-narrow-wide',
-                                  size: 'md',
-                                },
-                              },
-                            ]}
-                          ></OptionsDropdown>
-                              </div>
+                                      if (
+                                        prop.text === 'مرتب سازی صعودی' &&
+                                        header.column.getIsSorted() !== 'asc'
+                                      ) {
+                                        header.column.toggleSorting(false);
+                                      }
+                                    }}
+                                    className={cn(
+                                      'hover:bg-brand-50 hover:text-brand-800 flex cursor-pointer items-center gap-2 overflow-y-hidden bg-white p-2',
+                                      {
+                                        'text-brand-800':
+                                          (header.column.getIsSorted() ===
+                                            'desc' &&
+                                            prop.text === 'مرتب سازی نزولی') ||
+                                          (header.column.getIsSorted() ===
+                                            'asc' &&
+                                            prop.text === 'مرتب سازی صعودی'),
+                                      },
+                                    )}
+                                  >
+                                    {prop.icon?.name && (
+                                      <Icon
+                                        name={prop.icon?.name}
+                                        size={prop.icon?.size}
+                                      />
+                                    )}
+                                    {prop.text}
+                                  </div>
+                                  {prop.text === 'مرتب سازی صعودی' && <hr />}
+                                </>
+                              )}
+                              customTriggerRender={({isActive}) => (
+                                <div className="rounde w-full">
+                                  <FundsColumn
 
+                                    filtered={!!header.column.getIsSorted()}
+                                    clickFilterd={() =>
+                                      header.column.getToggleSortingHandler()?.(
+                                        new Event('click'),
+                                      )
+                                    }
+                                    size="extraLarg"
+                                    shadow={isScrollAtStart}
+                                    type={
+                                      header.column.getIsSorted() === 'asc'
+                                        ? 'active-desc'
+                                        : header.column.getIsSorted() === 'desc'
+                                          ? 'active-asc'
+                                          : 'inactive'
+                                    }
+                                    filterable={columnFilters.some(
+                                      (filterItem) =>
+                                        filterItem.id === header.id,
+                                    )}
+                                    title={String(
+                                      flexRender(
+                                        header.column.columnDef.header,
+                                        header.getContext(),
+                                      ),
+                                    )}
+                                    sortType={
+                                      (
+                                        columns[index]?.meta as {
+                                          type?: string;
+                                        }
+                                      )?.type === 'text'
+                                        ? 'alphabetical'
+                                        : 'ranked'
+                                    }
+                                  ></FundsColumn>
+                                  <div className="absolute top-5 flex items-center gap-2 pr-4">
+                                    <Tooltip title="انتخاب ستون‌ها">
+                                      <div
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          setIsSettingModal(true);
+                                        }}
+                                        className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
+                                      >
+                                        {isChanged && (
+                                          <div className="absolute -right-1 -top-1 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
+                                        )}
+                                        <Icon size="lg" name="settings" />
+                                      </div>
+                                    </Tooltip>
+                                    <Tooltip title="فیلتر صندوق‌ها">
+                                      <div
+                                        onClick={(e) => {
+                                          setIsFilterModal(true);
+                                          e.stopPropagation();
+                                        }}
+                                        className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
+                                      >
+                                        {(Object.entries(selectedFilters)
+                                          .length > 0 ||
+                                          fundSearchQuery) && (
+                                          <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
+                                        )}
+                                        <Icon size="lg" name="filter" />
+                                      </div>
+                                    </Tooltip>
+                                  </div>
+                                </div>
+                              )}
+                              dropDownList={[
+                                {
+                                  text: 'مرتب سازی نزولی',
+                                  icon: {
+                                    name: 'arrow-down-narrow-wide',
+                                    size: 'md',
+                                  },
+                                },
+                                {
+                                  text: 'مرتب سازی صعودی',
+                                  icon: {
+                                    name: 'arrow-up-narrow-wide',
+                                    size: 'md',
+                                  },
+                                },
+                              ]}
+                            ></OptionsDropdown>
+                          </div>
                         </th>
                       )}
                       {index >= 1 && (
@@ -479,200 +489,185 @@ const Funds = () => {
                           colSpan={header.colSpan}
                         >
                           {index >= 2 && header.isPlaceholder ? null : (
-                              <div
-                                {...{
-                                  className: header.column.getCanSort()
-                                    ? 'cursor-pointer h-[72px] select-none'
-                                    : '',
+                            <div
+                              {...{
+                                className: header.column.getCanSort()
+                                  ? 'cursor-pointer h-[72px] select-none'
+                                  : '',
+                              }}
+                            >
+                              <OptionsDropdown
+                                dropDownStyles={{
+                                  size: 'md',
+                                  anchor: 'bottom start',
+                                  bg: 'primary',
+                                  emphasize: 'medium',
+                                  checkSelected: true,
                                 }}
-                              >
-                                <OptionsDropdown
-                                  dropDownStyles={{
-                                    size: 'md',
-                                    anchor: 'bottom start',
-                                    bg: 'primary',
-                                    emphasize: 'medium',
-                                    checkSelected: true,
-                                  }}
-                                  customOptionRender={(prop) => (
-                                    <>
-                                      <div
-                                        onClick={() => {
-                                          if (prop.text === 'انتقال به راست') {
-                                            moveColumn(
-                                              header.column.id,
-                                              'right',
-                                            );
-                                          }
-                                          if (prop.text === 'انتقال به چپ') {
-                                            moveColumn(
-                                              header.column.id,
-                                              'left',
-                                            );
-                                          }
-                                          if (prop.text === 'انتقال به ابتدا') {
-                                            moveColumn(
-                                              header.column.id,
-                                              'start',
-                                            );
-                                          }
-                                          if (prop.text === 'انتقال به انتها') {
-                                            moveColumn(header.column.id, 'end');
-                                          }
-                                          if (
-                                            prop.text === 'مرتب سازی نزولی' &&
-                                            header.column.getIsSorted() !==
-                                              'desc'
-                                          ) {
-                                            header.column.toggleSorting(true);
-                                          }
-                                          if (
-                                            prop.text === 'مرتب سازی صعودی' &&
-                                            header.column.getIsSorted() !==
-                                              'asc'
-                                          ) {
-                                            header.column.toggleSorting(false);
-                                          }
-                                        }}
-                                        className={cn(
-                                          'hover:bg-brand-50 hover:text-brand-800 flex cursor-pointer items-center gap-2 bg-white p-2',
-                                          {
-                                            'cursor-default text-gray-100 hover:bg-white hover:text-gray-100':
-                                              (index === 1 &&
-                                                (prop.text ===
-                                                  'انتقال به ابتدا' ||
-                                                  prop.text ===
-                                                    'انتقال به راست')) ||
-                                              (index + 1 ===
-                                                updateTableHeaders.length &&
-                                                (prop.text ===
-                                                  'انتقال به انتها' ||
-                                                  prop.text ===
-                                                    'انتقال به چپ')),
-                                            'text-brand-800':
-                                              (header.column.getIsSorted() ===
-                                                'desc' &&
+                                customOptionRender={(prop) => (
+                                  <>
+                                    <div
+                                      onClick={() => {
+                                        if (prop.text === 'انتقال به راست') {
+                                          moveColumn(header.column.id, 'right');
+                                        }
+                                        if (prop.text === 'انتقال به چپ') {
+                                          moveColumn(header.column.id, 'left');
+                                        }
+                                        if (prop.text === 'انتقال به ابتدا') {
+                                          moveColumn(header.column.id, 'start');
+                                        }
+                                        if (prop.text === 'انتقال به انتها') {
+                                          moveColumn(header.column.id, 'end');
+                                        }
+                                        if (
+                                          prop.text === 'مرتب سازی نزولی' &&
+                                          header.column.getIsSorted() !== 'desc'
+                                        ) {
+                                          header.column.toggleSorting(true);
+                                        }
+                                        if (
+                                          prop.text === 'مرتب سازی صعودی' &&
+                                          header.column.getIsSorted() !== 'asc'
+                                        ) {
+                                          header.column.toggleSorting(false);
+                                        }
+                                      }}
+                                      className={cn(
+                                        'hover:bg-brand-50 hover:text-brand-800 flex cursor-pointer items-center gap-2 bg-white p-2',
+                                        {
+                                          'cursor-default text-gray-100 hover:bg-white hover:text-gray-100':
+                                            (index === 1 &&
+                                              (prop.text ===
+                                                'انتقال به ابتدا' ||
                                                 prop.text ===
-                                                  'مرتب سازی نزولی') ||
-                                              (header.column.getIsSorted() ===
-                                                'asc' &&
-                                                prop.text ===
-                                                  'مرتب سازی صعودی'),
-                                          },
-                                        )}
-                                      >
-                                        {prop.icon?.name && (
-                                          <Icon
-                                            name={prop.icon?.name}
-                                            size={prop.icon?.size}
-                                          />
-                                        )}
-                                        {prop.text}
-                                      </div>
-                                      {prop.text === 'مرتب سازی صعودی' && (
-                                        <hr />
+                                                  'انتقال به راست')) ||
+                                            (index + 1 ===
+                                              updateTableHeaders.length &&
+                                              (prop.text ===
+                                                'انتقال به انتها' ||
+                                                prop.text === 'انتقال به چپ')),
+                                          'text-brand-800':
+                                            (header.column.getIsSorted() ===
+                                              'desc' &&
+                                              prop.text ===
+                                                'مرتب سازی نزولی') ||
+                                            (header.column.getIsSorted() ===
+                                              'asc' &&
+                                              prop.text === 'مرتب سازی صعودی'),
+                                        },
                                       )}
-                                    </>
-                                  )}
-                                  customTriggerRender={() => (
-                                    <div className="w-full !bg-yellow-600">
-                                      <FundsColumn
-                                        filtered={!!header.column.getIsSorted()}
-                                        clickFilterd={() =>
-                                          header.column.getToggleSortingHandler()?.(
-                                            new Event('click'),
-                                          )
-                                        }
-                                        size={
-                                          String(
-                                            flexRender(
-                                              header.column.columnDef.header,
-                                              header.getContext(),
-                                            ),
-                                          ).length > 10
-                                            ? 'large'
-                                            : 'medium'
-                                        }
-                                        type={
-                                          header.column.getIsSorted() === 'asc'
-                                            ? 'active-desc'
-                                            : header.column.getIsSorted() ===
-                                                'desc'
-                                              ? 'active-asc'
-                                              : 'inactive'
-                                        }
-                                        filterable={false}
-                                        title={String(
+                                    >
+                                      {prop.icon?.name && (
+                                        <Icon
+                                          name={prop.icon?.name}
+                                          size={prop.icon?.size}
+                                        />
+                                      )}
+                                      {prop.text}
+                                    </div>
+                                    {prop.text === 'مرتب سازی صعودی' && <hr />}
+                                  </>
+                                )}
+                                customTriggerRender={() => (
+                                  <div className="w-full !bg-yellow-600">
+                                    <FundsColumn
+                                      filtered={!!header.column.getIsSorted()}
+                                      clickFilterd={() =>
+                                        header.column.getToggleSortingHandler()?.(
+                                          new Event('click'),
+                                        )
+                                      }
+                                      size={
+                                        String(
                                           flexRender(
                                             header.column.columnDef.header,
                                             header.getContext(),
                                           ),
-                                        )}
-                                        sortType={
-                                          (
-                                            columns[index]?.meta as {
-                                              type?: string;
-                                            }
-                                          )?.type === 'text'
-                                            ? 'alphabetical'
-                                            : 'ranked'
-                                        }
-                                      ></FundsColumn>
-                                    </div>
-                                  )}
-                                  dropDownList={[
-                                    {
-                                      text: 'مرتب سازی نزولی',
-                                      icon: {
-                                        name: 'arrow-down-narrow-wide',
-                                        size: 'md',
-                                      },
+                                        ).length > 10
+                                          ? 'large'
+                                          : 'medium'
+                                      }
+                                      type={
+                                        header.column.getIsSorted() === 'asc'
+                                          ? 'active-desc'
+                                          : header.column.getIsSorted() ===
+                                              'desc'
+                                            ? 'active-asc'
+                                            : 'inactive'
+                                      }
+                                      filterable={false}
+                                      title={String(
+                                        flexRender(
+                                          header.column.columnDef.header,
+                                          header.getContext(),
+                                        ),
+                                      )}
+                                      sortType={
+                                        (
+                                          columns[index]?.meta as {
+                                            type?: string;
+                                          }
+                                        )?.type === 'text'
+                                          ? 'alphabetical'
+                                          : 'ranked'
+                                      }
+                                    ></FundsColumn>
+                                  </div>
+                                )}
+                                dropDownList={[
+                                  {
+                                    text: 'مرتب سازی نزولی',
+                                    icon: {
+                                      name: 'arrow-down-narrow-wide',
+                                      size: 'md',
                                     },
-                                    {
-                                      text: 'مرتب سازی صعودی',
-                                      icon: {
-                                        name: 'arrow-up-narrow-wide',
-                                        size: 'md',
-                                      },
+                                  },
+                                  {
+                                    text: 'مرتب سازی صعودی',
+                                    icon: {
+                                      name: 'arrow-up-narrow-wide',
+                                      size: 'md',
                                     },
-                                    {
-                                      text: 'انتقال به راست',
-                                      icon: {
-                                        name: 'arrow-right',
-                                        size: 'md',
-                                      },
+                                  },
+                                  {
+                                    text: 'انتقال به راست',
+                                    icon: {
+                                      name: 'arrow-right',
+                                      size: 'md',
                                     },
-                                    {
-                                      text: 'انتقال به ابتدا',
-                                      icon: {
-                                        name: 'arrow-right-to-line',
-                                        size: 'md',
-                                      },
+                                  },
+                                  {
+                                    text: 'انتقال به ابتدا',
+                                    icon: {
+                                      name: 'arrow-right-to-line',
+                                      size: 'md',
                                     },
-                                    {
-                                      text: 'انتقال به چپ',
-                                      icon: {
-                                        name: 'arrow-left',
-                                        size: 'md',
-                                      },
+                                  },
+                                  {
+                                    text: 'انتقال به چپ',
+                                    icon: {
+                                      name: 'arrow-left',
+                                      size: 'md',
                                     },
-                                    {
-                                      text: 'انتقال به انتها',
-                                      icon: {
-                                        name: 'arrow-left-to-line',
-                                        size: 'md',
-                                      },
+                                  },
+                                  {
+                                    text: 'انتقال به انتها',
+                                    icon: {
+                                      name: 'arrow-left-to-line',
+                                      size: 'md',
                                     },
-                                  ]}
-                                ></OptionsDropdown>
-                              </div>
+                                  },
+                                ]}
+                              ></OptionsDropdown>
+                            </div>
                           )}
                         </th>
                       )}
                     </React.Fragment>
                   );
                 })}
-                <th className="sticky left-10 m-0 mt-5">
+                <th className="sticky left-12 m-0 mt-5">
                   {isScrollAtEnd && (
                     <div
                       onClick={() => handlerKeyboardScroll(false)}
@@ -684,7 +679,7 @@ const Funds = () => {
                             'bg-brand-600 rounded-md p-1 text-white',
                           )}
                         >
-                          <Icon name="arrow-left" />
+                          <Icon name="arrow-left" size='lg' />
                         </button>
                       </Tooltip>
                     </div>
@@ -723,7 +718,7 @@ const Funds = () => {
                         <tr
                           style={{ top: topValue }}
                           className={cn(
-                            'group border-t h-[60px] -top-4 border-blue-100',
+                            'group -top-4 h-[60px] border-t border-blue-100',
                             row.getIsPinned() && `sticky z-30`,
                             {
                               'shadow-2xl': row.id === lastPinnedRowId,
@@ -758,9 +753,7 @@ const Funds = () => {
                                       toggleWatchList={() =>
                                         toggleWatchList({ id: row.id })
                                       }
-                                      pinedFunction={() =>
-                                        row.pin('top', true)
-                                      }
+                                      pinedFunction={() => row.pin('top', true)}
                                       unPinedFunction={() => row.pin(false)}
                                       isScrolled={isScrollAtStart}
                                       investmentMethod={
@@ -834,7 +827,7 @@ const Funds = () => {
                         <tr
                           style={{ top: topValue }}
                           className={cn(
-                            'border group border-blue-100',
+                            'group border border-blue-100',
                             pineWatchLis.includes(row.id) && `sticky z-40`,
                             {
                               'shadow-2xl': pineWatchLis.includes(row.id),
@@ -855,7 +848,7 @@ const Funds = () => {
                             return (
                               <React.Fragment key={cell.id}>
                                 {index === 0 && (
-                                  <td className="sticky z-40 right-0 m-0 p-0">
+                                  <td className="sticky right-0 z-40 m-0 p-0">
                                     <FundsTableRow
                                       tag={true}
                                       category="watchlist"
@@ -932,7 +925,7 @@ const Funds = () => {
       </div>
 
       <div className="fixed bottom-6 right-0 mt-6 flex w-full justify-between px-8">
-        <div className="rounded-md bg-gray-400 py-2">
+        <div className="rounded-md bg-[#B3B6BD] py-2">
           <OptionsDropdown
             onChange={(e) => {
               startTransition(() => {
@@ -981,10 +974,10 @@ const Funds = () => {
           />
         </div>
 
-        <span className="rounded-md bg-gray-300 px-3 py-2 text-xs font-medium">
+        <span className="rounded-md bg-[#B3B6BD] px-3 py-2 text-xs font-medium">
           مجموعه ارزش خالص دارایی‌ها : 10,986,249.09
         </span>
-        <div className="flex items-center gap-2 rounded-md bg-gray-400 px-3 py-2">
+        <div className="flex items-center gap-2 rounded-md bg-[#B3B6BD] px-3 py-2">
           <span className="text-gray-1000 flex items-center gap-1 text-xs font-medium">
             <div>
               {formatNumber(
@@ -1067,63 +1060,72 @@ const Funds = () => {
               </DialogTitle>
               <hr />
               <div className="scrollbar-thumb-gray-500 scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-track-gray-300 mb-6 h-[550px] overflow-x-hidden overflow-y-scroll">
-                {table.getAllColumns().map((item, index) => (
-                  <div className="mt-6" key={index}>
-                    <span className="mb-4 mr-4 text-base font-semibold">
-                      {item.columnDef.header?.toString()}
-                    </span>
-                    <div className="grid grid-cols-2 pr-6">
-                      {item.columns.map((item, index) => (
-                        <div
-                          className="hover:bg-brand-100 rounded-md p-3"
-                          key={index}
-                        >
-                          {item && (
-                            <Checkbox
-                              onChange={() => {
-                                if (item.columnDef.header?.toString() === 'بازه دلخواه') {
-                                  setCustomColl({active: true, date: ''})
-                                }
-                                if (
-                                  table
-                                    .getAllLeafColumns()
-                                    .filter((col) => col.getIsVisible())
-                                    .length === 25
-                                ) {
-                                  if (item.getIsVisible())
+                {table.getAllColumns().map((item, index) => {
+                  if (index === 0) return null;
+                  return (
+                    <div className="my-6" key={index}>
+                      <span className="mb-4 mr-4 text-base font-semibold">
+                        {item.columnDef.header?.toString()}
+                      </span>
+                      <div className="grid grid-cols-2 pr-4 pb-6">
+                        {item.columns.map((item, index) => (
+                          <div
+                            className="hover:bg-brand-100 rounded-md p-3"
+                            key={index}
+                          >
+                            {item && (
+                              <Checkbox
+                                onChange={() => {
+                                  if (
+                                    item.columnDef.header?.toString() ===
+                                    'بازه دلخواه'
+                                  ) {
+                                    setCustomColl({ active: true, date: '' });
+                                  }
+                                  if (
+                                    table
+                                      .getAllLeafColumns()
+                                      .filter((col) => col.getIsVisible())
+                                      .length === 25
+                                  ) {
+                                    if (item.getIsVisible())
+                                      item.toggleVisibility(
+                                        !item.getIsVisible(),
+                                      );
+                                  } else if (
+                                    table
+                                      .getAllLeafColumns()
+                                      .filter((col) => col.getIsVisible())
+                                      .length === 7
+                                  ) {
+                                    if (!item.getIsVisible())
+                                      item.toggleVisibility(
+                                        !item.getIsVisible(),
+                                      );
+                                  } else {
                                     item.toggleVisibility(!item.getIsVisible());
-                                } else if (
-                                  table
-                                    .getAllLeafColumns()
-                                    .filter((col) => col.getIsVisible())
-                                    .length === 7
-                                ) {
-                                  if (!item.getIsVisible())
-                                    item.toggleVisibility(!item.getIsVisible());
-                                } else {
-                                  item.toggleVisibility(!item.getIsVisible());
-                                }
-                              }}
-                              content={item.columnDef.header?.toString()}
-                              checked={item.getIsVisible()}
-                            />
-                          )}
-                        </div>
-                      ))}
+                                  }
+                                }}
+                                content={item.columnDef.header?.toString()}
+                                checked={item.getIsVisible()}
+                              />
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                      {index + 1 < table.getAllColumns().length && <hr />}
                     </div>
-                    {index + 1 < table.getAllColumns().length && <hr />}
-                  </div>
-                ))}
+                  );
+                })}
               </div>
               <div
-                  onClick={() => setIsSettingModal(false)}
-                  className="text-brand-600 absolute w-[28px] h-[28px] -left-2 -top-2 z-10 cursor-pointer rounded-full bg-white"
-                >
-                  <div className='-mt-0.5'>
-
+                onClick={() => setIsSettingModal(false)}
+                className="text-brand-600 absolute -left-2 -top-2 z-10 h-[28px] w-[28px] cursor-pointer rounded-full bg-white"
+              >
+                <div className="-mt-0.5">
                   <Icon name="circle-x" size="lg_plus" />
-                  </div>
                 </div>
+              </div>
             </DialogPanel>
           </div>
         </div>
@@ -1141,14 +1143,13 @@ const Funds = () => {
               transition
               className="shadow-3xl data-[closed]:transform-[scale(0%)] relative z-20 w-full max-w-lg rounded-3xl bg-white duration-300 ease-out data-[closed]:opacity-0"
             >
-              <div className='w-full bg-white h-[620px] overflow-y-auto overflow-x-hidden'>
+              <div className="h-[620px] w-full rounded-3xl overflow-y-auto overflow-x-hidden bg-white">
                 <div
                   onClick={() => setIsFilterModal(false)}
-                  className="text-brand-600 absolute w-[28px] h-[28px] -left-2 -top-2 z-10 cursor-pointer rounded-full bg-white"
+                  className="text-brand-600 absolute -left-2 -top-2 z-10 h-[28px] w-[28px] cursor-pointer rounded-full bg-white"
                 >
-                  <div className='-mt-0.5'>
-
-                  <Icon name="circle-x" size="lg_plus" />
+                  <div className="-mt-0.5">
+                    <Icon name="circle-x" size="lg_plus" />
                   </div>
                 </div>
                 <div className="my-4 flex w-full flex-col gap-2">
@@ -1169,24 +1170,25 @@ const Funds = () => {
         open={customColl.active}
         as="div"
         className="relative z-50 focus:outline-none"
-        onClose={() => setCustomColl({active: false, date: ''})}
+        onClose={() => setCustomColl({ active: false, date: '' })}
       >
-        <div className="fixed inset-0 z-30 w-screen flex justify-center overflow-y-auto">
+        <div className="fixed inset-0 z-30 flex w-screen justify-center overflow-y-auto">
           <div className="absolute right-0 top-0 h-screen w-screen bg-black opacity-[0.15]"></div>
           <div className="flex min-h-full w-screen items-center justify-center">
             <DialogPanel
               transition
-              className="shadow-3xl data-[closed]:transform-[scale(0%)] relative z-20 rounded-3xl mx-auto duration-300 ease-out data-[closed]:opacity-0"
+              className="shadow-3xl data-[closed]:transform-[scale(0%)] relative z-20 mx-auto rounded-3xl duration-300 ease-out data-[closed]:opacity-0"
             >
-                <DatePicker 
-                isOpen={customColl.active} 
-                onClose={() => setCustomColl({active: false, date: ''})} 
-                dateRange={{end: '1404-12-12', start: '1300-01-12'}} 
-                max='1404-12-12'
-                min='1300-01-12'
+              <DatePicker
+                isOpen={customColl.active}
+                onClose={() => setCustomColl({ active: false, date: '' })}
+                dateRange={{ end: '1404-12-12', start: '1300-01-12' }}
+                max="1404-12-12"
+                min="1300-01-12"
                 setDateRange={(date) => {
-                  setCustomColl({active: false, date: 'date'});
-                }} ></DatePicker>
+                  setCustomColl({ active: false, date: 'date' });
+                }}
+              ></DatePicker>
             </DialogPanel>
           </div>
         </div>
