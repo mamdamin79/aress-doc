@@ -333,7 +333,7 @@ const Funds = () => {
                             <OptionsDropdown
                               dropDownStyles={{
                                 size: 'md',
-                                anchor: 'bottom start',
+                                anchor: 'bottom',
                                 bg: 'primary',
                                 emphasize: 'medium',
                                 checkSelected: true,
@@ -379,10 +379,9 @@ const Funds = () => {
                                   {prop.text === 'مرتب سازی صعودی' && <hr />}
                                 </>
                               )}
-                              customTriggerRender={({isActive}) => (
+                              customTriggerRender={() => (
                                 <div className="rounde w-full">
                                   <FundsColumn
-
                                     filtered={!!header.column.getIsSorted()}
                                     clickFilterd={() =>
                                       header.column.getToggleSortingHandler()?.(
@@ -499,7 +498,7 @@ const Funds = () => {
                               <OptionsDropdown
                                 dropDownStyles={{
                                   size: 'md',
-                                  anchor: 'bottom start',
+                                  anchor: 'bottom',
                                   bg: 'primary',
                                   emphasize: 'medium',
                                   checkSelected: true,
