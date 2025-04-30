@@ -5,10 +5,12 @@ import { LogoutModal } from './LogoutModal';
 interface ProfileSidebarWrapperProps {
   title?: string;
   subTitle?: string;
+  onNavigation?: (section: string) => void;
 }
 export const ProfileSidebarWrapper: React.FC<ProfileSidebarWrapperProps> = ({
   title,
   subTitle,
+  onNavigation,
 }) => {
   const [isLogoutModalOpen, setisLogoutModalOpen] = useState(false);
   return (
@@ -17,6 +19,7 @@ export const ProfileSidebarWrapper: React.FC<ProfileSidebarWrapperProps> = ({
         title={title}
         subTitle={subTitle}
         onLogoutBtn={() => setisLogoutModalOpen(true)}
+        onNavigation={(section) => onNavigation?.(section)}
       />
       <LogoutModal
         isOpen={isLogoutModalOpen}

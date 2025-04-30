@@ -130,7 +130,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
           </Dialog>
         ))}
 
-      <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6">
+      <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
         {formSchema.map(({ name, label, value, edit }) => (
           <TextField
             key={name}

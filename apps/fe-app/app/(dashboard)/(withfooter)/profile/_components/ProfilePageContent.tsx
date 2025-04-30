@@ -1,0 +1,66 @@
+'use client';
+import { AressApiUser } from '@openapi';
+import React, { useState } from 'react';
+import { ProfileSidebarWrapper } from './ProfileSidebarWrapper';
+import { ProfileForm } from '../../../../components';
+import { cn, Icon, ProfileSidebar } from 'design-system';
+import { LogoutModal } from './LogoutModal';
+import { useThrottle, useWindowSize } from '@uidotdev/usehooks';
+
+export const ProfilePageContent: React.FC<AressApiUser> = (user) => {
+  const [activeSection, setActiveSection] = useState<undefined | string>(
+    undefined,
+  );
+  const [isLogoutModalOpen, setisLogoutModalOpen] = useState(false);
+
+  const { width } = useWindowSize();
+  const throttledWidth = useThrottle(width, 200) ?? 0;
+  const isDesktop = throttledWidth > 1024;
+  return (
+    <>
+      <div className="flex max-w-[1680px] flex-row gap-14 px-20 pb-28 pt-12">
+        {!(activeSection && !isDesktop) && (
+          <ProfileSidebar
+            title="علی محمدی"
+            subTitle="09339133898"
+            onLogoutBtn={() => setisLogoutModalOpen(true)}
+            onNavigation={(section) => setActiveSection(section)}
+            activeSection={isDesktop ? 'profile' : activeSection}
+          />
+        )}
+
+        <div
+          className={cn(
+            'hidden w-full lg:block',
+            activeSection == 'profile' && 'block',
+          )}
+        >
+          <div>
+            {!isDesktop && activeSection && (
+              <button
+                onClick={() => setActiveSection(undefined)}
+                className="flex cursor-pointer items-center gap-1 text-right text-lg font-medium"
+              >
+                <Icon name="chevron-right" size="lg" />
+                حساب کاربری
+              </button>
+            )}
+            <ProfileForm
+              email={user.email}
+              fnameAndLname=""
+              nationalID={
+                user.nationalCode ? Number(user.nationalCode) : undefined
+              }
+              phoneNumber={user.phoneNumber?.replace('+', '') + '+'}
+              username={user.username}
+            />
+          </div>
+        </div>
+      </div>
+      <LogoutModal
+        isOpen={isLogoutModalOpen}
+        onClose={() => setisLogoutModalOpen(false)}
+      />
+    </>
+  );
+};
