@@ -159,7 +159,7 @@ export function FilterPopUpSection({
       {/* Filter Options List */}
       <div
         className={cn(
-          'absolute right-0 top-0 h-[580px] w-full translate-x-full bg-white transition-all duration-500',
+          'absolute right-0 top-3 h-[570px] w-full translate-x-full bg-white transition-all duration-500',
           { 'translate-x-0': activeFilter },
         )}
       >

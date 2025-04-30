@@ -18,6 +18,7 @@ import {
   FundsTableRow,
   FilterPopUpSection,
   FundsColumn,
+  Dialog,
   Checkbox,
 } from 'design-system';
 import {
@@ -30,7 +31,6 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { makeData } from './components/makeData';
-import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import { columns, columnVisibility, filterList } from './FundsTable.constants';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
@@ -167,10 +167,10 @@ const Funds = () => {
       }
 
       if (e.code === 'KeyS') {
-        tableRef?.current?.scrollBy({top: 100, behavior: 'smooth'});
+        tableRef?.current?.scrollBy({ top: 100, behavior: 'smooth' });
       }
       if (e.code === 'KeyW') {
-        tableRef?.current?.scrollBy({top: -100, behavior: 'smooth'});
+        tableRef?.current?.scrollBy({ top: -100, behavior: 'smooth' });
       }
     };
 
@@ -306,7 +306,7 @@ const Funds = () => {
                             'bg-brand-600 rounded-md p-1 text-white',
                           )}
                         >
-                          <Icon name="arrow-right" size='lg' />
+                          <Icon name="arrow-right" size="lg" />
                         </button>
                       </Tooltip>
                     </div>
@@ -379,7 +379,7 @@ const Funds = () => {
                                   {prop.text === 'مرتب سازی صعودی' && <hr />}
                                 </>
                               )}
-                              customTriggerRender={({isActive}) => (
+                              customTriggerRender={({ isActive }) => (
                                 <div className="rounde w-full">
                                   <FundsColumn
                                     active={isActive}
@@ -569,7 +569,7 @@ const Funds = () => {
                                     {prop.text === 'مرتب سازی صعودی' && <hr />}
                                   </>
                                 )}
-                                customTriggerRender={({isActive}) => (
+                                customTriggerRender={({ isActive }) => (
                                   <div className="w-full !bg-yellow-600">
                                     <FundsColumn
                                       active={isActive}
@@ -680,7 +680,7 @@ const Funds = () => {
                             'bg-brand-600 rounded-md p-1 text-white',
                           )}
                         >
-                          <Icon name="arrow-left" size='lg' />
+                          <Icon name="arrow-left" size="lg" />
                         </button>
                       </Tooltip>
                     </div>
@@ -1021,178 +1021,126 @@ const Funds = () => {
       </div>
 
       <Dialog
-        open={isSettingModal}
-        as="div"
-        className="relative z-40 focus:outline-none"
+        className="min-w-[570px] p-0"
         onClose={() => setIsSettingModal(false)}
+        isOpen={isSettingModal}
       >
-        <div className="fixed inset-0 z-30 w-screen overflow-y-auto">
-          <div className="absolute right-0 top-0 h-screen w-screen bg-black opacity-[0.15]"></div>
-          <div className="flex min-h-full items-center justify-center">
-            <DialogPanel
-              transition
-              className="shadow-3xl data-[closed]:transform-[scale(0%)] relative w-full max-w-lg rounded-3xl bg-white duration-300 ease-out data-[closed]:opacity-0"
-            >
-              <DialogTitle className="flex items-center justify-between">
-                <span
-                  className={cn('p-6 text-xl font-medium', {
-                    'text-red-600':
-                      table
-                        .getAllLeafColumns()
-                        .filter((col) => col.getIsVisible()).length === 25,
-                  })}
-                >
-                  انتخاب ستون‌ها (
-                  {
-                    table
-                      .getAllLeafColumns()
-                      .filter((col) => col.getIsVisible()).length
-                  }
-                  /25)
+        <div className="flex items-center justify-between">
+          <span
+            className={cn('p-6 text-xl font-medium', {
+              'text-red-600':
+                table.getAllLeafColumns().filter((col) => col.getIsVisible())
+                  .length === 25,
+            })}
+          >
+            انتخاب ستون‌ها (
+            {
+              table.getAllLeafColumns().filter((col) => col.getIsVisible())
+                .length
+            }
+            /25)
+          </span>
+        </div>
+        {isChanged && (
+          <span
+            className="m-6 cursor-pointer text-base font-medium text-red-600"
+            onClick={() => table.resetColumnVisibility()}
+          >
+            بازنشانی به پیشفرض
+          </span>
+        )}
+        <hr />
+        <div
+          dir="rtl"
+          className="scrollbar-thumb-gray-500 scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-track-gray-300 mb-6 h-[550px] overflow-x-hidden overflow-y-scroll"
+        >
+          {table.getAllColumns().map((item, index) => {
+            if (index === 0) return null;
+            return (
+              <div className="my-6 text-right" key={index}>
+                <span className="mb-4 mr-4 text-right text-base font-semibold">
+                  {item.columnDef.header?.toString()}
                 </span>
-                {isChanged && (
-                  <span
-                    className="m-6 cursor-pointer text-base font-medium text-red-600"
-                    onClick={() => table.resetColumnVisibility()}
-                  >
-                    بازنشانی به پیشفرض
-                  </span>
-                )}
-              </DialogTitle>
-              <hr />
-              <div className="scrollbar-thumb-gray-500 scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-track-gray-300 mb-6 h-[550px] overflow-x-hidden overflow-y-scroll">
-                {table.getAllColumns().map((item, index) => {
-                  if (index === 0) return null;
-                  return (
-                    <div className="my-6" key={index}>
-                      <span className="mb-4 mr-4 text-base font-semibold">
-                        {item.columnDef.header?.toString()}
-                      </span>
-                      <div className="grid grid-cols-2 pr-4 pb-6">
-                        {item.columns.map((item, index) => (
-                          <div
-                            className="hover:bg-brand-100 rounded-md p-3"
-                            key={index}
-                          >
-                            {item && (
-                              <Checkbox
-                                onChange={() => {
-                                  if (
-                                    item.columnDef.header?.toString() ===
-                                    'بازه دلخواه'
-                                  ) {
-                                    setCustomColl({ active: true, date: '' });
-                                  }
-                                  if (
-                                    table
-                                      .getAllLeafColumns()
-                                      .filter((col) => col.getIsVisible())
-                                      .length === 25
-                                  ) {
-                                    if (item.getIsVisible())
-                                      item.toggleVisibility(
-                                        !item.getIsVisible(),
-                                      );
-                                  } else if (
-                                    table
-                                      .getAllLeafColumns()
-                                      .filter((col) => col.getIsVisible())
-                                      .length === 7
-                                  ) {
-                                    if (!item.getIsVisible())
-                                      item.toggleVisibility(
-                                        !item.getIsVisible(),
-                                      );
-                                  } else {
-                                    item.toggleVisibility(!item.getIsVisible());
-                                  }
-                                }}
-                                content={item.columnDef.header?.toString()}
-                                checked={item.getIsVisible()}
-                              />
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                      {index + 1 < table.getAllColumns().length && <hr />}
+                <div className="grid grid-cols-2 px-4 pb-6">
+                  {item.columns.map((item, index) => (
+                    <div
+                      className="hover:bg-brand-100 rounded-md p-3"
+                      key={index}
+                    >
+                      {item && (
+                        <Checkbox
+                          onChange={() => {
+                            if (
+                              item.columnDef.header?.toString() ===
+                              'بازه دلخواه'
+                            ) {
+                              setCustomColl({ active: true, date: '' });
+                            }
+                            if (
+                              table
+                                .getAllLeafColumns()
+                                .filter((col) => col.getIsVisible()).length ===
+                              25
+                            ) {
+                              if (item.getIsVisible())
+                                item.toggleVisibility(!item.getIsVisible());
+                            } else if (
+                              table
+                                .getAllLeafColumns()
+                                .filter((col) => col.getIsVisible()).length ===
+                              7
+                            ) {
+                              if (!item.getIsVisible())
+                                item.toggleVisibility(!item.getIsVisible());
+                            } else {
+                              item.toggleVisibility(!item.getIsVisible());
+                            }
+                          }}
+                          content={item.columnDef.header?.toString()}
+                          checked={item.getIsVisible()}
+                        />
+                      )}
                     </div>
-                  );
-                })}
-              </div>
-              <div
-                onClick={() => setIsSettingModal(false)}
-                className="text-brand-600 absolute -left-2 -top-2 z-10 h-[28px] w-[28px] cursor-pointer rounded-full bg-white"
-              >
-                <div className="-mt-0.5">
-                  <Icon name="circle-x" size="lg_plus" />
+                  ))}
                 </div>
+                {index + 1 < table.getAllColumns().length && <hr />}
               </div>
-            </DialogPanel>
-          </div>
+            );
+          })}
         </div>
       </Dialog>
       <Dialog
-        open={isFilterModal}
-        as="div"
-        className="relative z-50 focus:outline-none"
+        className="w-[416px] p-0"
         onClose={() => setIsFilterModal(false)}
+        isOpen={isFilterModal}
       >
-        <div className="fixed inset-0 z-30 w-screen overflow-y-auto">
-          <div className="absolute right-0 top-0 h-screen w-screen bg-black opacity-[0.15]"></div>
-          <div className="flex min-h-full items-center justify-center">
-            <DialogPanel
-              transition
-              className="shadow-3xl data-[closed]:transform-[scale(0%)] relative z-20 w-full max-w-lg rounded-3xl bg-white duration-300 ease-out data-[closed]:opacity-0"
-            >
-              <div className="h-[620px] w-full rounded-3xl overflow-y-auto overflow-x-hidden bg-white">
-                <div
-                  onClick={() => setIsFilterModal(false)}
-                  className="text-brand-600 absolute -left-2 -top-2 z-10 h-[28px] w-[28px] cursor-pointer rounded-full bg-white"
-                >
-                  <div className="-mt-0.5">
-                    <Icon name="circle-x" size="lg_plus" />
-                  </div>
-                </div>
-                <div className="my-4 flex w-full flex-col gap-2">
-                  <FilterPopUpSection
-                    searchValue={fundSearchQuery}
-                    onSearchChange={setFundSearchQuery}
-                    filterOptions={filterList}
-                    selectedFilters={selectedFilters}
-                    onFilterChange={setSelectedFilters}
-                  />
-                </div>
-              </div>
-            </DialogPanel>
+        <div className="h-[620px] w-full overflow-y-auto overflow-x-hidden rounded-3xl bg-white text-right">
+          <div className="my-4 flex w-full flex-col gap-2">
+            <FilterPopUpSection
+              searchValue={fundSearchQuery}
+              onSearchChange={setFundSearchQuery}
+              filterOptions={filterList}
+              selectedFilters={selectedFilters}
+              onFilterChange={setSelectedFilters}
+            />
           </div>
         </div>
       </Dialog>
       <Dialog
-        open={customColl.active}
-        as="div"
-        className="relative z-50 focus:outline-none"
+        isOpen={customColl.active}
+        className="p-0"
         onClose={() => setCustomColl({ active: false, date: '' })}
       >
-        <div className="fixed inset-0 z-30 flex w-screen justify-center overflow-y-auto">
-          <div className="absolute right-0 top-0 h-screen w-screen bg-black opacity-[0.15]"></div>
-          <div className="flex min-h-full w-screen items-center justify-center">
-            <DialogPanel
-              transition
-              className="shadow-3xl data-[closed]:transform-[scale(0%)] relative z-20 mx-auto rounded-3xl duration-300 ease-out data-[closed]:opacity-0"
-            >
-              <DatePicker
-                isOpen={customColl.active}
-                onClose={() => setCustomColl({ active: false, date: '' })}
-                dateRange={{ end: '1404-12-12', start: '1300-01-12' }}
-                max="1404-12-12"
-                min="1300-01-12"
-                setDateRange={(date) => {
-                  setCustomColl({ active: false, date: 'date' });
-                }}
-              ></DatePicker>
-            </DialogPanel>
-          </div>
-        </div>
+        <DatePicker
+          isOpen={customColl.active}
+          onClose={() => setCustomColl({ active: false, date: '' })}
+          dateRange={{ end: '1404-12-12', start: '1300-01-12' }}
+          max="1404-12-12"
+          min="1300-01-12"
+          setDateRange={(date) => {
+            setCustomColl({ active: false, date: 'date' });
+          }}
+        ></DatePicker>
       </Dialog>
     </>
   );
