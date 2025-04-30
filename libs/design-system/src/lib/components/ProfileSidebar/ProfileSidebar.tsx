@@ -7,12 +7,14 @@ export interface ProfileSidebarProps {
   image?: string;
   title?: string;
   subTitle?: string;
+  onLogoutBtn?: () => void;
 }
 
 export const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
   image,
   subTitle,
   title,
+  onLogoutBtn,
 }) => {
   return (
     <div className="flex w-full flex-col gap-4 rounded-3xl border-2 border-gray-100 p-4 lg:w-[264px]">
@@ -44,6 +46,7 @@ export const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
           isActive
         />
         <ProfileSidebarOption
+          onClick={onLogoutBtn}
           text="خروج از حساب کاربری"
           icon={{ name: 'power' }}
         />
