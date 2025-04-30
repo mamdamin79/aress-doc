@@ -1,10 +1,11 @@
-'use client'
+'use client';
 import { useState } from 'react';
 import { Icon } from '../Icon';
 import { RemovableLabel } from '../RemovableLabel';
 import { Checkbox } from '../Checkbox';
 import { cn } from 'libs/design-system/src/utils';
 import { TextField } from '../TextField';
+import { Button } from '../Button';
 
 interface FilterOption {
   title: string;
@@ -28,14 +29,20 @@ export function FilterPopUpSection({
   onSearchChange,
 }: Prop) {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
-  const [tempSelectedFilters, setTempSelectedFilters] = useState<Record<string, string[]>>({});
+  const [tempSelectedFilters, setTempSelectedFilters] = useState<
+    Record<string, string[]>
+  >({});
 
   const openFilter = (title: string) => {
     setActiveFilter(title);
     setTempSelectedFilters(selectedFilters);
   };
 
-  const toggleFilterOption = (category: string, option: string, singleSelect: boolean) => {
+  const toggleFilterOption = (
+    category: string,
+    option: string,
+    singleSelect: boolean,
+  ) => {
     setTempSelectedFilters((prev) => {
       const currentOptions = prev[category] || [];
 
@@ -70,12 +77,17 @@ export function FilterPopUpSection({
   };
 
   return (
-    <div className={cn('relative overflow-hidden', { 'h-[580px]': activeFilter })}>
+    <div
+      className={cn('relative overflow-hidden', { 'h-[580px]': activeFilter })}
+    >
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-4 text-xl font-medium">
         <span>فیلتر صندوق‌ها</span>
         {(Object.keys(selectedFilters).length > 0 || searchValue) && (
-          <span onClick={handleClearAll} className="cursor-pointer text-red-600">
+          <span
+            onClick={handleClearAll}
+            className="cursor-pointer text-red-600"
+          >
             بازنشانی فیلتر‌ها
           </span>
         )}
@@ -99,7 +111,10 @@ export function FilterPopUpSection({
       <div className="mt-4 flex flex-col gap-6 px-4">
         {filterOptions.map((item, index) => (
           <div key={index}>
-            <div onClick={() => openFilter(item.title)} className="rounded-lg border p-3">
+            <div
+              onClick={() => openFilter(item.title)}
+              className="rounded-lg border p-3"
+            >
               <div className="flex cursor-pointer items-center justify-between">
                 <span>{item.title}</span>
                 <Icon name="chevron-left" size="lg" />
@@ -115,13 +130,20 @@ export function FilterPopUpSection({
                         item=""
                         label={option}
                         onClose={() => {
-                          const currentOptions = selectedFilters[item.title] || [];
-                          const updatedOptions = currentOptions.filter((o) => o !== option);
+                          const currentOptions =
+                            selectedFilters[item.title] || [];
+                          const updatedOptions = currentOptions.filter(
+                            (o) => o !== option,
+                          );
                           if (updatedOptions.length === 0) {
-                            const { [item.title]: _, ...rest } = selectedFilters;
+                            const { [item.title]: _, ...rest } =
+                              selectedFilters;
                             onFilterChange(rest);
                           } else {
-                            onFilterChange({ ...selectedFilters, [item.title]: updatedOptions });
+                            onFilterChange({
+                              ...selectedFilters,
+                              [item.title]: updatedOptions,
+                            });
                           }
                         }}
                       />
@@ -135,11 +157,16 @@ export function FilterPopUpSection({
       </div>
 
       {/* Filter Options List */}
-      <div className={cn(
-        'absolute right-0 top-0 h-[580px] w-full bg-white translate-x-full transition-all duration-500',
-        { 'translate-x-0': activeFilter }
-      )}>
-        <div className="flex cursor-pointer items-center gap-1 px-6 py-6" onClick={() => setActiveFilter(null)}>
+      <div
+        className={cn(
+          'absolute right-0 top-0 h-[580px] w-full translate-x-full bg-white transition-all duration-500',
+          { 'translate-x-0': activeFilter },
+        )}
+      >
+        <div
+          className="flex cursor-pointer items-center gap-1 px-6 py-6"
+          onClick={() => setActiveFilter(null)}
+        >
           <Icon name="chevron-right" size="lg" />
           <span>{activeFilter}</span>
         </div>
@@ -148,35 +175,59 @@ export function FilterPopUpSection({
         {/* Options */}
         <div className="flex flex-col">
           {activeFilter &&
-            filterOptions.find((f) => f.title === activeFilter)?.options.map((option, index) => (
-              <div key={index} className="flex items-center gap-2 py-3 pr-6">
-                <Checkbox
-                  checked={tempSelectedFilters[activeFilter]?.includes(option) || false}
-                  onChange={() => {
-                    const filter = filterOptions.find((f) => f.title === activeFilter);
-                    toggleFilterOption(activeFilter, option, filter?.singleSelect || false);
-                  }}
-                />
-                <span>{option}</span>
-              </div>
-            ))
-          }
+            filterOptions
+              .find((f) => f.title === activeFilter)
+              ?.options.map((option, index) => (
+                <div key={index} className="flex items-center gap-2 py-3 pr-6">
+                  <Checkbox
+                    checked={
+                      tempSelectedFilters[activeFilter]?.includes(option) ||
+                      false
+                    }
+                    onChange={() => {
+                      const filter = filterOptions.find(
+                        (f) => f.title === activeFilter,
+                      );
+                      toggleFilterOption(
+                        activeFilter,
+                        option,
+                        filter?.singleSelect || false,
+                      );
+                    }}
+                  />
+                  <span>{option}</span>
+                </div>
+              ))}
         </div>
 
         {/* Confirm Buttons */}
         <div className="absolute bottom-0 left-6 flex items-center gap-2 p-4">
-          <button
-            className="rounded-sm border px-3 py-2 font-medium text-base border-[#0C9292] text-[#0C9292]"
+          <Button
             onClick={() => setActiveFilter(null)}
+            size="sm"
+            mode="secondary"
+            align="center"
+            isLoading={false}
           >
             بازگشت
-          </button>
-          <button
-            className="text-white py-2 px-3 font-medium text-base rounded-md border border-[#AFE4E4] bg-[#AFE4E4]"
+          </Button>
+          <Button
+            className="whitespace-nowrap"
             onClick={handleConfirm}
+            align="center"
+            disabled={
+              !(
+                activeFilter &&
+                tempSelectedFilters[activeFilter] &&
+                tempSelectedFilters[activeFilter].length > 0
+              )
+            }
+            isLoading={false}
+            mode="primary"
+            size="sm"
           >
             تایید و انتخاب
-          </button>
+          </Button>
         </div>
       </div>
     </div>

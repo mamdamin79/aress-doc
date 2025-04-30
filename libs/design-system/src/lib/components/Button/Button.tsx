@@ -33,6 +33,7 @@ export const Button: React.FC<ButtonProps> = ({
       {...props}
       className={cn(
         'group flex w-full items-center gap-2 px-2 transition-all duration-300',
+        className,
         { 'cursor-default': isLoading || disabled },
         { 'justify-center': align === 'center' },
         { 'justify-start': align === 'right' },
