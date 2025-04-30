@@ -16,6 +16,7 @@ import { OptionsDropdownTrigger } from './OptionsDropdownTrigger';
 import { cn } from '../../../utils/classNames.utils';
 
 export interface OptionsDropdownProps {
+  className?: string;
   dropDownStyles?: DropDownStyle;
   dropDownList: DropdownCell[];
   customTriggerRender?: (props: TriggerProps) => React.ReactElement;
@@ -26,6 +27,7 @@ export interface OptionsDropdownProps {
 
 export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
   dropDownList,
+  className,
   dropDownStyles = {
     anchor: 'bottom start',
     bg: 'primary',
@@ -87,6 +89,7 @@ useEffect(() => {
       
       anchor={dropDownStyles.anchor}
       className={cn(
+        className,
         'shadow-7xl mt-1 gap-1 rounded-lg border border-gray-300 p-1 outline-none bg-white',
         !dropDownStyles.fixedWidth && 'w-fit',
       )}
@@ -97,7 +100,7 @@ useEffect(() => {
       }
     >
       {dropDownList.map((item, index) => (
-        <ListboxOption value={item} key={`listBox option-${index}`}>
+        <ListboxOption className="!z-50" value={item} key={`listBox option-${index}`}>
           {({ selected }) =>
             customOptionRender ? (
               (customOptionRender({

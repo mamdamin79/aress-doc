@@ -30,14 +30,14 @@ export const Tabs: React.FC<Props> = ({
           className={cn(
             'flex',
             { 'w-max gap-10 border-b-2 border-gray-300': variant === 'lined' },
-            { 'gap-4': variant !== 'lined' && variant !== 'divided' },
+            { 'gap-2': variant !== 'lined' && variant !== 'divided' },
           )}
         >
           {tabs.map((props, index) => (
             <Tab
               key={index}
               className={cn(
-                'font-vazirmatn text-md relative outline-none',
+                'text-md relative outline-none',
                 {
                   'data-[selected]:bg-brand-600 relative min-w-40 rounded-t-xl py-2 text-center text-gray-600 hover:text-gray-700 data-[selected]:font-semibold data-[selected]:text-white':
                     variant === 'lined',
@@ -57,7 +57,7 @@ export const Tabs: React.FC<Props> = ({
                     variant === 'rounded',
                 },
                 {
-                  'border-2 border-gray-100': variant === 'shaped',
+                  'border-2 border-gray-100 h-[34px]': variant === 'shaped',
                   'bg-white': variant === 'shaped' && colorMode === 'inverse',
                   'bg-gray-100 border-red-200':
                     variant === 'shaped' && colorMode === 'neutral',
@@ -77,7 +77,7 @@ export const Tabs: React.FC<Props> = ({
                     variant === 'lined' && colorMode === 'neutral',
                 },
                 {
-                  'data-[selected]:border-brand-600 border-gray-100 data-[selected]:bg-brand-600 hover:border-brand-600 rounded-md border-2 px-2 py-1 text-black data-[selected]:text-white':
+                  'data-[selected]:border-brand-600 font-medium border-gray-100 data-[selected]:bg-brand-600 hover:border-brand-600 rounded-md border-2 px-2 text-black data-[selected]:text-white':
                     variant === 'shaped',
                 },
                 {

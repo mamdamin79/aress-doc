@@ -11,7 +11,7 @@ import { listMonth, weekdayNames, weeksTitle } from './DatePicker.constansts';
 import { Tooltip } from '../Tooltip';
 import { OptionsDropdown } from '../OptionsDropdown';
 
-export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
+export function DatePicker({ min, max, setDateRange }: Props) {
   const [titleTooltip, setTitleTooltip] = useState('');
   const [dateHover, setDateHover] = useState<DateType | null>();
   const [areInputsEqual, setAreInputsEqual] = useState(false);
@@ -240,24 +240,8 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
   
     return { startInputText, endInputText };
   };
-
-  const close = useMemo(
-    () => (
-      <div
-        onClick={() => onClose()}
-        className="w-8 h-8 rounded-full cursor-pointer bg-brand-600 absolute -left-2 -top-2 flex items-center justify-center"
-      >
-        <div className="rounded-full flex items-center bg-white justify-center w-6 h-6">
-          <Icon name="x" size="sm" />
-        </div>
-      </div>
-    ),
-    [onClose]
-  );
   return (
-    <div className='inline-block w-auto'>
-      <div className="bg-gray-100 relative rounded-3xl">
-        {isOpen && (
+
           <div
             className="flex flex-col p-6 gap-4"
             style={{
@@ -265,7 +249,7 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
             }}
           >
             <div className="flex flex-col gap-1">
-              <div className="flex gap-2 text-md items-center font-vazirmatn justify-center">
+              <div className="flex gap-2 text-md items-center justify-center">
                 <div className="flex flex-col gap-1 items-start">
                   <span className='select-none font-medium text-sm'>تاریخ شروع بازه:</span>
                   <div
@@ -342,7 +326,6 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                 >
                   <Icon name="chevron-right" size="lg" />
                 </div>
-                {close}
                 <div className="relative">
                   <div className="absolute -top-6 items-center right-[85px] gap-1 z-50">
                     <OptionsDropdown
@@ -746,8 +729,5 @@ export function DatePicker({ min, max, isOpen, onClose, setDateRange }: Props) {
                 )}
             </div>
           </div>
-        )}
-      </div>
-    </div>
   );
 }

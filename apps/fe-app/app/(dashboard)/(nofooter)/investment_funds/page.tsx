@@ -41,6 +41,7 @@ const Funds = () => {
   const [isSettingModal, setIsSettingModal] = useState(false);
   const [isScrollAtStart, setIsScrollAtStart] = useState<boolean>(false);
   const [isScrollAtEnd, setIsScrollAtEnd] = useState<boolean>(true);
+  const [isScrollTop, setIsScrollTop] = useState(false);
   const [fundSearchQuery, setFundSearchQuery] = useState<string>('');
   const tableRef = useRef<HTMLDivElement>(null);
   const [watchList, setWatchList] = useState<string[]>([]);
@@ -141,7 +142,7 @@ const Funds = () => {
   };
 
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
+    // document.body.style.overflow = 'hidden';
     const handleScroll = () => {
       if (tableRef.current) {
         const { scrollLeft, scrollWidth, clientWidth } = tableRef.current;
@@ -185,6 +186,17 @@ const Funds = () => {
     });
   }, [fundSearchQuery, updateTableHeaders]);
 
+  useEffect(() => {
+    document.documentElement.style.overflow = 'hidden';
+  }, [customColl.active]);
+
+  const handlerScroll = () => {
+    if (tableRef.current) {
+      if (tableRef.current.scrollTop) {
+        setIsScrollTop(true);
+      } else setIsScrollTop(false);
+    }
+  };
   return (
     <>
       <div
@@ -284,7 +296,8 @@ const Funds = () => {
       >
         <div
           ref={tableRef}
-          className="border-brand-200 table-scroll h-[calc(100vh-178px)] w-screen overflow-auto scroll-smooth border-2 border-r-0"
+          onScroll={handlerScroll}
+          className="border-brand-200 table-scroll h-[calc(100vh-170px)] w-screen overflow-auto scroll-smooth border-2 border-r-0"
         >
           <table
             dir="rtl"
@@ -331,6 +344,7 @@ const Funds = () => {
                             }}
                           >
                             <OptionsDropdown
+                            className='z-50'
                               dropDownStyles={{
                                 size: 'md',
                                 anchor: 'bottom',
@@ -339,8 +353,8 @@ const Funds = () => {
                                 checkSelected: true,
                               }}
                               customOptionRender={(prop) => (
-                                <>
                                   <div
+
                                     onClick={() => {
                                       if (
                                         prop.text === 'مرتب سازی نزولی' &&
@@ -376,8 +390,6 @@ const Funds = () => {
                                     )}
                                     {prop.text}
                                   </div>
-                                  {prop.text === 'مرتب سازی صعودی' && <hr />}
-                                </>
                               )}
                               customTriggerRender={({ isActive }) => (
                                 <div className="rounde w-full">
@@ -497,6 +509,7 @@ const Funds = () => {
                               }}
                             >
                               <OptionsDropdown
+                              className='z-50'
                                 dropDownStyles={{
                                   size: 'md',
                                   anchor: 'bottom',
@@ -570,7 +583,7 @@ const Funds = () => {
                                   </>
                                 )}
                                 customTriggerRender={({ isActive }) => (
-                                  <div className="w-full !bg-yellow-600">
+                                  <div className="w-full">
                                     <FundsColumn
                                       active={isActive}
                                       filtered={!!header.column.getIsSorted()}
@@ -720,9 +733,10 @@ const Funds = () => {
                           style={{ top: topValue }}
                           className={cn(
                             'group -top-4 h-[60px] border-t border-blue-100',
-                            row.getIsPinned() && `sticky z-30`,
+                            row.getIsPinned() && `sticky z-10`,
                             {
-                              'shadow-2xl': row.id === lastPinnedRowId,
+                              'shadow-2xl':
+                                row.id === lastPinnedRowId && isScrollTop,
                               'bg-blue-200': false,
                               'group-hover:bg-blue-50': !false && !false,
                             },
@@ -926,7 +940,7 @@ const Funds = () => {
       </div>
 
       <div className="fixed bottom-6 right-0 mt-6 flex w-full justify-between px-8">
-        <div className="rounded-md bg-[#B3B6BD] py-2">
+        <div className="h-[40px] rounded-md bg-[#B3B6BD8C] py-2 backdrop-blur-[30px]">
           <OptionsDropdown
             onChange={(e) => {
               startTransition(() => {
@@ -975,10 +989,11 @@ const Funds = () => {
           />
         </div>
 
-        <span className="rounded-md bg-[#B3B6BD] px-3 py-2 text-xs font-medium">
-          مجموعه ارزش خالص دارایی‌ها : 10,986,249.09
+        <span className="flex h-[40px] gap-2 rounded-md bg-[#B3B6BD8C] px-3 py-2 text-xs font-medium backdrop-blur-[30px]">
+          مجموعه ارزش خالص دارایی‌ها:
+          <span className="text-sm">10,986,249.09</span>
         </span>
-        <div className="flex items-center gap-2 rounded-md bg-[#B3B6BD] px-3 py-2">
+        <div className="flex h-[40px] items-center gap-2 rounded-md bg-[#B3B6BD8C] px-3 py-2 backdrop-blur-[30px]">
           <span className="text-gray-1000 flex items-center gap-1 text-xs font-medium">
             <div>
               {formatNumber(
@@ -1000,7 +1015,7 @@ const Funds = () => {
           </span>
           <button
             className={cn('cursor-pointer rounded', {
-              'cursor-default text-gray-300':
+              'cursor-default text-[#B3B6BD]':
                 table.getState().pagination.pageIndex + 1 === 1,
             })}
             onClick={() => table.previousPage()}
@@ -1010,7 +1025,7 @@ const Funds = () => {
           </button>
           <button
             className={cn('cursor-pointer rounded', {
-              'cursor-default text-gray-300': !table.getCanNextPage(),
+              'cursor-default text-[#B3B6BD]': !table.getCanNextPage(),
             })}
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
@@ -1026,29 +1041,32 @@ const Funds = () => {
         isOpen={isSettingModal}
       >
         <div className="flex items-center justify-between">
-          <span
-            className={cn('p-6 text-xl font-medium', {
-              'text-red-600':
+          <div className="flex items-center justify-between">
+            <span
+              className={cn('p-6 text-xl font-medium', {
+                'text-red-600':
+                  table.getAllLeafColumns().filter((col) => col.getIsVisible())
+                    .length === 25,
+              })}
+            >
+              انتخاب ستون‌ها (
+              {
                 table.getAllLeafColumns().filter((col) => col.getIsVisible())
-                  .length === 25,
-            })}
-          >
-            انتخاب ستون‌ها (
-            {
-              table.getAllLeafColumns().filter((col) => col.getIsVisible())
-                .length
-            }
-            /25)
-          </span>
+                  .length
+              }
+              /25)
+            </span>
+          </div>
+          {isChanged && (
+            <span
+              className="m-6 cursor-pointer text-base font-medium text-red-600"
+              onClick={() => table.resetColumnVisibility()}
+            >
+              بازنشانی به پیشفرض
+            </span>
+          )}
         </div>
-        {isChanged && (
-          <span
-            className="m-6 cursor-pointer text-base font-medium text-red-600"
-            onClick={() => table.resetColumnVisibility()}
-          >
-            بازنشانی به پیشفرض
-          </span>
-        )}
+
         <hr />
         <div
           dir="rtl"
@@ -1128,16 +1146,14 @@ const Funds = () => {
       </Dialog>
       <Dialog
         isOpen={customColl.active}
-        className="p-0"
+        className="bg-gray-100 p-0"
         onClose={() => setCustomColl({ active: false, date: '' })}
       >
         <DatePicker
-          isOpen={customColl.active}
-          onClose={() => setCustomColl({ active: false, date: '' })}
           dateRange={{ end: '1404-12-12', start: '1300-01-12' }}
           max="1404-12-12"
           min="1300-01-12"
-          setDateRange={(date) => {
+          setDateRange={() => {
             setCustomColl({ active: false, date: 'date' });
           }}
         ></DatePicker>
