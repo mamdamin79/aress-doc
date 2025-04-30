@@ -11,6 +11,7 @@ interface Props {
   shadow?: boolean;
   clickFilterd: () => void;
   filtered: boolean;
+  active?: boolean;
 }
 
 export function FundsColumn({
@@ -22,6 +23,7 @@ export function FundsColumn({
   type,
   clickFilterd,
   filtered,
+  active,
 }: Props) {
   return (
     <div
@@ -32,10 +34,12 @@ export function FundsColumn({
           'w-[200px]': size === 'large',
           'w-[312px]': size === 'extraLarg',
           'shadow-4xl': shadow && size === 'extraLarg',
-          'bg-pink-200': size === 'extraLarg' && filterable,
+          'bg-pink-200': size === 'extraLarg' && filterable && !active,
           'bg-brand-100': size === 'extraLarg' && !filterable,
+          'bg-pink-300': active && size !== 'extraLarg' && filterable,
+          'bg-brand-200': active && size !== 'extraLarg' && !filterable, 
           'bg-brand-100 hover:bg-brand-200':
-            !filterable && size !== 'extraLarg',
+            !filterable && size !== 'extraLarg' && !active,
           'bg-pink-200 hover:bg-pink-300': filterable && size !== 'extraLarg',
         },
         'text-text-neutral-primary group/first cursor-pointer text-sm font-medium',
@@ -49,6 +53,8 @@ export function FundsColumn({
               size === 'extraLarg' && filterable,
             'group-hover/first:bg-brand-300':
               size === 'extraLarg' && !filterable,
+              'bg-brand-300': !filterable && active && size === 'extraLarg',
+              'bg-pink-300': filterable && active && size === 'extraLarg',
           },
         )}
       >
@@ -83,6 +89,7 @@ export function FundsColumn({
               {
                 'invisible text-[#545962] group-hover/first:visible':
                   type === 'inactive',
+                  'visible': active,
               },
               'hover:bg-brand-600 rounded-md p-1 duration-150 hover:text-white',
             )}

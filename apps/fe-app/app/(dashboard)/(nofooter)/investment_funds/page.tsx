@@ -379,9 +379,10 @@ const Funds = () => {
                                   {prop.text === 'مرتب سازی صعودی' && <hr />}
                                 </>
                               )}
-                              customTriggerRender={() => (
+                              customTriggerRender={({isActive}) => (
                                 <div className="rounde w-full">
                                   <FundsColumn
+                                    active={isActive}
                                     filtered={!!header.column.getIsSorted()}
                                     clickFilterd={() =>
                                       header.column.getToggleSortingHandler()?.(
@@ -568,9 +569,10 @@ const Funds = () => {
                                     {prop.text === 'مرتب سازی صعودی' && <hr />}
                                   </>
                                 )}
-                                customTriggerRender={() => (
+                                customTriggerRender={({isActive}) => (
                                   <div className="w-full !bg-yellow-600">
                                     <FundsColumn
+                                      active={isActive}
                                       filtered={!!header.column.getIsSorted()}
                                       clickFilterd={() =>
                                         header.column.getToggleSortingHandler()?.(
