@@ -668,7 +668,7 @@ const Funds = () => {
                     </React.Fragment>
                   );
                 })}
-                <th className="sticky left-12 m-0 mt-5">
+                <th className="sticky left-16 m-0 mt-5">
                   {isScrollAtEnd && (
                     <div
                       onClick={() => handlerKeyboardScroll(false)}
