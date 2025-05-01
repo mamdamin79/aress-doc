@@ -17,8 +17,8 @@ export const ProfilePageContent: React.FC<AressApiUser> = (user) => {
   const throttledWidth = useThrottle(width, 200) ?? 0;
   const isDesktop = throttledWidth > 1024;
   return (
-    <>
-      <div className="flex max-w-[1680px] flex-row gap-14 px-20 pb-28 pt-12">
+    <div className="mx-auto flex w-full max-w-[1680px] justify-center">
+      <div className="flex w-full flex-row gap-14 px-8 pb-28 pt-12 lg:px-20">
         {!(activeSection && !isDesktop) && (
           <ProfileSidebar
             title="علی محمدی"
@@ -61,6 +61,6 @@ export const ProfilePageContent: React.FC<AressApiUser> = (user) => {
         isOpen={isLogoutModalOpen}
         onClose={() => setisLogoutModalOpen(false)}
       />
-    </>
+    </div>
   );
 };
