@@ -87,7 +87,7 @@ const TextContainer = ({
   <div className="text-right">
     <p
       className={cn(
-        'text-sm font-semibold',
+        'text-sm font-medium',
         isActive && !isDashboard ? 'text-brand-700' : 'text-gray-1000',
         !isActive && (isDisabled ? 'text-gray-400' : 'text-gray-1000'),
       )}
