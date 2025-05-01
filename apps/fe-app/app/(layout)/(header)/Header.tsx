@@ -16,7 +16,6 @@ import { usePathname } from 'next/navigation';
 export const HeaderMenu: React.FC = () => {
   const { width } = useWindowSize();
   const pathname = usePathname();
-  const links = MenuData.map((menuItem) => menuItem.link);
   const activeTabIndex = MenuData.map((menuItem) => menuItem.link).indexOf(
     pathname,
   );
@@ -45,7 +44,7 @@ export const Header: React.FC = () => {
           isHeaderVisible ? 'translate-y-0' : '-translate-y-full',
         )}
       >
-        <div className="mt-1 flex flex-row gap-6">
+        <div className="flex flex-row items-center gap-6">
           <Link href={'/'}>
             <Image
               src={PRODUCT_LOGO}
@@ -55,8 +54,9 @@ export const Header: React.FC = () => {
               alt="product logo"
             />
           </Link>
-
-          <HeaderMenu />
+          <div className="pt-2">
+            <HeaderMenu />
+          </div>
         </div>
 
         <div className="flex flex-row gap-3">
