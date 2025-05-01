@@ -53,6 +53,8 @@ export const DesktopMenu: React.FC<MenuProps> = ({ menuItems, activeTab }) => {
             className={cn(
               'flex flex-col',
               dropdownItem.children[0]?.isDashboard ? 'gap-2' : '',
+              dropdownItem.groupLabel == '' &&
+                'mb-2 border-b-2 border-t-2 border-gray-200',
             )}
           >
             <div className="flex flex-row items-center gap-2 pr-4 text-sm font-normal text-gray-600">
