@@ -98,7 +98,10 @@ export const DateInput: React.FC<DatePickerProps> = ({
   }, [active]);
 
   useEffect(() => {
-    if (!focus) setActiveIndex(null);
+    if (!focus) {
+      setActiveIndex(null);
+      yearRef.current?.setAttribute('disabled', 'disabled');
+    }
     setFocusInput(focus);
   }, [focus]);
 
@@ -107,8 +110,9 @@ export const DateInput: React.FC<DatePickerProps> = ({
     if (!day) {
       dayRef?.current?.focus();
       setActiveIndex(1);
+      dayRef?.current?.setSelectionRange(0, 1);
     }
-  }, [day]);
+  }, [day, active]);
 
   // set min date
   useEffect(() => {
@@ -465,7 +469,6 @@ export const DateInput: React.FC<DatePickerProps> = ({
     }
   };
   
-
   useEffect(() => {
     if (isArrowKeyPressed) {
       return;

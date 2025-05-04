@@ -21,6 +21,27 @@ interface Prop {
   onFilterChange: (filters: Record<string, string[]>) => void;
 }
 
+function areFiltersEqual(
+  a: Record<string, string[]>,
+  b: Record<string, string[]>,
+): boolean {
+  const aKeys = Object.keys(a);
+  const bKeys = Object.keys(b);
+  if (aKeys.length !== bKeys.length) return false;
+
+  for (const key of aKeys) {
+    const aVals = a[key] || [];
+    const bVals = b[key] || [];
+    if (aVals.length !== bVals.length) return false;
+    const sortedA = [...aVals].sort();
+    const sortedB = [...bVals].sort();
+    for (let i = 0; i < sortedA.length; i++) {
+      if (sortedA[i] !== sortedB[i]) return false;
+    }
+  }
+  return true;
+}
+
 export function FilterPopUpSection({
   filterOptions,
   searchValue,
@@ -75,6 +96,8 @@ export function FilterPopUpSection({
     onFilterChange({});
     onSearchChange('');
   };
+
+  const hasChanged = !areFiltersEqual(tempSelectedFilters, selectedFilters);
 
   return (
     <div
@@ -215,13 +238,7 @@ export function FilterPopUpSection({
             className="whitespace-nowrap"
             onClick={handleConfirm}
             align="center"
-            disabled={
-              !(
-                activeFilter &&
-                tempSelectedFilters[activeFilter] &&
-                tempSelectedFilters[activeFilter].length > 0
-              )
-            }
+            disabled={!hasChanged}
             isLoading={false}
             mode="primary"
             size="sm"

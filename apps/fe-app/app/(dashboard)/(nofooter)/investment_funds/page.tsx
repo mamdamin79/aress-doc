@@ -206,7 +206,7 @@ const Funds = () => {
         )}
       >
         <div className="flex w-full items-center justify-start gap-3">
-          <span className="pb-2.5">دسته بندی صندوق‌ها:</span>
+          <span className="pb-2.5">دسته‌بندی صندوق‌ها:</span>
           <Tabs
             variant="shaped"
             onClickTab={(e) => setIndexCategoryTab(e)}
@@ -297,7 +297,7 @@ const Funds = () => {
         <div
           ref={tableRef}
           onScroll={handlerScroll}
-          className="border-brand-200 table-scroll h-[calc(100vh-170px)] w-screen overflow-auto scroll-smooth border-2 border-r-0"
+          className="table-scroll h-[calc(100vh-170px)] w-screen overflow-auto scroll-smooth"
         >
           <table
             dir="rtl"
@@ -305,7 +305,7 @@ const Funds = () => {
           >
             <thead
               className={cn(
-                'group sticky right-0 top-0 z-30 m-0 w-fit rounded-md border-b-2 p-0 duration-300',
+                'group sticky right-0 top-0 z-30 m-0 border-brand-200 shadow-brand-200 [box-shadow:0_2px_0_#bcebeb] border-none p-0 duration-300',
               )}
             >
               <tr className="overflow-hidden rounded-md p-0">
@@ -339,7 +339,7 @@ const Funds = () => {
                           <div
                             {...{
                               className: header.column.getCanSort()
-                                ? 'cursor-pointer h-[70px] select-none'
+                                ? 'cursor-pointer h-[72px] select-none'
                                 : '',
                             }}
                           >
@@ -354,16 +354,15 @@ const Funds = () => {
                               }}
                               customOptionRender={(prop) => (
                                   <div
-
                                     onClick={() => {
                                       if (
-                                        prop.text === 'مرتب سازی نزولی' &&
+                                        prop.text === 'مرتب سازی (ی-الف)' &&
                                         header.column.getIsSorted() !== 'desc'
                                       ) {
                                         header.column.toggleSorting(true);
                                       }
                                       if (
-                                        prop.text === 'مرتب سازی صعودی' &&
+                                        prop.text === 'مرتب سازی (الف-ی)' &&
                                         header.column.getIsSorted() !== 'asc'
                                       ) {
                                         header.column.toggleSorting(false);
@@ -466,16 +465,16 @@ const Funds = () => {
                               )}
                               dropDownList={[
                                 {
-                                  text: 'مرتب سازی نزولی',
+                                  text: 'مرتب سازی (الف-ی)',
                                   icon: {
-                                    name: 'arrow-down-narrow-wide',
+                                    name: 'arrow-down-a-z',
                                     size: 'md',
                                   },
                                 },
                                 {
-                                  text: 'مرتب سازی صعودی',
+                                  text: 'مرتب سازی (ی-الف)',
                                   icon: {
-                                    name: 'arrow-up-narrow-wide',
+                                    name: 'arrow-up-z-a',
                                     size: 'md',
                                   },
                                 },
@@ -549,7 +548,7 @@ const Funds = () => {
                                       className={cn(
                                         'hover:bg-brand-50 hover:text-brand-800 flex cursor-pointer items-center gap-2 bg-white p-2',
                                         {
-                                          'cursor-default text-gray-100 hover:bg-white hover:text-gray-100':
+                                          'cursor-default pointer-events-none text-[#B3B6BD] hover:bg-white hover:text-[#B3B6BD]':
                                             (index === 1 &&
                                               (prop.text ===
                                                 'انتقال به ابتدا' ||
@@ -991,7 +990,7 @@ const Funds = () => {
 
         <span className="flex h-[40px] gap-2 rounded-md bg-[#B3B6BD8C] px-3 py-2 text-xs font-medium backdrop-blur-[30px]">
           مجموعه ارزش خالص دارایی‌ها:
-          <span className="text-sm">10,986,249.09</span>
+          <span className="text-sm border-b text-[#06080F] border-[#06080F]">10,986,249.09</span>
         </span>
         <div className="flex h-[40px] items-center gap-2 rounded-md bg-[#B3B6BD8C] px-3 py-2 backdrop-blur-[30px]">
           <span className="text-gray-1000 flex items-center gap-1 text-xs font-medium">

@@ -90,7 +90,7 @@ useEffect(() => {
       anchor={dropDownStyles.anchor}
       className={cn(
         className,
-        'shadow-7xl mt-1 gap-1 rounded-lg border border-gray-300 p-1 outline-none bg-white',
+        'shadow-7xl mt-1 gap-1 rounded-lg z-50 border border-gray-300 p-1 outline-none bg-white',
         !dropDownStyles.fixedWidth && 'w-fit',
       )}
       style={

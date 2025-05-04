@@ -122,6 +122,11 @@ export function DatePicker({ min, max, setDateRange }: Props) {
       setAreInputsEqual(true);
     } else setAreInputsEqual(false);
     if (+date.slice(8, 10) <= 31 && dateFormat >= minDate && dateFormat <= maxDate) {
+      if (startDate?.year && startDate.month && startDate.day) {
+        setActiveEndInput(true);
+        setFocuseEndInput(true);
+        setFocuseStartInput(false);
+      }
       setStartDate({ day: +date.slice(8, 10), month: +date.slice(5, 7), year: +date.slice(0, 4) });
     }
   };
@@ -191,8 +196,6 @@ export function DatePicker({ min, max, setDateRange }: Props) {
       max,
     ]
   );
-  
-  
 
   const errorHandler = ({ minError, maxError }: ErrorState) => {
     setErrors({

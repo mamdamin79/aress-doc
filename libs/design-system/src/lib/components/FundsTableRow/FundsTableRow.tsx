@@ -45,17 +45,17 @@ export function FundsTableRow({
   return (
     <div
       className={cn(
-        'sticky right-0 flex h-[72px] p-0 m-0 w-fit items-center justify-between bg-white',
+        'sticky right-0 flex h-[70px] overflow-y-hidden p-0 m-0 w-fit items-center justify-between',
         className,
         {
           'shadow-md': isScrolled,
           'bg-blue-50 group-hover:bg-blue-100': pined,
           'bg-blue-200': selected,
-          'group-hover:bg-blue-50': !selected && !pined,
+          'group-hover:bg-blue-50 bottom-0': !selected && !pined,
         },
       )}
     >
-      <div className="relative flex items-center gap-2 px-2 py-1">
+      <div className="relative flex items-center gap-2 px-2">
         <div
           className={cn(
             'bg-vividGreen-600 invisible box-content h-2.5 w-2.5 rounded-full border-2 border-white',
@@ -118,13 +118,14 @@ export function FundsTableRow({
                   'hidden h-[33px] w-[33px] cursor-pointer items-center justify-center rounded-full bg-white text-blue-700 duration-500 group-hover/img:flex',
                   {
                     flex: pined,
+                    'border border-[#B3B6BD]': !canPin && !pined,
                   },
                 )}
               >
                 <div
                   className={cn('flex items-center justify-center', {
                     'group-hover/img:hidden': pined,
-                    'rotate-45 text-gray-100': !canPin && !pined,
+                    'rotate-[35deg] text-[#B3B6BD]': !canPin && !pined,
                   })}
                 >
                   <Icon name="pin" size="md" />
