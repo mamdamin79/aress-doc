@@ -69,9 +69,9 @@ export function FundsTableRow({
             <img src={logo} alt="logo fund" />
           </div>
           
-          <div className={cn("absolute right-4 top-9 transition-all duration-500 group-hover/img:-translate-x-[12.5px] group-hover/img:-translate-y-[32.5px]", {
+          <div className={cn("absolute right-4 top-8 transition-all duration-500 group-hover/img:-translate-x-[12.5px] group-hover/img:-translate-y-[32.5px]", {
             'group-hover/img:-translate-y-[19.5px]': investmentMethod === 'T',
-            'top-5 group-hover/img:top-9': investmentMethod !== 'T' && pined,
+            'top-4 group-hover/img:top-8': investmentMethod !== 'T' && pined,
           })}>
             <Tooltip
               className='z-50'

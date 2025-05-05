@@ -841,8 +841,8 @@ const Funds = () => {
                         <tr
                           style={{ top: topValue }}
                           className={cn(
-                            'group border border-blue-100',
-                            pineWatchLis.includes(row.id) && `sticky z-40`,
+                            'group -top-4 h-[76px] border-t border-blue-100',
+                            pineWatchLis.includes(row.id) && `sticky z-10`,
                             {
                               'shadow-2xl': pineWatchLis.includes(row.id),
                               'bg-blue-200': false,
@@ -939,7 +939,7 @@ const Funds = () => {
       </div>
 
       <div className="fixed bottom-6 right-0 mt-6 flex w-full justify-between px-8">
-        <div className="h-[40px] rounded-md bg-[#B3B6BD8C] py-2 backdrop-blur-[30px]">
+        <div className="rounded-md bg-[#B3B6BD8C] backdrop-blur-[30px]">
           <OptionsDropdown
             onChange={(e) => {
               startTransition(() => {
@@ -954,7 +954,7 @@ const Funds = () => {
               checkSelected: true,
             }}
             customTriggerRender={(prop) => (
-              <div className="flex items-center gap-2 px-3 text-xs font-medium">
+              <div className="flex items-center gap-2 px-3 h-[40px] text-xs font-medium">
                 <span>تعداد سطر در جدول: </span>
                 {prop.selectedItem.text}
                 <Icon name={prop.isActive ? 'chevron-up' : 'chevron-down'} />
