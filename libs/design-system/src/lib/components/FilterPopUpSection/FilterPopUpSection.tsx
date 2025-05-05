@@ -224,7 +224,7 @@ export function FilterPopUpSection({
         </div>
 
         {/* Confirm Buttons */}
-        <div className="absolute bottom-0 left-6 flex items-center gap-2 p-4">
+        <div className="absolute -bottom-3 left-2.5 flex items-center gap-2 p-4">
           <Button
             onClick={() => setActiveFilter(null)}
             size="sm"

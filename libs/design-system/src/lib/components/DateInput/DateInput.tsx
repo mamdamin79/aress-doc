@@ -501,7 +501,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
           }
         }}
         className={cn(
-          'w-40 rounded-md bg-white border-white select-none border-2 flex items-center gap-1 py-2 px-4',
+          'w-40 rounded-md bg-white border-white select-none border flex items-center gap-1 py-2 px-4',
           {
             'border-red-600':
               (day && month && year) && focusInput && (
@@ -514,7 +514,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
               !errors?.maxError &&
               !errors?.minError && 
               !equalInput,
-            'border-gray-500':
+            'border-gray-[#E1E2E5]':
               year &&
               day &&
               month &&
@@ -538,7 +538,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
               onChange={(e) => changeDayInput(+e.target.value, true)}
               placeholder="روز"
               className={cn(
-                'w-5 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
+                'w-5 outline-none border-none pb-0.5 -mx-1 placeholder:text-black bg-white block',
                 activeIndex === 1 && focusInput && 'bg-blue-200'
               )}
             />
@@ -554,7 +554,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
               onChange={(e) => changeMonthInput(+e.target.value, true)}
               placeholder="ماه"
               className={cn(
-                'w-5 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
+                'w-5 outline-none border-none pb-0.5 -mx-1 placeholder:text-black bg-white block',
                 activeIndex === 2 && focusInput && 'bg-blue-200'
               )}
             />
@@ -573,7 +573,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
               onChange={(e) => changeYearInput(+e.target.value, true)}
               placeholder="سال"
               className={cn(
-                'w-10 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
+                'w-10 outline-none border-none pb-0.5 -mx-1 placeholder:text-black bg-white block',
                 activeIndex === 3 && focusInput && 'bg-blue-200'
               )}
             />
