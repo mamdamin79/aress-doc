@@ -363,7 +363,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
                       : id
                     }-${calendars[0].slice(8, 9)}`)
                 }}
-                dropDownStyles={{ checkSelected: true, size: 'lg' }}
+                dropDownStyles={{ checkSelected: true, size: 'lg', scrollable: true }}
                 dropDownList={listMonth.map((month, index) => ({ text: month, id: index + 1 }))} />
             </div>
             <div className="absolute -top-6 items-center gap-1  z-50">
@@ -393,7 +393,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
                   )
                 }
                 }
-                dropDownStyles={{ checkSelected: true, size: 'lg' }}
+                dropDownStyles={{ checkSelected: true, size: 'lg', scrollable: true }}
                 dropDownList={years.map((year) => ({ text: String(year) }))} />
             </div>
           </div>
@@ -427,7 +427,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
                 )
               }
               }
-              dropDownStyles={{ checkSelected: true, size: 'lg' }}
+              dropDownStyles={{ checkSelected: true, size: 'lg', scrollable: true }}
               dropDownList={years.map((year) => ({ text: String(year) }))} />
           </div>
           <div className="absolute top-0 gap-1 left-[145px] z-50">
@@ -458,7 +458,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
                     : id
                   }-${calendars[1].slice(8, 9)}`)
               }}
-              dropDownStyles={{ checkSelected: true, size: 'lg' }}
+              dropDownStyles={{ checkSelected: true, size: 'lg', scrollable: true }}
               dropDownList={listMonth.map((month, index) => ({ text: month, id: index }))} />
           </div>
           <div
