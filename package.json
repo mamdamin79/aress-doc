@@ -88,6 +88,9 @@
   },
   "nx": {},
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "@headlessui/react": "^2.1.8",
     "@iconify/tools": "^4.0.7",
     "@storybook/preview-api": "^8.3.2",
