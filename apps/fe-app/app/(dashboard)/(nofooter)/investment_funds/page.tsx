@@ -1,6 +1,7 @@
 'use client';
 import React, {
   startTransition,
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -126,60 +127,66 @@ const Funds = () => {
     );
   }, [table.getState().columnVisibility]);
 
-  const handlerKeyboardScroll = (right: boolean) => {
-    if (tableRef.current) {
-      if (right) {
-        tableRef.current.scrollLeft += 100;
-      } else tableRef.current.scrollLeft -= 100;
-    }
-  };
+  const handlerKeyboardScroll = useCallback(
+    (right: boolean) => {
+      if (tableRef.current) {
+        tableRef.current.scrollLeft += right ? 100 : -100;
+      }
+    },
+    [tableRef] // ensure tableRef is properly stable or use a ref that doesn't change
+  );
 
   const toggleWatchList = (fund: { id: string }) => {
     setWatchList((prev) =>
       prev.includes(fund.id)
         ? prev.filter((id: string) => id !== fund.id)
-        : [...prev, fund.id],
+        : [...prev, fund.id]
     );
   };
 
-  useEffect(() => {
-    // document.body.style.overflow = 'hidden';
-    const handleScroll = () => {
-      if (tableRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } = tableRef.current;
-
-        if (Math.round(scrollLeft) === 0) {
-          setIsScrollAtStart(false);
-        } else if (scrollLeft < 0) setIsScrollAtStart(true);
-        setIsScrollAtEnd(
-          Math.round(scrollLeft * -1) + clientWidth <= scrollWidth - 1,
-        );
+useEffect(() => {
+  const handleScroll = () => {
+    if (tableRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = tableRef.current;
+      // Update scroll start state
+      if (Math.round(scrollLeft) === 0) {
+        setIsScrollAtStart(false);
+      } else if (scrollLeft < 0) {
+        setIsScrollAtStart(true);
       }
-    };
+      // Update scroll end state; logic preserved from original code
+      setIsScrollAtEnd(Math.round(scrollLeft * -1) + clientWidth <= scrollWidth - 1);
+    }
+  };
 
-    const table = tableRef.current;
-    table?.addEventListener('scroll', handleScroll);
+  // Register scroll event listener on the table element
+  const tableElem = tableRef.current;
+  tableElem?.addEventListener('scroll', handleScroll);
 
-    const keyboardHandler = (e: KeyboardEvent) => {
-      if (e.code === 'KeyA') {
-        handlerKeyboardScroll(false);
-      }
-      if (e.code === 'KeyD') {
-        handlerKeyboardScroll(true);
-      }
+  // Keyboard handler for scrolling (horizontal and vertical)
+  const keyboardHandler = (e: KeyboardEvent) => {
+    if (e.code === 'KeyA') {
+      handlerKeyboardScroll(false);
+    }
+    if (e.code === 'KeyD') {
+      handlerKeyboardScroll(true);
+    }
+    if (e.code === 'KeyS') {
+      tableRef.current?.scrollBy({ top: 100, behavior: 'smooth' });
+    }
+    if (e.code === 'KeyW') {
+      tableRef.current?.scrollBy({ top: -100, behavior: 'smooth' });
+    }
+  };
 
-      if (e.code === 'KeyS') {
-        tableRef?.current?.scrollBy({ top: 100, behavior: 'smooth' });
-      }
-      if (e.code === 'KeyW') {
-        tableRef?.current?.scrollBy({ top: -100, behavior: 'smooth' });
-      }
-    };
+  document.addEventListener('keypress', keyboardHandler);
 
-    document.addEventListener('keypress', keyboardHandler);
-
-    return () => table?.removeEventListener('scroll', handleScroll);
-  }, []);
+  // Cleanup: remove event listeners when component unmounts or dependencies change
+  return () => {
+    tableElem?.removeEventListener('scroll', handleScroll);
+    document.removeEventListener('keypress', keyboardHandler);
+  };
+}, [tableRef, handlerKeyboardScroll]);
 
   useEffect(() => {
     startTransition(() => {
@@ -686,11 +693,12 @@ const Funds = () => {
                       key={row.id}
                       style={{ top: topValue }}
                       className={cn(
-                        'group -top-4 h-[70px] border-t border-blue-100',
+                        'group -top-4 h-[70px] border-t-2 border-blue-100',
                         isPinned && 'sticky z-50',
                         {
                           'shadow-2xl': isPinned && isLastPinned && isScrollTop,
                           'group-hover:bg-blue-50': true,
+                          'bg-blue-200': false,
                         },
                       )}
                     >
@@ -699,7 +707,7 @@ const Funds = () => {
                         return (
                           <React.Fragment key={cell.id}>
                             {index === 0 && (
-                              <td className="sticky right-0 z-40 m-0 p-0">
+                              <td className="sticky right-0 z-40 bg-white m-0 p-0">
                                 <FundsTableRow
                                   tag={!isMainTab}
                                   category={
@@ -768,7 +776,7 @@ const Funds = () => {
         </div>
       </div>
 
-      <div className="fixed bottom-6 right-0 mt-6 flex w-full justify-between px-8">
+      <div className="fixed z-50 bottom-6 right-0 mt-6 flex w-full justify-between px-8">
         <div className="rounded-md bg-[#B3B6BD8C] backdrop-blur-[30px]">
           <OptionsDropdown
             onChange={(e) => {
