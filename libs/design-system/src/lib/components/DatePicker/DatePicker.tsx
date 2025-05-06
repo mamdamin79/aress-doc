@@ -131,6 +131,8 @@ export function DatePicker({ min, max, setDateRange }: Props) {
       }
       setStartDate({ day: +date.slice(8, 10), month: +date.slice(5, 7), year: +date.slice(0, 4) });
     }
+    setStartDate({ day: +date.slice(8, 10), month: +date.slice(5, 7), year: +date.slice(0, 4) });
+
   };
   const updateEndInput = (date: string) => {
     const dateFormat = date.slice(0, 4) + String(date.slice(5, 7)) + String(date.slice(8, 10));
@@ -322,7 +324,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
           <div
             onClick={() => setCurrentDate(-1)}
             className={cn(
-              'bg-white hover:border-2 border-brand-600 flex items-center justify-center w-10 h-10 cursor-pointer rounded-full text-black',
+              'bg-white hover:border-2 mb-1.5 border-brand-600 flex items-center justify-center w-10 h-10 cursor-pointer rounded-full text-black',
               {
                 'text-[#B3B6BD] hover:border-none cursor-default':
                   min.slice(0, 4) === calendars[0].slice(0, 4) &&
@@ -349,7 +351,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
                   </div>
                 )}
                 customTriggerRender={(_) => (
-                  <div className='bg-white py-2.5 flex font-semibold items-center justify-between px-2 rounded-md w-[92px]'>
+                  <div className='bg-white h-10 flex text-sm font-semibold items-center justify-between px-2 rounded-md w-[92px]'>
                     {listMonth[parseInt(calendars[0].slice(5, 7), 10) - 1]}
                     <Icon name='chevron-down' size='md' />
                   </div>
@@ -367,7 +369,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
             <div className="absolute -top-6 items-center gap-1  z-50">
               <OptionsDropdown
                 customTriggerRender={() =>
-                  <div className={cn('text-sm bg-white font-semibold items-center cursor-pointer w-20 py-2.5 flex rounded-md justify-center gap-0.5 text-center hover:bg-brand-50', {
+                  <div className={cn('text-sm bg-white font-semibold items-center cursor-pointer w-20 h-10 flex rounded-md justify-center gap-0.5 text-center hover:bg-brand-50', {
                   })}>
                     {calendars[0].slice(0, 4)}
                     <Icon name="chevron-down" size='md' />
@@ -401,7 +403,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
           <div className="absolute top-0 gap-1 -right-[100px] z-50">
             <OptionsDropdown
               customTriggerRender={() =>
-                <div className={cn('text-sm font-semibold bg-white items-center cursor-pointer w-20 py-2.5 flex rounded-md justify-center gap-0.5 text-center hover:bg-brand-50', {
+                <div className={cn('text-sm font-semibold bg-white items-center cursor-pointer w-20 h-10 flex rounded-md justify-center gap-0.5 text-center hover:bg-brand-50', {
                 })}>
                   {calendars[1].slice(0, 4)}
                   <Icon name="chevron-down" size='md' />
@@ -428,7 +430,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
               dropDownStyles={{ checkSelected: true, size: 'lg' }}
               dropDownList={years.map((year) => ({ text: String(year) }))} />
           </div>
-          <div className="absolute top-0 gap-1 left-[150px] z-50">
+          <div className="absolute top-0 gap-1 left-[145px] z-50">
             <OptionsDropdown
               initialSelectedIndex={+calendars[1].slice(5, 7) - 1}
               customOptionRender={({ isActive, text }) => (
@@ -444,7 +446,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
                 </div>
               )}
               customTriggerRender={(_) => (
-                <div className='bg-white py-2.5 flex font-semibold items-center justify-between px-2 rounded-md w-[92px]'>
+                <div className='bg-white h-10 flex font-semibold items-center justify-between px-2 rounded-md w-[92px]'>
                   {listMonth[parseInt(calendars[1].slice(5, 7), 10) - 1]}
                   <Icon name='chevron-down' size='md' />
                 </div>
@@ -462,7 +464,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
           <div
             onClick={() => setCurrentDate(+1)}
             className={cn(
-              'bg-white hover:border-2 border-brand-600 flex items-center justify-center w-10 h-10 cursor-pointer rounded-full text-black',
+              'bg-white hover:border-2 border-brand-600 flex items-center mb-1 justify-center w-10 h-10 cursor-pointer rounded-full text-black',
               {
                 'text-[#B3B6BD] hover:border-none cursor-default':
                   max.slice(0, 4) === calendars[1].slice(0, 4) &&
@@ -477,14 +479,14 @@ export function DatePicker({ min, max, setDateRange }: Props) {
 
       </div>
       <div className="flex items-center justify-between gap-10">
-        <div className="col-span-7 border-b border-[#E1E2E5] pb-1.5 w-1/2 items-start row-start-1 flex justify-between px-5">
+        <div className="col-span-7 border-b border-[#E1E2E5] pb-1.5 w-1/2 items-start row-start-1 flex justify-between px-3">
           {weeksTitle.map((item, index) => (
             <div key={index} className="text-center">
               {item}
             </div>
           ))}
         </div>
-        <div className="col-span-7 border-b border-[#E1E2E5] pb-1.5 w-1/2 flex row-start-1 items-start justify-between px-5">
+        <div className="col-span-7 border-b border-[#E1E2E5] pb-1.5 w-1/2 flex row-start-1 items-start justify-between px-3">
           {weeksTitle.map((item, index) => (
             <div key={index} className="text-center">
               {item}
@@ -586,7 +588,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
           })}
         </div>
         <div className='h-[270px] w-[0.5px] bg-[#E1E2E5]'></div>
-        <div className="w-[310px] h-[260px] grid grid-cols-7">
+        <div className="w-[310px] -ml-1 h-[260px] grid grid-cols-7">
           {endMonth.map((day, index) => {
             return (
               <div
@@ -701,7 +703,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
             }
           }}
           className={cn(
-            'px-2 select-none bg-brand-300 cursor-default py-1 font-medium rounded-md text-white',
+            'px-2 select-none bg-brand-300 cursor-default py-1 font-medium text-base rounded-md text-white',
             {
               'cursor-pointer bg-brand-500':
                 startDate &&

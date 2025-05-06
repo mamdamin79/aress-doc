@@ -112,7 +112,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
       setActiveIndex(1);
       dayRef?.current?.setSelectionRange(0, 1);
     }
-  }, [day, active]);
+  }, [day, focus]);
 
   // set min date
   useEffect(() => {
