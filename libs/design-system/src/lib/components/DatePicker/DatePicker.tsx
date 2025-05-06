@@ -495,7 +495,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
         </div>
       </div>
       <div onMouseLeave={() => setDateHover(null)} className="flex items-center gap-5">
-        <div className="w-[310px] h-[260px] grid grid-cols-7">
+        <div className="w-fit h-[260px] grid grid-cols-7">
           {startDays.map((day, index) => {
             return (
               <div
@@ -588,7 +588,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
           })}
         </div>
         <div className='h-[270px] w-[0.5px] bg-[#E1E2E5]'></div>
-        <div className="w-[310px] -ml-1 h-[260px] grid grid-cols-7">
+        <div className="w-fit -ml-1 h-[260px] grid grid-cols-7">
           {endMonth.map((day, index) => {
             return (
               <div
