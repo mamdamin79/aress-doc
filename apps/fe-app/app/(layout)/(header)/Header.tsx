@@ -64,7 +64,9 @@ export const Header: React.FC = () => {
             icons={[{ name: 'sun' }, { name: 'moon' }]}
             badge={{ enabled: false }}
           />
-          <HeadProfile profileImage="https://picsum.photos/200" />
+          <Link href={'/profile'}>
+            <HeadProfile profileImage="https://picsum.photos/200" />
+          </Link>
         </div>
       </div>
       <div className={cn('invisible', `h-[80px]`)}></div>

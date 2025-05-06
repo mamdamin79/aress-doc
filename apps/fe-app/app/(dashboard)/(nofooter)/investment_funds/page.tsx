@@ -1069,7 +1069,7 @@ const Funds = () => {
         <hr />
         <div
           dir="rtl"
-          className="scrollbar-thumb-gray-500 scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-track-gray-300 mb-6 h-[550px] overflow-x-hidden overflow-y-scroll"
+          className="scrollbar-md mb-6 h-[550px] overflow-x-hidden overflow-y-scroll"
         >
           {table.getAllColumns().map((item, index) => {
             if (index === 0) return null;
@@ -1131,8 +1131,7 @@ const Funds = () => {
         onClose={() => setIsFilterModal(false)}
         isOpen={isFilterModal}
       >
-        <div className="h-[620px] w-full overflow-y-auto overflow-x-hidden rounded-3xl bg-white text-right">
-          <div className="my-4 flex w-full flex-col gap-2">
+        <div className="h-[620px] mb-4 mt-7 w-full overflow-y-auto scrollbar-md overflow-x-hidden rounded-3xl bg-white text-right">
             <FilterPopUpSection
               searchValue={fundSearchQuery}
               onSearchChange={setFundSearchQuery}
@@ -1140,7 +1139,6 @@ const Funds = () => {
               selectedFilters={selectedFilters}
               onFilterChange={setSelectedFilters}
             />
-          </div>
         </div>
       </Dialog>
       <Dialog

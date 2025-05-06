@@ -101,10 +101,10 @@ export function FilterPopUpSection({
 
   return (
     <div
-      className={cn('relative overflow-hidden', { 'h-[580px]': activeFilter })}
+      className={cn('relative overflow-hidden', { 'h-[615px]': activeFilter })}
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-6 py-4 text-xl font-medium">
+      <div className="flex items-center justify-between px-6 pb-4 text-xl font-medium">
         <span>فیلتر صندوق‌ها</span>
         {(Object.keys(selectedFilters).length > 0 || searchValue) && (
           <span
@@ -182,7 +182,7 @@ export function FilterPopUpSection({
       {/* Filter Options List */}
       <div
         className={cn(
-          'absolute right-0 top-3 h-[570px] w-full translate-x-full bg-white transition-all duration-500',
+          'absolute right-0 top-0 h-[570px] w-full translate-x-full bg-white transition-all duration-500',
           { 'translate-x-0': activeFilter },
         )}
       >
@@ -224,7 +224,7 @@ export function FilterPopUpSection({
         </div>
 
         {/* Confirm Buttons */}
-        <div className="absolute -bottom-3 left-2.5 flex items-center gap-2 p-4">
+        <div className="absolute -bottom-12 left-2.5 flex items-center gap-2 p-4">
           <Button
             onClick={() => setActiveFilter(null)}
             size="sm"
