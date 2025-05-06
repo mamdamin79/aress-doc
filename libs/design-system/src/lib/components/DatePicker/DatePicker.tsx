@@ -114,42 +114,51 @@ export function DatePicker({ min, max, setDateRange }: Props) {
     ...updatedCurrentMonthDays(nextDays),
   ];
 
-  const updateStartInput = (date: string) => {
-    const dateFormat = date.slice(0, 4) + String(date.slice(5, 7)) + String(date.slice(8, 10));
-    const minDate = min.slice(0, 4) + String(min.slice(5, 7)) + String(min.slice(8, 10));
-    const maxDate = max.slice(0, 4) + String(max.slice(5, 7)) + String(max.slice(8, 10));
+  const updateDateInput = (date: string, type: 'start' | 'end') => {
+    const dateFormat = date.slice(0, 4) + date.slice(5, 7) + date.slice(8, 10);
+    const minDate = min.slice(0, 4) + min.slice(5, 7) + min.slice(8, 10);
+    const maxDate = max.slice(0, 4) + max.slice(5, 7) + max.slice(8, 10);
+  
+    const newDate = {
+      day: +date.slice(8, 10),
+      month: +date.slice(5, 7),
+      year: +date.slice(0, 4),
+    };
+  
     if (
-      (startDate?.year === endDate?.year && startDate?.month === endDate?.month && startDate && endDate && startDate?.day > endDate?.day)
-      || (startDate?.year === endDate?.year && startDate?.month === endDate?.month && endDate && startDate && (startDate?.day > endDate?.day || startDate?.day === endDate.day))) {
+      startDate?.year === endDate?.year &&
+      startDate?.month === endDate?.month &&
+      startDate &&
+      endDate &&
+      (startDate.day > endDate.day || startDate.day === endDate.day)
+    ) {
       setAreInputsEqual(true);
-    } else setAreInputsEqual(false);
+    } else {
+      setAreInputsEqual(false);
+    }
+  
     if (+date.slice(8, 10) <= 31 && dateFormat >= minDate && dateFormat <= maxDate) {
-      if (startDate?.year && startDate.month && startDate.day) {
-        setActiveEndInput(true);
-        setFocuseEndInput(true);
-        setFocuseStartInput(false);
+      if (type === 'start') {
+        setStartDate(newDate);
+        if (newDate.year && newDate.month && newDate.day) {
+          setActiveEndInput(true);
+          setFocuseEndInput(true);
+          setFocuseStartInput(false);
+        }
+      } else {
+        setEndDate(newDate);
+        setErrors({
+          start: { minError: false, maxError: false },
+          end: { minError: false, maxError: false },
+        });
       }
-      setStartDate({ day: +date.slice(8, 10), month: +date.slice(5, 7), year: +date.slice(0, 4) });
     }
-    setStartDate({ day: +date.slice(8, 10), month: +date.slice(5, 7), year: +date.slice(0, 4) });
-
-  };
-  const updateEndInput = (date: string) => {
-    const dateFormat = date.slice(0, 4) + String(date.slice(5, 7)) + String(date.slice(8, 10));
-    const minDate = min.slice(0, 4) + String(min.slice(5, 7)) + String(min.slice(8, 10));
-    const maxDate = max.slice(0, 4) + String(max.slice(5, 7)) + String(max.slice(8, 10));
-    if ((startDate?.year === endDate?.year && startDate?.month === endDate?.month && startDate && endDate && startDate?.day > endDate?.day)
-      || (startDate?.year === endDate?.year && startDate?.month === endDate?.month && endDate && startDate && (startDate?.day > endDate?.day || startDate?.day === endDate.day))) {
-      setAreInputsEqual(true);
-    } else setAreInputsEqual(false);
-    if (+date.slice(8, 10) <= 31 && dateFormat >= minDate && dateFormat <= maxDate) {
-      setErrors({
-        start: { minError: false, maxError: false },
-        end: { minError: false, maxError: false },
-      });
-      setEndDate({ day: +date.slice(8, 10), month: +date.slice(5, 7), year: +date.slice(0, 4) });
+  
+    if (type === 'start') {
+      setStartDate(newDate);
     }
   };
+  
 
   // Render TitleTooltip
   const moseEnterCell = useCallback(
@@ -275,7 +284,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
                 errorHandler={errorHandler}
                 placeholder="تاریخ شروع"
                 active={activeStartInput}
-                onChange={(e) => updateStartInput(e.toString())}
+                onChange={(e) => updateDateInput(e.toString(), 'start')}
                 clearDate={clearStartDate}
                 errors={errors.start}
                 focus={focuseStartInput}
@@ -307,7 +316,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
                 placeholder="تاریخ پایان"
                 active={activeEndInput}
                 errors={errors.end}
-                onChange={(e) => updateEndInput(e.toString())}
+                onChange={(e) => updateDateInput(e.toString(), 'end')}
                 clearDate={clearEndDate}
                 min={min}
                 max={max}
