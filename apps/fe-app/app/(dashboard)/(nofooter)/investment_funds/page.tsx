@@ -240,7 +240,7 @@ const Funds = () => {
           >
             <thead
               className={cn(
-                'group sticky right-0 top-0 z-30 m-0 border-brand-200 shadow-brand-200 [box-shadow:0_2px_0_#bcebeb] border-none p-0 duration-300',
+                'border-brand-200 shadow-brand-200 group sticky right-0 top-0 z-50 m-0 border-none p-0 duration-300 [box-shadow:0_2px_0_#bcebeb]',
               )}
             >
               <tr className="overflow-hidden rounded-md p-0">
@@ -279,7 +279,7 @@ const Funds = () => {
                             }}
                           >
                             <OptionsDropdown
-                            className='z-50'
+                              className="z-50"
                               dropDownStyles={{
                                 size: 'md',
                                 anchor: 'bottom',
@@ -288,42 +288,42 @@ const Funds = () => {
                                 checkSelected: true,
                               }}
                               customOptionRender={(prop) => (
-                                  <div
-                                    onClick={() => {
-                                      if (
-                                        prop.text === 'مرتب سازی (ی-الف)' &&
-                                        header.column.getIsSorted() !== 'desc'
-                                      ) {
-                                        header.column.toggleSorting(true);
-                                      }
-                                      if (
-                                        prop.text === 'مرتب سازی (الف-ی)' &&
-                                        header.column.getIsSorted() !== 'asc'
-                                      ) {
-                                        header.column.toggleSorting(false);
-                                      }
-                                    }}
-                                    className={cn(
-                                      'hover:bg-brand-50 hover:text-brand-800 flex cursor-pointer items-center gap-2 overflow-y-hidden bg-white p-2',
-                                      {
-                                        'text-brand-800':
-                                          (header.column.getIsSorted() ===
-                                            'desc' &&
-                                            prop.text === 'مرتب سازی نزولی') ||
-                                          (header.column.getIsSorted() ===
-                                            'asc' &&
-                                            prop.text === 'مرتب سازی صعودی'),
-                                      },
-                                    )}
-                                  >
-                                    {prop.icon?.name && (
-                                      <Icon
-                                        name={prop.icon?.name}
-                                        size={prop.icon?.size}
-                                      />
-                                    )}
-                                    {prop.text}
-                                  </div>
+                                <div
+                                  onClick={() => {
+                                    if (
+                                      prop.text === 'مرتب سازی (ی-الف)' &&
+                                      header.column.getIsSorted() !== 'desc'
+                                    ) {
+                                      header.column.toggleSorting(true);
+                                    }
+                                    if (
+                                      prop.text === 'مرتب سازی (الف-ی)' &&
+                                      header.column.getIsSorted() !== 'asc'
+                                    ) {
+                                      header.column.toggleSorting(false);
+                                    }
+                                  }}
+                                  className={cn(
+                                    'hover:bg-brand-50 hover:text-brand-800 flex cursor-pointer items-center gap-2 overflow-y-hidden bg-white p-2',
+                                    {
+                                      'text-brand-800':
+                                        (header.column.getIsSorted() ===
+                                          'desc' &&
+                                          prop.text === 'مرتب سازی نزولی') ||
+                                        (header.column.getIsSorted() ===
+                                          'asc' &&
+                                          prop.text === 'مرتب سازی صعودی'),
+                                    },
+                                  )}
+                                >
+                                  {prop.icon?.name && (
+                                    <Icon
+                                      name={prop.icon?.name}
+                                      size={prop.icon?.size}
+                                    />
+                                  )}
+                                  {prop.text}
+                                </div>
                               )}
                               customTriggerRender={({ isActive }) => (
                                 <div className="rounde w-full">
@@ -443,7 +443,7 @@ const Funds = () => {
                               }}
                             >
                               <OptionsDropdown
-                              className='z-50'
+                                className="z-50"
                                 dropDownStyles={{
                                   size: 'md',
                                   anchor: 'bottom',
@@ -483,7 +483,7 @@ const Funds = () => {
                                       className={cn(
                                         'hover:bg-brand-50 hover:text-brand-800 flex cursor-pointer items-center gap-2 bg-white p-2',
                                         {
-                                          'cursor-default pointer-events-none text-[#B3B6BD] hover:bg-white hover:text-[#B3B6BD]':
+                                          'pointer-events-none cursor-default text-[#B3B6BD] hover:bg-white hover:text-[#B3B6BD]':
                                             (index === 1 &&
                                               (prop.text ===
                                                 'انتقال به ابتدا' ||
@@ -636,235 +636,130 @@ const Funds = () => {
               </tr>
             </thead>
             <tbody className="relative w-full overflow-hidden rounded-b-md">
-              {indexCategoryTab === 0 ? (
-                table.getRowModel().rows.length ? (
-                  (() => {
-                    const pinnedRows = table
-                      .getRowModel()
-                      .rows.filter((row) => row.getIsPinned());
-                    const lastPinnedRowId = pinnedRows.length
-                      ? pinnedRows[pinnedRows.length - 1].id
-                      : null;
+              {(() => {
+                const isMainTab = indexCategoryTab === 0;
+                const allRows = table.getRowModel().rows;
+                const pinnedIds = isMainTab
+                  ? allRows.filter((r) => r.getIsPinned()).map((r) => r.id)
+                  : pineWatchLis;
 
-                    const allRows = [
-                      ...pinnedRows,
-                      ...table
-                        .getRowModel()
-                        .rows.filter((row) => !row.getIsPinned()),
-                    ];
+                const filteredRows = isMainTab
+                  ? allRows
+                  : allRows.filter((row) => watchList.includes(row.id));
 
-                    return allRows.map((row, rowIndex) => {
-                      const pinnedIndex = pinnedRows.findIndex(
-                        (pinnedRow) => pinnedRow.id === row.id,
-                      );
-                      const topValue =
-                        pinnedIndex !== -1
-                          ? `${(pinnedIndex + 1) * 70}px`
-                          : 'auto';
+                const pinnedRows = filteredRows.filter((row) =>
+                  pinnedIds.includes(row.id),
+                );
+                const otherRows = filteredRows.filter(
+                  (row) => !pinnedIds.includes(row.id),
+                );
 
-                      return (
-                        <tr
-                          style={{ top: topValue }}
-                          className={cn(
-                            'group -top-4 h-[60px] border-t border-blue-100',
-                            row.getIsPinned() && `sticky z-10`,
-                            {
-                              'shadow-2xl':
-                                row.id === lastPinnedRowId && isScrollTop,
-                              'bg-blue-200': false,
-                              'group-hover:bg-blue-50': !false && !false,
-                            },
-                          )}
-                          key={row.id}
-                        >
-                          <td
-                            className={cn({
-                              'bg-blue-50 group-hover:bg-blue-100': false,
-                              'bg-blue-200': false,
-                              'group-hover:bg-blue-50': !false && rowIndex,
-                            })}
-                          ></td>
-                          {row.getVisibleCells().map((cell, index) => {
-                            return (
-                              <React.Fragment key={cell.id}>
-                                {index === 0 && (
-                                  <td className="sticky right-0 m-0 p-0">
-                                    <FundsTableRow
-                                      tag={false}
-                                      category={
-                                        watchList.includes(row.id)
-                                          ? 'watchlist'
-                                          : 'stocks'
-                                      }
-                                      canPin={
-                                        pinnedRows.length <= 2 ? true : false
-                                      }
-                                      toggleWatchList={() =>
-                                        toggleWatchList({ id: row.id })
-                                      }
-                                      pinedFunction={() => row.pin('top', true)}
-                                      unPinedFunction={() => row.pin(false)}
-                                      isScrolled={isScrollAtStart}
-                                      investmentMethod={
-                                        row.original.investmentMethod
-                                      }
-                                      name={row.original.nameFund}
-                                      pined={Boolean(row.getIsPinned())}
-                                      selected={false}
-                                      logo={row.original.logo}
-                                    />
-                                  </td>
-                                )}
-                                {index >= 1 && (
-                                  <td
-                                    className={cn({
-                                      'bg-blue-50 group-hover:bg-blue-100':
-                                        row.getIsPinned(),
-                                      'bg-blue-200': false,
-                                      'group-hover:bg-blue-50':
-                                        !row.getIsPinned(),
-                                    })}
-                                  >
-                                    {flexRender(
-                                      cell.column.columnDef.cell,
-                                      cell.getContext(),
-                                    )}
-                                  </td>
-                                )}
-                              </React.Fragment>
-                            );
-                          })}
-                        </tr>
-                      );
-                    });
-                  })()
-                ) : (
-                  <tr className="fixed right-[calc(50%-150px)] mt-5 w-full text-gray-600">
-                    <td className="text-sm">
-                      صندوقی یافت نشد! لطفا فیلتر هارا بازنشانی کنید.
-                    </td>
-                  </tr>
-                )
-              ) : watchList.length > 0 ? (
-                table.getRowModel().rows.length ? (
-                  (() => {
-                    const pinnedRows = table
-                      .getRowModel()
-                      .rows.filter((row) => pineWatchLis.includes(row.id));
+                const rowsToRender = [...pinnedRows, ...otherRows];
+                const lastPinnedRowId = pinnedRows.at(-1)?.id;
 
-                    const allRows = [
-                      ...pinnedRows,
-                      ...table
-                        .getRowModel()
-                        .rows.filter((row) => !pineWatchLis.includes(row.id)),
-                    ];
+                if (rowsToRender.length === 0) {
+                  return (
+                    <tr className="fixed right-[calc(50%-150px)] mt-5 w-full text-gray-600">
+                      <td className="text-sm">
+                        {isMainTab
+                          ? 'صندوقی یافت نشد! لطفا فیلتر هارا بازنشانی کنید.'
+                          : watchList.length === 0
+                            ? 'صندوقی در دیده بان وجود ندارد.'
+                            : 'صندوقی یافت نشد! لطفا فیلتر هارا بازنشانی کنید.'}
+                      </td>
+                    </tr>
+                  );
+                }
 
-                    const filteredRows = allRows.filter((row) =>
-                      watchList.includes(row.id),
-                    );
+                return rowsToRender.map((row, rowIndex) => {
+                  const isPinned = pinnedIds.includes(row.id);
+                  const pinnedIndex = pinnedRows.findIndex(
+                    (r) => r.id === row.id,
+                  );
+                  const topValue = isPinned
+                    ? `${(pinnedIndex + 1) * 70}px`
+                    : 'auto';
+                  const isLastPinned = row.id === lastPinnedRowId;
 
-                    return filteredRows.map((row, rowIndex) => {
-                      const pinnedIndex = pinnedRows.findIndex(
-                        (pinnedRow) => pinnedRow.id === row.id,
-                      );
-                      const topValue =
-                        pinnedIndex !== -1
-                          ? `${(pinnedIndex + 1) * 70}px`
-                          : 'auto';
-
-                      return (
-                        <tr
-                          style={{ top: topValue }}
-                          className={cn(
-                            'group -top-4 h-[76px] border-t border-blue-100',
-                            pineWatchLis.includes(row.id) && `sticky z-10`,
-                            {
-                              'shadow-2xl': pineWatchLis.includes(row.id),
-                              'bg-blue-200': false,
-                              'group-hover:bg-blue-50': !false && !false,
-                            },
-                          )}
-                          key={row.id}
-                        >
-                          <td
-                            className={cn({
-                              'bg-blue-50 group-hover:bg-blue-100': false,
-                              'bg-blue-200': false,
-                              'group-hover:bg-blue-50': !false && rowIndex,
-                            })}
-                          ></td>
-                          {row.getVisibleCells().map((cell, index) => {
-                            return (
-                              <React.Fragment key={cell.id}>
-                                {index === 0 && (
-                                  <td className="sticky right-0 z-40 m-0 p-0">
-                                    <FundsTableRow
-                                      tag={true}
-                                      category="watchlist"
-                                      canPin={
-                                        pineWatchLis.length <= 2 ? true : false
-                                      }
-                                      toggleWatchList={() =>
-                                        toggleWatchList({ id: row.id })
-                                      }
-                                      pinedFunction={() =>
-                                        setPineWatchList([
+                  return (
+                    <tr
+                      key={row.id}
+                      style={{ top: topValue }}
+                      className={cn(
+                        'group -top-4 h-[70px] border-t border-blue-100',
+                        isPinned && 'sticky z-50',
+                        {
+                          'shadow-2xl': isPinned && isLastPinned && isScrollTop,
+                          'group-hover:bg-blue-50': true,
+                        },
+                      )}
+                    >
+                      <td></td>
+                      {row.getVisibleCells().map((cell, index) => {
+                        return (
+                          <React.Fragment key={cell.id}>
+                            {index === 0 && (
+                              <td className="sticky right-0 z-40 m-0 p-0">
+                                <FundsTableRow
+                                  tag={!isMainTab}
+                                  category={
+                                    isMainTab
+                                      ? watchList.includes(row.id)
+                                        ? 'watchlist'
+                                        : 'stocks'
+                                      : 'watchlist'
+                                  }
+                                  canPin={pinnedRows.length <= 2}
+                                  toggleWatchList={() =>
+                                    toggleWatchList({ id: row.id })
+                                  }
+                                  pinedFunction={() =>
+                                    isMainTab
+                                      ? row.pin('top', true)
+                                      : setPineWatchList([
                                           ...pineWatchLis,
                                           row.id,
                                         ])
-                                      }
-                                      unPinedFunction={() =>
-                                        setPineWatchList((prev) =>
+                                  }
+                                  unPinedFunction={() =>
+                                    isMainTab
+                                      ? row.pin(false)
+                                      : setPineWatchList((prev) =>
                                           prev.filter((id) => id !== row.id),
                                         )
-                                      }
-                                      isScrolled={isScrollAtStart}
-                                      investmentMethod={
-                                        row.original.investmentMethod
-                                      }
-                                      name={row.original.nameFund}
-                                      pined={pineWatchLis.includes(row.id)}
-                                      selected={false}
-                                      logo={row.original.logo}
-                                    />
-                                  </td>
+                                  }
+                                  isScrolled={isScrollAtStart}
+                                  investmentMethod={
+                                    row.original.investmentMethod
+                                  }
+                                  name={row.original.nameFund}
+                                  pined={isPinned}
+                                  selected={false}
+                                  logo={row.original.logo}
+                                />
+                              </td>
+                            )}
+                            {index >= 1 && (
+                              <td
+                                className={cn({
+                                  'bg-blue-50 group-hover:bg-blue-100':
+                                    isPinned,
+                                  'group-hover:bg-blue-50': !isPinned,
+                                })}
+                              >
+                                {flexRender(
+                                  cell.column.columnDef.cell,
+                                  cell.getContext(),
                                 )}
-                                {index >= 1 && (
-                                  <td
-                                    className={cn({
-                                      'bg-blue-50 group-hover:bg-blue-100':
-                                        pineWatchLis.includes(row.id),
-                                      'bg-blue-200': false,
-                                      'group-hover:bg-blue-50':
-                                        !pineWatchLis.includes(row.id),
-                                    })}
-                                  >
-                                    {flexRender(
-                                      cell.column.columnDef.cell,
-                                      cell.getContext(),
-                                    )}
-                                  </td>
-                                )}
-                              </React.Fragment>
-                            );
-                          })}
-                        </tr>
-                      );
-                    });
-                  })()
-                ) : (
-                  <tr className="fixed right-[calc(50%-150px)] mt-5 w-full text-gray-600">
-                    <td className="text-sm">
-                      صندوقی یافت نشد! لطفا فیلتر هارا بازنشانی کنید.
-                    </td>
-                  </tr>
-                )
-              ) : (
-                <tr className="fixed right-[calc(50%-150px)] mt-5 w-full text-gray-600">
-                  <td className="text-sm">صندوقی در دیده بان وجود ندارد.</td>
-                </tr>
-              )}
-
+                              </td>
+                            )}
+                          </React.Fragment>
+                        );
+                      })}
+                    </tr>
+                  );
+                });
+              })()}
               <tr className="h-[60px]">
                 <td></td>
               </tr>
@@ -889,7 +784,7 @@ const Funds = () => {
               checkSelected: true,
             }}
             customTriggerRender={(prop) => (
-              <div className="flex items-center gap-2 px-3 h-[40px] text-xs font-medium">
+              <div className="flex h-[40px] items-center gap-2 px-3 text-xs font-medium">
                 <span>تعداد سطر در جدول: </span>
                 {prop.selectedItem.text}
                 <Icon name={prop.isActive ? 'chevron-up' : 'chevron-down'} />
@@ -925,7 +820,9 @@ const Funds = () => {
 
         <span className="flex h-[40px] gap-2 rounded-md bg-[#B3B6BD8C] px-3 py-2 text-xs font-medium backdrop-blur-[30px]">
           مجموعه ارزش خالص دارایی‌ها:
-          <span className="text-sm border-b text-[#06080F] border-[#06080F]">10,986,249.09</span>
+          <span className="border-b border-[#06080F] text-sm text-[#06080F]">
+            10,986,249.09
+          </span>
         </span>
         <div className="flex h-[40px] items-center gap-2 rounded-md bg-[#B3B6BD8C] px-3 py-2 backdrop-blur-[30px]">
           <span className="text-gray-1000 flex items-center gap-1 text-xs font-medium">
@@ -1066,14 +963,14 @@ const Funds = () => {
         onClose={() => setIsFilterModal(false)}
         isOpen={isFilterModal}
       >
-        <div className="h-[620px] mb-4 mt-7 w-full overflow-y-auto scrollbar-md overflow-x-hidden rounded-3xl bg-white text-right">
-            <FilterPopUpSection
-              searchValue={fundSearchQuery}
-              onSearchChange={setFundSearchQuery}
-              filterOptions={filterList}
-              selectedFilters={selectedFilters}
-              onFilterChange={setSelectedFilters}
-            />
+        <div className="scrollbar-md mb-4 mt-7 h-[620px] w-full overflow-y-auto overflow-x-hidden rounded-3xl bg-white text-right">
+          <FilterPopUpSection
+            searchValue={fundSearchQuery}
+            onSearchChange={setFundSearchQuery}
+            filterOptions={filterList}
+            selectedFilters={selectedFilters}
+            onFilterChange={setSelectedFilters}
+          />
         </div>
       </Dialog>
       <Dialog
