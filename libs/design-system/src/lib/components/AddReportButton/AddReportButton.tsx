@@ -7,16 +7,18 @@ export const AddReportButton: React.FC<AddReportButtonProps> = ({
   onClick,
 }) => {
   return (
-    <button
-      className="w-[616px] h-[336px] flex justify-center items-center bg-white rounded-2xl shadow-sm  text-gray-600 text-lg font-medium group/reportBtn hover:text-brand-700"
-      onClick={onClick}
-    >
-      <div className="flex flex-col gap-4 justify-center items-center transition-all">
-        <div className="w-[72px] h-[72px] rounded-full border-2 border-dashed border-gray-500 group-hover/reportBtn:border-brand-700  transition-all group-hover/reportBtn:border-solid flex justify-center items-center">
+    <div className="shadow-6xl flex h-[336px] w-[616px] items-center justify-center rounded-2xl border-2 border-gray-200 bg-white text-lg font-medium text-gray-600">
+      <button
+        onClick={onClick}
+        className="group/reportBtn flex flex-col items-center justify-center gap-4 transition-colors"
+      >
+        <div className="group-hover/reportBtn:text-brand-700 group-hover/reportBtn:border-brand-700 flex h-[72px] w-[72px] items-center justify-center rounded-full border-2 border-dashed border-gray-500 transition-all group-hover/reportBtn:border-solid">
           <Icon name="plus" size="lg" />
         </div>
-        <span className="text-center">افزودن گزارش جدید</span>
-      </div>
-    </button>
+        <span className="group-hover/reportBtn:text-brand-700 text-center">
+          افزودن گزارش جدید
+        </span>
+      </button>
+    </div>
   );
 };
