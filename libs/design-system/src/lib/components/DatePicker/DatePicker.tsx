@@ -495,7 +495,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
         </div>
       </div>
       <div onMouseLeave={() => setDateHover(null)} className="flex items-center gap-5">
-        <div className="w-fit h-[260px] grid grid-cols-7">
+        <div className="w-[305px] h-[260px] grid grid-cols-7">
           {startDays.map((day, index) => {
             return (
               <div
@@ -588,7 +588,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
           })}
         </div>
         <div className='h-[270px] w-[0.5px] bg-[#E1E2E5]'></div>
-        <div className="w-fit -ml-1 h-[260px] grid grid-cols-7">
+        <div className="w-[305px] -ml-1 h-[260px] grid grid-cols-7">
           {endMonth.map((day, index) => {
             return (
               <div
@@ -654,7 +654,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
                             'border-t-2 border-b-2 pl-[4px] border-brand-300 w-11 border-x-0 rounded-none': dateHover && `${dateHover.year}${dateHover.month < 10 ? `0${dateHover.month}` : dateHover.month}${dateHover.day < 10 ? `0${dateHover.day}` : dateHover.day}` > `${calendars[1].slice(0, 4)}${calendars[1].slice(5, 7)}${day.day < 10 ? `0${day.day}` : day.day}` && isDateAfterStartOrEnd({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) && focuseEndInput,
                           },
                           {
-                            'bg-brand-200 pl-[4px] mx-auto w-11 group hover:bg-brand-200 border-0 rounded-none hover:border-none text-brand-800': isDateBetweenStartAndEnd({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) && !isStartDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) && !isEndDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) })
+                            'bg-brand-200 pl-[4px] mx-auto w-11 group hover:bg-brand-200 border-none   rounded-none text-brand-800': isDateBetweenStartAndEnd({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) && !isStartDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) && !isEndDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) })
                           },
                           {
                             'text-white bg-brand-600 w-10 border-0 border-x-2 border-brand-600': isStartDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) }) || isEndDateEqual({ day: day.day, month: +calendars[1].slice(5, 7), year: +calendars[1].slice(0, 4) })
@@ -703,7 +703,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
             }
           }}
           className={cn(
-            'px-2 select-none bg-brand-300 cursor-default py-1 font-medium text-base rounded-md text-white',
+            'px-2 select-none bg-brand-300 cursor-default py-1 font-medium text-md rounded-md text-white',
             {
               'cursor-pointer bg-brand-500':
                 startDate &&
