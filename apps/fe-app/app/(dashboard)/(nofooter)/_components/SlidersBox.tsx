@@ -106,6 +106,17 @@ export const SlidersBox: React.FC = () => {
   ];
   const [isReportSelectionPopupOpen, setIsReportSelectionPopupOpen] =
     useState(false);
+  function generateTooltips(barsNumber: number, slides: number): string[] {
+    const tooltips: string[] = [];
+    const step = Math.ceil(slides / barsNumber);
+    for (let i = 0; i < barsNumber; i++) {
+      const start = i * step + 1;
+      let end = (i + 1) * step;
+      if (end > slides) end = slides;
+      tooltips.push(`اسلاید ${start}-${end}`);
+    }
+    return tooltips;
+  }
   return (
     <>
       <div className="flex w-full justify-between">
@@ -149,6 +160,7 @@ export const SlidersBox: React.FC = () => {
           externalIndex={currIndex}
           autoRotate={Boolean(activeRotate)}
           autoRotateDuration={activeRotate || undefined}
+          tooltips={generateTooltips(barsNumber, slides)}
         />
         {activeRotate && (
           <AutoRotationOff onClick={() => setActiveRotate(null)} />
