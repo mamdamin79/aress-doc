@@ -8,7 +8,7 @@ interface Props {
     setCurrentDate: (date: string) => void;
 }
 
-export function DropDownYear ({years, calendar, setCurrentDate}: Props) {
+export function YearSelect ({years, calendar, setCurrentDate}: Props) {
   return (
     <OptionsDropdown
       customTriggerRender={() => (

@@ -9,9 +9,8 @@ import { DateDifference, updatedCurrentMonthDays } from './DatePicker.utils';
 import { Props, ErrorState, DateType } from './DatePicker.types';
 import { listMonth, weekdayNames, weeksTitle } from './DatePicker.constansts';
 import { Tooltip } from '../Tooltip';
-import { OptionsDropdown } from '../OptionsDropdown';
-import { DropDownYear } from './YearDropdown';
-import DropDownMonth from './MonthDropdown';
+import { YearSelect } from './YearSelect';
+import {MonthSelect} from './MonthSelect';
 
 export function DatePicker({ min, max, setDateRange }: Props) {
   const [titleTooltip, setTitleTooltip] = useState('');
@@ -21,8 +20,6 @@ export function DatePicker({ min, max, setDateRange }: Props) {
   const [focuseStartInput, setFocuseStartInput] = useState(true);
   const [activeStartInput, setActiveStartInput] = useState(true);
   const [activeEndInput, setActiveEndInput] = useState(false);
-  const [foducStartInput, setFocusStartInput] = useState(true);
-  const [foducEndInput, setFocusEndInput] = useState(false);
   const [errors, setErrors] = useState<{
     start: ErrorState;
     end: ErrorState;
@@ -367,14 +364,14 @@ export function DatePicker({ min, max, setDateRange }: Props) {
           </div>
           <div className="relative">
             <div className="absolute -top-6 right-[85px] z-50 items-center gap-1">
-              <DropDownMonth
+              <MonthSelect
                 months={listMonth}
                 calendar={calendars[0]}
                 setCurrentDate={setCurrentDate}
               />
             </div>
             <div className="absolute -top-6 z-50 items-center gap-1">
-              <DropDownYear
+              <YearSelect
                 calendar={calendars[0]}
                 years={years}
                 setCurrentDate={setCurrentDate}
@@ -384,14 +381,14 @@ export function DatePicker({ min, max, setDateRange }: Props) {
         </div>
         <div className="relative flex items-center gap-6">
           <div className="absolute -right-[100px] top-0 z-50 gap-1">
-            <DropDownYear
+            <YearSelect
               calendar={calendars[1]}
               years={years}
               setCurrentDate={setCurrentDate}
             />
           </div>
           <div className="absolute left-[145px] top-0 z-50 gap-1">
-            <DropDownMonth
+            <MonthSelect
               months={listMonth}
               calendar={calendars[1]}
               setCurrentDate={setCurrentDate}

@@ -8,7 +8,7 @@ interface Props {
   setCurrentDate: (date: string) => void;
 }
 
-export default function DropDownMonth({
+export function MonthSelect({
   months,
   calendar,
   setCurrentDate,
