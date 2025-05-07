@@ -10,7 +10,7 @@
 
 .drop-down::-webkit-scrollbar {
   width: 4px;
-  background-color: #D8DBE1;
+  background-color: #d8dbe1;
   border-radius: 8px;
   margin: 5px 0;
 }
@@ -294,38 +294,6 @@
     /* Base Background in RGB */
     --color-base-background: 10, 13, 13;
   }
-
-  .scrollbar-sm::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
-    border-radius: 8px;
-  }
-
-  .scrollbar-sm::-webkit-scrollbar-thumb,
-  .scrollbar-md::-webkit-scrollbar-thumb,
-  .scrollbar-lg::-webkit-scrollbar-thumb {
-    background-color: #8c9096;
-    position: sticky;
-    border-radius: 8px;
-  }
-
-  .scrollbar-sm::-webkit-scrollbar-track,
-  .scrollbar-md::-webkit-scrollbar-track,
-  .scrollbar-lg::-webkit-scrollbar-track {
-    background-color: #d8dbe1;
-    border-radius: 8px;
-  }
-
-  .scrollbar-md::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-    border-radius: 8px;
-  }
-  .scrollbar-lg::-webkit-scrollbar {
-    width: 8px;
-    height: 6px;
-    border-radius: 8px;
-  }
 }
 
 .dir-rtl {
@@ -339,7 +307,7 @@
 html {
   direction: rtl;
 }
-.table-scroll { 
+.table-scroll {
   writing-mode: sideways-rl;
 }
 table {
@@ -362,10 +330,33 @@ input[type='password']::-webkit-password-eye {
   position: sticky;
   border-radius: 8px;
 }
-.hidescrollbar {
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
+
+.scrollbar-sm::-webkit-scrollbar {
+  width: 4px;
+  border-radius: 8px;
 }
-.hidescrollbar::-webkit-scrollbar { 
-  display: none;  /* Safari and Chrome */
+
+.scrollbar-sm::-webkit-scrollbar-thumb,
+.scrollbar-md::-webkit-scrollbar-thumb,
+.scrollbar-lg::-webkit-scrollbar-thumb {
+  background-color: #8c9096;
+  position: sticky;
+  border-radius: 8px;
+}
+
+.scrollbar-sm::-webkit-scrollbar-track,
+.scrollbar-md::-webkit-scrollbar-track,
+.scrollbar-lg::-webkit-scrollbar-track {
+  background-color: #d8dbe1;
+  border-radius: 8px;
+}
+
+.scrollbar-md::-webkit-scrollbar {
+  width: 6px;
+  border-radius: 8px;
+}
+
+.scrollbar-lg::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 8px;
 }
