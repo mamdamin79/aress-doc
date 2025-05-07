@@ -171,12 +171,12 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
           )}
         </div>
       ) : (
-        <>
+        <div className='group/text'>
           <div
             className={`absolute -right-[1.5px] bottom-0 top-0 my-auto transition-all ${
               isActive
                 ? 'bg-brand-600 h-5 w-[4px] rounded-bl-[3px] rounded-tl-[3px]'
-                : 'bg-brand-400 group-hover:bg-brand-600 h-4 w-[2px] rounded-lg group-hover:h-5'
+                : 'bg-brand-400 group-hover:bg-brand-600 h-4 w-[2px] rounded-lg group-hover/text:h-5'
             }`}
           />
           <div className="flex justify-start pr-2">
@@ -187,7 +187,7 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
               isDashboard={true}
             />
           </div>
-        </>
+        </div>
       )}
       {/* <ChangeDashboardNameModal
         isOpen={modalName == 'changeDashboardName'}
