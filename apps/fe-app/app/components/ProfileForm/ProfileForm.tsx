@@ -58,25 +58,34 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
       name: 'fnameAndLname',
       label: 'نام و نام خانوادگی',
       value: fnameAndLname,
+      icon: 'user',
     },
     {
       name: 'phoneNumber',
       label: 'شماره همراه',
       value: phoneNumber,
       edit: 'phoneNumber',
+      icon: 'phone',
     },
-    { name: 'nationalID', label: 'کد ملی', value: nationalID },
-    { name: 'email', label: 'ایمیل', value: email, edit: 'email' },
+    { name: 'nationalID', label: 'کد ملی', value: nationalID, icon: 'id-card' },
+    {
+      name: 'email',
+      label: 'ایمیل',
+      value: email,
+      edit: 'email',
+      icon: 'mail',
+    },
     {
       name: 'username',
       label: 'نام کاربری',
       value: username,
       edit: 'username',
+      icon: 'at-sign',
     },
   ];
 
   return (
-    <div className="flex w-full max-w-6xl flex-col items-center gap-12 px-4 md:px-8">
+    <div className="flex w-full max-w-[1032px] flex-col items-center gap-12">
       <ProfileImageAndUpload
         loadingInitial={isLoading}
         maxSize={2e13}
@@ -107,7 +116,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
           <Dialog
             isOpen
             onClose={() => setEditDialog(null)}
-            className="w-full max-w-md p-4 sm:p-6"
+            className="w-[500px] p-4 sm:p-6"
           >
             {editDialog === 'phoneNumber' && (
               <ChangeNumber
@@ -131,7 +140,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
         ))}
 
       <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
-        {formSchema.map(({ name, label, value, edit }) => (
+        {formSchema.map(({ name, label, value, edit, icon }) => (
           <TextField
             key={name}
             mergeTitleAndPlaceholder={false}
@@ -159,6 +168,10 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                   ]
                 : []
             }
+            leadingIcon={{
+              name: icon,
+              size: 'lg',
+            }}
             label={label}
             placeholder=""
             readOnly
