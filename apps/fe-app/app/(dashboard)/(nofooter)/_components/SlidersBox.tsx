@@ -97,6 +97,18 @@ export const SlidersBox: React.FC = () => {
   );
   const [isReportSelectionPopupOpen, setIsReportSelectionPopupOpen] =
     useState(false);
+  function generateTooltips(barsNumber: number, slides: number): string[] {
+    if (slides % 2 !== 0) slides += 1;
+    const tooltips: string[] = [];
+    const step = Math.ceil(slides / barsNumber);
+    for (let i = 0; i < barsNumber; i++) {
+      const start = i * step + 1;
+      let end = (i + 1) * step;
+      if (end > slides) end = slides;
+      tooltips.push(`اسلاید ${start}-${end}`);
+    }
+    return tooltips;
+  }
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -245,6 +257,7 @@ export const SlidersBox: React.FC = () => {
           externalIndex={currIndex}
           autoRotate={Boolean(activeRotate)}
           autoRotateDuration={activeRotate || undefined}
+          tooltips={generateTooltips(barsNumber, initialImages.length)}
         />
         {activeRotate && (
           <AutoRotationOff onClick={() => setActiveRotate(null)} />
