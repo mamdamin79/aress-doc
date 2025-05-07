@@ -82,11 +82,11 @@ export const SlidersBox: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const initialImages = [
-    '/charts/Report 6.png',
-    '/charts/Report 7.png',
-    '/charts/Report 8.png',
-    '/charts/Report 9.png',
-    '/charts/Report 10.png',
+    '/charts/Report 6.png?v=2',
+    '/charts/Report 7.png?v=2',
+    '/charts/Report 8.png?v=2',
+    '/charts/Report 9.png?v=2',
+    '/charts/Report 10.png?v=2',
   ];
   const [items, setItems] = useState<Item[]>(
     initialImages.map((url, index) => ({
