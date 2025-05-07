@@ -11,11 +11,13 @@ interface Props {
 export function YearSelect ({years, calendar, setCurrentDate}: Props) {
   return (
     <OptionsDropdown
-      customTriggerRender={() => (
+      customTriggerRender={({isActive}) => (
         <div
           className={cn(
-            'hover:bg-brand-50 flex h-10 w-20 cursor-pointer items-center justify-center gap-0.5 rounded-md bg-white text-center text-sm font-semibold',
-            {},
+            'hover:bg-brand-50 flex h-10 w-20 cursor-pointer border-2 border-white items-center justify-center gap-0.5 rounded-md bg-white text-center text-sm font-semibold',
+            {
+              'border-[#0C9292]': isActive
+            },
           )}
         >
           {calendar.slice(0, 4)}
@@ -46,6 +48,7 @@ export function YearSelect ({years, calendar, setCurrentDate}: Props) {
         );
       }}
       dropDownStyles={{
+        anchor: 'bottom',
         checkSelected: true,
         size: 'lg',
         scrollable: true,

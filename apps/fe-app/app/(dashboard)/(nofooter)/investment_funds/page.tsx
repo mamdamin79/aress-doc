@@ -239,7 +239,7 @@ useEffect(() => {
         <div
           ref={tableRef}
           onScroll={handlerScroll}
-          className="table-scroll h-[calc(100vh-170px)] w-screen overflow-auto scroll-smooth"
+          className="scrollbar-md table-scroll h-[calc(100vh-170px)] w-screen overflow-auto scroll-smooth"
         >
           <table
             dir="rtl"
@@ -474,17 +474,15 @@ useEffect(() => {
                                         if (prop.text === 'انتقال به انتها') {
                                           moveColumn(header.column.id, 'end');
                                         }
-                                        if (
-                                          prop.text === 'مرتب سازی نزولی' &&
-                                          header.column.getIsSorted() !== 'desc'
-                                        ) {
-                                          header.column.toggleSorting(true);
+                                        if (prop.text === 'مرتب سازی نزولی') {
+                                          if (header.column.getIsSorted() !== 'desc') {
+                                            header.column.toggleSorting(true); // force to 'desc'
+                                          }
                                         }
-                                        if (
-                                          prop.text === 'مرتب سازی صعودی' &&
-                                          header.column.getIsSorted() !== 'asc'
-                                        ) {
-                                          header.column.toggleSorting(false);
+                                        if (prop.text === 'مرتب سازی صعودی') {
+                                          if (header.column.getIsSorted() !== 'asc') {
+                                            header.column.toggleSorting(false); // force to 'asc'
+                                          }
                                         }
                                       }}
                                       className={cn(
@@ -574,7 +572,7 @@ useEffect(() => {
                                   {
                                     text: 'مرتب سازی نزولی',
                                     icon: {
-                                      name: 'arrow-down-narrow-wide',
+                                      name: 'arrow-down-wide-narrow',
                                       size: 'md',
                                     },
                                   },

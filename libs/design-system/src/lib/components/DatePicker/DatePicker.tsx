@@ -10,7 +10,7 @@ import { Props, ErrorState, DateType } from './DatePicker.types';
 import { listMonth, weekdayNames, weeksTitle } from './DatePicker.constansts';
 import { Tooltip } from '../Tooltip';
 import { YearSelect } from './YearSelect';
-import {MonthSelect} from './MonthSelect';
+import { MonthSelect } from './MonthSelect';
 
 export function DatePicker({ min, max, setDateRange }: Props) {
   const [titleTooltip, setTitleTooltip] = useState('');
@@ -380,17 +380,17 @@ export function DatePicker({ min, max, setDateRange }: Props) {
           </div>
         </div>
         <div className="relative flex items-center gap-6">
-          <div className="absolute -right-[100px] top-0 z-50 gap-1">
-            <YearSelect
-              calendar={calendars[1]}
-              years={years}
-              setCurrentDate={setCurrentDate}
-            />
-          </div>
-          <div className="absolute left-[145px] top-0 z-50 gap-1">
+          <div className="absolute -right-[122px] top-0 z-50 gap-1">
             <MonthSelect
               months={listMonth}
               calendar={calendars[1]}
+              setCurrentDate={setCurrentDate}
+            />
+          </div>
+          <div className="absolute left-[168px] top-0 z-50 gap-1">
+            <YearSelect
+              calendar={calendars[1]}
+              years={years}
               setCurrentDate={setCurrentDate}
             />
           </div>

@@ -100,7 +100,10 @@ export const DateInput: React.FC<DatePickerProps> = ({
   useEffect(() => {
     if (!focus) {
       setActiveIndex(null);
+      dayRef?.current?.blur();
       yearRef.current?.setAttribute('disabled', 'disabled');
+    } else {
+      yearRef.current?.removeAttribute('disabled');
     }
     setFocusInput(focus);
   }, [focus]);
@@ -110,7 +113,6 @@ export const DateInput: React.FC<DatePickerProps> = ({
     if (!day) {
       dayRef?.current?.focus();
       setActiveIndex(1);
-      dayRef?.current?.setSelectionRange(0, 1);
     }
   }, [day, focus]);
 
@@ -561,7 +563,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
             /
             <input
               disabled={!activeInput}
-              onClick={() => {
+              onClick={() => {                
                 setActiveIndex(3);
                 yearRef?.current?.setSelectionRange(
                   yearRef?.current?.value.length,
@@ -573,7 +575,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
               onChange={(e) => changeYearInput(+e.target.value, true)}
               placeholder="سال"
               className={cn(
-                'w-10 outline-none border-none pb-0.5 -mx-1 placeholder:text-black bg-white block',
+                'w-10 outline-none border-none pb-0.5 -mx-1 placeholder:text-black bg-white',
                 activeIndex === 3 && focusInput && 'bg-blue-200'
               )}
             />

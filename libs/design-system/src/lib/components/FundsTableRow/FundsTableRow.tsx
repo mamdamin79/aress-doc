@@ -115,7 +115,7 @@ export function FundsTableRow({
                   }
                 }}
                 className={cn(
-                  'hidden h-[33px] w-[33px] cursor-pointer items-center justify-center rounded-full bg-white text-blue-700 duration-500 group-hover/img:flex',
+                  'hidden h-[24px] w-[24px] cursor-pointer items-center justify-center rounded-full group-hover/img:w-[33px] group-hover/img:h-[33px] bg-white text-blue-700 duration-500 group-hover/img:flex',
                   {
                     flex: pined,
                     'border border-[#B3B6BD]': !canPin && !pined,
@@ -124,7 +124,7 @@ export function FundsTableRow({
               >
                 <div
                   className={cn('flex items-center justify-center', {
-                    'group-hover/img:hidden': pined,
+                    'group-hover/img:hidden text-black': pined,
                     'rotate-[35deg] text-[#B3B6BD]': !canPin && !pined,
                   })}
                 >

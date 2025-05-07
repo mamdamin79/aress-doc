@@ -31,8 +31,10 @@ export function MonthSelect({
           {text}
         </div>
       )}
-      customTriggerRender={(_) => (
-        <div className="flex h-10 w-[92px] items-center justify-between rounded-md bg-white px-2 text-sm font-semibold">
+      customTriggerRender={({isActive}) => (
+        <div className={cn("flex h-10 w-[100px] items-center border-2 border-white justify-between rounded-md bg-white px-2 text-sm font-semibold", {
+          'border-[#0C9292]': isActive
+        })}>
           {months[parseInt(calendar.slice(5, 7), 10) - 1]}
           <Icon name="chevron-down" size="md" />
         </div>

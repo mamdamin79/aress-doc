@@ -88,16 +88,15 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
           )
         }
       </ListboxButton>
-      <div className={cn('max-h-[265px] mt-1 overflow-y-scroll', {
-        'scrollbar-sm': dropDownStyles.scrollable,
-        'hidescrollbar': !dropDownStyles.scrollable,
-      })}>
+      <div className="mt-1">
         <ListboxOptions
           anchor={dropDownStyles.anchor}
           className={cn(
             className,
-            'mt-1 gap-1 rounded-lg z-50 border border-gray-300  outline-none bg-white',
+            'mt-1 gap-1 rounded-lg z-50 border max-h-[265px] overflow-y-scroll border-gray-300  outline-none bg-white',
             dropDownStyles.shadow && 'shadow-7xl',
+            dropDownStyles.scrollable && 'scrollbar-sm',
+            dropDownStyles.scrollable || 'hidescrollbar',
             !dropDownStyles.fixedWidth && 'w-fit',
           )}
           style={

@@ -99,7 +99,7 @@ export function FundsColumn({
                 sortType === 'ranked'
                   ? type === 'active-asc'
                     ? 'arrow-down-wide-narrow'
-                    : 'arrow-up-wide-narrow'
+                    : 'arrow-up-narrow-wide'
                   : type === 'active-asc'
                     ? 'arrow-down-a-z'
                     : 'arrow-up-z-a'
