@@ -1,5 +1,5 @@
 export async function fetchToken(): Promise<string> {
-    const response = await fetch('http://185.141.213.190:8000/users/token', {
+    const response = await fetch('http://192.168.100.129:30201/users/token', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
