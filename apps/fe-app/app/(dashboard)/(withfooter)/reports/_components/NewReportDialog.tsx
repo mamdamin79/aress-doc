@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-// import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 
 import {
   Checkbox,
@@ -27,7 +26,7 @@ export const NewReportDialog = () => {
         mode="primary"
         size="sm"
         onClick={openDialog}
-        className="h-14 w-14 rounded-full bottom-[72px] z-50 right-8 fixed"
+        className="fixed bottom-[72px] right-8 z-50 h-14 w-14 rounded-full"
       >
         {isOpen ? (
           <Icon name="x" size="lg" />
@@ -35,7 +34,7 @@ export const NewReportDialog = () => {
           <Icon name="clipboard-plus" size="lg" />
         )}
       </Button>
-      <Dialog onClose={closeDialog} isOpen={isOpen} className="text-right">
+      <Dialog onClose={closeDialog} isOpen={isOpen} className="text-right w-[584px]">
         <div className="text-center text-lg font-medium text-gray-800">
           درخواست گزارش جدید
         </div>

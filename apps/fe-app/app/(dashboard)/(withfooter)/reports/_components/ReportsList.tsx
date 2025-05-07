@@ -1,16 +1,42 @@
-import { GetDashboardReportsResponse } from '@openapi';
+'use client';
+import {
+  GetDashboardReportsResponse,
+  OpenAPI,
+  useDashboardServiceDeleteDashboardReportsByReportIdFavorite,
+  useDashboardServicePostDashboardReportsByReportIdFavorite,
+} from '@openapi';
 import { ReportCard } from 'design-system';
 import React from 'react';
 import emptyState from '@aress-assets/icons/Empty state.png';
 import Image from 'next/image';
 import { FilterReport } from './FilterReport';
 import { SearchBar } from './SearchBar';
+import { fetchToken } from '../../../../(auth)/auth.utils';
 
 type Props = {
   reports: GetDashboardReportsResponse;
 };
 
 export const ReportList: React.FC<Props> = ({ reports }) => {
+  const addFavoriteMutation =
+    useDashboardServicePostDashboardReportsByReportIdFavorite();
+  const deleteFavoriteMutation =
+    useDashboardServiceDeleteDashboardReportsByReportIdFavorite();
+
+  const handleLike = async(reportId: number, isFavorite: boolean) => {
+    const token = await fetchToken();
+    if (!token) {
+      throw new Error('Failed to fetch access token');
+    }
+    OpenAPI.HEADERS = {
+      Authorization: `Bearer ${token}`,
+    };
+    if (isFavorite) {
+      deleteFavoriteMutation.mutate({ reportId });
+    } else {
+      addFavoriteMutation.mutate({ reportId });
+    }
+  };
   return (
     <>
       <div className="inline-flex items-center justify-center">
@@ -33,6 +59,13 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
                 categoryType={report.category.title}
                 reportSubscription="رایگان"
                 fixedBrief={true}
+                // hasVideo has error because of the type of report is old
+                newBadge={report.hasVideo}
+                onLike={() =>
+                  handleLike(report.identifier, report?.userFavorite ?? false)
+                }
+                userFavorite={report.userFavorite}
+                videoBadge={true}
                 {...report}
               />
             </div>

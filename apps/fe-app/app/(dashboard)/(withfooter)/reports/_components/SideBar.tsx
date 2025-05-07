@@ -17,9 +17,9 @@ export const SideBar: React.FC<Props> = ({ categories, reports }) => {
   return (
     <div
       className={cn(
-        'sticky top-0 mt-6 h-fit w-[180px] transition-all duration-300',
+        'sticky top-4 mt-6 h-fit w-[180px] transition-all duration-300',
         {
-          'top-24': isHeaderVisible,
+          'top-28 ': isHeaderVisible,
         },
       )}
     >

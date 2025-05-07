@@ -65,11 +65,14 @@ export default async function ReportMenuPage({
       <div className="flex flex-row-reverse items-stretch justify-between gap-4 md:max-w-[772px] xl:max-w-full xl:justify-center">
         <div>
           <ReportList reports={paginatedReports} />
-          <Pagination
-            currentPage={currentPage}
-            pageCount={totalPages}
-            pageSize={ITEMS_PER_PAGE}
-          />
+          <div className="mt-16">
+            <Pagination
+              currentPage={currentPage}
+              pageCount={totalPages}
+              pageSize={ITEMS_PER_PAGE}
+              totalItems={filteredReports.length}
+            />
+          </div>
         </div>
         <div className={`relative pb-20`}>
           <SideBar reports={reports} categories={categories} />
