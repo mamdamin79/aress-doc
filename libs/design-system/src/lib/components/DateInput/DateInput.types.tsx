@@ -10,10 +10,9 @@ export interface DatePickerProps {
   min?: string;
   max?: string;
   active?: boolean;
-  minErrorText?: string | undefined;
-  maxErrorText?: string | undefined;
+  errorText: string;
+  equalInput: boolean;
   focus: boolean;
-  duplicateInputError: string;
   clearDate: () => void;
   errors: {
     minError: boolean;

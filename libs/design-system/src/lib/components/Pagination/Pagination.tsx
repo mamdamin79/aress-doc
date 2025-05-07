@@ -7,18 +7,20 @@ type PaginationProps = {
   pageCount: number;
   pageSize: number;
   currentPage: number;
+  totalItems: number;
 };
 
 export const Pagination: React.FC<PaginationProps> = ({
   pageCount,
   pageSize,
   currentPage,
+  totalItems,
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const startPost = (currentPage - 1) * pageSize + 1;
-  const endPost = Math.min(currentPage * pageSize, pageCount * pageSize);
+  const endPost = Math.min(currentPage * pageSize, totalItems);
 
   const handlePageChange = (selectedItem: { selected: number }) => {
     const selectedPage = selectedItem.selected + 1;
@@ -51,7 +53,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         breakClassName="flex items-center justify-center"
       />
       <div className="font-vazirmatn mt-2 text-center text-sm font-medium text-gray-600">
-        {startPost} - {endPost} از {pageCount * pageSize} گزارش
+        {startPost} - {endPost} از {totalItems} گزارش
       </div>
     </div>
   );

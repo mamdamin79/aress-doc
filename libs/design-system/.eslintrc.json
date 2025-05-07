@@ -1,6 +1,14 @@
 {
   "extends": ["plugin:@nx/react", "../../.eslintrc.json"],
   "ignorePatterns": ["!**/*", "storybook-static", "node_modules"],
+  "rules": {
+    "@nx/enforce-module-boundaries": [
+      "error",
+      {
+        "allow": ["moment", "jalali-moment"]
+      }
+    ]
+  },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],

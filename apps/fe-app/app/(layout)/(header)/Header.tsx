@@ -2,8 +2,8 @@
 import React from 'react';
 import Image from 'next/image';
 import PRODUCT_LOGO from '@aress-assets/icons/product_logo.svg';
-import { useWindowSize } from '@uidotdev/usehooks';
 import { cn, HeadProfile, SquaredButton } from 'design-system';
+import { useWindowSize } from '@uidotdev/usehooks';
 import { useHeaderVisibility } from '../../../hooks';
 import { DESKTOP_BREAKPOINT } from './Header.constants';
 import { BurgerMenu } from './BurgerMenu';

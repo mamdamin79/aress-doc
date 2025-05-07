@@ -12,12 +12,20 @@ export const SearchBar: React.FC = () => {
     const params = new URLSearchParams(queries);
     params.set('search', value as string);
     params.set('page', '1');
-    router.replace(`/dashboard/reports?${params.toString()}`);
+    router.replace(`/reports?${params.toString()}`);
   };
+
+  const handleClear = () => {
+    const params = new URLSearchParams(queries);
+    params.delete('search');
+    params.set('page', '1');
+    router.replace(`/reports?${params.toString()}`);
+  };
+
   return (
     <>
       <TextField
-        className="w-[416px]"
+        className="xl:w sm:w-[324px] md:w-[416px]"
         mergeTitleAndPlaceholder={false}
         mode="outline"
         leadingIcon={{
@@ -25,7 +33,7 @@ export const SearchBar: React.FC = () => {
           size: 'lg',
           onClick: (value) => handleSearch(value),
         }}
-        trailingIcons={[{ name: 'x', size: 'lg' }]}
+        trailingIcons={[{ name: 'x', size: 'lg', onClick: ()=>handleClear() }]}
         placeholder="جستجو گزارش..."
       />
     </>
