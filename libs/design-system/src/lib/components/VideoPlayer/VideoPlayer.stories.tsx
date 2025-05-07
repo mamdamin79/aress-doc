@@ -5,8 +5,8 @@ import video1080 from '../../../assets/videos/The Breathtaking Beauty of Nature1
 import video720 from '../../../assets/videos/The Breathtaking Beauty of Nature720p.mp4';
 import video360 from '../../../assets/videos/The Breathtaking Beauty of Nature360p.mp4';
 import video1080forest from '../../../assets/videos/Cinematic-Forest-1080.mp4';
-import video720forest from '../../../assets/videos/Cinematic-Forest-720.mp4';
-import video360forest from '../../../assets/videos/Cinematic-Forest-360.mp4';
+import video720forest from '../../../assets/videos/Cinematic Forest-720.mp4';
+import video360forest from '../../../assets/videos/Cinematic Forest-360.mp4';
 import { Video } from './VideoPlayer.types';
 
 export default {
