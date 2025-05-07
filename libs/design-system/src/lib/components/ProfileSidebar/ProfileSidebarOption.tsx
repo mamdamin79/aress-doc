@@ -14,7 +14,7 @@ export const ProfileSidebarOption: React.FC<ProfileSidebarOptionProps> = ({
   onClick,
 }) => {
   return (
-    <div
+    <button
       onClick={onClick}
       className={cn(
         'flex w-full cursor-pointer flex-row items-center gap-2 rounded-sm p-2 text-sm font-medium transition-colors',
@@ -25,6 +25,6 @@ export const ProfileSidebarOption: React.FC<ProfileSidebarOptionProps> = ({
     >
       <Icon name={icon.name} />
       {text}
-    </div>
+    </button>
   );
 };

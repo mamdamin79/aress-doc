@@ -1,7 +1,6 @@
 'use client';
 import { AressApiUser } from '@openapi';
 import React, { useState } from 'react';
-import { ProfileSidebarWrapper } from './ProfileSidebarWrapper';
 import { ProfileForm } from '../../../../components';
 import { cn, Icon, ProfileSidebar } from 'design-system';
 import { LogoutModal } from './LogoutModal';
@@ -11,7 +10,7 @@ export const ProfilePageContent: React.FC<AressApiUser> = (user) => {
   const [activeSection, setActiveSection] = useState<undefined | string>(
     undefined,
   );
-  const [isLogoutModalOpen, setisLogoutModalOpen] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
   const { width } = useWindowSize();
   const throttledWidth = useThrottle(width, 200) ?? 0;
@@ -23,7 +22,7 @@ export const ProfilePageContent: React.FC<AressApiUser> = (user) => {
           <ProfileSidebar
             title="علی محمدی"
             subTitle="09339133898"
-            onLogoutBtn={() => setisLogoutModalOpen(true)}
+            onLogoutBtn={() => setIsLogoutModalOpen(true)}
             onNavigation={(section) => setActiveSection(section)}
             activeSection={isDesktop ? 'profile' : activeSection}
           />
@@ -51,7 +50,11 @@ export const ProfilePageContent: React.FC<AressApiUser> = (user) => {
               nationalID={
                 user.nationalCode ? Number(user.nationalCode) : undefined
               }
-              phoneNumber={user.phoneNumber?.replace('+', '') + '+'}
+              phoneNumber={
+                user.phoneNumber?.startsWith('+')
+                  ? user.phoneNumber
+                  : `+${user.phoneNumber}`
+              }
               username={user.username}
             />
           </div>
@@ -59,7 +62,7 @@ export const ProfilePageContent: React.FC<AressApiUser> = (user) => {
       </div>
       <LogoutModal
         isOpen={isLogoutModalOpen}
-        onClose={() => setisLogoutModalOpen(false)}
+        onClose={() => setIsLogoutModalOpen(false)}
       />
     </div>
   );
