@@ -6,11 +6,13 @@ interface Props {
   months: string[];
   calendar: string;
   setCurrentDate: (date: string) => void;
+  type: 'start' | 'end';
 }
 
 export function MonthSelect({
   months,
   calendar,
+  type,
   setCurrentDate,
 }: Props) {
   return (
@@ -40,6 +42,8 @@ export function MonthSelect({
         </div>
       )}
       onChange={(_, id) => {
+        console.log(calendar, id);
+        
         setCurrentDate(
           `${calendar.slice(0, 4)}-${
             id && id < 10 ? `0${id}` : id
@@ -53,7 +57,7 @@ export function MonthSelect({
       }}
       dropDownList={months.map((month, index) => ({
         text: month,
-        id: index + 1,
+        id: index + (type === 'start' ? 1 : 0),
       }))}
     />
   );

@@ -269,7 +269,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
         width: 704,
       }}
     >
-      <div className="flex flex-col gap-1">
+      {/* <div className="flex flex-col gap-1">
         <div className="text-md flex items-center justify-center gap-2">
           <div className="flex flex-col items-start gap-1">
             <span className="select-none text-sm font-medium">
@@ -344,7 +344,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* select drop down */}
       <div className="flex w-full items-center justify-between">
@@ -365,6 +365,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
           <div className="relative">
             <div className="absolute -top-6 right-[85px] z-50 items-center gap-1">
               <MonthSelect
+                type='start'
                 months={listMonth}
                 calendar={calendars[0]}
                 setCurrentDate={setCurrentDate}
@@ -382,6 +383,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
         <div className="relative flex items-center gap-6">
           <div className="absolute -right-[122px] top-0 z-50 gap-1">
             <MonthSelect
+                type='end'
               months={listMonth}
               calendar={calendars[1]}
               setCurrentDate={setCurrentDate}
