@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Person } from "./components/makeData";
+import { Person } from "./_components/makeData";
 
 export const columnVisibility:  Record<string, boolean>  = {
   profitPerUnit: false,

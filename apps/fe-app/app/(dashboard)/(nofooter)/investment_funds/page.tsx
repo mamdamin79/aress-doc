@@ -31,9 +31,9 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { makeData } from './components/makeData';
+import { makeData } from './_components/makeData';
 import { columns, columnVisibility, filterList } from './FundsTable.constants';
-import { ExportExel } from '../_components/ExportExel';
+import { ExportExel } from './_components/ExportExel';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
   const [indexCategoryTab, setIndexCategoryTab] = useState(0);

@@ -31,7 +31,6 @@ export const Tooltip: React.FC<Props> = ({
         id={id}
         noArrow
         place={position}
-        positionStrategy="fixed"
         offset={offset}
         content={title}
         style={{ padding: '0 8px' }}
