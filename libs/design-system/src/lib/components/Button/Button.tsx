@@ -23,6 +23,7 @@ export const Button: React.FC<ButtonProps> = ({
   isLoading,
   iconLeft,
   children,
+  className,
   ...props
 }) => {
   return (
@@ -160,6 +161,7 @@ export const Button: React.FC<ButtonProps> = ({
             : theme === 'success'
             ? 'text-green-600 active:text-green-800 active:border-green-800'
             : 'text-gray-600 active:text-gray-800 active:border-gray-800'),
+            className,
       )}
     >
       {isLoading ? (
