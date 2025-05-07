@@ -8,7 +8,7 @@ import Image from 'next/image';
 
 export function FooterLite() {
   return (
-    <div className="relative mx-auto w-full overflow-hidden bg-white">
+    <div className="relative border-t border-[#e1e2e5] mx-auto w-full overflow-hidden bg-white">
       <div className="relative z-10 mx-auto max-w-7xl px-20 py-6">
         <Link href="/">
           <Image
@@ -80,7 +80,7 @@ export function FooterLite() {
         width={100}
         height={200}
         src={AbstractLine}
-        className="absolute top-20 h-[300px] w-[1400px] opacity-[0.1] lg:top-10 lg:w-[2200px]"
+        className="absolute top-20 w-full opacity-[0.1] lg:top-10"
         alt="Abstract Line"
       />
     </div>
