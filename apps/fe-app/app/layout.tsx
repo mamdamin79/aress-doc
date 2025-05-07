@@ -1,5 +1,3 @@
-import { FooterLite } from './(layout)/(footer-lite)';
-import { Header } from './(layout)/(header)';
 import './global.css';
 import ReactQueryProvider from './providers/ReactQueryProvider';
 

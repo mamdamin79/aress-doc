@@ -8,6 +8,18 @@
   --rt-transition-closing-delay: 0.15s;
 }
 
+.drop-down::-webkit-scrollbar {
+  width: 4px;
+  background-color: #d8dbe1;
+  border-radius: 8px;
+  margin: 5px 0;
+}
+.drop-down::-webkit-scrollbar-thumb {
+  background-color: #8c9096;
+  position: sticky;
+  border-radius: 8px;
+}
+
 @layer base {
   :root {
     /* brand colors */
@@ -295,7 +307,12 @@
 html {
   direction: rtl;
 }
-
+.table-scroll {
+  writing-mode: sideways-rl;
+}
+table {
+  writing-mode: horizontal-tb;
+}
 input[type='password']::-ms-reveal,
 input[type='password']::-ms-clear,
 input[type='password']::-webkit-password-eye {
