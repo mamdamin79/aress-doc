@@ -122,7 +122,7 @@ export const PlayerActions: React.FC<Props> = React.memo(
             <Tooltip offset={48} title="(m) فعال کردن صدا" className="!z-30">
               <button
                 onClick={toggleMute}
-                className="flex items-center justify-center p-1 text-white transition-all duration-300"
+                className="flex items-center justify-center text-white transition-all duration-300"
               >
                 <span className="hidden sm:block">
                   <Icon name="volume-x" />
@@ -136,7 +136,7 @@ export const PlayerActions: React.FC<Props> = React.memo(
             <Tooltip offset={46} title="(m) قطع صدا" className="!z-30">
               <button
                 onClick={toggleMute}
-                className="flex items-center justify-center p-1 text-white transition-all duration-300"
+                className="flex items-center justify-center text-white transition-all duration-300"
               >
                 <span className="hidden sm:block">
                   <Icon name="volume-2" />
@@ -149,7 +149,7 @@ export const PlayerActions: React.FC<Props> = React.memo(
           )}
           <Tooltip title="میزان صدا" offset={56}>
             <div
-              className="relative hidden w-16 transition-all duration-300 ease-in-out group-hover:block group-hover:opacity-100"
+              className="relative hidden w-16 cursor-pointer transition-all duration-300 ease-in-out group-hover:block group-hover:opacity-100"
               onClick={handleVolumeBarClick}
             >
               <progress
