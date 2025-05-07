@@ -119,7 +119,7 @@ export const SlidersBox: React.FC = () => {
   // Manual scroll sync and stop auto-rotate
   useEffect(() => {
     const onScroll = () => {
-      if (activeRotate !== null) setActiveRotate(null);
+      if (activeRotate !== null) return;
       else {
         const index = Math.round(window.scrollY / CARD_HEIGHT);
         const bounded = Math.min(Math.max(index, 0), barsNumber - 1);
