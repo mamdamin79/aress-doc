@@ -77,7 +77,6 @@ const CARD_HEIGHT = 336;
 export const SlidersBox: React.FC = () => {
   const [currIndex, setCurrIndex] = useState(0);
   const [activeRotate, setActiveRotate] = useState<number | null>(null);
-  const [isAutoScrolling, setIsAutoScrolling] = useState(false);
   const [barsNumber, setBarsNumber] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -105,11 +104,10 @@ export const SlidersBox: React.FC = () => {
     }),
   );
 
-  // Dynamically compute number of scroll positions (bars) based on columns
+  // Compute number of scroll positions
   useEffect(() => {
     const calculateBars = () => {
       const total = items.length + 1; // include AddReportButton
-      // Tailwind xl breakpoint at 1280px for two-columns
       const cols = window.matchMedia('(min-width: 1280px)').matches ? 2 : 1;
       setBarsNumber(Math.ceil(total / cols));
     };
@@ -118,58 +116,57 @@ export const SlidersBox: React.FC = () => {
     return () => window.removeEventListener('resize', calculateBars);
   }, [items]);
 
-  // Sync index with manual scroll and stop auto-rotate
+  // Manual scroll sync and stop auto-rotate
   useEffect(() => {
     const onScroll = () => {
-      if (isAutoScrolling) return;
-      // User scrolled manually: stop auto-rotation
-      if (activeRotate !== null) {
-        setActiveRotate(null);
-      }
-      const index = Math.round(window.scrollY / CARD_HEIGHT);
-      const bounded = Math.min(Math.max(index, 0), barsNumber - 1);
-      if (bounded !== currIndex) {
-        setCurrIndex(bounded);
+      if (activeRotate !== null) setActiveRotate(null);
+      else {
+        const index = Math.round(window.scrollY / CARD_HEIGHT);
+        const bounded = Math.min(Math.max(index, 0), barsNumber - 1);
+        if (bounded !== currIndex) {
+          setCurrIndex(bounded);
+        }
       }
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, [isAutoScrolling, barsNumber, currIndex, activeRotate]);
+  }, [barsNumber, currIndex, activeRotate]);
 
   const handleScroll = useCallback(
     (index: number) => {
-      setIsAutoScrolling(true);
       const bounded = Math.min(Math.max(index, 0), barsNumber - 1);
       setCurrIndex(bounded);
       window.scrollTo({ top: bounded * CARD_HEIGHT, behavior: 'smooth' });
-      setTimeout(() => setIsAutoScrolling(false), 800);
     },
     [barsNumber],
   );
 
-  // Auto-rotate effect
+  // Auto-rotate index increment
   useEffect(() => {
     if (activeRotate !== null && barsNumber > 1) {
-      const id = setInterval(() => {
-        setCurrIndex((prev) => {
-          const next = (prev + 1) % barsNumber;
-          handleScroll(next);
-          return next;
-        });
+      const intervalId = setInterval(() => {
+        setCurrIndex((prev) => (prev + 1) % barsNumber);
       }, activeRotate * 1000);
-      return () => clearInterval(id);
+      return () => clearInterval(intervalId);
     }
-  }, [activeRotate, barsNumber, handleScroll]);
+  }, [activeRotate, barsNumber]);
+
+  // Auto-scroll on index change
+  useEffect(() => {
+    if (activeRotate !== null) {
+      window.scrollTo({
+        top: currIndex * CARD_HEIGHT,
+        behavior: 'smooth',
+      });
+    }
+  }, [currIndex, activeRotate]);
 
   const handleRotation = (seconds: number | null) => {
     setActiveRotate(seconds);
     if (seconds !== null) {
-      // advance one step immediately in forward direction, wrapping at end
-      setCurrIndex((prev) => {
-        const next = (prev + 1) % barsNumber;
-        handleScroll(next);
-        return next;
-      });
+      // jump immediately to slide 1
+      setCurrIndex(1);
+      window.scrollTo({ top: CARD_HEIGHT, behavior: 'smooth' });
     }
   };
 
