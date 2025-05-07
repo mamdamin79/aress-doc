@@ -78,6 +78,7 @@ export const SlidersBox: React.FC = () => {
   const [currIndex, setCurrIndex] = useState(0);
   const [activeRotate, setActiveRotate] = useState<number | null>(null);
   const [barsNumber, setBarsNumber] = useState(0);
+  const [isProgamScroll, setIsProgramScroll] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const initialImages = [
@@ -118,34 +119,50 @@ export const SlidersBox: React.FC = () => {
 
   // Manual scroll sync and stop auto-rotate
   useEffect(() => {
+    let scrollTimeout: NodeJS.Timeout | null = null;
     const onScroll = () => {
-      if (activeRotate !== null) return;
-      else {
-        const index = Math.round(window.scrollY / CARD_HEIGHT);
-        const bounded = Math.min(Math.max(index, 0), barsNumber - 1);
-        if (bounded !== currIndex) {
-          setCurrIndex(bounded);
-        }
+      if (isProgamScroll) {
+        // Ignore this scroll event, reset the flag after a short delay
+        if (scrollTimeout) clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => setIsProgramScroll(false), 300);
+        return;
+      }
+      if (activeRotate !== null) {
+        // User scrolled during auto-rotate, stop auto-rotation
+        setActiveRotate(null);
+      }
+      const index = Math.round(window.scrollY / CARD_HEIGHT);
+      const bounded = Math.min(Math.max(index, 0), barsNumber - 1);
+      if (bounded !== currIndex) {
+        setCurrIndex(bounded);
       }
     };
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [barsNumber, currIndex, activeRotate]);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+    };
+  }, [barsNumber, currIndex, activeRotate, isProgamScroll]);
 
   const handleScroll = useCallback(
     (index: number) => {
       const bounded = Math.min(Math.max(index, 0), barsNumber - 1);
       setCurrIndex(bounded);
+      setIsProgramScroll(true);
       window.scrollTo({ top: bounded * CARD_HEIGHT, behavior: 'smooth' });
     },
     [barsNumber],
   );
 
   // Auto-rotate index increment
+  const scrollProgammaticly = () => {
+    setIsProgramScroll(true);
+    setCurrIndex((prev) => (prev + 1) % barsNumber);
+  };
   useEffect(() => {
     if (activeRotate !== null && barsNumber > 1) {
       const intervalId = setInterval(() => {
-        setCurrIndex((prev) => (prev + 1) % barsNumber);
+        scrollProgammaticly();
       }, activeRotate * 1000);
       return () => clearInterval(intervalId);
     }
@@ -154,6 +171,7 @@ export const SlidersBox: React.FC = () => {
   // Auto-scroll on index change
   useEffect(() => {
     if (activeRotate !== null) {
+      setIsProgramScroll(true);
       window.scrollTo({
         top: currIndex * CARD_HEIGHT,
         behavior: 'smooth',
@@ -164,7 +182,6 @@ export const SlidersBox: React.FC = () => {
   const handleRotation = (seconds: number | null) => {
     setActiveRotate(seconds);
     if (seconds !== null) {
-      // jump immediately to slide 1
       setCurrIndex(1);
       window.scrollTo({ top: CARD_HEIGHT, behavior: 'smooth' });
     }
