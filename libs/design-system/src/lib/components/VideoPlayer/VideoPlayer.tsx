@@ -178,7 +178,7 @@ export const VideoPlayer: React.FC<Props> = ({
       ) : (
         <span
           className={cn(
-            'absolute right-8 opacity-90 transition-all duration-700 ease-in-out',
+            'absolute right-8 top-6 opacity-90 transition-all duration-700 ease-in-out',
             { 'opacity-20': !showControlPanel && isPlaying },
           )}
         >

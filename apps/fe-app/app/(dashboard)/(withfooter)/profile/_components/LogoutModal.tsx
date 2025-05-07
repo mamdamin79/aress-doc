@@ -30,7 +30,7 @@ export const LogoutModal: React.FC<LogoutModalProps> = ({
           isLoading={false}
           mode="secondary"
           size="md"
-          theme="brand"
+          theme="neutral"
           onClick={onClose}
         >
           انصراف
