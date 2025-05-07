@@ -170,7 +170,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             }
             leadingIcon={{
               name: icon,
-              size: 'lg',
+              size: 'md',
             }}
             label={label}
             placeholder=""
