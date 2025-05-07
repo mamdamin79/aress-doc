@@ -10,6 +10,7 @@ import {
   DeleteDashboardModal,
   NewDashboardModal,
 } from './MenuModals';
+import { useMenuModal } from './MenuModalsProvider';
 
 const MenuTilesWrapper = ({
   children,
@@ -135,11 +136,10 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
         : 'border-0 cursor-pointer'
     }`;
 
-  const [modalName, setModalName] = useState<null | string>(null);
-
+  const { openModal } = useMenuModal();
   const handleOnClick = () => {
     if (action === 'openModal' && meta?.modalName) {
-      setModalName(meta?.modalName);
+      openModal(meta?.modalName as any);
     }
   };
 
@@ -189,7 +189,7 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
           </div>
         </>
       )}
-      <ChangeDashboardNameModal
+      {/* <ChangeDashboardNameModal
         isOpen={modalName == 'changeDashboardName'}
         onClose={() => setModalName(null)}
       />
@@ -204,7 +204,7 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
       <DeleteDashboardModal
         isOpen={modalName == 'deleteDashboard'}
         onClose={() => setModalName(null)}
-      />
+      /> */}
     </MenuTilesWrapper>
   );
 };

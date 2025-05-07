@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { ConfirmModal } from '../ConfirmModal';
 
 type CommonProps = {
@@ -89,15 +89,3 @@ export const CopyDashboardModal: React.FC<CommonProps> = ({
     }}
   />
 );
-
-export type ModalName =
-  | 'ChangeDashboardModal'
-  | 'DeleteDashboardModal'
-  | 'NewDashboardModal'
-  | 'CopyDashboardModal';
-
-type ModalRendererProps = {
-  modalName: ModalName | null;
-  modalProps?: any;
-  onClose: () => void;
-};
