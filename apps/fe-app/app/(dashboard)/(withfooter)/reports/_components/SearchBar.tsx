@@ -12,12 +12,12 @@ export const SearchBar: React.FC = () => {
     const params = new URLSearchParams(queries);
     params.set('search', value as string);
     params.set('page', '1');
-    router.replace(`/dashboard/reports?${params.toString()}`);
+    router.replace(`/reports?${params.toString()}`);
   };
   return (
     <>
       <TextField
-        className="w-[416px]"
+        className="sm:w-[324px] md:w-[416px] xl:w"
         mergeTitleAndPlaceholder={false}
         mode="outline"
         leadingIcon={{
