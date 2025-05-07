@@ -18,6 +18,8 @@ export interface DropdownCell {
 }
 
 export interface DropDownStyle {
+  scrollable?: boolean;
+  shadow?: boolean;
   size?: DropdownSize;
   bg?: DropdownBg;
   emphasize?: DropdownEmphasize;

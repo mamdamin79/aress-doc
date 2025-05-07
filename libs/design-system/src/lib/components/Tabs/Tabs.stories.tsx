@@ -48,6 +48,7 @@ export const Default: Story = {
           </div>
         ),
         id: '1',
+        tag: 'green',
         title: 'خلاصه',
       },
       {
@@ -59,6 +60,7 @@ export const Default: Story = {
         id: '3',
         content: 'تحلیل بازدهی',
         title: 'تحلیل بازدهی',
+        tag: 'blue',
       },
       {
         id: '4',

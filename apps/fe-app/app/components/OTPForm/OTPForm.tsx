@@ -65,7 +65,7 @@ export const OTPForm: React.FC<OTPFormProps> = ({
   };
 
   return (
-    <div className={cn('flex w-[462px] flex-col gap-6 text-right', className)}>
+    <div className={cn('flex w-full flex-col gap-6 text-right', className)}>
       <div className="flex w-full flex-row justify-between">
         {onBackBtn ? (
           <>

@@ -1,3 +1,4 @@
+import { FundsTagProps } from '../FundsTag';
 import { IconProps } from '../Icon';
 
 export interface Tab {
@@ -5,4 +6,5 @@ export interface Tab {
   id: string;
   content?: React.ReactNode | string;
   icons?: IconProps[];
+  tag?: FundsTagProps['color'];
 }
