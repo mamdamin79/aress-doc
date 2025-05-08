@@ -144,49 +144,49 @@ const Funds = () => {
     );
   };
 
-useEffect(() => {
-  const handleScroll = () => {
-    if (tableRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = tableRef.current;
-      // Update scroll start state
-      if (Math.round(scrollLeft) === 0) {
-        setIsScrollAtStart(false);
-      } else if (scrollLeft < 0) {
-        setIsScrollAtStart(true);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (tableRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = tableRef.current;
+        // Update scroll start state
+        if (Math.round(scrollLeft) === 0) {
+          setIsScrollAtStart(false);
+        } else if (scrollLeft < 0) {
+          setIsScrollAtStart(true);
+        }
+        // Update scroll end state; logic preserved from original code
+        setIsScrollAtEnd(Math.round(scrollLeft * -1) + clientWidth <= scrollWidth - 1);
       }
-      // Update scroll end state; logic preserved from original code
-      setIsScrollAtEnd(Math.round(scrollLeft * -1) + clientWidth <= scrollWidth - 1);
-    }
-  };
+    };
 
-  // Register scroll event listener on the table element
-  const tableElem = tableRef.current;
-  tableElem?.addEventListener('scroll', handleScroll);
+    // Register scroll event listener on the table element
+    const tableElem = tableRef.current;
+    tableElem?.addEventListener('scroll', handleScroll);
 
-  // Keyboard handler for scrolling (horizontal and vertical)
-  const keyboardHandler = (e: KeyboardEvent) => {
-    if (e.code === 'KeyA') {
-      handlerKeyboardScroll(false);
-    }
-    if (e.code === 'KeyD') {
-      handlerKeyboardScroll(true);
-    }
-    if (e.code === 'KeyS') {
-      tableRef.current?.scrollBy({ top: 100, behavior: 'smooth' });
-    }
-    if (e.code === 'KeyW') {
-      tableRef.current?.scrollBy({ top: -100, behavior: 'smooth' });
-    }
-  };
+    // Keyboard handler for scrolling (horizontal and vertical)
+    const keyboardHandler = (e: KeyboardEvent) => {
+      if (e.code === 'KeyA') {
+        handlerKeyboardScroll(false);
+      }
+      if (e.code === 'KeyD') {
+        handlerKeyboardScroll(true);
+      }
+      if (e.code === 'KeyS') {
+        tableRef.current?.scrollBy({ top: 100, behavior: 'smooth' });
+      }
+      if (e.code === 'KeyW') {
+        tableRef.current?.scrollBy({ top: -100, behavior: 'smooth' });
+      }
+    };
 
-  document.addEventListener('keypress', keyboardHandler);
+    document.addEventListener('keypress', keyboardHandler);
 
-  // Cleanup: remove event listeners when component unmounts or dependencies change
-  return () => {
-    tableElem?.removeEventListener('scroll', handleScroll);
-    document.removeEventListener('keypress', keyboardHandler);
-  };
-}, [tableRef, handlerKeyboardScroll]);
+    // Cleanup: remove event listeners when component unmounts or dependencies change
+    return () => {
+      tableElem?.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('keypress', keyboardHandler);
+    };
+  }, [tableRef, handlerKeyboardScroll]);
 
   useEffect(() => {
     startTransition(() => {
@@ -247,10 +247,10 @@ useEffect(() => {
           >
             <thead
               className={cn(
-                'border-brand-200 shadow-brand-200 group sticky right-0 top-0 z-50 m-0 border-none p-0 duration-300 [box-shadow:0_2px_0_#bcebeb]',
+                'shadow-brand-200b group sticky right-0 top-0 z-50 m-0 border-none p-0 duration-300 [box-shadow:0_2px_0_#bcebeb]',
               )}
             >
-              <tr className="overflow-hidden rounded-md p-0">
+              <tr className="rounded-md p-0">
                 <th className="sticky right-[270px] z-50 mt-5 p-0">
                   {isScrollAtStart && (
                     <div className="hidden group-hover:block">
@@ -281,12 +281,11 @@ useEffect(() => {
                           <div
                             {...{
                               className: header.column.getCanSort()
-                                ? 'cursor-pointer h-[72px] select-none'
+                                ? 'cursor-pointer h-[75px] select-none'
                                 : '',
                             }}
                           >
                             <OptionsDropdown
-                              className="z-50"
                               dropDownStyles={{
                                 size: 'md',
                                 anchor: 'bottom',
@@ -370,7 +369,7 @@ useEffect(() => {
                                         ? 'alphabetical'
                                         : 'ranked'
                                     }
-                                  ></FundsColumn>
+                                  />
                                   <div className="absolute top-5 flex items-center gap-2 pr-4">
                                     <Tooltip title="انتخاب ستون‌ها">
                                       <div
@@ -397,8 +396,8 @@ useEffect(() => {
                                         {(Object.entries(selectedFilters)
                                           .length > 0 ||
                                           fundSearchQuery) && (
-                                          <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
-                                        )}
+                                            <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
+                                          )}
                                         <Icon size="lg" name="filter" />
                                       </div>
                                     </Tooltip>
@@ -421,14 +420,14 @@ useEffect(() => {
                                   },
                                 },
                               ]}
-                            ></OptionsDropdown>
+                            />
                           </div>
                         </th>
                       )}
                       {index >= 1 && (
                         <th
                           className={cn(
-                            'm-0 overflow-y-hidden p-0 text-sm font-medium',
+                            'm-0 p-0 text-sm font-medium',
                             String(
                               flexRender(
                                 header.column.columnDef.header,
@@ -445,7 +444,7 @@ useEffect(() => {
                             <div
                               {...{
                                 className: header.column.getCanSort()
-                                  ? 'cursor-pointer h-[72px] select-none'
+                                  ? 'cursor-pointer h-[75px] select-none'
                                   : '',
                               }}
                             >
@@ -493,7 +492,7 @@ useEffect(() => {
                                               (prop.text ===
                                                 'انتقال به ابتدا' ||
                                                 prop.text ===
-                                                  'انتقال به راست')) ||
+                                                'انتقال به راست')) ||
                                             (index + 1 ===
                                               updateTableHeaders.length &&
                                               (prop.text ===
@@ -503,7 +502,7 @@ useEffect(() => {
                                             (header.column.getIsSorted() ===
                                               'desc' &&
                                               prop.text ===
-                                                'مرتب سازی نزولی') ||
+                                              'مرتب سازی نزولی') ||
                                             (header.column.getIsSorted() ===
                                               'asc' &&
                                               prop.text === 'مرتب سازی صعودی'),
@@ -545,7 +544,7 @@ useEffect(() => {
                                         header.column.getIsSorted() === 'asc'
                                           ? 'active-desc'
                                           : header.column.getIsSorted() ===
-                                              'desc'
+                                            'desc'
                                             ? 'active-asc'
                                             : 'inactive'
                                       }
@@ -682,19 +681,20 @@ useEffect(() => {
                     (r) => r.id === row.id,
                   );
                   const topValue = isPinned
-                    ? `${(pinnedIndex + 1) * 70}px`
+                    ? rowIndex === 1 ? `${(pinnedIndex + 1) * 72}px` : `${(pinnedIndex + 1) * 70}px`
                     : 'auto';
                   const isLastPinned = row.id === lastPinnedRowId;
 
                   return (
                     <tr
                       key={row.id}
-                      style={{ top: topValue }}
+                      style={{ top: rowIndex > 0 ? topValue : '76px' }}
                       className={cn(
-                        'group -top-4 h-[70px] border-t-2 border-blue-100',
-                        isPinned && 'sticky z-50',
+                        'group  h-[70px] border-t-2 border-blue-100',
+                        isPinned && 'sticky z-50 top-2',
                         {
                           'shadow-2xl': isPinned && isLastPinned && isScrollTop,
+                          '[box-shadow:0_1px_0_#bcebeb]': isPinned && !isScrollTop,
                           'group-hover:bg-blue-50': true,
                           'bg-blue-200': false,
                         },
@@ -724,16 +724,16 @@ useEffect(() => {
                                     isMainTab
                                       ? row.pin('top', true)
                                       : setPineWatchList([
-                                          ...pineWatchLis,
-                                          row.id,
-                                        ])
+                                        ...pineWatchLis,
+                                        row.id,
+                                      ])
                                   }
                                   unPinedFunction={() =>
                                     isMainTab
                                       ? row.pin(false)
                                       : setPineWatchList((prev) =>
-                                          prev.filter((id) => id !== row.id),
-                                        )
+                                        prev.filter((id) => id !== row.id),
+                                      )
                                   }
                                   isScrolled={isScrollAtStart}
                                   investmentMethod={
@@ -793,7 +793,11 @@ useEffect(() => {
             customTriggerRender={(prop) => (
               <div className="flex h-[40px] items-center gap-2 px-3 text-xs font-medium">
                 <span>تعداد سطر در جدول: </span>
-                {prop.selectedItem.text}
+                {formatNumber(
+                  table.getState().pagination.pageSize *
+                  (table.getState().pagination.pageIndex + 1),
+                  { commaSeparated: true },
+                )}
                 <Icon name={prop.isActive ? 'chevron-up' : 'chevron-down'} />
               </div>
             )}
@@ -803,7 +807,7 @@ useEffect(() => {
                   {table.getState().pagination.pageSize *
                     (table.getState().pagination.pageIndex + 1) *
                     table.getPageCount() ===
-                  +prop.text
+                    +prop.text
                     ? 'همه'
                     : prop.text}
                 </span>
@@ -817,8 +821,8 @@ useEffect(() => {
               {
                 text: String(
                   table.getState().pagination.pageSize *
-                    (table.getState().pagination.pageIndex + 1) *
-                    table.getPageCount(),
+                  (table.getState().pagination.pageIndex + 1) *
+                  table.getPageCount(),
                 ),
               },
             ]}
@@ -836,7 +840,7 @@ useEffect(() => {
             <div>
               {formatNumber(
                 table.getState().pagination.pageSize *
-                  (table.getState().pagination.pageIndex + 1),
+                (table.getState().pagination.pageIndex + 1),
                 { commaSeparated: true },
               )}
               -

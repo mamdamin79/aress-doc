@@ -47,7 +47,7 @@ export function FundsTableRow({
   return (
     <div
       className={cn(
-        'sticky right-0 flex h-[70px] p-0 m-0 w-fit items-center justify-between',
+        'sticky right-0 flex h-[67px] p-0 m-0 w-fit items-center justify-between',
         className,
         {
           'shadow-md': isScrolled,
@@ -71,10 +71,8 @@ export function FundsTableRow({
             <img src={logo} alt="logo fund" />
           </div>
           
-          <div className={cn("absolute right-4 top-8 transition-all duration-500 group-hover/img:-translate-x-[12.5px] group-hover/img:-translate-y-[21.2px]", {
-          })}>
+          <div className="absolute right-4 top-8 transition-all duration-500 group-hover/img:-translate-x-[13px] group-hover/img:-translate-y-[19.5px]">
             <Tooltip
-              className='!z-[100]'
               position="left"
               title={
                 canPin
@@ -115,7 +113,7 @@ export function FundsTableRow({
                   }
                 }}
                 className={cn(
-                  'hidden h-[24px] w-[24px] cursor-pointer items-center justify-center rounded-full group-hover/img:w-[33px] group-hover/img:h-[33px] bg-white duration-500 group-hover/img:flex',
+                  'hidden h-[24px] w-[24px] cursor-pointer items-center justify-center rounded-full group-hover/img:w-[34px] group-hover/img:h-[34px] bg-white duration-500 group-hover/img:flex',
                   {
                     flex: pined,
                     'border border-[#B3B6BD]': !canPin && !pined,
@@ -144,7 +142,7 @@ export function FundsTableRow({
           <Tooltip offset={2} position="bottom" className="!z-10" title={name}>
             <p
               className={cn(
-                'text-gray-1000 w-[235px] truncate text-right text-sm font-medium group-hover:w-[202px]',
+                'text-gray-1000 w-[202px] truncate text-right text-sm font-medium',
                 {
                   'w-[202px]': isDropdownActive,
                 },

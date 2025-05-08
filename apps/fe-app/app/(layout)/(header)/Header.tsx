@@ -38,7 +38,7 @@ export const Header: React.FC = () => {
       {/* Always fixed top header */}
       <div
         className={cn(
-          'fixed right-0 top-0 z-40 flex w-full flex-row items-center justify-between border-b-2 bg-white px-8 pb-3 pt-4 transition-transform duration-300',
+          'fixed right-0 top-0 z-[100] flex w-full flex-row items-center justify-between border-b-2 bg-white px-8 pb-3 pt-4 transition-transform duration-300',
           currentScrollY === 0
             ? 'border-gray-300'
             : 'border-gray-200 shadow-sm',

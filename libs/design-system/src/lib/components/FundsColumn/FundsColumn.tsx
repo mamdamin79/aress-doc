@@ -47,7 +47,7 @@ export function FundsColumn({
     >
       <div
         className={cn(
-          'relative mx-auto px-1.5 flex h-[75px] w-fit items-center justify-center gap-1',
+          'relative mx-auto px-1.5 flex h-[76px] w-fit items-center justify-center gap-1',
           {
             'group-hover/first:bg-pink-300':
               size === 'extraLarg' && filterable,
