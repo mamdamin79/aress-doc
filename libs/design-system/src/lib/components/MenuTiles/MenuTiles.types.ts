@@ -2,6 +2,10 @@ import { IconProps } from '../Icon';
 interface iconPropsPlusColor extends IconProps {
   color?: string;
 }
+type metaType = {
+  modalName?: string;
+  modalProps?: any;
+};
 export interface MenuTilesProps {
   link?: string;
   text: string;
@@ -9,9 +13,11 @@ export interface MenuTilesProps {
   icon?: iconPropsPlusColor;
   badgeColor?: string;
   expandable?: boolean;
-  leadingAction?: () => void;
+  action?: string;
   isDashboard?: boolean;
   isActive?: boolean;
   isDisabled?: boolean;
   prefix?: string;
+  meta?: metaType;
+  onClick?: (action?: string, meta?: metaType) => void;
 }

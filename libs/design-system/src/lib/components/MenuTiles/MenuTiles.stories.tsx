@@ -29,8 +29,9 @@ export const WithIconAndBadge: Story = {
 
     isDashboard: false,
     isActive: true,
-    leadingAction: () => {
-      console.log('clicked');
+    action: 'openModal',
+    meta: {
+      modalName: 'deleteDashboard',
     },
   },
 };
@@ -52,8 +53,9 @@ export const WithIconOnly: Story = {
     isDashboard: false,
     expandable: false,
     isActive: false,
-    leadingAction: () => {
-      console.log('clicked');
+    action: 'openModal',
+    meta: {
+      modalName: 'deleteDashboard',
     },
   },
 };
@@ -74,8 +76,9 @@ export const NoSubText: Story = {
     isDashboard: false,
     expandable: false,
     isActive: false,
-    leadingAction: () => {
-      console.log('clicked');
+    action: 'openModal',
+    meta: {
+      modalName: 'deleteDashboard',
     },
   },
 };
@@ -89,14 +92,15 @@ export const justText: Story = {
     text: 'صندوق سهم آشنا',
     isDashboard: false,
     isActive: false,
-    leadingAction: () => {
-      console.log('clicked');
+    action: 'openModal',
+    meta: {
+      modalName: 'deleteDashboard',
     },
   },
 };
 export const expandable: Story = {
   render: (args) => (
-    <div className="w-full h-40 bg-gray-300 flex justify-center items-center">
+    <div className="flex h-40 w-full items-center justify-center bg-gray-300">
       <MenuTiles {...args} />
     </div>
   ),
@@ -104,8 +108,9 @@ export const expandable: Story = {
     text: 'بازارها',
     isDashboard: false,
     isActive: false,
-    leadingAction: () => {
-      console.log('clicked');
+    action: 'openModal',
+    meta: {
+      modalName: 'deleteDashboard',
     },
     expandable: true,
   },
@@ -120,8 +125,9 @@ export const dashBoard: Story = {
     text: '1. تحلیل صنعت پتروشیمی',
     isDashboard: true,
     isActive: false,
-    leadingAction: () => {
-      console.log('clicked');
+    action: 'openModal',
+    meta: {
+      modalName: 'deleteDashboard',
     },
   },
 };
@@ -135,8 +141,9 @@ export const dashBoardActive: Story = {
     text: '2. صندوق‌های پربازده',
     isDashboard: true,
     isActive: true,
-    leadingAction: () => {
-      console.log('clicked');
+    action: 'openModal',
+    meta: {
+      modalName: 'deleteDashboard',
     },
   },
 };
