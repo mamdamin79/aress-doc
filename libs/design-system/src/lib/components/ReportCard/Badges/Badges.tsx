@@ -21,26 +21,34 @@ export const VideoBadge = () => {
 interface LikeBadgeProps {
   isLiked: boolean;
   onClick: (isLiked: boolean) => void;
+  hasFrame?: boolean;
+  size?: 'md' | 'lg';
 }
-export const LikeBadge = ({ isLiked, onClick }: LikeBadgeProps) => {
+export const LikeBadge: React.FC<LikeBadgeProps> = ({
+  isLiked,
+  onClick,
+  hasFrame = false,
+  size,
+}) => {
   const [isLikedState, setIsLikedState] = useState(isLiked);
   const handleLiked = () => {
     const nextState = !isLikedState;
     setIsLikedState(nextState);
     onClick(nextState);
   };
+
   return (
     <div
       className={cn(
-        `flex h-[36px] w-[36px] cursor-pointer items-center justify-center rounded-full bg-white p-2 text-red-600 transition-colors hover:bg-red-100`,
-        isLikedState ? 'fill-red-600' : '',
+        'flex h-9 w-9 cursor-pointer items-center justify-center rounded-full text-red-600 transition-colors',
+        hasFrame && `bg-white p-2 hover:bg-red-100`,
       )}
       onClick={handleLiked}
     >
       <Iconify
         icon={'lucide:heart'}
-        width={16}
-        height={16}
+        width={size == 'lg' ? 24 : 20}
+        height={size == 'lg' ? 24 : 20}
         className={isLikedState ? '[&>*]:fill-red-600' : ''}
       />
     </div>
