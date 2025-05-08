@@ -40,7 +40,6 @@ export const TextField: React.FC<textFieldPropsType> = ({
   const handleClearInput = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    
     setInternalValue('');
     onChange?.({ target: { value: '' } } as any); // event simulation
   };
@@ -53,7 +52,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
     <div
       data-twe-input-wrapper-init
       className={cn(
-        'font-vazirmatn relative w-full',
+        'relative w-full',
         {
           'pointer-events-none': disabled,
         },
@@ -97,10 +96,10 @@ export const TextField: React.FC<textFieldPropsType> = ({
 
       {leadingIcon && (
         <div
-          className={cn('absolute right-4 top-10', {
+          className={cn('absolute right-4 top-[38px]', {
             'text-gray-400': disabled,
-             "cursor-pointer":leadingIcon.onClick,
-            'top-[42px]': leadingIcon?.size === 'md',
+            'cursor-pointer': leadingIcon.onClick,
+            'top-10': leadingIcon?.size === 'md',
           })}
         >
           {leadingIcon && (
@@ -123,7 +122,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
           value={inputValue}
           disabled={disabled}
           className={cn(
-            'text-md h-[50px] w-full resize-none rounded-xl border p-2 font-normal outline-none transition-colors duration-150',
+            'text-md h-12 w-full resize-none rounded-xl border p-2 font-normal outline-none transition-colors duration-150',
             {
               'border-inherit bg-transparent opacity-100 placeholder:text-gray-400':
                 disabled,
@@ -153,8 +152,17 @@ export const TextField: React.FC<textFieldPropsType> = ({
           value={inputValue}
           disabled={disabled}
           onChange={handleInputChange}
+          onKeyDown={(e) => {
+            if (
+              e.key === 'Enter' &&
+              leadingIcon &&
+              typeof leadingIcon.onClick === 'function'
+            ) {
+              leadingIcon.onClick(inputValue);
+            }
+          }}
           className={cn(
-            'text-md h-[50px] w-full rounded-xl border p-2 font-normal outline-none transition-colors duration-150',
+            'text-md h-12 w-full rounded-xl border p-2 font-normal outline-none transition-colors duration-150',
             {
               'border-inherit bg-transparent opacity-100 placeholder:text-gray-400':
                 disabled,
@@ -176,9 +184,9 @@ export const TextField: React.FC<textFieldPropsType> = ({
 
       <div
         className={cn(
-          'absolute left-4 top-10 z-20 flex items-center justify-between gap-4',
+          'absolute left-4 top-[38px] z-20 flex items-center justify-between gap-4',
           {
-            'top-[42px]':
+            'top-10':
               trailingIcons.length > 0 && trailingIcons[1]?.size === 'md',
           },
         )}
@@ -205,8 +213,9 @@ export const TextField: React.FC<textFieldPropsType> = ({
                 type="button"
                 className={isDisabled}
                 onMouseDown={(e) => {
-                  icon.onClick && icon.onClick()
-                  handleClearInput(e)}}
+                  icon.onClick && icon.onClick();
+                  handleClearInput(e);
+                }}
               >
                 <Icon size={icon.size} name={icon.name} />
               </button>

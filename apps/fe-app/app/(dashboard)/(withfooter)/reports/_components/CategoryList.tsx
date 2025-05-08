@@ -53,22 +53,25 @@ export const CategoryList: React.FC<Props> = ({ categories, reports }) => {
             onClick={() => handleCategory(category.title)}
             key={category.identifier}
             className={cn(
-              'mb-4 flex cursor-pointer items-center gap-2 rounded-md text-sm font-medium text-gray-700',
+              'group mb-4 flex cursor-pointer items-center gap-2 rounded-md text-sm font-medium text-gray-600 hover:text-gray-700',
               {
-                'text-gray-900':
+                'text-gray-1000':
                   category.title === searchParams.get('category'),
               },
             )}
           >
             <div
-              className={cn('h-4 w-[2px] rounded-md bg-gray-300', {
-                'bg-brand-600 h-5 w-1':
-                  category.title === searchParams.get('category'),
-              })}
+              className={cn(
+                'h-4 w-[2px] rounded-md bg-gray-400 transition-all duration-300 group-hover:h-5 group-hover:w-1 group-hover:bg-gray-500',
+                {
+                  'bg-brand-600 h-5 w-1':
+                    category.title === searchParams.get('category'),
+                },
+              )}
             ></div>
             <span
               className={cn({
-                'border-brand-600 border-b':
+                'border-brand-600 border-b transition-colors group-hover:text-gray-700':
                   category.title === searchParams.get('category'),
               })}
             >

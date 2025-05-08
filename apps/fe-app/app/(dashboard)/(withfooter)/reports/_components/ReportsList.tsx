@@ -23,7 +23,7 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
   const deleteFavoriteMutation =
     useDashboardServiceDeleteDashboardReportsByReportIdFavorite();
 
-  const handleLike = async(reportId: number, isFavorite: boolean) => {
+  const handleLike = async (reportId: number, isFavorite: boolean) => {
     const token = await fetchToken();
     if (!token) {
       throw new Error('Failed to fetch access token');
@@ -41,9 +41,11 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
     <>
       <div className="inline-flex items-center justify-center">
         <div className="flex w-full items-start">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-row items-center gap-2">
             <SearchBar />
-            <FilterReport />
+            <div className="mt-1">
+              <FilterReport />
+            </div>
           </div>
         </div>
       </div>

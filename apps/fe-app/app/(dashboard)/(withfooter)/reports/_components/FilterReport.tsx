@@ -1,6 +1,6 @@
 'use client';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
-import { Checkbox, Icon } from 'design-system';
+import { Button, Checkbox, Icon } from 'design-system';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -44,8 +44,16 @@ export const FilterReport = () => {
 
   return (
     <Popover>
-      <PopoverButton className="bg-white border border-brand-600 text-brand-600 -mb-1 flex h-12  w-12 items-center justify-center rounded-xl outline-none">
-        <Icon  name="filter" size="lg" />
+      <PopoverButton className="outline-none">
+        <Button
+          align="center"
+          isLoading={false}
+          mode="secondary"
+          size="md"
+          className="h-12 w-12 rounded-xl"
+        >
+          <Icon name="filter" size="lg" />
+        </Button>
       </PopoverButton>
       <PopoverPanel
         transition
