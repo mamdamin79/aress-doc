@@ -39,6 +39,8 @@ export const TextField: React.FC<textFieldPropsType> = ({
 
   const handleClearInput = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
+    
     setInternalValue('');
     onChange?.({ target: { value: '' } } as any); // event simulation
   };
@@ -97,6 +99,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
         <div
           className={cn('absolute right-4 top-10', {
             'text-gray-400': disabled,
+             "cursor-pointer":leadingIcon.onClick,
             'top-[42px]': leadingIcon?.size === 'md',
           })}
         >
@@ -201,7 +204,9 @@ export const TextField: React.FC<textFieldPropsType> = ({
               <button
                 type="button"
                 className={isDisabled}
-                onMouseDown={(e) => handleClearInput(e)}
+                onMouseDown={(e) => {
+                  icon.onClick && icon.onClick()
+                  handleClearInput(e)}}
               >
                 <Icon size={icon.size} name={icon.name} />
               </button>

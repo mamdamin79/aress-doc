@@ -12,7 +12,7 @@ export const LogoutModal: React.FC<LogoutModalProps> = ({
   onClose,
 }) => {
   const router = useRouter();
-  const Logout = () => {
+  const logout = () => {
     router.push('/login');
   };
   return (
@@ -30,7 +30,7 @@ export const LogoutModal: React.FC<LogoutModalProps> = ({
           isLoading={false}
           mode="secondary"
           size="md"
-          theme="brand"
+          theme="neutral"
           onClick={onClose}
         >
           انصراف
@@ -41,7 +41,7 @@ export const LogoutModal: React.FC<LogoutModalProps> = ({
           mode="primary"
           size="md"
           theme="error"
-          onClick={Logout}
+          onClick={logout}
         >
           خروج
         </Button>

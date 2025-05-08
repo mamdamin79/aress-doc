@@ -2,12 +2,12 @@ import { cn } from '../../../utils';
 import { Tab as TabItem } from './Tabs.types';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 import { Icon } from '../Icon';
+import { FundsTag } from '../FundsTag';
 
 interface Props {
   tabs: TabItem[];
   variant: 'shaped' | 'divided' | 'lined' | 'rounded' | 'rounded-full';
   colorMode: 'neutral' | 'inverse';
-  tag?: boolean;
   activeTab: number;
   onClickTab: (idTab: number) => void;
 }
@@ -18,10 +18,8 @@ export const Tabs: React.FC<Props> = ({
   onClickTab,
   colorMode,
   activeTab,
-  tag,
 }) => {
   return (
-    <div className="flex w-full justify-center">
       <TabGroup
         selectedIndex={activeTab}
         onChange={(index) => {
@@ -32,14 +30,14 @@ export const Tabs: React.FC<Props> = ({
           className={cn(
             'flex',
             { 'w-max gap-10 border-b-2 border-gray-300': variant === 'lined' },
-            { 'gap-4': variant !== 'lined' && variant !== 'divided' },
+            { 'gap-2': variant !== 'lined' && variant !== 'divided' },
           )}
         >
           {tabs.map((props, index) => (
             <Tab
               key={index}
               className={cn(
-                'font-vazirmatn text-md relative outline-none',
+                'text-md relative outline-none',
                 {
                   'data-[selected]:bg-brand-600 relative min-w-40 rounded-t-xl py-2 text-center text-gray-600 hover:text-gray-700 data-[selected]:font-semibold data-[selected]:text-white':
                     variant === 'lined',
@@ -59,9 +57,9 @@ export const Tabs: React.FC<Props> = ({
                     variant === 'rounded',
                 },
                 {
-                  'border-2 border-gray-100': variant === 'shaped',
+                  'border-2 border-gray-100 h-[34px]': variant === 'shaped',
                   'bg-white': variant === 'shaped' && colorMode === 'inverse',
-                  'bg-gray-100':
+                  'bg-gray-100 border-red-200':
                     variant === 'shaped' && colorMode === 'neutral',
                 },
                 {
@@ -79,11 +77,11 @@ export const Tabs: React.FC<Props> = ({
                     variant === 'lined' && colorMode === 'neutral',
                 },
                 {
-                  'data-[selected]:border-brand-600 data-[selected]:bg-brand-600 hover:border-brand-600 rounded-md border-2 border-white px-2 py-1 text-black data-[selected]:text-white':
+                  'data-[selected]:border-brand-600 font-medium border-gray-100 data-[selected]:bg-brand-600 hover:border-brand-600 rounded-md border-2 px-2 text-black data-[selected]:text-white':
                     variant === 'shaped',
                 },
                 {
-                  'data-[selected]:bg-brand-600 data-[selected]:border-brand-600 hover:border-brand-600 rounded-full border-2 border-gray-100 px-4 py-2 text-sm font-medium text-black data-[selected]:border-spacing-2 data-[selected]:text-white':
+                  'data-[selected]:bg-brand-600 data-[selected]:border-brand-600 hover:border-brand-600 flex items-center gap-2 rounded-full border-2 border-gray-100 px-4 py-2 text-sm font-medium text-black data-[selected]:border-spacing-2 data-[selected]:text-white':
                     variant === 'rounded-full',
                 },
                 {
@@ -120,11 +118,12 @@ export const Tabs: React.FC<Props> = ({
                       )}
                     ></div>
                   )}
+                  {variant === 'rounded-full' && props.tag && (
+                    <FundsTag color={props.tag} />
+                  )}
                   {variant === 'shaped' ? (
                     <div className="flex items-center gap-2">
-                      {tag && (
-                        <div className="bg-vividGreen-600 flex h-3 w-3 items-center justify-center rounded-full border-2 border-white"></div>
-                      )}
+                      {props.tag && <FundsTag color={props.tag} />}
                       {props.icons?.length && (
                         <Icon {...props.icons[0]} size="lg" />
                       )}
@@ -147,6 +146,5 @@ export const Tabs: React.FC<Props> = ({
           ))}
         </TabPanels>
       </TabGroup>
-    </div>
   );
 };

@@ -2,6 +2,7 @@
 import { cn } from 'libs/design-system/src/utils';
 import React, { useEffect, useRef, useState } from 'react';
 import { Icon } from '../Icon';
+import { Tooltip } from '../Tooltip';
 
 export interface HorizontalScrollBarProps {
   barsNumber: number;
@@ -10,6 +11,7 @@ export interface HorizontalScrollBarProps {
   autoRotateDuration?: 5 | 10 | 15 | number;
   hasArrows?: boolean;
   externalIndex?: number;
+  tooltips?: string[];
 }
 
 export const HorizontalScrollBar: React.FC<HorizontalScrollBarProps> = ({
@@ -19,6 +21,7 @@ export const HorizontalScrollBar: React.FC<HorizontalScrollBarProps> = ({
   autoRotateDuration = 5,
   hasArrows = false,
   externalIndex,
+  tooltips,
 }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const handleNext = () => {
@@ -70,31 +73,38 @@ export const HorizontalScrollBar: React.FC<HorizontalScrollBarProps> = ({
 
       {Array.from({ length: barsNumber }, (_, index) => (
         <div className="p-1" key={index}>
-          <div
-            onClick={() => handleClick(index)}
-            className={cn(
-              'bg-brand-400 h-4 w-4 cursor-pointer overflow-hidden rounded-[100px] transition-all ease-in-out',
-              activeIndex === index ? 'h-14 duration-500' : 'duration-100',
-            )}
+          <Tooltip
+            title={tooltips ? tooltips[index] : String(index)}
+            position="left"
           >
             <div
+              onClick={() => handleClick(index)}
               className={cn(
-                'bg-brand-600 h-full w-full -translate-y-full transition-all delay-500 ease-in-out',
-                activeIndex === index
-                  ? `translate-y-0 duration-[5000ms]`
-                  : '-translate-y-full delay-0 duration-100',
-                !autoRotate && activeIndex === index && 'translate-y-0 delay-0',
+                'bg-brand-400 h-4 w-4 cursor-pointer overflow-hidden rounded-[100px] transition-all ease-in-out',
+                activeIndex === index ? 'h-14 duration-500' : 'duration-100',
               )}
-              style={{
-                transitionDuration:
+            >
+              <div
+                className={cn(
+                  'bg-brand-600 h-full w-full -translate-y-full transition-all delay-500 ease-in-out',
                   activeIndex === index
-                    ? !autoRotate
-                      ? '100ms'
-                      : `${autoRotateDuration * 1000}ms`
-                    : '100ms',
-              }}
-            ></div>
-          </div>
+                    ? `translate-y-0 duration-[5000ms]`
+                    : '-translate-y-full delay-0 duration-100',
+                  !autoRotate &&
+                    activeIndex === index &&
+                    'translate-y-0 delay-0',
+                )}
+                style={{
+                  transitionDuration:
+                    activeIndex === index
+                      ? !autoRotate
+                        ? '100ms'
+                        : `${autoRotateDuration * 1000}ms`
+                      : '100ms',
+                }}
+              ></div>
+            </div>
+          </Tooltip>
         </div>
       ))}
       {hasArrows && (

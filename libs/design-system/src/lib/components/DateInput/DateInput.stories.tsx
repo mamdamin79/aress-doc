@@ -19,7 +19,7 @@ export const ControlledDateInput: Story = {
     clearDate: () => console.log('clearDate'),
     focus: true,
     active: true,
-    defaultValue: '1400-12-10',
+    defaultValue: '',
   },
   render: function Success(args) {
     const [{ value }, updateArgs] = useArgs();

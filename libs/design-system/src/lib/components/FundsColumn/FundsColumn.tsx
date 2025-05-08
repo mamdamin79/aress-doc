@@ -1,4 +1,5 @@
 import { Icon } from '../Icon';
+import { Tooltip } from '../Tooltip';
 import { cn } from './../../../utils';
 
 interface Props {
@@ -8,6 +9,9 @@ interface Props {
   filterable: boolean;
   type: 'inactive' | 'active-desc' | 'active-asc';
   shadow?: boolean;
+  clickFilterd: () => void;
+  filtered: boolean;
+  active?: boolean;
 }
 
 export function FundsColumn({
@@ -17,6 +21,9 @@ export function FundsColumn({
   sortType,
   filterable,
   type,
+  clickFilterd,
+  filtered,
+  active,
 }: Props) {
   return (
     <div
@@ -27,55 +34,79 @@ export function FundsColumn({
           'w-[200px]': size === 'large',
           'w-[312px]': size === 'extraLarg',
           'shadow-4xl': shadow && size === 'extraLarg',
-          'bg-pink-200': size === 'extraLarg' && filterable,
+          'bg-pink-200': size === 'extraLarg' && filterable && !active,
           'bg-brand-100': size === 'extraLarg' && !filterable,
+          'bg-pink-300': active && size !== 'extraLarg' && filterable,
+          'bg-brand-200': active && size !== 'extraLarg' && !filterable, 
           'bg-brand-100 hover:bg-brand-200':
-            !filterable && size !== 'extraLarg',
+            !filterable && size !== 'extraLarg' && !active,
           'bg-pink-200 hover:bg-pink-300': filterable && size !== 'extraLarg',
         },
-        'text-text-neutral-primary group cursor-pointer text-sm font-medium',
+        'text-text-neutral-primary group/first cursor-pointer text-sm font-medium',
       )}
     >
       <div
         className={cn(
-          'mx-auto flex h-[72px] items-center justify-center gap-1 py-[23px]',
+          'relative mx-auto px-1.5 flex h-[75px] w-fit items-center justify-center gap-1',
           {
-            'w-[108px] bg-pink-200 group-hover:bg-pink-300':
+            'group-hover/first:bg-pink-300':
               size === 'extraLarg' && filterable,
-            'group-hover:bg-brand-300 bg-brand-200 w-[108px]':
+            'group-hover/first:bg-brand-300':
               size === 'extraLarg' && !filterable,
+              'bg-brand-300': !filterable && active && size === 'extraLarg',
+              'bg-pink-300': filterable && active && size === 'extraLarg',
           },
         )}
       >
         <div className={cn(filterable ? 'visible' : 'invisible')}>
           <Icon name="filter" />
         </div>
-        {title}
-        <div
-          role="columnheader"
-          aria-sort={
-            type === 'active-asc'
-              ? 'ascending'
-              : type === 'active-desc'
-                ? 'descending'
-                : 'none'
-          }
-          className={cn({
-            'invisible text-[#545962] group-hover:visible': type === 'inactive',
-          })}
-        >
-          <Icon
-            name={
-              sortType === 'ranked'
-                ? type === 'active-asc'
-                  ? 'arrow-up-wide-narrow'
-                  : 'arrow-down-wide-narrow'
+        <span>{title}</span>
+        {filtered && (
+          <div className="bg-brand-600 absolute -bottom-[2px] h-3 w-16 rounded-md"></div>
+        )}
+        <Tooltip
+          title={
+            sortType === 'ranked'
+              ? type === 'inactive'
+                ? 'مرتب سازی نزولی'
                 : type === 'active-asc'
-                  ? 'arrow-up-z-a'
-                  : 'arrow-down-a-z'
-            }
-          />
-        </div>
+                ? 'مرتب سازی صعودی'
+                : 'حالت پیشفرض (بدون مرتب سازی)'
+            : type === 'inactive'
+              ? 'مرتب سازی نزولی'
+              : type === 'active-asc'
+                ? 'حالت پیشفرض (بدون مرتب سازی)'
+                : 'مرتب سازی صعودی'}>
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              if (typeof clickFilterd === 'function') {
+                clickFilterd();
+              }
+            }}
+            className={cn(
+              {
+                'invisible text-[#545962] group-hover/first:visible':
+                  type === 'inactive',
+                  'visible': active,
+              },
+              'hover:bg-brand-600 rounded-md p-1 duration-150 hover:text-white',
+            )}
+          >
+            <Icon
+              name={
+                sortType === 'ranked'
+                  ? type === 'active-asc'
+                    ? 'arrow-down-wide-narrow'
+                    : 'arrow-up-narrow-wide'
+                  : type === 'active-asc'
+                    ? 'arrow-down-a-z'
+                    : 'arrow-up-z-a'
+              }
+            />
+          </div>
+        </Tooltip>
       </div>
     </div>
   );

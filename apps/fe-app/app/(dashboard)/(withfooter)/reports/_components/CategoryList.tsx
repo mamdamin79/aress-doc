@@ -18,12 +18,12 @@ export const CategoryList: React.FC<Props> = ({ categories, reports }) => {
     const params = new URLSearchParams(searchParams);
     if (title === 'همه ی گزارش ها') {
       params.delete('category');
-      router.replace(`/dashboard/reports?${params.toString()}`);
+      router.replace(`/reports?${params.toString()}`);
       return;
     }
     params.set('category', title);
     params.set('page', '1');
-    router.replace(`/dashboard/reports?${params.toString()}`);
+    router.replace(`/reports?${params.toString()}`);
   };
   return (
     <ul>
@@ -39,7 +39,13 @@ export const CategoryList: React.FC<Props> = ({ categories, reports }) => {
             'bg-brand-600 h-5 w-1 text-gray-900': !searchParams.get('category'),
           })}
         ></div>
-        همه ی گزارش ها ({reports.length})
+        <span
+          className={cn({
+            'border-brand-600 border-b': !searchParams.get('category'),
+          })}
+        >
+          همه ی گزارش ها ({reports.length})
+        </span>
       </li>
       {categories.map((category) => (
         <>
@@ -60,7 +66,15 @@ export const CategoryList: React.FC<Props> = ({ categories, reports }) => {
                   category.title === searchParams.get('category'),
               })}
             ></div>
-            {category.title} (
+            <span
+              className={cn({
+                'border-brand-600 border-b':
+                  category.title === searchParams.get('category'),
+              })}
+            >
+              {category.title}
+            </span>
+            (
             {
               reports.filter(
                 (report) => report.category.title === category.title,
