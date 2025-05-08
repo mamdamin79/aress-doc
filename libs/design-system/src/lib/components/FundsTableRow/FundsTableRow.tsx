@@ -21,10 +21,12 @@ interface Props {
   toggleWatchList: () => void;
   canPin: boolean;
   tag: boolean;
+  index: number;
 }
 
 export function FundsTableRow({
   name,
+  index,
   investmentMethod,
   tag,
   toggleWatchList,
@@ -40,12 +42,12 @@ export function FundsTableRow({
 }: Props) {
   const [isDropdownActive, setIsDropdownActive] = useState(false);
 
-  const { showProgressToast, showToast } = useCustomToast();
+  const { showProgressToast, showToast } = useCustomToast();  
 
   return (
     <div
       className={cn(
-        'sticky right-0 flex h-[70px] overflow-y-hidden p-0 m-0 w-fit items-center justify-between',
+        'sticky right-0 flex h-[70px] p-0 m-0 w-fit items-center justify-between',
         className,
         {
           'shadow-md': isScrolled,
@@ -69,13 +71,11 @@ export function FundsTableRow({
             <img src={logo} alt="logo fund" />
           </div>
           
-          <div className={cn("absolute right-4 top-8 transition-all duration-500 group-hover/img:-translate-x-[12.5px] group-hover/img:-translate-y-[32.5px]", {
-            'group-hover/img:-translate-y-[19.5px]': investmentMethod === 'T',
-            'top-4 group-hover/img:top-8': investmentMethod !== 'T' && pined,
+          <div className={cn("absolute right-4 top-8 transition-all duration-500 group-hover/img:-translate-x-[12.5px] group-hover/img:-translate-y-[21.2px]", {
           })}>
             <Tooltip
-              className='z-50'
-              position="top"
+              className='!z-[100]'
+              position="left"
               title={
                 canPin
                   ? pined
@@ -115,7 +115,7 @@ export function FundsTableRow({
                   }
                 }}
                 className={cn(
-                  'hidden h-[24px] w-[24px] cursor-pointer items-center justify-center rounded-full group-hover/img:w-[33px] group-hover/img:h-[33px] bg-white text-blue-700 duration-500 group-hover/img:flex',
+                  'hidden h-[24px] w-[24px] cursor-pointer items-center justify-center rounded-full group-hover/img:w-[33px] group-hover/img:h-[33px] bg-white duration-500 group-hover/img:flex',
                   {
                     flex: pined,
                     'border border-[#B3B6BD]': !canPin && !pined,
@@ -123,8 +123,8 @@ export function FundsTableRow({
                 )}
               >
                 <div
-                  className={cn('flex items-center justify-center', {
-                    'group-hover/img:hidden text-black': pined,
+                  className={cn('flex items-center rotate-45 justify-center text-black', {
+                    'group-hover/img:hidden text-blue-700 rotate-0': pined,
                     'rotate-[35deg] text-[#B3B6BD]': !canPin && !pined,
                   })}
                 >
@@ -132,7 +132,7 @@ export function FundsTableRow({
                 </div>
 
                 {pined && (
-                  <div className="hidden items-center justify-center group-hover/img:flex">
+                  <div className="hidden items-center text-blue-700 rotate-45 justify-center group-hover/img:flex">
                     <Icon name="pin-off" size="md" />
                   </div>
                 )}
@@ -141,7 +141,7 @@ export function FundsTableRow({
           </div>
         </div>
         <div className="flex flex-col gap-1">
-          <Tooltip offset={2} position="bottom" className="!z-50" title={name}>
+          <Tooltip offset={2} position="bottom" className="!z-10" title={name}>
             <p
               className={cn(
                 'text-gray-1000 w-[235px] truncate text-right text-sm font-medium group-hover:w-[202px]',
@@ -154,11 +154,9 @@ export function FundsTableRow({
             </p>
           </Tooltip>
           <div className="flex items-center gap-1 text-xs font-medium">
-            {investmentMethod === 'T' && (
                 <div className="border-vividGreen-200 text-vividGreen-800 bg-vividGreen-100 rounded-sm border px-2 py-0.5">
                   ETF
                 </div>
-            )}
           </div>
         </div>
       </div>

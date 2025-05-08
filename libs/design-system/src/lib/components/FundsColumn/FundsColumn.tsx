@@ -63,7 +63,7 @@ export function FundsColumn({
         </div>
         <span>{title}</span>
         {filtered && (
-          <div className="bg-brand-600 absolute -bottom-[2px] h-3 w-16 rounded-md"></div>
+          <div className="bg-brand-600 absolute bottom-0 h-2 w-16 rounded-t-md"></div>
         )}
         <Tooltip
           title={
