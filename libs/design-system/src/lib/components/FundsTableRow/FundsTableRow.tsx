@@ -140,14 +140,7 @@ export function FundsTableRow({
         </div>
         <div className="flex flex-col gap-1">
           <Tooltip offset={2} position="bottom" className="!z-10" title={name}>
-            <p
-              className={cn(
-                'text-gray-1000 w-[202px] truncate text-right text-sm font-medium',
-                {
-                  'w-[202px]': isDropdownActive,
-                },
-              )}
-            >
+            <p className='text-gray-1000 w-[200px] truncate text-right text-sm font-medium'>
               {name}
             </p>
           </Tooltip>
@@ -192,9 +185,10 @@ export function FundsTableRow({
           return (
             <div
               className={cn(
-                'hidden cursor-pointer rounded-full p-1.5 group-hover:block',
+                'invisible cursor-pointer rounded-full p-1.5 group-hover:visible',
                 {
                   'hover:border-brand-600 border border-blue-200': selected,
+                  'visible': prop.isActive,
                   'hover:border-brand-600 border border-blue-100': pined,
                   'hover:border-brand-600 border border-white hover:bg-white':
                     !selected && !pined,
