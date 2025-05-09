@@ -101,97 +101,98 @@ export function FilterPopUpSection({
 
   return (
     <div
-      className={cn('relative overflow-hidden', { 'h-[615px]': activeFilter })}
+      className={cn('relative overflow-hidden h-[696px]')}
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-6 pb-4 text-xl font-medium">
+      <div className="flex items-center justify-between px-6 pb-4 pt-6 text-xl font-medium">
         <span>فیلتر صندوق‌ها</span>
         {(Object.keys(selectedFilters).length > 0 || searchValue) && (
           <span
             onClick={handleClearAll}
-            className="cursor-pointer text-red-600"
+            className="cursor-pointer font-medium text-base text-[#DD3636]"
           >
-            بازنشانی فیلتر‌ها
+            بازنشانی به پیش‌فرض
           </span>
         )}
       </div>
-      <hr className="h-0.5 bg-gray-100" />
+      <div className='w-full h-[2px] bg-[#D1D3D7]'></div>
+      <div className='h-[580px] mt-4 overflow-y-auto scrollbar-sm'>
+        {/* Search Input */}
+        <div className="px-4">
+          <TextField
+            mode="outline"
+            placeholder=""
+            trailingIcons={[{ name: 'x' }]}
+            mergeTitleAndPlaceholder={false}
+            label="نام صندوق"
+            value={searchValue}
+            onChange={(e) => onSearchChange(e.target.value)}
+          />
+        </div>
 
-      {/* Search Input */}
-      <div className="mt-4 px-4">
-        <TextField
-          mode="outline"
-          placeholder=""
-          trailingIcons={[{ name: 'x' }]}
-          mergeTitleAndPlaceholder={false}
-          label="نام صندوق"
-          value={searchValue}
-          onChange={(e) => onSearchChange(e.target.value)}
-        />
-      </div>
-
-      {/* Filter Categories */}
-      <div className="mt-4 flex flex-col gap-6 px-4">
-        {filterOptions.map((item, index) => (
-          <div key={index}>
-            <div
-              onClick={() => openFilter(item.title)}
-              className="rounded-lg border p-3"
-            >
-              <div className="flex cursor-pointer items-center justify-between">
-                <span>{item.title}</span>
-                <Icon name="chevron-left" size="lg" />
-              </div>
-
-              {selectedFilters[item.title] && (
-                <div className="pt-2" onClick={(e) => e.stopPropagation()}>
-                  <hr className="h-0.5 bg-gray-100" />
-                  <div className="flex flex-wrap gap-2 pt-2">
-                    {selectedFilters[item.title]?.map((option, i) => (
-                      <RemovableLabel
-                        key={i}
-                        item=""
-                        label={option}
-                        onClose={() => {
-                          const currentOptions =
-                            selectedFilters[item.title] || [];
-                          const updatedOptions = currentOptions.filter(
-                            (o) => o !== option,
-                          );
-                          if (updatedOptions.length === 0) {
-                            const { [item.title]: _, ...rest } =
-                              selectedFilters;
-                            onFilterChange(rest);
-                          } else {
-                            onFilterChange({
-                              ...selectedFilters,
-                              [item.title]: updatedOptions,
-                            });
-                          }
-                        }}
-                      />
-                    ))}
-                  </div>
+        {/* Filter Categories */}
+        <div className="mt-0.5 flex flex-col gap-6 px-4">
+          {filterOptions.map((item, index) => (
+            <div key={index}>
+              <div
+                onClick={() => openFilter(item.title)}
+                className="rounded-lg border p-3"
+              >
+                <div className="flex cursor-pointer items-center justify-between">
+                  <span>{item.title}</span>
+                  <Icon name="chevron-left" size="lg" />
                 </div>
-              )}
+
+                {selectedFilters[item.title] && (
+                  <div className="pt-2" onClick={(e) => e.stopPropagation()}>
+                    <hr className="h-0.5 bg-gray-100" />
+                    <div className="flex flex-wrap gap-2 pt-2">
+                      {selectedFilters[item.title]?.map((option, i) => (
+                        <RemovableLabel
+                          key={i}
+                          item=""
+                          label={option}
+                          onClose={() => {
+                            const currentOptions =
+                              selectedFilters[item.title] || [];
+                            const updatedOptions = currentOptions.filter(
+                              (o) => o !== option,
+                            );
+                            if (updatedOptions.length === 0) {
+                              const { [item.title]: _, ...rest } =
+                                selectedFilters;
+                              onFilterChange(rest);
+                            } else {
+                              onFilterChange({
+                                ...selectedFilters,
+                                [item.title]: updatedOptions,
+                              });
+                            }
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* Filter Options List */}
       <div
         className={cn(
-          'absolute right-0 top-0 h-[570px] w-full translate-x-full bg-white transition-all duration-500',
+          'absolute z-0 right-0 top-0 h-[695px] w-full translate-x-full bg-white transition-all duration-500',
           { 'translate-x-0': activeFilter },
         )}
       >
         <div
-          className="flex cursor-pointer items-center gap-1 px-6 py-6"
+          className="flex cursor-pointer items-center gap-1 px-6 pt-6 pb-4"
           onClick={() => setActiveFilter(null)}
         >
           <Icon name="chevron-right" size="lg" />
-          <span>{activeFilter}</span>
+          <span className='font-medium'>{activeFilter}</span>
         </div>
         <hr className="h-0.5 bg-gray-100" />
 
@@ -224,8 +225,9 @@ export function FilterPopUpSection({
         </div>
 
         {/* Confirm Buttons */}
-        <div className="absolute -bottom-12 left-2.5 flex items-center gap-2 p-4">
+        <div className="absolute bottom-1.5 left-2.5 flex items-center gap-2 p-4">
           <Button
+            theme='brand'
             onClick={() => setActiveFilter(null)}
             size="sm"
             mode="secondary"
@@ -235,6 +237,7 @@ export function FilterPopUpSection({
             بازگشت
           </Button>
           <Button
+            theme='brand'
             className="whitespace-nowrap"
             onClick={handleConfirm}
             align="center"

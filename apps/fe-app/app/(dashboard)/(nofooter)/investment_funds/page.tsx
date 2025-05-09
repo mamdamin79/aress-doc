@@ -923,7 +923,7 @@ const Funds = () => {
           )}
         </div>
 
-        <hr />
+        <div className='w-full h-[2px] bg-[#D1D3D7]'></div>
         <div
           dir="rtl"
           className="scrollbar-md mb-6 h-[550px] overflow-x-hidden overflow-y-scroll"
@@ -984,11 +984,11 @@ const Funds = () => {
         </div>
       </Dialog>
       <Dialog
-        className="w-[416px] p-0"
+        className="w-[416px] p-0 h-[696px]"
         onClose={() => setIsFilterModal(false)}
         isOpen={isFilterModal}
       >
-        <div className="scrollbar-md mb-4 mt-7 h-[620px] w-full overflow-y-auto overflow-x-hidden rounded-3xl bg-white text-right">
+        <div className="scrollbar-md mb-4 w-full overflow-x-hidden rounded-3xl bg-white text-right">
           <FilterPopUpSection
             searchValue={fundSearchQuery}
             onSearchChange={setFundSearchQuery}

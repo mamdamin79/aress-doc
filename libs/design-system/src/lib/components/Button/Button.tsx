@@ -23,12 +23,14 @@ export const Button: React.FC<ButtonProps> = ({
   isLoading,
   iconLeft,
   children,
+  className,
   ...props
 }) => {
   return (
     <button
       {...props}
       className={cn(
+        className,
         'group flex w-full items-center gap-2 px-2 transition-all duration-300',
         { 'cursor-default': isLoading || disabled },
         { 'justify-center': align === 'center' },
