@@ -130,7 +130,7 @@ const Funds = () => {
   const handlerKeyboardScroll = useCallback(
     (right: boolean) => {
       if (tableRef.current) {
-        tableRef.current.scrollLeft += right ? 100 : -100;
+        tableRef.current.scrollLeft += right ? 200 : -200;
       }
     },
     [tableRef] // ensure tableRef is properly stable or use a ref that doesn't change
