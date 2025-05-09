@@ -165,6 +165,7 @@ const Funds = () => {
 
     // Keyboard handler for scrolling (horizontal and vertical)
     const keyboardHandler = (e: KeyboardEvent) => {
+
       if (e.code === 'KeyA') {
         handlerKeyboardScroll(false);
       }
@@ -179,14 +180,27 @@ const Funds = () => {
       }
     };
 
+    const keyboardArrow = (e: KeyboardEvent) => {
+      if (e.code === 'ArrowDown') {
+        tableRef.current?.scrollBy({ top: 100, behavior: 'smooth' });
+      }
+      if (e.code === 'ArrowUp') {
+        tableRef.current?.scrollBy({ top: -100, behavior: 'smooth' });
+      }
+    }
+
     document.addEventListener('keypress', keyboardHandler);
+    document.addEventListener('keydown', keyboardArrow);
 
     // Cleanup: remove event listeners when component unmounts or dependencies change
     return () => {
       tableElem?.removeEventListener('scroll', handleScroll);
       document.removeEventListener('keypress', keyboardHandler);
+      document.removeEventListener('keydown', keyboardArrow);
     };
   }, [tableRef, handlerKeyboardScroll]);
+
+
 
   useEffect(() => {
     startTransition(() => {
