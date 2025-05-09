@@ -700,84 +700,102 @@ const Funds = () => {
                   const isLastPinned = row.id === lastPinnedRowId;
 
                   return (
-                    <tr
-                      key={row.id}
-                      style={{ top: rowIndex > 0 ? topValue : '76px' }}
-                      className={cn(
-                        'group  h-[70px] border-t-2 border-blue-100',
-                        isPinned && 'sticky z-50 top-2',
-                        {
-                          'shadow-2xl': isPinned && isLastPinned && isScrollTop,
-                          '[box-shadow:0_1px_0_#bcebeb]': isPinned && !isScrollTop,
-                          'group-hover:bg-blue-50': true,
-                          'bg-blue-200': false,
-                        },
-                      )}
-                    >
-                      <td></td>
-                      {row.getVisibleCells().map((cell, index) => {
-                        return (
-                          <React.Fragment key={cell.id}>
-                            {index === 0 && (
-                              <td className="sticky right-0 z-40 bg-white m-0 p-0">
-                                <FundsTableRow
-                                  index={rowIndex}
-                                  tag={!isMainTab}
-                                  category={
-                                    isMainTab
-                                      ? watchList.includes(row.id)
-                                        ? 'watchlist'
-                                        : 'stocks'
-                                      : 'watchlist'
-                                  }
-                                  canPin={pinnedRows.length <= 2}
-                                  toggleWatchList={() =>
-                                    toggleWatchList({ id: row.id })
-                                  }
-                                  pinedFunction={() =>
-                                    isMainTab
-                                      ? row.pin('top', true)
-                                      : setPineWatchList([
-                                        ...pineWatchLis,
-                                        row.id,
-                                      ])
-                                  }
-                                  unPinedFunction={() =>
-                                    isMainTab
-                                      ? row.pin(false)
-                                      : setPineWatchList((prev) =>
-                                        prev.filter((id) => id !== row.id),
-                                      )
-                                  }
-                                  isScrolled={isScrollAtStart}
-                                  investmentMethod={
-                                    row.original.investmentMethod
-                                  }
-                                  name={row.original.nameFund}
-                                  pined={isPinned}
-                                  selected={false}
-                                  logo={row.original.logo}
-                                />
-                              </td>
-                            )}
-                            {index >= 1 && (
-                              <td
-                                className={cn({
-                                  'bg-blue-50 group-hover:bg-blue-100':
-                                    isPinned,
-                                  'group-hover:bg-blue-50': !isPinned,
-                                })}
-                              >
-                                {flexRender(
-                                  cell.column.columnDef.cell,
-                                  cell.getContext(),
-                                )}
-                              </td>
-                            )}
-                          </React.Fragment>
-                        );
-                      })}
-                    </tr>
+                    <>
+                      <tr
+                        key={row.id}
+                        style={{ top: rowIndex > 0 ? topValue : '76px' }}
+                        className={cn(
+                          'group  h-[70px] border-t-2 border-blue-100',
+                          isPinned && 'sticky z-50 top-2',
+                          rowIndex === rowsToRender.length - 1 && 'border-b',
+                          {
+                            'shadow-2xl': isPinned && isLastPinned && isScrollTop,
+                            '[box-shadow:0_1px_0_#bcebeb]': isPinned && !isScrollTop,
+                            'group-hover:bg-blue-50': true,
+                            'bg-blue-200': false,
+                          },
+                        )}
+                      >
+                        <td></td>
+                        {row.getVisibleCells().map((cell, index) => {
+                          return (
+                            <React.Fragment key={cell.id}>
+                              {index === 0 && (
+                                <td className="sticky right-0 z-40 bg-white m-0 p-0">
+                                  <FundsTableRow
+                                    index={rowIndex}
+                                    tag={!isMainTab}
+                                    category={
+                                      isMainTab
+                                        ? watchList.includes(row.id)
+                                          ? 'watchlist'
+                                          : 'stocks'
+                                        : 'watchlist'
+                                    }
+                                    canPin={pinnedRows.length <= 2}
+                                    toggleWatchList={() =>
+                                      toggleWatchList({ id: row.id })
+                                    }
+                                    pinedFunction={() =>
+                                      isMainTab
+                                        ? row.pin('top', true)
+                                        : setPineWatchList([
+                                          ...pineWatchLis,
+                                          row.id,
+                                        ])
+                                    }
+                                    unPinedFunction={() =>
+                                      isMainTab
+                                        ? row.pin(false)
+                                        : setPineWatchList((prev) =>
+                                          prev.filter((id) => id !== row.id),
+                                        )
+                                    }
+                                    isScrolled={isScrollAtStart}
+                                    investmentMethod={
+                                      row.original.investmentMethod
+                                    }
+                                    name={row.original.nameFund}
+                                    pined={isPinned}
+                                    selected={false}
+                                    logo={row.original.logo}
+                                  />
+                                </td>
+                              )}
+                              {index >= 1 && (
+                                <td
+                                  className={cn({
+                                    'bg-blue-50 group-hover:bg-blue-100':
+                                      isPinned,
+                                    'group-hover:bg-blue-50': !isPinned,
+                                  })}
+                                >
+                                  {flexRender(
+                                    cell.column.columnDef.cell,
+                                    cell.getContext(),
+                                  )}
+                                </td>
+
+                              )}
+                            </React.Fragment>
+                          );
+                        })}
+                      </tr>
+                      {
+                        rowIndex === rowsToRender.length - 1 &&
+                        <div className="mt-5 mb-2 w-screen sticky text-sm right-0 whitespace-nowrap text-gray-600">
+                          {formatNumber(
+                            table.getState().pagination.pageSize *
+                            (table.getState().pagination.pageIndex + 1),
+                            { commaSeparated: true },
+                          ) === formatNumber(
+                            table.getPageCount() * table.getState().pagination.pageSize,
+                            { commaSeparated: true },
+                          ) && 'پایان لیست صندوق ها.'}
+                        </div>
+                      }
+                    </>
+
                   );
                 });
               })()}
