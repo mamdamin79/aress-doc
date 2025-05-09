@@ -767,7 +767,7 @@ const Funds = () => {
                   );
                 });
               })()}
-              <tr className="h-[60px]">
+              <tr className="h-16">
                 <td></td>
               </tr>
             </tbody>

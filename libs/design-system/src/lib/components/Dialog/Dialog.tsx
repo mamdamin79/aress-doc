@@ -25,7 +25,7 @@ export const Dialog: React.FC<DialogProps> = ({
     <Transition appear show={isOpen} as={Fragment}>
       <HeadlessDialog
         as="div"
-        className="relative z-50"
+        className="relative z-[100]"
         aria-label="Close dialog"
         onClose={onClose}
       >

@@ -46,7 +46,7 @@ export const DesktopMenu: React.FC<MenuProps> = ({ menuItems,activeTab }) => {
 
 
   const renderDropdownMenu = (item: MenuItem, index: number) => (
-    <div className="bg-baseBackground shadow-offset-y-10 shadow-8xl absolute z-10 flex hidden flex-row rounded-xl border-2 border-gray-300 group-hover:block">
+    <div className="bg-baseBackground shadow-offset-y-10 shadow-8xl absolute flex hidden flex-row rounded-xl border-2 border-gray-300 group-hover:block">
       <div className="flex h-fit w-fit max-w-[272px] flex-col gap-2 py-4 text-right">
         {item.dropdown?.map((dropdownItem, dropdownItemIndex) => (
           <div
