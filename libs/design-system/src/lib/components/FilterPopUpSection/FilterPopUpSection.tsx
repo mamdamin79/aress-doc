@@ -188,7 +188,7 @@ export function FilterPopUpSection({
         )}
       >
         <div
-          className="flex cursor-pointer items-center gap-1 px-6 pt-6 pb-4"
+          className="flex cursor-pointer w-fit items-center gap-1 mx-6 mt-6 mb-4"
           onClick={() => setActiveFilter(null)}
         >
           <Icon name="chevron-right" size="lg" />

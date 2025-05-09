@@ -218,7 +218,8 @@ const Funds = () => {
         setIsScrollTop(true);
       } else setIsScrollTop(false);
     }
-  };
+  };  
+
   return (
     <>
       <div
@@ -259,11 +260,7 @@ const Funds = () => {
             dir="rtl"
             className="w-full table-fixed rounded-xl bg-white text-center"
           >
-            <thead
-              className={cn(
-                'shadow-brand-200b group sticky right-0 top-0 z-50 m-0 border-none p-0 duration-300 [box-shadow:0_2px_0_#bcebeb]',
-              )}
-            >
+            <thead className='sticky right-0 top-0 z-50 m-0 border-none p-0 duration-300 [box-shadow:0_2px_0_#bcebeb]'>
               <tr className="rounded-md p-0">
                 <th className="sticky right-[270px] z-50 mt-5 p-0">
                   {isScrollAtStart && (
@@ -466,7 +463,7 @@ const Funds = () => {
                                 className="z-50"
                                 dropDownStyles={{
                                   size: 'md',
-                                  anchor: 'bottom',
+                                  anchor: 'bottom start',
                                   bg: 'primary',
                                   emphasize: 'medium',
                                   checkSelected: true,
@@ -499,7 +496,7 @@ const Funds = () => {
                                         }
                                       }}
                                       className={cn(
-                                        'hover:bg-brand-50 hover:text-brand-800 flex cursor-pointer items-center gap-2 bg-white p-2',
+                                        'hover:bg-brand-50 font-medium text-sm hover:bg-[#E3F8F8] flex cursor-pointer items-center gap-2 bg-white p-2',
                                         {
                                           'pointer-events-none cursor-default text-[#B3B6BD] hover:bg-white hover:text-[#B3B6BD]':
                                             (index === 1 &&
@@ -545,12 +542,12 @@ const Funds = () => {
                                         )
                                       }
                                       size={
-                                        String(
+                                       ( header.column.parent?.id.toString().length || String(
                                           flexRender(
                                             header.column.columnDef.header,
                                             header.getContext(),
                                           ),
-                                        ).length > 10
+                                        ).length) > 10
                                           ? 'large'
                                           : 'medium'
                                       }
@@ -563,12 +560,14 @@ const Funds = () => {
                                             : 'inactive'
                                       }
                                       filterable={false}
+                                      subTitle={header.column.parent?.id}
                                       title={String(
                                         flexRender(
                                           header.column.columnDef.header,
                                           header.getContext(),
-                                        ),
-                                      )}
+                                        )
+                                      )
+                                    }
                                       sortType={
                                         (
                                           columns[index]?.meta as {
@@ -578,7 +577,7 @@ const Funds = () => {
                                           ? 'alphabetical'
                                           : 'ranked'
                                       }
-                                    ></FundsColumn>
+                                    />
                                   </div>
                                 )}
                                 dropDownList={[
@@ -680,7 +679,7 @@ const Funds = () => {
                     <tr className="fixed right-[calc(50%-150px)] mt-5 w-full text-gray-600">
                       <td className="text-sm">
                         {isMainTab
-                          ? 'صندوقی یافت نشد! لطفا فیلتر هارا بازنشانی کنید.'
+                          ? 'صندوقی یافت نشد! لطفا فیلتر ها را بازنشانی کنید.'
                           : watchList.length === 0
                             ? 'صندوقی در دیده بان وجود ندارد.'
                             : 'صندوقی یافت نشد! لطفا فیلتر هارا بازنشانی کنید.'}

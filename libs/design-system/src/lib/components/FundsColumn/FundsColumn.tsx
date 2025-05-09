@@ -12,11 +12,13 @@ interface Props {
   clickFilterd: () => void;
   filtered: boolean;
   active?: boolean;
+  subTitle?: string;
 }
 
 export function FundsColumn({
   size,
   title,
+  subTitle,
   shadow = false,
   sortType,
   filterable,
@@ -35,10 +37,10 @@ export function FundsColumn({
           'w-[312px]': size === 'extraLarg',
           'shadow-4xl': shadow && size === 'extraLarg',
           'bg-pink-200': size === 'extraLarg' && filterable && !active,
-          'bg-brand-100': size === 'extraLarg' && !filterable,
+          'bg-[#E3F8F8]': size === 'extraLarg' && !filterable,
           'bg-pink-300': active && size !== 'extraLarg' && filterable,
-          'bg-brand-200': active && size !== 'extraLarg' && !filterable, 
-          'bg-brand-100 hover:bg-brand-200':
+          'bg-brand-200': active && size !== 'extraLarg' && !filterable,
+          'bg-[#E3F8F8] hover:bg-brand-200':
             !filterable && size !== 'extraLarg' && !active,
           'bg-pink-200 hover:bg-pink-300': filterable && size !== 'extraLarg',
         },
@@ -53,15 +55,18 @@ export function FundsColumn({
               size === 'extraLarg' && filterable,
             'group-hover/first:bg-brand-300':
               size === 'extraLarg' && !filterable,
-              'bg-brand-300': !filterable && active && size === 'extraLarg',
-              'bg-pink-300': filterable && active && size === 'extraLarg',
+            'bg-brand-300': !filterable && active && size === 'extraLarg',
+            'bg-pink-300': filterable && active && size === 'extraLarg',
           },
         )}
       >
         <div className={cn(filterable ? 'visible' : 'invisible')}>
           <Icon name="filter" />
         </div>
-        <span>{title}</span>
+        <div className='flex flex-col'>
+          <span>{title}</span>
+          <span>{subTitle}</span>
+        </div>
         {filtered && (
           <div className="bg-brand-600 absolute bottom-0 h-2 w-16 rounded-t-md"></div>
         )}
@@ -71,13 +76,13 @@ export function FundsColumn({
               ? type === 'inactive'
                 ? 'مرتب سازی نزولی'
                 : type === 'active-asc'
-                ? 'مرتب سازی صعودی'
-                : 'حالت پیشفرض (بدون مرتب سازی)'
-            : type === 'inactive'
-              ? 'مرتب سازی نزولی'
-              : type === 'active-asc'
-                ? 'حالت پیشفرض (بدون مرتب سازی)'
-                : 'مرتب سازی صعودی'}>
+                  ? 'مرتب سازی صعودی'
+                  : 'حالت پیشفرض (بدون مرتب سازی)'
+              : type === 'inactive'
+                ? 'مرتب سازی نزولی'
+                : type === 'active-asc'
+                  ? 'حالت پیشفرض (بدون مرتب سازی)'
+                  : 'مرتب سازی صعودی'}>
           <div
             onClick={(e) => {
               e.stopPropagation();
@@ -89,7 +94,7 @@ export function FundsColumn({
               {
                 'invisible text-[#545962] group-hover/first:visible':
                   type === 'inactive',
-                  'visible': active,
+                'visible': active,
               },
               'hover:bg-brand-600 rounded-md p-1 duration-150 hover:text-white',
             )}
