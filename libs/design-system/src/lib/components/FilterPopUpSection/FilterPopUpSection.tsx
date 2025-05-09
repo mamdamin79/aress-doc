@@ -138,7 +138,7 @@ export function FilterPopUpSection({
                 onClick={() => openFilter(item.title)}
                 className="rounded-lg border p-3"
               >
-                <div className="flex cursor-pointer items-center justify-between">
+                <div className="flex cursor-pointer font-medium text-sm items-center justify-between">
                   <span>{item.title}</span>
                   <Icon name="chevron-left" size="lg" />
                 </div>
