@@ -3,6 +3,7 @@ import { Tab as TabItem } from './Tabs.types';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 import { Icon } from '../Icon';
 import { FundsTag } from '../FundsTag';
+import { useEffect } from 'react';
 
 interface Props {
   tabs: TabItem[];
@@ -19,6 +20,18 @@ export const Tabs: React.FC<Props> = ({
   colorMode,
   activeTab,
 }) => {
+
+  useEffect(() => {
+    const keyboardHandler = (e: KeyboardEvent) => {      
+      e.stopPropagation();
+    }
+    document.addEventListener('keyup', keyboardHandler);
+
+    return () => {
+      document.removeEventListener('keyup', keyboardHandler);
+    }
+  }, [activeTab])
+
   return (
       <TabGroup
         selectedIndex={activeTab}

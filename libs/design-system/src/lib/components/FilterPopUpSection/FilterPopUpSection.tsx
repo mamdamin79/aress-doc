@@ -116,7 +116,7 @@ export function FilterPopUpSection({
         )}
       </div>
       <div className='w-full h-[2px] bg-[#D1D3D7]'></div>
-      <div className='h-[580px] mt-4 overflow-y-auto scrollbar-sm'>
+      <div className='h-[580px] pt-4 overflow-y-auto scrollbar-sm'>
         {/* Search Input */}
         <div className="px-4">
           <TextField
@@ -204,6 +204,8 @@ export function FilterPopUpSection({
               ?.options.map((option, index) => (
                 <div key={index} className="flex items-center gap-2 py-3 pr-6">
                   <Checkbox
+                    content={option}
+                    disabled={false}
                     checked={
                       tempSelectedFilters[activeFilter]?.includes(option) ||
                       false
@@ -219,7 +221,6 @@ export function FilterPopUpSection({
                       );
                     }}
                   />
-                  <span>{option}</span>
                 </div>
               ))}
         </div>

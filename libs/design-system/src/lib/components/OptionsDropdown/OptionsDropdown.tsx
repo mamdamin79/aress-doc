@@ -44,6 +44,13 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
   onChange,
   initialSelectedIndex = 0,
 }) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  };
+
   const [selectedItem, setSelectedItem] = useState<DropdownCell>(
     dropDownList[initialSelectedIndex],
   );
@@ -65,6 +72,7 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
   return (
     <Listbox value={selectedItem} onChange={handleSelectionChange}>
       <ListboxButton
+        onKeyDown={handleKeyDown}
         className={cn('outline-none', !dropDownStyles.fixedWidth && 'w-fit')}
         style={
           dropDownStyles.fixedWidth

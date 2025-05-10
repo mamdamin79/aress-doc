@@ -133,14 +133,14 @@ const Funds = () => {
         tableRef.current.scrollLeft += right ? 200 : -200;
       }
     },
-    [tableRef] // ensure tableRef is properly stable or use a ref that doesn't change
+    [tableRef], // ensure tableRef is properly stable or use a ref that doesn't change
   );
 
   const toggleWatchList = (fund: { id: string }) => {
     setWatchList((prev) =>
       prev.includes(fund.id)
         ? prev.filter((id: string) => id !== fund.id)
-        : [...prev, fund.id]
+        : [...prev, fund.id],
     );
   };
 
@@ -155,7 +155,9 @@ const Funds = () => {
           setIsScrollAtStart(true);
         }
         // Update scroll end state; logic preserved from original code
-        setIsScrollAtEnd(Math.round(scrollLeft * -1) + clientWidth <= scrollWidth - 1);
+        setIsScrollAtEnd(
+          Math.round(scrollLeft * -1) + clientWidth <= scrollWidth - 1,
+        );
       }
     };
 
@@ -165,7 +167,6 @@ const Funds = () => {
 
     // Keyboard handler for scrolling (horizontal and vertical)
     const keyboardHandler = (e: KeyboardEvent) => {
-
       if (e.code === 'KeyA') {
         handlerKeyboardScroll(false);
       }
@@ -187,7 +188,7 @@ const Funds = () => {
       if (e.code === 'ArrowUp') {
         tableRef.current?.scrollBy({ top: -100, behavior: 'smooth' });
       }
-    }
+    };
 
     document.addEventListener('keypress', keyboardHandler);
     document.addEventListener('keydown', keyboardArrow);
@@ -199,8 +200,6 @@ const Funds = () => {
       document.removeEventListener('keydown', keyboardArrow);
     };
   }, [tableRef, handlerKeyboardScroll]);
-
-
 
   useEffect(() => {
     startTransition(() => {
@@ -218,7 +217,8 @@ const Funds = () => {
         setIsScrollTop(true);
       } else setIsScrollTop(false);
     }
-  };  
+  };
+
 
   return (
     <>
@@ -254,13 +254,13 @@ const Funds = () => {
         <div
           ref={tableRef}
           onScroll={handlerScroll}
-          className="scrollbar-md table-scroll h-[calc(100vh-170px)] w-screen overflow-auto scroll-smooth"
+          className="scrollbar-lg table-scroll h-[calc(100vh-170px)] w-screen overflow-auto scroll-smooth"
         >
           <table
             dir="rtl"
             className="w-full table-fixed rounded-xl bg-white text-center"
           >
-            <thead className='sticky right-0 top-0 z-50 m-0 border-none p-0 duration-300 [box-shadow:0_2px_0_#bcebeb]'>
+            <thead className="sticky group right-0 top-0 z-50 m-0 border-none p-0 duration-300 [box-shadow:0_2px_0_#bcebeb]">
               <tr className="rounded-md p-0">
                 <th className="sticky right-[270px] z-50 mt-5 p-0">
                   {isScrollAtStart && (
@@ -297,6 +297,7 @@ const Funds = () => {
                             }}
                           >
                             <OptionsDropdown
+                              className='!shadow-8xl'
                               dropDownStyles={{
                                 size: 'md',
                                 anchor: 'bottom',
@@ -321,7 +322,7 @@ const Funds = () => {
                                     }
                                   }}
                                   className={cn(
-                                    'hover:bg-brand-50 hover:text-brand-800 flex cursor-pointer items-center gap-2 overflow-y-hidden bg-white p-2',
+                                    'hover:bg-brand-50 w-[184px] font-medium text-sm hover:text-brand-800 flex cursor-pointer items-center gap-2 overflow-y-hidden bg-white p-2',
                                     {
                                       'text-brand-800':
                                         (header.column.getIsSorted() ===
@@ -407,8 +408,8 @@ const Funds = () => {
                                         {(Object.entries(selectedFilters)
                                           .length > 0 ||
                                           fundSearchQuery) && (
-                                            <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
-                                          )}
+                                          <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
+                                        )}
                                         <Icon size="lg" name="filter" />
                                       </div>
                                     </Tooltip>
@@ -460,7 +461,7 @@ const Funds = () => {
                               }}
                             >
                               <OptionsDropdown
-                                className="z-50"
+                              className='!shadow-8xl'
                                 dropDownStyles={{
                                   size: 'md',
                                   anchor: 'bottom start',
@@ -485,25 +486,31 @@ const Funds = () => {
                                           moveColumn(header.column.id, 'end');
                                         }
                                         if (prop.text === 'مرتب سازی نزولی') {
-                                          if (header.column.getIsSorted() !== 'desc') {
+                                          if (
+                                            header.column.getIsSorted() !==
+                                            'desc'
+                                          ) {
                                             header.column.toggleSorting(true); // force to 'desc'
                                           }
                                         }
                                         if (prop.text === 'مرتب سازی صعودی') {
-                                          if (header.column.getIsSorted() !== 'asc') {
+                                          if (
+                                            header.column.getIsSorted() !==
+                                            'asc'
+                                          ) {
                                             header.column.toggleSorting(false); // force to 'asc'
                                           }
                                         }
                                       }}
                                       className={cn(
-                                        'hover:bg-brand-50 font-medium text-sm hover:bg-[#E3F8F8] flex cursor-pointer items-center gap-2 bg-white p-2',
+                                        'hover:bg-brand-50 flex cursor-pointer items-center gap-2 w-[184px] bg-white p-2 text-sm font-medium hover:bg-[#E3F8F8]',
                                         {
                                           'pointer-events-none cursor-default text-[#B3B6BD] hover:bg-white hover:text-[#B3B6BD]':
                                             (index === 1 &&
                                               (prop.text ===
                                                 'انتقال به ابتدا' ||
                                                 prop.text ===
-                                                'انتقال به راست')) ||
+                                                  'انتقال به راست')) ||
                                             (index + 1 ===
                                               updateTableHeaders.length &&
                                               (prop.text ===
@@ -513,7 +520,7 @@ const Funds = () => {
                                             (header.column.getIsSorted() ===
                                               'desc' &&
                                               prop.text ===
-                                              'مرتب سازی نزولی') ||
+                                                'مرتب سازی نزولی') ||
                                             (header.column.getIsSorted() ===
                                               'asc' &&
                                               prop.text === 'مرتب سازی صعودی'),
@@ -536,18 +543,22 @@ const Funds = () => {
                                     <FundsColumn
                                       active={isActive}
                                       filtered={!!header.column.getIsSorted()}
+                                      defaultSort={() => updateTableHeaders[0].column.getToggleSortingHandler()?.(
+                                        new Event('click'),
+                                      )}
                                       clickFilterd={() =>
                                         header.column.getToggleSortingHandler()?.(
                                           new Event('click'),
                                         )
                                       }
                                       size={
-                                       ( header.column.parent?.id.toString().length || String(
-                                          flexRender(
-                                            header.column.columnDef.header,
-                                            header.getContext(),
-                                          ),
-                                        ).length) > 10
+                                        (
+                                          String(
+                                            flexRender(
+                                              header.column.columnDef.header,
+                                              header.getContext(),
+                                            ),
+                                          ).length) > 10
                                           ? 'large'
                                           : 'medium'
                                       }
@@ -555,7 +566,7 @@ const Funds = () => {
                                         header.column.getIsSorted() === 'asc'
                                           ? 'active-desc'
                                           : header.column.getIsSorted() ===
-                                            'desc'
+                                              'desc'
                                             ? 'active-asc'
                                             : 'inactive'
                                       }
@@ -565,9 +576,8 @@ const Funds = () => {
                                         flexRender(
                                           header.column.columnDef.header,
                                           header.getContext(),
-                                        )
-                                      )
-                                    }
+                                        ),
+                                      )}
                                       sortType={
                                         (
                                           columns[index]?.meta as {
@@ -624,7 +634,7 @@ const Funds = () => {
                                     },
                                   },
                                 ]}
-                              ></OptionsDropdown>
+                              />
                             </div>
                           )}
                         </th>
@@ -694,7 +704,9 @@ const Funds = () => {
                     (r) => r.id === row.id,
                   );
                   const topValue = isPinned
-                    ? rowIndex === 1 ? `${(pinnedIndex + 1) * 72}px` : `${(pinnedIndex + 1) * 70}px`
+                    ? rowIndex === 1
+                      ? `${((pinnedIndex + 1) * 71) - 1}px`
+                      : `${(pinnedIndex + 1) * 69}px`
                     : 'auto';
                   const isLastPinned = row.id === lastPinnedRowId;
 
@@ -704,12 +716,15 @@ const Funds = () => {
                         key={row.id}
                         style={{ top: rowIndex > 0 ? topValue : '76px' }}
                         className={cn(
-                          'group  h-[70px] border-t-2 border-blue-100',
-                          isPinned && 'sticky z-50 top-2',
+                          'group h-[64px] border-t-2 border-blue-100',
+                          isPinned && 'sticky top-2 z-50',
                           rowIndex === rowsToRender.length - 1 && 'border-b',
                           {
-                            'shadow-2xl': isPinned && isLastPinned && isScrollTop,
-                            '[box-shadow:0_1px_0_#bcebeb]': isPinned && !isScrollTop,
+                            '[box-shadow:0_1px_0_#bcebeb] ': isPinned && !isLastPinned,
+                            'shadow-2xl':
+                              isPinned && isLastPinned && isScrollTop,
+                            '[box-shadow:0_1px_0_#bcebeb]':
+                              isPinned && !isScrollTop,
                             'group-hover:bg-blue-50': true,
                             'bg-blue-200': false,
                           },
@@ -720,7 +735,7 @@ const Funds = () => {
                           return (
                             <React.Fragment key={cell.id}>
                               {index === 0 && (
-                                <td className="sticky right-0 z-40 bg-white m-0 p-0">
+                                <td className="sticky right-0 z-40 m-0 bg-white p-0">
                                   <FundsTableRow
                                     index={rowIndex}
                                     tag={!isMainTab}
@@ -739,16 +754,16 @@ const Funds = () => {
                                       isMainTab
                                         ? row.pin('top', true)
                                         : setPineWatchList([
-                                          ...pineWatchLis,
-                                          row.id,
-                                        ])
+                                            ...pineWatchLis,
+                                            row.id,
+                                          ])
                                     }
                                     unPinedFunction={() =>
                                       isMainTab
                                         ? row.pin(false)
                                         : setPineWatchList((prev) =>
-                                          prev.filter((id) => id !== row.id),
-                                        )
+                                            prev.filter((id) => id !== row.id),
+                                          )
                                     }
                                     isScrolled={isScrollAtStart}
                                     investmentMethod={
@@ -763,38 +778,36 @@ const Funds = () => {
                               )}
                               {index >= 1 && (
                                 <td
-                                  className={cn({
+                                  className={cn('text-sm font-medium', {
                                     'bg-blue-50 group-hover:bg-blue-100':
                                       isPinned,
                                     'group-hover:bg-blue-50': !isPinned,
                                   })}
                                 >
-                                  {flexRender(
-                                    cell.column.columnDef.cell,
-                                    cell.getContext(),
-                                  )}
+                                  {formatNumber(cell.getValue() as string, {
+                                    commaSeparated: true,
+                                  })}
                                 </td>
-
                               )}
                             </React.Fragment>
                           );
                         })}
                       </tr>
-                      {
-                        rowIndex === rowsToRender.length - 1 &&
-                        <div className="mt-5 mb-2 w-screen sticky text-sm right-0 whitespace-nowrap text-gray-600">
+                      {rowIndex === rowsToRender.length - 1 && (
+                        <div className="sticky right-0 mb-2 mt-5 w-screen whitespace-nowrap text-sm text-gray-600">
                           {formatNumber(
                             table.getState().pagination.pageSize *
-                            (table.getState().pagination.pageIndex + 1),
+                              (table.getState().pagination.pageIndex + 1),
                             { commaSeparated: true },
-                          ) === formatNumber(
-                            table.getPageCount() * table.getState().pagination.pageSize,
-                            { commaSeparated: true },
-                          ) && 'پایان لیست صندوق ها.'}
+                          ) ===
+                            formatNumber(
+                              table.getPageCount() *
+                                table.getState().pagination.pageSize,
+                              { commaSeparated: true },
+                            ) && 'پایان لیست صندوق ها.'}
                         </div>
-                      }
+                      )}
                     </>
-
                   );
                 });
               })()}
@@ -806,7 +819,7 @@ const Funds = () => {
         </div>
       </div>
 
-      <div className="fixed z-50 bottom-6 right-0 mt-6 flex w-full justify-between px-8">
+      <div className="fixed bottom-6 right-0 z-50 mt-6 flex w-full justify-between px-8">
         <div className="rounded-md bg-[#B3B6BD8C] backdrop-blur-[30px]">
           <OptionsDropdown
             onChange={(e) => {
@@ -822,23 +835,36 @@ const Funds = () => {
               checkSelected: true,
             }}
             customTriggerRender={(prop) => (
-              <div className="flex h-[40px] items-center gap-2 px-3 text-xs font-medium">
-                <span>تعداد سطر در جدول: </span>
-                {formatNumber(
-                  table.getState().pagination.pageSize *
-                  (table.getState().pagination.pageIndex + 1),
-                  { commaSeparated: true },
-                )}
-                <Icon name={prop.isActive ? 'chevron-up' : 'chevron-down'} />
+              <div className="flex items-center gap-2 h-[40px] pl-2 pr-3 text-xs font-medium">
+                <div className='flex gap-1'>
+                  <span>تعداد سطر در جدول: </span>
+                  {formatNumber(
+                    table.getState().pagination.pageSize *
+                      (table.getState().pagination.pageIndex + 1),
+                    { commaSeparated: true },
+                  )}
+                </div>
+                <Icon size='lg' name={prop.isActive ? 'chevron-up' : 'chevron-down'} />
               </div>
             )}
             customOptionRender={(prop) => (
-              <div className="text-gray-1000 w-full cursor-pointer bg-gray-400 px-3 text-center text-xs font-medium first:pt-2">
+              <div
+                className={cn(
+                  'w-full cursor-pointer bg-[#B3B6BD8C] px-3 pt-2 text-center text-xs font-medium text-[#06080F]',
+                  {
+                    'pb-2':
+                      table.getState().pagination.pageSize *
+                        (table.getState().pagination.pageIndex + 1) *
+                        table.getPageCount() ===
+                      +prop.text,
+                  },
+                )}
+              >
                 <span>
                   {table.getState().pagination.pageSize *
                     (table.getState().pagination.pageIndex + 1) *
                     table.getPageCount() ===
-                    +prop.text
+                  +prop.text
                     ? 'همه'
                     : prop.text}
                 </span>
@@ -852,8 +878,8 @@ const Funds = () => {
               {
                 text: String(
                   table.getState().pagination.pageSize *
-                  (table.getState().pagination.pageIndex + 1) *
-                  table.getPageCount(),
+                    (table.getState().pagination.pageIndex + 1) *
+                    table.getPageCount(),
                 ),
               },
             ]}
@@ -871,7 +897,7 @@ const Funds = () => {
             <div>
               {formatNumber(
                 table.getState().pagination.pageSize *
-                (table.getState().pagination.pageIndex + 1),
+                  (table.getState().pagination.pageIndex + 1),
                 { commaSeparated: true },
               )}
               -
@@ -1001,7 +1027,7 @@ const Funds = () => {
         </div>
       </Dialog>
       <Dialog
-        className="w-[416px] p-0 h-[696px]"
+        className="h-[696px] w-[416px] p-0"
         onClose={() => setIsFilterModal(false)}
         isOpen={isFilterModal}
       >

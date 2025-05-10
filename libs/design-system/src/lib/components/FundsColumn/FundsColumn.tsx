@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Icon } from '../Icon';
 import { Tooltip } from '../Tooltip';
 import { cn } from './../../../utils';
@@ -13,6 +14,7 @@ interface Props {
   filtered: boolean;
   active?: boolean;
   subTitle?: string;
+  defaultSort?: () => void;
 }
 
 export function FundsColumn({
@@ -25,8 +27,15 @@ export function FundsColumn({
   type,
   clickFilterd,
   filtered,
+  defaultSort,
   active,
 }: Props) {
+  const [sortTypeValue, setSortTypeValue] = useState<Props['type']>(type);
+
+  useEffect(() => {
+    setSortTypeValue(type)
+  }, [type])  
+  
   return (
     <div
       className={cn(
@@ -44,7 +53,7 @@ export function FundsColumn({
             !filterable && size !== 'extraLarg' && !active,
           'bg-pink-200 hover:bg-pink-300': filterable && size !== 'extraLarg',
         },
-        'text-text-neutral-primary group/first cursor-pointer text-sm font-medium',
+        'text-text-neutral-primary group/first cursor-pointer',
       )}
     >
       <div
@@ -63,9 +72,9 @@ export function FundsColumn({
         <div className={cn(filterable ? 'visible' : 'invisible')}>
           <Icon name="filter" />
         </div>
-        <div className='flex flex-col'>
+        <div className='flex flex-col text-sm font-]'>
           <span>{title}</span>
-          <span>{subTitle}</span>
+          <span>{subTitle !== 'مشخصات صندوق' && subTitle !== 'ارکان صندوق' && subTitle !== 'سهم پرتفوی صندوق' && subTitle}</span>
         </div>
         {filtered && (
           <div className="bg-brand-600 absolute bottom-0 h-2 w-16 rounded-t-md"></div>
@@ -88,6 +97,9 @@ export function FundsColumn({
               e.stopPropagation();
               if (typeof clickFilterd === 'function') {
                 clickFilterd();
+              }
+              if (sortTypeValue === 'active-desc') {                
+                defaultSort && defaultSort();
               }
             }}
             className={cn(
