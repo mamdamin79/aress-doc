@@ -10,6 +10,7 @@ export interface TriggerProps {
   dropDownStyles?: DropDownStyle;
 }
 export interface DropdownCell {
+  id?: number;
   text: string;
   tag?: FundsTagProps;
   icon?: IconProps;

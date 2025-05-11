@@ -48,10 +48,9 @@ function SortableItem({ item }: { item: Item }) {
   const style: React.CSSProperties = {
     transition,
     zIndex: isDragging ? 10 : undefined,
-    transform: CSS.Transform.toString(transform),
+    transform: CSS.Translate.toString(transform),
     rotate: isDragging ? '-8deg' : undefined,
   };
-
   return (
     <div
       ref={setNodeRef}
@@ -97,15 +96,20 @@ export const SlidersBox: React.FC = () => {
   );
   const [isReportSelectionPopupOpen, setIsReportSelectionPopupOpen] =
     useState(false);
-  function generateTooltips(barsNumber: number, slides: number): string[] {
-    if (slides % 2 !== 0) slides += 1;
+  function generateTooltips(totalSlides: number): string[] {
+    const slidesPerGroup = window.matchMedia('(min-width: 1280px)').matches
+      ? 4
+      : 2;
+    const groups = Math.ceil(totalSlides / slidesPerGroup);
     const tooltips: string[] = [];
-    const step = Math.ceil(slides / barsNumber);
-    for (let i = 0; i < barsNumber; i++) {
-      const start = i * step + 1;
-      let end = (i + 1) * step;
-      if (end > slides) end = slides;
-      tooltips.push(`اسلاید ${start}-${end}`);
+    for (let i = 0; i < groups; i++) {
+      const start = i * slidesPerGroup + 1;
+      const end = Math.min((i + 1) * slidesPerGroup, totalSlides);
+      if (start !== end) {
+        tooltips.push(`اسلاید ${end}-${start}`);
+      } else {
+        tooltips.push(`اسلاید ${end}`);
+      }
     }
     return tooltips;
   }
@@ -121,7 +125,7 @@ export const SlidersBox: React.FC = () => {
   useEffect(() => {
     const calculateBars = () => {
       const total = items.length + 1; // include AddReportButton
-      const cols = window.matchMedia('(min-width: 1280px)').matches ? 2 : 1;
+      const cols = window.matchMedia('(min-width: 1280px)').matches ? 4 : 2;
       setBarsNumber(Math.ceil(total / cols));
     };
     calculateBars();
@@ -143,7 +147,7 @@ export const SlidersBox: React.FC = () => {
         // User scrolled during auto-rotate, stop auto-rotation
         setActiveRotate(null);
       }
-      const index = Math.round(window.scrollY / CARD_HEIGHT);
+      const index = Math.floor(((window.scrollY / CARD_HEIGHT) * 2) / 3);
       const bounded = Math.min(Math.max(index, 0), barsNumber - 1);
       if (bounded !== currIndex) {
         setCurrIndex(bounded);
@@ -161,7 +165,10 @@ export const SlidersBox: React.FC = () => {
       const bounded = Math.min(Math.max(index, 0), barsNumber - 1);
       setCurrIndex(bounded);
       setIsProgramScroll(true);
-      window.scrollTo({ top: bounded * CARD_HEIGHT, behavior: 'smooth' });
+      window.scrollTo({
+        top: bounded * CARD_HEIGHT * 1.5 + 80,
+        behavior: 'smooth',
+      });
     },
     [barsNumber],
   );
@@ -185,7 +192,7 @@ export const SlidersBox: React.FC = () => {
     if (activeRotate !== null) {
       setIsProgramScroll(true);
       window.scrollTo({
-        top: currIndex * CARD_HEIGHT,
+        top: currIndex * CARD_HEIGHT * 1.5 + 80,
         behavior: 'smooth',
       });
     }
@@ -194,7 +201,11 @@ export const SlidersBox: React.FC = () => {
   const handleRotation = (seconds: number | null) => {
     setActiveRotate(seconds);
     if (seconds !== null) {
-      setCurrIndex(1);
+      setCurrIndex(-1);
+      setTimeout(() => {
+        setCurrIndex(0);
+      }, 50);
+
       window.scrollTo({ top: CARD_HEIGHT, behavior: 'smooth' });
     }
   };
@@ -228,7 +239,7 @@ export const SlidersBox: React.FC = () => {
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
       >
-        <section className="mt-8 flex w-fit justify-center">
+        <section className="mt-6 flex w-fit justify-center">
           <SortableContext
             items={items.map((i) => i.id)}
             strategy={rectSortingStrategy}
@@ -257,7 +268,8 @@ export const SlidersBox: React.FC = () => {
           externalIndex={currIndex}
           autoRotate={Boolean(activeRotate)}
           autoRotateDuration={activeRotate || undefined}
-          tooltips={generateTooltips(barsNumber, initialImages.length)}
+          tooltips={generateTooltips(initialImages.length)}
+          onAddReportClick={() => setIsReportSelectionPopupOpen(true)}
         />
         {activeRotate && (
           <AutoRotationOff onClick={() => setActiveRotate(null)} />

@@ -55,7 +55,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
 
   return (
     <div
-      className="bg-baseBackground flex h-[calc(100vh-30px)] w-full min-w-[296px] flex-col items-center overflow-y-hidden rounded-tl-2xl rounded-tr-2xl border-2 border-gray-300 pt-4"
+      className="bg-baseBackground flex h-[calc(100vh-16px)] w-full min-w-[296px] flex-col items-center overflow-y-hidden rounded-tl-2xl rounded-tr-2xl border-2 border-b-0 border-gray-300 pt-4"
       ref={containerRef}
     >
       <div
@@ -107,21 +107,23 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
               />
             )}
           />
-          <OptionsDropdown
-            onChange={onTimeframeChange}
-            dropDownList={[
-              { text: 'روزانه' },
-              { text: 'هفتگی' },
-              { text: 'ماهانه' },
-              { text: 'سه ماهه' },
-            ]}
-            dropDownStyles={{
-              anchor: 'bottom start',
-              bg: 'primary',
-              emphasize: 'medium',
-              size: 'sm',
-            }}
-          />
+          <div className="w-fit">
+            <OptionsDropdown
+              onChange={onTimeframeChange}
+              dropDownList={[
+                { text: 'روزانه' },
+                { text: 'هفتگی' },
+                { text: 'ماهانه' },
+                { text: 'سه ماهه' },
+              ]}
+              dropDownStyles={{
+                anchor: 'bottom start',
+                bg: 'primary',
+                emphasize: 'medium',
+                size: 'sm',
+              }}
+            />
+          </div>
         </div>
         <div className="w-full px-4">
           <div className="h-0.5 w-full rounded-md bg-gray-300"></div>
@@ -163,6 +165,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
           </>
         ))}
       </div>
+      <div className="h-4"></div>
     </div>
   );
 };
