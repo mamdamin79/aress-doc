@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useState } from 'react';
 import { Icon } from '../Icon';
 import { Tooltip } from '../Tooltip';
@@ -62,9 +63,9 @@ export function FundsColumn({
           {
             'group-hover/first:bg-pink-300':
               size === 'extraLarg' && filterable,
-            'group-hover/first:bg-brand-300':
+            'group-hover/first:bg-brand-200':
               size === 'extraLarg' && !filterable,
-            'bg-brand-300': !filterable && active && size === 'extraLarg',
+            'bg-brand-200': !filterable && active && size === 'extraLarg',
             'bg-pink-300': filterable && active && size === 'extraLarg',
           },
         )}

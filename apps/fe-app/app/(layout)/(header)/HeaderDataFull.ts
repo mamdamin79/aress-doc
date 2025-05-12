@@ -87,7 +87,7 @@ export const MenuData:MenuItem[] = [
       link: '#',
     },
     {
-      text: 'صندوق های سرمایه گذاری',
+      text: 'صندوق‌های سرمایه گذاری',
       link: '#',
     },
     {

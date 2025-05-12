@@ -47,10 +47,10 @@ export function FundsTableRow({
   return (
     <div
       className={cn(
-        'sticky right-0 m-0 flex h-[63px] w-fit items-center justify-between p-0',
+        'sticky right-0 m-0 flex h-full w-fit items-center justify-between p-0',
         className,
         {
-          'shadow-md': isScrolled,
+          'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]': isScrolled,
           'bg-blue-50 group-hover:bg-blue-100': pined,
           'bg-blue-200': selected,
           'bottom-0 group-hover:bg-blue-50': !selected && !pined,
@@ -71,7 +71,7 @@ export function FundsTableRow({
             <img src={logo} alt="logo fund" />
           </div>
 
-          <div className="absolute right-4 top-8 transition-all duration-500 group-hover/img:-translate-x-[12.5px] group-hover/img:-translate-y-[18px]">
+          <div className="absolute right-4 top-8 transition-all duration-500 group-hover/img:-translate-x-[12.5px] group-hover/img:-translate-y-[17px]">
             <Tooltip
               position="left"
               title={
@@ -143,11 +143,11 @@ export function FundsTableRow({
         </div>
         <div className="flex flex-col gap-1">
           <Tooltip offset={2} position="bottom" title={name.length > 29 ? name : ''}>
-            <p className="text-gray-1000 w-[201px] truncate text-right text-sm font-medium">
+            <p className="text-gray-1000 w-[201px] hover:text-[#0F7575] truncate text-right text-sm font-medium">
               {name}
             </p>
           </Tooltip>
-          <span className={cn("border-vividGreen-200 select-none w-fit text-vividGreen-800 bg-vividGreen-100 rounded-sm border px-2 pt-0.5 h-[25px] text-xs font-medium", {
+          <span className={cn("border-vividGreen-200 select-none w-fit text-[#058F3C] bg-vividGreen-100 rounded-sm border px-2 pt-0.5 h-[25px] text-xs font-medium", {
             'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]': investmentMethod === 'T'
           })}>
             ETF
@@ -195,7 +195,7 @@ export function FundsTableRow({
                   'hover:border-brand-600 border border-blue-100': pined,
                   'hover:border-brand-600 border border-white hover:bg-white':
                     !selected && !pined,
-                  block: prop.isActive,
+                  'visible border border-blue-200': prop.isActive,
                 },
               )}
             >
@@ -252,7 +252,7 @@ export function FundsTableRow({
                 }
               }}
               className={cn(
-                'flex cursor-pointer font-medium w-[168px] pr-2 text-sm items-center gap-2 bg-white py-2',
+                'flex cursor-pointer font-medium w-[168px] pr-2 text-sm hover:text-brand-800 items-center gap-2 bg-white py-2',
                 {
                   'cursor-default text-[#B3B6BD]':
                     !canPin && prop.text === 'پین کردن',

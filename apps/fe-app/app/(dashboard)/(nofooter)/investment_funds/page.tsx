@@ -36,6 +36,7 @@ import { columns, columnVisibility, filterList } from './FundsTable.constants';
 import { ExportExel } from './_components/ExportExel';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
+  const [canScrollVertical, setCanScrollVertical] = useState(false);
   const [indexCategoryTab, setIndexCategoryTab] = useState(0);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [data, setData] = useState(() => makeData(500));
@@ -181,23 +182,29 @@ const Funds = () => {
       }
     };
 
-    const keyboardArrow = (e: KeyboardEvent) => {
+    const keyboardArrow = (e: KeyboardEvent) => {      
       if (e.code === 'ArrowDown') {
         tableRef.current?.scrollBy({ top: 100, behavior: 'smooth' });
       }
       if (e.code === 'ArrowUp') {
         tableRef.current?.scrollBy({ top: -100, behavior: 'smooth' });
       }
+      if (e.code === 'ArrowLeft') {
+        handlerKeyboardScroll(false);
+      }
+      if (e.code === 'ArrowRight') {
+        handlerKeyboardScroll(true);
+      }
     };
 
     document.addEventListener('keypress', keyboardHandler);
-    document.addEventListener('keydown', keyboardArrow);
+    document.addEventListener('keyup', keyboardArrow);
 
     // Cleanup: remove event listeners when component unmounts or dependencies change
     return () => {
       tableElem?.removeEventListener('scroll', handleScroll);
       document.removeEventListener('keypress', keyboardHandler);
-      document.removeEventListener('keydown', keyboardArrow);
+      document.removeEventListener('keyup', keyboardArrow);
     };
   }, [tableRef, handlerKeyboardScroll]);
 
@@ -209,16 +216,28 @@ const Funds = () => {
 
   useEffect(() => {
     document.documentElement.style.overflow = 'hidden';
+
+    return () => {
+      document.documentElement.style.overflow = 'auto';
+    };
   }, [customColl.active]);
 
   const handlerScroll = () => {
-    if (tableRef.current) {
+    if (tableRef.current) {      
       if (tableRef.current.scrollTop) {
         setIsScrollTop(true);
       } else setIsScrollTop(false);
     }
   };
 
+  const handlerMouseEnterTable = () => {   
+    if (tableRef.current) {
+      if (tableRef.current.scrollHeight > tableRef.current.clientHeight) {
+        setCanScrollVertical(true);
+      } else setCanScrollVertical(false);
+    }}
+  
+    
 
   return (
     <>
@@ -249,19 +268,28 @@ const Funds = () => {
       </div>
       <div
         dir="ltr"
-        className={cn('relative top-0 flex items-center overflow-hidden')}
+        className={cn('relative border-t-2 border-[#BCEBEB] top-0 flex items-center overflow-hidden')}
       >
         <div
+          onMouseEnter={handlerMouseEnterTable}
           ref={tableRef}
           onScroll={handlerScroll}
-          className="scrollbar-lg table-scroll h-[calc(100vh-170px)] w-screen overflow-auto scroll-smooth"
+          className={cn(
+            'table-scroll group/table scrollbar-lg h-[calc(100vh-172px)] w-screen overflow-hidden scroll-smooth',
+            {
+              'hover:overflow-auto':
+                (indexCategoryTab === 0 &&
+                  table.getRowModel().rows.length > 0) ||
+                watchList.length > 0,
+            },
+          )}
         >
           <table
             dir="rtl"
             className="w-full table-fixed rounded-xl bg-white text-center"
           >
-            <thead className="sticky group right-0 top-0 z-50 m-0 border-none p-0 duration-300 [box-shadow:0_2px_0_#bcebeb]">
-              <tr className="rounded-md p-0">
+            <thead className="group sticky right-0 top-0 z-50 m-0 p-0 duration-300 [box-shadow:0_2px_0_#bcebeb]">
+              <tr>
                 <th className="sticky right-[270px] z-50 mt-5 p-0">
                   {isScrollAtStart && (
                     <div className="hidden group-hover:block">
@@ -285,19 +313,24 @@ const Funds = () => {
                         <th
                           key={index}
                           className={cn(
-                            'sticky right-0 top-0 z-40 m-0 w-[312px] p-0',
-                            isScrollAtStart ? 'shadow' : 'shadow-none',
+                            'sticky top-0 right-0 h-[64px] pr-2 border-b z-40 m-0 w-[312px] bg-[#E3F8F8]',
+                            {
+                              'group-hover/table:pr-0':
+                                (indexCategoryTab === 0 &&
+                                  table.getRowModel().rows.length > 0) ||
+                                watchList.length > 0,
+                            },
                           )}
                         >
-                          <div
-                            {...{
-                              className: header.column.getCanSort()
-                                ? 'cursor-pointer h-[75px] select-none'
-                                : '',
-                            }}
-                          >
+                        <div
+                              {...{
+                                className: header.column.getCanSort()
+                                  ? 'cursor-pointer h-[75px] select-none'
+                                  : '',
+                              }}
+                            >
                             <OptionsDropdown
-                              className='!shadow-8xl'
+                              className="!shadow-8xl"
                               dropDownStyles={{
                                 size: 'md',
                                 anchor: 'bottom',
@@ -322,7 +355,7 @@ const Funds = () => {
                                     }
                                   }}
                                   className={cn(
-                                    'hover:bg-brand-50 w-[184px] font-medium text-sm hover:text-brand-800 flex cursor-pointer items-center gap-2 overflow-y-hidden bg-white p-2',
+                                    'hover:bg-brand-50 hover:text-brand-800 flex w-[184px] cursor-pointer items-center gap-2 overflow-y-hidden bg-white p-2 text-sm font-medium',
                                     {
                                       'text-brand-800':
                                         (header.column.getIsSorted() ===
@@ -344,17 +377,17 @@ const Funds = () => {
                                 </div>
                               )}
                               customTriggerRender={({ isActive }) => (
-                                <div className="rounde w-full">
+                                <div className={cn('w-full', {
+                                   'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]': isScrollAtStart
+                                })}>
                                   <FundsColumn
                                     active={isActive}
                                     filtered={!!header.column.getIsSorted()}
                                     clickFilterd={() =>
-                                      header.column.getToggleSortingHandler()?.(
-                                        new Event('click'),
-                                      )
+                                      header.column.toggleSorting(header.column.getIsSorted() === "desc" ? false : true)
                                     }
                                     size="extraLarg"
-                                    shadow={isScrollAtStart}
+                                    shadow={false}
                                     type={
                                       header.column.getIsSorted() === 'asc'
                                         ? 'active-desc'
@@ -385,8 +418,7 @@ const Funds = () => {
                                   <div className="absolute top-5 flex items-center gap-2 pr-4">
                                     <Tooltip title="انتخاب ستون‌ها">
                                       <div
-                                        onClick={(e) => {
-                                          e.stopPropagation();
+                                        onClick={() => {
                                           setIsSettingModal(true);
                                         }}
                                         className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
@@ -399,9 +431,8 @@ const Funds = () => {
                                     </Tooltip>
                                     <Tooltip title="فیلتر صندوق‌ها">
                                       <div
-                                        onClick={(e) => {
+                                        onClick={() => {
                                           setIsFilterModal(true);
-                                          e.stopPropagation();
                                         }}
                                         className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
                                       >
@@ -433,13 +464,13 @@ const Funds = () => {
                                 },
                               ]}
                             />
-                          </div>
+                            </div>
                         </th>
                       )}
                       {index >= 1 && (
                         <th
                           className={cn(
-                            'm-0 p-0 text-sm font-medium',
+                            'm-0 pr-2 group-hover/table:pr-0 bg-[#E3F8F8] h-[64px] text-sm font-medium',
                             String(
                               flexRender(
                                 header.column.columnDef.header,
@@ -448,6 +479,12 @@ const Funds = () => {
                             ).length > 10
                               ? 'w-[200px]'
                               : 'w-36',
+                            {
+                              'group-hover/table:pr-0':
+                                (indexCategoryTab === 0 &&
+                                  table.getRowModel().rows.length > 0) ||
+                                watchList.length > 0,
+                            },
                           )}
                           key={index}
                           colSpan={header.colSpan}
@@ -461,7 +498,7 @@ const Funds = () => {
                               }}
                             >
                               <OptionsDropdown
-                              className='!shadow-8xl'
+                                className="!shadow-8xl"
                                 dropDownStyles={{
                                   size: 'md',
                                   anchor: 'bottom start',
@@ -503,7 +540,7 @@ const Funds = () => {
                                         }
                                       }}
                                       className={cn(
-                                        'hover:bg-brand-50 flex cursor-pointer items-center gap-2 w-[184px] bg-white p-2 text-sm font-medium hover:bg-[#E3F8F8]',
+                                        'hover:bg-brand-50 flex w-[184px] cursor-pointer items-center gap-2 bg-white p-2 text-sm font-medium hover:bg-[#E3F8F8]',
                                         {
                                           'pointer-events-none cursor-default text-[#B3B6BD] hover:bg-white hover:text-[#B3B6BD]':
                                             (index === 1 &&
@@ -543,22 +580,23 @@ const Funds = () => {
                                     <FundsColumn
                                       active={isActive}
                                       filtered={!!header.column.getIsSorted()}
-                                      defaultSort={() => updateTableHeaders[0].column.getToggleSortingHandler()?.(
-                                        new Event('click'),
-                                      )}
+                                      defaultSort={() =>
+                                        updateTableHeaders[0].column.getToggleSortingHandler()?.(
+                                          new Event('click'),
+                                        )
+                                      }
                                       clickFilterd={() =>
                                         header.column.getToggleSortingHandler()?.(
                                           new Event('click'),
                                         )
                                       }
                                       size={
-                                        (
-                                          String(
-                                            flexRender(
-                                              header.column.columnDef.header,
-                                              header.getContext(),
-                                            ),
-                                          ).length) > 10
+                                        String(
+                                          flexRender(
+                                            header.column.columnDef.header,
+                                            header.getContext(),
+                                          ),
+                                        ).length > 10
                                           ? 'large'
                                           : 'medium'
                                       }
@@ -642,7 +680,7 @@ const Funds = () => {
                     </React.Fragment>
                   );
                 })}
-                <th className="sticky left-16 m-0 mt-5">
+                <div className="fixed left-[35px] m-0 mt-5">
                   {isScrollAtEnd && (
                     <div
                       onClick={() => handlerKeyboardScroll(false)}
@@ -659,7 +697,7 @@ const Funds = () => {
                       </Tooltip>
                     </div>
                   )}
-                </th>
+                </div>
               </tr>
             </thead>
             <tbody className="relative w-full overflow-hidden rounded-b-md">
@@ -705,7 +743,7 @@ const Funds = () => {
                   );
                   const topValue = isPinned
                     ? rowIndex === 1
-                      ? `${((pinnedIndex + 1) * 71) - 1}px`
+                      ? `${(pinnedIndex + 1) * 71 - 1}px`
                       : `${(pinnedIndex + 1) * 69}px`
                     : 'auto';
                   const isLastPinned = row.id === lastPinnedRowId;
@@ -716,16 +754,13 @@ const Funds = () => {
                         key={row.id}
                         style={{ top: rowIndex > 0 ? topValue : '76px' }}
                         className={cn(
-                          'group h-[64px] border-t-2 border-blue-100',
+                          'group h-[64px] [&>td]:border-b group-hover:bg-[#F5F9FE]',
                           isPinned && 'sticky top-2 z-50',
-                          rowIndex === rowsToRender.length - 1 && 'border-b',
                           {
-                            '[box-shadow:0_1px_0_#bcebeb] ': isPinned && !isLastPinned,
+                            '[box-shadow:0_1px_0_#bcebeb]':
+                              isPinned && (!isLastPinned || !isScrollTop),
                             'shadow-2xl':
                               isPinned && isLastPinned && isScrollTop,
-                            '[box-shadow:0_1px_0_#bcebeb]':
-                              isPinned && !isScrollTop,
-                            'group-hover:bg-blue-50': true,
                             'bg-blue-200': false,
                           },
                         )}
@@ -735,7 +770,7 @@ const Funds = () => {
                           return (
                             <React.Fragment key={cell.id}>
                               {index === 0 && (
-                                <td className="sticky right-0 z-40 m-0 bg-white p-0">
+                                <td className="sticky bg-white py-0 right-0 z-40 m-0 pr-2 group-hover/table:pr-0">
                                   <FundsTableRow
                                     index={rowIndex}
                                     tag={!isMainTab}
@@ -778,11 +813,14 @@ const Funds = () => {
                               )}
                               {index >= 1 && (
                                 <td
-                                  className={cn('text-sm font-medium', {
-                                    'bg-blue-50 group-hover:bg-blue-100':
-                                      isPinned,
-                                    'group-hover:bg-blue-50': !isPinned,
-                                  })}
+                                  className={cn(
+                                    'text-sm pr-4 group-hover/table:pr-0 font-medium group-hover/table:',
+                                    {
+                                      'bg-blue-50 group-hover:bg-blue-100':
+                                        isPinned,
+                                      'group-hover:bg-blue-50': !isPinned,
+                                    },
+                                  )}
                                 >
                                   {formatNumber(cell.getValue() as string, {
                                     commaSeparated: true,
@@ -822,6 +860,7 @@ const Funds = () => {
       <div className="fixed bottom-6 right-0 z-50 mt-6 flex w-full justify-between px-8">
         <div className="rounded-md bg-[#B3B6BD8C] backdrop-blur-[30px]">
           <OptionsDropdown
+            className='!-mt-2'
             onChange={(e) => {
               startTransition(() => {
                 table.setPageSize(Number(e));
@@ -834,9 +873,9 @@ const Funds = () => {
               anchor: 'top end',
               checkSelected: true,
             }}
-            customTriggerRender={(prop) => (
-              <div className="flex items-center gap-2 h-[40px] pl-2 pr-3 text-xs font-medium">
-                <div className='flex gap-1'>
+            customTriggerRender={({isActive}) => (
+              <div className="flex h-[40px] items-center gap-2 pl-2 pr-3 text-xs font-medium">
+                <div className="flex gap-1">
                   <span>تعداد سطر در جدول: </span>
                   {formatNumber(
                     table.getState().pagination.pageSize *
@@ -844,7 +883,16 @@ const Funds = () => {
                     { commaSeparated: true },
                   )}
                 </div>
-                <Icon size='lg' name={prop.isActive ? 'chevron-up' : 'chevron-down'} />
+                <div className={cn('transition-transform duration-300',{
+                  'rotate-180': isActive,
+                  'rotate-0': !isActive,
+                })}>
+
+                <Icon
+                  size="lg"
+                  name='chevron-down'
+                  />
+                  </div>
               </div>
             )}
             customOptionRender={(prop) => (
@@ -966,7 +1014,7 @@ const Funds = () => {
           )}
         </div>
 
-        <div className='w-full h-[2px] bg-[#D1D3D7]'></div>
+        <div className="h-[2px] w-full bg-[#D1D3D7]"></div>
         <div
           dir="rtl"
           className="scrollbar-md mb-6 h-[550px] overflow-x-hidden overflow-y-scroll"

@@ -96,7 +96,7 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
           )
         }
       </ListboxButton>
-      <div className="mt-1">
+      <div>
         <ListboxOptions
           anchor={dropDownStyles.anchor}
           className={cn(

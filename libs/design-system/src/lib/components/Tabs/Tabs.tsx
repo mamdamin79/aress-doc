@@ -1,3 +1,4 @@
+'use client';
 import { cn } from '../../../utils';
 import { Tab as TabItem } from './Tabs.types';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';

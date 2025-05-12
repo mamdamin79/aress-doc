@@ -363,3 +363,7 @@ input[type='password']::-webkit-password-eye {
   height: 8px;
   border-radius: 8px;
 }
+
+.hiddenscrollbar::-webkit-scrollbar {
+  display: none;
+}

@@ -39,7 +39,7 @@ export const CategoryList: React.FC<Props> = ({ categories, reports }) => {
             'bg-brand-600 h-5 w-1 text-gray-900': !searchParams.get('category'),
           })}
         ></div>
-        همه ی گزارش ها ({reports.length})
+        همه ی گزارش‌ها({reports.length})
       </li>
       {categories.map((category) => (
         <>
