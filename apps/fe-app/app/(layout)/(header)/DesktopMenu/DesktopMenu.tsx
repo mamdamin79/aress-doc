@@ -13,7 +13,7 @@ interface MenuProps {
   activeTab: number;
 }
 
-export const DesktopMenu: React.FC<MenuProps> = ({ menuItems,activeTab }) => {
+export const DesktopMenu: React.FC<MenuProps> = ({ menuItems, activeTab }) => {
   const [activeSubMenu, setActiveSubMenu] = useState<null | dropdownType>(null);
   const [showMoreMenu, setShowMoreMenu] = useState(false);
   const [menus, setMenus] = useState<{
@@ -44,9 +44,8 @@ export const DesktopMenu: React.FC<MenuProps> = ({ menuItems,activeTab }) => {
     }
   }, [throttledWidth, menuItems]);
 
-
   const renderDropdownMenu = (item: MenuItem, index: number) => (
-    <div className="bg-baseBackground shadow-offset-y-10 shadow-8xl absolute z-10 flex hidden flex-row rounded-xl border-2 border-gray-300 group-hover:block">
+    <div className="bg-baseBackground shadow-offset-y-10 shadow-8xl z-50 absolute z-10 flex hidden flex-row rounded-xl border-2 border-gray-300 group-hover:block">
       <div className="flex h-fit w-fit max-w-[272px] flex-col gap-2 py-4 text-right">
         {item.dropdown?.map((dropdownItem, dropdownItemIndex) => (
           <div
@@ -54,6 +53,8 @@ export const DesktopMenu: React.FC<MenuProps> = ({ menuItems,activeTab }) => {
             className={cn(
               'flex flex-col',
               dropdownItem.children[0]?.isDashboard ? 'gap-2' : '',
+              dropdownItem.groupLabel == '' &&
+                'mb-2 border-b-2 border-t-2 border-gray-200',
             )}
           >
             <div className="flex flex-row items-center gap-2 pr-4 text-sm font-normal text-gray-600">
@@ -88,7 +89,7 @@ export const DesktopMenu: React.FC<MenuProps> = ({ menuItems,activeTab }) => {
     <Popover key={item.text} className="group relative h-10">
       <PopoverButton
         className={cn(
-          'text-shadow-sm flex items-center gap-2 py-1 font-normal outline-none transition-colors',
+          'text-shadow-sm relative flex items-center gap-2 py-1 text-sm font-normal outline-none transition-colors',
           item.dropdown
             ? 'group-hover:text-brand-600'
             : activeTab === index
@@ -108,17 +109,17 @@ export const DesktopMenu: React.FC<MenuProps> = ({ menuItems,activeTab }) => {
           ) : (
             <span>{item.text}</span>
           )}
-          <div
-            className={`bg-brand-600 absolute bottom-0 left-0 right-0 mx-auto -mb-2 h-1.5 w-6 rounded-full ${
-              activeTab === index ? 'group-hover:block' : 'hidden'
-            }`}
-          />
         </div>
         {item.dropdown && (
           <div className="transform transition-transform duration-200 group-hover:rotate-180">
             <Icon name="chevron-down" size="lg" />
           </div>
         )}
+        <div
+          className={`bg-brand-600 absolute bottom-1 left-0 right-0 mx-auto -mb-2 h-1.5 w-6 rounded-full ${
+            activeTab === index ? 'group-hover:block' : 'hidden'
+          }`}
+        />
       </PopoverButton>
 
       {item.dropdown && renderDropdownMenu(item, index)}
@@ -128,7 +129,16 @@ export const DesktopMenu: React.FC<MenuProps> = ({ menuItems,activeTab }) => {
   return (
     <>
       <div className="flex items-center gap-5 text-nowrap">
-        {menus.main.map((item, index) => renderMenuItem(item, index))}
+        {menus.main.map((item, index) => {
+          if (menus.main.length > 2 && index == 2)
+            return (
+              <>
+                <div className="-mt-2 h-5 w-0.5 rounded-[100px] bg-gray-400"></div>
+                {renderMenuItem(item, index)}
+              </>
+            );
+          return renderMenuItem(item, index);
+        })}
         {menus.more.length > 0 && (
           <div className="relative flex flex-col" ref={ref}>
             <div

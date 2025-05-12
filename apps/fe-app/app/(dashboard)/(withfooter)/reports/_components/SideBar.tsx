@@ -1,5 +1,5 @@
 'use client';
-import { cn, Icon } from 'design-system';
+import { cn, Icon, Tooltip } from 'design-system';
 import { CategoryList } from './CategoryList';
 import {
   GetDashboardReportsCategoriesResponse,
@@ -19,7 +19,7 @@ export const SideBar: React.FC<Props> = ({ categories, reports }) => {
       className={cn(
         'sticky top-4 mt-6 h-fit w-[180px] transition-all duration-300',
         {
-          'top-28 ': isHeaderVisible,
+          'top-28': isHeaderVisible,
         },
       )}
     >

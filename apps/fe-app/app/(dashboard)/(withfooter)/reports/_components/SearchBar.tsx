@@ -33,8 +33,11 @@ export const SearchBar: React.FC = () => {
           size: 'lg',
           onClick: (value) => handleSearch(value),
         }}
-        trailingIcons={[{ name: 'x', size: 'lg', onClick: ()=>handleClear() }]}
+        trailingIcons={[
+          { name: 'x', size: 'lg', onClick: () => handleClear() },
+        ]}
         placeholder="جستجو گزارش..."
+        onChange={(e) => e.target.value === '' && handleClear()}
       />
     </>
   );

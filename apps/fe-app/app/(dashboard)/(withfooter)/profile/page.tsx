@@ -1,9 +1,15 @@
 import React from 'react';
 import { AressApiUser, OpenAPI, UsersService } from '@openapi';
 import { ProfilePageContent } from './_components';
+import { fetchToken } from '../../../(auth)/auth.utils';
+
 async function getData() {
+  const token = await fetchToken();
+  if (!token) {
+    throw new Error('Failed to fetch access token');
+  }
   OpenAPI.HEADERS = {
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzQ2MDg5OTk1fQ.HNohfZhu-PIAodja4h751LIxd0T93etbr0ZJuU4QiH4`,
+    Authorization: `Bearer ${token}`,
   };
 
   const user = (await UsersService.getUsersMe()) as AressApiUser;

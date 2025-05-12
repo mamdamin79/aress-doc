@@ -11,10 +11,13 @@ import { TextField } from '../TextField';
 export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   title,
   input,
-  checkBoxText = 'باز کردن در تب جدید',
+  checkBoxText,
   onConfirm,
   isOpen,
   onClose,
+  submitBtnLabel = 'ذخیره',
+  cancelBtnLabel = 'انصراف',
+  description,
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [checked, setChecked] = useState(false);
@@ -36,6 +39,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
       <div className="w-[472px] text-right">
         <form onSubmit={handleConfirm} className="flex flex-col gap-4">
           <div className="text-lg font-semibold">{title}</div>
+          {description}
           {isWithInput && (
             <div className="flex flex-col">
               <TextField
@@ -53,7 +57,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
           )}
           {/* Checkbox */}
           {checkBoxText && (
-            <div className="flex items-center text-sm font-medium">
+            <div className="-mt-6 mr-1 flex items-center text-sm font-medium">
               <Checkbox
                 checked={checked}
                 id="confirm-modal-checkbox"
@@ -73,7 +77,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
                 onClick={() => onClose?.()}
                 type="button"
               >
-                انصراف
+                {cancelBtnLabel}
               </Button>
             </div>
             <div className="min-w-14">
@@ -90,7 +94,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
                     : 'bg-brand-600 hover:bg-brand-700',
                 )}
               >
-                ذخیره
+                {submitBtnLabel}
               </Button>
             </div>
           </div>

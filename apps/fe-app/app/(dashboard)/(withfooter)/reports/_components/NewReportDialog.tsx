@@ -9,6 +9,7 @@ import {
   Button,
   Icon,
   Dialog,
+  Tooltip,
 } from 'design-system';
 
 export const NewReportDialog = () => {
@@ -19,22 +20,28 @@ export const NewReportDialog = () => {
 
   return (
     <div>
-      <Button
-        align="center"
-        type="button"
-        isLoading={false}
-        mode="primary"
-        size="sm"
-        onClick={openDialog}
-        className="fixed bottom-[72px] right-8 z-50 h-14 w-14 rounded-full"
+      <Tooltip title='درخواست گزارش جدید' position='top' >
+        <Button
+          align="center"
+          type="button"
+          isLoading={false}
+          mode="primary"
+          size="sm"
+          onClick={openDialog}
+          className="fixed bottom-[72px] right-8 z-50 h-14 w-14 rounded-full"
+        >
+          {isOpen ? (
+            <Icon name="x" size="lg" />
+          ) : (
+            <Icon name="clipboard-plus" size="lg" />
+          )}
+        </Button>
+      </Tooltip>
+      <Dialog
+        onClose={closeDialog}
+        isOpen={isOpen}
+        className="w-[584px] text-right"
       >
-        {isOpen ? (
-          <Icon name="x" size="lg" />
-        ) : (
-          <Icon name="clipboard-plus" size="lg" />
-        )}
-      </Button>
-      <Dialog onClose={closeDialog} isOpen={isOpen} className="text-right w-[584px]">
         <div className="text-center text-lg font-medium text-gray-800">
           درخواست گزارش جدید
         </div>
