@@ -78,7 +78,7 @@ export function FundsColumn({
           <span>{subTitle !== 'مشخصات صندوق' && subTitle !== 'ارکان صندوق' && subTitle !== 'سهم پرتفوی صندوق' && subTitle}</span>
         </div>
         {filtered && (
-          <div className="bg-brand-600 absolute bottom-0 h-2 w-16 rounded-t-md"></div>
+          <div className="bg-brand-600 absolute bottom-[1px] h-2 w-16 rounded-t-md"></div>
         )}
         <Tooltip
           title={

@@ -21,12 +21,10 @@ interface Props {
   toggleWatchList: () => void;
   canPin: boolean;
   tag: boolean;
-  index: number;
 }
 
 export function FundsTableRow({
   name,
-  index,
   investmentMethod,
   tag,
   toggleWatchList,
@@ -47,7 +45,7 @@ export function FundsTableRow({
   return (
     <div
       className={cn(
-        'sticky right-0 m-0 flex h-full w-fit items-center justify-between p-0',
+        'sticky right-0 top-0 py-0 m-0 flex bg-white h-[61px] w-fit items-center justify-between p-0',
         className,
         {
           'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]': isScrolled,

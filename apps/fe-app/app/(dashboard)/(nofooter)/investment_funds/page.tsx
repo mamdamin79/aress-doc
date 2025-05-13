@@ -182,7 +182,7 @@ const Funds = () => {
       }
     };
 
-    const keyboardArrow = (e: KeyboardEvent) => {      
+    const keyboardArrow = (e: KeyboardEvent) => {
       if (e.code === 'ArrowDown') {
         tableRef.current?.scrollBy({ top: 100, behavior: 'smooth' });
       }
@@ -223,21 +223,22 @@ const Funds = () => {
   }, [customColl.active]);
 
   const handlerScroll = () => {
-    if (tableRef.current) {      
+    if (tableRef.current) {
       if (tableRef.current.scrollTop) {
         setIsScrollTop(true);
       } else setIsScrollTop(false);
     }
   };
 
-  const handlerMouseEnterTable = () => {   
+const handlerMouseEnterTable = () => {
+  requestAnimationFrame(() => {
     if (tableRef.current) {
-      if (tableRef.current.scrollHeight > tableRef.current.clientHeight) {
-        setCanScrollVertical(true);
-      } else setCanScrollVertical(false);
-    }}
-  
-    
+      const hasVerticalScroll =
+        tableRef.current.scrollHeight > tableRef.current.clientHeight;
+      setCanScrollVertical(hasVerticalScroll);
+    }
+  });
+};
 
   return (
     <>
@@ -268,7 +269,9 @@ const Funds = () => {
       </div>
       <div
         dir="ltr"
-        className={cn('relative border-t-2 border-[#BCEBEB] top-0 flex items-center overflow-hidden')}
+        className={cn(
+          'relative top-0 flex items-center overflow-hidden border-t-2 border-[#BCEBEB]',
+        )}
       >
         <div
           onMouseEnter={handlerMouseEnterTable}
@@ -313,22 +316,19 @@ const Funds = () => {
                         <th
                           key={index}
                           className={cn(
-                            'sticky top-0 right-0 h-[64px] pr-2 border-b z-40 m-0 w-[312px] bg-[#E3F8F8]',
+                            'sticky right-0 top-0 py-0 z-40 m-0 h-[64px] w-[312px] border-b bg-[#E3F8F8] pr-2',
                             {
-                              'group-hover/table:pr-0':
-                                (indexCategoryTab === 0 &&
-                                  table.getRowModel().rows.length > 0) ||
-                                watchList.length > 0,
+                              'group-hover/table:pr-0': canScrollVertical,
                             },
                           )}
                         >
-                        <div
-                              {...{
-                                className: header.column.getCanSort()
-                                  ? 'cursor-pointer h-[75px] select-none'
-                                  : '',
-                              }}
-                            >
+                          <div
+                            {...{
+                              className: header.column.getCanSort()
+                                ? 'cursor-pointer h-[75px] select-none'
+                                : '',
+                            }}
+                          >
                             <OptionsDropdown
                               className="!shadow-8xl"
                               dropDownStyles={{
@@ -377,23 +377,29 @@ const Funds = () => {
                                 </div>
                               )}
                               customTriggerRender={({ isActive }) => (
-                                <div className={cn('w-full', {
-                                   'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]': isScrollAtStart
-                                })}>
+                                <div
+                                  className={cn('w-full', {
+                                    'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]':
+                                      isScrollAtStart,
+                                  })}
+                                >
                                   <FundsColumn
                                     active={isActive}
                                     filtered={!!header.column.getIsSorted()}
                                     clickFilterd={() =>
-                                      header.column.toggleSorting(header.column.getIsSorted() === "desc" ? false : true)
+                                      header.column.toggleSorting(
+                                        header.column.getIsSorted() === 'desc'
+                                          ? false
+                                          : true,
+                                      )
                                     }
                                     size="extraLarg"
                                     shadow={false}
                                     type={
                                       header.column.getIsSorted() === 'asc'
-                                        ? 'active-desc'
+                                        ? 'active-asc'
                                         : header.column.getIsSorted() === 'desc'
-                                          ? 'active-asc'
-                                          : 'inactive'
+                                         ? 'inactive' : 'inactive'
                                     }
                                     filterable={columnFilters.some(
                                       (filterItem) =>
@@ -464,13 +470,13 @@ const Funds = () => {
                                 },
                               ]}
                             />
-                            </div>
+                          </div>
                         </th>
                       )}
                       {index >= 1 && (
                         <th
                           className={cn(
-                            'm-0 pr-2 group-hover/table:pr-0 bg-[#E3F8F8] h-[64px] text-sm font-medium',
+                            'm-0 h-[64px] bg-[#E3F8F8] pr-2 text-sm font-medium',
                             String(
                               flexRender(
                                 header.column.columnDef.header,
@@ -480,10 +486,7 @@ const Funds = () => {
                               ? 'w-[200px]'
                               : 'w-36',
                             {
-                              'group-hover/table:pr-0':
-                                (indexCategoryTab === 0 &&
-                                  table.getRowModel().rows.length > 0) ||
-                                watchList.length > 0,
+                              'group-hover/table:pr-0': canScrollVertical,
                             },
                           )}
                           key={index}
@@ -700,7 +703,7 @@ const Funds = () => {
                 </div>
               </tr>
             </thead>
-            <tbody className="relative w-full overflow-hidden rounded-b-md">
+            <tbody className="relative w-full overflow-hidden">
               {(() => {
                 const isMainTab = indexCategoryTab === 0;
                 const allRows = table.getRowModel().rows;
@@ -743,8 +746,8 @@ const Funds = () => {
                   );
                   const topValue = isPinned
                     ? rowIndex === 1
-                      ? `${(pinnedIndex + 1) * 71 - 1}px`
-                      : `${(pinnedIndex + 1) * 69}px`
+                      ? `${((pinnedIndex + 1) * 72) - 2}px`
+                      : `${((pinnedIndex + 1) * 70) - 5}px`
                     : 'auto';
                   const isLastPinned = row.id === lastPinnedRowId;
 
@@ -752,12 +755,12 @@ const Funds = () => {
                     <>
                       <tr
                         key={row.id}
-                        style={{ top: rowIndex > 0 ? topValue : '76px' }}
+                        style={{ top: rowIndex > 0 ? topValue : '79px' }}
                         className={cn(
-                          'group h-[64px] [&>td]:border-b group-hover:bg-[#F5F9FE]',
+                          'group h-[63px] bg-white group-hover:bg-[#F5F9FE]',
                           isPinned && 'sticky top-2 z-50',
                           {
-                            '[box-shadow:0_1px_0_#bcebeb]':
+                            '[box-shadow:0_1px_0_#E1E2E5]':
                               isPinned && (!isLastPinned || !isScrollTop),
                             'shadow-2xl':
                               isPinned && isLastPinned && isScrollTop,
@@ -770,9 +773,10 @@ const Funds = () => {
                           return (
                             <React.Fragment key={cell.id}>
                               {index === 0 && (
-                                <td className="sticky bg-white py-0 right-0 z-40 m-0 pr-2 group-hover/table:pr-0">
+                                <td className={cn("sticky border-b border-[#E1E2E5] right-0 top-0 z-40 m-0 py-0 pr-2", {
+                                  'group-hover/table:pr-0': canScrollVertical
+                                })}>
                                   <FundsTableRow
-                                    index={rowIndex}
                                     tag={!isMainTab}
                                     category={
                                       isMainTab
@@ -814,8 +818,9 @@ const Funds = () => {
                               {index >= 1 && (
                                 <td
                                   className={cn(
-                                    'text-sm pr-4 group-hover/table:pr-0 font-medium group-hover/table:',
+                                    'pr-4 py-0 border-b border-[#E1E2E5] text-sm font-medium',
                                     {
+                                      'group-hover/table:pr-0': canScrollVertical,
                                       'bg-blue-50 group-hover:bg-blue-100':
                                         isPinned,
                                       'group-hover:bg-blue-50': !isPinned,
@@ -860,7 +865,7 @@ const Funds = () => {
       <div className="fixed bottom-6 right-0 z-50 mt-6 flex w-full justify-between px-8">
         <div className="rounded-md bg-[#B3B6BD8C] backdrop-blur-[30px]">
           <OptionsDropdown
-            className='!-mt-2'
+            className="!-mt-2"
             onChange={(e) => {
               startTransition(() => {
                 table.setPageSize(Number(e));
@@ -873,7 +878,7 @@ const Funds = () => {
               anchor: 'top end',
               checkSelected: true,
             }}
-            customTriggerRender={({isActive}) => (
+            customTriggerRender={({ isActive }) => (
               <div className="flex h-[40px] items-center gap-2 pl-2 pr-3 text-xs font-medium">
                 <div className="flex gap-1">
                   <span>تعداد سطر در جدول: </span>
@@ -883,16 +888,14 @@ const Funds = () => {
                     { commaSeparated: true },
                   )}
                 </div>
-                <div className={cn('transition-transform duration-300',{
-                  'rotate-180': isActive,
-                  'rotate-0': !isActive,
-                })}>
-
-                <Icon
-                  size="lg"
-                  name='chevron-down'
-                  />
-                  </div>
+                <div
+                  className={cn('transition-transform duration-300', {
+                    'rotate-180': isActive,
+                    'rotate-0': !isActive,
+                  })}
+                >
+                  <Icon size="lg" name="chevron-down" />
+                </div>
               </div>
             )}
             customOptionRender={(prop) => (
