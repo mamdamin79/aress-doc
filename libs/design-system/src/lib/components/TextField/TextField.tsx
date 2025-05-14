@@ -103,8 +103,8 @@ export const TextField: React.FC<textFieldPropsType> = ({
           className={cn(
             'absolute right-4',
             {
-              'top-[38px]': label,
-              'top-[12px]': !label,
+              'top-[44px]': label,
+              'top-[16px]': !label,
             },
             {
               'text-gray-400': disabled,
@@ -171,7 +171,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
             }
           }}
           className={cn(
-            'text-md h-12 w-full rounded-xl border p-2 font-normal outline-none transition-colors duration-150',
+            'text-md h-14 w-full rounded-xl border p-2 font-normal outline-none transition-colors duration-150',
             {
               'border-inherit bg-transparent opacity-100 placeholder:text-gray-400':
                 disabled,
@@ -195,8 +195,8 @@ export const TextField: React.FC<textFieldPropsType> = ({
         className={cn(
           'absolute left-4 z-20 flex items-center justify-between gap-4',
           {
-            'top-[38px]': label,
-            'top-[12px]': !label,
+            'top-[44px]': label,
+            'top-[16px]': !label,
           },
           {
             'top-10':
