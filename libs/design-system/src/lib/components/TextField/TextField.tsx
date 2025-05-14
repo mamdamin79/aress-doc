@@ -59,9 +59,19 @@ export const TextField: React.FC<textFieldPropsType> = ({
         className,
       )}
     >
-      <div className="h-[26px]">
-        {mergeTitleAndPlaceholder ? (
-          (isFocused || inputValue) && (
+      {label && (
+        <div className="h-[26px]">
+          {mergeTitleAndPlaceholder ? (
+            (isFocused || inputValue) && (
+              <label
+                className={cn('text-sm font-medium', {
+                  'text-gray-400': disabled,
+                })}
+              >
+                {label}
+              </label>
+            )
+          ) : (
             <label
               className={cn('text-sm font-medium', {
                 'text-gray-400': disabled,
@@ -69,15 +79,9 @@ export const TextField: React.FC<textFieldPropsType> = ({
             >
               {label}
             </label>
-          )
-        ) : (
-          <label
-            className={cn('text-sm font-medium', { 'text-gray-400': disabled })}
-          >
-            {label}
-          </label>
-        )}
-      </div>
+          )}
+        </div>
+      )}
 
       {!isFocused && !inputValue && (
         <label
@@ -96,21 +100,26 @@ export const TextField: React.FC<textFieldPropsType> = ({
 
       {leadingIcon && (
         <div
-          className={cn('absolute right-4 top-[38px]', {
-            'text-gray-400': disabled,
-            'cursor-pointer': leadingIcon.onClick,
-            'top-10': leadingIcon?.size === 'md',
-          })}
-        >
-          {leadingIcon && (
-            <div
-              onClick={() =>
-                leadingIcon.onClick && leadingIcon?.onClick(inputValue)
-              }
-            >
-              <Icon name={leadingIcon.name} size={leadingIcon.size || 'lg'} />
-            </div>
+          className={cn(
+            'absolute right-4',
+            {
+              'top-[38px]': label,
+              'top-[12px]': !label,
+            },
+            {
+              'text-gray-400': disabled,
+              'cursor-pointer': leadingIcon.onClick,
+              'top-10': leadingIcon?.size === 'md' && label,
+            },
           )}
+        >
+          <div
+            onClick={() =>
+              leadingIcon.onClick && leadingIcon?.onClick(inputValue)
+            }
+          >
+            <Icon name={leadingIcon.name} size={leadingIcon.size || 'lg'} />
+          </div>
         </div>
       )}
       {longText ? (
@@ -184,10 +193,16 @@ export const TextField: React.FC<textFieldPropsType> = ({
 
       <div
         className={cn(
-          'absolute left-4 top-[38px] z-20 flex items-center justify-between gap-4',
+          'absolute left-4 z-20 flex items-center justify-between gap-4',
+          {
+            'top-[38px]': label,
+            'top-[12px]': !label,
+          },
           {
             'top-10':
-              trailingIcons.length > 0 && trailingIcons[1]?.size === 'md',
+              trailingIcons.length > 0 &&
+              trailingIcons[1]?.size === 'md' &&
+              label,
           },
         )}
       >
@@ -233,15 +248,17 @@ export const TextField: React.FC<textFieldPropsType> = ({
           }
         })}
       </div>
-      <div
-        className={cn('h-[22px] pt-1 text-xs', {
-          'text-red-600': isError,
-          'text-gray-600': !isError,
-          'text-gray-400': disabled,
-        })}
-      >
-        {supportText}
-      </div>
+      {supportText && (
+        <div
+          className={cn('h-[22px] pt-1 text-xs', {
+            'text-red-600': isError,
+            'text-gray-600': !isError,
+            'text-gray-400': disabled,
+          })}
+        >
+          {supportText}
+        </div>
+      )}
     </div>
   );
 };
