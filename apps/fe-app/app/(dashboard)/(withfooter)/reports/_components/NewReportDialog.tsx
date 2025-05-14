@@ -20,7 +20,7 @@ export const NewReportDialog = () => {
 
   return (
     <div>
-      <Tooltip title='درخواست گزارش جدید' position='top' >
+      <Tooltip title="درخواست گزارش جدید" position="top">
         <Button
           align="center"
           type="button"
