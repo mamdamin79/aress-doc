@@ -28,7 +28,7 @@ export const NewReportDialog = () => {
           mode="primary"
           size="sm"
           onClick={openDialog}
-          className="fixed bottom-[72px] right-8 z-50 h-14 w-14 rounded-full"
+          className="z-50 h-14 w-14 rounded-full"
         >
           {isOpen ? (
             <Icon name="x" size="lg" />

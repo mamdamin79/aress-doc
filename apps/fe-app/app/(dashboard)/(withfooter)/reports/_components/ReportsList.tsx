@@ -41,11 +41,9 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
     <>
       <div className="inline-flex items-center justify-center">
         <div className="flex w-full items-start">
-          <div className="flex flex-row items-center gap-2">
+          <div className="flex flex-row items-center py-6 gap-2">
             <SearchBar />
-            <div className="mt-1">
-              <FilterReport />
-            </div>
+            <FilterReport />
           </div>
         </div>
       </div>
@@ -54,7 +52,7 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
           {reports.map((report, idx) => (
             <div
               key={report.identifier}
-              className="sm:max-w-[380px] md:max-w-[512px] md:min-w-[512px] xl:min-w-[442px] xl:max-w-[442px] 3xl:max-w-[512px] 3xl:min-w-[512px] 4xl:min-w-[500px] 4xl:max-w-[500px] "
+              className="3xl:max-w-[512px] 3xl:min-w-[512px] 4xl:min-w-[500px] 4xl:max-w-[500px] sm:max-w-[380px] md:min-w-[512px] md:max-w-[512px] xl:min-w-[442px] xl:max-w-[442px]"
             >
               <ReportCard
                 link="/report/1"
