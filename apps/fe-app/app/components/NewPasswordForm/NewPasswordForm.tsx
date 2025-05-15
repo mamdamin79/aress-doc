@@ -51,8 +51,8 @@ export const NewPasswordForm: React.FC<NewPasswordFormProps> = ({
     >
       <h3 className="text-center text-xl font-medium">بازنشانی رمز عبور</h3>
       <div className="flex flex-col gap-7">
-        <div className="flex flex-col gap-4">
-          <div>
+        <div className="flex flex-col gap-4 text-right">
+          <div >
             <Controller
               name="password"
               control={control}

@@ -134,7 +134,10 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
               />
             )}
             {editDialog === 'password' && (
-              <ChangePassword phone={phoneNumber} />
+              <ChangePassword
+                phone={phoneNumber}
+                onClose={(success) => setEditDialog(success ? 'success' : null)}
+              />
             )}
           </Dialog>
         ))}
@@ -151,7 +154,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                 ? [
                     {
                       name: 'pencil',
-                      size:"lg",
+                      size: 'lg',
                       onClick: () => {
                         if (
                           edit &&
@@ -172,7 +175,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             leadingIcon={{
               name: icon,
               size: 'lg',
-              color:"secondary"
+              color: 'secondary',
             }}
             label={label}
             placeholder=""

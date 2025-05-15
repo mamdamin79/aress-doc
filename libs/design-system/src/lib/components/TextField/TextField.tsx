@@ -196,7 +196,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
         className={cn(
           'absolute left-4 z-10 flex items-center justify-between gap-4',
           {
-            'top-[44px]': label,
+            'top-[46px]': label,
             'top-[16px]': !label,
           },
           {
