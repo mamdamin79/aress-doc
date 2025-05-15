@@ -179,7 +179,7 @@ export const Button: React.FC<ButtonProps> = ({
               { 'text-center': align === 'center' },
               mode === 'underline' &&
                 !disabled &&
-                'pb-1 underline-offset-8 transition-transform group-hover:border-b group-hover:underline',
+                'underline-offset-8 transition-transform group-hover:border-b group-hover:underline',
             )}
           >
             {children}

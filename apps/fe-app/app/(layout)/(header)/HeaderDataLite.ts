@@ -73,6 +73,7 @@ export const MenuData: MenuItem[] = [
             link: '#',
             text: 'صندوق کالایی',
             isDashboard: true,
+            isActive: true,
           },
           {
             link: '#',
