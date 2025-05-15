@@ -15,6 +15,9 @@ export const ProfilePageContent: React.FC<AressApiUser> = (user) => {
   const { width } = useWindowSize();
   const throttledWidth = useThrottle(width, 200) ?? 0;
   const isDesktop = throttledWidth > 1024;
+  const userPhoneNumber = user.phoneNumber
+    ? `${user.phoneNumber.replace('+', '')}+`
+    : '';
   return (
     <div className="mx-auto flex w-full max-w-[1680px] justify-center">
       <div className="flex w-full flex-row gap-14 px-8 pb-28 pt-12 lg:px-20">
@@ -50,11 +53,7 @@ export const ProfilePageContent: React.FC<AressApiUser> = (user) => {
               nationalID={
                 user.nationalCode ? Number(user.nationalCode) : undefined
               }
-              phoneNumber={
-                user.phoneNumber?.startsWith('+')
-                  ? user.phoneNumber
-                  : `+${user.phoneNumber}`
-              }
+              phoneNumber={userPhoneNumber}
               username={user.username}
             />
           </div>

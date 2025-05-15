@@ -151,6 +151,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
                 ? [
                     {
                       name: 'pencil',
+                      size:"lg",
                       onClick: () => {
                         if (
                           edit &&
@@ -170,7 +171,8 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             }
             leadingIcon={{
               name: icon,
-              size: 'md',
+              size: 'lg',
+              color:"secondary"
             }}
             label={label}
             placeholder=""

@@ -60,7 +60,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
       )}
     >
       {label && (
-        <div className="h-[26px] mb-1">
+        <div className="mb-1 h-[26px]">
           {mergeTitleAndPlaceholder ? (
             (isFocused || inputValue) && (
               <label
@@ -108,6 +108,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
             },
             {
               'text-gray-400': disabled,
+              'text-gray-500': leadingIcon.color === 'secondary',
               'cursor-pointer': leadingIcon.onClick,
               'top-10': leadingIcon?.size === 'md' && label,
             },
@@ -193,7 +194,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
 
       <div
         className={cn(
-          'absolute left-4 z-20 flex items-center justify-between gap-4',
+          'absolute left-4 z-10 flex items-center justify-between gap-4',
           {
             'top-[44px]': label,
             'top-[16px]': !label,
@@ -207,7 +208,10 @@ export const TextField: React.FC<textFieldPropsType> = ({
         )}
       >
         {trailingIcons.map((icon) => {
-          const isDisabled = cn({ 'text-gray-400': disabled });
+          const isDisabled = cn({
+            'text-gray-400': disabled,
+            'text-gray-500': icon.color === 'secondary',
+          });
 
           if (icon.name === 'eye') {
             return (
@@ -254,7 +258,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
             'text-red-600': isError,
             'text-gray-600': !isError,
             'text-gray-400': disabled,
-            "-mt-2":longText
+            '-mt-2': longText,
           })}
         >
           {supportText}
