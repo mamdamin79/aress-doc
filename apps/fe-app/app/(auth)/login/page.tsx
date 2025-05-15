@@ -3,12 +3,24 @@ import React from 'react';
 import TERMINAL_LOGIN from '@aress-assets/icons/TerminalLogin.svg';
 import Image from 'next/image';
 import { FormWrapper } from './_components';
-
+import Logo from '@aress-assets/icons/product_logo.svg';
 const LoginPage = () => {
   return (
-    <div className="h-[100vh]">
-      <div className="flex w-full flex-col items-center justify-center gap-10 pt-10">
-        <SectionTitle align="center" level={1} title={'خوش آمدید!'} />
+    <div className="flex h-full justify-center">
+      <div className="max-w-screen-3xl flex w-full flex-col items-start justify-center gap-10 pt-[46px]">
+        <div className="relative flex w-full items-center justify-center">
+          <div className="absolute right-0 mr-8">
+            <div className="flex items-center gap-4">
+              <Image alt="logo" src={Logo} width={38} height={38} />
+              <h1 className="text-lg font-semibold">
+                پردازش اطلاعات مالی آرسس
+              </h1>
+            </div>
+          </div>
+          <div>
+            <SectionTitle align="center" level={1} title={'خوش آمدید!'} />
+          </div>
+        </div>
         <div className="flex w-full gap-20 px-[152px]">
           <div className="mt-[72px] w-1/2">
             <FormWrapper />

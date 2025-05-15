@@ -112,12 +112,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
           >
             ورود به ترمینال
           </Button>
-          <Link
-            href="/forgot"
-            className="text-brand-600 text-md text-center font-medium"
-          >
-            رمز عبور را فراموش کرده‌اید؟
-          </Link>
+          <Button align="center" isLoading={false} mode="underline" size="sm">
+            <Link href="/forgot">رمز عبور را فراموش کرده‌اید؟</Link>
+          </Button>
         </div>
       </div>
     </form>

@@ -110,12 +110,16 @@ export const OTPForm: React.FC<OTPFormProps> = ({
           </>
         ) : (
           showResendButton && (
-            <div
-              className="border-brand-600 text-brand-600 text-md cursor-pointer rounded-md border px-2 py-1 font-medium"
+            <Button
+              align="center"
+              isLoading={false}
+              mode="secondary"
+              size="sm"
+              className="text-md w-fit px-2 py-1 font-medium"
               onClick={handleResendCode}
             >
               درخواست مجدد کد
-            </div>
+            </Button>
           )
         )}
       </div>
