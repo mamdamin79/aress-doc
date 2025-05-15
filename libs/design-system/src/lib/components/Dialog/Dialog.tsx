@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react';
+'use client';
+import React, { Fragment, useEffect } from 'react';
 import {
   Dialog as HeadlessDialog,
   DialogPanel,
@@ -25,7 +26,7 @@ export const Dialog: React.FC<DialogProps> = ({
     <Transition appear show={isOpen} as={Fragment}>
       <HeadlessDialog
         as="div"
-        className="relative z-50"
+        className="relative z-50 w-screen"
         aria-label="Close dialog"
         onClose={onClose}
       >
