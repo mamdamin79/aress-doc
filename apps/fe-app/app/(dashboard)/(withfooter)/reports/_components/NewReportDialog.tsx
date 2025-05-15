@@ -50,7 +50,7 @@ export const NewReportDialog = () => {
           mode="primary"
           size="sm"
           onClick={openDialog}
-          className="fixed right-20 bottom-[78px] z-50 h-14 w-14 rounded-full"
+          className="fixed right-20 bottom-[78px] h-14 w-14 rounded-full"
         >
           {isOpen ? (
             <Icon name="x" size="lg" />
