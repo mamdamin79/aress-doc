@@ -43,7 +43,6 @@ export const SearchBar: React.FC = () => {
         leadingIcon={{
           name: 'search',
           size: 'lg',
-          onClick: (value) => handleSearch(value),
         }}
         trailingIcons={[
           { name: 'x', size: 'lg', onClick: () => handleClear() },
