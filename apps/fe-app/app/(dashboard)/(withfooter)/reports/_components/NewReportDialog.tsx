@@ -17,7 +17,6 @@ export const NewReportDialog = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [isError, setIsError] = useState(false); // Add state for error handling
 
   const {
     control,
@@ -33,18 +32,12 @@ export const NewReportDialog = () => {
 
   const onSubmit = async (data: any) => {
     setIsSubmitting(true);
-    setIsError(false); // Reset error state
-    try {
-      await new Promise((r) => setTimeout(r, 2000)); // Simulate API call
-      setIsSubmitting(false);
-      closeDialog();
-      await new Promise((r) => setTimeout(r, 1000)); // Simulate API call
-      setIsSuccess(true);
-      reset();
-    } catch (error) {
-      setIsSubmitting(false);
-      setIsError(true); // Set error state on failure
-    }
+    await new Promise((r) => setTimeout(r, 2000)); // Simulate API call
+    setIsSubmitting(false);
+    closeDialog();
+    await new Promise((r) => setTimeout(r, 1000)); // Simulate API call
+    setIsSuccess(true);
+    reset();
   };
 
   return (
@@ -57,7 +50,7 @@ export const NewReportDialog = () => {
           mode="primary"
           size="sm"
           onClick={openDialog}
-          className="z-50 h-14 w-14 rounded-full"
+          className="fixed right-20 bottom-[78px] z-50 h-14 w-14 rounded-full"
         >
           {isOpen ? (
             <Icon name="x" size="lg" />
@@ -148,17 +141,8 @@ export const NewReportDialog = () => {
           isOpen={isSuccess}
           onClose={() => setIsSuccess(false)}
           title="درخواست با موفقیت ثبت شد"
-          message="گزارش شما با موفقیت ثبت شد و در حال بررسی است."
-          mode="success"
-        />
-      )}
-      {(
-        <IconDialog
-          isOpen={isError}
-          onClose={() => setIsError(false)}
-          title="خطا در ارسال درخواست"
-          message="مشکلی در ارسال درخواست شما به وجود آمد. لطفاً دوباره تلاش کنید."
-          mode="error"
+          message='گزارش شما با موفقیت ثبت شد و در حال بررسی است.'
+          mode='success'
         />
       )}
     </div>

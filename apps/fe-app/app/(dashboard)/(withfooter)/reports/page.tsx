@@ -78,6 +78,7 @@ export default async function ReportMenuPage({
           <SideBar reports={reports} categories={categories} />
         </div>
       </div>
+      <NewReportDialog />
     </div>
   );
 }

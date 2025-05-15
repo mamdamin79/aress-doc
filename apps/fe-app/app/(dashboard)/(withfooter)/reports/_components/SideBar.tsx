@@ -18,19 +18,20 @@ export const SideBar: React.FC<Props> = ({ categories, reports }) => {
   return (
     <div
       className={cn(
-        'sticky top-4  mt-6 h-fit w-[180px] transition-all duration-300',
+        'sticky top-4 mt-6 h-fit w-[180px] transition-all duration-300',
         {
           'top-[107px]': isHeaderVisible,
         },
       )}
     >
-      <span className="mb-8 text-3xl inline-block font-medium">لیست‌ گزارش‌‌‌‌‌‌ها</span>
+      <span className="mb-8 inline-block text-3xl font-medium">
+        لیست‌ گزارش‌‌‌‌‌‌ها
+      </span>
       <div className="mb-6 flex items-center gap-2">
         <Icon name="layers-2" size="lg" />
         <div className="text-lg font-medium">دسته‌بندی‌ها</div>
       </div>
       <CategoryList reports={reports} categories={categories} />
-      <NewReportDialog/>
     </div>
   );
 };
