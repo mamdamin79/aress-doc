@@ -24,13 +24,6 @@ export const Dialog: React.FC<DialogProps> = ({
   className,
   showCloseBtn = true,
 }) => {
-  useEffect(() => {
-    if (isOpen) {
-      document.documentElement.classList.add('modal-open');
-    } else {
-      document.documentElement.classList.remove('modal-open');
-    }
-  }, [isOpen]);
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <HeadlessDialog
