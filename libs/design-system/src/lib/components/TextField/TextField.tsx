@@ -60,7 +60,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
       )}
     >
       {label && (
-        <div className="h-[26px]">
+        <div className="h-[26px] mb-1">
           {mergeTitleAndPlaceholder ? (
             (isFocused || inputValue) && (
               <label
@@ -254,6 +254,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
             'text-red-600': isError,
             'text-gray-600': !isError,
             'text-gray-400': disabled,
+            "-mt-2":longText
           })}
         >
           {supportText}
