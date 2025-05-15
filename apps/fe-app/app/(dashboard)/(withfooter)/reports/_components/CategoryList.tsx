@@ -16,7 +16,7 @@ export const CategoryList: React.FC<Props> = ({ categories, reports }) => {
   const searchParams = useSearchParams();
   const handleCategory = (title: string) => {
     const params = new URLSearchParams(searchParams);
-    if (title === 'همه ی گزارش ها') {
+    if (title === 'همه‌ی گزارش‌‌‌‌‌‌ها') {
       params.delete('category');
       router.replace(`/reports?${params.toString()}`);
       return;
@@ -28,7 +28,7 @@ export const CategoryList: React.FC<Props> = ({ categories, reports }) => {
   return (
     <ul>
       <li
-        onClick={() => handleCategory('همه ی گزارش ها')}
+        onClick={() => handleCategory('همه‌ی گزارش‌‌‌‌‌‌ها')}
         className={cn(
           'mb-4 flex cursor-pointer items-center gap-2 rounded-md text-sm font-medium text-gray-700',
           { 'text-gray-900': !searchParams.get('category') },
@@ -41,10 +41,10 @@ export const CategoryList: React.FC<Props> = ({ categories, reports }) => {
         ></div>
         <span
           className={cn({
-            'border-brand-600 border-b': !searchParams.get('category'),
+            'border-brand-600 border-b-[1.5px]': !searchParams.get('category'),
           })}
         >
-          همه ی گزارش ها ({reports.length})
+          همه‌ی گزارش‌‌‌‌‌‌ها ({reports.length})
         </span>
       </li>
       {categories.map((category) => (
@@ -71,7 +71,7 @@ export const CategoryList: React.FC<Props> = ({ categories, reports }) => {
             ></div>
             <span
               className={cn({
-                'border-brand-600 border-b transition-colors group-hover:text-gray-700':
+                'border-brand-600 border-b-[1.5px] transition-colors group-hover:text-gray-700':
                   category.title === searchParams.get('category'),
               })}
             >

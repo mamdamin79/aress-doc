@@ -61,11 +61,11 @@ export default async function ReportMenuPage({
   );
 
   return (
-    <div className="mx-auto flex justify-center px-20 xl:mx-[80px] xl:block">
-      <div className="flex flex-row-reverse items-stretch justify-between gap-4 md:max-w-[772px] xl:max-w-full xl:justify-center">
+    <div className="mx-auto flex justify-center px-20 xl:block">
+      <div className="flex flex-row-reverse items-stretch justify-between gap-8 md:max-w-[772px] xl:max-w-full xl:justify-center">
         <div>
           <ReportList reports={paginatedReports} />
-          <div className="mt-16">
+          <div className="mt-12">
             <Pagination
               currentPage={currentPage}
               pageCount={totalPages}

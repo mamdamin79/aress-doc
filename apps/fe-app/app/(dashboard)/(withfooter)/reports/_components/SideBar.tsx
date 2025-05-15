@@ -6,6 +6,7 @@ import {
   GetDashboardReportsResponse,
 } from '@openapi';
 import { useHeaderVisibility } from '../../../../../hooks/useHeaderVisiblity';
+import { NewReportDialog } from './NewReportDialog';
 
 type Props = {
   categories: GetDashboardReportsCategoriesResponse;
@@ -19,14 +20,16 @@ export const SideBar: React.FC<Props> = ({ categories, reports }) => {
       className={cn(
         'sticky top-4 mt-6 h-fit w-[180px] transition-all duration-300',
         {
-          'top-28': isHeaderVisible,
+          'top-[107px]': isHeaderVisible,
         },
       )}
     >
-      <h1 className="mb-5 text-3xl font-medium">لیست گزارش ها</h1>
-      <div className="mb-4 flex items-center gap-2">
+      <span className="mb-8 inline-block text-3xl font-medium">
+        لیست‌ گزارش‌‌‌‌‌‌ها
+      </span>
+      <div className="mb-6 flex items-center gap-2">
         <Icon name="layers-2" size="lg" />
-        <div className="text-lg font-medium">دسته بندی ها</div>
+        <div className="text-lg font-medium">دسته‌بندی‌ها</div>
       </div>
       <CategoryList reports={reports} categories={categories} />
     </div>
