@@ -135,12 +135,13 @@ export const SlidersBox: React.FC = () => {
 
   // Manual scroll sync and stop auto-rotate
   useEffect(() => {
-    let scrollTimeout: NodeJS.Timeout | null = null;
+    let scrollTimeout: number | null = null;
+
     const onScroll = () => {
       if (isProgamScroll) {
         // Ignore this scroll event, reset the flag after a short delay
         if (scrollTimeout) clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => setIsProgramScroll(false), 300);
+        scrollTimeout = window.setTimeout(() => setIsProgramScroll(false), 300);
         return;
       }
       if (activeRotate !== null) {
@@ -153,9 +154,19 @@ export const SlidersBox: React.FC = () => {
         setCurrIndex(bounded);
       }
     };
+
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onScroll();
+      }
+    };
+
+    window.addEventListener('keydown', handleEsc, { passive: true });
     window.addEventListener('scroll', onScroll, { passive: true });
+
     return () => {
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('keydown', handleEsc);
       if (scrollTimeout) clearTimeout(scrollTimeout);
     };
   }, [barsNumber, currIndex, activeRotate, isProgamScroll]);

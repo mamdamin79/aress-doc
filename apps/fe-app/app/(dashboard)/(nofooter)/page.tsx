@@ -10,9 +10,7 @@ const page = () => {
       <div id="slidesSection" className={cn('w-fit', styles.customScrollbar)}>
         <SlidersBox />
       </div>
-      
         <FundsSidebarWrapper />
-      
     </div>
   );
 };

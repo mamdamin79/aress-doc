@@ -55,7 +55,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
 
   return (
     <div
-      className="bg-baseBackground flex h-[calc(100vh-16px)] w-full min-w-[296px] flex-col items-center overflow-y-hidden rounded-tl-2xl rounded-tr-2xl border-2 border-b-0 border-gray-300 pt-4"
+      className="bg-baseBackground flex h-[calc(100vh-16px)] w-full min-w-[296px] flex-col items-center overflow-x-hidden overflow-y-hidden rounded-tl-2xl rounded-tr-2xl border-2 border-b-0 border-gray-300 px-1 pt-4"
       ref={containerRef}
     >
       <div
@@ -135,7 +135,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
         </div>
       </div>
       <div
-        className="custom-scrollbar grid w-full grid-cols-[60px_88px_1fr] gap-4 overflow-y-scroll px-4"
+        className="scrollbar-sm grid w-full grid-cols-[60px_88px_1fr] gap-4 overflow-x-hidden overflow-y-hidden px-3 hover:overflow-y-scroll hover:pr-2"
         ref={listContainerRef}
         onScroll={handleScroll}
         dir="ltr"
