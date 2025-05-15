@@ -55,7 +55,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
 
   return (
     <div
-      className="bg-baseBackground flex h-[calc(100vh-16px)] w-full min-w-[296px] flex-col items-center overflow-x-hidden overflow-y-hidden rounded-tl-2xl rounded-tr-2xl border-2 border-b-0 border-gray-300 px-1 pt-4"
+      className="bg-baseBackground flex h-[calc(100vh-16px)] w-full  flex-col items-center overflow-x-hidden overflow-y-hidden rounded-tl-2xl rounded-tr-2xl border-2 border-b-0 border-gray-300 px-1 pt-4"
       ref={containerRef}
     >
       <div

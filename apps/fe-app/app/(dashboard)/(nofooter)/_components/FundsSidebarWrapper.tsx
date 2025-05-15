@@ -120,7 +120,7 @@ export const FundsSidebarWrapper: React.FC = () => {
   return (
     <div
       className={cn(
-        '3xl:block sticky hidden h-fit w-fit transition-all duration-300 xl:hidden',
+        '3xl:block sticky hidden h-fit min-w-[296px] transition-all duration-300 lg:block xl:hidden',
       )}
       style={{
         top: isHeaderVisible ? `104px` : `24px`,

@@ -57,14 +57,14 @@ function SortableItem({ item }: { item: Item }) {
       style={style}
       {...attributes}
       {...listeners}
-      className="shadow-6xl relative h-[336px] w-full overflow-hidden rounded-2xl border-2 border-gray-200"
+      className="shadow-6xl relative h-[336px] overflow-hidden rounded-2xl border-2 border-gray-200"
     >
       {item.type === 'image' && (
         <Image
-          fill
           src={item.content}
           alt="slider-image"
-          className="h-full w-full object-cover"
+          fill
+          className="h-full object-contain"
         />
       )}
     </div>
@@ -81,6 +81,11 @@ export const SlidersBox: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const initialImages = [
+    '/charts/Report 6.png?v=2',
+    '/charts/Report 7.png?v=2',
+    '/charts/Report 8.png?v=2',
+    '/charts/Report 9.png?v=2',
+    '/charts/Report 10.png?v=2',
     '/charts/Report 6.png?v=2',
     '/charts/Report 7.png?v=2',
     '/charts/Report 8.png?v=2',
@@ -177,7 +182,7 @@ export const SlidersBox: React.FC = () => {
       setCurrIndex(bounded);
       setIsProgramScroll(true);
       window.scrollTo({
-        top: bounded * CARD_HEIGHT * 1.5 + 80,
+        top: bounded * CARD_HEIGHT * 2.3 + 80,
         behavior: 'smooth',
       });
     },
@@ -250,7 +255,7 @@ export const SlidersBox: React.FC = () => {
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
       >
-        <section className="mt-6 flex w-fit justify-center">
+        <section className="mt-6 flex w-fit max-w-full justify-center">
           <SortableContext
             items={items.map((i) => i.id)}
             strategy={rectSortingStrategy}
