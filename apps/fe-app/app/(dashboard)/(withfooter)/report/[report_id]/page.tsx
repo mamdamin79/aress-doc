@@ -6,12 +6,16 @@ import { ReportDetailPageApiResponse } from './_types/api.types';
 import Markdown from 'react-markdown';
 import { VideoPlayerWrapper } from './_components/VideoPlayerWrapper';
 import { DashboardService, OpenAPI } from '@openapi';
+import { fetchToken } from '../../../../(auth)/auth.utils';
 
 async function getData(id: number) {
+  const token = await fetchToken();
+  if (!token) {
+    throw new Error('Failed to fetch access token');
+  }
   OpenAPI.HEADERS = {
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzQ1NDE2MjY5fQ.fYoeXOvstJcWxcoExDW1fwwmvzi0L7aXqgO_3viizU0`,
+    Authorization: `Bearer ${token}`,
   };
-
   const user = (await DashboardService.getDashboardReportsByReportId({
     reportId: id,
   })) as ReportDetailPageApiResponse;

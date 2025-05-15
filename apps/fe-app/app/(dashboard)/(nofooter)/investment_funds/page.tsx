@@ -274,7 +274,7 @@ useEffect(() => {
                         <th
                           key={index}
                           className={cn(
-                            'sticky right-0 top-0 z-40 m-0 w-[312px] overflow-y-hidden p-0',
+                            'sticky right-0 top-0 z-40 m-0 w-[312px] p-0',
                             isScrollAtStart ? 'shadow' : 'shadow-none',
                           )}
                         >
@@ -707,6 +707,7 @@ useEffect(() => {
                             {index === 0 && (
                               <td className="sticky right-0 z-40 bg-white m-0 p-0">
                                 <FundsTableRow
+                                  index={rowIndex}
                                   tag={!isMainTab}
                                   category={
                                     isMainTab

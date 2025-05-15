@@ -14,6 +14,7 @@ export interface DialogProps {
   onClose: () => void;
   children?: React.ReactNode;
   className?: string;
+  showCloseBtn?: boolean;
 }
 
 export const Dialog: React.FC<DialogProps> = ({
@@ -21,6 +22,7 @@ export const Dialog: React.FC<DialogProps> = ({
   isOpen = true,
   onClose,
   className,
+  showCloseBtn = true,
 }) => {
   useEffect(() => {
     if (isOpen) {
@@ -66,12 +68,15 @@ export const Dialog: React.FC<DialogProps> = ({
                   className,
                 )}
               >
-                <button
-                  onClick={onClose}
-                  className="absolute left-0 top-0 -ml-2 -mt-2 flex items-center justify-center rounded-full shadow-lg"
-                >
-                  <Icon name="CustomCirlcleX" size="lg_plus" />
-                </button>
+                {showCloseBtn && (
+                  <button
+                    onClick={onClose}
+                    className="absolute left-0 top-0 -ml-2 -mt-2 flex items-center justify-center rounded-full shadow-lg"
+                  >
+                    <Icon name="CustomCirlcleX" size="lg_plus" />
+                  </button>
+                )}
+
                 {children}
               </DialogPanel>
             </TransitionChild>

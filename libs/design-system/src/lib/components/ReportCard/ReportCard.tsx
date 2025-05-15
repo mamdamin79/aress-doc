@@ -37,7 +37,7 @@ export const ReportCard: React.FC<ReportCardProps> = ({
   return (
     <div
       className={cn(
-        `group relative flex flex-col overflow-hidden rounded-3xl border-[3px] border-gray-100 bg-gray-100 transition-all hover:shadow-md`,
+        `group relative flex flex-col overflow-hidden rounded-3xl border-[3px] border-gray-100 bg-gray-100 transition-all hover:shadow-7xl`,
         fixedBrief
           ? 'h-[448px] min-w-[380px] max-w-[512px] items-start'
           : 'h-[318px] min-w-[304px] max-w-[416px]',
@@ -115,7 +115,12 @@ export const ReportCard: React.FC<ReportCardProps> = ({
                 {summary}
               </span>
               <div className="absolute bottom-4 right-0 flex w-full items-center justify-between px-4">
-                <LikeBadge isLiked={userFavorite} onClick={() => onLike?.()} />
+                <LikeBadge
+                  isLiked={userFavorite}
+                  onClick={() => onLike?.()}
+                  hasFrame={true}
+                  size="lg"
+                />
                 <div className="flex h-[38px] origin-left scale-x-[0.3] transform items-center overflow-hidden rounded-[100px] text-xs opacity-0 transition-all duration-300 ease-in-out group-hover:scale-x-100 group-hover:opacity-100">
                   <Link href={link ?? '/'}>
                     <Button

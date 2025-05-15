@@ -21,7 +21,6 @@ export * from './FundsTableRow';
 export * from './FilterPopUpSection';
 export * from './FundsColumn';
 export * from './ReportCard';
-export * from './Heart';
 export * from './SquaredButton';
 export * from './Tooltip';
 export * from './ReportsCarousel';
