@@ -230,15 +230,24 @@ const Funds = () => {
     }
   };
 
-const handlerMouseEnterTable = () => {
-  requestAnimationFrame(() => {
-    if (tableRef.current) {
-      const hasVerticalScroll =
-        tableRef.current.scrollHeight > tableRef.current.clientHeight;
-      setCanScrollVertical(hasVerticalScroll);
-    }
-  });
-};
+  const handlerMouseEnterTable = () => {
+    requestAnimationFrame(() => {
+      if (tableRef.current) {
+        const hasVerticalScroll =
+          tableRef.current.scrollHeight > tableRef.current.clientHeight;
+        setCanScrollVertical(hasVerticalScroll);
+      } else setCanScrollVertical(false);
+    });
+  };
+
+  const pageSize = table.getPageCount();
+
+  useEffect(() => {
+    handlerMouseEnterTable();
+  }, [indexCategoryTab, pageSize])
+
+
+
 
   return (
     <>
@@ -399,7 +408,7 @@ const handlerMouseEnterTable = () => {
                                       header.column.getIsSorted() === 'asc'
                                         ? 'active-asc'
                                         : header.column.getIsSorted() === 'desc'
-                                         ? 'inactive' : 'inactive'
+                                          ? 'inactive' : 'inactive'
                                     }
                                     filterable={columnFilters.some(
                                       (filterItem) =>
@@ -445,8 +454,8 @@ const handlerMouseEnterTable = () => {
                                         {(Object.entries(selectedFilters)
                                           .length > 0 ||
                                           fundSearchQuery) && (
-                                          <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
-                                        )}
+                                            <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
+                                          )}
                                         <Icon size="lg" name="filter" />
                                       </div>
                                     </Tooltip>
@@ -550,7 +559,7 @@ const handlerMouseEnterTable = () => {
                                               (prop.text ===
                                                 'انتقال به ابتدا' ||
                                                 prop.text ===
-                                                  'انتقال به راست')) ||
+                                                'انتقال به راست')) ||
                                             (index + 1 ===
                                               updateTableHeaders.length &&
                                               (prop.text ===
@@ -560,7 +569,7 @@ const handlerMouseEnterTable = () => {
                                             (header.column.getIsSorted() ===
                                               'desc' &&
                                               prop.text ===
-                                                'مرتب سازی نزولی') ||
+                                              'مرتب سازی نزولی') ||
                                             (header.column.getIsSorted() ===
                                               'asc' &&
                                               prop.text === 'مرتب سازی صعودی'),
@@ -607,7 +616,7 @@ const handlerMouseEnterTable = () => {
                                         header.column.getIsSorted() === 'asc'
                                           ? 'active-desc'
                                           : header.column.getIsSorted() ===
-                                              'desc'
+                                            'desc'
                                             ? 'active-asc'
                                             : 'inactive'
                                       }
@@ -793,16 +802,16 @@ const handlerMouseEnterTable = () => {
                                       isMainTab
                                         ? row.pin('top', true)
                                         : setPineWatchList([
-                                            ...pineWatchLis,
-                                            row.id,
-                                          ])
+                                          ...pineWatchLis,
+                                          row.id,
+                                        ])
                                     }
                                     unPinedFunction={() =>
                                       isMainTab
                                         ? row.pin(false)
                                         : setPineWatchList((prev) =>
-                                            prev.filter((id) => id !== row.id),
-                                          )
+                                          prev.filter((id) => id !== row.id),
+                                        )
                                     }
                                     isScrolled={isScrollAtStart}
                                     investmentMethod={
@@ -840,12 +849,12 @@ const handlerMouseEnterTable = () => {
                         <div className="sticky right-0 mb-2 mt-5 w-screen whitespace-nowrap text-sm text-gray-600">
                           {formatNumber(
                             table.getState().pagination.pageSize *
-                              (table.getState().pagination.pageIndex + 1),
+                            (table.getState().pagination.pageIndex + 1),
                             { commaSeparated: true },
                           ) ===
                             formatNumber(
                               table.getPageCount() *
-                                table.getState().pagination.pageSize,
+                              table.getState().pagination.pageSize,
                               { commaSeparated: true },
                             ) && 'پایان لیست صندوق ها.'}
                         </div>
@@ -884,7 +893,7 @@ const handlerMouseEnterTable = () => {
                   <span>تعداد سطر در جدول: </span>
                   {formatNumber(
                     table.getState().pagination.pageSize *
-                      (table.getState().pagination.pageIndex + 1),
+                    (table.getState().pagination.pageIndex + 1),
                     { commaSeparated: true },
                   )}
                 </div>
@@ -905,8 +914,8 @@ const handlerMouseEnterTable = () => {
                   {
                     'pb-2':
                       table.getState().pagination.pageSize *
-                        (table.getState().pagination.pageIndex + 1) *
-                        table.getPageCount() ===
+                      (table.getState().pagination.pageIndex + 1) *
+                      table.getPageCount() ===
                       +prop.text,
                   },
                 )}
@@ -915,7 +924,7 @@ const handlerMouseEnterTable = () => {
                   {table.getState().pagination.pageSize *
                     (table.getState().pagination.pageIndex + 1) *
                     table.getPageCount() ===
-                  +prop.text
+                    +prop.text
                     ? 'همه'
                     : prop.text}
                 </span>
@@ -929,8 +938,8 @@ const handlerMouseEnterTable = () => {
               {
                 text: String(
                   table.getState().pagination.pageSize *
-                    (table.getState().pagination.pageIndex + 1) *
-                    table.getPageCount(),
+                  (table.getState().pagination.pageIndex + 1) *
+                  table.getPageCount(),
                 ),
               },
             ]}
@@ -948,7 +957,7 @@ const handlerMouseEnterTable = () => {
             <div>
               {formatNumber(
                 table.getState().pagination.pageSize *
-                  (table.getState().pagination.pageIndex + 1),
+                (table.getState().pagination.pageIndex + 1),
                 { commaSeparated: true },
               )}
               -
