@@ -36,7 +36,7 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
     bg: 'primary',
     checkSelected: false,
     emphasize: 'medium',
-    shadow:true,
+    shadow: true,
     size: 'md',
   },
   customTriggerRender,
@@ -97,6 +97,7 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
         }
       </ListboxButton>
       <ListboxOptions
+        modal={false}
         anchor={dropDownStyles.anchor}
         className={cn(
           'z-50 mt-1 max-h-[265px] gap-1 overflow-y-scroll rounded-lg border border-gray-300 bg-white outline-none',

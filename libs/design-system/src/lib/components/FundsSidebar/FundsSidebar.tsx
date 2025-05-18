@@ -55,7 +55,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
 
   return (
     <div
-      className="bg-baseBackground flex h-[calc(100vh-16px)] w-full  flex-col items-center overflow-x-hidden overflow-y-hidden rounded-tl-2xl rounded-tr-2xl border-2 border-b-0 border-gray-300 px-1 pt-4"
+      className="bg-baseBackground flex h-[calc(100vh-16px)] w-full flex-col items-center overflow-x-hidden overflow-y-hidden rounded-tl-2xl rounded-tr-2xl border-2 border-b-0 border-gray-300 px-1 pt-4"
       ref={containerRef}
     >
       <div
@@ -64,7 +64,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
           scrollTopPosition > 0 && 'shadow-3xl',
         )}
       >
-        <div className="flex w-full justify-center">
+        <div className="flex w-full justify-center px-4">
           <OptionsDropdown
             onChange={onCategoryChange}
             dropDownList={[
