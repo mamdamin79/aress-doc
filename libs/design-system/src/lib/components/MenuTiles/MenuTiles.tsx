@@ -1,13 +1,11 @@
+'use client';
 import React from 'react';
 import { Icon } from '../Icon';
 import { MenuTilesProps } from './MenuTiles.types';
 import { cn } from '../../../utils/classNames.utils';
 import Link from 'next/link';
+import { useMenuModal } from './MenuModalsProvider';
 
-// We define a wrapper around each item in the menu to have
-// the correct semantic. for example for links and user dashboards wrap
-// all elements inside an a tag. and for a element that modified dashboard
-// and has a leading action instead of a link we wrap it inside a button
 const MenuTilesWrapper = ({
   children,
   link,
@@ -35,9 +33,6 @@ const MenuTilesWrapper = ({
   );
 };
 
-// In this part we handle icon and logos, also some logos in the menu
-// have a colorful badge that we define it using the badgeColor prop
-// All logos and Icons should be implemented inside Our custom icon component
 const IconWithBadge = ({
   icon,
   badgeColor,
@@ -49,7 +44,7 @@ const IconWithBadge = ({
 }) => (
   <div
     className={cn(
-      'flex flex-col items-start gap-2 pt-[3px] h-fit relative',
+      'relative flex h-fit flex-col items-start gap-2 pt-[3px]',
       isDisabled ? 'text-gray-400' : 'text-gray-1000',
     )}
   >
@@ -61,7 +56,7 @@ const IconWithBadge = ({
     {icon && badgeColor && (
       <div
         className={cn(
-          'w-2 h-2 rounded-full mr-1 absolute bottom-0 -right-1',
+          'absolute -right-1 bottom-0 mr-1 h-2 w-2 rounded-full',
           badgeColor,
         )}
       />
@@ -69,11 +64,6 @@ const IconWithBadge = ({
   </div>
 );
 
-// Based on the design text elements in the menu tiles contain
-// title only or title with subTexts that are under out main title(optional)
-// Also there is a prefix which can be used to add to each tile title
-// eg: counter of the number of dashboards
-// note: we only render the prefix if the type of tile is dashboard
 const TextContainer = ({
   text,
   subText,
@@ -92,7 +82,7 @@ const TextContainer = ({
   <div className="text-right">
     <p
       className={cn(
-        'text-sm font-semibold',
+        'text-sm font-medium',
         isActive && !isDashboard ? 'text-brand-700' : 'text-gray-1000',
         !isActive && (isDisabled ? 'text-gray-400' : 'text-gray-1000'),
       )}
@@ -103,7 +93,7 @@ const TextContainer = ({
     {subText && (
       <p
         className={cn(
-          'font-semibold text-xs',
+          'text-xs font-medium',
           isActive && !isDashboard ? 'text-brand-600' : 'text-gray-600',
         )}
       >
@@ -112,7 +102,6 @@ const TextContainer = ({
     )}
   </div>
 );
-
 export const MenuTiles: React.FC<MenuTilesProps> = ({
   text,
   subText,
@@ -121,10 +110,12 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
   expandable = false,
   isDashboard = false,
   isActive = false,
-  leadingAction,
+  action,
   isDisabled = false,
   prefix = '',
   link,
+  meta,
+  onClick,
 }) => {
   const wrapperClasses = `w-full min-w-[240px] max-w-[272px] flex items-center justify-between py-2 pr-3 transition-all 
     bg-baseBackground ${!isDisabled && 'hover:bg-brand-100'} ${
@@ -139,17 +130,22 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
         : 'border-0 cursor-pointer'
     }`;
 
+  const { openModal } = useMenuModal();
+  const handleOnClick = () => {
+    if (action === 'openModal' && meta?.modalName) {
+      openModal(meta?.modalName as any);
+    }
+  };
+
   return (
     <MenuTilesWrapper
       link={link}
       isDisabled={isDisabled}
-      onClick={leadingAction}
+      onClick={handleOnClick}
       className={isDashboard ? dashboardClasses : wrapperClasses}
     >
-      {/* Elements of dashboard are limited and we conditionally render two type of components based
-      on the value of the isDashboard prop */}
       {!isDashboard ? (
-        <div className="flex justify-start gap-2 relative w-full pl-5">
+        <div className="relative flex w-full justify-start gap-2 pl-5">
           <IconWithBadge
             icon={icon}
             badgeColor={badgeColor}
@@ -163,21 +159,20 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
             isDisabled={isDisabled}
           />
           {expandable && (
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 ">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2">
               <Icon name="chevron-left" size="md" />
             </div>
           )}
         </div>
       ) : (
-        <>
+        <div className="group/text">
           <div
             className={`absolute -right-[1.5px] bottom-0 top-0 my-auto transition-all ${
               isActive
-                ? 'bg-brand-600 h-5 w-[4px] rounded-bl-[3px] rounded-tl-[3px]'
-                : 'bg-brand-400 group-hover:bg-brand-600 h-4 w-[2px] rounded-lg group-hover:h-5'
+                ? 'bg-brand-600 h-5 w-1 rounded-bl-[3px] rounded-tl-[3px]'
+                : 'bg-brand-400 group-hover/text:bg-brand-600 h-4 w-0.5 rounded-lg group-hover/text:h-5'
             }`}
           />
-
           <div className="flex justify-start pr-2">
             <TextContainer
               text={text}
@@ -186,7 +181,7 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
               isDashboard={true}
             />
           </div>
-        </>
+        </div>
       )}
     </MenuTilesWrapper>
   );

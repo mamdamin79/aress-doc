@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react';
+'use client';
+import React, { Fragment, useEffect } from 'react';
 import {
   Dialog as HeadlessDialog,
   DialogPanel,
@@ -13,6 +14,7 @@ export interface DialogProps {
   onClose: () => void;
   children?: React.ReactNode;
   className?: string;
+  showCloseBtn?: boolean;
 }
 
 export const Dialog: React.FC<DialogProps> = ({
@@ -20,12 +22,13 @@ export const Dialog: React.FC<DialogProps> = ({
   isOpen = true,
   onClose,
   className,
+  showCloseBtn = true,
 }) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <HeadlessDialog
         as="div"
-        className="relative z-[100]"
+        className="relative z-[100] w-screen"
         aria-label="Close dialog"
         onClose={onClose}
       >
@@ -58,12 +61,15 @@ export const Dialog: React.FC<DialogProps> = ({
                   className,
                 )}
               >
-                <button
-                  onClick={onClose}
-                  className="absolute left-0 top-0 z-10 -ml-2 -mt-2 flex items-center justify-center rounded-full shadow-lg"
-                >
-                  <Icon name="CustomCirlcleX" size="lg_plus" />
-                </button>
+                {showCloseBtn && (
+                  <button
+                    onClick={onClose}
+                    className="absolute left-0 top-0 -ml-2 -mt-2 flex items-center justify-center rounded-full shadow-lg"
+                  >
+                    <Icon name="CustomCirlcleX" size="lg_plus" />
+                  </button>
+                )}
+
                 {children}
               </DialogPanel>
             </TransitionChild>

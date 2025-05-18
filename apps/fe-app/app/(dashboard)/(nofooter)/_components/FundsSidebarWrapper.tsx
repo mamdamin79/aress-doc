@@ -1,3 +1,4 @@
+'use client';
 const data = [
   {
     changeValue: 23,
@@ -110,9 +111,22 @@ const data = [
     title: 'صندوق تک سهم بورس',
   },
 ];
-import { FundsSidebar } from 'design-system';
+import { cn, FundsSidebar } from 'design-system';
 import React from 'react';
-
+import { useHeaderVisibility } from '../../../../hooks';
 export const FundsSidebarWrapper: React.FC = () => {
-  return <FundsSidebar data={data}/>;
+  const { isHeaderVisible } = useHeaderVisibility();
+
+  return (
+    <div
+      className={cn(
+        '3xl:block sticky hidden h-fit min-w-[296px] transition-all duration-300 lg:block xl:hidden',
+      )}
+      style={{
+        top: isHeaderVisible ? `104px` : `24px`,
+      }}
+    >
+      <FundsSidebar data={data} />
+    </div>
+  );
 };

@@ -1,18 +1,48 @@
 'use client';
 
 import { useState } from 'react';
-import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
-
-import { Checkbox, TextField, FileUpload, Button, Icon } from 'design-system';
+import { useForm, Controller } from 'react-hook-form';
+import {
+  Checkbox,
+  TextField,
+  FileUpload,
+  Button,
+  Icon,
+  Dialog,
+  Tooltip,
+  IconDialog,
+} from 'design-system';
 
 export const NewReportDialog = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isValid },
+    reset,
+  } = useForm({
+    mode: 'onChange',
+  });
 
   const openDialog = () => setIsOpen(true);
   const closeDialog = () => setIsOpen(false);
 
+  const onSubmit = async (data: any) => {
+    setIsSubmitting(true);
+    await new Promise((r) => setTimeout(r, 2000)); // Simulate API call
+    setIsSubmitting(false);
+    closeDialog();
+    await new Promise((r) => setTimeout(r, 1000)); // Simulate API call
+    setIsSuccess(true);
+    reset();
+  };
+
   return (
     <div>
+      <Tooltip title="درخواست گزارش جدید" position="top">
         <Button
           align="center"
           type="button"
@@ -20,7 +50,7 @@ export const NewReportDialog = () => {
           mode="primary"
           size="sm"
           onClick={openDialog}
-          className='rounded-full w-14 h-14'
+          className="fixed right-20 bottom-[78px] h-14 w-14 rounded-full"
         >
           {isOpen ? (
             <Icon name="x" size="lg" />
@@ -28,58 +58,93 @@ export const NewReportDialog = () => {
             <Icon name="clipboard-plus" size="lg" />
           )}
         </Button>
+      </Tooltip>
       <Dialog
-        open={isOpen}
         onClose={closeDialog}
-        className="relative z-50 w-full"
+        isOpen={isOpen}
+        className="w-[480px] text-right xl:w-[584px]"
       >
-        {/* Overlay */}
-        <div className="fixed inset-0 bg-black/50" aria-hidden="true" />
-
-        {/* Content */}
-        <div className="fixed inset-0 flex items-center justify-center p-4">
-          <DialogPanel className="w-full max-w-lg rounded-lg bg-white p-6 shadow-lg">
-            
-            <DialogTitle className="text-lg font-medium text-center text-gray-800">
-              درخواست گزارش جدید
-            </DialogTitle>
-            <form>
+        <div className="mb-6 text-center text-lg font-medium text-gray-800">
+          درخواست گزارش جدید
+        </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Controller
+            name="title"
+            control={control}
+            rules={{ required: 'عنوان گزارش الزامی است.' }}
+            render={({ field, fieldState }) => (
               <TextField
                 label="عنوان گزارش"
                 mergeTitleAndPlaceholder={false}
                 placeholder="عنوان گزارش مدنظر خود را اینجا وارد کنید..."
                 mode="outline"
                 trailingIcons={[]}
+                className="mb-6"
+                isError={!!fieldState.error}
+                supportText={fieldState.error?.message}
+                {...field}
               />
+            )}
+          />
+          <Controller
+            name="description"
+            control={control}
+            rules={{ required: 'شرح گزارش الزامی است.' }}
+            render={({ field, fieldState }) => (
               <TextField
                 label="شرح گزارش"
                 mergeTitleAndPlaceholder={false}
                 placeholder="میتواند شامل محور افقی و عمودی، روابط آماری و ریاضی و تشریح مدل‌های مالی باشد..."
                 mode="outline"
+                longText
                 trailingIcons={[]}
+                className="mb-6"
+                isError={!!fieldState.error}
+                supportText={fieldState.error?.message}
+                {...field}
               />
-              <div className="mb-6">
-                <h3 className="mb-2 text-sm font-medium">
-                  پیوست فایل اکسل فرآیند طراحی نمودار را تسهیل می‌کند. (اختیاری)
-                </h3>
-                <FileUpload types={['xls', 'xlsx']} maxSize={1000000000} />
-              </div>
-              <div className="mb-8">
-                <Checkbox onChange={()=>console.log("checked")} content="در مورد تشریح جزئیات گزارش احتیاج دارم با من تماس گرفته شود." />
-              </div>
-              <Button
-                align="center"
-                type="button"
-                isLoading={false}
-                mode="primary"
-                size="sm"
-              >
-                ثبت درخواست
-              </Button>
-            </form>
-          </DialogPanel>
-        </div>
+            )}
+          />
+          <div className="mb-6">
+            <h3 className="mb-2 text-sm font-medium">
+              پیوست فایل اکسل فرآیند طراحی نمودار را تسهیل می‌کند. (اختیاری)
+            </h3>
+            <FileUpload types={['xls', 'xlsx']} maxSize={1000000000} />
+          </div>
+          <div className="mb-8">
+            <Controller
+              name="contact"
+              control={control}
+              render={({ field }) => (
+                <Checkbox
+                  {...field}
+                  onChange={() => field.onChange(!field.value)}
+                  content="در مورد تشریح جزئیات گزارش احتیاج دارم با من تماس گرفته شود."
+                />
+              )}
+            />
+          </div>
+          <Button
+            align="center"
+            type="submit"
+            isLoading={isSubmitting}
+            mode="primary"
+            disabled={!isValid}
+            size="sm"
+          >
+            ثبت درخواست
+          </Button>
+        </form>
       </Dialog>
+      {(
+        <IconDialog
+          isOpen={isSuccess}
+          onClose={() => setIsSuccess(false)}
+          title="درخواست با موفقیت ثبت شد"
+          message='گزارش شما با موفقیت ثبت شد و در حال بررسی است.'
+          mode='success'
+        />
+      )}
     </div>
   );
 };

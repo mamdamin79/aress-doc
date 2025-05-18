@@ -14,7 +14,10 @@ export const MenuData: MenuItem[] = [
               name: 'pencil',
               size: 'md',
             },
-            leadingAction: () => console.log('clicked'),
+            action: 'openModal',
+            meta: {
+              modalName: 'changeDashboardName',
+            },
           },
           {
             text: 'کپی کردن داشبورد',
@@ -22,7 +25,10 @@ export const MenuData: MenuItem[] = [
               name: 'copy',
               size: 'md',
             },
-            leadingAction: () => console.log('clicked'),
+            action: 'openModal',
+            meta: {
+              modalName: 'copyDashboard',
+            },
           },
           {
             text: 'حذف داشبورد',
@@ -30,8 +36,10 @@ export const MenuData: MenuItem[] = [
               name: 'trash-2',
               size: 'md',
             },
-            leadingAction: () => console.log('clicked'),
-            isDisabled: true,
+            action: 'openModal',
+            meta: {
+              modalName: 'deleteDashboard',
+            },
           },
         ],
       },
@@ -44,7 +52,10 @@ export const MenuData: MenuItem[] = [
               name: 'plus',
               size: 'md',
             },
-            leadingAction: () => console.log('clicked'),
+            action: 'openModal',
+            meta: {
+              modalName: 'newDashboard',
+            },
           },
         ],
       },
@@ -62,6 +73,7 @@ export const MenuData: MenuItem[] = [
             link: '#',
             text: 'صندوق کالایی',
             isDashboard: true,
+            isActive: true,
           },
           {
             link: '#',

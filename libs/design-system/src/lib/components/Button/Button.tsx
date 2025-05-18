@@ -10,7 +10,7 @@ export interface ButtonProps
   size: ButtonSize;
   mode: ButtonMode;
   align: 'center' | 'right';
-  theme: 'brand' | 'error' | 'success' | 'neutral';
+  theme?: 'brand' | 'error' | 'success' | 'neutral';
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -88,17 +88,17 @@ export const Button: React.FC<ButtonProps> = ({
               ? 'border border-red-600 text-red-600'
               : theme === 'success'
                 ? 'border border-green-600 text-green-600'
-                : 'border border-gray-600 text-gray-600'),
+                : 'text-gray-1000 border border-gray-600'),
         mode === 'secondary' &&
           !isLoading &&
           !disabled &&
           (theme === 'brand'
-            ? 'border-brand-600 text-brand-600 hover:bg-brand-700 active:bg-brand-800 border bg-white hover:text-white'
+            ? 'border-brand-600 text-brand-600 hover:bg-brand-700 hover:border-brand-700 active:bg-brand-800 border bg-white hover:text-white active:border-red-800'
             : theme === 'error'
-              ? 'border border-red-600 bg-white text-red-600 hover:bg-red-700 hover:text-white active:bg-red-800'
+              ? 'border border-red-600 bg-white text-red-600 hover:border-red-700 hover:bg-red-700 hover:text-white active:border-red-800 active:bg-red-800'
               : theme === 'success'
-                ? 'border border-green-600 bg-white text-green-600 hover:bg-green-700 hover:text-white active:bg-green-800'
-                : 'border border-gray-600 bg-white text-gray-600 hover:bg-gray-700 hover:text-white active:bg-gray-800'),
+                ? 'border border-green-600 bg-white text-green-600 hover:border-green-700 hover:bg-green-700 hover:text-white active:border-green-800 active:bg-green-800'
+                : 'text-gray-1000 border border-gray-600 bg-white hover:border-gray-700 hover:bg-gray-700 hover:text-white active:border-gray-800 active:bg-gray-800'),
 
         // TEXT MODE
         mode === 'text' &&
@@ -119,7 +119,7 @@ export const Button: React.FC<ButtonProps> = ({
               ? 'border border-red-600 text-red-600'
               : theme === 'success'
                 ? 'border border-green-600 text-green-600'
-                : 'border border-gray-600 text-gray-600'),
+                : 'text-gray-1000 border border-gray-600'),
         mode === 'text' &&
           !isLoading &&
           !disabled &&
@@ -129,7 +129,7 @@ export const Button: React.FC<ButtonProps> = ({
               ? 'text-red-600 hover:border hover:border-red-600 active:border-red-800 active:text-red-800'
               : theme === 'success'
                 ? 'text-green-600 hover:border hover:border-green-600 active:border-green-800 active:text-green-800'
-                : 'text-gray-600 hover:border hover:border-gray-600 active:border-gray-800 active:text-gray-800'),
+                : 'text-gray-1000 hover:border hover:border-gray-600 active:border-gray-800 active:text-gray-800'),
 
         // UNDERLINE MODE
         mode === 'underline' &&
@@ -150,7 +150,7 @@ export const Button: React.FC<ButtonProps> = ({
               ? 'text-red-600'
               : theme === 'success'
                 ? 'text-green-600'
-                : 'text-gray-600'),
+                : 'text-gray-1000'),
         mode === 'underline' &&
           !isLoading &&
           !disabled &&
@@ -160,7 +160,7 @@ export const Button: React.FC<ButtonProps> = ({
               ? 'text-red-600 active:border-red-800 active:text-red-800'
               : theme === 'success'
                 ? 'text-green-600 active:border-green-800 active:text-green-800'
-                : 'text-gray-600 active:border-gray-800 active:text-gray-800'),
+                : 'text-gray-1000 active:border-gray-800 active:text-gray-800'),
         className,
       )}
     >
@@ -179,7 +179,7 @@ export const Button: React.FC<ButtonProps> = ({
               { 'text-center': align === 'center' },
               mode === 'underline' &&
                 !disabled &&
-                'pb-1 underline-offset-8 transition-transform group-hover:border-b group-hover:underline',
+                'underline-offset-8 transition-transform group-hover:border-b group-hover:underline',
             )}
           >
             {children}

@@ -1,14 +1,21 @@
+import { fetchToken } from '../../../(auth)/auth.utils';
+import { NewReportDialog } from './_components/NewReportDialog';
 import { ReportList } from './_components/ReportsList';
 import { SideBar } from './_components/SideBar';
 import { DashboardService, GetDashboardReportsData, OpenAPI } from '@openapi';
 import { Pagination } from 'design-system';
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 6;
 
 async function getData(searchParams: GetDashboardReportsData) {
+  const token = await fetchToken();
+  if (!token) {
+    throw new Error('Failed to fetch access token');
+  }
   OpenAPI.HEADERS = {
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzQ1NDE2MjY5fQ.fYoeXOvstJcWxcoExDW1fwwmvzi0L7aXqgO_3viizU0`,
+    Authorization: `Bearer ${token}`,
   };
+
   const [reports, categories] = await Promise.all([
     DashboardService.getDashboardReports({
       ...searchParams,
@@ -17,6 +24,7 @@ async function getData(searchParams: GetDashboardReportsData) {
   ]);
   return { reports, categories };
 }
+
 export default async function ReportMenuPage({
   searchParams,
 }: {
@@ -53,20 +61,24 @@ export default async function ReportMenuPage({
   );
 
   return (
-    <div className="mx-8 md:flex md:justify-center xl:block ">
-      <div className="flex md:max-w-[772px] xl:max-w-full flex-row-reverse items-start justify-between gap-4 xl:justify-center">
-        <div className="w-full">
+    <div className="mx-auto flex justify-center px-20 xl:block">
+      <div className="flex flex-row-reverse items-stretch justify-between gap-8 md:max-w-[772px] xl:max-w-full xl:justify-center">
+        <div>
           <ReportList reports={paginatedReports} />
-          <Pagination
-            currentPage={currentPage}
-            pageCount={totalPages}
-            pageSize={ITEMS_PER_PAGE}
-          />
+          <div className="mt-12">
+            <Pagination
+              currentPage={currentPage}
+              pageCount={totalPages}
+              pageSize={ITEMS_PER_PAGE}
+              totalItems={filteredReports.length}
+            />
+          </div>
         </div>
-        <div className=''>
+        <div className={`relative pb-20`}>
           <SideBar reports={reports} categories={categories} />
         </div>
       </div>
+      <NewReportDialog />
     </div>
   );
 }

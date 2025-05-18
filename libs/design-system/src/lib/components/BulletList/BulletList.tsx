@@ -7,9 +7,10 @@ interface Props {
     status?: 'normal' | 'error' | 'success';
   }[];
   textColor?: 'semi-dark' | 'dark';
+  size?: 'sm' | 'md';
 }
 
-export function BulletList({ items, textColor = 'dark' }: Props) {
+export function BulletList({ items, textColor = 'dark', size = 'md' }: Props) {
   return (
     <ul className="w-full">
       {items.map((item, index) => {
@@ -17,21 +18,21 @@ export function BulletList({ items, textColor = 'dark' }: Props) {
         return (
           <li
             className={cn(
-              'flex items-start gap-2 font-medium text-sm',
+              'flex items-start gap-2 text-sm font-medium',
               status === 'error' && 'text-red-600',
               status === 'success' && 'text-green-600',
               status === 'normal' &&
                 (textColor === 'dark'
                   ? 'text-gray-1000 mr-2'
                   : 'mr-2 text-gray-600'),
+              size == 'sm' && 'text-xs',
             )}
             key={index}
           >
             {/* Icon or bullet based on status */}
-            {!status ||
-              (status === 'normal' && (
-                <span className="bg-gray-1000 mt-2.5 h-1 w-1 rounded-full"></span>
-              ))}
+            {status === 'normal' && (
+              <span className="bg-gray-1000 mt-2.5 h-1 w-1 shrink-0 rounded-full"></span>
+            )}
             {status === 'success' && (
               <div className="mt-1">
                 <Icon name="check" size="sm" />

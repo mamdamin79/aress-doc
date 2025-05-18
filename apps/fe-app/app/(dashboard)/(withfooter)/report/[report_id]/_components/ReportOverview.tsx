@@ -1,8 +1,9 @@
 'use client';
 import React from 'react';
-import { Button, NewBadge, Heart, Icon } from 'design-system';
-import { TextWithIcon } from 'compositions';
+import { Button, NewBadge, Icon, LikeBadge } from 'design-system';
+// import { TextWithIcon } from 'compositions';
 import { Category } from '../_types/api.types';
+import { TextWithIcon } from '../../../../../../compositions/TextWithIcon';
 export interface ReportOverviewProps {
   title?: string;
   category?: Category;
@@ -30,9 +31,9 @@ export const ReportOverview: React.FC<ReportOverviewProps> = ({
         </div>
         <div className="flex flex-row items-center gap-3">
           <div className="flex h-8 w-8 items-center justify-center">
-            <Heart
-              initialIsliked={userFavorite ?? false}
-              onLike={() => console.log('sdasdd')}
+            <LikeBadge
+              isLiked={userFavorite ?? false}
+              onClick={() => console.log('liked')}
             />
           </div>
           <Button align="center" isLoading={false} mode="primary" size="sm">

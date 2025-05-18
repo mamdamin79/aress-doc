@@ -39,6 +39,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
 
   const handleClearInput = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
     setInternalValue('');
     onChange?.({ target: { value: '' } } as any); // event simulation
   };
@@ -51,16 +52,26 @@ export const TextField: React.FC<textFieldPropsType> = ({
     <div
       data-twe-input-wrapper-init
       className={cn(
-        'font-vazirmatn relative w-full',
+        'relative w-full',
         {
           'pointer-events-none': disabled,
         },
         className,
       )}
     >
-      <div className="h-[26px]">
-        {mergeTitleAndPlaceholder ? (
-          (isFocused || inputValue) && (
+      {label && (
+        <div className="mb-1 h-[26px]">
+          {mergeTitleAndPlaceholder ? (
+            (isFocused || inputValue) && (
+              <label
+                className={cn('text-sm font-medium', {
+                  'text-gray-400': disabled,
+                })}
+              >
+                {label}
+              </label>
+            )
+          ) : (
             <label
               className={cn('text-sm font-medium', {
                 'text-gray-400': disabled,
@@ -68,15 +79,9 @@ export const TextField: React.FC<textFieldPropsType> = ({
             >
               {label}
             </label>
-          )
-        ) : (
-          <label
-            className={cn('text-sm font-medium', { 'text-gray-400': disabled })}
-          >
-            {label}
-          </label>
-        )}
-      </div>
+          )}
+        </div>
+      )}
 
       {!isFocused && !inputValue && (
         <label
@@ -95,20 +100,27 @@ export const TextField: React.FC<textFieldPropsType> = ({
 
       {leadingIcon && (
         <div
-          className={cn('absolute right-4 top-10', {
-            'text-gray-400': disabled,
-            'top-[42px]': leadingIcon?.size === 'md',
-          })}
-        >
-          {leadingIcon && (
-            <div
-              onClick={() =>
-                leadingIcon.onClick && leadingIcon?.onClick(inputValue)
-              }
-            >
-              <Icon name={leadingIcon.name} size={leadingIcon.size || 'lg'} />
-            </div>
+          className={cn(
+            'absolute right-4',
+            {
+              'top-[44px]': label,
+              'top-[16px]': !label,
+            },
+            {
+              'text-gray-400': disabled,
+              'text-gray-500': leadingIcon.color === 'secondary',
+              'cursor-pointer': leadingIcon.onClick,
+              'top-10': leadingIcon?.size === 'md' && label,
+            },
           )}
+        >
+          <div
+            onClick={() =>
+              leadingIcon.onClick && leadingIcon?.onClick(inputValue)
+            }
+          >
+            <Icon name={leadingIcon.name} size={leadingIcon.size || 'lg'} />
+          </div>
         </div>
       )}
       {longText ? (
@@ -120,7 +132,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
           value={inputValue}
           disabled={disabled}
           className={cn(
-            'text-md h-[50px] w-full resize-none rounded-xl border p-2 font-normal outline-none transition-colors duration-150',
+            'text-md h-12 w-full resize-none rounded-xl border p-2 font-normal outline-none transition-colors duration-150',
             {
               'border-inherit bg-transparent opacity-100 placeholder:text-gray-400':
                 disabled,
@@ -150,8 +162,17 @@ export const TextField: React.FC<textFieldPropsType> = ({
           value={inputValue}
           disabled={disabled}
           onChange={handleInputChange}
+          onKeyDown={(e) => {
+            if (
+              e.key === 'Enter' &&
+              leadingIcon &&
+              typeof leadingIcon.onClick === 'function'
+            ) {
+              leadingIcon.onClick(inputValue);
+            }
+          }}
           className={cn(
-            'text-md h-[50px] w-full rounded-xl border p-2 font-normal outline-none transition-colors duration-150',
+            'text-md h-14 w-full rounded-xl border p-2 font-normal outline-none transition-colors duration-150',
             {
               'border-inherit bg-transparent opacity-100 placeholder:text-gray-400':
                 disabled,
@@ -173,15 +194,24 @@ export const TextField: React.FC<textFieldPropsType> = ({
 
       <div
         className={cn(
-          'absolute left-4 top-10 z-20 flex items-center justify-between gap-4',
+          'absolute left-4 z-10 flex items-center justify-between gap-4',
           {
-            'top-[42px]':
-              trailingIcons.length > 0 && trailingIcons[1]?.size === 'md',
+            'top-[46px]': label,
+            'top-[16px]': !label,
+          },
+          {
+            'top-10':
+              trailingIcons.length > 0 &&
+              trailingIcons[1]?.size === 'md' &&
+              label,
           },
         )}
       >
         {trailingIcons.map((icon) => {
-          const isDisabled = cn({ 'text-gray-400': disabled });
+          const isDisabled = cn({
+            'text-gray-400': disabled,
+            'text-gray-500': icon.color === 'secondary',
+          });
 
           if (icon.name === 'eye') {
             return (
@@ -201,7 +231,10 @@ export const TextField: React.FC<textFieldPropsType> = ({
               <button
                 type="button"
                 className={isDisabled}
-                onMouseDown={(e) => handleClearInput(e)}
+                onMouseDown={(e) => {
+                  icon.onClick && icon.onClick();
+                  handleClearInput(e);
+                }}
               >
                 <Icon size={icon.size} name={icon.name} />
               </button>
@@ -219,15 +252,18 @@ export const TextField: React.FC<textFieldPropsType> = ({
           }
         })}
       </div>
-      <div
-        className={cn('h-[22px] pt-1 text-xs', {
-          'text-red-600': isError,
-          'text-gray-600': !isError,
-          'text-gray-400': disabled,
-        })}
-      >
-        {supportText}
-      </div>
+      {supportText && (
+        <div
+          className={cn('h-[22px] pt-1 text-xs', {
+            'text-red-600': isError,
+            'text-gray-600': !isError,
+            'text-gray-400': disabled,
+            '-mt-2': longText,
+          })}
+        >
+          {supportText}
+        </div>
+      )}
     </div>
   );
 };

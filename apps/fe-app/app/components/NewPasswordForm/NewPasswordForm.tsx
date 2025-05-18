@@ -8,6 +8,7 @@ import {
   LOWERCASE_UPPERCASE_REGEX,
   MIN_PASSWORD_LENGTH,
   NUMBER_SPECIAL_CHAR_REGEX,
+  NO_PERSIAN_CHAR_REGEX,
 } from './NewPasswordForm.constants';
 export interface NewPasswordFormProps {
   onSubmit: (values: NewPasswordFormValues) => void;
@@ -32,6 +33,7 @@ export const NewPasswordForm: React.FC<NewPasswordFormProps> = ({
   const passwordValue = watch('password');
   const validations = useMemo(
     () => ({
+      onlyEnglish: NO_PERSIAN_CHAR_REGEX.test(passwordValue),
       minLength: passwordValue.length >= MIN_PASSWORD_LENGTH,
       lowerAndUpperCase: LOWERCASE_UPPERCASE_REGEX.test(passwordValue),
       numberOrSpecialChar: NUMBER_SPECIAL_CHAR_REGEX.test(passwordValue),
@@ -49,8 +51,8 @@ export const NewPasswordForm: React.FC<NewPasswordFormProps> = ({
     >
       <h3 className="text-center text-xl font-medium">بازنشانی رمز عبور</h3>
       <div className="flex flex-col gap-7">
-        <div className="flex flex-col gap-4">
-          <div>
+        <div className="flex flex-col gap-4 text-right">
+          <div >
             <Controller
               name="password"
               control={control}
@@ -62,13 +64,15 @@ export const NewPasswordForm: React.FC<NewPasswordFormProps> = ({
 
                 validate: (value) => {
                   const v = {
+                    onlyEnglish: NO_PERSIAN_CHAR_REGEX.test(passwordValue),
                     minLength: value.length >= MIN_PASSWORD_LENGTH,
                     lowerAndUpperCase: LOWERCASE_UPPERCASE_REGEX.test(value),
                     numberOrSpecialChar: NUMBER_SPECIAL_CHAR_REGEX.test(value),
                   };
-                  return Object.values(v).every(Boolean) || 'رمز عبور معتبر نیست';
+                  return (
+                    Object.values(v).every(Boolean) || 'رمز عبور معتبر نیست'
+                  );
                 },
-                
               }}
               render={({ field, fieldState }) => (
                 <TextField
@@ -89,9 +93,19 @@ export const NewPasswordForm: React.FC<NewPasswordFormProps> = ({
                 />
               )}
             />
-            <div className="-mt-3 text-xs">
+            <div className="mt-1 text-xs">
               <BulletList
+                size="sm"
+                textColor="semi-dark"
                 items={[
+                  {
+                    title: 'فقط حروف انگلیسی',
+                    status: !passwordValue
+                      ? 'normal'
+                      : validations.onlyEnglish
+                        ? 'success'
+                        : 'error',
+                  },
                   {
                     title: 'شامل حروف بزرگ و کوچک',
                     status: !passwordValue

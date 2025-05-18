@@ -36,7 +36,7 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
     bg: 'primary',
     checkSelected: false,
     emphasize: 'medium',
-    shadow,
+    shadow:true,
     size: 'md',
   },
   customTriggerRender,

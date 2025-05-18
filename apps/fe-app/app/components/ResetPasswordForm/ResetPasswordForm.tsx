@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ResetPasswordFormValues } from './ResetPasswordForm.types';
 import { validateNationalCode } from './ResetPasswordForm.utils';
 import { validatePhoneNumber } from '../LoginForm/LoginForm.utils';
+import { useState } from 'react';
 export interface ResetPasswordFormProps {
   onSubmit: (values: ResetPasswordFormValues) => void;
 }
@@ -21,7 +22,6 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
       phoneNumber: '',
     },
   });
-
   return (
     <form
       dir="rtl"
@@ -100,7 +100,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
             ادامه
           </Button>
           <Link
-            href="/forgot"
+            href="/login"
             className="text-brand-600 text-md text-center font-medium"
           >
             بازگشت به صفحه ورود
