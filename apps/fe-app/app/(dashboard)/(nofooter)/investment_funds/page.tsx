@@ -236,18 +236,9 @@ const Funds = () => {
         const hasVerticalScroll =
           tableRef.current.scrollHeight > tableRef.current.clientHeight;
         setCanScrollVertical(hasVerticalScroll);
-      } else setCanScrollVertical(false);
+      }
     });
   };
-
-  const pageSize = table.getPageCount();
-
-  useEffect(() => {
-    handlerMouseEnterTable();
-  }, [indexCategoryTab, pageSize])
-
-
-
 
   return (
     <>
@@ -325,7 +316,7 @@ const Funds = () => {
                         <th
                           key={index}
                           className={cn(
-                            'sticky right-0 top-0 py-0 z-40 m-0 h-[64px] w-[312px] border-b bg-[#E3F8F8] pr-2',
+                            'sticky right-0 top-0 z-40 m-0 h-[64px] w-[312px] border-b bg-[#E3F8F8] py-0 pr-2',
                             {
                               'group-hover/table:pr-0': canScrollVertical,
                             },
@@ -408,7 +399,8 @@ const Funds = () => {
                                       header.column.getIsSorted() === 'asc'
                                         ? 'active-asc'
                                         : header.column.getIsSorted() === 'desc'
-                                          ? 'inactive' : 'inactive'
+                                          ? 'inactive'
+                                          : 'inactive'
                                     }
                                     filterable={columnFilters.some(
                                       (filterItem) =>
@@ -454,8 +446,8 @@ const Funds = () => {
                                         {(Object.entries(selectedFilters)
                                           .length > 0 ||
                                           fundSearchQuery) && (
-                                            <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
-                                          )}
+                                          <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
+                                        )}
                                         <Icon size="lg" name="filter" />
                                       </div>
                                     </Tooltip>
@@ -559,7 +551,7 @@ const Funds = () => {
                                               (prop.text ===
                                                 'انتقال به ابتدا' ||
                                                 prop.text ===
-                                                'انتقال به راست')) ||
+                                                  'انتقال به راست')) ||
                                             (index + 1 ===
                                               updateTableHeaders.length &&
                                               (prop.text ===
@@ -569,7 +561,7 @@ const Funds = () => {
                                             (header.column.getIsSorted() ===
                                               'desc' &&
                                               prop.text ===
-                                              'مرتب سازی نزولی') ||
+                                                'مرتب سازی نزولی') ||
                                             (header.column.getIsSorted() ===
                                               'asc' &&
                                               prop.text === 'مرتب سازی صعودی'),
@@ -616,7 +608,7 @@ const Funds = () => {
                                         header.column.getIsSorted() === 'asc'
                                           ? 'active-desc'
                                           : header.column.getIsSorted() ===
-                                            'desc'
+                                              'desc'
                                             ? 'active-asc'
                                             : 'inactive'
                                       }
@@ -755,8 +747,8 @@ const Funds = () => {
                   );
                   const topValue = isPinned
                     ? rowIndex === 1
-                      ? `${((pinnedIndex + 1) * 72) - 2}px`
-                      : `${((pinnedIndex + 1) * 70) - 5}px`
+                      ? `${(pinnedIndex + 1) * 72 - 2}px`
+                      : `${(pinnedIndex + 1) * 70 - 5}px`
                     : 'auto';
                   const isLastPinned = row.id === lastPinnedRowId;
 
@@ -782,9 +774,15 @@ const Funds = () => {
                           return (
                             <React.Fragment key={cell.id}>
                               {index === 0 && (
-                                <td className={cn("sticky border-b border-[#E1E2E5] right-0 top-0 z-40 m-0 py-0 pr-2", {
-                                  'group-hover/table:pr-0': canScrollVertical
-                                })}>
+                                <td
+                                  className={cn(
+                                    'sticky right-0 top-0 z-40 m-0 border-b border-[#E1E2E5] py-0 pr-2',
+                                    {
+                                      'group-hover/table:pr-0':
+                                        canScrollVertical,
+                                    },
+                                  )}
+                                >
                                   <FundsTableRow
                                     tag={!isMainTab}
                                     category={
@@ -802,16 +800,16 @@ const Funds = () => {
                                       isMainTab
                                         ? row.pin('top', true)
                                         : setPineWatchList([
-                                          ...pineWatchLis,
-                                          row.id,
-                                        ])
+                                            ...pineWatchLis,
+                                            row.id,
+                                          ])
                                     }
                                     unPinedFunction={() =>
                                       isMainTab
                                         ? row.pin(false)
                                         : setPineWatchList((prev) =>
-                                          prev.filter((id) => id !== row.id),
-                                        )
+                                            prev.filter((id) => id !== row.id),
+                                          )
                                     }
                                     isScrolled={isScrollAtStart}
                                     investmentMethod={
@@ -827,9 +825,10 @@ const Funds = () => {
                               {index >= 1 && (
                                 <td
                                   className={cn(
-                                    'pr-4 py-0 border-b border-[#E1E2E5] text-sm font-medium',
+                                    'border-b border-[#E1E2E5] py-0 pr-4 text-sm font-medium',
                                     {
-                                      'group-hover/table:pr-0': canScrollVertical,
+                                      'group-hover/table:pr-0':
+                                        canScrollVertical,
                                       'bg-blue-50 group-hover:bg-blue-100':
                                         isPinned,
                                       'group-hover:bg-blue-50': !isPinned,
@@ -849,12 +848,12 @@ const Funds = () => {
                         <div className="sticky right-0 mb-2 mt-5 w-screen whitespace-nowrap text-sm text-gray-600">
                           {formatNumber(
                             table.getState().pagination.pageSize *
-                            (table.getState().pagination.pageIndex + 1),
+                              (table.getState().pagination.pageIndex + 1),
                             { commaSeparated: true },
                           ) ===
                             formatNumber(
                               table.getPageCount() *
-                              table.getState().pagination.pageSize,
+                                table.getState().pagination.pageSize,
                               { commaSeparated: true },
                             ) && 'پایان لیست صندوق ها.'}
                         </div>
@@ -874,7 +873,7 @@ const Funds = () => {
       <div className="fixed bottom-6 right-0 z-50 mt-6 flex w-full justify-between px-8">
         <div className="rounded-md bg-[#B3B6BD8C] backdrop-blur-[30px]">
           <OptionsDropdown
-            className="!-mt-2"
+            className="-mt-2"
             onChange={(e) => {
               startTransition(() => {
                 table.setPageSize(Number(e));
@@ -893,7 +892,7 @@ const Funds = () => {
                   <span>تعداد سطر در جدول: </span>
                   {formatNumber(
                     table.getState().pagination.pageSize *
-                    (table.getState().pagination.pageIndex + 1),
+                      (table.getState().pagination.pageIndex + 1),
                     { commaSeparated: true },
                   )}
                 </div>
@@ -914,8 +913,8 @@ const Funds = () => {
                   {
                     'pb-2':
                       table.getState().pagination.pageSize *
-                      (table.getState().pagination.pageIndex + 1) *
-                      table.getPageCount() ===
+                        (table.getState().pagination.pageIndex + 1) *
+                        table.getPageCount() ===
                       +prop.text,
                   },
                 )}
@@ -924,7 +923,7 @@ const Funds = () => {
                   {table.getState().pagination.pageSize *
                     (table.getState().pagination.pageIndex + 1) *
                     table.getPageCount() ===
-                    +prop.text
+                  +prop.text
                     ? 'همه'
                     : prop.text}
                 </span>
@@ -938,8 +937,8 @@ const Funds = () => {
               {
                 text: String(
                   table.getState().pagination.pageSize *
-                  (table.getState().pagination.pageIndex + 1) *
-                  table.getPageCount(),
+                    (table.getState().pagination.pageIndex + 1) *
+                    table.getPageCount(),
                 ),
               },
             ]}
@@ -957,7 +956,7 @@ const Funds = () => {
             <div>
               {formatNumber(
                 table.getState().pagination.pageSize *
-                (table.getState().pagination.pageIndex + 1),
+                  (table.getState().pagination.pageIndex + 1),
                 { commaSeparated: true },
               )}
               -
