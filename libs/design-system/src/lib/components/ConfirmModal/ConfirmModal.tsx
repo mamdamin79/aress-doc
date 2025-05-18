@@ -37,35 +37,41 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   return (
     <Dialog isOpen={isOpen} onClose={() => onClose?.()}>
       <div className="w-[472px] text-right">
-        <form onSubmit={handleConfirm} className="flex flex-col gap-4">
-          <div className="text-lg font-semibold">{title}</div>
-          {description}
-          {isWithInput && (
-            <div className="flex flex-col">
-              <TextField
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                autoFocus
-                label={input.label}
-                placeholder={input.placeholder}
-                mergeTitleAndPlaceholder={false}
-                mode="outline"
-                id="confirm-modal-input"
-                trailingIcons={[]}
-              />
-            </div>
-          )}
-          {/* Checkbox */}
-          {checkBoxText && (
-            <div className="-mt-6 mr-1 flex items-center text-sm font-medium">
-              <Checkbox
-                checked={checked}
-                id="confirm-modal-checkbox"
-                onChange={() => setChecked(!checked)}
-              ></Checkbox>
-              <label htmlFor="confirm-modal-checkbox">{checkBoxText}</label>
-            </div>
-          )}
+        <form
+          onSubmit={handleConfirm}
+          className={cn('flex flex-col gap-10', checkBoxText && 'gap-4')}
+        >
+          <div className="flex flex-col gap-4">
+            <div className="text-lg font-semibold">{title}</div>
+            {description}
+            {isWithInput && (
+              <div className="flex flex-col">
+                <TextField
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  autoFocus
+                  label={input.label}
+                  placeholder={input.placeholder}
+                  mergeTitleAndPlaceholder={false}
+                  mode="outline"
+                  id="confirm-modal-input"
+                  trailingIcons={[]}
+                />
+              </div>
+            )}
+            {/* Checkbox */}
+            {checkBoxText && (
+              <div className="mr-1 flex items-center text-sm font-medium">
+                <Checkbox
+                  checked={checked}
+                  id="confirm-modal-checkbox"
+                  onChange={() => setChecked(!checked)}
+                ></Checkbox>
+                <label htmlFor="confirm-modal-checkbox">{checkBoxText}</label>
+              </div>
+            )}
+          </div>
+
           {/* Handle Submit or Cancel */}
           <div className="flex justify-end gap-2">
             <div className="min-w-14">
