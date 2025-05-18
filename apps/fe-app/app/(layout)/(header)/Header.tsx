@@ -4,7 +4,7 @@ import Image from 'next/image';
 import PRODUCT_LOGO from '@aress-assets/icons/product_logo.svg';
 import { useWindowSize } from '@uidotdev/usehooks';
 import { cn, HeadProfile, ModalProvider, SquaredButton } from 'design-system';
-import { useHeaderVisibility } from '../../../hooks';
+import { useHeaderVisibility, useHtmlPaddingRight } from '../../../hooks';
 import { DESKTOP_BREAKPOINT } from './Header.constants';
 import { BurgerMenu } from './BurgerMenu';
 import { DesktopMenu } from './DesktopMenu';
@@ -31,6 +31,7 @@ export const Header: React.FC = () => {
   const { isHeaderVisible } = useHeaderVisibility();
   const [{ y: scrollY }] = useWindowScroll();
   const currentScrollY = scrollY ?? 0;
+  const htmlPaddingRight = useHtmlPaddingRight();
 
   return (
     <ModalProvider>
@@ -44,6 +45,9 @@ export const Header: React.FC = () => {
               : 'border-gray-200 shadow-sm',
             isHeaderVisible ? 'translate-y-0' : '-translate-y-full',
           )}
+          style={{
+            right: htmlPaddingRight,
+          }}
         >
           <div className="flex flex-row items-center gap-6">
             <Link href={'/'}>
@@ -60,7 +64,12 @@ export const Header: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex flex-row gap-3">
+          <div
+            className="flex flex-row gap-3"
+            style={{
+              paddingLeft: htmlPaddingRight,
+            }}
+          >
             <SquaredButton
               icons={[{ name: 'sun' }, { name: 'moon' }]}
               badge={{ enabled: false }}
