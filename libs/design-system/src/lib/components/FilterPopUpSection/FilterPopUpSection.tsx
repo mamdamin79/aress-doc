@@ -131,7 +131,7 @@ export function FilterPopUpSection({
         </div>
 
         {/* Filter Categories */}
-        <div className="mt-0.5 flex flex-col gap-6 px-4">
+        <div className="mt-6 flex flex-col gap-6 px-4">
           {filterOptions.map((item, index) => (
             <div key={index}>
               <div

@@ -240,6 +240,12 @@ const Funds = () => {
     });
   };
 
+  const tableCount = table.getPageCount();
+
+  useEffect(() => {
+    handlerMouseEnterTable();
+  }, [indexCategoryTab, tableCount])
+
   return (
     <>
       <div
