@@ -7,7 +7,7 @@ export const FundsTag: React.FC<FundsTagProps> = ({ color }) => {
   return (
     <div
       className={cn(
-        'h-2.5 w-2.5 rounded-full',
+        'h-2.5 w-2.5 rounded-full border border-white',
         color === 'green' && 'bg-vividGreen-600',
         color === 'blue' && 'bg-blue-600',
         color === 'purple' && 'bg-purple-600',

@@ -1,3 +1,4 @@
+'use client';
 import { cn } from '../../../utils';
 import { Tab as TabItem } from './Tabs.types';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
@@ -19,6 +20,7 @@ export const Tabs: React.FC<Props> = ({
   colorMode,
   activeTab,
 }) => {
+
   return (
       <TabGroup
         selectedIndex={activeTab}
@@ -77,7 +79,7 @@ export const Tabs: React.FC<Props> = ({
                     variant === 'lined' && colorMode === 'neutral',
                 },
                 {
-                  'data-[selected]:border-brand-600 font-medium border-gray-100 data-[selected]:bg-brand-600 hover:border-brand-600 rounded-md border-2 px-2 text-black data-[selected]:text-white':
+                  'data-[selected]:border-brand-600 font-medium text-sm border-gray-100 data-[selected]:bg-brand-600 hover:border-brand-600 rounded-md border-2 px-2 text-black data-[selected]:text-white':
                     variant === 'shaped',
                 },
                 {

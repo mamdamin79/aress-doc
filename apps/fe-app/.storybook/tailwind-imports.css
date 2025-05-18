@@ -266,6 +266,7 @@ input[type='password']::-webkit-password-eye {
 
 .scrollbar-sm::-webkit-scrollbar {
   width: 4px;
+  height: 4px;
   border-radius: 8px;
 }
 
@@ -286,10 +287,12 @@ input[type='password']::-webkit-password-eye {
 
 .scrollbar-md::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
   border-radius: 8px;
 }
 
 .scrollbar-lg::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
   border-radius: 8px;
 }

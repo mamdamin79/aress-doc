@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { cn } from './../../../utils/classNames.utils';
 import { Icon } from '../Icon';
 import { OptionsDropdown } from '../OptionsDropdown';
@@ -21,12 +21,10 @@ interface Props {
   toggleWatchList: () => void;
   canPin: boolean;
   tag: boolean;
-  index: number;
 }
 
 export function FundsTableRow({
   name,
-  index,
   investmentMethod,
   tag,
   toggleWatchList,
@@ -42,22 +40,22 @@ export function FundsTableRow({
 }: Props) {
   const [isDropdownActive, setIsDropdownActive] = useState(false);
 
-  const { showProgressToast, showToast } = useCustomToast();  
+  const { showProgressToast, showToast } = useCustomToast();
 
   return (
     <div
       className={cn(
-        'sticky right-0 flex h-[70px] p-0 m-0 w-fit items-center justify-between',
+        'sticky right-0 top-0 py-0 m-0 flex bg-white h-[61px] w-fit items-center justify-between p-0',
         className,
         {
-          'shadow-md': isScrolled,
+          'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]': isScrolled,
           'bg-blue-50 group-hover:bg-blue-100': pined,
           'bg-blue-200': selected,
-          'group-hover:bg-blue-50 bottom-0': !selected && !pined,
+          'bottom-0 group-hover:bg-blue-50': !selected && !pined,
         },
       )}
     >
-      <div className="relative flex items-center gap-2 px-2">
+      <div className="relative h-full flex items-center gap-2 px-2">
         <div
           className={cn(
             'bg-vividGreen-600 invisible box-content h-2.5 w-2.5 rounded-full border-2 border-white',
@@ -70,11 +68,9 @@ export function FundsTableRow({
           <div className="h-8 w-8 overflow-hidden rounded-full">
             <img src={logo} alt="logo fund" />
           </div>
-          
-          <div className={cn("absolute right-4 top-8 transition-all duration-500 group-hover/img:-translate-x-[12.5px] group-hover/img:-translate-y-[21.2px]", {
-          })}>
+
+          <div className="absolute right-4 top-8 transition-all duration-500 group-hover/img:-translate-x-[12.5px] group-hover/img:-translate-y-[17px]">
             <Tooltip
-              className='!z-[100]'
               position="left"
               title={
                 canPin
@@ -115,7 +111,7 @@ export function FundsTableRow({
                   }
                 }}
                 className={cn(
-                  'hidden h-[24px] w-[24px] cursor-pointer items-center justify-center rounded-full group-hover/img:w-[33px] group-hover/img:h-[33px] bg-white duration-500 group-hover/img:flex',
+                  'hidden h-[24px] w-[24px] cursor-pointer items-center justify-center rounded-full bg-white duration-500 group-hover/img:flex group-hover/img:h-[33px] group-hover/img:w-[33px]',
                   {
                     flex: pined,
                     'border border-[#B3B6BD]': !canPin && !pined,
@@ -123,16 +119,19 @@ export function FundsTableRow({
                 )}
               >
                 <div
-                  className={cn('flex items-center rotate-45 justify-center text-black', {
-                    'group-hover/img:hidden text-blue-700 rotate-0': pined,
-                    'rotate-[35deg] text-[#B3B6BD]': !canPin && !pined,
-                  })}
+                  className={cn(
+                    'flex rotate-45 items-center justify-center text-black',
+                    {
+                      'rotate-0 text-blue-700 group-hover/img:hidden': pined,
+                      'rotate-[35deg] text-[#B3B6BD]': !canPin && !pined,
+                    },
+                  )}
                 >
                   <Icon name="pin" size="md" />
                 </div>
 
                 {pined && (
-                  <div className="hidden items-center text-blue-700 rotate-45 justify-center group-hover/img:flex">
+                  <div className="hidden rotate-45 items-center justify-center text-blue-700 group-hover/img:flex">
                     <Icon name="pin-off" size="md" />
                   </div>
                 )}
@@ -141,27 +140,21 @@ export function FundsTableRow({
           </div>
         </div>
         <div className="flex flex-col gap-1">
-          <Tooltip offset={2} position="bottom" className="!z-10" title={name}>
-            <p
-              className={cn(
-                'text-gray-1000 w-[235px] truncate text-right text-sm font-medium group-hover:w-[202px]',
-                {
-                  'w-[202px]': isDropdownActive,
-                },
-              )}
-            >
+          <Tooltip offset={2} position="bottom" title={name.length > 29 ? name : ''}>
+            <p className="text-gray-1000 w-[201px] hover:text-[#0F7575] truncate text-right text-sm font-medium">
               {name}
             </p>
           </Tooltip>
-          <div className="flex items-center gap-1 text-xs font-medium">
-                <div className="border-vividGreen-200 text-vividGreen-800 bg-vividGreen-100 rounded-sm border px-2 py-0.5">
-                  ETF
-                </div>
-          </div>
+          <span className={cn("border-vividGreen-200 select-none w-fit text-[#058F3C] bg-vividGreen-100 rounded-sm border px-2 pt-0.5 h-[25px] text-xs font-medium", {
+            'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]': investmentMethod === 'T'
+          })}>
+            ETF
+          </span>
         </div>
       </div>
 
       <OptionsDropdown
+        className='!border-[#D1D3D7] shadow-7xl'
         dropDownStyles={{
           anchor: 'bottom start',
           size: 'md',
@@ -171,7 +164,7 @@ export function FundsTableRow({
         dropDownList={[
           { text: 'مشاهده صندوق', icon: { name: 'eye', size: 'md' } },
           { text: 'مشاهده ویدیو', icon: { name: 'video', size: 'md' } },
-          { text: 'نشان دار کردن', icon: { name: 'target', size: 'md' } },
+          { text: 'نشان‌دار کردن', icon: { name: 'target', size: 'md' } },
           {
             text: pined ? 'برداشتن پین' : 'پین کردن',
             icon: { name: pined ? 'pin-off' : 'pin', size: 'md' },
@@ -179,8 +172,8 @@ export function FundsTableRow({
           {
             text:
               category === 'stocks'
-                ? 'اضافه کردن به دیده بان'
-                : 'حذف از دیده بان',
+                ? 'افزودن به دیده‌بان'
+                : 'حذف از دیده‌بان',
             icon: {
               name: category === 'stocks' ? 'plus' : 'minus',
               size: 'md',
@@ -194,13 +187,13 @@ export function FundsTableRow({
           return (
             <div
               className={cn(
-                'hidden cursor-pointer rounded-full p-1.5 group-hover:block',
+                'invisible cursor-pointer rounded-full p-1.5 group-hover:visible',
                 {
                   'hover:border-brand-600 border border-blue-200': selected,
                   'hover:border-brand-600 border border-blue-100': pined,
                   'hover:border-brand-600 border border-white hover:bg-white':
                     !selected && !pined,
-                  block: prop.isActive,
+                  'visible border border-blue-200': prop.isActive,
                 },
               )}
             >
@@ -213,8 +206,11 @@ export function FundsTableRow({
             <div
               onClick={() => {
                 if (!canPin && prop.text === 'پین کردن') {
-                  return;
-                }
+                  showToast({
+                    message:
+                      'حداکثر میتوانید ۳ صندوق را در هر دسته بندی پین کنید.',
+                    type: 'warning',
+                  });                }
                 if (prop.text === 'پین کردن') {
                   pinedFunction();
                   showProgressToast({
@@ -234,14 +230,14 @@ export function FundsTableRow({
                   });
                 }
 
-                if (prop.text === 'اضافه کردن به دیده بان') {
+                if (prop.text === 'افزودن به دیده‌بان') {
                   toggleWatchList();
                   showProgressToast({
                     title: 'صندوق مورد نظر به دیده بان اضافه شد.',
                     timeout: 3000,
                   });
                 }
-                if (prop.text === 'حذف از دیده بان') {
+                if (prop.text === 'حذف از دیده‌بان') {
                   showProgressToast({
                     title: 'صندوق مورد نظر از دیده بان حذف شد.',
                     timeout: 3000,
@@ -254,9 +250,9 @@ export function FundsTableRow({
                 }
               }}
               className={cn(
-                'flex cursor-pointer items-center gap-2 bg-white px-3 py-2',
+                'flex cursor-pointer font-medium w-[168px] pr-2 text-sm hover:text-brand-800 items-center gap-2 bg-white py-2',
                 {
-                  'cursor-default text-gray-100':
+                  'cursor-default text-[#B3B6BD]':
                     !canPin && prop.text === 'پین کردن',
                 },
               )}
@@ -275,7 +271,7 @@ export function FundsTableRow({
             </div>
           );
         }}
-      ></OptionsDropdown>
+      />
       <Toaster
         position="bottom-center"
         containerStyle={{
