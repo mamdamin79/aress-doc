@@ -28,6 +28,7 @@ import {
   rectSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { useHtmlPaddingRight } from '../../../../hooks';
 
 interface Item {
   id: string;
@@ -238,6 +239,7 @@ export const SlidersBox: React.FC = () => {
       setActiveRotate(null);
     }
   };
+  const htmlPaddingRight = useHtmlPaddingRight();
 
   return (
     <>
@@ -277,7 +279,12 @@ export const SlidersBox: React.FC = () => {
         </section>
       </DndContext>
 
-      <div className="fixed right-4 top-1/2 z-10 flex -translate-y-1/2 flex-col items-center gap-2">
+      <div
+        className="fixed right-4 top-1/2 z-10 flex -translate-y-1/2 flex-col items-center gap-2"
+        style={{
+          paddingRight: htmlPaddingRight,
+        }}
+      >
         <HorizontalScrollBar
           onChangeIndex={handleScroll}
           barsNumber={barsNumber}
