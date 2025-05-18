@@ -14,7 +14,7 @@ async function getData(id: number) {
     throw new Error('Failed to fetch access token');
   }
   OpenAPI.HEADERS = {
-    Authorization: `Bearer ${token}`,
+    Authorization: `Bearer 123`,
   };
   const user = (await DashboardService.getDashboardReportsByReportId({
     reportId: id,
