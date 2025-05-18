@@ -23,11 +23,11 @@ export const ReportSelectionPopup: React.FC<ReportSelectionPopupProps> = ({
     <Dialog
       isOpen={isOpen}
       onClose={() => onClose()}
-      className="bg-baseBackground relative flex w-full min-w-[668px] max-w-[1048px] items-center justify-center text-right"
+      className="bg-baseBackground relative flex max-h-[800px] min-h-[456px] w-full min-w-[668px] max-w-[696px] items-center justify-center text-right"
     >
       <div className="flex w-full flex-col">
         {/* Scrollable content wrapper */}
-        <div className="custom-scrollbar ml-1 flex max-h-[500px] flex-grow overflow-y-auto">
+        <div className="custom-scrollbar flex max-h-[500px] w-full flex-grow overflow-y-auto overflow-x-hidden">
           <div className="flex flex-col gap-4 px-6">
             <div
               className="flex cursor-pointer flex-row items-center gap-1"

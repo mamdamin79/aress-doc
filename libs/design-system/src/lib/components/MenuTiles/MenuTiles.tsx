@@ -1,15 +1,9 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import { Icon } from '../Icon';
 import { MenuTilesProps } from './MenuTiles.types';
 import { cn } from '../../../utils/classNames.utils';
 import Link from 'next/link';
-import {
-  ChangeDashboardNameModal,
-  CopyDashboardModal,
-  DeleteDashboardModal,
-  NewDashboardModal,
-} from './MenuModals';
 import { useMenuModal } from './MenuModalsProvider';
 
 const MenuTilesWrapper = ({
@@ -171,12 +165,12 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
           )}
         </div>
       ) : (
-        <div className='group/text'>
+        <div className="group/text">
           <div
             className={`absolute -right-[1.5px] bottom-0 top-0 my-auto transition-all ${
               isActive
-                ? 'bg-brand-600 h-5 w-[4px] rounded-bl-[3px] rounded-tl-[3px]'
-                : 'bg-brand-400 group-hover:bg-brand-600 h-4 w-[2px] rounded-lg group-hover/text:h-5'
+                ? 'bg-brand-600 h-5 w-1 rounded-bl-[3px] rounded-tl-[3px]'
+                : 'bg-brand-400 group-hover/text:bg-brand-600 h-4 w-0.5 rounded-lg group-hover/text:h-5'
             }`}
           />
           <div className="flex justify-start pr-2">
@@ -189,22 +183,6 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
           </div>
         </div>
       )}
-      {/* <ChangeDashboardNameModal
-        isOpen={modalName == 'changeDashboardName'}
-        onClose={() => setModalName(null)}
-      />
-      <CopyDashboardModal
-        isOpen={modalName == 'copyDashboard'}
-        onClose={() => setModalName(null)}
-      />
-      <NewDashboardModal
-        isOpen={modalName == 'newDashboard'}
-        onClose={() => setModalName(null)}
-      />
-      <DeleteDashboardModal
-        isOpen={modalName == 'deleteDashboard'}
-        onClose={() => setModalName(null)}
-      /> */}
     </MenuTilesWrapper>
   );
 };

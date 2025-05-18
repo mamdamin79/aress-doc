@@ -60,7 +60,7 @@ export const MenuData: MenuItem[] = [
         ],
       },
       {
-        groupLabel: 'داشبوردهای شما',
+        groupLabel: 'داشبوردهای‌شما',
         counter: true,
 
         children: [
@@ -73,10 +73,11 @@ export const MenuData: MenuItem[] = [
             link: '#',
             text: 'صندوق کالایی',
             isDashboard: true,
+            isActive: true,
           },
           {
             link: '#',
-            text: 'صندوق های پربازده',
+            text: 'صندوق‌های پربازده',
             isDashboard: true,
           },
         ],
@@ -88,7 +89,7 @@ export const MenuData: MenuItem[] = [
     link: '/reports',
   },
   {
-    text: 'صندوق های سرمایه گذاری',
+    text: 'صندوق‌های سرمایه گذاری',
     link: '/investment_funds',
   },
 ];

@@ -34,7 +34,7 @@ export function Checkbox(props: CheckboxProps) {
         className={cn(
           { 'cursor-default text-gray-400': props.disabled },
           { 'text-gray-1000 cursor-pointer': props.checked && !props.disabled },
-          { 'cursor-pointer text-gray-600': !props.disabled && !props.checked },
+          { 'cursor-pointer': !props.disabled && !props.checked },
           'text-sm',
         )}
       >

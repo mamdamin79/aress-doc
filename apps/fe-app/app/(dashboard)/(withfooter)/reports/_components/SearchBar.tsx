@@ -1,11 +1,23 @@
 'use client';
 import { TextField } from 'design-system';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDebounce } from '@uidotdev/usehooks';
 
 export const SearchBar: React.FC = () => {
   const router = useRouter();
   const queries = useSearchParams().toString();
+  const [searchInput, setSearchInput] = useState('');
+  const debouncedSearch = useDebounce(searchInput, 300);
+
+  useEffect(() => {
+    if (debouncedSearch === '') {
+      handleClear();
+    } else {
+      handleSearch(debouncedSearch);
+    }
+  }, [debouncedSearch]);
+
   const handleSearch = (
     value: string | number | readonly string[] | undefined,
   ) => {
@@ -31,13 +43,13 @@ export const SearchBar: React.FC = () => {
         leadingIcon={{
           name: 'search',
           size: 'lg',
-          onClick: (value) => handleSearch(value),
         }}
         trailingIcons={[
           { name: 'x', size: 'lg', onClick: () => handleClear() },
         ]}
         placeholder="جستجو گزارش..."
-        onChange={(e) => e.target.value === '' && handleClear()}
+        value={searchInput}
+        onChange={(e) => setSearchInput(e.target.value)}
       />
     </>
   );
