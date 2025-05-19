@@ -23,8 +23,8 @@ export const Default: Story = {
       size: 'lg',
     },
     trailingIcons: [
-      { name: 'x', size: 'md' },
-      { name: 'eye', size: 'md' },
+      { name: 'x', size: 'lg' },
+      { name: 'eye', size: 'lg' },
     ],
     disabled: false,
     type: 'text',
