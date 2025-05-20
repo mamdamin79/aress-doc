@@ -4,6 +4,7 @@ import {
   AddReportButton,
   AutoRotateSwitch,
   AutoRotationOff,
+  cn,
   HorizontalScrollBar,
 } from 'design-system';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
@@ -79,6 +80,7 @@ export const SlidersBox: React.FC = () => {
   const [activeRotate, setActiveRotate] = useState<number | null>(null);
   const [barsNumber, setBarsNumber] = useState(0);
   const [isProgamScroll, setIsProgramScroll] = useState(false);
+  const [slidesPerView, setSlidesPerView] = useState(2);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const initialImages = [
@@ -102,15 +104,13 @@ export const SlidersBox: React.FC = () => {
   );
   const [isReportSelectionPopupOpen, setIsReportSelectionPopupOpen] =
     useState(false);
+  const [addReportBoxCount, setAddReportBoxCount] = useState(0);
   function generateTooltips(totalSlides: number): string[] {
-    const slidesPerGroup = window.matchMedia('(min-width: 1280px)').matches
-      ? 4
-      : 2;
-    const groups = Math.ceil(totalSlides / slidesPerGroup);
+    const groups = Math.ceil(totalSlides / slidesPerView);
     const tooltips: string[] = [];
     for (let i = 0; i < groups; i++) {
-      const start = i * slidesPerGroup + 1;
-      const end = Math.min((i + 1) * slidesPerGroup, totalSlides);
+      const start = i * slidesPerView + 1;
+      const end = Math.min((i + 1) * slidesPerView, totalSlides);
       if (start !== end) {
         tooltips.push(`اسلاید ${end}-${start}`);
       } else {
@@ -132,6 +132,7 @@ export const SlidersBox: React.FC = () => {
     const calculateBars = () => {
       const total = items.length + 1; // include AddReportButton
       const cols = window.matchMedia('(min-width: 1280px)').matches ? 4 : 2;
+      setSlidesPerView(cols);
       setBarsNumber(Math.ceil(total / cols));
     };
     calculateBars();
@@ -209,7 +210,7 @@ export const SlidersBox: React.FC = () => {
     if (activeRotate !== null) {
       setIsProgramScroll(true);
       window.scrollTo({
-        top: currIndex * CARD_HEIGHT * 1.5 + 80,
+        top: currIndex * CARD_HEIGHT * 2.3 + 80,
         behavior: 'smooth',
       });
     }
@@ -242,7 +243,7 @@ export const SlidersBox: React.FC = () => {
   const htmlPaddingRight = useHtmlPaddingRight();
 
   return (
-    <>
+    <div>
       <div className="flex w-full justify-between">
         <DashboardNumberAndName number={2} title="صندوق کالایی" />
         <AutoRotateSwitch
@@ -269,6 +270,12 @@ export const SlidersBox: React.FC = () => {
               {items.map((item) => (
                 <SortableItem key={item.id} item={item} />
               ))}
+                              {[...Array(addReportBoxCount)].map((_, index) =>  <div key={index} className="shadow-6xl relative h-[336px] w-full overflow-hidden rounded-2xl border-2 border-gray-200">
+                <AddReportButton
+                  onClick={() => setIsReportSelectionPopupOpen(true)}
+                />
+              </div>)}
+
               <div className="shadow-6xl relative h-[336px] w-full overflow-hidden rounded-2xl border-2 border-gray-200">
                 <AddReportButton
                   onClick={() => setIsReportSelectionPopupOpen(true)}
@@ -280,7 +287,10 @@ export const SlidersBox: React.FC = () => {
       </DndContext>
 
       <div
-        className="fixed right-4 top-1/2 z-10 flex -translate-y-1/2 flex-col items-center gap-2"
+        className={cn(
+          'fixed right-4 top-1/2 z-10 flex -translate-y-1/2 flex-col items-center gap-2',
+          activeRotate && 'pt-1',
+        )}
         style={{
           paddingRight: htmlPaddingRight,
         }}
@@ -292,7 +302,9 @@ export const SlidersBox: React.FC = () => {
           autoRotate={Boolean(activeRotate)}
           autoRotateDuration={activeRotate || undefined}
           tooltips={generateTooltips(initialImages.length)}
-          onAddReportClick={() => setIsReportSelectionPopupOpen(true)}
+          onAddReportClick={() => {
+            setAddReportBoxCount((prev) => (prev < 16 ? prev + 1 : prev));
+          }}
         />
         {activeRotate && (
           <AutoRotationOff onClick={() => setActiveRotate(null)} />
@@ -310,6 +322,6 @@ export const SlidersBox: React.FC = () => {
         video
         report={tempData}
       />
-    </>
+    </div>
   );
 };
