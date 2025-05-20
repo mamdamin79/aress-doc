@@ -25,7 +25,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
   return (
     <form
       dir="rtl"
-      className="flex w-full flex-col gap-6 rounded-3xl border border-gray-300 p-6"
+      className="bg-baseBackground flex w-full flex-col gap-6 rounded-3xl border border-gray-300 p-6"
       onSubmit={handleSubmit(onSubmit)}
     >
       <h3 className="text-center text-xl font-medium">بازنشانی رمز عبور</h3>

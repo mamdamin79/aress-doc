@@ -6,9 +6,9 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative h-full">
+    <div className="relative min-h-screen">
       <svg
-        className="absolute left-0 top-0 -z-10 h-screen w-auto"
+        className="absolute left-0 top-0 -z-10 h-full w-auto"
         width="408"
         viewBox="0 0 408 1024"
         fill="none"

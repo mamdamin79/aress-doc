@@ -44,7 +44,7 @@ export const NewPasswordForm: React.FC<NewPasswordFormProps> = ({
     <form
       dir="rtl"
       className={cn(
-        'flex w-full flex-col gap-6 rounded-3xl',
+        'bg-baseBackground flex w-full flex-col gap-6 rounded-3xl',
         isStandAlone && 'border border-gray-300 p-6',
       )}
       onSubmit={handleSubmit(onSubmit)}
@@ -52,7 +52,7 @@ export const NewPasswordForm: React.FC<NewPasswordFormProps> = ({
       <h3 className="text-center text-xl font-medium">بازنشانی رمز عبور</h3>
       <div className="flex flex-col gap-7">
         <div className="flex flex-col gap-4 text-right">
-          <div >
+          <div>
             <Controller
               name="password"
               control={control}
@@ -164,7 +164,7 @@ export const NewPasswordForm: React.FC<NewPasswordFormProps> = ({
                 label="تکرار رمز عبور"
                 placeholder=""
                 isError={!!fieldState.error}
-                supportText={fieldState.error?.message}
+                supportText={fieldState.error?.message || ' '}
                 {...field}
               />
             )}

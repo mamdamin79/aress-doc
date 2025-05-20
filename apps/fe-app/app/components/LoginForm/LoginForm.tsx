@@ -2,7 +2,11 @@
 import { useForm, Controller } from 'react-hook-form';
 import { Button, Checkbox, TextField } from 'design-system';
 import Link from 'next/link';
-import { validateNationalCode, validatePhoneNumber } from './LoginForm.utils';
+import {
+  validateNationalCode,
+  validatePhoneNumber,
+  validateUsername,
+} from './LoginForm.utils';
 import { LoginFormValues } from './LoginForm.types';
 export interface LoginFormProps {
   onSubmit: (values: LoginFormValues) => void;
@@ -23,7 +27,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
   return (
     <form
       dir="rtl"
-      className="flex w-full flex-col gap-6 rounded-3xl border border-gray-300 p-6"
+      className="bg-baseBackground flex w-full flex-col gap-6 rounded-3xl border border-gray-300 p-6"
       onSubmit={handleSubmit(onSubmit)}
     >
       <h3 className="text-center text-xl font-medium">ورود به آرسس ترمینال</h3>
@@ -38,10 +42,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                 message: 'این فیلد اجباری است.',
               },
               validate: (value) => {
-                if (
-                  !validateNationalCode(value) &&
-                  !validatePhoneNumber(value)
-                ) {
+                if (!validateUsername(value)) {
                   return 'لطفاً کد ملی، شماره تماس یا نام کاربری معتبر وارد کنید.';
                 }
 
@@ -83,7 +84,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                 label="رمز عبور"
                 placeholder=""
                 isError={!!fieldState.error}
-                supportText={fieldState.error?.message}
+                supportText={fieldState.error?.message || ' '}
                 {...field}
               />
             )}

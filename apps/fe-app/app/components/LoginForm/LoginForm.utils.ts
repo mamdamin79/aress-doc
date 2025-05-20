@@ -11,3 +11,6 @@ export const validateNationalCode = (nationalCode: string): boolean => {
 export const validatePhoneNumber = (phoneNumber: string): boolean => {
   return /^09[0-9]{9}$/.test(phoneNumber);
 };
+export const validateUsername = (username: string): boolean => {
+  return /^[a-zA-Z0-9_]+$/.test(username);
+};
