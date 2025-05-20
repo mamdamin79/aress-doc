@@ -1,6 +1,7 @@
 'use client';
 import React, {
   startTransition,
+  TableHTMLAttributes,
   useCallback,
   useEffect,
   useMemo,
@@ -29,30 +30,37 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  sortingFns,
   useReactTable,
 } from '@tanstack/react-table';
 import { makeData } from './_components/makeData';
 import { columns, columnVisibility, filterList } from './FundsTable.constants';
 import { ExportExel } from './_components/ExportExel';
 const Funds = () => {
+  const [sortIndex, setSortIndex] = useState(0);
   const { isHeaderVisible } = useHeaderVisibility();
   const [canScrollVertical, setCanScrollVertical] = useState(false);
   const [indexCategoryTab, setIndexCategoryTab] = useState(0);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [data, setData] = useState(() => makeData(500));
+  const [data] = useState(() => makeData(500));
   const [isFilterModal, setIsFilterModal] = useState(false);
   const [isSettingModal, setIsSettingModal] = useState(false);
   const [isScrollAtStart, setIsScrollAtStart] = useState<boolean>(false);
   const [isScrollAtEnd, setIsScrollAtEnd] = useState<boolean>(true);
-  const [isScrollTop, setIsScrollTop] = useState(false);
   const [fundSearchQuery, setFundSearchQuery] = useState<string>('');
   const tableRef = useRef<HTMLDivElement>(null);
   const [watchList, setWatchList] = useState<string[]>([]);
   const [pineWatchLis, setPineWatchList] = useState<string[]>([]);
-  const [isActiveDropdownPageCount, setIsActiveDropdownPageCount] = useState(false);
+  const [isActiveDropdownPageCount, setIsActiveDropdownPageCount] =
+    useState(false);
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string[]>
   >({});
+  const headerRefs = useRef<(HTMLTableHeaderCellElement | null)[]>([]);
+  const [sortIndicator, setSortIndicator] = useState({
+    right: headerRefs.current[0]?.offsetLeft,
+    width: 0,
+  });
 
   const [customColl, setCustomColl] = useState<{
     active: boolean;
@@ -223,14 +231,6 @@ const Funds = () => {
     };
   }, [customColl.active]);
 
-  const handlerScroll = () => {
-    if (tableRef.current) {
-      if (tableRef.current.scrollTop) {
-        setIsScrollTop(true);
-      } else setIsScrollTop(false);
-    }
-  };
-
   const handlerMouseEnterTable = () => {
     requestAnimationFrame(() => {
       if (tableRef.current) {
@@ -245,7 +245,27 @@ const Funds = () => {
 
   useEffect(() => {
     handlerMouseEnterTable();
-  }, [indexCategoryTab, tableCount])
+  }, [indexCategoryTab, tableCount]);
+
+useEffect(() => {
+  const node = headerRefs?.current[sortIndex];
+  const container = tableRef?.current;
+
+  if (node && container) {
+    const nodeRect = node.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+
+    const rightOffset = Math.round(containerRect.right - nodeRect.right);    
+
+    setSortIndicator({
+      right: rightOffset,
+      width: node.offsetWidth,
+    });
+  }
+}, [sortIndex]);
+
+console.log(sortIndicator);
+
 
   return (
     <>
@@ -283,11 +303,11 @@ const Funds = () => {
         <div
           onMouseEnter={handlerMouseEnterTable}
           ref={tableRef}
-          onScroll={handlerScroll}
           className={cn(
-          'table-scroll group/table scrollbar-lg h-[calc(100vh-172px)] w-screen overflow-hidden scroll-smooth',
+            'table-scroll group/table scrollbar-lg relative h-[calc(100vh-172px)] w-screen overflow-hidden scroll-smooth',
             {
-              'hover:overflow-auto': canScrollVertical && !isActiveDropdownPageCount
+              'hover:overflow-auto':
+                canScrollVertical && !isActiveDropdownPageCount,
             },
           )}
         >
@@ -318,11 +338,17 @@ const Funds = () => {
                     <React.Fragment key={index}>
                       {index === 0 && (
                         <th
+                          ref={(el) => {
+                            if (headerRefs?.current) {
+                              headerRefs.current[index] = el;
+                            }
+                          }}
                           key={index}
                           className={cn(
-                            'sticky right-0 top-0 z-40 m-0 h-[64px] w-[312px] border-b bg-[#E3F8F8] py-0 pr-2',
+                            'sticky right-0 top-0 z-50 m-0 h-[64px] w-[312px] border-b bg-[#E3F8F8] py-0 pr-2',
                             {
-                              'group-hover/table:pr-0': canScrollVertical && !isActiveDropdownPageCount,
+                              'group-hover/table:pr-0':
+                                canScrollVertical && !isActiveDropdownPageCount,
                             },
                           )}
                         >
@@ -389,14 +415,15 @@ const Funds = () => {
                                 >
                                   <FundsColumn
                                     active={isActive}
-                                    filtered={!!header.column.getIsSorted()}
-                                    clickFilterd={() =>
+                                    filtered={!!header.column.getIsSorted() && isScrollAtStart}
+                                    clickFilterd={() => {
+                                      setSortIndex(0);
                                       header.column.toggleSorting(
                                         header.column.getIsSorted() === 'desc'
                                           ? false
                                           : true,
-                                      )
-                                    }
+                                      );
+                                    }}
                                     size="extraLarg"
                                     shadow={false}
                                     type={
@@ -472,6 +499,11 @@ const Funds = () => {
                       )}
                       {index >= 1 && (
                         <th
+                          ref={(el) => {
+                            if (headerRefs?.current) {
+                              headerRefs.current[index] = el;
+                            }
+                          }}
                           className={cn(
                             'm-0 h-[64px] bg-[#E3F8F8] pr-2 text-sm font-medium',
                             String(
@@ -483,7 +515,8 @@ const Funds = () => {
                               ? 'w-[200px]'
                               : 'w-36',
                             {
-                              'group-hover/table:pr-0': canScrollVertical && !isActiveDropdownPageCount,
+                              'group-hover/table:pr-0':
+                                canScrollVertical && !isActiveDropdownPageCount,
                             },
                           )}
                           key={index}
@@ -579,17 +612,17 @@ const Funds = () => {
                                   <div className="w-full">
                                     <FundsColumn
                                       active={isActive}
-                                      filtered={!!header.column.getIsSorted()}
                                       defaultSort={() =>
                                         updateTableHeaders[0].column.getToggleSortingHandler()?.(
                                           new Event('click'),
                                         )
                                       }
-                                      clickFilterd={() =>
+                                      clickFilterd={() => {
+                                        setSortIndex(index);
                                         header.column.getToggleSortingHandler()?.(
                                           new Event('click'),
-                                        )
-                                      }
+                                        );
+                                      }}
                                       size={
                                         String(
                                           flexRender(
@@ -699,6 +732,23 @@ const Funds = () => {
                   )}
                 </div>
               </tr>
+              <tr dir='ltr' className="relative w-full bg-red-500">
+                <td
+                  
+                  style={{
+                    
+                    transform:  `translateX(-${sortIndicator.right}px)`,
+                    width: `${sortIndicator.width}px`,
+                  }}
+                  className={cn(" z-[51] transition-transform duration-300", {
+                    'rigth-2 group-hover/table:rigth-0': canScrollVertical,
+                    'z-40 bottom-0 absolute right-2 group-hover/table:right-0': sortIndex !== 0,
+                    'fixed right-0 top-[240px]': sortIndex === 0,
+                  })}
+                >
+                  <div className='bg-brand-600 mx-auto h-1.5 w-16 rounded-t-[10px]'></div>
+                </td>
+              </tr>
             </thead>
             <tbody className="relative w-full overflow-hidden">
               {(() => {
@@ -726,7 +776,7 @@ const Funds = () => {
                     <tr className="fixed right-[calc(50%-150px)] mt-5 w-full text-gray-600">
                       <td className="text-sm">
                         {isMainTab
-                        ? 'صندوقی یافت نشد! لطفا فیلتر‌هارا بازنشانی کنید.'
+                          ? 'صندوقی یافت نشد! لطفا فیلتر‌هارا بازنشانی کنید.'
                           : watchList.length === 0
                             ? 'صندوقی در دیده بان وجود ندارد.'
                             : 'صندوقی یافت نشد! لطفا فیلتر هارا بازنشانی کنید.'}
@@ -742,7 +792,7 @@ const Funds = () => {
                     <>
                       <tr
                         key={row.id}
-                        className='group h-[63px] bg-white group-hover:bg-[#F5F9FE]'
+                        className="group h-[63px] bg-white group-hover:bg-[#F5F9FE]"
                       >
                         <td></td>
                         {row.getVisibleCells().map((cell, index) => {
@@ -754,7 +804,8 @@ const Funds = () => {
                                     'sticky right-0 top-0 z-40 m-0 border-b border-[#E1E2E5] py-0 pr-2',
                                     {
                                       'group-hover/table:pr-0':
-                                        canScrollVertical && !isActiveDropdownPageCount,
+                                        canScrollVertical &&
+                                        !isActiveDropdownPageCount,
                                     },
                                   )}
                                 >
@@ -803,7 +854,8 @@ const Funds = () => {
                                     'border-b border-[#E1E2E5] py-0 pr-4 text-sm font-medium',
                                     {
                                       'group-hover/table:pr-0':
-                                        canScrollVertical && !isActiveDropdownPageCount,
+                                        canScrollVertical &&
+                                        !isActiveDropdownPageCount,
                                       'bg-blue-50 group-hover:bg-blue-100':
                                         isPinned,
                                       'group-hover:bg-blue-50': !isPinned,
@@ -864,25 +916,25 @@ const Funds = () => {
             customTriggerRender={({ isActive }) => {
               setIsActiveDropdownPageCount(isActive);
               return (
-              <div className="flex h-[40px] items-center gap-2 pl-2 pr-3 text-xs font-medium">
-                <div className="flex gap-1">
-                  <span>تعداد سطر در جدول: </span>
-                  {formatNumber(
-                    table.getState().pagination.pageSize *
-                      (table.getState().pagination.pageIndex + 1),
-                    { commaSeparated: true },
-                  )}
+                <div className="flex h-[40px] items-center gap-2 pl-2 pr-3 text-xs font-medium">
+                  <div className="flex gap-1">
+                    <span>تعداد سطر در جدول: </span>
+                    {formatNumber(
+                      table.getState().pagination.pageSize *
+                        (table.getState().pagination.pageIndex + 1),
+                      { commaSeparated: true },
+                    )}
+                  </div>
+                  <div
+                    className={cn('transition-transform duration-300', {
+                      'rotate-180': isActive,
+                      'rotate-0': !isActive,
+                    })}
+                  >
+                    <Icon size="lg" name="chevron-down" />
+                  </div>
                 </div>
-                <div
-                  className={cn('transition-transform duration-300', {
-                    'rotate-180': isActive,
-                    'rotate-0': !isActive,
-                  })}
-                >
-                  <Icon size="lg" name="chevron-down" />
-                </div>
-              </div>
-              )
+              );
             }}
             customOptionRender={(prop) => (
               <div
