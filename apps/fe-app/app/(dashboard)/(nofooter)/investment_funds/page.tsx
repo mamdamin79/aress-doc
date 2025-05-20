@@ -49,6 +49,7 @@ const Funds = () => {
   const tableRef = useRef<HTMLDivElement>(null);
   const [watchList, setWatchList] = useState<string[]>([]);
   const [pineWatchLis, setPineWatchList] = useState<string[]>([]);
+  const [isActiveDropdownPageCount, setIsActiveDropdownPageCount] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string[]>
   >({});
@@ -284,12 +285,9 @@ const Funds = () => {
           ref={tableRef}
           onScroll={handlerScroll}
           className={cn(
-            'table-scroll group/table scrollbar-lg h-[calc(100vh-172px)] w-screen overflow-hidden scroll-smooth',
+          'table-scroll group/table scrollbar-lg h-[calc(100vh-172px)] w-screen overflow-hidden scroll-smooth',
             {
-              'hover:overflow-auto':
-                (indexCategoryTab === 0 &&
-                  table.getRowModel().rows.length > 0) ||
-                watchList.length > 0,
+              'hover:overflow-auto': canScrollVertical && !isActiveDropdownPageCount
             },
           )}
         >
@@ -324,7 +322,7 @@ const Funds = () => {
                           className={cn(
                             'sticky right-0 top-0 z-40 m-0 h-[64px] w-[312px] border-b bg-[#E3F8F8] py-0 pr-2',
                             {
-                              'group-hover/table:pr-0': canScrollVertical,
+                              'group-hover/table:pr-0': canScrollVertical && !isActiveDropdownPageCount,
                             },
                           )}
                         >
@@ -418,15 +416,7 @@ const Funds = () => {
                                         header.getContext(),
                                       ),
                                     )}
-                                    sortType={
-                                      (
-                                        columns[index]?.meta as {
-                                          type?: string;
-                                        }
-                                      )?.type === 'text'
-                                        ? 'alphabetical'
-                                        : 'ranked'
-                                    }
+                                    sortType={'alphabetical'}
                                   />
                                   <div className="absolute top-5 flex items-center gap-2 pr-4">
                                     <Tooltip title="انتخاب ستون‌ها">
@@ -493,7 +483,7 @@ const Funds = () => {
                               ? 'w-[200px]'
                               : 'w-36',
                             {
-                              'group-hover/table:pr-0': canScrollVertical,
+                              'group-hover/table:pr-0': canScrollVertical && !isActiveDropdownPageCount,
                             },
                           )}
                           key={index}
@@ -730,14 +720,13 @@ const Funds = () => {
                 );
 
                 const rowsToRender = [...pinnedRows, ...otherRows];
-                const lastPinnedRowId = pinnedRows.at(-1)?.id;
 
                 if (rowsToRender.length === 0) {
                   return (
                     <tr className="fixed right-[calc(50%-150px)] mt-5 w-full text-gray-600">
                       <td className="text-sm">
                         {isMainTab
-                          ? 'صندوقی یافت نشد! لطفا فیلتر ها را بازنشانی کنید.'
+                        ? 'صندوقی یافت نشد! لطفا فیلتر‌هارا بازنشانی کنید.'
                           : watchList.length === 0
                             ? 'صندوقی در دیده بان وجود ندارد.'
                             : 'صندوقی یافت نشد! لطفا فیلتر هارا بازنشانی کنید.'}
@@ -748,32 +737,12 @@ const Funds = () => {
 
                 return rowsToRender.map((row, rowIndex) => {
                   const isPinned = pinnedIds.includes(row.id);
-                  const pinnedIndex = pinnedRows.findIndex(
-                    (r) => r.id === row.id,
-                  );
-                  const topValue = isPinned
-                    ? rowIndex === 1
-                      ? `${(pinnedIndex + 1) * 72 - 2}px`
-                      : `${(pinnedIndex + 1) * 70 - 5}px`
-                    : 'auto';
-                  const isLastPinned = row.id === lastPinnedRowId;
 
                   return (
                     <>
                       <tr
                         key={row.id}
-                        style={{ top: rowIndex > 0 ? topValue : '79px' }}
-                        className={cn(
-                          'group h-[63px] bg-white group-hover:bg-[#F5F9FE]',
-                          isPinned && 'sticky top-2 z-50',
-                          {
-                            '[box-shadow:0_1px_0_#E1E2E5]':
-                              isPinned && (!isLastPinned || !isScrollTop),
-                            'shadow-2xl':
-                              isPinned && isLastPinned && isScrollTop,
-                            'bg-blue-200': false,
-                          },
-                        )}
+                        className='group h-[63px] bg-white group-hover:bg-[#F5F9FE]'
                       >
                         <td></td>
                         {row.getVisibleCells().map((cell, index) => {
@@ -785,7 +754,7 @@ const Funds = () => {
                                     'sticky right-0 top-0 z-40 m-0 border-b border-[#E1E2E5] py-0 pr-2',
                                     {
                                       'group-hover/table:pr-0':
-                                        canScrollVertical,
+                                        canScrollVertical && !isActiveDropdownPageCount,
                                     },
                                   )}
                                 >
@@ -834,7 +803,7 @@ const Funds = () => {
                                     'border-b border-[#E1E2E5] py-0 pr-4 text-sm font-medium',
                                     {
                                       'group-hover/table:pr-0':
-                                        canScrollVertical,
+                                        canScrollVertical && !isActiveDropdownPageCount,
                                       'bg-blue-50 group-hover:bg-blue-100':
                                         isPinned,
                                       'group-hover:bg-blue-50': !isPinned,
@@ -892,7 +861,9 @@ const Funds = () => {
               anchor: 'top end',
               checkSelected: true,
             }}
-            customTriggerRender={({ isActive }) => (
+            customTriggerRender={({ isActive }) => {
+              setIsActiveDropdownPageCount(isActive);
+              return (
               <div className="flex h-[40px] items-center gap-2 pl-2 pr-3 text-xs font-medium">
                 <div className="flex gap-1">
                   <span>تعداد سطر در جدول: </span>
@@ -911,7 +882,8 @@ const Funds = () => {
                   <Icon size="lg" name="chevron-down" />
                 </div>
               </div>
-            )}
+              )
+            }}
             customOptionRender={(prop) => (
               <div
                 className={cn(

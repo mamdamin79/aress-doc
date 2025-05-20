@@ -211,7 +211,7 @@ export function FundsTableRow({
                       'حداکثر میتوانید ۳ صندوق را در هر دسته بندی پین کنید.',
                     type: 'warning',
                   });                }
-                if (prop.text === 'پین کردن') {
+                if (prop.text === 'پین کردن' && canPin) {
                   pinedFunction();
                   showProgressToast({
                     timeout: 5000,
@@ -252,7 +252,7 @@ export function FundsTableRow({
               className={cn(
                 'flex cursor-pointer font-medium w-[168px] pr-2 text-sm hover:text-brand-800 items-center gap-2 bg-white py-2',
                 {
-                  'cursor-default text-[#B3B6BD]':
+                  'cursor-default hover:text-nowrap hover:text-[#B3B6BD] text-[#B3B6BD]':
                     !canPin && prop.text === 'پین کردن',
                 },
               )}
