@@ -54,7 +54,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
                 label="کد ملی"
                 placeholder=""
                 isError={!!fieldState.error}
-                supportText={fieldState.error?.message}
+                supportText={fieldState.error?.message || ' '}
                 {...field}
               />
             )}
@@ -83,7 +83,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
                 label="شماره همراه"
                 placeholder=""
                 isError={!!fieldState.error}
-                supportText={fieldState.error?.message}
+                supportText={fieldState.error?.message || ' '}
                 {...field}
               />
             )}

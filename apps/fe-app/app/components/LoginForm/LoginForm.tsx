@@ -95,13 +95,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
               name="remember"
               control={control}
               render={({ field }) => (
-                <Checkbox checked={field.value} onChange={field.onChange} />
+                <Checkbox
+                  checked={field.value}
+                  onChange={field.onChange}
+                  content="مرا به خاطر بسپار"
+                />
               )}
             />
-
-            <label className="text-sm font-medium" htmlFor="remember">
-              مرا به خاطر بسپار
-            </label>
           </div>
           <Button
             align="center"
@@ -112,7 +112,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
           >
             ورود به ترمینال
           </Button>
-          <Button align="center" isLoading={false} mode="underline" size="sm">
+          <Button
+            className="font-medium"
+            align="center"
+            isLoading={false}
+            mode="underline"
+            size="sm"
+          >
             <Link href="/forgot">رمز عبور را فراموش کرده‌اید؟</Link>
           </Button>
         </div>

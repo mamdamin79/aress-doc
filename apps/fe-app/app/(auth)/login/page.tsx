@@ -1,9 +1,18 @@
-import { BulletList, NotesHeading, SectionTitle } from 'design-system';
+import { BulletList, Button, NotesHeading, SectionTitle } from 'design-system';
 import React from 'react';
 import TERMINAL_LOGIN from '@aress-assets/icons/TerminalLogin.svg';
 import Image from 'next/image';
 import { FormWrapper } from './_components';
 import Logo from '@aress-assets/icons/product_logo.svg';
+const OurTermsOfServiceText: React.FC = () => (
+  <div>
+    <span>همچنین توصیه می‌کنیم که </span>
+    <span className="text-brand-700 cursor-pointer underline-offset-4 hover:underline">
+      شیوه‌نامه خدمات
+    </span>
+    <span> ما را به دقت مطالعه فرمایید.</span>
+  </div>
+);
 const LoginPage = () => {
   return (
     <div className="flex h-full justify-center">
@@ -48,7 +57,7 @@ const LoginPage = () => {
                       title: `هیچ‌وقت اطلاعات حساب کاربری خود را با دیگران به اشتراک نگذارید.`,
                     },
                     {
-                      title: `همچنین، توصیه می‌کنیم که شیوه‌نامه خدمات ما را به دقت مطالعه فرمایید.`,
+                      title: <OurTermsOfServiceText />,
                     },
                   ]}
                 />
