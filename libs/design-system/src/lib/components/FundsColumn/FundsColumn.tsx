@@ -12,7 +12,6 @@ interface Props {
   type: 'inactive' | 'active-desc' | 'active-asc';
   shadow?: boolean;
   clickFilterd: () => void;
-  filtered: boolean;
   active?: boolean;
   subTitle?: string;
   defaultSort?: () => void;
@@ -27,7 +26,7 @@ export function FundsColumn({
   filterable,
   type,
   clickFilterd,
-  filtered,
+  
   defaultSort,
   active,
 }: Props) {

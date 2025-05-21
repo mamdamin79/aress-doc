@@ -247,25 +247,26 @@ const Funds = () => {
     handlerMouseEnterTable();
   }, [indexCategoryTab, tableCount]);
 
-useEffect(() => {
-  const node = headerRefs?.current[sortIndex];
-  const container = tableRef?.current;
+  useEffect(() => {
+    const node = headerRefs?.current[sortIndex];
+    const container = tableRef?.current;
 
-  if (node && container) {
-    const nodeRect = node.getBoundingClientRect();
-    const containerRect = container.getBoundingClientRect();
+    if (node && container) {
+      const nodeRect = node.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
 
-    const rightOffset = Math.round(containerRect.right - nodeRect.right);    
+      let rightOffset = Math.round(containerRect.right - nodeRect.right);
 
-    setSortIndicator({
-      right: rightOffset,
-      width: node.offsetWidth,
-    });
-  }
-}, [sortIndex]);
+      if (isScrollAtStart && tableRef.current && sortIndex !== 0) {
+        rightOffset += tableRef?.current?.scrollLeft * -1;
+      }
 
-console.log(sortIndicator);
-
+      setSortIndicator({
+        right: rightOffset,
+        width: node.offsetWidth,
+      });
+    }
+  }, [isScrollAtStart, sortIndex]);
 
   return (
     <>
@@ -415,7 +416,6 @@ console.log(sortIndicator);
                                 >
                                   <FundsColumn
                                     active={isActive}
-                                    filtered={!!header.column.getIsSorted() && isScrollAtStart}
                                     clickFilterd={() => {
                                       setSortIndex(0);
                                       header.column.toggleSorting(
@@ -612,11 +612,12 @@ console.log(sortIndicator);
                                   <div className="w-full">
                                     <FundsColumn
                                       active={isActive}
-                                      defaultSort={() =>
+                                      defaultSort={() => {
                                         updateTableHeaders[0].column.getToggleSortingHandler()?.(
                                           new Event('click'),
-                                        )
-                                      }
+                                        );
+                                        setSortIndex(0);
+                                      }}
                                       clickFilterd={() => {
                                         setSortIndex(index);
                                         header.column.getToggleSortingHandler()?.(
@@ -732,21 +733,19 @@ console.log(sortIndicator);
                   )}
                 </div>
               </tr>
-              <tr dir='ltr' className="relative w-full bg-red-500">
+              <tr dir="ltr" className="relative w-full">
                 <td
-                  
                   style={{
-                    
-                    transform:  `translateX(-${sortIndicator.right}px)`,
+                    transform: `translateX(-${sortIndicator.right}px)`,
                     width: `${sortIndicator.width}px`,
                   }}
-                  className={cn(" z-[51] transition-transform duration-300", {
-                    'rigth-2 group-hover/table:rigth-0': canScrollVertical,
-                    'z-40 bottom-0 absolute right-2 group-hover/table:right-0': sortIndex !== 0,
+                  className={cn('z-[51] right-0 transition-transform duration-500', {
+                    'absolute bottom-0 right-0 z-40': sortIndex !== 0,
+                    'group-hover/table:-right-2': sortIndex !== 0 && canScrollVertical,
                     'fixed right-0 top-[240px]': sortIndex === 0,
                   })}
                 >
-                  <div className='bg-brand-600 mx-auto h-1.5 w-16 rounded-t-[10px]'></div>
+                  <div className="bg-brand-600 mx-auto h-1.5 w-16 rounded-t-[10px]"></div>
                 </td>
               </tr>
             </thead>
