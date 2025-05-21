@@ -7,7 +7,7 @@ import { FundsTag } from '../FundsTag';
 
 interface Props {
   tabs: TabItem[];
-  variant: 'shaped' | 'divided' | 'lined' | 'rounded' | 'rounded-full';
+  variant: 'shaped' | 'divided' | 'lined' | 'rounded' | 'rounded-full' | 'shaped-color';
   colorMode: 'neutral' | 'inverse';
   activeTab: number;
   onClickTab: (idTab: number) => void;
@@ -40,6 +40,16 @@ export const Tabs: React.FC<Props> = ({
               key={index}
               className={cn(
                 'text-md relative outline-none',
+                {
+                  'font-medium border border-[#F3F4F6] text-[#06080F] text-sm py-1 flex items-center gap-2 pr-0.5 bg-[#F3F4F6] pl-2 rounded-md': variant === 'shaped-color',
+                  'pr-2': variant === 'shaped-color' && !props.tag,
+                  'hover:bg-blue-50 hover:border-blue-200 data-[selected]:bg-blue-100 data-[selected]:text-blue-700 data-[selected]:border-blue-300': variant === 'shaped-color' && props.tag === 'blue',
+                  'hover:bg-green-50 hover:border-green-200 data-[selected]:bg-green-100 data-[selected]:text-green-700 data-[selected]:border-green-300': variant === 'shaped-color' && props.tag === 'green',
+                  'hover:bg-yellow-50 hover:border-yellow-200 data-[selected]:bg-yellow-100 data-[selected]:text-yellow-700 data-[selected]:border-yellow-300': variant === 'shaped-color' && props.tag === 'yellow',
+                  'hover:bg-purple-50 hover:border-purple-200 data-[selected]:bg-purple-100 data-[selected]:text-purple-700 data-[selected]:border-purple-300': variant === 'shaped-color' && props.tag === 'purple',
+                  'hover:bg-[#F3F4F6] hover:border-[#B3B6BD] data-[selected]:bg-[#E1E2E5] data-[selected]:border-[#8F9299]': variant === 'shaped-color' && !props.tag,
+ 
+                },
                 {
                   'data-[selected]:bg-brand-600 relative min-w-40 rounded-t-xl py-2 text-center text-gray-600 hover:text-gray-700 data-[selected]:font-semibold data-[selected]:text-white':
                     variant === 'lined',
@@ -120,7 +130,7 @@ export const Tabs: React.FC<Props> = ({
                       )}
                     ></div>
                   )}
-                  {variant === 'rounded-full' && props.tag && (
+                  {(variant === 'rounded-full' || variant === 'shaped-color') && props.tag && (
                     <FundsTag color={props.tag} />
                   )}
                   {variant === 'shaped' ? (

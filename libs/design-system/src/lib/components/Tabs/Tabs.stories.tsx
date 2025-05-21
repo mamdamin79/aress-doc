@@ -10,7 +10,14 @@ const meta: Meta<typeof Tabs> = {
   argTypes: {
     variant: {
       control: 'radio',
-      options: ['shaped', 'lined', 'divided', 'rounded', 'rounded-full'],
+      options: [
+        'shaped',
+        'lined',
+        'divided',
+        'rounded',
+        'rounded-full',
+        'shaped-color',
+      ],
     },
   },
 };
@@ -55,15 +62,22 @@ export const Default: Story = {
         id: '2',
         content: 'تحلیل بازدهی',
         title: 'تحلیل بازدهی',
+        tag: 'blue',
       },
       {
         id: '3',
         content: 'تحلیل بازدهی',
         title: 'تحلیل بازدهی',
-        tag: 'blue',
+        tag: 'yellow',
       },
       {
         id: '4',
+        content: 'تحلیل بازدهی',
+        tag: 'purple',
+        title: 'تحلیل بازدهی',
+      },
+      {
+        id: '5',
         content: 'تحلیل بازدهی',
         title: 'تحلیل بازدهی',
       },
