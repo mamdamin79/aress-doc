@@ -4,11 +4,9 @@ import { IconDialog, ProgressBar } from 'design-system';
 import React, { useState } from 'react';
 import RESET_PASSWORD from '@aress-assets/icons/ResetPassword.svg';
 import Image from 'next/image';
-import { NewPasswordForm, OTPForm, ResetPasswordForm } from '../../components';
 import Logo from '@aress-assets/icons/product_logo.svg';
 import LogoWithText from '@aress-assets/icons/LogoWithText.svg';
 import { Notice } from './_components/Notice';
-import { Toaster } from 'react-hot-toast';
 import { FormWrapper } from './_components';
 
 const ForgotPasswordPage = () => {
@@ -72,7 +70,6 @@ const ForgotPasswordPage = () => {
         onClose={() => setIsIconDialogOpen(false)}
         title="رمز عبور جدید با موفقیت ذخیره شد!"
       />
-      <Toaster position="top-center" />
     </div>
   );
 };
