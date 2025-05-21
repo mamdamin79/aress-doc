@@ -13,7 +13,7 @@ const nextConfig = {
     svgr: true,
   },
   images: {
-    domains: ["placehold.co","picsum.photos"],
+    domains: ['placehold.co', 'picsum.photos', '192.168.100.143'],
   },
   transpilePackages: ['lucide-react'], // add this
 };

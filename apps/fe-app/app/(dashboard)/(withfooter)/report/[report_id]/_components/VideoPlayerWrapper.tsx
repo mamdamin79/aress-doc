@@ -54,7 +54,7 @@ export const VideoPlayerWrapper: React.FC = () => {
   const [selectedVideo, setSelectedVideo] = useState<Video>(videos[0]);
 
   return (
-    <div className="flex items-center justify-center gap-4">
+    <div className="flex w-[424px] items-center justify-center gap-4 lg:w-[816px]">
       <VideoPlayer
         videos={videos}
         setSelectedVideo={setSelectedVideo}

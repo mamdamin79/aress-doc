@@ -23,7 +23,7 @@ export const TabsWrapper: React.FC = () => {
 
   return (
     <section
-      className={cn('sticky z-30 mb-6 bg-white px-2 pt-3')}
+      className={cn('sticky z-30 mb-6 w-full bg-white px-2 py-3')}
       style={{ top: 0 }}
     >
       <Tabs
@@ -32,6 +32,7 @@ export const TabsWrapper: React.FC = () => {
         tabs={TABS}
         activeTab={currentSection ? Number(currentSection) : 0}
         onClickTab={(idTab) => scrollToSection(idTab)}
+        className="z-10 flex w-full justify-center"
       />
     </section>
   );
