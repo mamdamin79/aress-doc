@@ -22,18 +22,20 @@ export const ProfilePageContent: React.FC<AressApiUser> = (user) => {
     <div className="mx-auto flex w-full max-w-[1680px] justify-center">
       <div className="flex w-full flex-row gap-14 px-8 pb-28 pt-12 lg:px-20">
         {!(activeSection && !isDesktop) && (
-          <ProfileSidebar
-            title="علی محمدی"
-            subTitle="09339133898"
-            onLogoutBtn={() => setIsLogoutModalOpen(true)}
-            onNavigation={(section) => setActiveSection(section)}
-            activeSection={isDesktop ? 'profile' : activeSection}
-          />
+          <div className="flex w-full justify-center lg:w-[264px]">
+            <ProfileSidebar
+              title="علی محمدی"
+              subTitle="09339133898"
+              onLogoutBtn={() => setIsLogoutModalOpen(true)}
+              onNavigation={(section) => setActiveSection(section)}
+              activeSection={isDesktop ? 'profile' : activeSection}
+            />
+          </div>
         )}
 
         <div
           className={cn(
-            'hidden w-full lg:block',
+            'hidden flex-grow lg:block',
             activeSection == 'profile' && 'block',
           )}
         >
