@@ -4,7 +4,6 @@ import { ProgressCircle } from './ProgressCircle';
 interface Props {
   progressBarItems: string[];
   activeIndex: number;
-  size?: 'sm' | 'md';
 }
 
 export function ProgressBar({ progressBarItems, activeIndex }: Props) {
