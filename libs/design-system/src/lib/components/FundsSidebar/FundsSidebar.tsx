@@ -143,7 +143,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
         dir="ltr"
       >
         {data.map((item, index) => (
-          <>
+          <React.Fragment key={index}>
             <div className="flex w-[60px] items-center justify-start pt-2">
               <NumberSection value={item.changeValue} />
             </div>
@@ -164,7 +164,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
                 }}
               />
             </div>
-          </>
+          </React.Fragment>
         ))}
       </div>
       <div className="h-4"></div>

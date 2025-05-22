@@ -13,7 +13,20 @@ const nextConfig = {
     svgr: true,
   },
   images: {
-    domains: ['placehold.co', 'picsum.photos', '192.168.100.143'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'placehold.co',
+      },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+      },
+      {
+        protocol: 'http',
+        hostname: '192.168.100.143',
+      },
+    ],
   },
   transpilePackages: ['lucide-react'], // add this
 };
