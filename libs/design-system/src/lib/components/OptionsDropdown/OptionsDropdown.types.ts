@@ -16,6 +16,7 @@ export interface DropdownCell {
   icon?: IconProps;
   isActive?: boolean;
   withCheck?: boolean;
+  className?:string;
 }
 
 export interface DropDownStyle {
