@@ -34,49 +34,50 @@ export function IconDialog({
       className="relative p-6 pt-16"
       showCloseBtn={false}
     >
-      <div className="flex min-h-full items-center justify-center">
-        <div className="flex flex-col items-center gap-6">
+      <div className="flex flex-col items-center gap-6">
+        <div
+          className={cn(
+            'absolute -top-12 flex h-[100px] w-[100px] items-center justify-center rounded-full',
+            colors[mode][0],
+          )}
+        >
           <div
             className={cn(
-              'absolute -top-9 flex items-center justify-center rounded-full',
-              colors[mode][0],
+              'flex h-20 w-20 items-center justify-center rounded-full',
+              colors[mode][1],
             )}
           >
             <div
               className={cn(
-                'flex h-20 w-20 items-center justify-center rounded-full',
-                colors[mode][1],
+                'flex h-16 w-16 items-center justify-center rounded-full text-white',
+                colors[mode][2],
               )}
             >
-              <div
-                className={cn(
-                  'flex h-16 w-16 items-center justify-center rounded-full px-4 text-white',
-                  colors[mode][2],
-                )}
-              >
-                {mode === 'error' ? (
-                  <Icon name="x" size="xl" />
-                ) : (
-                  <Icon name="check" size="xl" />
-                )}
-              </div>
+              {mode === 'error' ? (
+                <Icon name="x" size="xl" />
+              ) : (
+                <Icon name="check" size="xl" />
+              )}
             </div>
           </div>
-          <div className="flex w-full flex-col gap-4">
-            <p className="text-center text-xl font-semibold">{title}</p>
-            {message && <p className="text-md text-center">{message}</p>}
-          </div>
-
-          <Button
-            align="center"
-            isLoading={false}
-            mode="primary"
-            size="md"
-            onClick={onClose}
-          >
-            {btnText}
-          </Button>
         </div>
+        <div className="flex w-full flex-col gap-4">
+          <p className="text-center text-xl font-medium">{title}</p>
+          {message && (
+            <p className="text-md text-center font-normal">{message}</p>
+          )}
+        </div>
+
+        <Button
+          align="center"
+          isLoading={false}
+          mode="primary"
+          size="md"
+          onClick={onClose}
+          className="w-[348px]"
+        >
+          {btnText}
+        </Button>
       </div>
     </Dialog>
   );
