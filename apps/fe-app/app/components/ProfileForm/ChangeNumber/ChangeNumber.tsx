@@ -178,8 +178,7 @@ export const ChangeNumber = ({
   const [stage, setStage] = useState<ChangeNumberStage | null>(0);
   const [newNumber, setNewNumber] = useState<null | string>(null);
   const onSaveData = async (code: string) => {
-    await new Promise((r) => setTimeout(r, 1000));
-    onClose?.();
+    // Send data to server
   };
   return (
     <>
