@@ -7,6 +7,7 @@ export interface ProfileFormProps {
   email?: string;
   username?: string;
   image?: string;
+  onImageChange?: (image:string)=>void;
 }
 export type editDialogStatus =
   | 'phoneNumber'

@@ -1,6 +1,6 @@
 'use client';
 import { AressApiUser } from '@openapi';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ProfileForm } from '../../../../components';
 import { cn, Icon, ProfileSidebar } from 'design-system';
 import { LogoutModal } from './LogoutModal';
@@ -18,12 +18,15 @@ export const ProfilePageContent: React.FC<AressApiUser> = (user) => {
   const userPhoneNumber = user.phoneNumber
     ? `${user.phoneNumber.replace('+', '')}+`
     : '';
+
+  const [image, setImage] = useState<string | undefined>(undefined);
   return (
     <div className="mx-auto flex w-full max-w-[1680px] justify-center">
       <div className="flex w-full flex-row gap-14 px-8 pb-28 pt-12 lg:px-20">
         {!(activeSection && !isDesktop) && (
           <div className="flex w-full justify-center lg:w-[264px]">
             <ProfileSidebar
+              image={image}
               title="علی محمدی"
               subTitle="09339133898"
               onLogoutBtn={() => setIsLogoutModalOpen(true)}
@@ -50,6 +53,8 @@ export const ProfilePageContent: React.FC<AressApiUser> = (user) => {
               </button>
             )}
             <ProfileForm
+              image={image}
+              onImageChange={(image) => setImage(image)}
               email={user.email}
               fnameAndLname=""
               nationalID={
