@@ -34,6 +34,7 @@ export const ReportOverview: React.FC<ReportOverviewProps> = ({
             <LikeBadge
               isLiked={userFavorite ?? false}
               onClick={() => console.log('liked')}
+              size="lg"
             />
           </div>
           <Button align="center" isLoading={false} mode="primary" size="sm">
@@ -46,7 +47,7 @@ export const ReportOverview: React.FC<ReportOverviewProps> = ({
       </div>
       <div className="h-0 w-full border border-gray-300"></div>
       <span className="text-md text-right font-medium">معرفی کوتاه:</span>
-      <p className="text-xs font-normal">{summary}</p>
+      <p className="text-sm font-normal text-gray-600">{summary}</p>
     </div>
   );
 };
