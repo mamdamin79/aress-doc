@@ -12,7 +12,6 @@ interface Props {
   type: 'inactive' | 'active-desc' | 'active-asc';
   shadow?: boolean;
   clickFilterd: () => void;
-  filtered: boolean;
   active?: boolean;
   subTitle?: string;
   defaultSort?: () => void;
@@ -27,7 +26,7 @@ export function FundsColumn({
   filterable,
   type,
   clickFilterd,
-  filtered,
+  
   defaultSort,
   active,
 }: Props) {
@@ -77,9 +76,6 @@ export function FundsColumn({
           <span>{title}</span>
           <span>{subTitle !== 'مشخصات صندوق' && subTitle !== 'ارکان صندوق' && subTitle !== 'سهم پرتفوی صندوق' && subTitle}</span>
         </div>
-        {filtered && (
-          <div className="bg-brand-600 absolute bottom-0 h-1.5 w-16 rounded-t-[10px]"></div>
-        )}
         <Tooltip
           title={
             sortType === 'ranked'
