@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import BOOKMARK_ICON from '@aress-assets/icons/bookmark.svg';
 import { cn } from 'libs/design-system/src/utils';
-import Image from 'next/image';
+import { Icon } from '../Icon';
+
 
 export function Bookmark() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,18 +13,28 @@ export function Bookmark() {
   };
 
   return (
-    <div className="relative py-2 flex items-center gap-1 overflow-x-hidden">
+    <div className="relative py-2 flex overflow-hidden items-center gap-1">
       <div
         onClick={toggleHandler}
-        className="h-fit absolute z-10 w-fit cursor-pointer"
+        className={cn("h-fit absolute top-[13px] z-10 fill-gray-500 w-fit cursor-pointer", {
+          'fill-red-600': selectedColor === 'red',
+          'fill-blue-600': selectedColor === 'blue',
+          'fill-green-600': selectedColor === 'green',
+          'fill-yellow-600': selectedColor === 'yellow',
+          'fill-purple-600': selectedColor === 'purple',
+          'fill-none hover:fill-gray-400': !selectedColor && !isOpen
+        })}
       >
-        {/* <BOOKMARK_ICON className="text-red-500" /> */}
-        <Image width={100} height={100} className='w-5 h-5 fill-red-400 text-red-400' src={BOOKMARK_ICON} alt="bookmark" />
+        <Icon name='CustomBookmark' />
       </div>
+
       <div
         style={{ transform: !isOpen ? `translateX(150%)` : `translateX(0)` }}
-        className="flex h-[26px] mr-6 items-center justify-between gap-2 rounded px-2 shadow-2xl transition-all duration-300"
+        className="flex h-[27px] mr-6 items-center justify-between gap-2 rounded px-2 shadow-2xl transition-all duration-300"
       >
+        <div className='fill-white -right-5 top-2 w-fit absolute'>
+          <Icon name='CustomArrow' />
+        </div>
         {colors.map((color) => (
           <div
             className={cn(

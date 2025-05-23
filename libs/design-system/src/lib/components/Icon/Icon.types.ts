@@ -19,6 +19,8 @@ export type CustomIconName =
   | 'CustomPinOffFill'
   | 'CustomPlayFill'
   | 'CustomPinFill'
+  | 'CustomBookmark'
+  | 'CustomArrow'
   | 'CustomGold';
 
 // this is a type of all valid icon names from lucide
