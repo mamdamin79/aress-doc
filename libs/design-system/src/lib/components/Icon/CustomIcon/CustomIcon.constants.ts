@@ -16,6 +16,8 @@ import { ReactComponent as CustomPinOffFill } from './src/icons/CustomPinOffFill
 import { ReactComponent as CustomPlayFill } from './src/icons/CustomPlayFill.svg';
 import { ReactComponent as CustomPinFill } from './src/icons/CustomPinFill.svg';
 import { ReactComponent as CustomGold } from './src/icons/CustomGold.svg';
+import { ReactComponent as CustomBookmark } from './src/icons/CustomBookmark.svg';
+import { ReactComponent as CustomArrow } from './src/icons/CustomArrow.svg';
 import { SVGProps } from 'react';
 
 export const CUSTOM_ICONS: Record<string, React.FC<SVGProps<SVGSVGElement>>> = {
@@ -37,4 +39,6 @@ export const CUSTOM_ICONS: Record<string, React.FC<SVGProps<SVGSVGElement>>> = {
   CustomPlayFill,
   CustomPinFill,
   CustomGold,
+  CustomBookmark,
+  CustomArrow,
 };

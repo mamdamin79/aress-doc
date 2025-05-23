@@ -34,8 +34,10 @@ import {
 import { makeData } from './_components/makeData';
 import { columns, columnVisibility, filterList } from './FundsTable.constants';
 import { ExportExel } from './_components/ExportExel';
+import { Bookmark } from 'libs/design-system/src/lib/components/Bookmark';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
+  const [rowMarks, setRowMarks] = useState<{ [tabIndex: number]: { [id: string]: string } }>({});
   const [canScrollVertical, setCanScrollVertical] = useState(false);
   const [indexCategoryTab, setIndexCategoryTab] = useState(0);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -247,6 +249,16 @@ const Funds = () => {
     handlerMouseEnterTable();
   }, [indexCategoryTab, tableCount])
 
+  const handleColorChange = (id: string, color: string) => {
+    setRowMarks((prev) => ({
+      ...prev,
+      [indexCategoryTab]: {
+        ...(prev[indexCategoryTab] || {}),
+        [id]: color,
+      },
+    }));
+  };
+
   return (
     <>
       <div
@@ -255,19 +267,16 @@ const Funds = () => {
           isHeaderVisible ? 'translate-y-0' : '-translate-y-full',
         )}
       >
-        <div className="flex w-full items-center justify-start gap-3">
-          <span className="pb-2.5">دسته‌بندی صندوق‌ها:</span>
-          <Tabs
-            variant="shaped"
-            onClickTab={(e) => setIndexCategoryTab(e)}
-            activeTab={indexCategoryTab}
-            colorMode="neutral"
-            tabs={[
-              { title: 'سهامی', tag: 'green', id: '1' },
-              { title: 'دیده بان', id: '2' },
-            ]}
-          />
-        </div>
+        <Tabs
+          variant="shaped"
+          onClickTab={(e) => setIndexCategoryTab(e)}
+          activeTab={indexCategoryTab}
+          colorMode="neutral"
+          tabs={[
+            { title: 'سهامی', tag: 'green', id: '1' },
+            { title: 'دیده بان', id: '2' },
+          ]}
+        />
         <Tooltip title="خروجی اکسل">
           <div className="border-brand-600 cursor-pointer rounded-md border p-1.5">
             <ExportExel />
@@ -285,7 +294,7 @@ const Funds = () => {
           ref={tableRef}
           onScroll={handlerScroll}
           className={cn(
-          'table-scroll group/table scrollbar-lg h-[calc(100vh-172px)] w-screen overflow-hidden scroll-smooth',
+            'table-scroll group/table scrollbar-lg h-[calc(100vh-172px)] w-screen overflow-hidden scroll-smooth',
             {
               'hover:overflow-auto': canScrollVertical && !isActiveDropdownPageCount
             },
@@ -297,7 +306,7 @@ const Funds = () => {
           >
             <thead className="group sticky right-0 top-0 z-50 m-0 p-0 duration-300 [box-shadow:0_2px_0_#bcebeb]">
               <tr>
-                <th className="sticky right-[270px] z-50 mt-5 p-0">
+                <th className="sticky right-[340px] z-50 mt-5 p-0">
                   {isScrollAtStart && (
                     <div className="hidden group-hover:block">
                       <Tooltip title="پیمایش به راست (D)">
@@ -320,7 +329,7 @@ const Funds = () => {
                         <th
                           key={index}
                           className={cn(
-                            'sticky right-0 top-0 z-40 m-0 h-[64px] w-[312px] border-b bg-[#E3F8F8] py-0 pr-2',
+                            'sticky right-0 top-0 z-40 m-0 h-[64px] w-[384px] border-b bg-[#E3F8F8] py-0 pr-2',
                             {
                               'group-hover/table:pr-0': canScrollVertical && !isActiveDropdownPageCount,
                             },
@@ -329,7 +338,7 @@ const Funds = () => {
                           <div
                             {...{
                               className: header.column.getCanSort()
-                                ? 'cursor-pointer h-[75px] select-none'
+                                ? 'cursor-pointer w-full h-[75px] select-none'
                                 : '',
                             }}
                           >
@@ -382,43 +391,47 @@ const Funds = () => {
                               )}
                               customTriggerRender={({ isActive }) => (
                                 <div
-                                  className={cn('w-full', {
+                                  className={cn('w-[384px] bg-[#E3F8F8] flex', {
                                     'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]':
                                       isScrollAtStart,
                                   })}
                                 >
-                                  <FundsColumn
-                                    active={isActive}
-                                    filtered={!!header.column.getIsSorted()}
-                                    clickFilterd={() =>
-                                      header.column.toggleSorting(
-                                        header.column.getIsSorted() === 'desc'
-                                          ? false
-                                          : true,
-                                      )
-                                    }
-                                    size="extraLarg"
-                                    shadow={false}
-                                    type={
-                                      header.column.getIsSorted() === 'asc'
-                                        ? 'active-asc'
-                                        : header.column.getIsSorted() === 'desc'
-                                          ? 'inactive'
-                                          : 'inactive'
-                                    }
-                                    filterable={columnFilters.some(
-                                      (filterItem) =>
-                                        filterItem.id === header.id,
-                                    )}
-                                    title={String(
-                                      flexRender(
-                                        header.column.columnDef.header,
-                                        header.getContext(),
-                                      ),
-                                    )}
-                                    sortType={'alphabetical'}
-                                  />
-                                  <div className="absolute top-5 flex items-center gap-2 pr-4">
+                                  <div className='mr-[170px]'>
+                                    <FundsColumn
+                                      active={isActive}
+                                      filtered={!!header.column.getIsSorted()}
+                                      clickFilterd={() =>
+                                        header.column.toggleSorting(
+                                          header.column.getIsSorted() === 'desc'
+                                            ? false
+                                            : true,
+                                        )
+                                      }
+                                      size="medium"
+                                      shadow={false}
+                                      type={
+                                        header.column.getIsSorted() === 'asc'
+                                          ? 'active-asc'
+                                          : header.column.getIsSorted() === 'desc'
+                                            ? 'inactive'
+                                            : 'inactive'
+                                      }
+                                      filterable={columnFilters.some(
+                                        (filterItem) =>
+                                          filterItem.id === header.id,
+                                      )}
+                                      title={String(
+                                        flexRender(
+                                          header.column.columnDef.header,
+                                          header.getContext(),
+                                        ),
+                                      )}
+                                      sortType={'alphabetical'}
+                                    /></div>
+
+                                  <div className={cn("absolute top-5 right-0 flex items-center gap-2 pr-10", {
+                                    'group-hover/table:pr-8': canScrollVertical && !isActiveDropdownPageCount,
+                                  })}>
                                     <Tooltip title="انتخاب ستون‌ها">
                                       <div
                                         onClick={() => {
@@ -442,8 +455,8 @@ const Funds = () => {
                                         {(Object.entries(selectedFilters)
                                           .length > 0 ||
                                           fundSearchQuery) && (
-                                          <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
-                                        )}
+                                            <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
+                                          )}
                                         <Icon size="lg" name="filter" />
                                       </div>
                                     </Tooltip>
@@ -547,7 +560,7 @@ const Funds = () => {
                                               (prop.text ===
                                                 'انتقال به ابتدا' ||
                                                 prop.text ===
-                                                  'انتقال به راست')) ||
+                                                'انتقال به راست')) ||
                                             (index + 1 ===
                                               updateTableHeaders.length &&
                                               (prop.text ===
@@ -557,7 +570,7 @@ const Funds = () => {
                                             (header.column.getIsSorted() ===
                                               'desc' &&
                                               prop.text ===
-                                                'مرتب سازی نزولی') ||
+                                              'مرتب سازی نزولی') ||
                                             (header.column.getIsSorted() ===
                                               'asc' &&
                                               prop.text === 'مرتب سازی صعودی'),
@@ -604,7 +617,7 @@ const Funds = () => {
                                         header.column.getIsSorted() === 'asc'
                                           ? 'active-desc'
                                           : header.column.getIsSorted() ===
-                                              'desc'
+                                            'desc'
                                             ? 'active-asc'
                                             : 'inactive'
                                       }
@@ -726,7 +739,7 @@ const Funds = () => {
                     <tr className="fixed right-[calc(50%-150px)] mt-5 w-full text-gray-600">
                       <td className="text-sm">
                         {isMainTab
-                        ? 'صندوقی یافت نشد! لطفا فیلتر‌هارا بازنشانی کنید.'
+                          ? 'صندوقی یافت نشد! لطفا فیلتر‌هارا بازنشانی کنید.'
                           : watchList.length === 0
                             ? 'صندوقی در دیده بان وجود ندارد.'
                             : 'صندوقی یافت نشد! لطفا فیلتر هارا بازنشانی کنید.'}
@@ -742,7 +755,9 @@ const Funds = () => {
                     <>
                       <tr
                         key={row.id}
-                        className='group h-[63px] bg-white group-hover:bg-[#F5F9FE]'
+                        className={cn('group h-[48px] border-b border-[#E1E2E5]', {
+                          'bg-blue-50 group-hover:bg-[#4991e9]': isPinned
+                        })}
                       >
                         <td></td>
                         {row.getVisibleCells().map((cell, index) => {
@@ -750,57 +765,67 @@ const Funds = () => {
                             <React.Fragment key={cell.id}>
                               {index === 0 && (
                                 <td
-                                  className={cn(
-                                    'sticky right-0 top-0 z-40 m-0 border-b border-[#E1E2E5] py-0 pr-2',
-                                    {
-                                      'group-hover/table:pr-0':
-                                        canScrollVertical && !isActiveDropdownPageCount,
-                                    },
-                                  )}
+                                  className='sticky flex items-center right-0 top-0 z-40 m-0 py-0'
                                 >
-                                  <FundsTableRow
-                                    tag={!isMainTab}
-                                    category={
-                                      isMainTab
-                                        ? watchList.includes(row.id)
-                                          ? 'watchlist'
-                                          : 'stocks'
-                                        : 'watchlist'
-                                    }
-                                    canPin={pinnedRows.length <= 2}
-                                    toggleWatchList={() =>
-                                      toggleWatchList({ id: row.id })
-                                    }
-                                    pinedFunction={() =>
-                                      isMainTab
-                                        ? row.pin('top', true)
-                                        : setPineWatchList([
+                                  <div className={cn('absolute right-2 z-50 pr-0', {
+                                    'group-hover/table:right-0': canScrollVertical,
+                                    'right-0': !canScrollVertical,
+                                  })}>
+
+                                    <Bookmark
+                                      selectedColor={rowMarks[indexCategoryTab]?.[row.id] || ''}
+                                      onColorChange={(color) => handleColorChange(row.id, color)} 
+                                      />
+                                  </div>
+                                  <div className={cn('pr-2 group-hover:bg-blue-50', {
+                                    'group-hover/table:pr-0': canScrollVertical,
+                                    'bg-blue-50 group-hover:bg-blue-100': isPinned
+                                  })}>
+                                    <FundsTableRow
+                                      tag={!isMainTab}
+                                      category={
+                                        isMainTab
+                                          ? watchList.includes(row.id)
+                                            ? 'watchlist'
+                                            : 'stocks'
+                                          : 'watchlist'
+                                      }
+                                      canPin={pinnedRows.length <= 2}
+                                      toggleWatchList={() =>
+                                        toggleWatchList({ id: row.id })
+                                      }
+                                      pinedFunction={() =>
+                                        isMainTab
+                                          ? row.pin('top', true)
+                                          : setPineWatchList([
                                             ...pineWatchLis,
                                             row.id,
                                           ])
-                                    }
-                                    unPinedFunction={() =>
-                                      isMainTab
-                                        ? row.pin(false)
-                                        : setPineWatchList((prev) =>
+                                      }
+                                      unPinedFunction={() =>
+                                        isMainTab
+                                          ? row.pin(false)
+                                          : setPineWatchList((prev) =>
                                             prev.filter((id) => id !== row.id),
                                           )
-                                    }
-                                    isScrolled={isScrollAtStart}
-                                    investmentMethod={
-                                      row.original.investmentMethod
-                                    }
-                                    name={row.original.nameFund}
-                                    pined={isPinned}
-                                    selected={false}
-                                    logo={row.original.logo}
-                                  />
+                                      }
+                                      isScrolled={isScrollAtStart}
+                                      investmentMethod={
+                                        row.original.investmentMethod
+                                      }
+                                      name={row.original.nameFund}
+                                      pined={isPinned}
+                                      selected={false}
+                                      logo={row.original.logo}
+                                    />
+                                  </div>
+
                                 </td>
                               )}
                               {index >= 1 && (
                                 <td
                                   className={cn(
-                                    'border-b border-[#E1E2E5] py-0 pr-4 text-sm font-medium',
+                                    'py-0 pr-4 text-sm border-b border-[#E1E2E5] font-medium',
                                     {
                                       'group-hover/table:pr-0':
                                         canScrollVertical && !isActiveDropdownPageCount,
@@ -823,12 +848,12 @@ const Funds = () => {
                         <div className="sticky right-0 mb-2 mt-5 w-screen whitespace-nowrap text-sm text-gray-600">
                           {formatNumber(
                             table.getState().pagination.pageSize *
-                              (table.getState().pagination.pageIndex + 1),
+                            (table.getState().pagination.pageIndex + 1),
                             { commaSeparated: true },
                           ) ===
                             formatNumber(
                               table.getPageCount() *
-                                table.getState().pagination.pageSize,
+                              table.getState().pagination.pageSize,
                               { commaSeparated: true },
                             ) && 'پایان لیست صندوق ها.'}
                         </div>
@@ -864,24 +889,24 @@ const Funds = () => {
             customTriggerRender={({ isActive }) => {
               setIsActiveDropdownPageCount(isActive);
               return (
-              <div className="flex h-[40px] items-center gap-2 pl-2 pr-3 text-xs font-medium">
-                <div className="flex gap-1">
-                  <span>تعداد سطر در جدول: </span>
-                  {formatNumber(
-                    table.getState().pagination.pageSize *
+                <div className="flex h-[40px] items-center gap-2 pl-2 pr-3 text-xs font-medium">
+                  <div className="flex gap-1">
+                    <span>تعداد سطر در جدول: </span>
+                    {formatNumber(
+                      table.getState().pagination.pageSize *
                       (table.getState().pagination.pageIndex + 1),
-                    { commaSeparated: true },
-                  )}
+                      { commaSeparated: true },
+                    )}
+                  </div>
+                  <div
+                    className={cn('transition-transform duration-300', {
+                      'rotate-180': isActive,
+                      'rotate-0': !isActive,
+                    })}
+                  >
+                    <Icon size="lg" name="chevron-down" />
+                  </div>
                 </div>
-                <div
-                  className={cn('transition-transform duration-300', {
-                    'rotate-180': isActive,
-                    'rotate-0': !isActive,
-                  })}
-                >
-                  <Icon size="lg" name="chevron-down" />
-                </div>
-              </div>
               )
             }}
             customOptionRender={(prop) => (
@@ -891,8 +916,8 @@ const Funds = () => {
                   {
                     'pb-2':
                       table.getState().pagination.pageSize *
-                        (table.getState().pagination.pageIndex + 1) *
-                        table.getPageCount() ===
+                      (table.getState().pagination.pageIndex + 1) *
+                      table.getPageCount() ===
                       +prop.text,
                   },
                 )}
@@ -901,7 +926,7 @@ const Funds = () => {
                   {table.getState().pagination.pageSize *
                     (table.getState().pagination.pageIndex + 1) *
                     table.getPageCount() ===
-                  +prop.text
+                    +prop.text
                     ? 'همه'
                     : prop.text}
                 </span>
@@ -915,8 +940,8 @@ const Funds = () => {
               {
                 text: String(
                   table.getState().pagination.pageSize *
-                    (table.getState().pagination.pageIndex + 1) *
-                    table.getPageCount(),
+                  (table.getState().pagination.pageIndex + 1) *
+                  table.getPageCount(),
                 ),
               },
             ]}
@@ -934,7 +959,7 @@ const Funds = () => {
             <div>
               {formatNumber(
                 table.getState().pagination.pageSize *
-                  (table.getState().pagination.pageIndex + 1),
+                (table.getState().pagination.pageIndex + 1),
                 { commaSeparated: true },
               )}
               -
