@@ -14,6 +14,7 @@ export function Bookmark({
   const ref = useRef<HTMLDivElement>(null);
   const toggleHandler = () => {
     setIsOpen((prev) => !prev);
+    onColorChange('');
   };
 
   useEffect(() => {
@@ -33,13 +34,13 @@ export function Bookmark({
       className="relative py-2 flex overflow-hidden items-center gap-1">
       <div
         onClick={toggleHandler}
-        className={cn("h-fit absolute border-none top-[13px] z-10 fill-gray-500 w-fit cursor-pointer", {
+        className={cn("h-fit absolute border-none top-[13px] z-10 fill-[#D1D3D7] w-fit cursor-pointer", {
           'fill-red-600': selectedColor === 'red',
           'fill-blue-600': selectedColor === 'blue',
           'fill-green-600': selectedColor === 'green',
           'fill-yellow-600': selectedColor === 'yellow',
           'fill-purple-600': selectedColor === 'purple',
-          'fill-none hover:fill-gray-400': !selectedColor && !isOpen
+          'invisible group-hover:visible': !selectedColor
         })}
       >
         <Icon size='sm' name='CustomBookmark' />
@@ -54,9 +55,6 @@ export function Bookmark({
         </div>
         {colors.map((color) => (
           <div
-            onClick={() => {
-              if (color === selectedColor) onColorChange('');
-            }}
             key={color}
             className={cn(
               'flex h-2.5 w-2.5 items-center justify-center rounded-full',

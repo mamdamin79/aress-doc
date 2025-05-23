@@ -91,8 +91,8 @@ export function FundsColumn({
                   : 'مرتب سازی صعودی'}>
           <div
             onClick={(e) => {
-              
               e.stopPropagation();
+              e.nativeEvent.stopImmediatePropagation();
               if (typeof clickFilterd === 'function') {
                 clickFilterd();
               }

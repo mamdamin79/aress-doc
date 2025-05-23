@@ -289,7 +289,7 @@ const Funds = () => {
         )}
       >
         <Tabs
-          variant="shaped"
+          variant="shaped-color"
           onClickTab={(e) => setIndexCategoryTab(e)}
           activeTab={indexCategoryTab}
           colorMode="neutral"
@@ -423,6 +423,8 @@ const Funds = () => {
                                       isScrollAtStart,
                                   })}
                                 >
+                                  <div className='mr-5'>
+
                                   <FundsColumn
                                     active={isActive}
                                     clickFilterd={() => {
@@ -454,7 +456,9 @@ const Funds = () => {
                                     )}
                                     sortType={'alphabetical'}
                                   />
-                                  <div className="absolute top-5 flex items-center gap-2 pr-4">
+                                  </div>
+
+                                  <div className="absolute top-5 flex items-center gap-2 pr-[24px]">
                                     <Tooltip title="انتخاب ستون‌ها">
                                       <div
                                         onClick={() => {
@@ -551,7 +555,7 @@ const Funds = () => {
                                 customOptionRender={(prop) => (
                                   <>
                                     <div
-                                      onClick={() => {
+                                      onClick={(e) => {
                                         if (prop.text === 'انتقال به راست') {
                                           moveColumn(header.column.id, 'right');
                                         }
@@ -618,7 +622,6 @@ const Funds = () => {
                                   </>
                                 )}
                                 customTriggerRender={({ isActive }) => (
-                                  <div className="w-full">
                                     <FundsColumn
                                       active={isActive}
                                       defaultSort={() => {
@@ -669,7 +672,6 @@ const Funds = () => {
                                           : 'ranked'
                                       }
                                     />
-                                  </div>
                                 )}
                                 dropDownList={[
                                   {
@@ -742,16 +744,16 @@ const Funds = () => {
                   )}
                 </div>
               </tr>
-              <tr dir="ltr" className="relative w-full">
+              <tr className="relative w-full">
                 <td
                   style={{
                     transform: `translateX(-${sortIndicator.right}px)`,
                     width: `${sortIndicator.width}px`,
                   }}
-                  className={cn('z-[51] right-0 transition-transform duration-500', {
-                    'absolute bottom-0 right-0 z-40': sortIndex !== 0,
+                  className={cn('z-40 right-0 transition-transform duration-500', {
+                    'absolute bottom-0 z-40': sortIndex !== 0,
                     'group-hover/table:-right-2': sortIndex !== 0 && canScrollVertical,
-                    'fixed -right-7 top-[240px]': sortIndex === 0,
+                    'fixed -right-3 top-[240px]': sortIndex === 0,
                   })}
                 >
                   <div className="bg-brand-600 mx-auto h-1.5 w-16 rounded-t-[10px]"></div>

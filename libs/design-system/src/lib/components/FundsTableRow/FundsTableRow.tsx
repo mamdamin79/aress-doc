@@ -126,7 +126,7 @@ export function FundsTableRow({
           return (
             <div
               className={cn(
-                'invisible cursor-pointer rounded-full p-1.5 hover:bg-white group-hover:visible',
+                'invisible w-8 h-8 flex justify-center items-center cursor-pointer rounded-full p-1.5 hover:bg-white group-hover:visible',
                 {
                   'hover:border-brand-600 border border-blue-200': selected,
                   'hover:border-brand-600 border border-blue-100': pined,
