@@ -367,7 +367,7 @@ const Funds = () => {
                           }}
                           key={index}
                           className={cn(
-                            'sticky right-0 top-0 z-40 m-0 h-[64px] w-[384px] border-b bg-[#E3F8F8] py-0 pr-2',
+                            'sticky right-0 top-0 z-40 m-0 h-[64px] w-[385px] border-b bg-[#E3F8F8] py-0 pr-2',
                             {
                               'group-hover/table:pr-0':
                                 canScrollVertical && !isActiveDropdownPageCount,
@@ -430,7 +430,7 @@ const Funds = () => {
                               )}
                               customTriggerRender={({ isActive }) => (
                                 <div
-                                  className={cn('w-[384px] bg-[#E3F8F8] flex', {
+                                  className={cn('w-[385px] bg-[#E3F8F8] flex', {
                                     'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]':
                                       isScrollAtStart,
                                   })}
