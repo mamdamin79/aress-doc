@@ -30,7 +30,6 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  sortingFns,
   useReactTable,
 } from '@tanstack/react-table';
 import { makeData } from './_components/makeData';
@@ -39,7 +38,7 @@ import { ExportExel } from './_components/ExportExel';
 import { Bookmark } from 'libs/design-system/src/lib/components/Bookmark';
 const Funds = () => {
   const [sortIndex, setSortIndex] = useState(0);
-  const { isHeaderVisible } = useHeaderVisibility();
+  const { isHeaderVisible, setIsHeaderVisible } = useHeaderVisibility();
   const [rowMarks, setRowMarks] = useState<{ [tabIndex: number]: { [id: string]: string } }>({});
   const [canScrollVertical, setCanScrollVertical] = useState(false);
   const [indexCategoryTab, setIndexCategoryTab] = useState(0);
@@ -161,6 +160,13 @@ const Funds = () => {
       if (tableRef.current) {
         const { scrollLeft, scrollWidth, clientWidth, scrollTop } = tableRef.current;
 
+        if (scrollTop) {
+          setIsHeaderVisible(false);
+        } else {
+          setIsHeaderVisible(true);
+        }
+        
+
         // Update scroll start state
         if (Math.round(scrollLeft) === 0) {
           setIsScrollAtStart(false);
@@ -279,7 +285,7 @@ const Funds = () => {
         [id]: color,
       },
     }));
-  };
+  };  
 
   return (
     <>
@@ -308,18 +314,23 @@ const Funds = () => {
       <div
         dir="ltr"
         className={cn(
-          'relative top-0 flex items-center overflow-hidden border-t-2 border-[#BCEBEB]',
+          'relative top-0 flex items-center transition-all duration-300 overflow-hidden border-t-2 border-[#BCEBEB]', {
+            '-top-[85px]': !isHeaderVisible
+          }
         )}
       >
         <div
           onMouseEnter={handlerMouseEnterTable}
           ref={tableRef}
           className={cn(
-            'table-scroll group/table scrollbar-lg relative h-[calc(100vh-172px)] w-screen overflow-y-hidden scroll-smooth',
+            'table-scroll group/table scrollbar-lg relative transition-all duration-300 h-[calc(100vh-172px)] w-screen overflow-y-hidden scroll-smooth',
             {
               'hover:overflow-auto':
                 canScrollVertical && !isActiveDropdownPageCount,
             },
+            {
+              'h-[calc(100vh-87px)]': !isHeaderVisible
+            }
           )}
         >
           <table
@@ -751,10 +762,11 @@ const Funds = () => {
                     transform: `translateX(-${sortIndicator.right}px)`,
                     width: `${sortIndicator.width}px`,
                   }}
-                  className={cn('z-40 right-0 transition-transform duration-500', {
+                  className={cn('z-40 right-0 transition-all duration-300', {
                     'absolute bottom-0 z-40': sortIndex !== 0,
                     'group-hover/table:-right-2': sortIndex !== 0 && canScrollVertical,
                     'fixed -right-3 top-[240px]': sortIndex === 0,
+                    'top-[157px]': sortIndex === 0 && !isHeaderVisible,
                   })}
                 >
                   <div className="bg-brand-600 mx-auto h-1.5 w-16 rounded-t-[10px]"></div>
