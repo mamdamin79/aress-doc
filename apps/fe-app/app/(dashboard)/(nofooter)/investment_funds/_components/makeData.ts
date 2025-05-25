@@ -36,7 +36,7 @@ const newPerson = (): Person => {
   const fixedNow = new Date('2020-01-01').getTime(); // fixed reference point to avoid hydration error
 
   return {
-    investmentMethod: faker.helpers.arrayElement(investmentMethods),
+    investmentMethod: "I&C",
     logo: faker.image.avatar(),
     nameFund: faker.person.fullName(),
     startDate:

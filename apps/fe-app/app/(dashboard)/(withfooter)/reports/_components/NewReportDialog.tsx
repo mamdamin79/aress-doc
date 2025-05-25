@@ -50,7 +50,7 @@ export const NewReportDialog = () => {
           mode="primary"
           size="sm"
           onClick={openDialog}
-          className="fixed right-20 bottom-[78px] h-14 w-14 rounded-full"
+          className="fixed right-20 z-30 bottom-[78px] h-14 w-14 rounded-full"
         >
           {isOpen ? (
             <Icon name="x" size="lg" />
@@ -64,7 +64,7 @@ export const NewReportDialog = () => {
         isOpen={isOpen}
         className="w-[480px] text-right xl:w-[584px]"
       >
-        <div className="mb-6 text-center text-lg font-medium text-gray-800">
+        <div className="mb-6 text-center text-lg font-medium text-[#06080F]">
           درخواست گزارش جدید
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>

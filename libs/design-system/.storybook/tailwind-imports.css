@@ -367,23 +367,6 @@ input[type='password']::-webkit-password-eye {
 .hiddenscrollbar::-webkit-scrollbar {
   display: none;
 }
-
-.scrollbar-sm-hidden::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-  border-radius: 8px;
-}
-.scrollbar-md-hidden::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-  border-radius: 8px;
-}
-
-.scrollbar-lg-hidden::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-  border-radius: 8px;
-}
 .scrollbar-sm-hidden::-webkit-scrollbar-thumb,
 .scrollbar-md-hidden::-webkit-scrollbar-thumb,
 .scrollbar-lg-hidden::-webkit-scrollbar-thumb {
