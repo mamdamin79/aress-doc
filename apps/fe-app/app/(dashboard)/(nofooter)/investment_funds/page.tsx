@@ -367,7 +367,7 @@ const Funds = () => {
                           }}
                           key={index}
                           className={cn(
-                            'sticky right-0 top-0 z-20 m-0 h-[64px] w-[384px] border-b bg-[#E3F8F8] py-0 pr-2',
+                            'sticky right-0 top-0 z-40 m-0 h-[64px] w-[384px] border-b bg-[#E3F8F8] py-0 pr-2',
                             {
                               'group-hover/table:pr-0':
                                 canScrollVertical && !isActiveDropdownPageCount,
@@ -762,11 +762,11 @@ const Funds = () => {
                     transform: sortIndex !== 0 ?`translateX(-${sortIndicator.right}px)` : '',
                     width: `${sortIndicator.width}px`,
                   }}
-                  className={cn('z-30 right-0 duration-300', {
-                    'absolute bottom-0 z-40 transition-transform': sortIndex !== 0,
+                  className={cn('right-0 duration-300', {
+                    'absolute bottom-0 z-20 transition-transform': sortIndex !== 0,
                     'transition group-hover/table:-right-2': sortIndex !== 0 && canScrollVertical,
                     'group-hover/table:-right-0': sortIndex !== 0 && canScrollVertical && isScrollAtStart,
-                    'fixed -right-2 top-[240px]': sortIndex === 0,
+                    'fixed z-40 -right-2 top-[240px]': sortIndex === 0,
                     'top-[157px]': sortIndex === 0 && !isHeaderVisible,
                   })}
                 >

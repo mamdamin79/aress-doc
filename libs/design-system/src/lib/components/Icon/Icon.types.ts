@@ -17,6 +17,7 @@ export type CustomIconName =
   | 'CustomPlayLinear'
   | 'CustomPinOffLinear'
   | 'CustomPinOffFill'
+  | 'CustomPin'
   | 'CustomPlayFill'
   | 'CustomPinFill'
   | 'CustomBookmark'

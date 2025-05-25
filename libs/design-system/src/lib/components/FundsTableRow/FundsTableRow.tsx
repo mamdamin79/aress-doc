@@ -80,7 +80,7 @@ export function FundsTableRow({
               <div
                 className='flex items-center justify-center text-black'
               >
-                <Icon name="pin" size="sm" />
+                <Icon name="CustomPin" size="sm" />
               </div>
             </div>
           }
