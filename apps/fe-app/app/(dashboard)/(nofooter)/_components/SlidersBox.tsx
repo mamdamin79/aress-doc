@@ -320,10 +320,12 @@ export const SlidersBox: React.FC = () => {
           onAddReportClick={() => {
             if (addReportBoxCount + items.length <= 16) {
               setAddReportBoxCount((prev) => prev + 1);
-              window.scrollTo({
-                top: document.body.scrollHeight,
-                behavior: 'smooth',
-              });
+              setTimeout(() => {
+                window.scrollTo({
+                  top: document.body.scrollHeight,
+                  behavior: 'smooth',
+                });
+              }, 100);
             } else {
               showToast({
                 message: 'حداکثر تعداد گزارش در هر داشبورد 16 عدد است',
