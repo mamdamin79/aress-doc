@@ -57,7 +57,7 @@ export function FundsTableRow({
       )}
     >
       <div className="relative pr-6 pl-2 h-full flex items-center gap-2">
-        <span className={cn("border-vividGreen-200 select-none w-fit text-[#058F3C] bg-vividGreen-100 rounded-sm border px-2 pt-0.5 h-[25px] text-xs font-medium", {
+        <span className={cn("border-[#ACF1C7] select-none w-fit text-[#058F3C] bg-[#D2FEE4] rounded-sm border px-2 pt-0.5 h-[25px] text-xs font-medium", {
           'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]': investmentMethod === 'T'
         })}>
           ETF

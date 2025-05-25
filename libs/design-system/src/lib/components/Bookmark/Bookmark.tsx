@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Icon } from "../Icon";
 import { cn } from "./../../../utils/classNames.utils";
 
@@ -11,29 +11,20 @@ export function Bookmark({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const colors = ['red', 'blue', 'green', 'yellow', 'purple'];
-  const ref = useRef<HTMLDivElement>(null);
   const toggleHandler = () => {
     setIsOpen((prev) => !prev);
     onColorChange('');
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (ref.current && !ref.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   return (
-    <div ref={ref}
+    <div onMouseLeave={() => setIsOpen(false)}
       className="relative py-2 flex overflow-hidden items-center gap-1">
       <div
         onClick={toggleHandler}
+        onMouseEnter={() => {
+          if (selectedColor) setIsOpen(true);
+        }}
         className={cn("h-fit absolute border-none top-[13px] z-10 fill-[#D1D3D7] w-fit cursor-pointer", {
           'fill-red-600': selectedColor === 'red',
           'fill-blue-600': selectedColor === 'blue',

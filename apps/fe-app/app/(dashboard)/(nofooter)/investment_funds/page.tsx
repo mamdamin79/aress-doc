@@ -159,7 +159,8 @@ const Funds = () => {
   useEffect(() => {
     const handleScroll = () => {
       if (tableRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } = tableRef.current;
+        const { scrollLeft, scrollWidth, clientWidth, scrollTop } = tableRef.current;
+
         // Update scroll start state
         if (Math.round(scrollLeft) === 0) {
           setIsScrollAtStart(false);
@@ -529,7 +530,7 @@ const Funds = () => {
                               : 'w-36',
                             {
                               'group-hover/table:pr-0':
-                                canScrollVertical && !isActiveDropdownPageCount,
+                                canScrollVertical && !isActiveDropdownPageCount && !isScrollAtStart,
                             },
                           )}
                           key={index}
@@ -815,7 +816,7 @@ const Funds = () => {
                                   className='sticky flex items-center right-0 top-0 z-40 m-0 py-0'
                                 >
                                   <div className={cn('absolute right-2 z-50 pr-0', {
-                                    'group-hover/table:right-0': canScrollVertical,
+                                    'group-hover/table:right-0': canScrollVertical && !isActiveDropdownPageCount,
                                     'right-0': !canScrollVertical,
                                   })}>
 
@@ -825,7 +826,7 @@ const Funds = () => {
                                     />
                                   </div>
                                   <div className={cn('pr-2 group-hover:bg-blue-50', {
-                                    'group-hover/table:pr-0': canScrollVertical,
+                                    'group-hover/table:pr-0': canScrollVertical && !isActiveDropdownPageCount,
                                     'bg-blue-50 group-hover:bg-blue-100': isPinned
                                   })}>
                                     <FundsTableRow
@@ -876,7 +877,7 @@ const Funds = () => {
                                     {
                                       'group-hover/table:pr-0':
                                         canScrollVertical &&
-                                        !isActiveDropdownPageCount,
+                                        !isActiveDropdownPageCount && !isScrollAtStart,
                                       'bg-blue-50 group-hover:bg-blue-100':
                                         isPinned,
                                       'group-hover:bg-blue-50': !isPinned,
