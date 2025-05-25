@@ -23,12 +23,15 @@ export const ReportSelectionPopup: React.FC<ReportSelectionPopupProps> = ({
     <Dialog
       isOpen={isOpen}
       onClose={() => onClose()}
-      className="bg-baseBackground relative flex max-h-[800px] min-h-[456px] w-full min-w-[668px] max-w-[696px] items-center justify-center text-right"
+      className="bg-baseBackground relative flex h-[90vh] max-h-[800px] min-h-[456px] w-full min-w-[670px] max-w-[696px] items-center justify-center p-0 pr-1 text-right"
     >
-      <div className="flex w-full flex-col">
+      <div className="flex h-full w-full flex-col pt-8">
         {/* Scrollable content wrapper */}
-        <div className="custom-scrollbar flex max-h-[500px] w-full flex-grow overflow-y-auto overflow-x-hidden">
-          <div className="flex flex-col gap-4 px-6">
+        <div
+          dir="ltr"
+          className="scrollbar-md flex h-full max-h-[700px] w-full flex-grow overflow-y-auto overflow-x-hidden pb-12 pl-6 pr-4"
+        >
+          <div className="flex flex-col gap-4" dir="rtl">
             <div
               className="flex cursor-pointer flex-row items-center gap-1"
               onClick={onClose}
@@ -59,7 +62,7 @@ export const ReportSelectionPopup: React.FC<ReportSelectionPopupProps> = ({
         </div>
 
         {/* Footer section (does not scroll) */}
-        <div className="mt-4 flex w-full flex-row justify-end gap-2 px-6">
+        <div className="mt-4 flex w-full flex-row justify-end gap-2 px-6 pb-4">
           <div className="w-fit">
             <Button align="center" isLoading={false} mode="secondary" size="sm">
               اطلاعات بیشتر

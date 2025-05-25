@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
-import PRODUCT_LOGO from '@aress-assets/icons/product_logo.svg';
+import PRODUCT_LOGO from '@aress-assets/icons/fullLogo.svg';
 import { useWindowSize } from '@uidotdev/usehooks';
 import { cn, HeadProfile, ModalProvider, SquaredButton } from 'design-system';
 import { useHeaderVisibility, useHtmlPaddingRight } from '../../../hooks';

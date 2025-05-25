@@ -3,7 +3,7 @@ import React from 'react';
 import TERMINAL_LOGIN from '@aress-assets/icons/TerminalLogin.svg';
 import Image from 'next/image';
 import { FormWrapper } from './_components';
-import Logo from '@aress-assets/icons/product_logo.svg';
+import Logo from '@aress-assets/icons/fullLogo.svg';
 
 import LogoWithText from '@aress-assets/icons/LogoWithText.svg';
 import { SecurityNoticeBox } from './_components/SecurityNoticeBox';
@@ -11,19 +11,19 @@ const LoginPage = () => {
   return (
     <div className="flex h-full justify-center">
       <div className="max-w-screen-3xl flex w-full flex-col items-start justify-center gap-10 pt-[46px]">
-        <div className="relative flex w-full items-center justify-center">
-          <div className="absolute right-0 mr-8">
-            <div className="hidden items-center gap-4 lg:flex">
+        <div className="flex w-full items-center justify-center">
+          <div className="absolute right-0 top-[34px] mr-8">
+            <div className="hidden items-center gap-4 py-3 xl:flex">
               <Image alt="logo" src={Logo} width={38} height={38} />
               <h1 className="text-lg font-semibold">
                 پردازش اطلاعات مالی آرسس
               </h1>
             </div>
-            <div className="flex lg:hidden">
+            <div className="flex xl:hidden">
               <Image alt="logo" src={LogoWithText} width={56} height={56} />
             </div>
           </div>
-        <div>
+          <div>
             <SectionTitle align="center" level={1} title={'خوش آمدید!'} />
           </div>
         </div>

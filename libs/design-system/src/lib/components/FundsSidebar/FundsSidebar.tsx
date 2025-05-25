@@ -137,7 +137,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
         </div>
       </div>
       <div
-        className="scrollbar-sm grid w-full grid-cols-[60px_88px_1fr] gap-4 overflow-x-hidden overflow-y-hidden px-3 hover:overflow-y-scroll hover:pr-2"
+        className="scrollbar-sm-hidden grid w-full grid-cols-[60px_88px_1fr] gap-4 overflow-x-hidden overflow-y-scroll pl-3 pr-2"
         ref={listContainerRef}
         onScroll={handleScroll}
         dir="ltr"

@@ -64,7 +64,7 @@ export const Dialog: React.FC<DialogProps> = ({
                 {showCloseBtn && (
                   <button
                     onClick={onClose}
-                    className="absolute z-10 left-0 top-0 -ml-2 -mt-2 flex items-center justify-center rounded-full shadow-lg"
+                    className="absolute left-0 top-0 z-10 -ml-2 -mt-2 flex items-center justify-center rounded-full shadow-lg"
                   >
                     <Icon name="CustomCirlcleX" size="lg_plus" />
                   </button>
