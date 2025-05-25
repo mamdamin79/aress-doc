@@ -24,6 +24,8 @@ export interface OptionsDropdownProps {
   customOptionRender?: (props: DropdownCell) => React.ReactElement;
   onChange?: (selectedText: string, id?: number) => void;
   initialSelectedIndex?: number;
+  triggerClassName?: string;
+  optionClassName?: string;
 }
 
 export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
@@ -43,6 +45,8 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
   customOptionRender,
   onChange,
   initialSelectedIndex = 0,
+  triggerClassName,
+  optionClassName,
 }) => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
     if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
@@ -92,6 +96,7 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
               {...dropDownStyles}
               {...selectedItem}
               isActive={open}
+              className={triggerClassName}
             />
           )
         }
@@ -130,6 +135,7 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
                 }) as React.ReactElement)
               ) : (
                 <OptionsDropdownOption
+                  className={optionClassName}
                   {...item}
                   withCheck={dropDownStyles.checkSelected ? selected : false}
                   isActive={selected}

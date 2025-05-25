@@ -19,6 +19,7 @@ export interface ReportCardProps {
   userFavorite?: boolean;
   link?: string;
   onLike?: () => void;
+  shadowOnHover?: boolean;
 }
 
 export const ReportCard: React.FC<ReportCardProps> = ({
@@ -33,14 +34,16 @@ export const ReportCard: React.FC<ReportCardProps> = ({
   userFavorite = false,
   link,
   onLike,
+  shadowOnHover = true,
 }) => {
   return (
     <div
       className={cn(
-        `group relative flex flex-col overflow-hidden rounded-3xl border-[3px] border-gray-100 bg-gray-100 transition-all hover:shadow-7xl`,
+        `hover:shadow-7xl group relative flex flex-col overflow-hidden rounded-3xl border-[3px] border-gray-100 bg-gray-100 transition-all`,
         fixedBrief
           ? 'h-[448px] min-w-[380px] max-w-[512px] items-start'
           : 'h-[318px] min-w-[304px] max-w-[416px]',
+        shadowOnHover && 'hover:shadow-transparent',
       )}
     >
       {/* Image Section */}
@@ -74,7 +77,7 @@ export const ReportCard: React.FC<ReportCardProps> = ({
           `flex flex-col justify-between gap-3 p-4 transition-all duration-500 ease-in group-hover:duration-700`,
           fixedBrief
             ? 'h-[212px] items-baseline'
-            : 'absolute bottom-6 left-0 max-h-[92px] items-end overflow-hidden transition-all ease-in-out group-hover:max-h-[250px]',
+            : 'absolute bottom-6 right-0 max-h-[92px] items-end overflow-hidden transition-all ease-in-out group-hover:max-h-[250px]',
         )}
       >
         <div className="flex h-fit w-fit flex-col gap-2">

@@ -37,11 +37,13 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
       addFavoriteMutation.mutate({ reportId });
     }
   };
+  const baseURL = process.env.NEXT_PUBLIC_API_URL;
+
   return (
     <>
       <div className="inline-flex items-center justify-center">
         <div className="flex w-full items-start">
-          <div className="flex flex-row items-center py-6 gap-2">
+          <div className="flex flex-row items-center gap-2 py-6">
             <SearchBar />
             <FilterReport />
           </div>
@@ -67,6 +69,7 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
                 userFavorite={report.userFavorite}
                 videoBadge={true}
                 {...report}
+                image={baseURL + report.image}
               />
             </div>
           ))}

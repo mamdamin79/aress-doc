@@ -8,8 +8,8 @@ import Image from 'next/image';
 
 export function FooterLite() {
   return (
-    <div className="relative border-t border-[#e1e2e5] mx-auto w-full overflow-hidden bg-white">
-      <div className="relative z-10 mx-auto max-w-7xl px-20 py-6">
+    <div className="relative mx-auto w-full overflow-hidden border-t border-[#e1e2e5] bg-white">
+      <div className="relative z-10 mx-auto max-w-[1680px] px-20 py-6">
         <Link href="/">
           <Image
             width={251}

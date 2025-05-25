@@ -9,6 +9,7 @@ export const OptionsDropdownOption: React.FC<DropdownCell> = ({
   icon,
   isActive,
   withCheck,
+  className
 }) => {
   return (
     <div
@@ -17,6 +18,7 @@ export const OptionsDropdownOption: React.FC<DropdownCell> = ({
         isActive
           ? 'bg-brand-100 text-brand-800'
           : 'hover:bg-brand-100 bg-baseBackground',
+          className
       )}
     >
       {icon && <Icon {...icon} size={icon?.size || 'md'} />}
