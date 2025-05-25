@@ -10,7 +10,7 @@ export function Bookmark({
   onColorChange: (color: string) => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const colors = ['red', 'blue', 'green', 'yellow', 'purple'];
+  const colors = ['pink', 'yellow', 'green', 'blue', 'purple'];
   const toggleHandler = () => {
     setIsOpen((prev) => !prev);
     onColorChange('');
@@ -26,7 +26,7 @@ export function Bookmark({
           if (selectedColor) setIsOpen(true);
         }}
         className={cn("h-fit absolute border-none top-[13px] z-10 fill-[#D1D3D7] w-fit cursor-pointer", {
-          'fill-red-600': selectedColor === 'red',
+          'fill-pink-600': selectedColor === 'pink',
           'fill-blue-600': selectedColor === 'blue',
           'fill-green-600': selectedColor === 'green',
           'fill-yellow-600': selectedColor === 'yellow',
@@ -34,7 +34,7 @@ export function Bookmark({
           'invisible group-hover:visible': !selectedColor
         })}
       >
-        <Icon size='sm' name='CustomBookmark' />
+        <Icon size='md' name='CustomBookmark' />
       </div>
 
       <div
@@ -51,7 +51,7 @@ export function Bookmark({
               'flex h-2.5 w-2.5 items-center justify-center rounded-full',
               {
                 'h-4 w-4': color === selectedColor,
-                'bg-red-600': color === 'red',
+                'bg-pink-600': color === 'pink',
                 'bg-blue-600': color === 'blue',
                 'bg-green-600': color === 'green',
                 'bg-yellow-600': color === 'yellow',
@@ -73,7 +73,7 @@ export function Bookmark({
                   setIsOpen(false);
                 }}
                 className={cn('h-2.5 w-2.5 cursor-pointer rounded-full', {
-                  'bg-red-600': color === 'red',
+                  'bg-pink-600': color === 'pink',
                   'bg-blue-600': color === 'blue',
                   'bg-green-600': color === 'green',
                   'bg-yellow-600': color === 'yellow',
