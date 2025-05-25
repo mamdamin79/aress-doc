@@ -28,6 +28,9 @@ export const CustomIcon: React.FC<IconProps> = ({ name, size = 'md' }) => {
           {
             'stroke-white': name === 'CustomBookmark' || name === 'CustomArrow',
           },
+          {
+            'hover:text-brand-600':  name !== 'CustomBookmark' && name !== 'CustomArrow'
+          }
         )}
       />
     </div>

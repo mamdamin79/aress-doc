@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import PRODUCT_LOGO from '@aress-assets/icons/product_logo.svg';
 import { useWindowSize } from '@uidotdev/usehooks';
@@ -32,13 +32,6 @@ export const Header: React.FC = () => {
   const [{ y: scrollY }] = useWindowScroll();
   const currentScrollY = scrollY ?? 0;
   const htmlPaddingRight = useHtmlPaddingRight();
-
-  useEffect(() => {
-    console.log(isHeaderVisible);
-    
-  }, [isHeaderVisible])
-
-  
 
   return (
     <ModalProvider>

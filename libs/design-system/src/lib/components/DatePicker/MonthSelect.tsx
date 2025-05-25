@@ -41,7 +41,9 @@ export function MonthSelect({
           <Icon name="chevron-down" size="md" />
         </div>
       )}
-      onChange={(_, id) => {        
+      onChange={(_, id) => {
+        console.log(calendar, id);
+        
         setCurrentDate(
           `${calendar.slice(0, 4)}-${
             id && id < 10 ? `0${id}` : id
