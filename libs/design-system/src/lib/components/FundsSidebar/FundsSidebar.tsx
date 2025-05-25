@@ -6,19 +6,19 @@ import { NumberSection } from './NumberSection';
 import { SparkLine } from '../SparkLine';
 import { cn } from '../../../utils/classNames.utils';
 import { CustomTriggerWithoutLogo } from './CustomTriggerWithoutLogo';
-
+export type FundsSidebarData = {
+  title: string;
+  chartData: {
+    data: number[];
+    trend: 'positive' | 'negative';
+  };
+  changeValue: number;
+};
 export interface FundsSidebarProps {
-  data: {
-    title: string;
-    chartData: {
-      data: number[];
-      trend: 'positive' | 'negative';
-    };
-    changeValue: number;
-  }[];
-  onCategoryChange: (category: string) => void;
-  onSortOptionChange: (selectedSort: string) => void;
-  onTimeframeChange: (selectedTimeframe: string) => void;
+  data: FundsSidebarData[];
+  onCategoryChange?: (category: string) => void;
+  onSortOptionChange?: (selectedSort: string) => void;
+  onTimeframeChange?: (selectedTimeframe: string) => void;
 }
 
 export const FundsSidebar: React.FC<FundsSidebarProps> = ({
@@ -55,7 +55,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
 
   return (
     <div
-      className="bg-baseBackground flex h-[calc(100vh-16px)] w-full flex-col items-center overflow-x-hidden overflow-y-hidden rounded-tl-2xl rounded-tr-2xl border-2 border-b-0 border-gray-300 px-1 pt-4"
+      className="bg-baseBackground flex h-[calc(100vh-24px)] w-full flex-col items-center overflow-x-hidden overflow-y-hidden rounded-tl-2xl rounded-tr-2xl border-2 border-b-0 border-gray-300 px-1 pt-4"
       ref={containerRef}
     >
       <div
@@ -67,6 +67,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
         <div className="flex w-full justify-center px-4">
           <OptionsDropdown
             onChange={onCategoryChange}
+            triggerClassName="text-md font-medium"
             dropDownList={[
               { text: 'سهامی', tag: { color: 'green' } },
               { text: 'کالایی', tag: { color: 'yellow' } },
@@ -109,6 +110,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
           />
           <div className="w-fit">
             <OptionsDropdown
+              triggerClassName="text-sm font-medium"
               onChange={onTimeframeChange}
               dropDownList={[
                 { text: 'روزانه' },
@@ -141,7 +143,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
         dir="ltr"
       >
         {data.map((item, index) => (
-          <>
+          <React.Fragment key={index}>
             <div className="flex w-[60px] items-center justify-start pt-2">
               <NumberSection value={item.changeValue} />
             </div>
@@ -162,7 +164,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
                 }}
               />
             </div>
-          </>
+          </React.Fragment>
         ))}
       </div>
       <div className="h-4"></div>

@@ -39,7 +39,11 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
       <div className="w-[472px] text-right">
         <form
           onSubmit={handleConfirm}
-          className={cn('flex flex-col gap-10', checkBoxText && 'gap-4')}
+          className={cn(
+            'flex flex-col gap-10',
+            checkBoxText && 'gap-4',
+            !checkBoxText && !isWithInput && 'gap-6',
+          )}
         >
           <div className="flex flex-col gap-4">
             <div className="text-lg font-semibold">{title}</div>
@@ -66,8 +70,8 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
                   checked={checked}
                   id="confirm-modal-checkbox"
                   onChange={() => setChecked(!checked)}
+                  content={checkBoxText}
                 ></Checkbox>
-                <label htmlFor="confirm-modal-checkbox">{checkBoxText}</label>
               </div>
             )}
           </div>
@@ -82,6 +86,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
                 mode="secondary"
                 onClick={() => onClose?.()}
                 type="button"
+                className="text-md px-4 font-medium"
               >
                 {cancelBtnLabel}
               </Button>
@@ -95,6 +100,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
                 type={!inputValue && isWithInput ? 'button' : 'submit'}
                 disabled={Boolean(!inputValue && isWithInput)}
                 className={cn(
+                  'text-md px-4 font-medium',
                   !inputValue && isWithInput
                     ? 'bg-brand-300 cursor-not-allowed'
                     : 'bg-brand-600 hover:bg-brand-700',

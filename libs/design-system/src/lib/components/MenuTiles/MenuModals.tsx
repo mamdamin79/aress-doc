@@ -34,7 +34,7 @@ export const DeleteDashboardModal: React.FC<CommonProps> = ({
 }) => (
   <ConfirmModal
     isOpen={isOpen}
-    title="تایید حذف گزارش"
+    title="تایید حذف داشبورد"
     onClose={onClose}
     onConfirm={() => {
       // Perform delete
@@ -44,8 +44,7 @@ export const DeleteDashboardModal: React.FC<CommonProps> = ({
     submitBtnLabel="بله"
     description={
       <div className="text-sm font-normal">
-        آیا مطمئن هستید که میخواهید گزارش <b>تحلیل صنعت</b> را از این فضا حذف
-        کنید؟
+        آیا مطمئن هستید که می‌خواهید داشبورد <b>صندوق کالایی</b> را حذف کنید؟
       </div>
     }
   />
