@@ -1,18 +1,28 @@
-'use client';
-import * as React from 'react';
-import { useWindowScroll } from '@uidotdev/usehooks';
+"use client";
+import * as React from "react";
+import { useWindowScroll } from "@uidotdev/usehooks";
+import {
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 
-type UseHeaderVisibilityResult = {
-  isHeaderVisible: boolean;
-  contentStart: number;
-};
+const HEADER_KEY = ["isHeaderVisible"];
 
-export const useHeaderVisibility = (): UseHeaderVisibilityResult => {
+export const useHeaderVisibility = () => {
+  const queryClient = useQueryClient();
   const [{ y: scrollY }] = useWindowScroll();
-  const [isHeaderVisible, setIsHeaderVisible] = React.useState(true);
-  const lastScrollY = React.useRef(0); // Ref to track the previous scroll position
+  const lastScrollY = React.useRef(0);
 
-  // Throttle scroll event handling
+  const { data: isHeaderVisible = true } = useQuery<boolean>({
+    queryKey: HEADER_KEY,
+    queryFn: () => true,
+    staleTime: Infinity,
+  });
+
+  const setIsHeaderVisible = (value: boolean) => {
+    queryClient.setQueryData(HEADER_KEY, value);
+  };
+
   React.useEffect(() => {
     const currentScrollY = scrollY ?? 0;
     const lastScrollValue = lastScrollY.current;
@@ -31,5 +41,9 @@ export const useHeaderVisibility = (): UseHeaderVisibilityResult => {
 
   const contentStart = isHeaderVisible ? 80 : 0;
 
-  return { isHeaderVisible, contentStart };
+  return {
+    isHeaderVisible,
+    contentStart,
+    setIsHeaderVisible,
+  };
 };

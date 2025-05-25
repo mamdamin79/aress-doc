@@ -12,7 +12,6 @@ interface Props {
   type: 'inactive' | 'active-desc' | 'active-asc';
   shadow?: boolean;
   clickFilterd: () => void;
-  filtered: boolean;
   active?: boolean;
   subTitle?: string;
   defaultSort?: () => void;
@@ -27,7 +26,7 @@ export function FundsColumn({
   filterable,
   type,
   clickFilterd,
-  filtered,
+  
   defaultSort,
   active,
 }: Props) {
@@ -49,8 +48,8 @@ export function FundsColumn({
           'bg-pink-200': size === 'extraLarg' && filterable && !active,
           'bg-[#E3F8F8]': size === 'extraLarg' && !filterable,
           'bg-pink-300': active && size !== 'extraLarg' && filterable,
-          'bg-brand-200': active && size !== 'extraLarg' && !filterable,
-          'bg-[#E3F8F8] hover:bg-brand-200':
+          'bg-[#BCEBEB]': active && size !== 'extraLarg' && !filterable,
+          'bg-[#E3F8F8] hover:bg-[#BCEBEB]':
             !filterable && size !== 'extraLarg' && !active,
           'bg-pink-200 hover:bg-pink-300': filterable && size !== 'extraLarg',
         },
@@ -63,9 +62,9 @@ export function FundsColumn({
           {
             'group-hover/first:bg-pink-300':
               size === 'extraLarg' && filterable,
-            'group-hover/first:bg-brand-200':
+            'group-hover/first:bg-[#BCEBEB]':
               size === 'extraLarg' && !filterable,
-            'bg-brand-200': !filterable && active && size === 'extraLarg',
+            'bg-[#BCEBEB]': !filterable && active && size === 'extraLarg',
             'bg-pink-300': filterable && active && size === 'extraLarg',
           },
         )}
@@ -77,9 +76,6 @@ export function FundsColumn({
           <span>{title}</span>
           <span>{subTitle !== 'مشخصات صندوق' && subTitle !== 'ارکان صندوق' && subTitle !== 'سهم پرتفوی صندوق' && subTitle}</span>
         </div>
-        {filtered && (
-          <div className="bg-brand-600 absolute bottom-[1px] h-2 w-16 rounded-t-md"></div>
-        )}
         <Tooltip
           title={
             sortType === 'ranked'
@@ -96,6 +92,7 @@ export function FundsColumn({
           <div
             onClick={(e) => {
               e.stopPropagation();
+              e.nativeEvent.stopImmediatePropagation();
               if (typeof clickFilterd === 'function') {
                 clickFilterd();
               }
@@ -114,13 +111,7 @@ export function FundsColumn({
           >
             <Icon
               name={
-                sortType === 'ranked'
-                  ? type === 'active-asc'
-                    ? 'arrow-down-wide-narrow'
-                    : 'arrow-up-narrow-wide'
-                  : type === 'active-asc'
-                    ? 'arrow-down-a-z'
-                    : 'arrow-up-z-a'
+                sortType === 'ranked' ? (type === 'active-asc' ? 'arrow-down-wide-narrow' : 'arrow-up-narrow-wide') : (type === 'active-asc' ? 'arrow-down-a-z' : 'arrow-up-z-a')
               }
             />
           </div>
