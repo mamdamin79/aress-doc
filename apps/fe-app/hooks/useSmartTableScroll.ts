@@ -9,20 +9,23 @@ export const useSmartTableScroll = (
   headerRefs: RefObject<(HTMLTableCellElement | null)[]>,
   tableRef: RefObject<HTMLDivElement>
 ): UseSmartTableScrollReturn => {
-const getColumnOffsets = (): number[] => {
-  const refs = headerRefs.current || [];
-  const offsets: number[] = [];
-  let currentOffset = 0;
+  // Calculates the left offset for each scrollable column.
+  // Skips the first column (index === 0) since it's fixed and should not be scrolled.
+  const getColumnOffsets = (): number[] => {
+    const refs = headerRefs.current || [];
+    const offsets: number[] = [];
+    let currentOffset = 0;
 
-  refs.forEach((ref, index) => {
-    const width = ref?.offsetWidth || 0;
-    if (index > 0) offsets.push(currentOffset); // ستون اول رو نادیده بگیر
-    currentOffset += width;
-  });
+    refs.forEach((ref, index) => {
+      const width = ref?.offsetWidth || 0;
+      if (index > 0) offsets.push(currentOffset);
+      currentOffset += width;
+    });
 
-  return offsets;
-};
+    return offsets;
+  };
 
+  // Determines which column index the current scrollLeft falls into.
   const getCurrentColumnIndex = (scrollLeft: number): number => {
     const offsets = getColumnOffsets();
     for (let i = 0; i < offsets.length - 1; i++) {
@@ -33,15 +36,17 @@ const getColumnOffsets = (): number[] => {
     return offsets.length - 1;
   };
 
+  // Smoothly scrolls the table to the specified column index (RTL-aware).
   const scrollToColumn = (index: number) => {
     const offsets = getColumnOffsets();
     const scrollTo = offsets[index] || 0;
-    tableRef.current?.scrollTo({ left: -scrollTo, behavior: "smooth" }); // منفی چون rtl
+    tableRef.current?.scrollTo({ left: -scrollTo, behavior: "smooth" });
   };
 
+  // Handles scrolling one column to the right (i.e., visually to the left in RTL).
   const handleScrollRight = () => {
     let scrollLeft = tableRef.current?.scrollLeft ?? 0;
-    scrollLeft = -scrollLeft; // چون مقدار منفیه در حالت rtl
+    scrollLeft = -scrollLeft;
 
     const offsets = getColumnOffsets();
     const currentIndex = getCurrentColumnIndex(scrollLeft);
@@ -58,6 +63,7 @@ const getColumnOffsets = (): number[] => {
     }
   };
 
+  // Handles scrolling one column to the left (i.e., visually to the right in RTL).
   const handleScrollLeft = () => {
     let scrollLeft = tableRef.current?.scrollLeft ?? 0;
     scrollLeft = -scrollLeft;
@@ -66,7 +72,7 @@ const getColumnOffsets = (): number[] => {
     const currentIndex = getCurrentColumnIndex(scrollLeft);
 
     console.log(offsets);
-    
+
 
     const currentStart = offsets[currentIndex];
     const currentEnd = offsets[currentIndex + 1] ?? currentStart;
@@ -75,7 +81,7 @@ const getColumnOffsets = (): number[] => {
       const diff = scrollLeft - currentStart;
       tableRef.current?.scrollBy({ left: diff, behavior: "smooth" });
     } else {
-      const prevIndex = Math.max(currentIndex - 1, 0); // حالا ستون اول هم مجازه
+      const prevIndex = Math.max(currentIndex - 1, 0);
       scrollToColumn(prevIndex);
     }
   };
