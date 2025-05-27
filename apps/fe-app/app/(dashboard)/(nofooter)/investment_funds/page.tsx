@@ -40,7 +40,9 @@ import { useSmartTableScroll } from 'apps/fe-app/hooks/useSmartTableScroll';
 const Funds = () => {
   const [sortIndex, setSortIndex] = useState(0);
   const { isHeaderVisible, setIsHeaderVisible } = useHeaderVisibility();
-  const [rowMarks, setRowMarks] = useState<{ [tabIndex: number]: { [id: string]: string } }>({});
+  const [rowMarks, setRowMarks] = useState<{
+    [tabIndex: number]: { [id: string]: string };
+  }>({});
   const [canScrollVertical, setCanScrollVertical] = useState(false);
   const [indexCategoryTab, setIndexCategoryTab] = useState(0);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -69,7 +71,10 @@ const Funds = () => {
     date: string;
   }>({ active: false, date: '' });
 
-  const { handleScrollRight, handleScrollLeft } = useSmartTableScroll(headerRefs, tableRef);
+  const { handleScrollRight, handleScrollLeft } = useSmartTableScroll(
+    headerRefs,
+    tableRef,
+  );
 
   const table = useReactTable({
     data,
@@ -141,7 +146,6 @@ const Funds = () => {
     );
   }, [table.getState().columnVisibility]);
 
-
   const toggleWatchList = (fund: { id: string }) => {
     setWatchList((prev) =>
       prev.includes(fund.id)
@@ -153,14 +157,22 @@ const Funds = () => {
   useEffect(() => {
     const handleScroll = () => {
       if (tableRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth, scrollTop } = tableRef.current;
+        const {
+          scrollLeft,
+          scrollWidth,
+          clientWidth,
+          scrollTop,
+          scrollHeight,
+          offsetHeight,
+        } = tableRef.current;
 
-        if (scrollTop) {
+        console.log(scrollHeight, offsetHeight);
+
+        if (scrollTop && scrollHeight - offsetHeight > 200) {
           setIsHeaderVisible(false);
         } else {
           setIsHeaderVisible(true);
         }
-
 
         // Update scroll start state
         if (Math.round(scrollLeft) === 0) {
@@ -284,12 +296,11 @@ const Funds = () => {
 
   const scrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-
   const startScrollLeft = () => {
     handleScrollLeft(); // First scroll immediately
     scrollIntervalRef.current = setInterval(() => {
       handleScrollLeft();
-    }, 150);
+    }, 100);
   };
 
   // Stop scrolling
@@ -300,12 +311,11 @@ const Funds = () => {
     }
   };
 
-
   const startScrollRight = () => {
     handleScrollRight(); // First scroll immediately
     scrollIntervalRef.current = setInterval(() => {
       handleScrollRight();
-    }, 150);
+    }, 100);
   };
 
   useEffect(() => {
@@ -313,11 +323,14 @@ const Funds = () => {
       stopScroll();
     };
 
-    window.addEventListener("mouseup", handleGlobalMouseUp);
+    window.addEventListener('mouseup', handleGlobalMouseUp);
     return () => {
-      window.removeEventListener("mouseup", handleGlobalMouseUp);
+      window.removeEventListener('mouseup', handleGlobalMouseUp);
     };
   }, []);
+
+  console.log(sortIndicator);
+  
 
   return (
     <>
@@ -346,23 +359,24 @@ const Funds = () => {
       <div
         dir="ltr"
         className={cn(
-          'relative top-0 flex items-center transition-all duration-300 overflow-hidden border-t-2 border-[#BCEBEB]', {
-          '-top-[85px]': !isHeaderVisible
-        }
+          'relative top-0 flex items-center overflow-hidden border-t-2 border-[#BCEBEB] transition-all duration-300',
+          {
+            '-top-[85px]': !isHeaderVisible,
+          },
         )}
       >
         <div
           onMouseEnter={handlerMouseEnterTable}
           ref={tableRef}
           className={cn(
-            'table-scroll group/table scrollbar-lg relative transition-all duration-300 h-[calc(100vh-172px)] w-screen overflow-y-hidden scroll-smooth',
+            'table-scroll group/table scrollbar-lg relative h-[calc(100vh-172px)] w-screen overflow-y-hidden scroll-smooth transition-all duration-300',
             {
               'hover:overflow-auto':
                 canScrollVertical && !isActiveDropdownPageCount,
             },
             {
-              'h-[calc(100vh-87px)]': !isHeaderVisible
-            }
+              'h-[calc(100vh-87px)]': !isHeaderVisible,
+            },
           )}
         >
           <table
@@ -377,7 +391,8 @@ const Funds = () => {
                       <Tooltip title="پیمایش به راست (D)">
                         <button
                           onMouseDown={startScrollLeft}
-                          onMouseLeave={stopScroll} className={cn(
+                          onMouseLeave={stopScroll}
+                          className={cn(
                             'bg-brand-600 rounded-md p-1 text-white',
                           )}
                         >
@@ -394,7 +409,7 @@ const Funds = () => {
                         <th
                           key={index}
                           className={cn(
-                            'sticky right-0 top-0 z-40 m-0 h-[64px] w-[385px] border-b bg-[#E3F8F8] py-0 pr-2',
+                            'sticky right-0 top-0 z-40 m-0 h-[64px] w-[385px] bg-[#E3F8F8] border-b py-0 pr-2',
                             {
                               'group-hover/table:pr-0':
                                 canScrollVertical && !isActiveDropdownPageCount,
@@ -402,150 +417,147 @@ const Funds = () => {
                           )}
                         >
                           <div
-                            {...{
-                              className: header.column.getCanSort()
-                                ? 'cursor-pointer w-full h-[75px] select-none'
-                                : '',
-                            }}
+                          className={cn({
+                            'w-[385px] h-[75px] bg-[#E3F8F8] select-none': header.column.getCanSort(),
+                            'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]': isScrollAtStart
+                          })}
                           >
-                            <OptionsDropdown
-                              className="!shadow-8xl"
-                              dropDownStyles={{
-                                size: 'md',
-                                anchor: 'bottom',
-                                bg: 'primary',
-                                emphasize: 'medium',
-                                checkSelected: true,
-                              }}
-                              customOptionRender={(prop) => (
+                            <div className="mr-24">
+                              <OptionsDropdown
+                                className="!shadow-8xl"
+                                dropDownStyles={{
+                                  size: 'md',
+                                  anchor: 'bottom',
+                                  bg: 'primary',
+                                  emphasize: 'medium',
+                                  checkSelected: true,
+                                }}
+                                customOptionRender={(prop) => (
+                                  <div
+                                    onClick={() => {
+                                      if (
+                                        prop.text === 'مرتب سازی (ی-الف)' &&
+                                        header.column.getIsSorted() !== 'desc'
+                                      ) {
+                                        header.column.toggleSorting(true);
+                                      }
+                                      if (
+                                        prop.text === 'مرتب سازی (الف-ی)' &&
+                                        header.column.getIsSorted() !== 'asc'
+                                      ) {
+                                        header.column.toggleSorting(false);
+                                      }
+                                    }}
+                                    className={cn(
+                                      'hover:bg-brand-50 hover:text-brand-800 flex w-[184px] cursor-pointer items-center gap-2 overflow-y-hidden bg-white p-2 text-sm font-medium',
+                                      {
+                                        'text-brand-800':
+                                          (header.column.getIsSorted() ===
+                                            'desc' &&
+                                            prop.text === 'مرتب سازی نزولی') ||
+                                          (header.column.getIsSorted() ===
+                                            'asc' &&
+                                            prop.text === 'مرتب سازی صعودی'),
+                                      },
+                                    )}
+                                  >
+                                    {prop.icon?.name && (
+                                      <Icon
+                                        name={prop.icon?.name}
+                                        size={prop.icon?.size}
+                                      />
+                                    )}
+                                    {prop.text}
+                                  </div>
+                                )}
+                                customTriggerRender={({ isActive }) => (
+                                  <div className="flex bg-[#E3F8F8]">
+                                    <div className="mr-">
+                                      <FundsColumn
+                                        active={isActive}
+                                        clickFilterd={() => {
+                                          setSortIndex(0);
+                                          header.column.toggleSorting(
+                                            header.column.getIsSorted() ===
+                                              'desc'
+                                              ? false
+                                              : true,
+                                          );
+                                        }}
+                                        size="medium"
+                                        shadow={false}
+                                        type={
+                                          header.column.getIsSorted() === 'asc'
+                                            ? 'active-asc'
+                                            : header.column.getIsSorted() ===
+                                                'desc'
+                                              ? 'inactive'
+                                              : 'inactive'
+                                        }
+                                        filterable={columnFilters.some(
+                                          (filterItem) =>
+                                            filterItem.id === header.id,
+                                        )}
+                                        title={String(
+                                          flexRender(
+                                            header.column.columnDef.header,
+                                            header.getContext(),
+                                          ),
+                                        )}
+                                        sortType={'alphabetical'}
+                                      />
+                                    </div>
+                                  </div>
+                                )}
+                                dropDownList={[
+                                  {
+                                    text: 'مرتب سازی (الف-ی)',
+                                    icon: {
+                                      name: 'arrow-down-a-z',
+                                      size: 'md',
+                                    },
+                                  },
+                                  {
+                                    text: 'مرتب سازی (ی-الف)',
+                                    icon: {
+                                      name: 'arrow-up-z-a',
+                                      size: 'md',
+                                    },
+                                  },
+                                ]}
+                              />
+                            </div>
+
+                            <div className="absolute top-[25px] flex items-center gap-2 pr-[24px]">
+                              <Tooltip title="انتخاب ستون‌ها">
                                 <div
                                   onClick={() => {
-                                    if (
-                                      prop.text === 'مرتب سازی (ی-الف)' &&
-                                      header.column.getIsSorted() !== 'desc'
-                                    ) {
-                                      header.column.toggleSorting(true);
-                                    }
-                                    if (
-                                      prop.text === 'مرتب سازی (الف-ی)' &&
-                                      header.column.getIsSorted() !== 'asc'
-                                    ) {
-                                      header.column.toggleSorting(false);
-                                    }
+                                    setIsSettingModal(true);
                                   }}
-                                  className={cn(
-                                    'hover:bg-brand-50 hover:text-brand-800 flex w-[184px] cursor-pointer items-center gap-2 overflow-y-hidden bg-white p-2 text-sm font-medium',
-                                    {
-                                      'text-brand-800':
-                                        (header.column.getIsSorted() ===
-                                          'desc' &&
-                                          prop.text === 'مرتب سازی نزولی') ||
-                                        (header.column.getIsSorted() ===
-                                          'asc' &&
-                                          prop.text === 'مرتب سازی صعودی'),
-                                    },
-                                  )}
+                                  className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
                                 >
-                                  {prop.icon?.name && (
-                                    <Icon
-                                      name={prop.icon?.name}
-                                      size={prop.icon?.size}
-                                    />
+                                  {isChanged && (
+                                    <div className="absolute -right-1 -top-1 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
                                   )}
-                                  {prop.text}
+                                  <Icon size="lg" name="settings" />
                                 </div>
-                              )}
-                              customTriggerRender={({ isActive }) => (
+                              </Tooltip>
+                              <Tooltip title="فیلتر صندوق‌ها">
                                 <div
-                                  className={cn('w-[385px] bg-[#E3F8F8] flex', {
-                                    'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]':
-                                      isScrollAtStart,
-                                  })}
+                                  onClick={() => {
+                                    setIsFilterModal(true);
+                                  }}
+                                  className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
                                 >
-                                  <div className='mr-5'>
-
-                                    <FundsColumn
-                                      active={isActive}
-                                      clickFilterd={() => {
-                                        setSortIndex(0);
-                                        header.column.toggleSorting(
-                                          header.column.getIsSorted() === 'desc'
-                                            ? false
-                                            : true,
-                                        );
-                                      }}
-                                      size="extraLarg"
-                                      shadow={false}
-                                      type={
-                                        header.column.getIsSorted() === 'asc'
-                                          ? 'active-asc'
-                                          : header.column.getIsSorted() === 'desc'
-                                            ? 'inactive'
-                                            : 'inactive'
-                                      }
-                                      filterable={columnFilters.some(
-                                        (filterItem) =>
-                                          filterItem.id === header.id,
-                                      )}
-                                      title={String(
-                                        flexRender(
-                                          header.column.columnDef.header,
-                                          header.getContext(),
-                                        ),
-                                      )}
-                                      sortType={'alphabetical'}
-                                    />
-                                  </div>
-
-                                  <div className="absolute top-5 flex items-center gap-2 pr-[24px]">
-                                    <Tooltip title="انتخاب ستون‌ها">
-                                      <div
-                                        onClick={() => {
-                                          setIsSettingModal(true);
-                                        }}
-                                        className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
-                                      >
-                                        {isChanged && (
-                                          <div className="absolute -right-1 -top-1 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
-                                        )}
-                                        <Icon size="lg" name="settings" />
-                                      </div>
-                                    </Tooltip>
-                                    <Tooltip title="فیلتر صندوق‌ها">
-                                      <div
-                                        onClick={() => {
-                                          setIsFilterModal(true);
-                                        }}
-                                        className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
-                                      >
-                                        {(Object.entries(selectedFilters)
-                                          .length > 0 ||
-                                          fundSearchQuery) && (
-                                            <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
-                                          )}
-                                        <Icon size="lg" name="filter" />
-                                      </div>
-                                    </Tooltip>
-                                  </div>
+                                  {(Object.entries(selectedFilters).length >
+                                    0 ||
+                                    fundSearchQuery) && (
+                                    <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
+                                  )}
+                                  <Icon size="lg" name="filter" />
                                 </div>
-                              )}
-                              dropDownList={[
-                                {
-                                  text: 'مرتب سازی (الف-ی)',
-                                  icon: {
-                                    name: 'arrow-down-a-z',
-                                    size: 'md',
-                                  },
-                                },
-                                {
-                                  text: 'مرتب سازی (ی-الف)',
-                                  icon: {
-                                    name: 'arrow-up-z-a',
-                                    size: 'md',
-                                  },
-                                },
-                              ]}
-                            />
+                              </Tooltip>
+                            </div>
                           </div>
                         </th>
                       )}
@@ -557,7 +569,10 @@ const Funds = () => {
                             }
                           }}
                           className={cn(
-                            'm-0 h-[64px] bg-[#E3F8F8] pr-2 text-sm font-medium',
+                            '5xl:w-full m-0 h-[64px] w-full bg-[#E3F8F8] pr-2 text-sm font-medium',
+                            {
+                              'pr-0': isScrollAtStart,
+                            },
                             String(
                               flexRender(
                                 header.column.columnDef.header,
@@ -568,7 +583,9 @@ const Funds = () => {
                               : 'w-36',
                             {
                               'group-hover/table:pr-0':
-                                canScrollVertical && !isActiveDropdownPageCount && !isScrollAtStart,
+                                canScrollVertical &&
+                                !isActiveDropdownPageCount &&
+                                !isScrollAtStart,
                             },
                           )}
                           key={index}
@@ -632,7 +649,7 @@ const Funds = () => {
                                               (prop.text ===
                                                 'انتقال به ابتدا' ||
                                                 prop.text ===
-                                                'انتقال به راست')) ||
+                                                  'انتقال به راست')) ||
                                             (index + 1 ===
                                               updateTableHeaders.length &&
                                               (prop.text ===
@@ -642,7 +659,7 @@ const Funds = () => {
                                             (header.column.getIsSorted() ===
                                               'desc' &&
                                               prop.text ===
-                                              'مرتب سازی نزولی') ||
+                                                'مرتب سازی نزولی') ||
                                             (header.column.getIsSorted() ===
                                               'asc' &&
                                               prop.text === 'مرتب سازی صعودی'),
@@ -688,8 +705,7 @@ const Funds = () => {
                                     type={
                                       header.column.getIsSorted() === 'asc'
                                         ? 'active-desc'
-                                        : header.column.getIsSorted() ===
-                                          'desc'
+                                        : header.column.getIsSorted() === 'desc'
                                           ? 'active-asc'
                                           : 'inactive'
                                     }
@@ -768,7 +784,7 @@ const Funds = () => {
                   {isScrollAtEnd && (
                     <div
                       onMouseDown={startScrollRight}
-                      onMouseLeave={stopScroll} 
+                      onMouseLeave={stopScroll}
                       className={cn('hidden group-hover:block')}
                     >
                       <Tooltip title="پیمایش به چپ (A)">
@@ -787,14 +803,20 @@ const Funds = () => {
               <tr className="relative w-full">
                 <td
                   style={{
-                    transform: sortIndex !== 0 ? `translateX(-${sortIndicator.right}px)` : '',
-                    width: `${sortIndicator.width}px`,
+                    transform:
+                      sortIndex !== 0
+                        ? `translateX(-${sortIndicator.right}px)`
+                        : '',
+                    width: sortIndex !== 0 ? `${sortIndicator.width}px` : '',
                   }}
-                  className={cn('right-0 duration-300', {
-                    'absolute bottom-0 z-20 transition-transform': sortIndex !== 0,
-                    'transition group-hover/table:-right-2': sortIndex !== 0 && canScrollVertical,
-                    'group-hover/table:-right-0': sortIndex !== 0 && canScrollVertical && isScrollAtStart,
-                    'fixed z-40 right-20 top-[240px]': sortIndex === 0,
+                  className={cn('duration-300', {
+                    'absolute bottom-0 z-20 transition-transform':
+                      sortIndex !== 0,
+                    'transition group-hover/table:-right-2':
+                      sortIndex !== 0 && canScrollVertical,
+                    'group-hover/table:-right-0':
+                      sortIndex !== 0 && canScrollVertical && isScrollAtStart,
+                    'fixed right-[215px] top-[240px] z-40 w-fit': sortIndex === 0,
                     'top-[157px]': sortIndex === 0 && !isHeaderVisible,
                   })}
                 >
@@ -828,10 +850,10 @@ const Funds = () => {
                     <tr className="fixed right-[calc(50%-150px)] mt-5 w-full text-gray-600">
                       <td className="text-sm">
                         {isMainTab
-                          ? 'صندوقی یافت نشد! لطفا فیلتر‌هارا بازنشانی کنید.'
+                          ? 'صندوقی یافت نشد! لطفا فیلتر‌ها را بازنشانی کنید.'
                           : watchList.length === 0
                             ? 'صندوقی در دیده بان وجود ندارد.'
-                            : 'صندوقی یافت نشد! لطفا فیلتر هارا بازنشانی کنید.'}
+                            : 'صندوقی یافت نشد! لطفا فیلتر ها را بازنشانی کنید.'}
                       </td>
                     </tr>
                   );
@@ -844,31 +866,51 @@ const Funds = () => {
                     <>
                       <tr
                         key={row.id}
-                        className={cn('group h-[48px] border-b border-[#E1E2E5]', {
-                          'bg-blue-50 group-hover:bg-[#4991e9]': isPinned
-                        })}
+                        className={cn(
+                          'group h-[48px] w-full border-b border-[#E1E2E5]',
+                          {
+                            'bg-blue-50 group-hover:bg-[#4991e9]': isPinned,
+                          },
+                        )}
                       >
                         <td></td>
                         {row.getVisibleCells().map((cell, index) => {
                           return (
                             <React.Fragment key={cell.id}>
                               {index === 0 && (
-                                <td
-                                  className='sticky flex items-center right-0 top-0 z-40 m-0 py-0'
-                                >
-                                  <div className={cn('absolute right-2 z-50 pr-0', {
-                                    'group-hover/table:right-0': canScrollVertical && !isActiveDropdownPageCount,
-                                  })}>
-
+                                <td className="sticky right-0 top-0 z-40 m-0 flex items-center bg-white py-0">
+                                  <div
+                                    className={cn(
+                                      'absolute right-2 z-50 pr-0',
+                                      {
+                                        'group-hover/table:right-0':
+                                          canScrollVertical &&
+                                          !isActiveDropdownPageCount,
+                                      },
+                                    )}
+                                  >
                                     <Bookmark
-                                      selectedColor={rowMarks[indexCategoryTab]?.[row.id] || ''}
-                                      onColorChange={(color) => handleColorChange(row.id, color)}
+                                      selectedColor={
+                                        rowMarks[indexCategoryTab]?.[row.id] ||
+                                        ''
+                                      }
+                                      onColorChange={(color) =>
+                                        handleColorChange(row.id, color)
+                                      }
                                     />
                                   </div>
-                                  <div className={cn('pr-2 group-hover:bg-blue-50', {
-                                    'group-hover/table:pr-0': canScrollVertical && !isActiveDropdownPageCount,
-                                    'bg-blue-50 group-hover:bg-blue-100': isPinned
-                                  })}>
+                                  <div
+                                    className={cn(
+                                      'pr-2 group-hover:bg-blue-50',
+                                      {
+                                        'group-hover/table:pr-0':
+                                          canScrollVertical &&
+                                          !isActiveDropdownPageCount,
+                                        'bg-blue-50 group-hover:bg-blue-100':
+                                          isPinned,
+                                      },
+                                    )}
+                                  >
                                     <FundsTableRow
                                       tag={!isMainTab}
                                       category={
@@ -886,16 +928,18 @@ const Funds = () => {
                                         isMainTab
                                           ? row.pin('top', true)
                                           : setPineWatchList([
-                                            ...pineWatchLis,
-                                            row.id,
-                                          ])
+                                              ...pineWatchLis,
+                                              row.id,
+                                            ])
                                       }
                                       unPinedFunction={() =>
                                         isMainTab
                                           ? row.pin(false)
                                           : setPineWatchList((prev) =>
-                                            prev.filter((id) => id !== row.id),
-                                          )
+                                              prev.filter(
+                                                (id) => id !== row.id,
+                                              ),
+                                            )
                                       }
                                       isScrolled={isScrollAtStart}
                                       investmentMethod={
@@ -907,17 +951,17 @@ const Funds = () => {
                                       logo={row.original.logo}
                                     />
                                   </div>
-
                                 </td>
                               )}
                               {index >= 1 && (
                                 <td
                                   className={cn(
-                                    'py-0 pr-4 text-sm border-b border-[#E1E2E5] font-medium',
+                                    'border-b border-[#E1E2E5] py-0 pr-0 text-sm font-medium',
                                     {
-                                      'group-hover/table:pr-0':
+                                      'pr-4 group-hover/table:pr-0':
                                         canScrollVertical &&
-                                        !isActiveDropdownPageCount && !isScrollAtStart,
+                                        !isActiveDropdownPageCount &&
+                                        !isScrollAtStart,
                                       'bg-blue-50 group-hover:bg-blue-100':
                                         isPinned,
                                       'group-hover:bg-blue-50': !isPinned,
@@ -937,12 +981,12 @@ const Funds = () => {
                         <div className="sticky right-0 mb-2 mt-5 w-screen whitespace-nowrap text-sm text-gray-600">
                           {formatNumber(
                             table.getState().pagination.pageSize *
-                            (table.getState().pagination.pageIndex + 1),
+                              (table.getState().pagination.pageIndex + 1),
                             { commaSeparated: true },
                           ) ===
                             formatNumber(
                               table.getPageCount() *
-                              table.getState().pagination.pageSize,
+                                table.getState().pagination.pageSize,
                               { commaSeparated: true },
                             ) && 'پایان لیست صندوق ها.'}
                         </div>
@@ -957,132 +1001,130 @@ const Funds = () => {
             </tbody>
           </table>
         </div>
-      </div >
+      </div>
 
-      <div className="fixed bottom-6 right-0 z-50 mt-6 flex w-full justify-between px-8">
-        <div className="rounded-md bg-[#B3B6BD8C] backdrop-blur-[30px]">
-          <OptionsDropdown
-            className="-mt-2"
-            onChange={(e) => {
-              startTransition(() => {
-                table.setPageSize(Number(e));
-              });
-            }}
-            dropDownStyles={{
-              bg: 'primary',
-              emphasize: 'medium',
-              size: 'md',
-              anchor: 'top end',
-              checkSelected: true,
-            }}
-            customTriggerRender={({ isActive }) => {
-              setIsActiveDropdownPageCount(isActive);
-              return (
-                <div className="flex h-[40px] items-center gap-2 pl-2 pr-3 text-xs font-medium">
-                  <div className="flex gap-1">
-                    <span>تعداد سطر در جدول: </span>
-                    {formatNumber(
-                      table.getState().pagination.pageSize *
+      <div className="fixed bottom-6 right-12 z-50 rounded-md bg-[#B3B6BD8C] backdrop-blur-[30px]">
+        <OptionsDropdown
+          className="-mt-2"
+          onChange={(e) => {
+            startTransition(() => {
+              table.setPageSize(Number(e));
+            });
+          }}
+          dropDownStyles={{
+            bg: 'primary',
+            emphasize: 'medium',
+            size: 'md',
+            anchor: 'top end',
+            checkSelected: true,
+          }}
+          customTriggerRender={({ isActive }) => {
+            setIsActiveDropdownPageCount(isActive);
+            return (
+              <div className="flex h-[40px] items-center gap-2 pl-2 pr-3 text-xs font-medium">
+                <div className="flex gap-1">
+                  <span>تعداد سطر در جدول: </span>
+                  {formatNumber(
+                    table.getState().pagination.pageSize *
                       (table.getState().pagination.pageIndex + 1),
-                      { commaSeparated: true },
-                    )}
-                  </div>
-                  <div
-                    className={cn('transition-transform duration-300', {
-                      'rotate-180': isActive,
-                      'rotate-0': !isActive,
-                    })}
-                  >
-                    <Icon size="lg" name="chevron-down" />
-                  </div>
+                    { commaSeparated: true },
+                  )}
                 </div>
-              );
-            }}
-            customOptionRender={(prop) => (
-              <div
-                className={cn(
-                  'w-full cursor-pointer bg-[#B3B6BD8C] px-3 pt-2 text-center text-xs font-medium text-[#06080F]',
-                  {
-                    'pb-2':
-                      table.getState().pagination.pageSize *
+                <div
+                  className={cn('transition-transform duration-300', {
+                    'rotate-180': isActive,
+                    'rotate-0': !isActive,
+                  })}
+                >
+                  <Icon size="lg" name="chevron-down" />
+                </div>
+              </div>
+            );
+          }}
+          customOptionRender={(prop) => (
+            <div
+              className={cn(
+                'w-full cursor-pointer bg-[#B3B6BD8C] px-3 pt-2 text-center text-xs font-medium text-[#06080F]',
+                {
+                  'pb-2':
+                    table.getState().pagination.pageSize *
                       (table.getState().pagination.pageIndex + 1) *
                       table.getPageCount() ===
-                      +prop.text,
-                  },
-                )}
-              >
-                <span>
-                  {table.getState().pagination.pageSize *
-                    (table.getState().pagination.pageIndex + 1) *
-                    table.getPageCount() ===
-                    +prop.text
-                    ? 'همه'
-                    : prop.text}
-                </span>
-              </div>
-            )}
-            dropDownList={[
-              { text: '10' },
-              { text: '25' },
-              { text: '50' },
-              { text: '100' },
-              {
-                text: String(
-                  table.getState().pagination.pageSize *
+                    +prop.text,
+                },
+              )}
+            >
+              <span>
+                {table.getState().pagination.pageSize *
+                  (table.getState().pagination.pageIndex + 1) *
+                  table.getPageCount() ===
+                +prop.text
+                  ? 'همه'
+                  : prop.text}
+              </span>
+            </div>
+          )}
+          dropDownList={[
+            { text: '10' },
+            { text: '25' },
+            { text: '50' },
+            { text: '100' },
+            {
+              text: String(
+                table.getState().pagination.pageSize *
                   (table.getState().pagination.pageIndex + 1) *
                   table.getPageCount(),
-                ),
-              },
-            ]}
-          />
-        </div>
+              ),
+            },
+          ]}
+        />
+      </div>
 
-        <span className="flex h-[40px] gap-2 rounded-md bg-[#B3B6BD8C] px-3 py-2 text-xs font-medium backdrop-blur-[30px]">
-          مجموعه ارزش خالص دارایی‌ها:
-          <span className="border-b border-[#06080F] text-sm text-[#06080F]">
-            10,986,249.09
-          </span>
+      <span className="fixed bottom-6 right-[50%] z-50 flex h-[40px] translate-x-[50%] gap-2 rounded-md bg-[#B3B6BD8C] px-3 py-2 text-xs font-medium backdrop-blur-[30px]">
+        مجموعه ارزش خالص دارایی‌ها:
+        <span className="border-b border-[#06080F] text-sm text-[#06080F]">
+          10,986,249.09
         </span>
-        <div className="flex h-[40px] items-center gap-2 rounded-md bg-[#B3B6BD8C] px-3 py-2 backdrop-blur-[30px]">
-          <span className="text-gray-1000 flex items-center gap-1 text-xs font-medium">
-            <div>
-              {formatNumber(
-                table.getState().pagination.pageSize *
-                (table.getState().pagination.pageIndex + 1),
-                { commaSeparated: true },
-              )}
-              -
-              {table.getState().pagination.pageSize *
-                table.getState().pagination.pageIndex +
-                1}
-            </div>
-            از
+      </span>
+      <div className="fixed bottom-6 left-12 z-50 flex h-[40px] items-center gap-2 rounded-md bg-[#B3B6BD8C] px-3 py-2 backdrop-blur-[30px]">
+        <span className="text-gray-1000 flex items-center gap-1 text-xs font-medium">
+          <div>
             {formatNumber(
-              table.getPageCount() * table.getState().pagination.pageSize,
+              table.getState().pagination.pageSize *
+                (table.getState().pagination.pageIndex + 1),
               { commaSeparated: true },
             )}
-            <span className="px-[1px]">صندوق</span>
-          </span>
-          <button
-            className={cn('cursor-pointer rounded', {
-              'cursor-default text-[#B3B6BD]':
-                table.getState().pagination.pageIndex + 1 === 1,
-            })}
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            <Icon size="lg" name="chevron-right" />
-          </button>
-          <button
-            className={cn('cursor-pointer rounded', {
-              'cursor-default text-[#B3B6BD]': !table.getCanNextPage(),
-            })}
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            <Icon size="lg" name="chevron-left" />
-          </button>
-        </div>
+            -
+            {table.getState().pagination.pageSize *
+              table.getState().pagination.pageIndex +
+              1}
+          </div>
+          از
+          {formatNumber(
+            table.getPageCount() * table.getState().pagination.pageSize,
+            { commaSeparated: true },
+          )}
+          <span className="px-[1px]">صندوق</span>
+        </span>
+        <button
+          className={cn('cursor-pointer rounded', {
+            'cursor-default text-[#B3B6BD]':
+              table.getState().pagination.pageIndex + 1 === 1,
+          })}
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          <Icon size="lg" name="chevron-right" />
+        </button>
+        <button
+          className={cn('cursor-pointer rounded', {
+            'cursor-default text-[#B3B6BD]': !table.getCanNextPage(),
+          })}
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          <Icon size="lg" name="chevron-left" />
+        </button>
       </div>
 
       <Dialog

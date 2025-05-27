@@ -70,10 +70,6 @@ export const useSmartTableScroll = (
 
     const offsets = getColumnOffsets();
     const currentIndex = getCurrentColumnIndex(scrollLeft);
-
-    console.log(offsets);
-
-
     const currentStart = offsets[currentIndex];
     const currentEnd = offsets[currentIndex + 1] ?? currentStart;
 
