@@ -446,17 +446,19 @@ export const useVideo = (
     dispatch({ type: 'SET_QUALITY', quality });
   }, []);
 
-
   const pathName = usePathname();
 
   const pictureInPicture = useCallback(() => {
     videoRef.current?.requestPictureInPicture();
 
     videoRef.current?.addEventListener('leavepictureinpicture', (e) => {
-      router.replace(pathName);
-      const oldVideoRef = e.target as HTMLVideoElement;
-      oldVideoRef.pause(); // destroy
-      dispatch({ type: 'SET_RESET', src, qualities });
+      // Only handle if the tab is visible (user is on this tab)
+      if (document.visibilityState === 'visible') {
+        router.replace(pathName);
+        const oldVideoRef = e.target as HTMLVideoElement;
+        oldVideoRef.pause(); // destroy
+      }
+      // If not visible, do nothing (don't pause or route)
     });
   }, [pathName, router]);
 
