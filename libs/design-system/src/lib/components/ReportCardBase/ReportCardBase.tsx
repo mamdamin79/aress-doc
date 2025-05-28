@@ -141,6 +141,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
               'flex flex-row gap-2',
               !compactHeader &&
                 'opacity-0 transition-opacity duration-300 group-hover:opacity-100',
+              !compactHeader && !settingsOpen && 'opacity-100',
             )}
           >
             <DualSwitch {...switchIcons} />
