@@ -19,7 +19,7 @@ export const SlideFromLeft: React.FC<SlideFromLeftProps> = ({
       )}
     >
       <div
-        dir="ltr"
+        dir="rtl"
         className={cn(
           'bg-baseBackground absolute left-0 top-0 z-10 h-full shadow-lg transition-all duration-300 ease-in-out',
           isOpen
@@ -27,9 +27,7 @@ export const SlideFromLeft: React.FC<SlideFromLeftProps> = ({
             : '-translate-x-full transform shadow-none',
         )}
       >
-        <div className="w-fit" dir="rtl">
-          {children}
-        </div>
+        {children}
       </div>
     </div>
   );

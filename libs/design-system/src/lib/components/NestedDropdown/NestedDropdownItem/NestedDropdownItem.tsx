@@ -42,7 +42,7 @@ export const NestedDropdownItem: React.FC<NestedDropdownItemProps> = ({
     <Wrapper hasTooltip={hasTooltip} selectedOption={selectedOption}>
       <div
         className={cn(
-          'flex h-10 w-full items-center justify-between rounded-md border border-gray-300 px-2 transition-colors',
+          'flex h-10 w-full cursor-pointer items-center justify-between rounded-md border border-gray-300 px-2 transition-colors',
           status === 'normal' && 'hover:border-gray-500',
           status === 'error' && 'border-red-600',
           status === 'opened' && 'border-brand-600 border-2',

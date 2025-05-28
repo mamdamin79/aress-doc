@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import { useEffect, useState } from 'react';
 import { OptionItem, CategoryItem } from './OptionsListExplorer.types';
 import { cn, formatNumber } from '../../../utils';
@@ -85,29 +85,20 @@ export function OptionsListExplorer({
   };
 
   return (
-    <div
-      className={cn(
-        items.items.length > 10
-          ? items.categories
-            ? 'h-[340px]'
-            : 'h-72'
-          : 'h-[260px]',
-        'w-[500px] bg-white',
-      )}
-    >
+    <div className={cn('h-full w-[500px] bg-white')}>
       <button
         aria-label="Go back"
         onClick={onBackButtonClick}
         className="text-gray-1000 flex w-fit cursor-pointer items-center gap-1 bg-transparent px-4 py-2.5"
       >
         <Icon name="chevron-right" />
-        <span className="mt-1 text-sm font-medium">{title}</span>
+        <span className="text-sm font-medium">{title}</span>
       </button>
       {!items.categories && items.items.length < 10 && (
         <div className="my-4 h-0.5 w-full bg-gray-300"></div>
       )}
       {items.items.length > 10 && (
-        <div className="mx-4 -mt-6 pb-2">
+        <div className="mx-4 pb-2">
           <TextField
             value={inputValue}
             onChange={(e) => handleInputChange(e.target.value)}
@@ -123,7 +114,7 @@ export function OptionsListExplorer({
         </div>
       )}
       {items.categories && (
-        <div className="mx-4 -mt-2">
+        <div className="mx-4 mt-2">
           <Tabs
             tabs={items.categories.map((category) => ({
               title: category.title,
@@ -162,14 +153,18 @@ export function OptionsListExplorer({
                 >
                   <Icon name="check" />
                 </div>
-                <span className="max-w-52 truncate">{item.title}</span>
+                <span className="max-w-52 truncate text-sm font-normal">
+                  {item.title}
+                </span>
               </div>
               <div className="flex items-center gap-1">
                 {item.categoryId !== activeTab && (
-                  <p className="w-20 text-center">{item?.type}</p>
+                  <p className="w-20 text-center text-xs font-normal">
+                    {item?.type}
+                  </p>
                 )}
                 {item.priceRials && (
-                  <span className="px-4 text-center">
+                  <span className="px-4 text-center text-xs font-medium">
                     {formatNumber(item.priceRials, {
                       commaSeparated: true,
                     })}
@@ -180,7 +175,7 @@ export function OptionsListExplorer({
                   <PercentageLabel
                     value={item.priceChangePercent}
                     key={`${item.id}-percentage`}
-                    size="normal"
+                    size="small"
                   />
                 )}
               </div>
