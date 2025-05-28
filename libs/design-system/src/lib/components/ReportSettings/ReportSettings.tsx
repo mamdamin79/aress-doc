@@ -29,14 +29,12 @@ export const ReportSettings: React.FC<ReportSettingsProps> = ({
   onSubmit,
 }) => {
   return (
-    <div
-      className={cn('bg-baseBackground flex h-80 w-[328px] flex-col')}
-    >
+    <div className={cn('flex h-full flex-col')}>
       <div className="text-md w-full py-2 pr-4 font-medium">تنظیمات گزارش</div>
       <div
         className={cn(
-          'flex h-[236px] gap-1 flex-col pl-5 pr-4',
-          'custom-scrollbar overflow-y-auto overflow-x-hidden',
+          'flex flex-col gap-1 pl-5 pr-4',
+          'scrollbar-sm-hidden h-full overflow-x-hidden',
         )}
       >
         {options.map((option: optionProps, index: number) => {
@@ -59,13 +57,14 @@ export const ReportSettings: React.FC<ReportSettingsProps> = ({
           return null;
         })}
       </div>
-      <div className="flex w-full flex-row gap-1 text-nowrap pb-4 pl-4 pr-[175px] text-xs font-semibold">
+      <div className="flex w-full flex-row gap-1 text-nowrap pb-4 pl-4 pr-[175px] pt-2 text-xs font-semibold">
         <Button
           align="center"
           isLoading={false}
           mode="secondary"
           size="sm"
           onClick={onClose}
+          className="h-8"
         >
           انصراف
         </Button>
@@ -75,6 +74,7 @@ export const ReportSettings: React.FC<ReportSettingsProps> = ({
           mode="primary"
           size="sm"
           onClick={onSubmit}
+          className="h-8"
         >
           اعمال تغییرات
         </Button>
