@@ -523,6 +523,14 @@ export const useVideo = (
   }, []);
 
   const fullScreen = useCallback(() => {
+    const activeElement = document.activeElement;
+
+    // Check if the focused element is an input or textarea or contenteditable
+    const isTyping =
+      activeElement?.tagName === 'INPUT' ||
+      activeElement?.tagName === 'TEXTAREA';
+
+    if (isTyping) return;
     if (videoContainerRef.current) {
       if (document.fullscreenElement) {
         document.exitFullscreen();
