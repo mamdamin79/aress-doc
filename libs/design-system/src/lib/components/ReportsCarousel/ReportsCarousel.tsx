@@ -37,7 +37,6 @@ export const ReportsCarousel: React.FC<ReportsCarouselProps> = ({ cards }) => {
       const containerWidth = instanceRef.current?.container.clientWidth || 0;
       const possibleSlides = containerWidth / (CARD_WIDTH + GAP_WIDTH / 2);
       setSlidesPerView(Math.max(1, Math.min(MAX_SLIDES, possibleSlides)));
-      console.log('slides per view: ' + possibleSlides);
     };
 
     // Initial calculation
