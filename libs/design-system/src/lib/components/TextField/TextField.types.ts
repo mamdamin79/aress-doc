@@ -28,4 +28,7 @@ export type textFieldPropsType = InputHTMLAttributes<HTMLInputElement> & {
   leadingIcon?: leadingIconType;
   trailingIcons: TrailingIcons;
   longText?: boolean;
+  inputSize?: TextFieldInputSize;
 };
+
+export type TextFieldInputSize = 'default' | 'md' | 'sm';

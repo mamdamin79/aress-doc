@@ -18,6 +18,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
   onChange,
   value,
   className,
+  inputSize = 'default',
   longText = false,
   ...rest
 }) => {
@@ -48,6 +49,10 @@ export const TextField: React.FC<textFieldPropsType> = ({
     setIsVisibleCharacter(!visibleCharacter);
   };
 
+  // Height and icon position classes based on inputSize
+  const heightClass =
+    inputSize === 'sm' ? 'h-10' : inputSize === 'md' ? 'h-12' : 'h-14'; // default
+
   return (
     <div
       data-twe-input-wrapper-init
@@ -64,7 +69,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
           {mergeTitleAndPlaceholder ? (
             (isFocused || inputValue) && (
               <label
-                className={cn('text-sm font-medium', {
+                className={cn('text-sm font-medium ', {
                   'text-gray-400': disabled,
                 })}
               >
@@ -87,9 +92,11 @@ export const TextField: React.FC<textFieldPropsType> = ({
         <label
           htmlFor={id}
           className={cn(
-            'absolute top-9 hidden cursor-text pr-4 text-sm font-medium',
+            'absolute hidden top-9 cursor-text pr-4 text-sm font-medium',
             { 'right-8': leadingIcon },
-            { block: mergeTitleAndPlaceholder },
+            { 'top-11 block': mergeTitleAndPlaceholder && inputSize === 'default' },
+            { 'top-10 block': mergeTitleAndPlaceholder && inputSize === 'md' },
+            { 'top-9 block': mergeTitleAndPlaceholder && inputSize === 'sm' },
             { 'text-gray-400': disabled },
             { 'top-10': leadingIcon?.size === 'md' },
           )}
@@ -103,8 +110,16 @@ export const TextField: React.FC<textFieldPropsType> = ({
           className={cn(
             'absolute right-4',
             {
-              'top-[44px]': label,
-              'top-[16px]': !label,
+              'top-[46px]': label && inputSize === 'default',
+              'top-[16px]': !label && inputSize === 'default',
+            },
+            {
+              'top-[42px]': label && inputSize === 'md',
+              'top-[12px]': !label && inputSize === 'md',
+            },
+            {
+              'top-[38px]': label && inputSize === 'sm',
+              'top-[8px]': !label && inputSize === 'sm',
             },
             {
               'text-gray-400': disabled,
@@ -172,7 +187,8 @@ export const TextField: React.FC<textFieldPropsType> = ({
             }
           }}
           className={cn(
-            'text-md h-14 w-full rounded-xl border p-2 font-normal outline-none transition-colors duration-150',
+            'text-md w-full rounded-xl border p-2 font-normal outline-none transition-colors duration-150',
+            heightClass,
             {
               'border-inherit bg-transparent opacity-100 placeholder:text-gray-400':
                 disabled,
@@ -196,8 +212,16 @@ export const TextField: React.FC<textFieldPropsType> = ({
         className={cn(
           'absolute left-4 z-10 flex items-center justify-between gap-4',
           {
-            'top-[46px]': label,
-            'top-[16px]': !label,
+            'top-[46px]': label && inputSize === 'default',
+            'top-[16px]': !label && inputSize === 'default',
+          },
+          {
+            'top-[42px]': label && inputSize === 'md',
+            'top-[12px]': !label && inputSize === 'md',
+          },
+          {
+            'top-[38px]': label && inputSize === 'sm',
+            'top-[8px]': !label && inputSize === 'sm',
           },
           {
             'top-10':
