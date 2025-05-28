@@ -188,7 +188,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                     align="center"
                     isLoading={false}
                     mode="primary"
-                    size="md"
+                    size="sm"
                   >
                     تلاش مجدد
                   </Button>
@@ -199,7 +199,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                   align="center"
                   isLoading={false}
                   mode="secondary"
-                  size="md"
+                  size="sm"
                   onClick={() => setLoadingStatus(null)}
                 >
                   انصراف
