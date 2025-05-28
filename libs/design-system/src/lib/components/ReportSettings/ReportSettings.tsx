@@ -33,7 +33,7 @@ export const ReportSettings: React.FC<ReportSettingsProps> = ({
       <div className="text-md w-full py-2 pr-4 font-medium">تنظیمات گزارش</div>
       <div
         className={cn(
-          'flex flex-col gap-1 pl-5 pr-4',
+          'ml-1 flex flex-col gap-1 pl-4 pr-4',
           'scrollbar-sm-hidden h-full overflow-x-hidden',
         )}
       >
