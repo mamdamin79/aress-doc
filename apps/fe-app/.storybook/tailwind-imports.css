@@ -264,9 +264,24 @@ input[type='password']::-webkit-password-eye {
   border-radius: 8px;
 }
 
-.scrollbar-sm::-webkit-scrollbar {
+.scrollbar-sm::-webkit-scrollbar,
+.scrollbar-sm-hidden::-webkit-scrollbar {
   width: 4px;
   height: 4px;
+  border-radius: 8px;
+}
+
+.scrollbar-md::-webkit-scrollbar,
+.scrollbar-md-hidden::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  border-radius: 8px;
+}
+
+.scrollbar-lg::-webkit-scrollbar,
+.scrollbar-lg-hidden::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
   border-radius: 8px;
 }
 
@@ -285,16 +300,8 @@ input[type='password']::-webkit-password-eye {
   border-radius: 8px;
 }
 
-.scrollbar-md::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-  border-radius: 8px;
-}
-
-.scrollbar-lg::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-  border-radius: 8px;
+.hiddenscrollbar::-webkit-scrollbar {
+  display: none;
 }
 .scrollbar-sm-hidden::-webkit-scrollbar-thumb,
 .scrollbar-md-hidden::-webkit-scrollbar-thumb,

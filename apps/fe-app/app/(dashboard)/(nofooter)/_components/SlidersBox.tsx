@@ -67,7 +67,8 @@ function SortableItem({ item }: { item: Item }) {
         <Image
           src={item.content}
           alt="slider-image"
-          fill
+          width={616}
+          height={336}
           className="h-full object-contain"
         />
       )}
@@ -278,21 +279,15 @@ export const SlidersBox: React.FC = () => {
                 <SortableItem key={item.id} item={item} />
               ))}
               {[...Array(addReportBoxCount)].map((_, index) => (
-                <div
-                  key={index}
-                  className="shadow-6xl relative h-[336px] w-full overflow-hidden rounded-2xl border-2 border-gray-200"
-                >
-                  <AddReportButton
-                    onClick={() => setIsReportSelectionPopupOpen(true)}
-                  />
-                </div>
-              ))}
-
-              <div className="shadow-6xl relative h-[336px] w-full overflow-hidden rounded-2xl border-2 border-gray-200">
                 <AddReportButton
+                  key={index}
                   onClick={() => setIsReportSelectionPopupOpen(true)}
                 />
-              </div>
+              ))}
+
+              <AddReportButton
+                onClick={() => setIsReportSelectionPopupOpen(true)}
+              />
             </div>
           </SortableContext>
         </section>
