@@ -78,13 +78,13 @@ export const PlayerOptions: React.FC<Props> = React.memo(
             <button
               onClick={() => setOpen(!open)}
               className={cn(
-                'relative mt-1 flex items-center justify-center p-1 text-white transition-transform duration-300',
+                'relative  flex items-center justify-center p-1 text-white transition-transform duration-300',
               )}
             >
               <span className={cn("hidden sm:block",{"rotate-12":open})}>
                 <Icon name="settings" />
               </span>
-              <span className={cn("hidden sm:block",{"rotate-12":open})}>
+              <span className={cn("block sm:hidden",{"rotate-12":open})}>
                 <Icon size="sm" name="settings" />
               </span>
             </button>
