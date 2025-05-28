@@ -110,6 +110,7 @@ export function OptionsListExplorer({
             }}
             mergeTitleAndPlaceholder={false}
             trailingIcons={[]}
+            inputSize="sm"
           />
         </div>
       )}
