@@ -62,12 +62,12 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
                 reportSubscription="رایگان"
                 fixedBrief={true}
                 // hasVideo has error because of the type of report is old
-                newBadge={report.hasVideo}
+                newBadge={report.isNew}
                 onLike={() =>
                   handleLike(report.identifier, report?.userFavorite ?? false)
                 }
                 userFavorite={report.userFavorite}
-                videoBadge={true}
+                videoBadge={report.hasVideo}
                 {...report}
                 image={baseURL + report.image}
               />
