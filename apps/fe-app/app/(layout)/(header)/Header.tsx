@@ -12,7 +12,7 @@ import { MenuData } from './HeaderDataLite';
 import { useWindowScroll } from '@uidotdev/usehooks';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-
+import { useThemeToggle } from '../../../hooks';
 export const HeaderMenu: React.FC = () => {
   const { width } = useWindowSize();
   const pathname = usePathname();
@@ -32,6 +32,7 @@ export const Header: React.FC = () => {
   const [{ y: scrollY }] = useWindowScroll();
   const currentScrollY = scrollY ?? 0;
   const htmlPaddingRight = useHtmlPaddingRight();
+  const { toggleTheme } = useThemeToggle();
 
   return (
     <ModalProvider>
@@ -73,6 +74,7 @@ export const Header: React.FC = () => {
             <SquaredButton
               icons={[{ name: 'sun' }, { name: 'moon' }]}
               badge={{ enabled: false }}
+              onClick={toggleTheme}
             />
             <Link href={'/profile'}>
               <HeadProfile profileImage="https://picsum.photos/200" />
