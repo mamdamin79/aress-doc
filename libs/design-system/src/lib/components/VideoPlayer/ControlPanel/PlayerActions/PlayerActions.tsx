@@ -122,7 +122,7 @@ export const PlayerActions: React.FC<Props> = React.memo(
             </span>
           </button>
         </Tooltip>
-        <div className="group relative mx-1 flex items-center space-x-2 px-1">
+        <div className="group relative mx-1 flex items-center  space-x-2 px-1">
           {muted ? (
             <Tooltip offset={48} title="(m) فعال کردن صدا" className="!z-30">
               <button
@@ -155,7 +155,7 @@ export const PlayerActions: React.FC<Props> = React.memo(
           <Tooltip title="میزان صدا" offset={56}>
             <div
               className={cn(
-                'relative cursor-pointer transition-all duration-300 ease-in-out group-hover:w-16 group-hover:opacity-100',
+                'relative -mt-1 cursor-pointer transition-all duration-300 ease-in-out group-hover:w-16 group-hover:opacity-100',
                 { 'w-0 opacity-0': !isDragging },
               )}
               onClick={handleVolumeBarClick}

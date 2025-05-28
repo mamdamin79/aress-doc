@@ -5,6 +5,7 @@ import { Button } from '../Button';
 import { platformMappings } from './SharePopUp.constants';
 import { PlatformName } from './SharePopUp.constants';
 import { Dialog } from '../Dialog';
+import { Tooltip } from '../Tooltip';
 
 export interface SharePopUpProps {
   url: string;
@@ -44,17 +45,19 @@ export const SharePopUp: React.FC<SharePopUpProps> = ({
 
   return (
     <>
-      <button
-        onClick={openShareModal}
-        className="flex items-center justify-center p-1 text-white transition-all duration-300"
-      >
-        <span className="hidden sm:block">
-          <Icon name="share-2" />
-        </span>
-        <span className="block sm:hidden">
-          <Icon size="sm" name="share-2" />
-        </span>
-      </button>
+      <Tooltip offset={48} className="!z-30" title='اشتراک گذاری'>
+        <button
+          onClick={openShareModal}
+          className="flex items-center justify-center p-1 text-white transition-all duration-300"
+        >
+          <span className="hidden sm:block">
+            <Icon name="share-2" />
+          </span>
+          <span className="block sm:hidden">
+            <Icon size="sm" name="share-2" />
+          </span>
+        </button>
+      </Tooltip>
       <Dialog
         isOpen={openShare}
         onClose={close}
