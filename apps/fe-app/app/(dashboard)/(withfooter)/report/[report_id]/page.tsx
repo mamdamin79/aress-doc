@@ -7,7 +7,10 @@ import { VideoPlayerWrapper } from './_components/VideoPlayerWrapper';
 import { DashboardService, OpenAPI } from '@openapi';
 import { fetchToken } from '../../../../(auth)/auth.utils';
 import { MarkdownRender } from './_components/MarkdownRender';
+import rightWaveSVG from '@aress-assets/images/rightwaves.svg';
+import leftWaveSVG from '@aress-assets/images/leftwaves.svg';
 
+import Image from 'next/image';
 async function getData(id: number) {
   const token = await fetchToken();
   if (!token) {
@@ -68,16 +71,27 @@ const page = async () => {
             <VideoPlayerWrapper />
           </div>
         </section>
+
         <section
-          className="flex flex-col items-center justify-center px-20 pt-[112px]"
+          className="relative flex flex-col items-center justify-center overflow-hidden px-4 pt-[112px] sm:px-10 md:px-20"
           id="1"
         >
+          <div className="absolute -right-16 top-1/4 h-[760px] w-[288px]">
+            <Image src={rightWaveSVG} alt="wave-right" fill />
+          </div>
+          <div
+            className="absolute -left-16 top-10 h-[760px] w-[288px]"
+            dir="ltr"
+          >
+            <Image src={leftWaveSVG} alt="wave-left" fill />
+          </div>
           <SectionTitle align="center" level={3} title="اطلاعات بیشتر" />
           <div className="mt-2 flex flex-col text-right">
             {/* Section Component */}
             <MarkdownRender markdown={REPORT?.markdownDescription} />
           </div>
         </section>
+
         <section className="flex flex-col gap-12 pb-20 pt-[112px]" id="2">
           <SectionTitle align="center" level={2} title="گزارش‌های مرتبط" />
           {REPORT?.relatedReports && (
