@@ -12,11 +12,13 @@ import {
   Tooltip,
   IconDialog,
 } from 'design-system';
+import { useHtmlPaddingRight } from '../../../../../hooks';
 
 export const NewReportDialog = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const htmlPaddingRight = useHtmlPaddingRight();
 
   const {
     control,
@@ -41,7 +43,12 @@ export const NewReportDialog = () => {
   };
 
   return (
-    <div>
+    <div
+      className="fixed bottom-[78px] z-30 mr-20"
+      style={{
+        right: htmlPaddingRight,
+      }}
+    >
       <Tooltip title="درخواست گزارش جدید" position="top">
         <Button
           align="center"
@@ -50,7 +57,7 @@ export const NewReportDialog = () => {
           mode="primary"
           size="sm"
           onClick={openDialog}
-          className="fixed right-20 z-30 bottom-[78px] h-14 w-14 rounded-full"
+          className="h-14 w-14 rounded-full"
         >
           {isOpen ? (
             <Icon name="x" size="lg" />
@@ -136,15 +143,15 @@ export const NewReportDialog = () => {
           </Button>
         </form>
       </Dialog>
-      {(
+      {
         <IconDialog
           isOpen={isSuccess}
           onClose={() => setIsSuccess(false)}
           title="درخواست با موفقیت ثبت شد"
-          message='گزارش شما با موفقیت ثبت شد و در حال بررسی است.'
-          mode='success'
+          message="گزارش شما با موفقیت ثبت شد و در حال بررسی است."
+          mode="success"
         />
-      )}
+      }
     </div>
   );
 };
