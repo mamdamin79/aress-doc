@@ -3,6 +3,7 @@ import { Icon } from '../../../Icon';
 import { Button } from '../../../Button';
 import { Tooltip } from '../../../Tooltip';
 import Draggable from 'react-draggable';
+import { cn } from 'libs/design-system/src/utils';
 
 type Props = {
   isPlaying: boolean;
@@ -117,7 +118,7 @@ export const PlayerActions: React.FC<Props> = React.memo(
             <Icon size="sm" name="skip-forward" />
           </span>
         </button>
-        <div className="group relative flex items-center space-x-2 px-2">
+        <div className="group relative flex items-center space-x-2 px-1 mx-1">
           {muted ? (
             <Tooltip offset={48} title="(m) فعال کردن صدا" className="!z-30">
               <button
@@ -149,20 +150,21 @@ export const PlayerActions: React.FC<Props> = React.memo(
           )}
           <Tooltip title="میزان صدا" offset={56}>
             <div
-              className="relative hidden w-16 cursor-pointer transition-all duration-300 ease-in-out group-hover:block group-hover:opacity-100"
+              className={cn("relative  cursor-pointer transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:w-16",{"w-0 opacity-0":!isDragging})}
               onClick={handleVolumeBarClick}
             >
               <progress
                 ref={volumeBarRef}
                 dir="ltr"
                 max="1"
-                className="[&::-webkit-progress-value]:bg-brand-600 h-1 w-full cursor-pointer appearance-none rounded-full [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-bar]:bg-white [&::-webkit-progress-value]:rounded-full"
+                className="[&::-webkit-progress-value]:bg-brand-600 transition-none w-16 h-1 cursor-pointer appearance-none rounded-full [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-bar]:bg-white [&::-webkit-progress-value]:rounded-full"
                 value={volume}
               />
               <div className="absolute -left-[3px] top-3 h-1 w-full">
                 <Draggable
                   axis="x"
-                  bounds="parent"
+                  bounds={{"left":0,"right":64}}
+                  // bounds="body"
                   position={{
                     x: volume * (volumeBarRef.current?.offsetWidth || 64),
                     y: 0,
@@ -182,6 +184,7 @@ export const PlayerActions: React.FC<Props> = React.memo(
             </div>
           </Tooltip>
         </div>
+        
       </>
     );
   },
