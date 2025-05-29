@@ -350,7 +350,7 @@ const Funds = () => {
             { title: 'دیده بان', id: '2' },
           ]}
         />
-        <Tooltip title="خروجی اکسل">
+        <Tooltip title="مرتب سازی نزولی">
           <div className="border-brand-600 cursor-pointer rounded-md border p-1.5">
             <ExportExel />
           </div>
@@ -787,7 +787,7 @@ const Funds = () => {
                       onMouseLeave={stopScroll}
                       className={cn('hidden group-hover:block')}
                     >
-                      <Tooltip title="پیمایش به چپ (A)">
+                      <Tooltip title="مرتب سازی نزولی">
                         <button
                           className={cn(
                             'bg-brand-600 rounded-md p-1 text-white',

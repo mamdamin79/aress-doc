@@ -26,16 +26,16 @@ export function FundsColumn({
   filterable,
   type,
   clickFilterd,
-  
+
   defaultSort,
   active,
 }: Props) {
   const [sortTypeValue, setSortTypeValue] = useState<Props['type']>(type);
 
   useEffect(() => {
-    setSortTypeValue(type)
-  }, [type])  
-  
+    setSortTypeValue(type);
+  }, [type]);
+
   return (
     <div
       className={cn(
@@ -58,10 +58,9 @@ export function FundsColumn({
     >
       <div
         className={cn(
-          'relative mx-auto px-1.5 flex h-[76px] w-fit items-center justify-center gap-1',
+          'relative mx-auto flex h-[76px] w-fit items-center justify-center gap-1 px-1.5',
           {
-            'group-hover/first:bg-pink-300':
-              size === 'extraLarg' && filterable,
+            'group-hover/first:bg-pink-300': size === 'extraLarg' && filterable,
             'group-hover/first:bg-[#BCEBEB]':
               size === 'extraLarg' && !filterable,
             'bg-[#BCEBEB]': !filterable && active && size === 'extraLarg',
@@ -72,11 +71,17 @@ export function FundsColumn({
         <div className={cn(filterable ? 'visible' : 'invisible')}>
           <Icon name="filter" />
         </div>
-        <div className='flex flex-col text-sm font-]'>
+        <div className="font-] flex flex-col text-sm">
           <span>{title}</span>
-          <span>{subTitle !== 'مشخصات صندوق' && subTitle !== 'ارکان صندوق' && subTitle !== 'سهم پرتفوی صندوق' && subTitle}</span>
+          <span>
+            {subTitle !== 'مشخصات صندوق' &&
+              subTitle !== 'ارکان صندوق' &&
+              subTitle !== 'سهم پرتفوی صندوق' &&
+              subTitle}
+          </span>
         </div>
         <Tooltip
+          className='text-md font-semibold'
           title={
             sortType === 'ranked'
               ? type === 'inactive'
@@ -88,7 +93,9 @@ export function FundsColumn({
                 ? 'مرتب سازی نزولی'
                 : type === 'active-asc'
                   ? 'حالت پیشفرض (بدون مرتب سازی)'
-                  : 'مرتب سازی صعودی'}>
+                  : 'مرتب سازی صعودی'
+          }
+        >
           <div
             onClick={(e) => {
               e.stopPropagation();
@@ -96,7 +103,7 @@ export function FundsColumn({
               if (typeof clickFilterd === 'function') {
                 clickFilterd();
               }
-              if (sortTypeValue === 'active-desc') {                
+              if (sortTypeValue === 'active-desc') {
                 defaultSort && defaultSort();
               }
             }}
@@ -104,14 +111,20 @@ export function FundsColumn({
               {
                 'invisible text-[#545962] group-hover/first:visible':
                   type === 'inactive',
-                'visible': active,
+                visible: active,
               },
               'hover:bg-brand-600 rounded-md p-1 duration-150 hover:text-white',
             )}
           >
             <Icon
               name={
-                sortType === 'ranked' ? (type === 'active-asc' ? 'arrow-down-wide-narrow' : 'arrow-up-narrow-wide') : (type === 'active-asc' ? 'arrow-down-a-z' : 'arrow-up-z-a')
+                sortType === 'ranked'
+                  ? type === 'active-asc'
+                    ? 'arrow-down-wide-narrow'
+                    : 'arrow-up-narrow-wide'
+                  : type === 'active-asc'
+                    ? 'arrow-down-a-z'
+                    : 'arrow-up-z-a'
               }
             />
           </div>
