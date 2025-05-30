@@ -330,7 +330,7 @@ const Funds = () => {
   }, []);
 
   console.log(sortIndicator);
-  
+
 
   return (
     <>
@@ -350,7 +350,7 @@ const Funds = () => {
             { title: 'دیده بان', id: '2' },
           ]}
         />
-        <Tooltip title="مرتب سازی نزولی">
+        <Tooltip title="خروجی اکسل">
           <div className="border-brand-600 cursor-pointer rounded-md border p-1.5">
             <ExportExel />
           </div>
@@ -385,7 +385,28 @@ const Funds = () => {
           >
             <thead className="group sticky right-0 top-0 z-50 m-0 p-0 duration-300 [box-shadow:0_2px_0_#bcebeb]">
               <tr>
-                <th className="sticky right-[340px] z-50 mt-5 p-0">
+                <th
+                  style={{
+                    transform:
+                      sortIndex !== 0
+                        ? `translateX(-${sortIndicator.right}px)`
+                        : '',
+                    width: sortIndex !== 0 ? `${sortIndicator.width}px` : '',
+                  }}
+                  className={cn('duration-300', {
+                    'absolute bottom-0 z-20 transition-transform':
+                      sortIndex !== 0,
+                    'transition group-hover/table:-right-2':
+                      sortIndex !== 0 && canScrollVertical,
+                    'group-hover/table:-right-0':
+                      sortIndex !== 0 && canScrollVertical && isScrollAtStart,
+                    'fixed right-[215px] top-[240px] z-10 w-fit': sortIndex === 0,
+                    'top-[157px]': sortIndex === 0 && !isHeaderVisible,
+                  })}
+                >
+                  <div className="bg-brand-600 mx-auto h-1.5 w-16 rounded-t-[10px]"></div>
+                </th>
+                <div className="sticky right-[340px] z-30 mt-5 p-0">
                   {isScrollAtStart && (
                     <div className="hidden group-hover:block">
                       <Tooltip title="پیمایش به راست (D)">
@@ -401,7 +422,7 @@ const Funds = () => {
                       </Tooltip>
                     </div>
                   )}
-                </th>
+                </div>
                 {updateTableHeaders.map((header, index) => {
                   return (
                     <React.Fragment key={index}>
@@ -409,7 +430,7 @@ const Funds = () => {
                         <th
                           key={index}
                           className={cn(
-                            'sticky right-0 top-0 z-40 m-0 h-[64px] w-[385px] bg-[#E3F8F8] border-b py-0 pr-2',
+                            'sticky right-0 top-0 z-20 m-0 h-[64px] w-[385px] bg-[#E3F8F8] border-b py-0 pr-2',
                             {
                               'group-hover/table:pr-0':
                                 canScrollVertical && !isActiveDropdownPageCount,
@@ -417,115 +438,48 @@ const Funds = () => {
                           )}
                         >
                           <div
-                          className={cn({
-                            'w-[385px] h-[75px] bg-[#E3F8F8] select-none': header.column.getCanSort(),
-                            'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]': isScrollAtStart
-                          })}
+                            className={cn({
+                              'w-[385px] h-[75px] bg-[#E3F8F8] select-none': header.column.getCanSort(),
+                              'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]': isScrollAtStart
+                            })}
                           >
-                            <div className="mr-24">
-                              <OptionsDropdown
-                                className="!shadow-8xl"
-                                dropDownStyles={{
-                                  size: 'md',
-                                  anchor: 'bottom',
-                                  bg: 'primary',
-                                  emphasize: 'medium',
-                                  checkSelected: true,
-                                }}
-                                customOptionRender={(prop) => (
-                                  <div
-                                    onClick={() => {
-                                      if (
-                                        prop.text === 'مرتب سازی (ی-الف)' &&
-                                        header.column.getIsSorted() !== 'desc'
-                                      ) {
-                                        header.column.toggleSorting(true);
-                                      }
-                                      if (
-                                        prop.text === 'مرتب سازی (الف-ی)' &&
-                                        header.column.getIsSorted() !== 'asc'
-                                      ) {
-                                        header.column.toggleSorting(false);
-                                      }
-                                    }}
-                                    className={cn(
-                                      'hover:bg-brand-50 hover:text-brand-800 flex w-[184px] cursor-pointer items-center gap-2 overflow-y-hidden bg-white p-2 text-sm font-medium',
-                                      {
-                                        'text-brand-800':
-                                          (header.column.getIsSorted() ===
-                                            'desc' &&
-                                            prop.text === 'مرتب سازی نزولی') ||
-                                          (header.column.getIsSorted() ===
-                                            'asc' &&
-                                            prop.text === 'مرتب سازی صعودی'),
-                                      },
-                                    )}
-                                  >
-                                    {prop.icon?.name && (
-                                      <Icon
-                                        name={prop.icon?.name}
-                                        size={prop.icon?.size}
-                                      />
-                                    )}
-                                    {prop.text}
-                                  </div>
-                                )}
-                                customTriggerRender={({ isActive }) => (
-                                  <div className="flex bg-[#E3F8F8]">
-                                    <div className="mr-">
-                                      <FundsColumn
-                                        active={isActive}
-                                        clickFilterd={() => {
-                                          setSortIndex(0);
-                                          header.column.toggleSorting(
-                                            header.column.getIsSorted() ===
-                                              'desc'
-                                              ? false
-                                              : true,
-                                          );
-                                        }}
-                                        size="medium"
-                                        shadow={false}
-                                        type={
-                                          header.column.getIsSorted() === 'asc'
-                                            ? 'active-asc'
-                                            : header.column.getIsSorted() ===
-                                                'desc'
-                                              ? 'inactive'
-                                              : 'inactive'
-                                        }
-                                        filterable={columnFilters.some(
-                                          (filterItem) =>
-                                            filterItem.id === header.id,
-                                        )}
-                                        title={String(
-                                          flexRender(
-                                            header.column.columnDef.header,
-                                            header.getContext(),
-                                          ),
-                                        )}
-                                        sortType={'alphabetical'}
-                                      />
-                                    </div>
-                                  </div>
-                                )}
-                                dropDownList={[
-                                  {
-                                    text: 'مرتب سازی (الف-ی)',
-                                    icon: {
-                                      name: 'arrow-down-a-z',
-                                      size: 'md',
-                                    },
-                                  },
-                                  {
-                                    text: 'مرتب سازی (ی-الف)',
-                                    icon: {
-                                      name: 'arrow-up-z-a',
-                                      size: 'md',
-                                    },
-                                  },
-                                ]}
-                              />
+                            <div className="mr-[75px] flex bg-[#E3F8F8]">
+                              <div className="mr-24">
+                                <FundsColumn
+                                  activeSorticon={!!header.column.getIsSorted()}
+                                  active={false}
+                                  clickFilterd={() => {
+                                    setSortIndex(0);
+                                    header.column.toggleSorting(
+                                      header.column.getIsSorted() ===
+                                        'desc'
+                                        ? false
+                                        : true,
+                                    );
+                                  }}
+                                  size="medium"
+                                  shadow={false}
+                                  type={
+                                    header.column.getIsSorted() === 'asc'
+                                      ? 'active-asc'
+                                      : header.column.getIsSorted() ===
+                                        'desc'
+                                        ? 'inactive'
+                                        : 'inactive'
+                                  }
+                                  filterable={columnFilters.some(
+                                    (filterItem) =>
+                                      filterItem.id === header.id,
+                                  )}
+                                  title={String(
+                                    flexRender(
+                                      header.column.columnDef.header,
+                                      header.getContext(),
+                                    ),
+                                  )}
+                                  sortType={'alphabetical'}
+                                />
+                              </div>
                             </div>
 
                             <div className="absolute top-[25px] flex items-center gap-2 pr-[24px]">
@@ -552,8 +506,8 @@ const Funds = () => {
                                   {(Object.entries(selectedFilters).length >
                                     0 ||
                                     fundSearchQuery) && (
-                                    <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
-                                  )}
+                                      <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
+                                    )}
                                   <Icon size="lg" name="filter" />
                                 </div>
                               </Tooltip>
@@ -569,7 +523,7 @@ const Funds = () => {
                             }
                           }}
                           className={cn(
-                            '5xl:w-full m-0 h-[64px] w-full bg-[#E3F8F8] pr-2 text-sm font-medium',
+                            'm-0 h-[64px] w-full bg-[#E3F8F8] pr-2 text-sm font-medium',
                             {
                               'pr-0': isScrollAtStart,
                             },
@@ -579,7 +533,7 @@ const Funds = () => {
                                 header.getContext(),
                               ),
                             ).length > 10
-                              ? 'w-[200px]'
+                              ? 'w-[215px]'
                               : 'w-36',
                             {
                               'group-hover/table:pr-0':
@@ -587,6 +541,7 @@ const Funds = () => {
                                 !isActiveDropdownPageCount &&
                                 !isScrollAtStart,
                             },
+                            '6xl:w-full'
                           )}
                           key={index}
                           colSpan={header.colSpan}
@@ -595,183 +550,58 @@ const Funds = () => {
                             <div
                               {...{
                                 className: header.column.getCanSort()
-                                  ? 'cursor-pointer h-[75px] select-none'
+                                  ? 'cursor-pointer h-[75px] flex justify-center select-none'
                                   : '',
                               }}
                             >
-                              <OptionsDropdown
-                                className="!shadow-8xl"
-                                dropDownStyles={{
-                                  size: 'md',
-                                  anchor: 'bottom start',
-                                  bg: 'primary',
-                                  emphasize: 'medium',
-                                  checkSelected: true,
+                              <FundsColumn
+                                active={false}
+                                defaultSort={() => {
+                                  updateTableHeaders[0].column.getToggleSortingHandler()?.(
+                                    new Event('click'),
+                                  );
+                                  setSortIndex(0);
                                 }}
-                                customOptionRender={(prop) => (
-                                  <>
-                                    <div
-                                      onClick={(e) => {
-                                        if (prop.text === 'انتقال به راست') {
-                                          moveColumn(header.column.id, 'right');
-                                        }
-                                        if (prop.text === 'انتقال به چپ') {
-                                          moveColumn(header.column.id, 'left');
-                                        }
-                                        if (prop.text === 'انتقال به ابتدا') {
-                                          moveColumn(header.column.id, 'start');
-                                        }
-                                        if (prop.text === 'انتقال به انتها') {
-                                          moveColumn(header.column.id, 'end');
-                                        }
-                                        if (prop.text === 'مرتب سازی نزولی') {
-                                          if (
-                                            header.column.getIsSorted() !==
-                                            'desc'
-                                          ) {
-                                            header.column.toggleSorting(true); // force to 'desc'
-                                          }
-                                        }
-                                        if (prop.text === 'مرتب سازی صعودی') {
-                                          if (
-                                            header.column.getIsSorted() !==
-                                            'asc'
-                                          ) {
-                                            header.column.toggleSorting(false); // force to 'asc'
-                                          }
-                                        }
-                                      }}
-                                      className={cn(
-                                        'hover:bg-brand-50 flex w-[184px] cursor-pointer items-center gap-2 bg-white p-2 text-sm font-medium hover:bg-[#E3F8F8]',
-                                        {
-                                          'pointer-events-none cursor-default text-[#B3B6BD] hover:bg-white hover:text-[#B3B6BD]':
-                                            (index === 1 &&
-                                              (prop.text ===
-                                                'انتقال به ابتدا' ||
-                                                prop.text ===
-                                                  'انتقال به راست')) ||
-                                            (index + 1 ===
-                                              updateTableHeaders.length &&
-                                              (prop.text ===
-                                                'انتقال به انتها' ||
-                                                prop.text === 'انتقال به چپ')),
-                                          'text-brand-800':
-                                            (header.column.getIsSorted() ===
-                                              'desc' &&
-                                              prop.text ===
-                                                'مرتب سازی نزولی') ||
-                                            (header.column.getIsSorted() ===
-                                              'asc' &&
-                                              prop.text === 'مرتب سازی صعودی'),
-                                        },
-                                      )}
-                                    >
-                                      {prop.icon?.name && (
-                                        <Icon
-                                          name={prop.icon?.name}
-                                          size={prop.icon?.size}
-                                        />
-                                      )}
-                                      {prop.text}
-                                    </div>
-                                    {prop.text === 'مرتب سازی صعودی' && <hr />}
-                                  </>
+                                clickFilterd={() => {
+                                  setSortIndex(index);
+                                  header.column.getToggleSortingHandler()?.(
+                                    new Event('click'),
+                                  );
+                                }}
+                                size={
+                                  String(
+                                    flexRender(
+                                      header.column.columnDef.header,
+                                      header.getContext(),
+                                    ),
+                                  ).length > 10
+                                    ? 'large'
+                                    : 'medium'
+                                }
+                                type={
+                                  header.column.getIsSorted() === 'asc'
+                                    ? 'active-desc'
+                                    : header.column.getIsSorted() === 'desc'
+                                      ? 'active-asc'
+                                      : 'inactive'
+                                }
+                                filterable={false}
+                                subTitle={header.column.parent?.id}
+                                title={String(
+                                  flexRender(
+                                    header.column.columnDef.header,
+                                    header.getContext(),
+                                  ),
                                 )}
-                                customTriggerRender={({ isActive }) => (
-                                  <FundsColumn
-                                    active={isActive}
-                                    defaultSort={() => {
-                                      updateTableHeaders[0].column.getToggleSortingHandler()?.(
-                                        new Event('click'),
-                                      );
-                                      setSortIndex(0);
-                                    }}
-                                    clickFilterd={() => {
-                                      setSortIndex(index);
-                                      header.column.getToggleSortingHandler()?.(
-                                        new Event('click'),
-                                      );
-                                    }}
-                                    size={
-                                      String(
-                                        flexRender(
-                                          header.column.columnDef.header,
-                                          header.getContext(),
-                                        ),
-                                      ).length > 10
-                                        ? 'large'
-                                        : 'medium'
+                                sortType={
+                                  (
+                                    columns[index]?.meta as {
+                                      type?: string;
                                     }
-                                    type={
-                                      header.column.getIsSorted() === 'asc'
-                                        ? 'active-desc'
-                                        : header.column.getIsSorted() === 'desc'
-                                          ? 'active-asc'
-                                          : 'inactive'
-                                    }
-                                    filterable={false}
-                                    subTitle={header.column.parent?.id}
-                                    title={String(
-                                      flexRender(
-                                        header.column.columnDef.header,
-                                        header.getContext(),
-                                      ),
-                                    )}
-                                    sortType={
-                                      (
-                                        columns[index]?.meta as {
-                                          type?: string;
-                                        }
-                                      )?.type === 'text'
-                                        ? 'alphabetical'
-                                        : 'ranked'
-                                    }
-                                  />
-                                )}
-                                dropDownList={[
-                                  {
-                                    text: 'مرتب سازی نزولی',
-                                    icon: {
-                                      name: 'arrow-down-wide-narrow',
-                                      size: 'md',
-                                    },
-                                  },
-                                  {
-                                    text: 'مرتب سازی صعودی',
-                                    icon: {
-                                      name: 'arrow-up-narrow-wide',
-                                      size: 'md',
-                                    },
-                                  },
-                                  {
-                                    text: 'انتقال به راست',
-                                    icon: {
-                                      name: 'arrow-right',
-                                      size: 'md',
-                                    },
-                                  },
-                                  {
-                                    text: 'انتقال به ابتدا',
-                                    icon: {
-                                      name: 'arrow-right-to-line',
-                                      size: 'md',
-                                    },
-                                  },
-                                  {
-                                    text: 'انتقال به چپ',
-                                    icon: {
-                                      name: 'arrow-left',
-                                      size: 'md',
-                                    },
-                                  },
-                                  {
-                                    text: 'انتقال به انتها',
-                                    icon: {
-                                      name: 'arrow-left-to-line',
-                                      size: 'md',
-                                    },
-                                  },
-                                ]}
+                                  )?.type === 'text'
+                                    ? 'alphabetical'
+                                    : 'ranked'
+                                }
                               />
                             </div>
                           )}
@@ -787,7 +617,7 @@ const Funds = () => {
                       onMouseLeave={stopScroll}
                       className={cn('hidden group-hover:block')}
                     >
-                      <Tooltip title="مرتب سازی نزولی">
+                      <Tooltip position='bottom' title="پیمایش به چپ (A)">
                         <button
                           className={cn(
                             'bg-brand-600 rounded-md p-1 text-white',
@@ -799,29 +629,6 @@ const Funds = () => {
                     </div>
                   )}
                 </div>
-              </tr>
-              <tr className="relative w-full">
-                <td
-                  style={{
-                    transform:
-                      sortIndex !== 0
-                        ? `translateX(-${sortIndicator.right}px)`
-                        : '',
-                    width: sortIndex !== 0 ? `${sortIndicator.width}px` : '',
-                  }}
-                  className={cn('duration-300', {
-                    'absolute bottom-0 z-20 transition-transform':
-                      sortIndex !== 0,
-                    'transition group-hover/table:-right-2':
-                      sortIndex !== 0 && canScrollVertical,
-                    'group-hover/table:-right-0':
-                      sortIndex !== 0 && canScrollVertical && isScrollAtStart,
-                    'fixed right-[215px] top-[240px] z-40 w-fit': sortIndex === 0,
-                    'top-[157px]': sortIndex === 0 && !isHeaderVisible,
-                  })}
-                >
-                  <div className="bg-brand-600 mx-auto h-1.5 w-16 rounded-t-[10px]"></div>
-                </td>
               </tr>
             </thead>
             <tbody className="relative w-full overflow-hidden">
@@ -928,18 +735,18 @@ const Funds = () => {
                                         isMainTab
                                           ? row.pin('top', true)
                                           : setPineWatchList([
-                                              ...pineWatchLis,
-                                              row.id,
-                                            ])
+                                            ...pineWatchLis,
+                                            row.id,
+                                          ])
                                       }
                                       unPinedFunction={() =>
                                         isMainTab
                                           ? row.pin(false)
                                           : setPineWatchList((prev) =>
-                                              prev.filter(
-                                                (id) => id !== row.id,
-                                              ),
-                                            )
+                                            prev.filter(
+                                              (id) => id !== row.id,
+                                            ),
+                                          )
                                       }
                                       isScrolled={isScrollAtStart}
                                       investmentMethod={
@@ -956,9 +763,12 @@ const Funds = () => {
                               {index >= 1 && (
                                 <td
                                   className={cn(
-                                    'border-b border-[#E1E2E5] py-0 pr-0 text-sm font-medium',
+                                    'border-b border-[#E1E2E5] py-0 text-sm font-medium',
                                     {
-                                      'pr-4 group-hover/table:pr-0':
+                                      'pr-4': !isScrollAtStart
+                                    },
+                                    {
+                                      'group-hover/table:pr-0':
                                         canScrollVertical &&
                                         !isActiveDropdownPageCount &&
                                         !isScrollAtStart,
@@ -981,12 +791,12 @@ const Funds = () => {
                         <div className="sticky right-0 mb-2 mt-5 w-screen whitespace-nowrap text-sm text-gray-600">
                           {formatNumber(
                             table.getState().pagination.pageSize *
-                              (table.getState().pagination.pageIndex + 1),
+                            (table.getState().pagination.pageIndex + 1),
                             { commaSeparated: true },
                           ) ===
                             formatNumber(
                               table.getPageCount() *
-                                table.getState().pagination.pageSize,
+                              table.getState().pagination.pageSize,
                               { commaSeparated: true },
                             ) && 'پایان لیست صندوق ها.'}
                         </div>
@@ -1026,7 +836,7 @@ const Funds = () => {
                   <span>تعداد سطر در جدول: </span>
                   {formatNumber(
                     table.getState().pagination.pageSize *
-                      (table.getState().pagination.pageIndex + 1),
+                    (table.getState().pagination.pageIndex + 1),
                     { commaSeparated: true },
                   )}
                 </div>
@@ -1048,8 +858,8 @@ const Funds = () => {
                 {
                   'pb-2':
                     table.getState().pagination.pageSize *
-                      (table.getState().pagination.pageIndex + 1) *
-                      table.getPageCount() ===
+                    (table.getState().pagination.pageIndex + 1) *
+                    table.getPageCount() ===
                     +prop.text,
                 },
               )}
@@ -1058,7 +868,7 @@ const Funds = () => {
                 {table.getState().pagination.pageSize *
                   (table.getState().pagination.pageIndex + 1) *
                   table.getPageCount() ===
-                +prop.text
+                  +prop.text
                   ? 'همه'
                   : prop.text}
               </span>
@@ -1072,8 +882,8 @@ const Funds = () => {
             {
               text: String(
                 table.getState().pagination.pageSize *
-                  (table.getState().pagination.pageIndex + 1) *
-                  table.getPageCount(),
+                (table.getState().pagination.pageIndex + 1) *
+                table.getPageCount(),
               ),
             },
           ]}
@@ -1091,7 +901,7 @@ const Funds = () => {
           <div>
             {formatNumber(
               table.getState().pagination.pageSize *
-                (table.getState().pagination.pageIndex + 1),
+              (table.getState().pagination.pageIndex + 1),
               { commaSeparated: true },
             )}
             -
