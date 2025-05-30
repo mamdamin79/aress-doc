@@ -75,6 +75,7 @@ const Funds = () => {
   const [watchList, setWatchList] = useState<string[]>([]);
   const [pineWatchLis, setPineWatchList] = useState<string[]>([]);
   const [isActiveDropdownPageCount, setIsActiveDropdownPageCount] = useState(false);
+  const [isRotating, setIsRotating] = useState(false);
 
   const columns = React.useMemo<ColumnDef<Person>[]>(
     () => [
@@ -209,8 +210,7 @@ const Funds = () => {
   >({});
   const [columnOrder, setColumnOrder] = React.useState<string[]>(() =>
     columns.map(c => c.id!)
-  )
-
+  ) 
 
   const DraggableTableHeader = ({
     header,
@@ -226,18 +226,21 @@ const Funds = () => {
         id: header.column.id,
       })
 
-    const style: CSSProperties = {
-      opacity: isDragging ? 0.8 : 1,
-      position: 'relative',
-      transform: CSS.Translate.toString(transform), // translate instead of transform to avoid squishing
-      transition: 'width transform 0.2s ease-in-out',
-      whiteSpace: 'nowrap',
-      width,
-      height: 30
-    }
+      const translate = CSS.Translate.toString(transform);
+      const rotate = isDragging ? ' rotate(-15deg)' : '';
+      const offsetY = isDragging ? ' translateY(35px)' : '';
+      const style: CSSProperties = {
+        opacity: isDragging ? 0.8 : 1,
+        position: 'relative',
+        transform: translate + offsetY + rotate,
+        transition: 'width transform 0.2s ease-in-out',
+        whiteSpace: 'nowrap',
+        width,
+        height: 30
+      };
 
     return (
-      <th {...attributes} {...listeners} className='5xl:w-full m-0 h-[64px] w-full bg-[#E3F8F8] text-sm font-medium' ref={setNodeRef} style={style}>
+      <th {...attributes} {...listeners} className='m-0 p-0 h-[64px] w-full bg-[#E3F8F8] text-sm font-medium' ref={setNodeRef} style={style}>
           {children}
       </th>
     )
@@ -259,8 +262,8 @@ const Funds = () => {
     }
 
     return (
-      <td className='mx-auto text-center' style={style} ref={setNodeRef}>
-        <div className='flex justify-center'>
+      <td className='mx-auto border-transparent h-full' style={style} ref={setNodeRef}>
+        <div className='flex justify-center items-center'>
           {children}
         </div>
       </td>
@@ -269,6 +272,7 @@ const Funds = () => {
 
   // reorder columns after drag & drop
   function handleDragEnd(event: DragEndEvent) {
+    setIsRotating(false);
     const { active, over } = event
     if (active && over && active.id !== over.id) {
       setColumnOrder(columnOrder => {
@@ -277,7 +281,7 @@ const Funds = () => {
         return arrayMove(columnOrder, oldIndex, newIndex) //this is just a splice util
       })
     }
-  }
+  }  
 
   const sensors = useSensors(
     useSensor(MouseSensor, {}),
@@ -315,8 +319,6 @@ const Funds = () => {
   const [updateTableHeaders, setUpdateTableHeaders] = useState(
     table.getHeaderGroups()[0].headers,
   );
-
-  console.log('>>>>>', table.getHeaderGroups()[0].headers);
 
 
   const columnVisibilityHeader = table.getState().columnVisibility;
@@ -519,10 +521,13 @@ const Funds = () => {
         </Tooltip>
       </div>
       <DndContext
+        onDragStart={() => setIsRotating(true)}
         collisionDetection={closestCenter}
         modifiers={[restrictToHorizontalAxis]}
         onDragEnd={handleDragEnd}
         sensors={sensors}
+        onDragOver={() => setIsRotating(true)}
+        onDragCancel={() => setIsRotating(false)}
       >
         <div
           dir="ltr"
@@ -956,7 +961,7 @@ const Funds = () => {
                                     <DragAlongCell key={cell.id} cell={cell} >
                                       <td
                                         className={cn(
-                                          'py-0 pr-4 text-sm border-b border-[#E1E2E5] font-medium',
+                                          'py-0 h-[46px] flex items-center justify-center w-full pr-4 text-sm border-[#E1E2E5] font-medium',
                                           {
                                             'group-hover/table:pr-0':
                                               canScrollVertical &&
