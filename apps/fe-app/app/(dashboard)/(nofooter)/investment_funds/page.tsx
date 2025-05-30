@@ -215,9 +215,11 @@ const Funds = () => {
   const DraggableTableHeader = ({
     header,
     children,
+    width,
   }: {
     header: Header<Person, unknown>,
-    children: React.ReactNode
+    children: React.ReactNode,
+    width: number
   }) => {
     const { attributes, isDragging, listeners, setNodeRef, transform } =
       useSortable({
@@ -230,19 +232,14 @@ const Funds = () => {
       transform: CSS.Translate.toString(transform), // translate instead of transform to avoid squishing
       transition: 'width transform 0.2s ease-in-out',
       whiteSpace: 'nowrap',
-      width: 250,
-      zIndex: isDragging ? 1 : 0,
+      width,
+      height: 30
     }
 
     return (
-      <th colSpan={header.colSpan} ref={setNodeRef} style={style}>
-      <button className='bg-red-300 px-10' {...attributes} {...listeners}>
-        {children}
-      </button>
-      
-  </th>
-
-
+      <th {...attributes} {...listeners} className='5xl:w-full m-0 h-[64px] w-full bg-[#E3F8F8] text-sm font-medium' ref={setNodeRef} style={style}>
+          {children}
+      </th>
     )
   }
 
@@ -257,11 +254,15 @@ const Funds = () => {
       transform: CSS.Translate.toString(transform), // translate instead of transform to avoid squishing
       transition: 'width transform 0.2s ease-in-out',
       zIndex: isDragging ? 1 : 0,
+      width: cell.column.getSize(),
+
     }
 
     return (
-      <td scope='' ref={setNodeRef}>
-        {children}
+      <td className='mx-auto text-center' style={style} ref={setNodeRef}>
+        <div className='flex justify-center'>
+          {children}
+        </div>
       </td>
     )
   }
@@ -292,7 +293,7 @@ const Funds = () => {
   const table = useReactTable({
     data,
     columns: columns,
-    state: { columnFilters },
+    state: { columnOrder },
     initialState: {
       columnVisibility,
       sorting: [
@@ -302,7 +303,9 @@ const Funds = () => {
         },
       ],
     },
-    onColumnFiltersChange: setColumnFilters,
+
+    // onColumnFiltersChange: setColumnFilters,
+    onColumnOrderChange: setColumnOrder,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -521,7 +524,6 @@ const Funds = () => {
         onDragEnd={handleDragEnd}
         sensors={sensors}
       >
-
         <div
           dir="ltr"
           className={cn(
@@ -566,97 +568,252 @@ const Funds = () => {
                     strategy={horizontalListSortingStrategy}
                   >
 
-                    {updateTableHeaders.map((header, index) => {
+                    {table.getHeaderGroups()[0].headers.map((header, index) => {
                       return (
-                        <DraggableTableHeader key={header.id} header={header} >
-                          {index > 0 && (
-                        <th
-                        className={cn(
-                          '5xl:w-full m-0 h-[64px] w-full bg-[#E3F8F8] pr-2 text-sm font-medium',
-                          {
-                            'pr-0': isScrollAtStart,
-                          },
-                          String(
-                            flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            ),
-                          ).length > 10
-                            ? 'w-[200px]'
-                            : 'w-36',
-                          {
-                            'group-hover/table:pr-0':
-                              canScrollVertical &&
-                              !isActiveDropdownPageCount &&
-                              !isScrollAtStart,
-                          },
-                        )}
-                        key={index}
-                        colSpan={header.colSpan}
-                      >
-                        {index >= 2 && header.isPlaceholder ? null : (
-                          <div
-                            {...{
-                              className: header.column.getCanSort()
-                                ? 'cursor-pointer h-[75px] select-none'
-                                : '',
-                            }}
-                          >
-                                <FundsColumn
-                                  active={true}
-                                  defaultSort={() => {
-                                    updateTableHeaders[0].column.getToggleSortingHandler()?.(
-                                      new Event('click'),
-                                    );
-                                    // setSortIndex(0);
+                        <>
+                          {index === 0 && (
+                            <th
+                              // ref={(el) => {
+                              //     headerRefs.current[index] = el;
+                              //   }             //   if (headerRefs?.current) {
+
+                              // }}
+                              key={index}
+                              className={cn(
+                                'sticky right-0 top-0 z-40 m-0 h-[64px] w-[385px] border-b bg-[#E3F8F8] py-0 pr-2',
+                                {
+                                  'group-hover/table:pr-0':
+                                    canScrollVertical && !isActiveDropdownPageCount,
+                                },
+                              )}
+                            >
+                              <div
+                                {...{
+                                  className: header.column.getCanSort()
+                                    ? 'cursor-pointer w-full h-[75px] select-none'
+                                    : '',
+                                }}
+                              >
+                                <OptionsDropdown
+                                  className="!shadow-8xl"
+                                  dropDownStyles={{
+                                    size: 'md',
+                                    anchor: 'bottom',
+                                    bg: 'primary',
+                                    emphasize: 'medium',
+                                    checkSelected: true,
                                   }}
-                                  clickFilterd={() => {
-                                    // setSortIndex(index);
-                                    header.column.getToggleSortingHandler()?.(
-                                      new Event('click'),
-                                    );
-                                  }}
-                                  size={
-                                    String(
-                                      flexRender(
-                                        header.column.columnDef.header,
-                                        header.getContext(),
-                                      ),
-                                    ).length > 10
-                                      ? 'large'
-                                      : 'medium'
-                                  }
-                                  type={
-                                    header.column.getIsSorted() === 'asc'
-                                      ? 'active-desc'
-                                      : header.column.getIsSorted() ===
-                                          'desc'
-                                        ? 'active-asc'
-                                        : 'inactive'
-                                  }
-                                  filterable={false}
-                                  subTitle={header.column.parent?.id}
-                                  title={String(
-                                    flexRender(
-                                      header.column.columnDef.header,
-                                      header.getContext(),
-                                    ),
+                                  customOptionRender={(prop) => (
+                                    <div
+                                      onClick={() => {
+                                        if (
+                                          prop.text === 'مرتب سازی (ی-الف)' &&
+                                          header.column.getIsSorted() !== 'desc'
+                                        ) {
+                                          header.column.toggleSorting(true);
+                                        }
+                                        if (
+                                          prop.text === 'مرتب سازی (الف-ی)' &&
+                                          header.column.getIsSorted() !== 'asc'
+                                        ) {
+                                          header.column.toggleSorting(false);
+                                        }
+                                      }}
+                                      className={cn(
+                                        'hover:bg-brand-50 hover:text-brand-800 flex w-[184px] cursor-pointer items-center gap-2 overflow-y-hidden bg-white p-2 text-sm font-medium',
+                                        {
+                                          'text-brand-800':
+                                            (header.column.getIsSorted() ===
+                                              'desc' &&
+                                              prop.text === 'مرتب سازی نزولی') ||
+                                            (header.column.getIsSorted() ===
+                                              'asc' &&
+                                              prop.text === 'مرتب سازی صعودی'),
+                                        },
+                                      )}
+                                    >
+                                      {prop.icon?.name && (
+                                        <Icon
+                                          name={prop.icon?.name}
+                                          size={prop.icon?.size}
+                                        />
+                                      )}
+                                      {prop.text}
+                                    </div>
                                   )}
-                                  sortType={
-                                    (
-                                      columns[index]?.meta as {
-                                        type?: string;
-                                      }
-                                    )?.type === 'text'
-                                      ? 'alphabetical'
-                                      : 'ranked'
-                                  }
+                                  customTriggerRender={({ isActive }) => (
+                                    <div
+                                      className={cn('w-[385px] bg-[#E3F8F8] flex', {
+                                        'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]':
+                                          isScrollAtStart,
+                                      })}
+                                    >
+                                      <div className='mr-5'>
+
+                                        <FundsColumn
+                                          active={isActive}
+                                          clickFilterd={() => {
+                                            // setSortIndex(0);
+                                            header.column.toggleSorting(
+                                              header.column.getIsSorted() === 'desc'
+                                                ? false
+                                                : true,
+                                            );
+                                          }}
+                                          size="extraLarg"
+                                          shadow={false}
+                                          type={
+                                            header.column.getIsSorted() === 'asc'
+                                              ? 'active-asc'
+                                              : header.column.getIsSorted() === 'desc'
+                                                ? 'inactive'
+                                                : 'inactive'
+                                          }
+                                          filterable={columnFilters.some(
+                                            (filterItem) =>
+                                              filterItem.id === header.id,
+                                          )}
+                                          title={String(
+                                            flexRender(
+                                              header.column.columnDef.header,
+                                              header.getContext(),
+                                            ),
+                                          )}
+                                          sortType={'alphabetical'}
+                                        />
+                                      </div>
+
+                                      <div className="absolute top-5 flex items-center gap-2 pr-[24px]">
+                                        <Tooltip title="انتخاب ستون‌ها">
+                                          <div
+                                            onClick={() => {
+                                              setIsSettingModal(true);
+                                            }}
+                                            className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
+                                          >
+                                            {isChanged && (
+                                              <div className="absolute -right-1 -top-1 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
+                                            )}
+                                            <Icon size="lg" name="settings" />
+                                          </div>
+                                        </Tooltip>
+                                        <Tooltip title="فیلتر صندوق‌ها">
+                                          <div
+                                            onClick={() => {
+                                              setIsFilterModal(true);
+                                            }}
+                                            className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
+                                          >
+                                            {(Object.entries(selectedFilters)
+                                              .length > 0 ||
+                                              fundSearchQuery) && (
+                                                <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
+                                              )}
+                                            <Icon size="lg" name="filter" />
+                                          </div>
+                                        </Tooltip>
+                                      </div>
+                                    </div>
+                                  )}
+                                  dropDownList={[
+                                    {
+                                      text: 'مرتب سازی (الف-ی)',
+                                      icon: {
+                                        name: 'arrow-down-a-z',
+                                        size: 'md',
+                                      },
+                                    },
+                                    {
+                                      text: 'مرتب سازی (ی-الف)',
+                                      icon: {
+                                        name: 'arrow-up-z-a',
+                                        size: 'md',
+                                      },
+                                    },
+                                  ]}
                                 />
-                          </div>
-                        )}
-                      </th>
+                              </div>
+                            </th>
                           )}
-                        </DraggableTableHeader>
+                          {
+                            index > 0 &&
+                            <DraggableTableHeader width={String(
+                              flexRender(
+                                header.column.columnDef.header,
+                                header.getContext(),
+                              ),
+                            ).length > 10
+                              ? 200
+                              : 144
+                            } key={header.id} header={header} >
+                              <th
+                                key={index}
+                                colSpan={header.colSpan}
+                              >
+                                {index >= 2 && header.isPlaceholder ? null : (
+                                  <div
+                                    {...{
+                                      className: header.column.getCanSort()
+                                        ? 'cursor-pointer h-[75px] select-none'
+                                        : '',
+                                    }}
+                                  >
+                                    <FundsColumn
+                                      active={true}
+                                      defaultSort={() => {
+                                        updateTableHeaders[0].column.getToggleSortingHandler()?.(
+                                          new Event('click'),
+                                        );
+                                        // setSortIndex(0);
+                                      }}
+                                      clickFilterd={() => {
+                                        // setSortIndex(index);
+                                        header.column.getToggleSortingHandler()?.(
+                                          new Event('click'),
+                                        );
+                                      }}
+                                      size={
+                                        String(
+                                          flexRender(
+                                            header.column.columnDef.header,
+                                            header.getContext(),
+                                          ),
+                                        ).length > 10
+                                          ? 'large'
+                                          : 'medium'
+                                      }
+                                      type={
+                                        header.column.getIsSorted() === 'asc'
+                                          ? 'active-desc'
+                                          : header.column.getIsSorted() ===
+                                            'desc'
+                                            ? 'active-asc'
+                                            : 'inactive'
+                                      }
+                                      filterable={false}
+                                      subTitle={header.column.parent?.id}
+                                      title={String(
+                                        flexRender(
+                                          header.column.columnDef.header,
+                                          header.getContext(),
+                                        ),
+                                      )}
+                                      sortType={
+                                        (
+                                          columns[index]?.meta as {
+                                            type?: string;
+                                          }
+                                        )?.type === 'text'
+                                          ? 'alphabetical'
+                                          : 'ranked'
+                                      }
+                                    />
+                                  </div>
+                                )}
+                              </th>
+                            </DraggableTableHeader>
+                          }
+                        </>
 
                       );
                     })}
@@ -730,109 +887,96 @@ const Funds = () => {
                           <td></td>
                           {row.getVisibleCells().map((cell, index) => {
                             return (
-                              // <React.Fragment key={cell.id}>
-                              //   {index === 0 && (
-                              //     <td
-                              //       className='sticky flex items-center right-0 top-0 z-40 m-0 py-0'
-                              //     >
-                              //       <div className={cn('absolute right-2 z-50 pr-0', {
-                              //         'group-hover/table:right-0': canScrollVertical,
-                              //         'right-0': !canScrollVertical,
-                              //       })}>
+                              <>
+                                {index === 0 && (
+                                  <td
+                                    className='sticky flex items-center right-0 top-0 z-40 m-0 py-0'
+                                  >
+                                    <div className={cn('absolute right-2 z-50 pr-0', {
+                                      'group-hover/table:right-0': canScrollVertical && !isActiveDropdownPageCount,
+                                    })}>
 
-                              //         <Bookmark
-                              //           selectedColor={rowMarks[indexCategoryTab]?.[row.id] || ''}
-                              //           onColorChange={(color) => handleColorChange(row.id, color)} 
-                              //           />
-                              //       </div>
-                              //       <div className={cn('pr-2 group-hover:bg-blue-50', {
-                              //         'group-hover/table:pr-0': canScrollVertical,
-                              //         'bg-blue-50 group-hover:bg-blue-100': isPinned
-                              //       })}>
-                              //         <FundsTableRow
-                              //           tag={!isMainTab}
-                              //           category={
-                              //             isMainTab
-                              //               ? watchList.includes(row.id)
-                              //                 ? 'watchlist'
-                              //                 : 'stocks'
-                              //               : 'watchlist'
-                              //           }
-                              //           canPin={pinnedRows.length <= 2}
-                              //           toggleWatchList={() =>
-                              //             toggleWatchList({ id: row.id })
-                              //           }
-                              //           pinedFunction={() =>
-                              //             isMainTab
-                              //               ? row.pin('top', true)
-                              //               : setPineWatchList([
-                              //                 ...pineWatchLis,
-                              //                 row.id,
-                              //               ])
-                              //           }
-                              //           unPinedFunction={() =>
-                              //             isMainTab
-                              //               ? row.pin(false)
-                              //               : setPineWatchList((prev) =>
-                              //                 prev.filter((id) => id !== row.id),
-                              //               )
-                              //           }
-                              //           isScrolled={isScrollAtStart}
-                              //           investmentMethod={
-                              //             row.original.investmentMethod
-                              //           }
-                              //           name={row.original.nameFund}
-                              //           pined={isPinned}
-                              //           selected={false}
-                              //           logo={row.original.logo}
-                              //         />
-                              //       </div>
+                                      <Bookmark
+                                        selectedColor={rowMarks[indexCategoryTab]?.[row.id] || ''}
+                                        onColorChange={(color) => handleColorChange(row.id, color)}
+                                      />
+                                    </div>
+                                    <div className={cn('pr-2 group-hover:bg-blue-50', {
+                                      'group-hover/table:pr-0': canScrollVertical && !isActiveDropdownPageCount,
+                                      'bg-blue-50 group-hover:bg-blue-100': isPinned
+                                    })}>
+                                      <FundsTableRow
+                                        tag={!isMainTab}
+                                        category={
+                                          isMainTab
+                                            ? watchList.includes(row.id)
+                                              ? 'watchlist'
+                                              : 'stocks'
+                                            : 'watchlist'
+                                        }
+                                        canPin={pinnedRows.length <= 2}
+                                        toggleWatchList={() =>
+                                          toggleWatchList({ id: row.id })
+                                        }
+                                        pinedFunction={() =>
+                                          isMainTab
+                                            ? row.pin('top', true)
+                                            : setPineWatchList([
+                                              ...pineWatchLis,
+                                              row.id,
+                                            ])
+                                        }
+                                        unPinedFunction={() =>
+                                          isMainTab
+                                            ? row.pin(false)
+                                            : setPineWatchList((prev) =>
+                                              prev.filter((id) => id !== row.id),
+                                            )
+                                        }
+                                        isScrolled={isScrollAtStart}
+                                        investmentMethod={
+                                          row.original.investmentMethod
+                                        }
+                                        name={row.original.nameFund}
+                                        pined={isPinned}
+                                        selected={false}
+                                        logo={row.original.logo}
+                                      />
+                                    </div>
 
-                              //     </td>
-                              //   )}
-                              //   {index >= 1 && (
-                              //     <td
-                              //       className={cn(
-                              //         'py-0 pr-4 text-sm border-b border-[#E1E2E5] font-medium',
-                              //         {
-                              //           'group-hover/table:pr-0':
-                              //             canScrollVertical && !isActiveDropdownPageCount,
-                              //           'bg-blue-50 group-hover:bg-blue-100':
-                              //             isPinned,
-                              //           'group-hover:bg-blue-50': !isPinned,
-                              //         },
-                              //       )}
-                              //     >
-                              //       {formatNumber(cell.getValue() as string, {
-                              //         commaSeparated: true,
-                              //       })}
-                              //     </td>
-                              //   )}
-                              // </React.Fragment>
-                              <SortableContext
-                                key={cell.id}
-                                items={columnOrder.slice(1)}
-                                strategy={horizontalListSortingStrategy}
-                              >
-                                <DragAlongCell key={cell.id} cell={cell} >
-                                <td
-                                  className={cn(
-                                    'py-0 pr-4 text-sm border-b border-[#E1E2E5] font-medium',
-                                    {
-                                      'group-hover/table:pr-0':
-                                        canScrollVertical &&
-                                        !isActiveDropdownPageCount && !isScrollAtStart,
-                                      'bg-blue-50 group-hover:bg-blue-100':
-                                        isPinned,
-                                      'group-hover:bg-blue-50': !isPinned,
-                                    },
-                                  )}
-                                >
-                                  {formatNumber(cell.getValue() as string, {
-                                    commaSeparated: true,
-                                  })}
-                                </td>                                </DragAlongCell>
-                              </SortableContext>
+                                  </td>
+                                )}
+                                {
+                                  index > 0 &&
+                                  <SortableContext
+                                    key={cell.id}
+                                    items={columnOrder}
+                                    strategy={horizontalListSortingStrategy}
+                                  >
+                                    <DragAlongCell key={cell.id} cell={cell} >
+                                      <td
+                                        className={cn(
+                                          'py-0 pr-4 text-sm border-b border-[#E1E2E5] font-medium',
+                                          {
+                                            'group-hover/table:pr-0':
+                                              canScrollVertical &&
+                                              !isActiveDropdownPageCount && !isScrollAtStart,
+                                            'bg-blue-50 group-hover:bg-blue-100':
+                                              isPinned,
+                                            'group-hover:bg-blue-50': !isPinned,
+                                          },
+                                        )}
+                                      >
+                                        {formatNumber(cell.getValue() as string, {
+                                          commaSeparated: true,
+                                        })}
+                                      </td>
+                                    </DragAlongCell>
+                                  </SortableContext>
+                                }
+
+                              </>
+
                             );
                           })}
                         </tr>
