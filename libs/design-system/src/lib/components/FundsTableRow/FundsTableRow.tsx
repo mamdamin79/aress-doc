@@ -79,7 +79,6 @@ export function FundsTableRow({
           <div className="h-8 w-8 overflow-hidden rounded-full">
             <img src={logo} alt="logo fund" />
           </div>
-
           {pined &&
             <div className="absolute -right-1 top-5">
               <div
@@ -214,12 +213,6 @@ export function FundsTableRow({
               <span>{prop.text}</span>
             </div>
           );
-        }}
-      />
-      <Toaster
-        position="bottom-center"
-        containerStyle={{
-          bottom: 70,
         }}
       />
     </div>
