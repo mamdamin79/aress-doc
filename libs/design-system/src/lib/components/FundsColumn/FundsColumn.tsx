@@ -89,7 +89,7 @@ export function FundsColumn({
           <Icon name="filter" />
         </div>
         {activeSorticon && showLine && (
-          <div className="w-16 h-1.5 absolute bottom-0.5 bg-brand-600 rounded-t-md"></div>
+          <div className="w-16 h-1.5 absolute bottom-0 bg-brand-600 rounded-t-md"></div>
         )}
         <div className="font-] flex flex-col text-sm">
           <span>{title}</span>

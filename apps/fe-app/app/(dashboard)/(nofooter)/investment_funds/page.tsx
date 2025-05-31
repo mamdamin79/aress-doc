@@ -329,9 +329,6 @@ const Funds = () => {
     };
   }, []);
 
-  console.log(sortIndicator);
-
-
   return (
     <>
       <div
@@ -385,7 +382,7 @@ const Funds = () => {
           >
             <thead className="group sticky right-0 top-0 z-50 m-0 p-0 duration-300 [box-shadow:0_2px_0_#bcebeb]">
               <tr>
-                <th
+                {/* <div
                   style={{
                     transform:
                       sortIndex !== 0
@@ -405,8 +402,8 @@ const Funds = () => {
                   })}
                 >
                   <div className="bg-brand-600 mx-auto h-1.5 w-16 rounded-t-[10px]"></div>
-                </th>
-                <div className="sticky right-[340px] z-30 mt-5 p-0">
+                </div>
+                <th className="sticky right-[340px] z-30 mt-5 p-0">
                   {isScrollAtStart && (
                     <div className="hidden group-hover:block">
                       <Tooltip title="پیمایش به راست (D)">
@@ -422,11 +419,11 @@ const Funds = () => {
                       </Tooltip>
                     </div>
                   )}
-                </div>
+                </th> */}
                 {updateTableHeaders.map((header, index) => {
                   return (
                     <React.Fragment key={index}>
-                      {index === 0 && (
+                      {/* {index === 0 && (
                         <th
                           key={index}
                           className={cn(
@@ -514,7 +511,7 @@ const Funds = () => {
                             </div>
                           </div>
                         </th>
-                      )}
+                      )} */}
                       {index >= 1 && (
                         <th
                           ref={(el) => {
@@ -523,7 +520,7 @@ const Funds = () => {
                             }
                           }}
                           className={cn(
-                            'm-0 h-[64px] w-full bg-[#E3F8F8] pr-2 text-sm font-medium',
+                            'm-0 h-[64px] w-full bg-[#E3F8F8] pr-4 text-nowrap text-sm font-medium',
                             {
                               'pr-0': isScrollAtStart,
                             },
@@ -610,7 +607,7 @@ const Funds = () => {
                     </React.Fragment>
                   );
                 })}
-                <div className="fixed left-[35px] m-0 mt-5">
+                {/* <div className="fixed left-[35px] m-0 mt-5">
                   {isScrollAtEnd && (
                     <div
                       onMouseDown={startScrollRight}
@@ -628,10 +625,10 @@ const Funds = () => {
                       </Tooltip>
                     </div>
                   )}
-                </div>
+                </div> */}
               </tr>
             </thead>
-            <tbody className="relative w-full overflow-hidden">
+            {/* <tbody className="relative w-full overflow-hidden">
               {(() => {
                 const isMainTab = indexCategoryTab === 0;
                 const allRows = table.getRowModel().rows;
@@ -708,7 +705,7 @@ const Funds = () => {
                                   </div>
                                   <div
                                     className={cn(
-                                      'pr-2 group-hover:bg-blue-50',
+                                      'pr-2 bg-white group-hover:bg-blue-50',
                                       {
                                         'group-hover/table:pr-0':
                                           canScrollVertical &&
@@ -808,7 +805,7 @@ const Funds = () => {
               <tr className="h-16">
                 <td></td>
               </tr>
-            </tbody>
+            </tbody> */}
           </table>
         </div>
       </div>
