@@ -212,12 +212,6 @@ export function FundsTableRow({
           );
         }}
       />
-      <Toaster
-        position="bottom-center"
-        containerStyle={{
-          bottom: 70,
-        }}
-      />
     </div>
   );
 }

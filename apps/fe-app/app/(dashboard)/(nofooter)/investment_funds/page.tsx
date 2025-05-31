@@ -19,13 +19,15 @@ import {
   type DragEndEvent,
   useSensor,
   useSensors,
-} from '@dnd-kit/core'
-import { restrictToHorizontalAxis } from '@dnd-kit/modifiers'
+  DragOverlay,
+  useDndMonitor,
+} from '@dnd-kit/core';
+import { restrictToHorizontalAxis } from '@dnd-kit/modifiers';
 import {
   arrayMove,
   SortableContext,
   horizontalListSortingStrategy,
-} from '@dnd-kit/sortable'
+} from '@dnd-kit/sortable';
 import {
   cn,
   Icon,
@@ -52,15 +54,17 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useSortable } from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { Person, makeData } from './_components/makeData';
-import { columns, columnVisibility, filterList } from './FundsTable.constants';
+import { columnVisibility, filterList } from './FundsTable.constants';
 import { ExportExel } from './_components/ExportExel';
 import { Bookmark } from 'libs/design-system/src/lib/components/Bookmark';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
-  const [rowMarks, setRowMarks] = useState<{ [tabIndex: number]: { [id: string]: string } }>({});
+  const [rowMarks, setRowMarks] = useState<{
+    [tabIndex: number]: { [id: string]: string };
+  }>({});
   const [canScrollVertical, setCanScrollVertical] = useState(false);
   const [indexCategoryTab, setIndexCategoryTab] = useState(0);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -74,8 +78,14 @@ const Funds = () => {
   const tableRef = useRef<HTMLDivElement>(null);
   const [watchList, setWatchList] = useState<string[]>([]);
   const [pineWatchLis, setPineWatchList] = useState<string[]>([]);
-  const [isActiveDropdownPageCount, setIsActiveDropdownPageCount] = useState(false);
+  const [dragOverColumnId, setDragOverColumnId] = useState<string | null>(null);
+  const [dragPosition, setDragPosition] = useState<'left' | 'right' | null>(
+    null,
+  );
+  const [isActiveDropdownPageCount, setIsActiveDropdownPageCount] =
+    useState(false);
   const [isRotating, setIsRotating] = useState(false);
+  const [activeId, setActiveId] = useState<null | string>(null);
 
   const columns = React.useMemo<ColumnDef<Person>[]>(
     () => [
@@ -187,7 +197,7 @@ const Funds = () => {
         header: 'Start Date',
         id: 'startDate',
         size: 160,
-        cell: info => new Date(info.getValue<number>()).toLocaleDateString(),
+        cell: (info) => new Date(info.getValue<number>()).toLocaleDateString(),
       },
       {
         accessorKey: 'investmentMethod',
@@ -200,94 +210,139 @@ const Funds = () => {
         header: 'Logo',
         id: 'logo',
         size: 100,
-        cell: info => <img src={info.getValue<string>()} alt="Logo" width={30} height={30} />,
+        cell: (info) => (
+          <img
+            src={info.getValue<string>()}
+            alt="Logo"
+            width={30}
+            height={30}
+          />
+        ),
       },
     ],
-    []
+    [],
   );
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string[]>
   >({});
   const [columnOrder, setColumnOrder] = React.useState<string[]>(() =>
-    columns.map(c => c.id!)
-  ) 
+    columns.map((c) => c.id!),
+  );
 
   const DraggableTableHeader = ({
     header,
     children,
     width,
   }: {
-    header: Header<Person, unknown>,
-    children: React.ReactNode,
-    width: number
+    header: Header<Person, unknown>;
+    children: React.ReactNode;
+    width: number;
   }) => {
     const { attributes, isDragging, listeners, setNodeRef, transform } =
       useSortable({
         id: header.column.id,
-      })
+      });
 
-      const translate = CSS.Translate.toString(transform);
-      const rotate = isDragging ? ' rotate(-15deg)' : '';
-      const offsetY = isDragging ? ' translateY(35px)' : '';
-      const style: CSSProperties = {
-        opacity: isDragging ? 0.8 : 1,
-        position: 'relative',
-        transform: translate + offsetY + rotate,
-        transition: 'width transform 0.2s ease-in-out',
-        whiteSpace: 'nowrap',
-        width,
-        height: 30
-      };
+    const translate = CSS.Translate.toString(transform);
+    const rotate = isDragging ? ' rotate(-15deg)' : '';
+    const offsetY = isDragging ? ' translateY(35px)' : '';
+    const style: CSSProperties = {
+      // opacity: isDragging ? 0.8 : 1,
+      position: 'relative',
+      // transform: translate + offsetY + rotate,
+      transition: 'width transform 0.2s ease-in-out',
+      whiteSpace: 'nowrap',
+      width,
+    };
+
+useDndMonitor({
+  onDragOver(event) {
+    const overId = event.over?.id;
+    const clientX = (event.activatorEvent as PointerEvent).clientX;
+
+    if (overId && clientX) {
+      const targetEl = document.querySelector(`[data-column-id="${overId}"]`) as HTMLElement;
+      if (!targetEl) return;
+
+      const rect = targetEl.getBoundingClientRect();
+      const midpoint = rect.left + rect.width / 2;
+
+      if (clientX > midpoint) {
+        setDragPosition('right');
+      } else {
+        setDragPosition('left');
+      }
+
+      setDragOverColumnId(String(overId));
+    }
+  },
+  onDragEnd() {
+    setDragOverColumnId(null);
+    setDragOverColumnId(null);
+  },
+});
 
     return (
-      <th {...attributes} {...listeners} className='m-0 p-0 h-[64px] w-full bg-[#E3F8F8] text-sm font-medium' ref={setNodeRef} style={style}>
-          {children}
+      <th
+        data-column-id={header.id}
+        {...attributes}
+        {...listeners}
+        className={cn(
+          'm-0 h-[64px] w-full bg-[#E3F8F8] p-0 text-sm font-medium',
+        )}
+        ref={setNodeRef}
+        style={style}
+      >
+        {children}
       </th>
-    )
-  }
+    );
+  };
 
-  const DragAlongCell = ({ cell, children }: { cell: Cell<Person, unknown>, children: React.ReactNode }) => {
-    const { isDragging, setNodeRef, transform } = useSortable({
+  const DragAlongCell = ({
+    cell,
+    children,
+  }: {
+    cell: Cell<Person, unknown>;
+    children: React.ReactNode;
+  }) => {
+    const { isDragging, setNodeRef } = useSortable({
       id: cell.column.id,
-    })
+    });
 
     const style: CSSProperties = {
-      opacity: isDragging ? 0.8 : 1,
       position: 'relative',
-      transform: CSS.Translate.toString(transform), // translate instead of transform to avoid squishing
-      transition: 'width transform 0.2s ease-in-out',
-      zIndex: isDragging ? 1 : 0,
       width: cell.column.getSize(),
-
-    }
+    };
 
     return (
-      <td className='mx-auto border-transparent h-full' style={style} ref={setNodeRef}>
-        <div className='flex justify-center items-center'>
-          {children}
-        </div>
+      <td
+        className="mx-auto h-full border-transparent"
+        style={style}
+        ref={setNodeRef}
+      >
+        <div className="flex items-center justify-center">{children}</div>
       </td>
-    )
-  }
+    );
+  };
 
   // reorder columns after drag & drop
   function handleDragEnd(event: DragEndEvent) {
     setIsRotating(false);
-    const { active, over } = event
+    const { active, over } = event;
     if (active && over && active.id !== over.id) {
-      setColumnOrder(columnOrder => {
-        const oldIndex = columnOrder.indexOf(active.id as string)
-        const newIndex = columnOrder.indexOf(over.id as string)
-        return arrayMove(columnOrder, oldIndex, newIndex) //this is just a splice util
-      })
+      setColumnOrder((columnOrder) => {
+        const oldIndex = columnOrder.indexOf(active.id as string);
+        const newIndex = columnOrder.indexOf(over.id as string);
+        return arrayMove(columnOrder, oldIndex, newIndex); //this is just a splice util
+      });
     }
-  }  
+  }
 
   const sensors = useSensors(
     useSensor(MouseSensor, {}),
     useSensor(TouchSensor, {}),
-    useSensor(KeyboardSensor, {})
-  )
+    useSensor(KeyboardSensor, {}),
+  );
 
   const [customColl, setCustomColl] = useState<{
     active: boolean;
@@ -319,7 +374,6 @@ const Funds = () => {
   const [updateTableHeaders, setUpdateTableHeaders] = useState(
     table.getHeaderGroups()[0].headers,
   );
-
 
   const columnVisibilityHeader = table.getState().columnVisibility;
 
@@ -483,7 +537,7 @@ const Funds = () => {
 
   useEffect(() => {
     handlerMouseEnterTable();
-  }, [indexCategoryTab, tableCount])
+  }, [indexCategoryTab, tableCount]);
 
   const handleColorChange = (id: string, color: string) => {
     setRowMarks((prev) => ({
@@ -495,7 +549,9 @@ const Funds = () => {
     }));
   };
 
-
+  console.log(dragPosition);
+  
+  
   return (
     <>
       <div
@@ -520,35 +576,39 @@ const Funds = () => {
           </div>
         </Tooltip>
       </div>
-      <DndContext
-        onDragStart={() => setIsRotating(true)}
-        collisionDetection={closestCenter}
-        modifiers={[restrictToHorizontalAxis]}
-        onDragEnd={handleDragEnd}
-        sensors={sensors}
-        onDragOver={() => setIsRotating(true)}
-        onDragCancel={() => setIsRotating(false)}
+      <div
+        dir="ltr"
+        className={cn(
+          'relative top-0 flex items-center overflow-hidden border-t-2 border-[#BCEBEB]',
+        )}
       >
         <div
-          dir="ltr"
+          onMouseEnter={handlerMouseEnterTable}
+          ref={tableRef}
+          onScroll={handlerScroll}
           className={cn(
-            'relative top-0 flex items-center overflow-hidden border-t-2 border-[#BCEBEB]',
+            'table-scroll group/table scrollbar-lg h-[calc(100vh-172px)] w-screen overflow-y-hidden scroll-smooth',
+            {
+              'hover:overflow-auto':
+                canScrollVertical && !isActiveDropdownPageCount,
+            },
           )}
         >
-          <div
-            onMouseEnter={handlerMouseEnterTable}
-            ref={tableRef}
-            onScroll={handlerScroll}
-            className={cn(
-              'table-scroll group/table scrollbar-lg h-[calc(100vh-172px)] w-screen overflow-y-hidden scroll-smooth',
-              {
-                'hover:overflow-auto': canScrollVertical && !isActiveDropdownPageCount
-              },
-            )}
+          <table
+            dir="rtl"
+            className="w-full table-fixed rounded-xl bg-white text-center"
           >
-            <table
-              dir="rtl"
-              className="w-full table-fixed rounded-xl bg-white text-center"
+            <DndContext
+              onDragStart={(event) => {
+                setIsRotating(true);
+                setActiveId(String(event.active.id));
+              }}
+              collisionDetection={closestCenter}
+              modifiers={[restrictToHorizontalAxis]}
+              onDragEnd={handleDragEnd}
+              sensors={sensors}
+              onDragOver={() => setIsRotating(true)}
+              onDragCancel={() => setIsRotating(false)}
             >
               <thead className="group sticky right-0 top-0 z-50 m-0 p-0 duration-300 [box-shadow:0_2px_0_#bcebeb]">
                 <tr>
@@ -572,8 +632,7 @@ const Funds = () => {
                     items={columnOrder.slice(1)}
                     strategy={horizontalListSortingStrategy}
                   >
-
-                    {table.getHeaderGroups()[0].headers.map((header, index) => {
+                    {table.getHeaderGroups()[0].headers.map((header, index) => {                      
                       return (
                         <>
                           {index === 0 && (
@@ -588,7 +647,8 @@ const Funds = () => {
                                 'sticky right-0 top-0 z-40 m-0 h-[64px] w-[385px] border-b bg-[#E3F8F8] py-0 pr-2',
                                 {
                                   'group-hover/table:pr-0':
-                                    canScrollVertical && !isActiveDropdownPageCount,
+                                    canScrollVertical &&
+                                    !isActiveDropdownPageCount,
                                 },
                               )}
                             >
@@ -630,7 +690,8 @@ const Funds = () => {
                                           'text-brand-800':
                                             (header.column.getIsSorted() ===
                                               'desc' &&
-                                              prop.text === 'مرتب سازی نزولی') ||
+                                              prop.text ===
+                                                'مرتب سازی نزولی') ||
                                             (header.column.getIsSorted() ===
                                               'asc' &&
                                               prop.text === 'مرتب سازی صعودی'),
@@ -648,19 +709,22 @@ const Funds = () => {
                                   )}
                                   customTriggerRender={({ isActive }) => (
                                     <div
-                                      className={cn('w-[385px] bg-[#E3F8F8] flex', {
-                                        'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]':
-                                          isScrollAtStart,
-                                      })}
+                                      className={cn(
+                                        'flex w-[385px] bg-[#E3F8F8]',
+                                        {
+                                          'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]':
+                                            isScrollAtStart,
+                                        },
+                                      )}
                                     >
-                                      <div className='mr-5'>
-
+                                      <div className="mr-5">
                                         <FundsColumn
                                           active={isActive}
                                           clickFilterd={() => {
                                             // setSortIndex(0);
                                             header.column.toggleSorting(
-                                              header.column.getIsSorted() === 'desc'
+                                              header.column.getIsSorted() ===
+                                                'desc'
                                                 ? false
                                                 : true,
                                             );
@@ -668,9 +732,11 @@ const Funds = () => {
                                           size="extraLarg"
                                           shadow={false}
                                           type={
-                                            header.column.getIsSorted() === 'asc'
+                                            header.column.getIsSorted() ===
+                                            'asc'
                                               ? 'active-asc'
-                                              : header.column.getIsSorted() === 'desc'
+                                              : header.column.getIsSorted() ===
+                                                  'desc'
                                                 ? 'inactive'
                                                 : 'inactive'
                                           }
@@ -712,8 +778,8 @@ const Funds = () => {
                                             {(Object.entries(selectedFilters)
                                               .length > 0 ||
                                               fundSearchQuery) && (
-                                                <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
-                                              )}
+                                              <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
+                                            )}
                                             <Icon size="lg" name="filter" />
                                           </div>
                                         </Tooltip>
@@ -740,21 +806,33 @@ const Funds = () => {
                               </div>
                             </th>
                           )}
-                          {
-                            index > 0 &&
-                            <DraggableTableHeader width={String(
-                              flexRender(
-                                header.column.columnDef.header,
-                                header.getContext(),
-                              ),
-                            ).length > 10
-                              ? 200
-                              : 144
-                            } key={header.id} header={header} >
-                              <th
-                                key={index}
-                                colSpan={header.colSpan}
-                              >
+                          {/* {dragOverColumnId === header.id && (
+                            <div
+                              className={cn(
+                                'absolute top-0 w-1 h-10 z-50 bg-red-500 transition-all duration-100',
+                                {
+                                  'left-0': dragPosition === 'left',
+                                  'right-0': dragPosition === 'right',
+                                },
+                              )}
+                            />
+                          )} */}
+                          {index > 0 && (
+                            <DraggableTableHeader
+                              width={
+                                String(
+                                  flexRender(
+                                    header.column.columnDef.header,
+                                    header.getContext(),
+                                  ),
+                                ).length > 10
+                                  ? 200
+                                  : 144
+                              }
+                              key={header.id}
+                              header={header}
+                            >
+                              <th key={index} colSpan={header.colSpan}>
                                 {index >= 2 && header.isPlaceholder ? null : (
                                   <div
                                     {...{
@@ -764,7 +842,10 @@ const Funds = () => {
                                     }}
                                   >
                                     <FundsColumn
-                                      active={true}
+                                      dragPosition={dragPosition ?? 'left'}
+                                      active={!isRotating}
+                                      activeStyle={header.id === activeId}
+                                      activePlaceholder={activeId !== header.id && dragOverColumnId === header.id}
                                       defaultSort={() => {
                                         updateTableHeaders[0].column.getToggleSortingHandler()?.(
                                           new Event('click'),
@@ -791,7 +872,7 @@ const Funds = () => {
                                         header.column.getIsSorted() === 'asc'
                                           ? 'active-desc'
                                           : header.column.getIsSorted() ===
-                                            'desc'
+                                              'desc'
                                             ? 'active-asc'
                                             : 'inactive'
                                       }
@@ -817,11 +898,41 @@ const Funds = () => {
                                 )}
                               </th>
                             </DraggableTableHeader>
-                          }
+                          )}
                         </>
-
                       );
                     })}
+                    <DragOverlay
+                      adjustScale={false}
+                      zIndex={100}
+                      style={{
+                        zIndex: 9999,
+                        pointerEvents: 'none',
+                      }}
+                    >
+                      {activeId ? (
+                        <th
+                          className="absolute top-0 mt-8 flex -rotate-12 items-start justify-center"
+                          style={{
+                            width:
+                              String(activeId).length > 10 ? '200px' : '144px',
+                            backgroundColor: '#E3F8F8',
+                            borderBottom: '1px solid #eee',
+                            padding: '0',
+                            zIndex: 100,
+                            height: '64px',
+                          }}
+                        >
+                          {activeId && (
+                            <div className="flex h-20 w-full items-center justify-center bg-[#BCEBEB]">
+                              {activeId}
+                            </div>
+                          )}
+                        </th>
+                      ) : (
+                        <></>
+                      )}
+                    </DragOverlay>
                   </SortableContext>
                   <div className="fixed left-[35px] m-0 mt-5">
                     {isScrollAtEnd && (
@@ -842,177 +953,196 @@ const Funds = () => {
                     )}
                   </div>
                 </tr>
+                <tr></tr>
               </thead>
-              <tbody className="relative w-full overflow-hidden">
-                {(() => {
-                  const isMainTab = indexCategoryTab === 0;
-                  const allRows = table.getRowModel().rows;
-                  const pinnedIds = isMainTab
-                    ? allRows.filter((r) => r.getIsPinned()).map((r) => r.id)
-                    : pineWatchLis;
+            </DndContext>
 
-                  const filteredRows = isMainTab
-                    ? allRows
-                    : allRows.filter((row) => watchList.includes(row.id));
+            <tbody className="relative w-full overflow-hidden">
+              {(() => {
+                const isMainTab = indexCategoryTab === 0;
+                const allRows = table.getRowModel().rows;
+                const pinnedIds = isMainTab
+                  ? allRows.filter((r) => r.getIsPinned()).map((r) => r.id)
+                  : pineWatchLis;
 
-                  const pinnedRows = filteredRows.filter((row) =>
-                    pinnedIds.includes(row.id),
+                const filteredRows = isMainTab
+                  ? allRows
+                  : allRows.filter((row) => watchList.includes(row.id));
+
+                const pinnedRows = filteredRows.filter((row) =>
+                  pinnedIds.includes(row.id),
+                );
+                const otherRows = filteredRows.filter(
+                  (row) => !pinnedIds.includes(row.id),
+                );
+
+                const rowsToRender = [...pinnedRows, ...otherRows];
+
+                if (rowsToRender.length === 0) {
+                  return (
+                    <tr className="fixed right-[calc(50%-150px)] mt-5 w-full text-gray-600">
+                      <td className="text-sm">
+                        {isMainTab
+                          ? 'صندوقی یافت نشد! لطفا فیلتر‌هارا بازنشانی کنید.'
+                          : watchList.length === 0
+                            ? 'صندوقی در دیده بان وجود ندارد.'
+                            : 'صندوقی یافت نشد! لطفا فیلتر هارا بازنشانی کنید.'}
+                      </td>
+                    </tr>
                   );
-                  const otherRows = filteredRows.filter(
-                    (row) => !pinnedIds.includes(row.id),
-                  );
+                }
 
-                  const rowsToRender = [...pinnedRows, ...otherRows];
+                return rowsToRender.map((row, rowIndex) => {
+                  const isPinned = pinnedIds.includes(row.id);
 
-                  if (rowsToRender.length === 0) {
-                    return (
-                      <tr className="fixed right-[calc(50%-150px)] mt-5 w-full text-gray-600">
-                        <td className="text-sm">
-                          {isMainTab
-                            ? 'صندوقی یافت نشد! لطفا فیلتر‌هارا بازنشانی کنید.'
-                            : watchList.length === 0
-                              ? 'صندوقی در دیده بان وجود ندارد.'
-                              : 'صندوقی یافت نشد! لطفا فیلتر هارا بازنشانی کنید.'}
-                        </td>
-                      </tr>
-                    );
-                  }
-
-                  return rowsToRender.map((row, rowIndex) => {
-                    const isPinned = pinnedIds.includes(row.id);
-
-                    return (
-                      <>
-                        <tr
-                          key={row.id}
-                          className={cn('group h-[48px] border-b border-[#E1E2E5]', {
-                            'bg-blue-50 group-hover:bg-[#4991e9]': isPinned
-                          })}
-                        >
-                          <td></td>
-                          {row.getVisibleCells().map((cell, index) => {
-                            return (
-                              <>
-                                {index === 0 && (
-                                  <td
-                                    className='sticky flex items-center right-0 top-0 z-40 m-0 py-0'
+                  return (
+                    <>
+                      <tr
+                        key={row.id}
+                        className={cn(
+                          'group h-[48px] border-b border-[#E1E2E5]',
+                          {
+                            'bg-blue-50 group-hover:bg-[#4991e9]': isPinned,
+                          },
+                        )}
+                      >
+                        <td></td>
+                        {row.getVisibleCells().map((cell, index) => {
+                          return (
+                            <>
+                              {index === 0 && (
+                                <td className="sticky right-0 top-0 z-40 m-0 flex items-center py-0">
+                                  <div
+                                    className={cn(
+                                      'absolute right-2 z-50 pr-0',
+                                      {
+                                        'group-hover/table:right-0':
+                                          canScrollVertical &&
+                                          !isActiveDropdownPageCount,
+                                      },
+                                    )}
                                   >
-                                    <div className={cn('absolute right-2 z-50 pr-0', {
-                                      'group-hover/table:right-0': canScrollVertical && !isActiveDropdownPageCount,
-                                    })}>
-
-                                      <Bookmark
-                                        selectedColor={rowMarks[indexCategoryTab]?.[row.id] || ''}
-                                        onColorChange={(color) => handleColorChange(row.id, color)}
-                                      />
-                                    </div>
-                                    <div className={cn('pr-2 group-hover:bg-blue-50', {
-                                      'group-hover/table:pr-0': canScrollVertical && !isActiveDropdownPageCount,
-                                      'bg-blue-50 group-hover:bg-blue-100': isPinned
-                                    })}>
-                                      <FundsTableRow
-                                        tag={!isMainTab}
-                                        category={
-                                          isMainTab
-                                            ? watchList.includes(row.id)
-                                              ? 'watchlist'
-                                              : 'stocks'
-                                            : 'watchlist'
-                                        }
-                                        canPin={pinnedRows.length <= 2}
-                                        toggleWatchList={() =>
-                                          toggleWatchList({ id: row.id })
-                                        }
-                                        pinedFunction={() =>
-                                          isMainTab
-                                            ? row.pin('top', true)
-                                            : setPineWatchList([
+                                    <Bookmark
+                                      selectedColor={
+                                        rowMarks[indexCategoryTab]?.[row.id] ||
+                                        ''
+                                      }
+                                      onColorChange={(color) =>
+                                        handleColorChange(row.id, color)
+                                      }
+                                    />
+                                  </div>
+                                  <div
+                                    className={cn(
+                                      'pr-2 group-hover:bg-blue-50',
+                                      {
+                                        'group-hover/table:pr-0':
+                                          canScrollVertical &&
+                                          !isActiveDropdownPageCount,
+                                        'bg-blue-50 group-hover:bg-blue-100':
+                                          isPinned,
+                                      },
+                                    )}
+                                  >
+                                    <FundsTableRow
+                                      tag={!isMainTab}
+                                      category={
+                                        isMainTab
+                                          ? watchList.includes(row.id)
+                                            ? 'watchlist'
+                                            : 'stocks'
+                                          : 'watchlist'
+                                      }
+                                      canPin={pinnedRows.length <= 2}
+                                      toggleWatchList={() =>
+                                        toggleWatchList({ id: row.id })
+                                      }
+                                      pinedFunction={() =>
+                                        isMainTab
+                                          ? row.pin('top', true)
+                                          : setPineWatchList([
                                               ...pineWatchLis,
                                               row.id,
                                             ])
-                                        }
-                                        unPinedFunction={() =>
-                                          isMainTab
-                                            ? row.pin(false)
-                                            : setPineWatchList((prev) =>
-                                              prev.filter((id) => id !== row.id),
+                                      }
+                                      unPinedFunction={() =>
+                                        isMainTab
+                                          ? row.pin(false)
+                                          : setPineWatchList((prev) =>
+                                              prev.filter(
+                                                (id) => id !== row.id,
+                                              ),
                                             )
-                                        }
-                                        isScrolled={isScrollAtStart}
-                                        investmentMethod={
-                                          row.original.investmentMethod
-                                        }
-                                        name={row.original.nameFund}
-                                        pined={isPinned}
-                                        selected={false}
-                                        logo={row.original.logo}
-                                      />
-                                    </div>
-
-                                  </td>
-                                )}
-                                {
-                                  index > 0 &&
-                                  <SortableContext
-                                    key={cell.id}
-                                    items={columnOrder}
-                                    strategy={horizontalListSortingStrategy}
-                                  >
-                                    <DragAlongCell key={cell.id} cell={cell} >
-                                      <td
-                                        className={cn(
-                                          'py-0 h-[46px] flex items-center justify-center w-full pr-4 text-sm border-[#E1E2E5] font-medium',
-                                          {
-                                            'group-hover/table:pr-0':
-                                              canScrollVertical &&
-                                              !isActiveDropdownPageCount && !isScrollAtStart,
-                                            'bg-blue-50 group-hover:bg-blue-100':
-                                              isPinned,
-                                            'group-hover:bg-blue-50': !isPinned,
-                                          },
-                                        )}
-                                      >
-                                        {formatNumber(cell.getValue() as string, {
-                                          commaSeparated: true,
-                                        })}
-                                      </td>
-                                    </DragAlongCell>
-                                  </SortableContext>
-                                }
-
-                              </>
-
-                            );
-                          })}
-                        </tr>
-                        {rowIndex === rowsToRender.length - 1 && (
-                          <div className="sticky right-0 mb-2 mt-5 w-screen whitespace-nowrap text-sm text-gray-600">
-                            {formatNumber(
-                              table.getState().pagination.pageSize *
+                                      }
+                                      isScrolled={isScrollAtStart}
+                                      investmentMethod={
+                                        row.original.investmentMethod
+                                      }
+                                      name={row.original.nameFund}
+                                      pined={isPinned}
+                                      selected={false}
+                                      logo={row.original.logo}
+                                    />
+                                  </div>
+                                </td>
+                              )}
+                              {index > 0 && (
+                                <SortableContext
+                                  key={cell.id}
+                                  items={columnOrder}
+                                  strategy={horizontalListSortingStrategy}
+                                >
+                                  <DragAlongCell key={cell.id} cell={cell}>
+                                    <td
+                                      className={cn(
+                                        'flex h-[46px] w-full items-center justify-center border-[#E1E2E5] py-0 pr-4 text-sm font-medium',
+                                        {
+                                          'group-hover/table:pr-0':
+                                            canScrollVertical &&
+                                            !isActiveDropdownPageCount &&
+                                            !isScrollAtStart,
+                                          'bg-blue-50 group-hover:bg-blue-100':
+                                            isPinned,
+                                          'group-hover:bg-blue-50': !isPinned,
+                                        },
+                                      )}
+                                    >
+                                      {formatNumber(cell.getValue() as string, {
+                                        commaSeparated: true,
+                                      })}
+                                    </td>
+                                  </DragAlongCell>
+                                </SortableContext>
+                              )}
+                            </>
+                          );
+                        })}
+                      </tr>
+                      {rowIndex === rowsToRender.length - 1 && (
+                        <div className="sticky right-0 mb-2 mt-5 w-screen whitespace-nowrap text-sm text-gray-600">
+                          {formatNumber(
+                            table.getState().pagination.pageSize *
                               (table.getState().pagination.pageIndex + 1),
-                              { commaSeparated: true },
-                            ) ===
-                              formatNumber(
-                                table.getPageCount() *
+                            { commaSeparated: true },
+                          ) ===
+                            formatNumber(
+                              table.getPageCount() *
                                 table.getState().pagination.pageSize,
-                                { commaSeparated: true },
-                              ) && 'پایان لیست صندوق ها.'}
-                          </div>
-                        )}
-                      </>
-                    );
-                  });
-                })()}
-                <tr className="h-16">
-                  <td></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+                              { commaSeparated: true },
+                            ) && 'پایان لیست صندوق ها.'}
+                        </div>
+                      )}
+                    </>
+                  );
+                });
+              })()}
+              <tr className="h-16">
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-      </DndContext>
-
-
+      </div>
 
       <div className="fixed bottom-6 right-0 z-50 mt-6 flex w-full justify-between px-8">
         <div className="rounded-md bg-[#B3B6BD8C] backdrop-blur-[30px]">
@@ -1038,7 +1168,7 @@ const Funds = () => {
                     <span>تعداد سطر در جدول: </span>
                     {formatNumber(
                       table.getState().pagination.pageSize *
-                      (table.getState().pagination.pageIndex + 1),
+                        (table.getState().pagination.pageIndex + 1),
                       { commaSeparated: true },
                     )}
                   </div>
@@ -1051,7 +1181,7 @@ const Funds = () => {
                     <Icon size="lg" name="chevron-down" />
                   </div>
                 </div>
-              )
+              );
             }}
             customOptionRender={(prop) => (
               <div
@@ -1060,8 +1190,8 @@ const Funds = () => {
                   {
                     'pb-2':
                       table.getState().pagination.pageSize *
-                      (table.getState().pagination.pageIndex + 1) *
-                      table.getPageCount() ===
+                        (table.getState().pagination.pageIndex + 1) *
+                        table.getPageCount() ===
                       +prop.text,
                   },
                 )}
@@ -1070,7 +1200,7 @@ const Funds = () => {
                   {table.getState().pagination.pageSize *
                     (table.getState().pagination.pageIndex + 1) *
                     table.getPageCount() ===
-                    +prop.text
+                  +prop.text
                     ? 'همه'
                     : prop.text}
                 </span>
@@ -1084,8 +1214,8 @@ const Funds = () => {
               {
                 text: String(
                   table.getState().pagination.pageSize *
-                  (table.getState().pagination.pageIndex + 1) *
-                  table.getPageCount(),
+                    (table.getState().pagination.pageIndex + 1) *
+                    table.getPageCount(),
                 ),
               },
             ]}
@@ -1103,7 +1233,7 @@ const Funds = () => {
             <div>
               {formatNumber(
                 table.getState().pagination.pageSize *
-                (table.getState().pagination.pageIndex + 1),
+                  (table.getState().pagination.pageIndex + 1),
                 { commaSeparated: true },
               )}
               -
@@ -1193,24 +1323,21 @@ const Funds = () => {
                       <Checkbox
                         onChange={() => {
                           if (
-                            item.columnDef.header?.toString() ===
-                            'بازه دلخواه'
+                            item.columnDef.header?.toString() === 'بازه دلخواه'
                           ) {
                             setCustomColl({ active: true, date: '' });
                           }
                           if (
                             table
                               .getAllLeafColumns()
-                              .filter((col) => col.getIsVisible()).length ===
-                            25
+                              .filter((col) => col.getIsVisible()).length === 25
                           ) {
                             if (item.getIsVisible())
                               item.toggleVisibility(!item.getIsVisible());
                           } else if (
                             table
                               .getAllLeafColumns()
-                              .filter((col) => col.getIsVisible()).length ===
-                            7
+                              .filter((col) => col.getIsVisible()).length === 7
                           ) {
                             if (!item.getIsVisible())
                               item.toggleVisibility(!item.getIsVisible());

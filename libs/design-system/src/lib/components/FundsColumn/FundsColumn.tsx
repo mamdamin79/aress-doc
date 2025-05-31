@@ -15,27 +15,32 @@ interface Props {
   active?: boolean;
   subTitle?: string;
   defaultSort?: () => void;
+  activePlaceholder?: boolean;
+  dragPosition?: 'right' | 'left';
+  activeStyle?: boolean;
 }
 
 export function FundsColumn({
   size,
   title,
   subTitle,
+  activeStyle = false,
+  dragPosition,
   shadow = false,
   sortType,
   filterable,
   type,
   clickFilterd,
-  
+  activePlaceholder = false,
   defaultSort,
   active,
 }: Props) {
   const [sortTypeValue, setSortTypeValue] = useState<Props['type']>(type);
 
   useEffect(() => {
-    setSortTypeValue(type)
-  }, [type])  
-  
+    setSortTypeValue(type);
+  }, [type]);
+
   return (
     <div
       className={cn(
@@ -48,20 +53,21 @@ export function FundsColumn({
           'bg-pink-200': size === 'extraLarg' && filterable && !active,
           'bg-[#E3F8F8]': size === 'extraLarg' && !filterable,
           'bg-pink-300': active && size !== 'extraLarg' && filterable,
-          'bg-[#BCEBEB]': active && size !== 'extraLarg' && !filterable,
+          'bg-[#BCEBEB]': (active && size !== 'extraLarg' && !filterable) || activeStyle,
           'bg-[#E3F8F8] hover:bg-[#BCEBEB]':
-            !filterable && size !== 'extraLarg' && !active,
+            !filterable && size !== 'extraLarg' && active,
           'bg-pink-200 hover:bg-pink-300': filterable && size !== 'extraLarg',
         },
-        'text-text-neutral-primary group/first cursor-pointer',
+        'group/first cursor-pointer',
       )}
     >
       <div
         className={cn(
-          'relative mx-auto px-1.5 flex h-[76px] w-fit items-center justify-center gap-1',
+          'relative mx-auto flex h-[76px] w-fit items-center justify-center gap-1 px-1.5',
           {
-            'group-hover/first:bg-pink-300':
-              size === 'extraLarg' && filterable,
+            'group-hover/first:bg-pink-300': size === 'extraLarg' && filterable,
+            'hover:bg-[#BCEBEB]':
+              activeStyle && !filterable && size !== 'extraLarg',
             'group-hover/first:bg-[#BCEBEB]':
               size === 'extraLarg' && !filterable,
             'bg-[#BCEBEB]': !filterable && active && size === 'extraLarg',
@@ -69,13 +75,27 @@ export function FundsColumn({
           },
         )}
       >
+        {activePlaceholder && dragPosition === 'left' && (
+          <div className="relative h-[90%] w-0.5 rounded-full bg-[#0F7575]">
+            <div className="absolute top-0 flex h-2.5 w-2.5 translate-x-1 items-center justify-center rounded-full bg-[#0F7575]">
+              <div className="h-1.5 w-1.5 rounded-full bg-white"></div>
+            </div>
+          </div>
+        )}
         <div className={cn(filterable ? 'visible' : 'invisible')}>
           <Icon name="filter" />
         </div>
-        <div className='flex flex-col text-sm font-]'>
+
+        <div className="font-] flex flex-col text-sm">
           <span>{title}</span>
-          <span>{subTitle !== 'مشخصات صندوق' && subTitle !== 'ارکان صندوق' && subTitle !== 'سهم پرتفوی صندوق' && subTitle}</span>
+          <span>
+            {subTitle !== 'مشخصات صندوق' &&
+              subTitle !== 'ارکان صندوق' &&
+              subTitle !== 'سهم پرتفوی صندوق' &&
+              subTitle}
+          </span>
         </div>
+
         <Tooltip
           title={
             sortType === 'ranked'
@@ -88,7 +108,9 @@ export function FundsColumn({
                 ? 'مرتب سازی نزولی'
                 : type === 'active-asc'
                   ? 'حالت پیشفرض (بدون مرتب سازی)'
-                  : 'مرتب سازی صعودی'}>
+                  : 'مرتب سازی صعودی'
+          }
+        >
           <div
             onClick={(e) => {
               e.stopPropagation();
@@ -96,7 +118,7 @@ export function FundsColumn({
               if (typeof clickFilterd === 'function') {
                 clickFilterd();
               }
-              if (sortTypeValue === 'active-desc') {                
+              if (sortTypeValue === 'active-desc') {
                 defaultSort && defaultSort();
               }
             }}
@@ -104,18 +126,30 @@ export function FundsColumn({
               {
                 'invisible text-[#545962] group-hover/first:visible':
                   type === 'inactive',
-                'visible': active,
               },
               'hover:bg-brand-600 rounded-md p-1 duration-150 hover:text-white',
             )}
           >
             <Icon
               name={
-                sortType === 'ranked' ? (type === 'active-asc' ? 'arrow-down-wide-narrow' : 'arrow-up-narrow-wide') : (type === 'active-asc' ? 'arrow-down-a-z' : 'arrow-up-z-a')
+                sortType === 'ranked'
+                  ? type === 'active-asc'
+                    ? 'arrow-down-wide-narrow'
+                    : 'arrow-up-narrow-wide'
+                  : type === 'active-asc'
+                    ? 'arrow-down-a-z'
+                    : 'arrow-up-z-a'
               }
             />
           </div>
         </Tooltip>
+        {activePlaceholder && dragPosition === 'right' && (
+          <div className="relative h-[90%] w-0.5 rounded-full bg-[#0F7575]">
+            <div className="absolute top-0 flex h-2.5 w-2.5 translate-x-1 items-center justify-center rounded-full bg-[#0F7575]">
+              <div className="h-1.5 w-1.5 rounded-full bg-white"></div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
