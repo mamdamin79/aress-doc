@@ -1,9 +1,15 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
-import PRODUCT_LOGO from '@aress-assets/icons/product_logo.svg';
+import PRODUCT_LOGO from '@aress-assets/icons/fullLogo.svg';
 import { useWindowSize } from '@uidotdev/usehooks';
-import { cn, HeadProfile, ModalProvider, SquaredButton } from 'design-system';
+import {
+  cn,
+  HeadProfile,
+  IconProps,
+  ModalProvider,
+  SquaredButton,
+} from 'design-system';
 import { useHeaderVisibility, useHtmlPaddingRight } from '../../../hooks';
 import { DESKTOP_BREAKPOINT } from './Header.constants';
 import { BurgerMenu } from './BurgerMenu';
@@ -12,7 +18,7 @@ import { MenuData } from './HeaderDataLite';
 import { useWindowScroll } from '@uidotdev/usehooks';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-
+import { useThemeToggle } from '../../../hooks';
 export const HeaderMenu: React.FC = () => {
   const { width } = useWindowSize();
   const pathname = usePathname();
@@ -32,7 +38,11 @@ export const Header: React.FC = () => {
   const [{ y: scrollY }] = useWindowScroll();
   const currentScrollY = scrollY ?? 0;
   const htmlPaddingRight = useHtmlPaddingRight();
-
+  const { toggleTheme, theme } = useThemeToggle();
+  const themeIcons: [IconProps, IconProps] | [IconProps] =
+    theme === 'light'
+      ? [{ name: 'sun' }, { name: 'moon' }]
+      : [{ name: 'moon' }, { name: 'sun' }];
   return (
     <ModalProvider>
       <div>
@@ -71,8 +81,9 @@ export const Header: React.FC = () => {
             }}
           >
             <SquaredButton
-              icons={[{ name: 'sun' }, { name: 'moon' }]}
+              icons={themeIcons}
               badge={{ enabled: false }}
+              onClick={toggleTheme}
             />
             <Link href={'/profile'}>
               <HeadProfile profileImage="https://picsum.photos/200" />

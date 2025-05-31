@@ -99,12 +99,15 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
           >
             ادامه
           </Button>
-          <Link
-            href="/login"
-            className="text-brand-600 text-md text-center font-medium"
+          <Button
+            className="font-medium"
+            align="center"
+            isLoading={false}
+            mode="underline"
+            size="sm"
           >
-            بازگشت به صفحه ورود
-          </Link>
+            <Link href="/login">بازگشت به صفحه ورود</Link>
+          </Button>
         </div>
       </div>
     </form>

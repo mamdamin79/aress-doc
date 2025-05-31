@@ -62,12 +62,12 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
                 reportSubscription="رایگان"
                 fixedBrief={true}
                 // hasVideo has error because of the type of report is old
-                newBadge={report.hasVideo}
+                newBadge={report.isNew}
                 onLike={() =>
                   handleLike(report.identifier, report?.userFavorite ?? false)
                 }
                 userFavorite={report.userFavorite}
-                videoBadge={true}
+                videoBadge={report.hasVideo}
                 {...report}
                 image={baseURL + report.image}
               />
@@ -75,7 +75,7 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
           ))}
         </div>
       ) : (
-        <div className="4xl:w-[1591px] mx-auto flex h-full flex-col items-center justify-start md:w-[512px] xl:w-[904px]">
+        <div className="4xl:w-[1550px] mx-auto flex h-full flex-col items-center justify-start md:w-[512px] xl:w-[904px]">
           <Image
             src={emptyState}
             alt="empty state"
