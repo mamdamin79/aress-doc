@@ -1,3 +1,4 @@
+import { Toaster } from 'react-hot-toast';
 import './global.css';
 import ReactQueryProvider from './providers/ReactQueryProvider';
 
@@ -15,6 +16,12 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ReactQueryProvider>{children}</ReactQueryProvider>
+        <Toaster
+          position="bottom-center"
+          containerStyle={{
+            bottom: 70,
+          }}
+        />
       </body>
     </html>
   );
