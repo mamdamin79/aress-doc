@@ -4,6 +4,7 @@ const sharedConfig = require('../../shared/tailwind/tailwind.config.base');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: [
     join(
       __dirname,
