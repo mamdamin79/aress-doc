@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import React, { useEffect, useState } from 'react';
 import { ReportCardProps, ReportCard } from '../ReportCard';
 import 'keen-slider/keen-slider.min.css';
@@ -35,7 +35,7 @@ export const ReportsCarousel: React.FC<ReportsCarouselProps> = ({ cards }) => {
   useEffect(() => {
     const updateSlidesPerView = () => {
       const containerWidth = instanceRef.current?.container.clientWidth || 0;
-      const possibleSlides = (containerWidth + 20) / (CARD_WIDTH + GAP_WIDTH);
+      const possibleSlides = containerWidth / (CARD_WIDTH + GAP_WIDTH / 2);
       setSlidesPerView(Math.max(1, Math.min(MAX_SLIDES, possibleSlides)));
     };
 

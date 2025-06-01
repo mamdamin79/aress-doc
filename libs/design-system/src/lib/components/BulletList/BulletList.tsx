@@ -3,7 +3,7 @@ import { Icon } from '../Icon';
 
 interface Props {
   items: {
-    title: string;
+    title: React.ReactNode;
     status?: 'normal' | 'error' | 'success';
   }[];
   textColor?: 'semi-dark' | 'dark';

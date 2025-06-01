@@ -40,7 +40,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
     }, 3000);
   };
   return (
-    <div className="bg-baseBackground group relative flex w-[616px] flex-col overflow-hidden shadow-sm">
+    <div className="bg-baseBackground group relative flex w-full flex-col overflow-hidden">
       <SlideFromLeft isOpen={settingsOpen}>
         <ReportSettings
           onSubmit={mockLoading}
@@ -92,26 +92,6 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                 onClick: () => setOptionsListOpen(true),
               },
             },
-            {
-              type: 'basicSelection',
-              props: {
-                title: 'صندوق:',
-                icon: { name: 'square-mouse-pointer', size: 'sm' },
-                status: 'normal',
-                selectedOption: 'مشترک افق روشن سرمایه‌گذاری بانک نوین',
-                onClick: () => setOptionsListOpen(true),
-              },
-            },
-            {
-              type: 'basicSelection',
-              props: {
-                title: 'دسته‌بندی اوراق:',
-                icon: { name: 'square-mouse-pointer', size: 'sm' },
-                status: 'normal',
-                selectedOption: 'کل اوراق',
-                onClick: () => setOptionsListOpen(true),
-              },
-            },
           ]}
         />
       </SlideFromLeft>
@@ -136,14 +116,9 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
             <div></div>
           )}
 
-          <div
-            className={cn(
-              'flex flex-row gap-2',
-              !compactHeader &&
-                'opacity-0 transition-opacity duration-300 group-hover:opacity-100',
-            )}
-          >
-            <DualSwitch {...switchIcons} />
+          <div className={cn('flex flex-row items-center gap-2')}>
+            <DualSwitch {...switchIcons} size="sm" />
+
             {compactHeader ? (
               <div
                 className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-gray-100"
@@ -213,7 +188,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                     align="center"
                     isLoading={false}
                     mode="primary"
-                    size="md"
+                    size="sm"
                   >
                     تلاش مجدد
                   </Button>
@@ -224,7 +199,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                   align="center"
                   isLoading={false}
                   mode="secondary"
-                  size="md"
+                  size="sm"
                   onClick={() => setLoadingStatus(null)}
                 >
                   انصراف

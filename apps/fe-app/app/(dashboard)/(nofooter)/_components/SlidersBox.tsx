@@ -4,6 +4,7 @@ import {
   AddReportButton,
   AutoRotateSwitch,
   AutoRotationOff,
+  cn,
   HorizontalScrollBar,
 } from 'design-system';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
@@ -29,6 +30,8 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useHtmlPaddingRight } from '../../../../hooks';
+import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
+import { Toaster } from 'react-hot-toast';
 
 interface Item {
   id: string;
@@ -64,7 +67,8 @@ function SortableItem({ item }: { item: Item }) {
         <Image
           src={item.content}
           alt="slider-image"
-          fill
+          width={616}
+          height={336}
           className="h-full object-contain"
         />
       )}
@@ -79,6 +83,7 @@ export const SlidersBox: React.FC = () => {
   const [activeRotate, setActiveRotate] = useState<number | null>(null);
   const [barsNumber, setBarsNumber] = useState(0);
   const [isProgamScroll, setIsProgramScroll] = useState(false);
+  const [slidesPerView, setSlidesPerView] = useState(2);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const initialImages = [
@@ -102,15 +107,13 @@ export const SlidersBox: React.FC = () => {
   );
   const [isReportSelectionPopupOpen, setIsReportSelectionPopupOpen] =
     useState(false);
+  const [addReportBoxCount, setAddReportBoxCount] = useState(0);
   function generateTooltips(totalSlides: number): string[] {
-    const slidesPerGroup = window.matchMedia('(min-width: 1280px)').matches
-      ? 4
-      : 2;
-    const groups = Math.ceil(totalSlides / slidesPerGroup);
+    const groups = Math.ceil(totalSlides / slidesPerView);
     const tooltips: string[] = [];
     for (let i = 0; i < groups; i++) {
-      const start = i * slidesPerGroup + 1;
-      const end = Math.min((i + 1) * slidesPerGroup, totalSlides);
+      const start = i * slidesPerView + 1;
+      const end = Math.min((i + 1) * slidesPerView, totalSlides);
       if (start !== end) {
         tooltips.push(`اسلاید ${end}-${start}`);
       } else {
@@ -130,14 +133,15 @@ export const SlidersBox: React.FC = () => {
   // Compute number of scroll positions
   useEffect(() => {
     const calculateBars = () => {
-      const total = items.length + 1; // include AddReportButton
+      const total = items.length + addReportBoxCount; // include AddReportButton
       const cols = window.matchMedia('(min-width: 1280px)').matches ? 4 : 2;
+      setSlidesPerView(cols);
       setBarsNumber(Math.ceil(total / cols));
     };
     calculateBars();
     window.addEventListener('resize', calculateBars);
     return () => window.removeEventListener('resize', calculateBars);
-  }, [items]);
+  }, [items, addReportBoxCount]);
 
   // Manual scroll sync and stop auto-rotate
   useEffect(() => {
@@ -182,8 +186,10 @@ export const SlidersBox: React.FC = () => {
       const bounded = Math.min(Math.max(index, 0), barsNumber - 1);
       setCurrIndex(bounded);
       setIsProgramScroll(true);
+      const scrollAmount =
+        bounded == 0 ? 160 : bounded * CARD_HEIGHT * 2.15 + 160;
       window.scrollTo({
-        top: bounded * CARD_HEIGHT * 2.3 + 80,
+        top: scrollAmount,
         behavior: 'smooth',
       });
     },
@@ -208,8 +214,10 @@ export const SlidersBox: React.FC = () => {
   useEffect(() => {
     if (activeRotate !== null) {
       setIsProgramScroll(true);
+      const scrollAmount =
+        currIndex == 0 ? 160 : currIndex * CARD_HEIGHT * 2.15 + 160;
       window.scrollTo({
-        top: currIndex * CARD_HEIGHT * 1.5 + 80,
+        top: scrollAmount,
         behavior: 'smooth',
       });
     }
@@ -240,9 +248,10 @@ export const SlidersBox: React.FC = () => {
     }
   };
   const htmlPaddingRight = useHtmlPaddingRight();
+  const { showToast } = useCustomToast();
 
   return (
-    <>
+    <div>
       <div className="flex w-full justify-between">
         <DashboardNumberAndName number={2} title="صندوق کالایی" />
         <AutoRotateSwitch
@@ -269,30 +278,56 @@ export const SlidersBox: React.FC = () => {
               {items.map((item) => (
                 <SortableItem key={item.id} item={item} />
               ))}
-              <div className="shadow-6xl relative h-[336px] w-full overflow-hidden rounded-2xl border-2 border-gray-200">
+              {[...Array(addReportBoxCount)].map((_, index) => (
                 <AddReportButton
+                  key={index}
                   onClick={() => setIsReportSelectionPopupOpen(true)}
                 />
-              </div>
+              ))}
+
+              <AddReportButton
+                onClick={() => setIsReportSelectionPopupOpen(true)}
+              />
             </div>
           </SortableContext>
         </section>
       </DndContext>
 
       <div
-        className="fixed right-4 top-1/2 z-10 flex -translate-y-1/2 flex-col items-center gap-2"
+        className={cn(
+          'fixed right-4 top-1/2 z-10 flex -translate-y-1/2 flex-col items-center gap-2',
+          activeRotate && 'pt-1',
+        )}
         style={{
           paddingRight: htmlPaddingRight,
         }}
       >
         <HorizontalScrollBar
-          onChangeIndex={handleScroll}
+          onChangeIndex={(index) => {
+            setActiveRotate(null);
+            handleScroll(index);
+          }}
           barsNumber={barsNumber}
           externalIndex={currIndex}
           autoRotate={Boolean(activeRotate)}
           autoRotateDuration={activeRotate || undefined}
           tooltips={generateTooltips(initialImages.length)}
-          onAddReportClick={() => setIsReportSelectionPopupOpen(true)}
+          onAddReportClick={() => {
+            if (addReportBoxCount + items.length <= 16) {
+              setAddReportBoxCount((prev) => prev + 1);
+              setTimeout(() => {
+                window.scrollTo({
+                  top: document.body.scrollHeight,
+                  behavior: 'smooth',
+                });
+              }, 100);
+            } else {
+              showToast({
+                message: 'حداکثر تعداد گزارش در هر داشبورد 16 عدد است',
+                type: 'warning',
+              });
+            }
+          }}
         />
         {activeRotate && (
           <AutoRotationOff onClick={() => setActiveRotate(null)} />
@@ -310,6 +345,7 @@ export const SlidersBox: React.FC = () => {
         video
         report={tempData}
       />
-    </>
+      <Toaster />
+    </div>
   );
 };

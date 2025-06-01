@@ -60,17 +60,18 @@ import { Person, makeData } from './_components/makeData';
 import { columnVisibility, filterList } from './FundsTable.constants';
 import { ExportExel } from './_components/ExportExel';
 import { Bookmark } from 'libs/design-system/src/lib/components/Bookmark';
+import { useSmartTableScroll } from 'apps/fe-app/hooks/useSmartTableScroll';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
   const [rowMarks, setRowMarks] = useState<{
     [tabIndex: number]: { [id: string]: string };
   }>({});
   const [canScrollVertical, setCanScrollVertical] = useState(false);
-  const [indexCategoryTab, setIndexCategoryTab] = useState(0);
+  const [activeIndexCategoryTab, setActiveIndexCategoryTab] = useState(0);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [data, setData] = useState(() => makeData(500));
-  const [isFilterModal, setIsFilterModal] = useState(false);
-  const [isSettingModal, setIsSettingModal] = useState(false);
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [isScrollAtStart, setIsScrollAtStart] = useState<boolean>(false);
   const [isScrollAtEnd, setIsScrollAtEnd] = useState<boolean>(true);
   const [isScrollTop, setIsScrollTop] = useState(false);
@@ -79,14 +80,26 @@ const Funds = () => {
   const [watchList, setWatchList] = useState<string[]>([]);
   const [pineWatchLis, setPineWatchList] = useState<string[]>([]);
   const [dragOverColumnId, setDragOverColumnId] = useState<string | null>(null);
+  const [activeSortIndex, setActiveSortIndex] = useState(0);
+  const headerRefs = useRef<(HTMLTableHeaderCellElement | null)[]>([]);
+  const [sortIndicatorPosition, setSortIndicatorPosition] = useState({
+    right: headerRefs.current[0]?.offsetLeft,
+    width: 0,
+  });
   const [dragPosition, setDragPosition] = useState<'left' | 'right' | null>(
     null,
+  );
+  const [activeFilters, setActiveFilters] = useState<Record<string, string[]>>(
+    {},
   );
   const [isActiveDropdownPageCount, setIsActiveDropdownPageCount] =
     useState(false);
   const [isRotating, setIsRotating] = useState(false);
   const [activeId, setActiveId] = useState<null | string>(null);
-
+  const { handleScrollRight, handleScrollLeft } = useSmartTableScroll(
+    headerRefs,
+    tableRef,
+  );
   const columns = React.useMemo<ColumnDef<Person>[]>(
     () => [
       {
@@ -238,58 +251,55 @@ const Funds = () => {
     children: React.ReactNode;
     width: number;
   }) => {
-    const { attributes, isDragging, listeners, setNodeRef, transform } =
-      useSortable({
-        id: header.column.id,
-      });
+    const { attributes, listeners, setNodeRef } = useSortable({
+      id: header.column.id,
+    });
 
-    const translate = CSS.Translate.toString(transform);
-    const rotate = isDragging ? ' rotate(-15deg)' : '';
-    const offsetY = isDragging ? ' translateY(35px)' : '';
     const style: CSSProperties = {
-      // opacity: isDragging ? 0.8 : 1,
       position: 'relative',
-      // transform: translate + offsetY + rotate,
       transition: 'width transform 0.2s ease-in-out',
       whiteSpace: 'nowrap',
       width,
     };
 
-useDndMonitor({
-  onDragOver(event) {
-    const overId = event.over?.id;
-    const clientX = (event.activatorEvent as PointerEvent).clientX;
+    useDndMonitor({
+      onDragOver(event) {
+        const overId = event.over?.id;
+        const clientX = (event.activatorEvent as PointerEvent).clientX;
 
-    if (overId && clientX) {
-      const targetEl = document.querySelector(`[data-column-id="${overId}"]`) as HTMLElement;
-      if (!targetEl) return;
+        if (overId && clientX) {
+          const targetEl = document.querySelector(
+            `[data-column-id="${overId}"]`,
+          ) as HTMLElement;
+          if (!targetEl) return;
 
-      const rect = targetEl.getBoundingClientRect();
-      const midpoint = rect.left + rect.width / 2;
+          const rect = targetEl.getBoundingClientRect();
+          const midpoint = rect.left + rect.width / 2;
 
-      if (clientX > midpoint) {
-        setDragPosition('right');
-      } else {
-        setDragPosition('left');
-      }
+          if (clientX > midpoint) {
+            setDragPosition('right');
+          } else {
+            setDragPosition('left');
+          }
 
-      setDragOverColumnId(String(overId));
-    }
-  },
-  onDragEnd() {
-    setDragOverColumnId(null);
-    setDragOverColumnId(null);
-  },
-});
+          setDragOverColumnId(String(overId));
+        }
+      },
+      onDragEnd() {
+        setDragOverColumnId(null);
+        setDragOverColumnId(null);
+      },
+    });
 
     return (
       <th
         data-column-id={header.id}
         {...attributes}
         {...listeners}
-        className={cn(
-          'm-0 h-[64px] w-full bg-[#E3F8F8] p-0 text-sm font-medium',
-        )}
+        className={cn('m-0 h-[64px] w-full bg-[#E3F8F8] text-sm font-medium', {
+          'pr-4 group-hover/table:pr-0': !isScrollAtStart && width !== 144,
+          'pr-2 group-hover/table:pr-0': !isScrollAtStart,
+        })}
         ref={setNodeRef}
         style={style}
       >
@@ -305,7 +315,7 @@ useDndMonitor({
     cell: Cell<Person, unknown>;
     children: React.ReactNode;
   }) => {
-    const { isDragging, setNodeRef } = useSortable({
+    const { setNodeRef } = useSortable({
       id: cell.column.id,
     });
 
@@ -381,54 +391,11 @@ useDndMonitor({
     setUpdateTableHeaders([...table.getHeaderGroups()[0].headers]);
   }, [columnVisibilityHeader, table]);
 
-  const moveColumn = (
-    accessorKey: string,
-    direction: 'left' | 'right' | 'start' | 'end',
-  ) => {
-    setUpdateTableHeaders((prevHeaders) => {
-      const index = prevHeaders.findIndex(
-        (header) => header.column.id === accessorKey,
-      );
-      if (index === -1) return prevHeaders;
-
-      const newHeaders = [...prevHeaders];
-
-      if (direction === 'right' && index > 0) {
-        [newHeaders[index], newHeaders[index - 1]] = [
-          newHeaders[index - 1],
-          newHeaders[index],
-        ];
-      } else if (direction === 'left' && index < newHeaders.length - 1) {
-        [newHeaders[index], newHeaders[index + 1]] = [
-          newHeaders[index + 1],
-          newHeaders[index],
-        ];
-      } else if (direction === 'start' && index > 0) {
-        newHeaders.splice(1, 0, newHeaders.splice(index, 1)[0]);
-      } else if (direction === 'end' && index < newHeaders.length - 1) {
-        newHeaders.push(newHeaders.splice(index, 1)[0]);
-      }
-
-      table.setColumnOrder(newHeaders.map((header) => header.column.id));
-
-      return newHeaders;
-    });
-  };
-
   const isChanged = useMemo(() => {
     return !Object.entries(table.getState().columnVisibility).every(
       ([key, value]) => columnVisibility[key] === value,
     );
   }, [table.getState().columnVisibility]);
-
-  const handlerKeyboardScroll = useCallback(
-    (right: boolean) => {
-      if (tableRef.current) {
-        tableRef.current.scrollLeft += right ? 200 : -200;
-      }
-    },
-    [tableRef], // ensure tableRef is properly stable or use a ref that doesn't change
-  );
 
   const toggleWatchList = (fund: { id: string }) => {
     setWatchList((prev) =>
@@ -462,10 +429,10 @@ useDndMonitor({
     // Keyboard handler for scrolling (horizontal and vertical)
     const keyboardHandler = (e: KeyboardEvent) => {
       if (e.code === 'KeyA') {
-        handlerKeyboardScroll(false);
+        handleScrollRight();
       }
       if (e.code === 'KeyD') {
-        handlerKeyboardScroll(true);
+        handleScrollLeft();
       }
       if (e.code === 'KeyS') {
         tableRef.current?.scrollBy({ top: 100, behavior: 'smooth' });
@@ -483,10 +450,10 @@ useDndMonitor({
         tableRef.current?.scrollBy({ top: -100, behavior: 'smooth' });
       }
       if (e.code === 'ArrowLeft') {
-        handlerKeyboardScroll(false);
+        handleScrollRight();
       }
       if (e.code === 'ArrowRight') {
-        handlerKeyboardScroll(true);
+        handleScrollLeft();
       }
     };
 
@@ -499,7 +466,7 @@ useDndMonitor({
       document.removeEventListener('keypress', keyboardHandler);
       document.removeEventListener('keyup', keyboardArrow);
     };
-  }, [tableRef, handlerKeyboardScroll]);
+  }, [tableRef]);
 
   useEffect(() => {
     startTransition(() => {
@@ -537,21 +504,53 @@ useDndMonitor({
 
   useEffect(() => {
     handlerMouseEnterTable();
-  }, [indexCategoryTab, tableCount]);
+  }, [activeIndexCategoryTab, tableCount]);
 
   const handleColorChange = (id: string, color: string) => {
     setRowMarks((prev) => ({
       ...prev,
-      [indexCategoryTab]: {
-        ...(prev[indexCategoryTab] || {}),
+      [activeIndexCategoryTab]: {
+        ...(prev[activeIndexCategoryTab] || {}),
         [id]: color,
       },
     }));
   };
 
-  console.log(dragPosition);
-  
-  
+  const scrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const startScrollLeft = () => {
+    handleScrollLeft(); // First scroll immediately
+    scrollIntervalRef.current = setInterval(() => {
+      handleScrollLeft();
+    }, 100);
+  };
+
+  // Stop scrolling
+  const stopScroll = () => {
+    if (scrollIntervalRef.current) {
+      clearInterval(scrollIntervalRef.current);
+      scrollIntervalRef.current = null;
+    }
+  };
+
+  const startScrollRight = () => {
+    handleScrollRight(); // First scroll immediately
+    scrollIntervalRef.current = setInterval(() => {
+      handleScrollRight();
+    }, 100);
+  };
+
+  useEffect(() => {
+    const handleGlobalMouseUp = () => {
+      stopScroll();
+    };
+
+    window.addEventListener('mouseup', handleGlobalMouseUp);
+    return () => {
+      window.removeEventListener('mouseup', handleGlobalMouseUp);
+    };
+  }, []);
+
   return (
     <>
       <div
@@ -561,9 +560,9 @@ useDndMonitor({
         )}
       >
         <Tabs
-          variant="shaped"
-          onClickTab={(e) => setIndexCategoryTab(e)}
-          activeTab={indexCategoryTab}
+          variant="shaped-color"
+          onClickTab={(e) => setActiveIndexCategoryTab(e)}
+          activeTab={activeIndexCategoryTab}
           colorMode="neutral"
           tabs={[
             { title: 'سهامی', tag: 'green', id: '1' },
@@ -576,6 +575,7 @@ useDndMonitor({
           </div>
         </Tooltip>
       </div>
+
       <div
         dir="ltr"
         className={cn(
@@ -600,6 +600,13 @@ useDndMonitor({
           >
             <DndContext
               onDragStart={(event) => {
+                if (
+                  event?.active?.data?.current?.target?.closest(
+                    '.icon-sort-cell',
+                  )
+                ) {
+                  event.activatorEvent.cancelable;
+                }
                 setIsRotating(true);
                 setActiveId(String(event.active.id));
               }}
@@ -612,12 +619,40 @@ useDndMonitor({
             >
               <thead className="group sticky right-0 top-0 z-50 m-0 p-0 duration-300 [box-shadow:0_2px_0_#bcebeb]">
                 <tr>
-                  <th className="sticky right-[340px] z-50 mt-5 p-0">
+                  <div
+                    style={{
+                      transform:
+                        activeSortIndex !== 0
+                          ? `translateX(-${sortIndicatorPosition.right}px)`
+                          : '',
+                      width:
+                        activeSortIndex !== 0
+                          ? `${sortIndicatorPosition.width}px`
+                          : '',
+                    }}
+                    className={cn('duration-300', {
+                      'absolute bottom-0 z-20 transition-transform':
+                        activeSortIndex !== 0,
+                      'transition group-hover/table:-right-2':
+                        activeSortIndex !== 0 && canScrollVertical,
+                      'group-hover/table:-right-0':
+                        activeSortIndex !== 0 &&
+                        canScrollVertical &&
+                        isScrollAtStart,
+                      'fixed right-[215px] top-[240px] z-10 w-fit':
+                        activeSortIndex === 0,
+                      'top-[157px]': activeSortIndex === 0 && !isHeaderVisible,
+                    })}
+                  >
+                    <div className="bg-brand-600 mx-auto h-1.5 w-16 rounded-t-[10px]"></div>
+                  </div>
+                  <div className="sticky right-[340px] z-30 mt-5 p-0">
                     {isScrollAtStart && (
                       <div className="hidden group-hover:block">
                         <Tooltip title="پیمایش به راست (D)">
                           <button
-                            onClick={() => handlerKeyboardScroll(true)}
+                            onMouseDown={startScrollLeft}
+                            // onMouseLeave={stopScroll}
                             className={cn(
                               'bg-brand-600 rounded-md p-1 text-white',
                             )}
@@ -627,24 +662,19 @@ useDndMonitor({
                         </Tooltip>
                       </div>
                     )}
-                  </th>
+                  </div>
                   <SortableContext
                     items={columnOrder.slice(1)}
                     strategy={horizontalListSortingStrategy}
                   >
-                    {table.getHeaderGroups()[0].headers.map((header, index) => {                      
+                    {table.getHeaderGroups()[0].headers.map((header, index) => {
                       return (
                         <>
                           {index === 0 && (
                             <th
-                              // ref={(el) => {
-                              //     headerRefs.current[index] = el;
-                              //   }             //   if (headerRefs?.current) {
-
-                              // }}
                               key={index}
                               className={cn(
-                                'sticky right-0 top-0 z-40 m-0 h-[64px] w-[385px] border-b bg-[#E3F8F8] py-0 pr-2',
+                                'sticky right-0 top-0 z-20 m-0 h-[64px] w-[385px] border-b bg-[#E3F8F8] py-0 pr-2',
                                 {
                                   'group-hover/table:pr-0':
                                     canScrollVertical &&
@@ -653,170 +683,86 @@ useDndMonitor({
                               )}
                             >
                               <div
-                                {...{
-                                  className: header.column.getCanSort()
-                                    ? 'cursor-pointer w-full h-[75px] select-none'
-                                    : '',
-                                }}
+                                className={cn({
+                                  'h-[75px] w-[385px] select-none bg-[#E3F8F8]':
+                                    header.column.getCanSort(),
+                                  'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]':
+                                    isScrollAtStart,
+                                })}
                               >
-                                <OptionsDropdown
-                                  className="!shadow-8xl"
-                                  dropDownStyles={{
-                                    size: 'md',
-                                    anchor: 'bottom',
-                                    bg: 'primary',
-                                    emphasize: 'medium',
-                                    checkSelected: true,
-                                  }}
-                                  customOptionRender={(prop) => (
+                                <div className="mr-[75px] flex bg-[#E3F8F8]">
+                                  <div className="mr-24">
+                                    <FundsColumn
+                                      activeSorticon={
+                                        !!header.column.getIsSorted()
+                                      }
+                                      active={true}
+                                      clickFilterd={() => {
+                                        setActiveSortIndex(0);
+                                        header.column.toggleSorting(
+                                          header.column.getIsSorted() === 'desc'
+                                            ? false
+                                            : true,
+                                        );
+                                      }}
+                                      size="medium"
+                                      shadow={false}
+                                      type={
+                                        header.column.getIsSorted() === 'asc'
+                                          ? 'active-asc'
+                                          : header.column.getIsSorted() ===
+                                              'desc'
+                                            ? 'inactive'
+                                            : 'inactive'
+                                      }
+                                      filterable={columnFilters.some(
+                                        (filterItem) =>
+                                          filterItem.id === header.id,
+                                      )}
+                                      title={String(
+                                        flexRender(
+                                          header.column.columnDef.header,
+                                          header.getContext(),
+                                        ),
+                                      )}
+                                      sortType={'alphabetical'}
+                                    />
+                                  </div>
+                                </div>
+
+                                <div className="absolute top-[25px] flex items-center gap-2 pr-[24px]">
+                                  <Tooltip title="انتخاب ستون‌ها">
                                     <div
                                       onClick={() => {
-                                        if (
-                                          prop.text === 'مرتب سازی (ی-الف)' &&
-                                          header.column.getIsSorted() !== 'desc'
-                                        ) {
-                                          header.column.toggleSorting(true);
-                                        }
-                                        if (
-                                          prop.text === 'مرتب سازی (الف-ی)' &&
-                                          header.column.getIsSorted() !== 'asc'
-                                        ) {
-                                          header.column.toggleSorting(false);
-                                        }
+                                        setIsSettingModalOpen(true);
                                       }}
-                                      className={cn(
-                                        'hover:bg-brand-50 hover:text-brand-800 flex w-[184px] cursor-pointer items-center gap-2 overflow-y-hidden bg-white p-2 text-sm font-medium',
-                                        {
-                                          'text-brand-800':
-                                            (header.column.getIsSorted() ===
-                                              'desc' &&
-                                              prop.text ===
-                                                'مرتب سازی نزولی') ||
-                                            (header.column.getIsSorted() ===
-                                              'asc' &&
-                                              prop.text === 'مرتب سازی صعودی'),
-                                        },
-                                      )}
+                                      className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
                                     >
-                                      {prop.icon?.name && (
-                                        <Icon
-                                          name={prop.icon?.name}
-                                          size={prop.icon?.size}
-                                        />
+                                      {isChanged && (
+                                        <div className="absolute -right-1 -top-1 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
                                       )}
-                                      {prop.text}
+                                      <Icon size="lg" name="settings" />
                                     </div>
-                                  )}
-                                  customTriggerRender={({ isActive }) => (
+                                  </Tooltip>
+                                  <Tooltip title="فیلتر صندوق‌ها">
                                     <div
-                                      className={cn(
-                                        'flex w-[385px] bg-[#E3F8F8]',
-                                        {
-                                          'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]':
-                                            isScrollAtStart,
-                                        },
-                                      )}
+                                      onClick={() => {
+                                        setIsFilterModalOpen(true);
+                                      }}
+                                      className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
                                     >
-                                      <div className="mr-5">
-                                        <FundsColumn
-                                          active={isActive}
-                                          clickFilterd={() => {
-                                            // setSortIndex(0);
-                                            header.column.toggleSorting(
-                                              header.column.getIsSorted() ===
-                                                'desc'
-                                                ? false
-                                                : true,
-                                            );
-                                          }}
-                                          size="extraLarg"
-                                          shadow={false}
-                                          type={
-                                            header.column.getIsSorted() ===
-                                            'asc'
-                                              ? 'active-asc'
-                                              : header.column.getIsSorted() ===
-                                                  'desc'
-                                                ? 'inactive'
-                                                : 'inactive'
-                                          }
-                                          filterable={columnFilters.some(
-                                            (filterItem) =>
-                                              filterItem.id === header.id,
-                                          )}
-                                          title={String(
-                                            flexRender(
-                                              header.column.columnDef.header,
-                                              header.getContext(),
-                                            ),
-                                          )}
-                                          sortType={'alphabetical'}
-                                        />
-                                      </div>
-
-                                      <div className="absolute top-5 flex items-center gap-2 pr-[24px]">
-                                        <Tooltip title="انتخاب ستون‌ها">
-                                          <div
-                                            onClick={() => {
-                                              setIsSettingModal(true);
-                                            }}
-                                            className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
-                                          >
-                                            {isChanged && (
-                                              <div className="absolute -right-1 -top-1 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
-                                            )}
-                                            <Icon size="lg" name="settings" />
-                                          </div>
-                                        </Tooltip>
-                                        <Tooltip title="فیلتر صندوق‌ها">
-                                          <div
-                                            onClick={() => {
-                                              setIsFilterModal(true);
-                                            }}
-                                            className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
-                                          >
-                                            {(Object.entries(selectedFilters)
-                                              .length > 0 ||
-                                              fundSearchQuery) && (
-                                              <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
-                                            )}
-                                            <Icon size="lg" name="filter" />
-                                          </div>
-                                        </Tooltip>
-                                      </div>
+                                      {(Object.entries(activeFilters).length >
+                                        0 ||
+                                        fundSearchQuery) && (
+                                        <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
+                                      )}
+                                      <Icon size="lg" name="filter" />
                                     </div>
-                                  )}
-                                  dropDownList={[
-                                    {
-                                      text: 'مرتب سازی (الف-ی)',
-                                      icon: {
-                                        name: 'arrow-down-a-z',
-                                        size: 'md',
-                                      },
-                                    },
-                                    {
-                                      text: 'مرتب سازی (ی-الف)',
-                                      icon: {
-                                        name: 'arrow-up-z-a',
-                                        size: 'md',
-                                      },
-                                    },
-                                  ]}
-                                />
+                                  </Tooltip>
+                                </div>
                               </div>
                             </th>
                           )}
-                          {/* {dragOverColumnId === header.id && (
-                            <div
-                              className={cn(
-                                'absolute top-0 w-1 h-10 z-50 bg-red-500 transition-all duration-100',
-                                {
-                                  'left-0': dragPosition === 'left',
-                                  'right-0': dragPosition === 'right',
-                                },
-                              )}
-                            />
-                          )} */}
                           {index > 0 && (
                             <DraggableTableHeader
                               width={
@@ -827,12 +773,48 @@ useDndMonitor({
                                   ),
                                 ).length > 10
                                   ? 200
-                                  : 144
+                                  : 140
                               }
                               key={header.id}
                               header={header}
                             >
-                              <th key={index} colSpan={header.colSpan}>
+                              <th
+                                ref={(el) => {
+                                  if (headerRefs?.current) {
+                                    headerRefs.current[index] = el;
+                                  }
+                                }}
+                                key={index}
+                                className={cn(
+                                  'm-0 h-[64px] w-full text-nowrap bg-[#E3F8F8] text-sm font-medium',
+                                  String(
+                                    flexRender(
+                                      header.column.columnDef.header,
+                                      header.getContext(),
+                                    ),
+                                  ).length > 10
+                                    ? 'w-[200px]'
+                                    : 'w-[144px]',
+                                  {
+                                    'pr-4 group-hover/table:pr-0':
+                                      !isScrollAtStart &&
+                                      String(
+                                        flexRender(
+                                          header.column.columnDef.header,
+                                          header.getContext(),
+                                        ),
+                                      ).length > 10,
+                                    'pr-2 group-hover/table:pr-0':
+                                      !isScrollAtStart &&
+                                      String(
+                                        flexRender(
+                                          header.column.columnDef.header,
+                                          header.getContext(),
+                                        ),
+                                      ).length > 10,
+                                  },
+                                )}
+                              >
                                 {index >= 2 && header.isPlaceholder ? null : (
                                   <div
                                     {...{
@@ -845,15 +827,18 @@ useDndMonitor({
                                       dragPosition={dragPosition ?? 'left'}
                                       active={!isRotating}
                                       activeStyle={header.id === activeId}
-                                      activePlaceholder={activeId !== header.id && dragOverColumnId === header.id}
+                                      activePlaceholder={
+                                        activeId !== header.id &&
+                                        dragOverColumnId === header.id
+                                      }
                                       defaultSort={() => {
                                         updateTableHeaders[0].column.getToggleSortingHandler()?.(
                                           new Event('click'),
                                         );
-                                        // setSortIndex(0);
+                                        setActiveSortIndex(0);
                                       }}
                                       clickFilterd={() => {
-                                        // setSortIndex(index);
+                                        setActiveSortIndex(index);
                                         header.column.getToggleSortingHandler()?.(
                                           new Event('click'),
                                         );
@@ -937,7 +922,8 @@ useDndMonitor({
                   <div className="fixed left-[35px] m-0 mt-5">
                     {isScrollAtEnd && (
                       <div
-                        onClick={() => handlerKeyboardScroll(false)}
+                        onMouseDown={startScrollRight}
+                        // onMouseLeave={stopScroll}
                         className={cn('hidden group-hover:block')}
                       >
                         <Tooltip title="پیمایش به چپ (A)">
@@ -959,7 +945,7 @@ useDndMonitor({
 
             <tbody className="relative w-full overflow-hidden">
               {(() => {
-                const isMainTab = indexCategoryTab === 0;
+                const isMainTab = activeIndexCategoryTab === 0;
                 const allRows = table.getRowModel().rows;
                 const pinnedIds = isMainTab
                   ? allRows.filter((r) => r.getIsPinned()).map((r) => r.id)
@@ -1024,8 +1010,9 @@ useDndMonitor({
                                   >
                                     <Bookmark
                                       selectedColor={
-                                        rowMarks[indexCategoryTab]?.[row.id] ||
-                                        ''
+                                        rowMarks[activeIndexCategoryTab]?.[
+                                          row.id
+                                        ] || ''
                                       }
                                       onColorChange={(color) =>
                                         handleColorChange(row.id, color)
@@ -1272,8 +1259,8 @@ useDndMonitor({
 
       <Dialog
         className="min-w-[570px] p-0"
-        onClose={() => setIsSettingModal(false)}
-        isOpen={isSettingModal}
+        onClose={() => setIsSettingModalOpen(false)}
+        isOpen={isSettingModalOpen}
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center justify-between">
@@ -1359,8 +1346,8 @@ useDndMonitor({
       </Dialog>
       <Dialog
         className="h-[696px] w-[416px] p-0"
-        onClose={() => setIsFilterModal(false)}
-        isOpen={isFilterModal}
+        onClose={() => setIsFilterModalOpen(false)}
+        isOpen={isFilterModalOpen}
       >
         <div className="scrollbar-md mb-4 w-full overflow-x-hidden rounded-3xl bg-white text-right">
           <FilterPopUpSection

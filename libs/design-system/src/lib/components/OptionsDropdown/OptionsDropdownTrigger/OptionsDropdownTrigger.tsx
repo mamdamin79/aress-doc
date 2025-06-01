@@ -12,6 +12,7 @@ export interface triggerCell extends Omit<DropdownCell, 'withCheck'> {
   size?: DropdownSize;
   bg?: DropdownBg;
   emphasize?: DropdownEmphasize;
+  className?: string;
 }
 export const OptionsDropdownTrigger: React.FC<triggerCell> = ({
   text,
@@ -21,6 +22,7 @@ export const OptionsDropdownTrigger: React.FC<triggerCell> = ({
   bg = 'primary',
   emphasize = 'medium',
   size = 'md',
+  className
 }) => {
   const detectBgStylings = () => {
     if (bg === 'primary') {
@@ -53,6 +55,7 @@ export const OptionsDropdownTrigger: React.FC<triggerCell> = ({
         size === 'md' && 'h-[40px] text-sm',
         size === 'lg' && 'text-md h-[46px]',
         detectBgStylings(),
+        className
       )}
     >
       <div className="flex flex-row items-center gap-1">

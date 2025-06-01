@@ -1,5 +1,6 @@
 'use client';
-const data = [
+import { cn, FundsSidebar, type FundsSidebarData } from 'design-system';
+const data: FundsSidebarData[] = [
   {
     changeValue: 23,
     chartData: {
@@ -111,7 +112,6 @@ const data = [
     title: 'صندوق تک سهم بورس',
   },
 ];
-import { cn, FundsSidebar } from 'design-system';
 import React from 'react';
 import { useHeaderVisibility } from '../../../../hooks';
 export const FundsSidebarWrapper: React.FC = () => {

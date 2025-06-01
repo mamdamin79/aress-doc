@@ -7,10 +7,17 @@ import { FundsTag } from '../FundsTag';
 
 interface Props {
   tabs: TabItem[];
-  variant: 'shaped' | 'divided' | 'lined' | 'rounded' | 'rounded-full';
+  variant:
+    | 'shaped'
+    | 'divided'
+    | 'lined'
+    | 'rounded'
+    | 'rounded-full'
+    | 'shaped-color';
   colorMode: 'neutral' | 'inverse';
   activeTab: number;
   onClickTab: (idTab: number) => void;
+  className?: string;
 }
 
 export const Tabs: React.FC<Props> = ({
@@ -19,6 +26,7 @@ export const Tabs: React.FC<Props> = ({
   onClickTab,
   colorMode,
   activeTab,
+  className,
 }) => {
   return (
     <TabGroup
@@ -26,6 +34,7 @@ export const Tabs: React.FC<Props> = ({
       onChange={(index) => {
         onClickTab(index);
       }}
+      className={className}
     >
       <TabList
         className={cn(
@@ -45,6 +54,21 @@ export const Tabs: React.FC<Props> = ({
             key={index}
             className={cn(
               'text-md relative outline-none',
+              {
+                'flex h-[34px] items-center gap-1 rounded-md border border-[#F3F4F6] bg-[#F3F4F6] py-1 pl-2 pr-2 text-sm font-medium text-[#06080F]':
+                  variant === 'shaped-color',
+                'pr-2': variant === 'shaped-color' && !props.tag,
+                'hover:border-blue-200 hover:bg-blue-50 data-[selected]:border-blue-300 data-[selected]:bg-blue-100 data-[selected]:text-blue-700':
+                  variant === 'shaped-color' && props.tag === 'blue',
+                'hover:border-green-200 hover:bg-green-50 data-[selected]:border-green-300 data-[selected]:bg-green-100 data-[selected]:text-green-700':
+                  variant === 'shaped-color' && props.tag === 'green',
+                'hover:border-yellow-200 hover:bg-yellow-50 data-[selected]:border-yellow-300 data-[selected]:bg-yellow-100 data-[selected]:text-yellow-700':
+                  variant === 'shaped-color' && props.tag === 'yellow',
+                'hover:border-purple-200 hover:bg-purple-50 data-[selected]:border-purple-300 data-[selected]:bg-purple-100 data-[selected]:text-purple-700':
+                  variant === 'shaped-color' && props.tag === 'purple',
+                'hover:border-[#B3B6BD] hover:bg-[#F3F4F6] data-[selected]:border-[#8F9299] data-[selected]:bg-[#E1E2E5]':
+                  variant === 'shaped-color' && !props.tag,
+              },
               {
                 'data-[selected]:bg-brand-600 relative min-w-40 rounded-t-xl py-2 text-center text-gray-600 hover:text-gray-700 data-[selected]:font-semibold data-[selected]:text-white':
                   variant === 'lined',
@@ -125,9 +149,8 @@ export const Tabs: React.FC<Props> = ({
                     )}
                   ></div>
                 )}
-                {variant === 'rounded-full' && props.tag && (
-                  <FundsTag color={props.tag} />
-                )}
+                {(variant === 'rounded-full' || variant === 'shaped-color') &&
+                  props.tag && <FundsTag color={props.tag} />}
                 {variant === 'shaped' ? (
                   <div className="flex items-center gap-2">
                     {props.tag && <FundsTag color={props.tag} />}

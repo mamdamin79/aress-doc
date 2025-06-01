@@ -1,17 +1,13 @@
 'use client';
-import {
-  BulletList,
-  IconDialog,
-  NotesHeading,
-  ProgressBar,
-  SectionTitle,
-} from 'design-system';
+import { IconDialog, ProgressBar } from 'design-system';
 
 import React, { useState } from 'react';
 import RESET_PASSWORD from '@aress-assets/icons/ResetPassword.svg';
 import Image from 'next/image';
-import { NewPasswordForm, OTPForm, ResetPasswordForm } from '../../components';
-import Logo from '@aress-assets/icons/product_logo.svg';
+import Logo from '@aress-assets/icons/fullLogo.svg';
+import LogoWithText from '@aress-assets/icons/LogoWithText.svg';
+import { Notice } from './_components/Notice';
+import { FormWrapper } from './_components';
 
 const ForgotPasswordPage = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -19,18 +15,21 @@ const ForgotPasswordPage = () => {
 
   return (
     <div className="flex h-full justify-center">
-      <div className="max-w-screen-3xl flex w-full flex-col items-start justify-center gap-10 pt-[46px]">
-        <div className="relative flex w-full items-center justify-center">
-          <div className="absolute right-0 top-0 mr-8">
-            <div className="flex items-center gap-4">
+      <div className="max-w-screen-3xl flex w-full flex-col items-start justify-center gap-6 pt-[46px]">
+        <div className="flex w-full items-center justify-center">
+          <div className="absolute left-1/2 top-[34px] flex -translate-x-1/2 justify-center md:left-auto md:right-0 md:mr-8 md:translate-x-0">
+            <div className="hidden items-center gap-4 py-3 xl:flex">
               <Image alt="logo" src={Logo} width={38} height={38} />
               <h1 className="text-lg font-semibold">
                 پردازش اطلاعات مالی آرسس
               </h1>
             </div>
+            <div className="flex xl:hidden">
+              <Image alt="logo" src={LogoWithText} width={56} height={56} />
+            </div>
           </div>
           <div>
-            <div className="mx-auto w-[680px] pt-3">
+            <div className="mx-auto w-[534px] pt-20 md:pt-3 xl:w-[680px]">
               <ProgressBar
                 activeIndex={activeIndex}
                 progressBarItems={[
@@ -42,27 +41,14 @@ const ForgotPasswordPage = () => {
             </div>
           </div>
         </div>
-        <div className="flex w-full flex-row gap-20 px-[152px]">
-          <div className="mt-10 w-[528px]">
-            {activeIndex === 0 && (
-              <ResetPasswordForm onSubmit={() => setActiveIndex(1)} />
-            )}
-            {activeIndex === 1 && (
-              <div className="rounded-2xl border border-gray-300 p-6">
-                <OTPForm
-                  onSubmit={() => setActiveIndex(2)}
-                  backBtnLabel="ویرایش شماره"
-                  title="بازنشانی رمز عبور"
-                  onBackBtn={() => setActiveIndex(0)}
-                  description="جهت تغییر رمز عبور، ابتدا کد تایید ارسال شده به شماره 09339133225 را وارد کنید."
-                />
-              </div>
-            )}
-            {activeIndex === 2 && (
-              <NewPasswordForm onSubmit={() => setIsIconDialogOpen(true)} />
-            )}
-          </div>
-          <div className="flex w-1/2 flex-col gap-4 pt-10">
+
+        <div className="flex w-full flex-col items-center justify-center gap-8 lg:flex-row">
+          <FormWrapper
+            activeIndex={activeIndex}
+            setActiveIndex={setActiveIndex}
+            setIsIconDialogOpen={setIsIconDialogOpen}
+          />
+          <div className="hidden w-[448px] flex-col gap-4 lg:flex xl:w-[528px]">
             <Image
               alt="vector"
               src={RESET_PASSWORD}
@@ -70,22 +56,10 @@ const ForgotPasswordPage = () => {
               height={360}
               className="w-full max-w-[468px] px-8"
             />
-            {activeIndex !== 1 && (
-              <div className="flex flex-col gap-4">
-                <NotesHeading
-                  icon={{ name: 'info', size: 'lg' }}
-                  title={'فرایند بازنشانی رمز عبور'}
-                />
-                <BulletList
-                  items={[
-                    {
-                      title: `کد ملی و شماره تماسی که هنگام ثبت نام از آن استفاده کرده‌اید را وارد کنید. ما کد بازیابی
-                    رمز عبور را برای شما پیامک می‌کنیم تا از آن برای ساخت رمز عبور جدید استفاده کنید.`,
-                    },
-                  ]}
-                />
-              </div>
-            )}
+            {activeIndex !== 1 && <Notice />}
+          </div>
+          <div className="block w-[448px] pb-20 lg:hidden xl:w-[528px]">
+            {activeIndex !== 1 && <Notice />}
           </div>
         </div>
       </div>

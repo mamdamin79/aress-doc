@@ -18,6 +18,7 @@ interface Props {
   activePlaceholder?: boolean;
   dragPosition?: 'right' | 'left';
   activeStyle?: boolean;
+  activeSorticon?: boolean;
 }
 
 export function FundsColumn({
@@ -30,6 +31,7 @@ export function FundsColumn({
   sortType,
   filterable,
   type,
+  activeSorticon = false,
   clickFilterd,
   activePlaceholder = false,
   defaultSort,
@@ -41,24 +43,40 @@ export function FundsColumn({
     setSortTypeValue(type);
   }, [type]);
 
+  const [showLine, setShowLine] = useState(false);
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    if (activeSorticon) {
+      timeout = setTimeout(() => {
+        setShowLine(true);
+      }, 300);
+    } else {
+      setShowLine(false);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [activeSorticon]);
+
   return (
     <div
       className={cn(
         {
-          'w-28': size === 'small',
-          'w-36': size === 'medium',
-          'w-[200px]': size === 'large',
-          'w-[312px]': size === 'extraLarg',
+          // 'w-28': size === 'small',
+          // 'w-36': size === 'medium',
+          // 'w-[215px]': size === 'large',
+          // 'w-[312px]': size === 'extraLarg',
           'shadow-4xl': shadow && size === 'extraLarg',
           'bg-pink-200': size === 'extraLarg' && filterable && !active,
           'bg-[#E3F8F8]': size === 'extraLarg' && !filterable,
           'bg-pink-300': active && size !== 'extraLarg' && filterable,
-          'bg-[#BCEBEB]': (active && size !== 'extraLarg' && !filterable) || activeStyle,
+          'bg-[#BCEBEB]':
+            (active && size !== 'extraLarg' && !filterable) || activeStyle,
           'bg-[#E3F8F8] hover:bg-[#BCEBEB]':
             !filterable && size !== 'extraLarg' && active,
           'bg-pink-200 hover:bg-pink-300': filterable && size !== 'extraLarg',
         },
-        'group/first cursor-pointer',
+        'group/first cursor-pointer w-full',
       )}
     >
       <div
@@ -75,17 +93,20 @@ export function FundsColumn({
           },
         )}
       >
-        {activePlaceholder && dragPosition === 'left' && (
-          <div className="relative h-[90%] w-0.5 rounded-full bg-[#0F7575]">
+          <div className={cn("relative invisible h-[90%] w-0.5 rounded-full bg-[#0F7575]", {
+            'visible': activePlaceholder && dragPosition === 'left'
+          })}>
             <div className="absolute top-0 flex h-2.5 w-2.5 translate-x-1 items-center justify-center rounded-full bg-[#0F7575]">
               <div className="h-1.5 w-1.5 rounded-full bg-white"></div>
             </div>
           </div>
-        )}
         <div className={cn(filterable ? 'visible' : 'invisible')}>
           <Icon name="filter" />
         </div>
 
+        {activeSorticon && showLine && (
+          <div className="bg-brand-600 absolute bottom-0 h-1.5 w-16 rounded-t-md"></div>
+        )}
         <div className="font-] flex flex-col text-sm">
           <span>{title}</span>
           <span>
@@ -97,6 +118,7 @@ export function FundsColumn({
         </div>
 
         <Tooltip
+          className="text-md z-50 font-semibold"
           title={
             sortType === 'ranked'
               ? type === 'inactive'
@@ -112,9 +134,7 @@ export function FundsColumn({
           }
         >
           <div
-            onClick={(e) => {
-              e.stopPropagation();
-              e.nativeEvent.stopImmediatePropagation();
+            onClick={() => {
               if (typeof clickFilterd === 'function') {
                 clickFilterd();
               }
@@ -124,7 +144,7 @@ export function FundsColumn({
             }}
             className={cn(
               {
-                'invisible text-[#545962] group-hover/first:visible':
+                'invisible text-[#545962] group-hover/first:visible icon-sort-cell':
                   type === 'inactive',
               },
               'hover:bg-brand-600 rounded-md p-1 duration-150 hover:text-white',
@@ -143,13 +163,13 @@ export function FundsColumn({
             />
           </div>
         </Tooltip>
-        {activePlaceholder && dragPosition === 'right' && (
-          <div className="relative h-[90%] w-0.5 rounded-full bg-[#0F7575]">
+          <div className={cn("relative invisible h-[90%] w-0.5 rounded-full bg-[#0F7575]", {
+            'visible': activePlaceholder && dragPosition === 'right'
+          })}>
             <div className="absolute top-0 flex h-2.5 w-2.5 translate-x-1 items-center justify-center rounded-full bg-[#0F7575]">
               <div className="h-1.5 w-1.5 rounded-full bg-white"></div>
             </div>
           </div>
-        )}
       </div>
     </div>
   );

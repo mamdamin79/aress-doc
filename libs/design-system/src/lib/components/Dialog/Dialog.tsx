@@ -1,5 +1,5 @@
 'use client';
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import {
   Dialog as HeadlessDialog,
   DialogPanel,
@@ -24,9 +24,29 @@ export const Dialog: React.FC<DialogProps> = ({
   className,
   showCloseBtn = true,
 }) => {
+  const [scrollbarWidth, setScrollbarWidth] = useState('15px');
+  useEffect(() => {
+    const html = document.documentElement;
+    setScrollbarWidth(window.innerWidth - document.body.clientWidth + 'px');
+
+    if (isOpen) {
+      html.style.paddingRight = scrollbarWidth;
+      html.style.overflow = 'hidden';
+    } else {
+      html.style.paddingRight = '';
+      html.style.overflow = '';
+    }
+
+    return () => {
+      html.style.paddingRight = '';
+      html.style.overflow = '';
+    };
+  }, [isOpen]);
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <HeadlessDialog
+        static
         as="div"
         className="relative z-[100] w-screen"
         aria-label="Close dialog"
@@ -60,16 +80,18 @@ export const Dialog: React.FC<DialogProps> = ({
                   'relative transform rounded-2xl border-2 border-gray-300 bg-white p-6 text-left align-middle transition-all',
                   className,
                 )}
+                style={{
+                  marginRight: isOpen ? scrollbarWidth : '0',
+                }}
               >
                 {showCloseBtn && (
                   <button
                     onClick={onClose}
-                    className="absolute z-10 left-0 top-0 -ml-2 -mt-2 flex items-center justify-center rounded-full shadow-lg"
+                    className="absolute left-0 top-0 z-10 -ml-2 -mt-2 flex items-center justify-center rounded-full shadow-lg"
                   >
                     <Icon name="CustomCirlcleX" size="lg_plus" />
                   </button>
                 )}
-
                 {children}
               </DialogPanel>
             </TransitionChild>

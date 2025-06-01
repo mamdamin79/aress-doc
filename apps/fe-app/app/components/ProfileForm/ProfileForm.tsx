@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   Button,
   Icon,
@@ -28,6 +28,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
   phoneNumber,
   username,
   image,
+  onImageChange,
 }) => {
   const [editDialog, setEditDialog] = useState<editDialogStatus>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -38,10 +39,10 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
     if (!croppedImage) return console.error('Cropped image is null');
     setSelectedImage(null);
     setIsLoading(true);
-
     try {
       const blob = await (await fetch(croppedImage)).blob();
       setProfileImage(URL.createObjectURL(blob));
+      onImageChange?.(URL.createObjectURL(blob));
     } catch (error) {
       console.error('Failed to convert Blob URL to Blob:', error);
     } finally {
@@ -52,6 +53,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
   const [iconDialogText, setIconDialogText] = useState<editDialogVerbs>(
     editDialogVerbs.phoneNumber,
   );
+
 
   const formSchema: FormSchemaType[] = [
     {

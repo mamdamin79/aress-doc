@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useReducer, useRef } from 'react';
 import Hls from 'hls.js'; // Import HLS.js
 import { VideoQuality } from './types';
+import { usePathname, useRouter } from 'next/navigation';
 
 interface videoState {
   isPlaying: boolean;
@@ -437,16 +438,30 @@ export const useVideo = (
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [state.isPlaying]);
 
+  const router = useRouter();
+
   const play = useCallback(() => videoRef.current?.play(), []);
   const pause = useCallback(() => videoRef.current?.pause(), []);
   const changeQuality = useCallback((quality: VideoQuality) => {
     dispatch({ type: 'SET_QUALITY', quality });
   }, []);
 
-  const pictureInPicture = useCallback(
-    () => videoRef.current?.requestPictureInPicture(),
-    [],
-  );
+  const pathName = usePathname();
+
+  const pictureInPicture = useCallback(() => {
+    videoRef.current?.requestPictureInPicture();
+
+    videoRef.current?.addEventListener('leavepictureinpicture', (e) => {
+      // Only handle if the tab is visible (user is on this tab)
+      if (document.visibilityState === 'visible') {
+        router.replace(pathName);
+        const oldVideoRef = e.target as HTMLVideoElement;
+        oldVideoRef.pause(); // destroy
+      }
+      // If not visible, do nothing (don't pause or route)
+    });
+  }, [pathName, router]);
+
   const seek = (newProgress: number) => {
     if (videoRef.current) {
       const newTime = (newProgress / 100) * videoRef.current.duration;
@@ -508,6 +523,14 @@ export const useVideo = (
   }, []);
 
   const fullScreen = useCallback(() => {
+    const activeElement = document.activeElement;
+
+    // Check if the focused element is an input or textarea or contenteditable
+    const isTyping =
+      activeElement?.tagName === 'INPUT' ||
+      activeElement?.tagName === 'TEXTAREA';
+
+    if (isTyping) return;
     if (videoContainerRef.current) {
       if (document.fullscreenElement) {
         document.exitFullscreen();

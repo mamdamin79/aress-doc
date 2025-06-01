@@ -13,7 +13,6 @@ export type Props = {
   anchor?: MenuItemsProps['anchor']; // using of anchor type of menuItem
 };
 
-
 export const ContextMenu: React.FC<Props> = ({
   items,
   anchor = 'bottom start',
@@ -21,7 +20,7 @@ export const ContextMenu: React.FC<Props> = ({
 }) => {
   return (
     <Menu>
-      <MenuButton>
+      <MenuButton className="outline-none">
         {/* if user provide a children we use it else we use the first item */}
         {children ? (
           <div className="rounded-full bg-gray-100 p-2 shadow-md">
@@ -35,6 +34,7 @@ export const ContextMenu: React.FC<Props> = ({
         )}
       </MenuButton>
       <MenuItems
+        modal={false}
         transition
         anchor={anchor}
         className="shadow-7xl w-[180px] rounded-xl border border-gray-300 bg-white text-sm transition duration-200 ease-out [--anchor-gap:8px] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"

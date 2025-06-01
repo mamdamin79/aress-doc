@@ -1,6 +1,6 @@
 'use client';
 import { cn } from 'libs/design-system/src/utils';
-import React, { useState } from 'react';
+import React, { JSXElementConstructor, ReactElement, useState } from 'react';
 import { Icon } from '../Icon';
 import { Tooltip } from '../Tooltip';
 import { DualSwitchItem, DualSwitchProps } from './DualSwitch.types';
@@ -22,7 +22,7 @@ export const DualSwitch: React.FC<DualSwitchProps> = ({
 
   const Wrapper: React.FC<{
     item: DualSwitchItem;
-    children: React.ReactNode;
+    children: ReactElement<any, string | JSXElementConstructor<any>>;
   }> = ({ item, children }) => {
     return item.tooltip ? (
       <Tooltip {...item.tooltip}>{children}</Tooltip>
@@ -51,7 +51,7 @@ export const DualSwitch: React.FC<DualSwitchProps> = ({
             role="radio"
             aria-checked={activeItemIndex === index}
             className={cn(
-              'rounded-full bg-white p-[6px]',
+              'rounded-full bg-white p-[5px]',
               disabled
                 ? activeItemIndex === index
                   ? 'bg-brand-300 cursor-default text-white'

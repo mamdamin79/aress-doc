@@ -1,59 +1,48 @@
-import { BulletList, NotesHeading, SectionTitle } from 'design-system';
+import { SectionTitle } from 'design-system';
 import React from 'react';
 import TERMINAL_LOGIN from '@aress-assets/icons/TerminalLogin.svg';
 import Image from 'next/image';
 import { FormWrapper } from './_components';
-import Logo from '@aress-assets/icons/product_logo.svg';
+import Logo from '@aress-assets/icons/fullLogo.svg';
+
+import LogoWithText from '@aress-assets/icons/LogoWithText.svg';
+import { SecurityNoticeBox } from './_components/SecurityNoticeBox';
 const LoginPage = () => {
   return (
     <div className="flex h-full justify-center">
       <div className="max-w-screen-3xl flex w-full flex-col items-start justify-center gap-10 pt-[46px]">
-        <div className="relative flex w-full items-center justify-center">
-          <div className="absolute right-0 mr-8">
-            <div className="flex items-center gap-4">
+        <div className="flex w-full items-center justify-center">
+          <div className="absolute right-0 top-[34px] mr-8">
+            <div className="hidden items-center gap-4 py-3 xl:flex">
               <Image alt="logo" src={Logo} width={38} height={38} />
               <h1 className="text-lg font-semibold">
                 پردازش اطلاعات مالی آرسس
               </h1>
+            </div>
+            <div className="flex xl:hidden">
+              <Image alt="logo" src={LogoWithText} width={56} height={56} />
             </div>
           </div>
           <div>
             <SectionTitle align="center" level={1} title={'خوش آمدید!'} />
           </div>
         </div>
-        <div className="flex w-full gap-20 px-[152px]">
-          <div className="mt-[72px] w-1/2">
+        <div className="flex w-full flex-col items-center justify-center gap-8 lg:flex-row">
+          <div className="flex w-[448px] flex-col gap-4 pt-8 xl:w-[528px]">
             <FormWrapper />
           </div>
-          <div className="flex w-1/2 flex-col gap-4 pt-10">
+          <div className="hidden w-[448px] flex-col gap-4 lg:flex xl:w-[528px]">
             <Image
               alt="vector"
               src={TERMINAL_LOGIN}
               width={468}
               height={360}
-              className="w-full max-w-[468px] px-8"
+              className="px-8"
             />
-            <div className="flex flex-col gap-4">
-              <NotesHeading
-                icon={{ name: 'shield-alert', size: 'lg' }}
-                title={'نکات امنیتی'}
-              />
-              <div className="text-sm">
-                <BulletList
-                  items={[
-                    {
-                      title: `کاربر گرامی، قبل از وارد کردن هرگونه اطلاعات در سایت، لطفاً آدرس مرورگر خود را با آدرس ایمن https://account.aressai.com مقایسه کنید. اگر تفاوتی مشاهده کردید، از ادامه فرآیند خودداری کنید و آن را به اطلاع ما برسانید.`,
-                    },
-                    {
-                      title: `هیچ‌وقت اطلاعات حساب کاربری خود را با دیگران به اشتراک نگذارید.`,
-                    },
-                    {
-                      title: `همچنین، توصیه می‌کنیم که شیوه‌نامه خدمات ما را به دقت مطالعه فرمایید.`,
-                    },
-                  ]}
-                />
-              </div>
-            </div>
+            <SecurityNoticeBox />
+          </div>
+          <div className="block w-[448px] pb-20 lg:hidden xl:w-[528px]">
+            <SecurityNoticeBox />
           </div>
         </div>
       </div>

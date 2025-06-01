@@ -5,8 +5,6 @@ import { OptionsDropdown } from '../OptionsDropdown';
 import { Tooltip } from '../Tooltip';
 import { useState } from 'react';
 import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
-import { Toaster } from 'react-hot-toast';
-import { Bookmark } from '../Bookmark';
 
 interface Props {
   name: string;
@@ -46,7 +44,7 @@ export function FundsTableRow({
   return (
     <div
       className={cn(
-        'sticky right-0 top-0 py-0 m-0 flex bg-white h-[46px] mt-0.5 w-[384px] items-center justify-between p-0',
+        'sticky right-0 top-0 py-0 m-0 flex bg-white h-[45px] w-[384px] items-center justify-between p-0',
         className,
         {
           'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]': isScrolled,
@@ -57,10 +55,15 @@ export function FundsTableRow({
       )}
     >
       <div className="relative pr-6 pl-2 h-full flex items-center gap-2">
-        <span className={cn("border-vividGreen-200 select-none w-fit text-[#058F3C] bg-vividGreen-100 rounded-sm border px-2 pt-0.5 h-[25px] text-xs font-medium", {
+        <span className={cn("border-[#ACF1C7] select-none w-fit text-[#058F3C] bg-[#D2FEE4] rounded-sm border px-2 pt-0.5 h-[25px] text-xs font-medium", {
           'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]': investmentMethod === 'T'
         })}>
           ETF
+        </span>
+                <span className={cn("border-[#ACF1C7] whitespace-nowrap select-none w-fit text-[#058F3C] bg-[#D2FEE4] rounded-sm border px-2 h-[25px] text-xs font-medium", {
+          'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]': investmentMethod === 'T'
+        })}>
+          قابل خرید
         </span>
         <div
           className={cn(
@@ -74,24 +77,22 @@ export function FundsTableRow({
           <div className="h-8 w-8 overflow-hidden rounded-full">
             <img src={logo} alt="logo fund" />
           </div>
-
           {pined &&
             <div className="absolute -right-1 top-5">
               <div
                 className='flex items-center justify-center text-black'
               >
-                <Icon name="pin" size="sm" />
+                <Icon name="CustomPin" size="sm" />
               </div>
             </div>
           }
         </div>
-        <Tooltip offset={2} position="bottom" title={name.length > 29 ? name : ''}>
-          <p className="text-gray-1000 w-[201px] hover:text-[#0F7575] truncate text-right text-sm font-medium">
+        <Tooltip offset={2} position="left" title={name.length > 13 ? name : ''}>
+          <p className="text-gray-1000 w-[130px] hover:text-[#0F7575] truncate text-right text-sm font-medium">
             {name}
           </p>
         </Tooltip>
       </div>
-
       <OptionsDropdown
         className='!border-[#D1D3D7] shadow-7xl'
         dropDownStyles={{
@@ -126,7 +127,7 @@ export function FundsTableRow({
           return (
             <div
               className={cn(
-                'invisible cursor-pointer rounded-full p-1.5 hover:bg-white group-hover:visible',
+                'invisible w-8 h-8 ml-1 flex justify-center items-center cursor-pointer rounded-full p-1.5 hover:bg-white group-hover:visible',
                 {
                   'hover:border-brand-600 border border-blue-200': selected,
                   'hover:border-brand-600 border border-blue-100': pined,

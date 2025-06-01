@@ -1,12 +1,11 @@
 'use client';
-import { cn, Icon, Tooltip } from 'design-system';
+import { cn, Icon } from 'design-system';
 import { CategoryList } from './CategoryList';
 import {
   GetDashboardReportsCategoriesResponse,
   GetDashboardReportsResponse,
 } from '@openapi';
 import { useHeaderVisibility } from '../../../../../hooks/useHeaderVisiblity';
-import { NewReportDialog } from './NewReportDialog';
 
 type Props = {
   categories: GetDashboardReportsCategoriesResponse;
