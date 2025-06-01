@@ -8,7 +8,7 @@ export const CustomIcon: React.FC<IconProps> = ({ name, size = 'md' }) => {
   const CustomIconComponent = CUSTOM_ICONS[name as keyof typeof CUSTOM_ICONS];
   return (
     <div
-      className={cn('hover:text-brand-600 group relative inline-block', {
+      className={cn(' group relative inline-block', {
         'text-brand-600': name === 'CustomCirlcleX',
       })}
     >
@@ -17,7 +17,7 @@ export const CustomIcon: React.FC<IconProps> = ({ name, size = 'md' }) => {
         height={SIZE_VALUES[size]}
         strokeWidth={STROKE_VALUES[size]}
         className={cn(
-          `hover:text-brand-600 cursor-pointer stroke-current transition-all duration-150 ease-in-out`,
+          `stroke-current transition-all duration-150 ease-in-out`,
           {
             'hover:-rotate-6': name === 'CustomBadge' || name === 'CustomBeta',
           },
@@ -25,6 +25,12 @@ export const CustomIcon: React.FC<IconProps> = ({ name, size = 'md' }) => {
           {
             'hover:scale-105': name === 'CustomCircleSlice',
           },
+          {
+            'stroke-white': name === 'CustomBookmark' || name === 'CustomArrow',
+          },
+          {
+            'hover:text-brand-600 cursor-pointer':  name !== 'CustomBookmark' && name !== 'CustomArrow' && name !== 'CustomPin'
+          }
         )}
       />
     </div>

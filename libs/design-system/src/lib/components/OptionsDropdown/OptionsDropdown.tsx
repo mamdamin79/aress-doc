@@ -1,0 +1,150 @@
+'use client';
+import {
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
+} from '@headlessui/react';
+import React, { useEffect, useState } from 'react';
+import { OptionsDropdownOption } from './OptionsDropdownOption';
+import {
+  DropDownStyle,
+  DropdownCell,
+  TriggerProps,
+} from './OptionsDropdown.types';
+import { OptionsDropdownTrigger } from './OptionsDropdownTrigger';
+import { cn } from '../../../utils/classNames.utils';
+
+export interface OptionsDropdownProps {
+  shadow?: boolean;
+  className?: string;
+  dropDownStyles?: DropDownStyle;
+  dropDownList: DropdownCell[];
+  customTriggerRender?: (props: TriggerProps) => React.ReactElement;
+  customOptionRender?: (props: DropdownCell) => React.ReactElement;
+  onChange?: (selectedText: string, id?: number) => void;
+  initialSelectedIndex?: number;
+  triggerClassName?: string;
+  optionClassName?: string;
+}
+
+export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
+  dropDownList,
+  className,
+  shadow,
+  dropDownStyles = {
+    scrollable: false,
+    anchor: 'bottom start',
+    bg: 'primary',
+    checkSelected: false,
+    emphasize: 'medium',
+    shadow: true,
+    size: 'md',
+  },
+  customTriggerRender,
+  customOptionRender,
+  onChange,
+  initialSelectedIndex = 0,
+  triggerClassName,
+  optionClassName,
+}) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  };
+
+  const [selectedItem, setSelectedItem] = useState<DropdownCell>(
+    dropDownList[initialSelectedIndex],
+  );
+
+  // Handle selection change
+  const handleSelectionChange = (item: DropdownCell) => {
+    setSelectedItem(item);
+    if (onChange) {
+      if (item.id) {
+        onChange(item.text, item.id);
+      } else {
+        onChange(item.text);
+      }
+    }
+  };
+  useEffect(() => {
+    setSelectedItem(dropDownList[initialSelectedIndex]);
+  }, [dropDownList, initialSelectedIndex]);
+  return (
+    <Listbox value={selectedItem} onChange={handleSelectionChange}>
+      <ListboxButton
+        onKeyDown={handleKeyDown}
+        className={cn('outline-none', !dropDownStyles.fixedWidth && 'w-fit')}
+        style={
+          dropDownStyles.fixedWidth
+            ? { width: `${dropDownStyles.fixedWidth}px` }
+            : undefined
+        }
+      >
+        {({ open }) =>
+          customTriggerRender ? (
+            customTriggerRender({
+              isActive: open,
+              selectedItem,
+              dropDownStyles,
+            })
+          ) : (
+            <OptionsDropdownTrigger
+              {...dropDownStyles}
+              {...selectedItem}
+              isActive={open}
+              className={triggerClassName}
+            />
+          )
+        }
+      </ListboxButton>
+      <ListboxOptions
+        modal={false}
+        anchor={dropDownStyles.anchor}
+        className={cn(
+          'z-50 mt-1 max-h-[265px] gap-1 overflow-y-scroll rounded-lg border border-gray-300 bg-white outline-none',
+          dropDownStyles.shadow && 'shadow-7xl',
+          dropDownStyles.scrollable && 'scrollbar-sm',
+          dropDownStyles.scrollable || 'hidescrollbar',
+          !dropDownStyles.fixedWidth && 'w-fit',
+          className,
+        )}
+        style={
+          dropDownStyles.fixedWidth
+            ? { width: `${dropDownStyles.fixedWidth}px` }
+            : undefined
+        }
+      >
+        {dropDownList.map((item, index) => (
+          <ListboxOption
+            className="!z-50"
+            value={item}
+            key={`listBox option-${index}`}
+          >
+            {({ selected }) =>
+              customOptionRender ? (
+                (customOptionRender({
+                  text: item.text,
+                  icon: item.icon,
+                  isActive: selected,
+                  tag: item.tag,
+                  withCheck: dropDownStyles.checkSelected ? selected : false,
+                }) as React.ReactElement)
+              ) : (
+                <OptionsDropdownOption
+                  className={optionClassName}
+                  {...item}
+                  withCheck={dropDownStyles.checkSelected ? selected : false}
+                  isActive={selected}
+                />
+              )
+            }
+          </ListboxOption>
+        ))}
+      </ListboxOptions>
+    </Listbox>
+  );
+};

@@ -1,6 +1,6 @@
-import { Footer } from './(layout)/(footer)';
+import { Toaster } from 'react-hot-toast';
 import './global.css';
-import { cn, Header } from 'design-system';
+import ReactQueryProvider from './providers/ReactQueryProvider';
 
 export const metadata = {
   title: 'Welcome to apps/fe-app',
@@ -14,10 +14,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={cn('sdfsdf py-2 absolute pb-1', 'dfsdfs')}>
-        <Header />
-        {children}
-        <Footer />
+      <body>
+        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <Toaster
+          position="bottom-center"
+          containerStyle={{
+            bottom: 70,
+          }}
+        />
       </body>
     </html>
   );

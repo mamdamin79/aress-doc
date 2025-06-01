@@ -3,7 +3,12 @@ const { default: colors } = require('./tailwindColors');
 module.exports = {
   theme: {
     extend: {
-      colors: colors || {},
+      transitionDuration: {
+        4000: '4000ms',
+      },
+      borderWidth: {
+        1.5: '1.5px',
+      },
       keyframes: {
         progressBar: {
           '0%': { transform: 'translateX(100%)' },
@@ -20,7 +25,7 @@ module.exports = {
       },
       fontFamily: {
         vazirmatn: 'vazirmatn',
-        sans: ['"vazirmatn"'],
+        sans: ['"vazirmatn"', ...defaultTheme.fontFamily.sans],
       },
       boxShadow: {
         xs: '0px 1px 1px 0px rgba(0, 11, 23, 0.06)',
@@ -92,6 +97,12 @@ module.exports = {
             lineHeight: '40px',
           },
         ],
+      },
+      colors: colors || {},
+      screens: {
+        '3xl': '1680px',
+        '4xl': '1920px',
+        '5xl': '2560px',
       },
     },
   },

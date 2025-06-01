@@ -4,6 +4,14 @@
   "sourceRoot": "libs/design-system/src",
   "projectType": "library",
   "tags": [],
-  "// targets": "to see all targets run: nx show project design-system --web",
-  "targets": {}
+  "implicitDependencies": ["openapi"],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{workspaceRoot}/dist/libs/design-system"],
+      "options": {
+        "tsConfig": "libs/design-system/tsconfig.json"
+      }
+    }
+  }
 }

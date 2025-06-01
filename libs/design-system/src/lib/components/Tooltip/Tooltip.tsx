@@ -1,11 +1,11 @@
 'use client';
 import { cn } from '../../../utils/classNames.utils';
-import React, { useId } from 'react';
+import React, { useId, cloneElement, ReactElement } from 'react';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactElement; // Ensure children is a single React element
   title: string;
   position?: 'top' | 'right' | 'bottom' | 'left';
   className?: string;
@@ -22,24 +22,17 @@ export const Tooltip: React.FC<Props> = ({
   const id = useId();
   return (
     <>
-      {/* wrapper */}
-      <div
-        data-tooltip-id={id}
-        className="relative inline-block cursor-pointer"
-      >
-        {/* here is the component that need a tooltip */}
-        {children}
-      </div>
+      {/* Apply tooltip ID directly to the child element */}
+      {cloneElement(children, { 'data-tooltip-id': id })}
       <ReactTooltip
         id={id}
         noArrow
         place={position}
-        positionStrategy="fixed"
         offset={offset}
         content={title}
         style={{ padding: '0 8px' }}
         className={cn(
-          'bg-gray-1000/85 shadow-5xl rounded-xs font-vazirmatn text-sm font-medium text-white',
+          'bg-gray-1000/85 shadow-5xl rounded-xs text-sm font-medium text-white z-50',
           className,
         )}
       ></ReactTooltip>
@@ -47,4 +40,4 @@ export const Tooltip: React.FC<Props> = ({
   );
 };
 
-export default Tooltip;
+export default Tooltip; 

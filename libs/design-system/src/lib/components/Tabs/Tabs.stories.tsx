@@ -8,9 +8,16 @@ const meta: Meta<typeof Tabs> = {
   component: Tabs, // Links to the actual component
   tags: ['autodocs'], // Optional: Add any additional tags for better categorization
   argTypes: {
-    mode: {
+    variant: {
       control: 'radio',
-      options: ['shaped', 'lined', 'divided', 'rounded', 'rounded-full'],
+      options: [
+        'shaped',
+        'lined',
+        'divided',
+        'rounded',
+        'rounded-full',
+        'shaped-color',
+      ],
     },
   },
 };
@@ -21,8 +28,16 @@ type Story = StoryObj<typeof Tabs>;
 
 // examples story for the Tabs component
 export const Default: Story = {
+  argTypes: {
+    colorMode: {
+      control: 'radio',
+      options: ['neutral', 'inverse'],
+    },
+  },
   render: (args) => (
-    <div className={cn({ 'w-max bg-gray-100 py-10': !args.bgWhite })}>
+    <div
+      className={cn({ 'w-max bg-gray-100 p-10': args.colorMode === 'inverse' })}
+    >
       <Tabs {...args} />
     </div>
   ),
@@ -39,46 +54,36 @@ export const Default: Story = {
             <p>پرتفوی صندوق</p>
           </div>
         ),
-        id: 1,
+        id: '1',
+        tag: 'green',
         title: 'خلاصه',
       },
       {
-        id: 2,
+        id: '2',
         content: 'تحلیل بازدهی',
+        title: 'تحلیل بازدهی',
+        tag: 'blue',
+      },
+      {
+        id: '3',
+        content: 'تحلیل بازدهی',
+        title: 'تحلیل بازدهی',
+        tag: 'yellow',
+      },
+      {
+        id: '4',
+        content: 'تحلیل بازدهی',
+        tag: 'purple',
         title: 'تحلیل بازدهی',
       },
       {
-        id: 3,
+        id: '5',
         content: 'تحلیل بازدهی',
         title: 'تحلیل بازدهی',
-      },
-      {
-        id: 4,
-        content: 'تحلیل بازدهی',
-        title: 'تحلیل بازدهی',
-      },
-      {
-        id: 5,
-        content: 'تحلیل بازدهی',
-        title: 'تحلیل بازدهی',
-      },
-      {
-        id: 6,
-        content: 'تحلیل بازدهی',
-        title: 'تحلیل بازدهی',
-      },
-      {
-        id: 7,
-        content: 'ارزیابی ریسک',
-        title: 'سلام',
-      },
-      {
-        id: 8,
-        content: 'تحلیل عملکرد',
-        title: 'تحلیل عملکرد',
       },
     ],
-    bgWhite: false,
-    mode: 'lined',
+    colorMode: 'inverse',
+    variant: 'lined',
+    activeTab: 1,
   },
 };

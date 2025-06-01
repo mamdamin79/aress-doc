@@ -23,8 +23,8 @@ export const Default: Story = {
       size: 'lg',
     },
     trailingIcons: [
-      { name: 'x', size: 'md' },
-      { name: 'eye', size: 'md' },
+      { name: 'x', size: 'lg' },
+      { name: 'eye', size: 'lg' },
     ],
     disabled: false,
     type: 'text',
@@ -70,6 +70,17 @@ export const PasswordToggle: Story = {
     supportText: 'رمز عبور خود را وارد کنید',
   },
 };
+export const CustomTrailingIcon: Story = {
+  args: {
+    ...Default.args,
+    trailingIcons: [
+      {
+        name: 'pencil',
+        onClick: () => alert('clicked'),
+      },
+    ],
+  },
+};
 
 export const WithoutIcons: Story = {
   args: {
@@ -85,5 +96,18 @@ export const MergedTitleAndPlaceholder: Story = {
     mergeTitleAndPlaceholder: true,
     label: 'نام کاربری',
     supportText: 'برچسب و پلیس‌هولدر ترکیب شده‌اند',
+  },
+};
+
+export const TextArea: Story = {
+  args: {
+    ...Default.args,
+    mergeTitleAndPlaceholder: false,
+    label: 'شرح گزارش',
+    placeholder:
+      'میتواند شامل محور افقی و عمودی روابط آماری و ریاضی و تشریح مدل های مالی باشد...',
+    longText: true,
+    trailingIcons: [],
+    leadingIcon: undefined,
   },
 };
