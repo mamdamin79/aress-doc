@@ -106,7 +106,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
       <div className="relative w-full p-3 pb-2">
         <div className="flex w-full items-center justify-between">
           {!compactHeader ? (
-            <div className="flex flex-row items-center text-xs font-semibold">
+            <div className="text-text-neutral-primary flex flex-row items-center text-xs font-semibold">
               <div className="p-1.5">
                 <Icon name="info" size="md" />
               </div>
@@ -121,7 +121,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
 
             {compactHeader ? (
               <div
-                className="bg-surface-neutral-secondary flex h-8 w-8 cursor-pointer items-center justify-center rounded-full"
+                className="bg-surface-neutral-secondary text-text-neutral-primary flex h-8 w-8 cursor-pointer items-center justify-center rounded-full"
                 onClick={() => setSettingsOpen(true)}
               >
                 <Icon name="settings" size="md" />

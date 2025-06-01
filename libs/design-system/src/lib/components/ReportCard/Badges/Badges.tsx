@@ -6,14 +6,14 @@ import { Icon } from '../../Icon';
 
 export const NewBadge = () => {
   return (
-    <div className="flex h-[22px] w-[37px] items-center justify-center rounded-[100px] bg-red-600 p-2 text-xs font-medium text-white">
+    <div className="bg-icon-accent-red-primary-600 text-text-neutral-white flex h-[22px] w-[37px] items-center justify-center rounded-[100px] p-2 text-xs font-medium">
       جدید
     </div>
   );
 };
 export const VideoBadge = () => {
   return (
-    <div className="bg-vividGreen-700 flex h-[22px] w-[37px] items-center justify-center rounded-[100px] p-2 text-xs font-medium text-white">
+    <div className="bg-surface-accent-vividgreen-600 text-text-neutral-white flex h-[22px] w-[37px] items-center justify-center rounded-[100px] p-2 text-xs font-medium">
       <Icon name="video" size="md" />
     </div>
   );
@@ -40,15 +40,15 @@ export const LikeBadge: React.FC<LikeBadgeProps> = ({
   return (
     <div
       className={cn(
-        'flex h-9 w-9 cursor-pointer items-center justify-center rounded-full text-red-600 transition-colors',
-        hasFrame && `bg-white p-2 hover:bg-red-100`,
+        'text-text-accent-red-primary-600 bg-surface-neutral-primary flex h-9 w-9 cursor-pointer items-center justify-center rounded-full transition-colors',
+        hasFrame && `hover:bg-surface-accent-red-100 p-2`,
       )}
       onClick={handleLiked}
     >
       <Iconify
         icon={'lucide:heart'}
-        width={size == 'lg' ? 24 : 20}
-        height={size == 'lg' ? 24 : 20}
+        width={size === 'lg' ? 24 : 20}
+        height={size === 'lg' ? 24 : 20}
         className={isLikedState ? '[&>*]:fill-red-600' : ''}
       />
     </div>

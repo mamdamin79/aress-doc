@@ -82,7 +82,7 @@ export const AutoRotateSwitch: React.FC<AutoRotateProps> = ({
         <Tooltip title="گردش خودکار" position="bottom" offset={10}>
           <div
             className={cn(
-              'flex h-8 w-8 items-center justify-center transition-all duration-300',
+              'text-icon-neutral-primary flex h-8 w-8 items-center justify-center transition-all duration-300',
               !activeRotateOption && 'group-hover:rotate-90',
             )}
           >
