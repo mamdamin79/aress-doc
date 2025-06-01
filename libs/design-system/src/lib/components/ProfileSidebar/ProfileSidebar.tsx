@@ -21,10 +21,10 @@ export const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
   activeSection,
 }) => {
   return (
-    <div className="flex h-fit w-full flex-col gap-4 rounded-3xl border-2 border-gray-100 p-4">
+    <div className="border-border-neutral-secondary bg-surface-neutral-primary flex h-fit w-full flex-col gap-4 rounded-3xl border-2 p-4">
       <div className="flex flex-row items-center gap-3">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-100 p-1">
-          <div className="flex h-12 w-12 flex-col items-center justify-end overflow-hidden rounded-xl bg-white">
+        <div className="bg-surface-neutral-secondary flex h-14 w-14 items-center justify-center rounded-2xl p-1">
+          <div className="bg-surface-neutral-background flex h-12 w-12 flex-col items-center justify-end overflow-hidden rounded-xl">
             <Image
               alt="profile image"
               src={image ? image : UserSVG}
@@ -39,10 +39,12 @@ export const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
         </div>
         <div className="flex flex-col">
           <span className="text-md font-semibold">{title}</span>
-          <span className="text-sm font-medium text-gray-600">{subTitle}</span>
+          <span className="text-text-neutral-secondary text-sm font-medium">
+            {subTitle}
+          </span>
         </div>
       </div>
-      <div className="w-full border-t border-gray-200"></div>
+      <div className="border-border-neutral-secondary w-full border-t"></div>
       <div className="flex w-full flex-col gap-2">
         <ProfileSidebarOption
           text="حساب کاربری"

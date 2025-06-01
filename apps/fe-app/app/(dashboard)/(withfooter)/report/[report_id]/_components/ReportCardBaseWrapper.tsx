@@ -147,8 +147,6 @@ export const ReportCardBaseWrapper: React.FC = () => {
     },
   };
   return (
-    <div className="shadow-6xl w-[616px] overflow-hidden rounded-2xl border-2 border-gray-200">
       <ReportCardBase {...args} compactHeader />
-    </div>
   );
 };
