@@ -14,7 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-surface-neutral-background">
         <ReactQueryProvider>{children}</ReactQueryProvider>
         <Toaster
           position="bottom-center"

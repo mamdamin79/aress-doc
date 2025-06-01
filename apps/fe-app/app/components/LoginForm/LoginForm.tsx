@@ -27,10 +27,12 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
   return (
     <form
       dir="rtl"
-      className="bg-baseBackground flex w-full flex-col gap-6 rounded-3xl border border-gray-300 p-6"
+      className="bg-surface-neutral-primary border-border-neutral-primary flex w-full flex-col gap-6 rounded-3xl border p-6"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <h3 className="text-center text-xl font-medium">ورود به آرسس ترمینال</h3>
+      <h3 className="text-text-neutral-primary text-center text-xl font-medium">
+        ورود به آرسس ترمینال
+      </h3>
       <div className="flex flex-col gap-7">
         <div className="flex flex-col gap-4">
           <Controller

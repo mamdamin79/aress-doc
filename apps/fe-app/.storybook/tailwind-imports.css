@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('./../src/assets/fonts/vazirmant.css');
+@import url('../assets/fonts/vazirmant.css');
 
 :root {
   --rt-transition-show-delay: 0.15s;

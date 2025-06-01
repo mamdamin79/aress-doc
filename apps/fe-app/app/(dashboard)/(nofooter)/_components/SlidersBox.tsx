@@ -61,7 +61,7 @@ function SortableItem({ item }: { item: Item }) {
       style={style}
       {...attributes}
       {...listeners}
-      className="shadow-6xl relative h-[336px] overflow-hidden rounded-2xl border-2 border-gray-200"
+      className="shadow-6xl border-border-neutral-secondary relative h-[336px] overflow-hidden rounded-2xl border-2"
     >
       {item.type === 'image' && (
         <Image
