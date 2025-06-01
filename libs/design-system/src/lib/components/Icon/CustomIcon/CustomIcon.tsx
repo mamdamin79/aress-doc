@@ -8,8 +8,8 @@ export const CustomIcon: React.FC<IconProps> = ({ name, size = 'md' }) => {
   const CustomIconComponent = CUSTOM_ICONS[name as keyof typeof CUSTOM_ICONS];
   return (
     <div
-      className={cn(' group relative inline-block', {
-        'text-brand-600': name === 'CustomCirlcleX',
+      className={cn('group relative inline-block', {
+        'text-surface-brand-600-primary': name === 'CustomCirlcleX',
       })}
     >
       <CustomIconComponent

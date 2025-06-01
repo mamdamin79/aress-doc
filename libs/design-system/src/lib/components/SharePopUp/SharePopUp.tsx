@@ -61,17 +61,17 @@ export const SharePopUp: React.FC<SharePopUpProps> = ({
       <Dialog
         isOpen={openShare}
         onClose={close}
-        className="z-50 max-h-[310px] max-w-[440px]"
+        className="z-50 max-h-[310px] bg-surface-neutral-primary max-w-[440px]"
       >
         <div className="flex w-full flex-col">
-          <p className="mb-4 text-center text-xl font-medium">اشتراک گذاری</p>
-          <p className="mb-3 text-right text-sm font-medium text-gray-600">
+          <p className="mb-4 text-center text-xl font-medium text-text-neutral-secondary">اشتراک گذاری</p>
+          <p className="mb-3 text-right text-sm font-medium text-text-neutral-secondary">
             ارسال لینک به:
           </p>
           {currentIndex + visibleItems < platforms.length && (
             <button
               onClick={goLeft}
-              className="bg-baseBackground text-brand-600 border-brand-600 shadow-3xl absolute left-2 top-1/2 z-10 -mt-2 -translate-y-1/2 transform rounded-full border-2 p-1"
+              className="bg-surface-neutral-primary text-icon-brand-primary-600 border-border-brand-primary-600 shadow-3xl absolute left-2 top-1/2 z-10 -mt-2 -translate-y-1/2 transform rounded-full border-2 p-1"
             >
               <Icon name="chevron-left" size="md" />
             </button>
@@ -101,7 +101,7 @@ export const SharePopUp: React.FC<SharePopUpProps> = ({
                         alt={platform.name}
                       />
                     </div>
-                    <span className="font-semibold">{platform.name}</span>
+                    <span className="font-semibold text-text-neutral-primary">{platform.name}</span>
                   </a>
                 ))}
             </div>
@@ -109,14 +109,14 @@ export const SharePopUp: React.FC<SharePopUpProps> = ({
           {currentIndex > 0 && (
             <button
               onClick={goRight}
-              className="bg-baseBackground text-brand-600 border-brand-600 shadow-3xl absolute right-2 top-1/2 z-10 -mt-2 -translate-y-1/2 transform rounded-full border-2 p-1"
+              className="bg-surface-neutral-primary text-icon-brand-primary-600 border-border-brand-primary-600 shadow-3xl absolute right-2 top-1/2 z-10 -mt-2 -translate-y-1/2 transform rounded-full border-2 p-1"
             >
               <Icon name="chevron-right" size="md" />
             </button>
           )}
         </div>
 
-        <div className="mt-4 flex h-fit w-full flex-row justify-between gap-2 rounded-xl border-[2px] border-gray-300 p-2">
+        <div className="mt-4 flex h-fit w-full flex-row justify-between gap-2 rounded-xl border-[2px] border-border-neutral-primary p-2">
           <div className="w-28 text-nowrap">
             <Button
               onClick={() => navigator.clipboard.writeText(url)}
@@ -132,7 +132,7 @@ export const SharePopUp: React.FC<SharePopUpProps> = ({
             type="text"
             readOnly
             value={`...${url.slice(0, 37)}`}
-            className="ltr w-full text-left text-sm font-semibold outline-none"
+            className="ltr w-full text-left bg-transparent text-sm text-text-neutral-primary font-semibold outline-none"
           />
         </div>
       </Dialog>

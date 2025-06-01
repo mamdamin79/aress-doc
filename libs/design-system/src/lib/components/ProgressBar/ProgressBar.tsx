@@ -15,13 +15,13 @@ export function ProgressBar({ progressBarItems, activeIndex }: Props) {
             {/* Connecting Line */}
             {index + 1 < progressBarItems.length && (
               <div className="relative col-span-12 -mt-2 flex items-center justify-center">
-                <div className="absolute mr-[90%] h-1 w-full bg-gray-200"></div>
+                <div className="absolute mr-[90%] h-1 w-full bg-border-neutral-primary" />
                 <div
                   className={cn(
-                    'bg-brand-600 absolute mr-[90%] h-1 transition-all duration-300',
+                    'bg-surface-brand-500 absolute mr-[90%] h-1 transition-all duration-300',
                     activeIndex > index ? 'w-full' : 'w-0',
                   )}
-                ></div>
+                />
               </div>
             )}
 
@@ -36,8 +36,8 @@ export function ProgressBar({ progressBarItems, activeIndex }: Props) {
               )}
               <div
                 className={cn(
-                  'text-md mt-3 w-full text-center font-medium',
-                  activeIndex < index && 'text-sm text-gray-600',
+                  'text-md mt-3 w-full text-center font-medium text-text-neutral-primary',
+                  activeIndex < index && 'text-sm text-text-neutral-secondary',
                 )}
               >
                 {item}
