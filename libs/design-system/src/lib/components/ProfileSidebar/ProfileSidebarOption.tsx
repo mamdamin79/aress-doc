@@ -19,8 +19,8 @@ export const ProfileSidebarOption: React.FC<ProfileSidebarOptionProps> = ({
       className={cn(
         'flex w-full cursor-pointer flex-row items-center gap-2 rounded-sm p-2 text-sm font-medium transition-colors',
         isActive
-          ? 'bg-brand-100 text-brand-800'
-          : 'hover:bg-brand-100 bg-baseBackground',
+          ? 'bg-surface-brand-100 text-text-onbrand-colored-primary-on200_100_50'
+          : 'hover:bg-surface-brand-100 bg-surface-neutral-primary text-text-neutral-primary',
       )}
     >
       <Icon name={icon.name} />

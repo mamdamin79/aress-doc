@@ -40,7 +40,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
     }, 3000);
   };
   return (
-    <div className="bg-baseBackground group relative flex w-full flex-col overflow-hidden">
+    <div className="bg-surface-neutral-primary shadow-6xl border-border-neutral-secondary group relative flex w-[616px] flex-col overflow-hidden rounded-2xl border-2">
       <SlideFromLeft isOpen={settingsOpen}>
         <ReportSettings
           onSubmit={mockLoading}
@@ -121,7 +121,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
 
             {compactHeader ? (
               <div
-                className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-gray-100"
+                className="bg-surface-neutral-secondary flex h-8 w-8 cursor-pointer items-center justify-center rounded-full"
                 onClick={() => setSettingsOpen(true)}
               >
                 <Icon name="settings" size="md" />
@@ -169,12 +169,12 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
         </div>
         <div
           className={cn(
-            'absolute bottom-0 w-[592px] border-b',
+            'border-border-neutral-primary absolute bottom-0 w-[592px] border-b',
             !compactHeader && 'group-hover:hidden',
           )}
         ></div>
       </div>
-      <div className="bg-baseBackground flex h-[268px] w-full items-center justify-center p-3 pt-2">
+      <div className="bg-surface-neutral-primary flex h-[268px] w-full items-center justify-center p-3 pt-2">
         {loadingStatus && (
           <div className="flex h-full flex-col items-center justify-between pb-3 pt-16">
             <div className="flex flex-col items-center justify-center gap-4">

@@ -88,17 +88,17 @@ export const HorizontalScrollBar: React.FC<HorizontalScrollBarProps> = ({
             <div
               onClick={() => handleClick(index)}
               className={cn(
-                'bg-brand-400 h-4 w-4 cursor-pointer overflow-hidden rounded-[100px] transition-all ease-in-out',
+                'bg-surface-brand-400 h-4 w-4 cursor-pointer overflow-hidden rounded-[100px] transition-all ease-in-out',
                 activeIndex === index
                   ? 'h-14 duration-500'
-                  : 'hover:bg-brand-600 duration-100',
+                  : 'hover:bg-surface-brand-600-primary duration-100',
               )}
             >
               {autoRotate && (
                 <div
                   key={animationKey} // Use animation key here
                   className={cn(
-                    'bg-brand-600 h-full w-full -translate-y-full transition-all delay-500 ease-in-out',
+                    'bg-surface-brand-600-primary h-full w-full -translate-y-full transition-all delay-500 ease-in-out',
                     activeIndex === index
                       ? `translate-y-0 duration-[5000ms]`
                       : '-translate-y-full delay-0 duration-100',
@@ -116,7 +116,7 @@ export const HorizontalScrollBar: React.FC<HorizontalScrollBarProps> = ({
               {activeIndex === index && !autoRotate && (
                 <div
                   className={cn(
-                    'bg-brand-600 h-full w-full -translate-y-full transition-all delay-500 ease-in-out',
+                    'bg-surface-brand-600-primary h-full w-full -translate-y-full transition-all delay-500 ease-in-out',
                     activeIndex === index
                       ? `translate-y-0 duration-[5000ms]`
                       : '-translate-y-full delay-0 duration-100',
@@ -131,7 +131,7 @@ export const HorizontalScrollBar: React.FC<HorizontalScrollBarProps> = ({
         <Tooltip title="افزودن گزارش جدید" position="left">
           <button
             onClick={onAddReportClick}
-            className="bg-brand-100 hover:bg-brand-200 text-brand-800 mt-1 flex h-7 w-7 cursor-pointer items-center justify-center rounded-sm opacity-0 transition-all group-hover/scroll:opacity-100"
+            className="bg-surface-brand-100 hover:bg-surface-brand-200 text-icon-onbrand-colored-primary-on200_100_50 mt-1 flex h-7 w-7 cursor-pointer items-center justify-center rounded-sm opacity-0 transition-all group-hover/scroll:opacity-100"
           >
             <Icon name="plus" size="md" />
           </button>
