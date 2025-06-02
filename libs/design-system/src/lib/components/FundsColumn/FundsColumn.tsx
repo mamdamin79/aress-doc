@@ -76,7 +76,7 @@ export function FundsColumn({
             !filterable && size !== 'extraLarg' && active,
           'bg-pink-200 hover:bg-pink-300': filterable && size !== 'extraLarg',
         },
-        'group/first cursor-pointer w-full',
+        'group/first w-full cursor-pointer',
       )}
     >
       <div
@@ -93,13 +93,18 @@ export function FundsColumn({
           },
         )}
       >
-          <div className={cn("relative invisible h-[90%] w-0.5 rounded-full bg-[#0F7575]", {
-            'visible': activePlaceholder && dragPosition === 'left'
-          })}>
-            <div className="absolute top-0 flex h-2.5 w-2.5 translate-x-1 items-center justify-center rounded-full bg-[#0F7575]">
-              <div className="h-1.5 w-1.5 rounded-full bg-white"></div>
-            </div>
+        <div
+          className={cn(
+            'invisible relative h-[90%] w-0.5 rounded-full bg-[#0F7575]',
+            {
+              visible: activePlaceholder && dragPosition === 'left',
+            },
+          )}
+        >
+          <div className="absolute top-0 flex h-2.5 w-2.5 translate-x-1 items-center justify-center rounded-full bg-[#0F7575]">
+            <div className="h-1.5 w-1.5 rounded-full bg-white"></div>
           </div>
+        </div>
         <div className={cn(filterable ? 'visible' : 'invisible')}>
           <Icon name="filter" />
         </div>
@@ -120,17 +125,19 @@ export function FundsColumn({
         <Tooltip
           className="text-md z-50 font-semibold"
           title={
-            sortType === 'ranked'
-              ? type === 'inactive'
-                ? 'مرتب سازی نزولی'
-                : type === 'active-asc'
-                  ? 'مرتب سازی صعودی'
-                  : 'حالت پیشفرض (بدون مرتب سازی)'
-              : type === 'inactive'
-                ? 'مرتب سازی نزولی'
-                : type === 'active-asc'
-                  ? 'حالت پیشفرض (بدون مرتب سازی)'
-                  : 'مرتب سازی صعودی'
+            activeStyle
+              ? sortType === 'ranked'
+                ? type === 'inactive'
+                  ? 'مرتب سازی نزولی'
+                  : type === 'active-asc'
+                    ? 'مرتب سازی صعودی'
+                    : 'حالت پیشفرض (بدون مرتب سازی)'
+                : type === 'inactive'
+                  ? 'مرتب سازی نزولی'
+                  : type === 'active-asc'
+                    ? 'حالت پیشفرض (بدون مرتب سازی)'
+                    : 'مرتب سازی صعودی'
+              : ''
           }
         >
           <div
@@ -142,13 +149,12 @@ export function FundsColumn({
                 defaultSort && defaultSort();
               }
             }}
-            className={cn(
-              {
-                'invisible text-[#545962] group-hover/first:visible icon-sort-cell':
-                  type === 'inactive',
-              },
-              'hover:bg-brand-600 rounded-md p-1 duration-150 hover:text-white',
-            )}
+            className={cn({
+              'icon-sort-cell invisible text-[#545962] group-hover/first:visible':
+                type === 'inactive',
+              'hover:bg-brand-600 rounded-md p-1 duration-150 hover:text-white':
+                !activePlaceholder,
+            })}
           >
             <Icon
               name={
@@ -163,13 +169,18 @@ export function FundsColumn({
             />
           </div>
         </Tooltip>
-          <div className={cn("relative invisible h-[90%] w-0.5 rounded-full bg-[#0F7575]", {
-            'visible': activePlaceholder && dragPosition === 'right'
-          })}>
-            <div className="absolute top-0 flex h-2.5 w-2.5 translate-x-1 items-center justify-center rounded-full bg-[#0F7575]">
-              <div className="h-1.5 w-1.5 rounded-full bg-white"></div>
-            </div>
+        <div
+          className={cn(
+            'invisible relative h-[90%] w-0.5 rounded-full bg-[#0F7575]',
+            {
+              visible: activePlaceholder && dragPosition === 'right',
+            },
+          )}
+        >
+          <div className="absolute top-0 flex h-2.5 w-2.5 translate-x-1 items-center justify-center rounded-full bg-[#0F7575]">
+            <div className="h-1.5 w-1.5 rounded-full bg-white" />
           </div>
+        </div>
       </div>
     </div>
   );

@@ -47,6 +47,7 @@ import {
   ColumnDef,
   ColumnFiltersState,
   Header,
+  SortingState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -79,9 +80,18 @@ const Funds = () => {
   const tableRef = useRef<HTMLDivElement>(null);
   const [watchList, setWatchList] = useState<string[]>([]);
   const [pineWatchLis, setPineWatchList] = useState<string[]>([]);
+  const [sorting, setSorting] = useState<SortingState>([
+    {
+      id: 'nameFund',
+      desc: false,
+    },
+  ]);
   const [dragOverColumnId, setDragOverColumnId] = useState<string | null>(null);
   const [activeSortIndex, setActiveSortIndex] = useState(0);
   const headerRefs = useRef<(HTMLTableHeaderCellElement | null)[]>([]);
+  const [activeSortColumnId, setActiveSortColumnId] = useState<string | null>(
+    null,
+  );
   const [sortIndicatorPosition, setSortIndicatorPosition] = useState({
     right: headerRefs.current[0]?.offsetLeft,
     width: 0,
@@ -296,10 +306,7 @@ const Funds = () => {
         data-column-id={header.id}
         {...attributes}
         {...listeners}
-        className={cn('m-0 h-[64px] w-full bg-[#E3F8F8] text-sm font-medium', {
-          'pr-4 group-hover/table:pr-0': !isScrollAtStart && width !== 144,
-          'pr-2 group-hover/table:pr-0': !isScrollAtStart,
-        })}
+        className="m-0 h-[64px] w-full bg-[#E3F8F8] text-sm font-medium"
         ref={setNodeRef}
         style={style}
       >
@@ -349,7 +356,12 @@ const Funds = () => {
   }
 
   const sensors = useSensors(
-    useSensor(MouseSensor, {}),
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        delay: 300,
+        distance: 0,
+      },
+    }),
     useSensor(TouchSensor, {}),
     useSensor(KeyboardSensor, {}),
   );
@@ -365,12 +377,15 @@ const Funds = () => {
     state: { columnOrder },
     initialState: {
       columnVisibility,
-      sorting: [
-        {
-          id: 'nameFund',
-          desc: false,
-        },
-      ],
+      sorting: sorting,
+    },
+    onSortingChange: (updater) => {
+      const newSorting =
+        typeof updater === 'function' ? updater(sorting) : updater;
+      const sortedColumnId = newSorting[0]?.id;
+
+      setSorting(newSorting);
+      setActiveSortColumnId(sortedColumnId || null);
     },
 
     // onColumnFiltersChange: setColumnFilters,
@@ -385,7 +400,7 @@ const Funds = () => {
     table.getHeaderGroups()[0].headers,
   );
 
-  const columnVisibilityHeader = table.getState().columnVisibility;
+  const columnVisibilityHeader = table.getState().columnVisibility;  
 
   useEffect(() => {
     setUpdateTableHeaders([...table.getHeaderGroups()[0].headers]);
@@ -404,6 +419,32 @@ const Funds = () => {
         : [...prev, fund.id],
     );
   };
+
+  // useEffect(() => {
+  //   const index = columnOrder.findIndex((id) => id === activeSortColumnId);
+  //   setActiveSortIndex(index);
+  // }, [activeSortColumnId, columnOrder]);
+
+  useEffect(() => {
+    const node = headerRefs?.current[activeSortIndex];
+    const container = tableRef?.current;
+
+    if (node && container) {
+      const nodeRect = node.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+
+      let rightOffset = Math.round(containerRect.right - nodeRect.right);
+
+      if (isScrollAtStart && tableRef.current && activeSortIndex !== 0) {
+        rightOffset += tableRef?.current?.scrollLeft * -1;
+      }
+
+      setSortIndicatorPosition({
+        right: rightOffset,
+        width: node.offsetWidth,
+      });
+    }
+  }, [isScrollAtStart, activeSortIndex, table]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -551,6 +592,17 @@ const Funds = () => {
     };
   }, []);
 
+  console.log(sorting[0].id, activeSortIndex, activeSortColumnId);
+  
+
+  useEffect(() => {
+    columnOrder.findIndex((id, index) => {
+      if (id === sorting[0]?.id && activeSortIndex !== 0) {        
+        setActiveSortIndex(index - 1);
+      }
+    });
+  }, [columnOrder]);
+
   return (
     <>
       <div
@@ -630,7 +682,7 @@ const Funds = () => {
                           ? `${sortIndicatorPosition.width}px`
                           : '',
                     }}
-                    className={cn('duration-300', {
+                    className={cn('z-[999999999999999] duration-300', {
                       'absolute bottom-0 z-20 transition-transform':
                         activeSortIndex !== 0,
                       'transition group-hover/table:-right-2':
@@ -652,7 +704,7 @@ const Funds = () => {
                         <Tooltip title="پیمایش به راست (D)">
                           <button
                             onMouseDown={startScrollLeft}
-                            // onMouseLeave={stopScroll}
+                            onMouseLeave={stopScroll}
                             className={cn(
                               'bg-brand-600 rounded-md p-1 text-white',
                             )}
@@ -693,9 +745,7 @@ const Funds = () => {
                                 <div className="mr-[75px] flex bg-[#E3F8F8]">
                                   <div className="mr-24">
                                     <FundsColumn
-                                      activeSorticon={
-                                        !!header.column.getIsSorted()
-                                      }
+                                      activeSorticon={sorting[0].id === 'nameFund'}
                                       active={true}
                                       clickFilterd={() => {
                                         setActiveSortIndex(0);
@@ -923,7 +973,7 @@ const Funds = () => {
                     {isScrollAtEnd && (
                       <div
                         onMouseDown={startScrollRight}
-                        // onMouseLeave={stopScroll}
+                        onMouseLeave={stopScroll}
                         className={cn('hidden group-hover:block')}
                       >
                         <Tooltip title="پیمایش به چپ (A)">
@@ -943,7 +993,7 @@ const Funds = () => {
               </thead>
             </DndContext>
 
-            <tbody className="relative w-full overflow-hidden">
+            {/* <tbody className="relative w-full overflow-hidden">
               {(() => {
                 const isMainTab = activeIndexCategoryTab === 0;
                 const allRows = table.getRowModel().rows;
@@ -1126,7 +1176,7 @@ const Funds = () => {
               <tr className="h-16">
                 <td></td>
               </tr>
-            </tbody>
+            </tbody> */}
           </table>
         </div>
       </div>
