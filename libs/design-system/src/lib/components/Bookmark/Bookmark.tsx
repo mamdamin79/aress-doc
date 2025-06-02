@@ -18,6 +18,7 @@ export function Bookmark({
 
   return (
     <div
+      dir='rtl'
       onMouseLeave={() => setIsOpen(false)}
       className="relative flex items-center gap-1 overflow-hidden py-2"
     >
@@ -29,11 +30,11 @@ export function Bookmark({
         className={cn(
           'absolute top-[13px] z-10 h-fit w-fit cursor-pointer border-none fill-[#D1D3D7]',
           {
-            'fill-pink-600': selectedColor === 'pink',
-            'fill-blue-600': selectedColor === 'blue',
-            'fill-green-600': selectedColor === 'green',
-            'fill-yellow-600': selectedColor === 'yellow',
-            'fill-purple-600': selectedColor === 'purple',
+            'fill-surface-accent-pink-600': selectedColor === 'pink',
+            'fill-surface-accent-blue-600': selectedColor === 'blue',
+            'fill-surface-accent-vividgreen-600': selectedColor === 'green',
+            'fill-surface-accent-yellow-600': selectedColor === 'yellow',
+            'fill-surface-accent-purple-600': selectedColor === 'purple',
             'invisible group-hover:visible': !selectedColor,
           },
         )}
@@ -43,9 +44,9 @@ export function Bookmark({
 
       <div
         style={{ transform: !isOpen ? `translateX(150%)` : `translateX(0)` }}
-        className="mr-6 flex h-[27px] items-center justify-between gap-2 rounded bg-white px-2 shadow-2xl transition-all duration-300"
+        className="mr-6 flex h-[27px] items-center justify-between gap-2 rounded bg-surface-neutral-primary px-2 shadow-2xl transition-all duration-300"
       >
-        <div className="absolute -right-3 top-1 w-fit fill-white">
+        <div className="absolute -right-3 top-1 w-fit fill-surface-neutral-primary">
           <Icon name="CustomArrow" />
         </div>
         {colors.map((color) => (
@@ -56,10 +57,11 @@ export function Bookmark({
               {
                 'h-4 w-4': color === selectedColor,
                 hover: color !== selectedColor,
-                'bg-blue-600': color === 'blue',
-                'bg-green-600': color === 'green',
-                'bg-yellow-600': color === 'yellow',
-                'bg-purple-600': color === 'purple',
+                'bg-surface-accent-pink-600': color === 'pink',
+                'bg-surface-accent-blue-600': color === 'blue',
+                'bg-surface-accent-vividgreen-600': color === 'green',
+                'bg-surface-accent-yellow-600': color === 'yellow',
+                'bg-surface-accent-purple-600': color === 'purple',
               },
             )}
           >
@@ -77,16 +79,16 @@ export function Bookmark({
                   setIsOpen(false);
                 }}
                 className={cn('h-2.5 w-2.5 flex justify-center items-center group/color cursor-pointer rounded-full', {
-                  'bg-pink-600': color === 'pink',
-                  'bg-blue-600': color === 'blue',
-                  'bg-green-600': color === 'green',
-                  'bg-yellow-600': color === 'yellow',
-                  'bg-purple-600': color === 'purple',
+                  'bg-surface-accent-pink-600': color === 'pink',
+                  'bg-surface-accent-blue-600': color === 'blue',
+                  'bg-surface-accent-vividgreen-600': color === 'green',
+                  'bg-surface-accent-yellow-600': color === 'yellow',
+                  'bg-surface-accent-purple-600': color === 'purple',
                 })}
               >
                 <div className={cn("h-1.5 w-1.5 rounded-full invisible bg-white opacity-50", {
                   'group-hover/color:visible': color !== selectedColor
-                })}></div>
+                })} />
               </div>
             </div>
           </div>

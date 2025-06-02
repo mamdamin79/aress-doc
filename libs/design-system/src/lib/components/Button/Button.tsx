@@ -93,12 +93,12 @@ export const Button: React.FC<ButtonProps> = ({
           !isLoading &&
           !disabled &&
           (theme === 'brand'
-            ? 'border-button-brand-border-default text-button-brand-label-plain-default border'
+            ? 'border-button-brand-border-default hover:border-button-brand-border-hover active:border-button-brand-border-pressed text-button-brand-label-plain-default border active:bg-button-brand-surface-pressed hover:bg-button-brand-surface-hover hover:text-button-brand-label-onsurface'
             : theme === 'error'
-              ? 'border border-button-error-border-default text-button-error-label-plain-default'
+              ? 'border border-button-error-border-default hover:border-button-error-border-hover active:border-button-error-border-pressed text-button-error-label-plain-default hover:bg-button-error-surface-hover hover:text-button-error-label-onsurface active:bg-button-error-surface-pressed'
               : theme === 'success'
-                ? 'border border-button-success-border-default text-button-success-label-plain-default'
-                : 'border border-button-neutral-border-default text-button-neutral-label-plain-default'),
+                ? 'border border-button-success-border-default hover:border-button-success-border-hover active:border-button-success-border-pressed text-button-success-label-plain-default hover:bg-button-success-surface-hover hover:text-button-success-label-onsurface active:bg-button-success-surface-pressed'
+                : 'border border-button-neutral-border-default hover:border-button-neutral-border-hover active:border-button-neutral-border-pressed text-button-neutral-label-plain-default hover:bg-button-neutral-surface-hover hover:text-button-neutral-label-onsurface active:bg-button-neutral-surface-pressed'),
 
         // TEXT MODE
         mode === 'text' &&
@@ -135,32 +135,32 @@ export const Button: React.FC<ButtonProps> = ({
         mode === 'underline' &&
           disabled &&
           (theme === 'brand'
-            ? 'text-brand-300'
+            ? 'text-button-brand-label-plain-disable'
             : theme === 'error'
-              ? 'text-red-300'
+              ? 'text-button-error-label-plain-disable'
               : theme === 'success'
-                ? 'text-green-300'
-                : 'text-gray-300'),
+                ? 'text-button-success-label-plain-disable'
+                : 'text-button-neutral-label-plain-disable'),
         mode === 'underline' &&
           isLoading &&
           !disabled &&
           (theme === 'brand'
-            ? 'text-brand-600'
+            ? 'text-button-brand-label-plain-loading'
             : theme === 'error'
-              ? 'text-red-600'
+              ? 'text-button-error-label-plain-loading'
               : theme === 'success'
-                ? 'text-green-600'
-                : 'text-gray-1000'),
+                ? 'text-button-success-label-plain-loading'
+                : 'text-button-neutral-label-plain-loading'),
         mode === 'underline' &&
           !isLoading &&
           !disabled &&
           (theme === 'brand'
-            ? 'text-brand-600 active:text-brand-800 active:border-brand-800'
+            ? 'text-button-brand-label-plain-default active:text-button-brand-label-plain-pressed active:border-button-brand-border-pressed hover:text-button-brand-label-plain-hover hover:border-button-brand-border-hover'
             : theme === 'error'
-              ? 'text-red-600 active:border-red-800 active:text-red-800'
+              ? 'text-button-error-label-plain-default active:text-button-error-label-plain-pressed active:border-button-error-border-pressed hover:text-button-error-label-plain-hover hover:border-button-error-border-hover'
               : theme === 'success'
-                ? 'text-green-600 active:border-green-800 active:text-green-800'
-                : 'text-gray-1000 active:border-gray-800 active:text-gray-800'),
+                ? 'text-button-success-label-plain-default active:text-button-success-label-plain-pressed active:border-button-success-border-pressed hover:text-button-success-label-plain-hover hover:border-button-success-border-hover'
+                : 'text-button-neutral-label-plain-default active:text-button-neutral-label-plain-pressed active:border-button-neutral-border-pressed hover:text-button-neutral-label-plain-hover hover:border-button-neutral-border-hover'),
         className,
       )}
     >

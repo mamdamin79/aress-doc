@@ -39,7 +39,7 @@ export const Tabs: React.FC<Props> = ({
       <TabList
         className={cn(
           'flex',
-          { 'w-max gap-10 border-b-2 border-gray-300': variant === 'lined' },
+          { 'w-max gap-10 border-b-2 border-border-neutral-primary': variant === 'lined' },
           { 'gap-2': variant !== 'lined' && variant !== 'divided' },
         )}
       >
@@ -70,7 +70,7 @@ export const Tabs: React.FC<Props> = ({
                   variant === 'shaped-color' && !props.tag,
               },
               {
-                'data-[selected]:bg-brand-600 relative min-w-40 rounded-t-xl py-2 text-center text-gray-600 hover:text-gray-700 data-[selected]:font-semibold data-[selected]:text-white':
+                'data-[selected]:bg-surface-brand-600-primary relative min-w-40 rounded-t-xl py-2 text-center text-text-neutral-secondary hover:text-text-neutral-secondarycontrast data-[selected]:font-semibold data-[selected]:text-text-onbrand-neutral-primary-on600 hover:bg-surface-neutral-secondary':
                   variant === 'lined',
               },
               {

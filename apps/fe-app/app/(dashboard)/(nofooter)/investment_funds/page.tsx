@@ -330,7 +330,7 @@ const Funds = () => {
   }, []);
 
   return (
-    <>
+    <div dir="rtl">
       <div
         className={cn(
           'mx-auto flex w-full items-center justify-between bg-white px-8 pb-3 pt-8 transition-all duration-300',
@@ -397,7 +397,8 @@ const Funds = () => {
                       sortIndex !== 0 && canScrollVertical,
                     'group-hover/table:-right-0':
                       sortIndex !== 0 && canScrollVertical && isScrollAtStart,
-                    'fixed right-[215px] top-[240px] z-10 w-fit': sortIndex === 0,
+                    'fixed right-[215px] top-[240px] z-10 w-fit':
+                      sortIndex === 0,
                     'top-[157px]': sortIndex === 0 && !isHeaderVisible,
                   })}
                 >
@@ -427,7 +428,7 @@ const Funds = () => {
                         <th
                           key={index}
                           className={cn(
-                            'sticky right-0 top-0 z-20 m-0 h-[64px] w-[385px] bg-[#E3F8F8] border-b py-0 pr-2',
+                            'sticky right-0 top-0 z-20 m-0 h-[64px] w-[385px] border-b bg-[#E3F8F8] py-0 pr-2',
                             {
                               'group-hover/table:pr-0':
                                 canScrollVertical && !isActiveDropdownPageCount,
@@ -436,8 +437,10 @@ const Funds = () => {
                         >
                           <div
                             className={cn({
-                              'w-[385px] h-[75px] bg-[#E3F8F8] select-none': header.column.getCanSort(),
-                              'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]': isScrollAtStart
+                              'h-[75px] w-[385px] select-none bg-[#E3F8F8]':
+                                header.column.getCanSort(),
+                              'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]':
+                                isScrollAtStart,
                             })}
                           >
                             <div className="mr-[75px] flex bg-[#E3F8F8]">
@@ -448,8 +451,7 @@ const Funds = () => {
                                   clickFilterd={() => {
                                     setSortIndex(0);
                                     header.column.toggleSorting(
-                                      header.column.getIsSorted() ===
-                                        'desc'
+                                      header.column.getIsSorted() === 'desc'
                                         ? false
                                         : true,
                                     );
@@ -459,14 +461,12 @@ const Funds = () => {
                                   type={
                                     header.column.getIsSorted() === 'asc'
                                       ? 'active-asc'
-                                      : header.column.getIsSorted() ===
-                                        'desc'
+                                      : header.column.getIsSorted() === 'desc'
                                         ? 'inactive'
                                         : 'inactive'
                                   }
                                   filterable={columnFilters.some(
-                                    (filterItem) =>
-                                      filterItem.id === header.id,
+                                    (filterItem) => filterItem.id === header.id,
                                   )}
                                   title={String(
                                     flexRender(
@@ -503,8 +503,8 @@ const Funds = () => {
                                   {(Object.entries(selectedFilters).length >
                                     0 ||
                                     fundSearchQuery) && (
-                                      <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
-                                    )}
+                                    <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
+                                  )}
                                   <Icon size="lg" name="filter" />
                                 </div>
                               </Tooltip>
@@ -520,7 +520,7 @@ const Funds = () => {
                             }
                           }}
                           className={cn(
-                            'm-0 h-[64px] w-full bg-[#E3F8F8] pr-4 text-nowrap text-sm font-medium',
+                            'm-0 h-[64px] w-full text-nowrap bg-[#E3F8F8] pr-4 text-sm font-medium',
                             {
                               'pr-0': isScrollAtStart,
                             },
@@ -538,7 +538,7 @@ const Funds = () => {
                                 !isActiveDropdownPageCount &&
                                 !isScrollAtStart,
                             },
-                            '6xl:w-full'
+                            '6xl:w-full',
                           )}
                           key={index}
                           colSpan={header.colSpan}
@@ -614,7 +614,7 @@ const Funds = () => {
                       onMouseLeave={stopScroll}
                       className={cn('hidden group-hover:block')}
                     >
-                      <Tooltip position='bottom' title="پیمایش به چپ (A)">
+                      <Tooltip position="bottom" title="پیمایش به چپ (A)">
                         <button
                           className={cn(
                             'bg-brand-600 rounded-md p-1 text-white',
@@ -705,7 +705,7 @@ const Funds = () => {
                                   </div>
                                   <div
                                     className={cn(
-                                      'pr-2 bg-white group-hover:bg-blue-50',
+                                      'bg-white pr-2 group-hover:bg-blue-50',
                                       {
                                         'group-hover/table:pr-0':
                                           canScrollVertical &&
@@ -732,18 +732,18 @@ const Funds = () => {
                                         isMainTab
                                           ? row.pin('top', true)
                                           : setPineWatchList([
-                                            ...pineWatchLis,
-                                            row.id,
-                                          ])
+                                              ...pineWatchLis,
+                                              row.id,
+                                            ])
                                       }
                                       unPinedFunction={() =>
                                         isMainTab
                                           ? row.pin(false)
                                           : setPineWatchList((prev) =>
-                                            prev.filter(
-                                              (id) => id !== row.id,
-                                            ),
-                                          )
+                                              prev.filter(
+                                                (id) => id !== row.id,
+                                              ),
+                                            )
                                       }
                                       isScrolled={isScrollAtStart}
                                       investmentMethod={
@@ -762,7 +762,7 @@ const Funds = () => {
                                   className={cn(
                                     'border-b border-[#E1E2E5] py-0 text-sm font-medium',
                                     {
-                                      'pr-4': !isScrollAtStart
+                                      'pr-4': !isScrollAtStart,
                                     },
                                     {
                                       'group-hover/table:pr-0':
@@ -788,12 +788,12 @@ const Funds = () => {
                         <div className="sticky right-0 mb-2 mt-5 w-screen whitespace-nowrap text-sm text-gray-600">
                           {formatNumber(
                             table.getState().pagination.pageSize *
-                            (table.getState().pagination.pageIndex + 1),
+                              (table.getState().pagination.pageIndex + 1),
                             { commaSeparated: true },
                           ) ===
                             formatNumber(
                               table.getPageCount() *
-                              table.getState().pagination.pageSize,
+                                table.getState().pagination.pageSize,
                               { commaSeparated: true },
                             ) && 'پایان لیست صندوق ها.'}
                         </div>
@@ -810,7 +810,7 @@ const Funds = () => {
         </div>
       </div>
 
-      <div className="fixed bottom-6 right-12 z-50 rounded-md bg-[#B3B6BD8C] backdrop-blur-[30px]">
+      <div className="bg-coloropacity-surface-accent-gray-400-55per fixed bottom-6 right-12 z-50 rounded-md backdrop-blur-[30px]">
         <OptionsDropdown
           className="-mt-2"
           onChange={(e) => {
@@ -833,7 +833,7 @@ const Funds = () => {
                   <span>تعداد سطر در جدول: </span>
                   {formatNumber(
                     table.getState().pagination.pageSize *
-                    (table.getState().pagination.pageIndex + 1),
+                      (table.getState().pagination.pageIndex + 1),
                     { commaSeparated: true },
                   )}
                 </div>
@@ -851,12 +851,12 @@ const Funds = () => {
           customOptionRender={(prop) => (
             <div
               className={cn(
-                'w-full cursor-pointer bg-[#B3B6BD8C] px-3 pt-2 text-center text-xs font-medium text-[#06080F]',
+                'bg-coloropacity-surface-accent-gray-400-55per w-full cursor-pointer px-3 pt-2 text-center text-xs font-medium text-[#06080F]',
                 {
                   'pb-2':
                     table.getState().pagination.pageSize *
-                    (table.getState().pagination.pageIndex + 1) *
-                    table.getPageCount() ===
+                      (table.getState().pagination.pageIndex + 1) *
+                      table.getPageCount() ===
                     +prop.text,
                 },
               )}
@@ -865,7 +865,7 @@ const Funds = () => {
                 {table.getState().pagination.pageSize *
                   (table.getState().pagination.pageIndex + 1) *
                   table.getPageCount() ===
-                  +prop.text
+                +prop.text
                   ? 'همه'
                   : prop.text}
               </span>
@@ -879,26 +879,25 @@ const Funds = () => {
             {
               text: String(
                 table.getState().pagination.pageSize *
-                (table.getState().pagination.pageIndex + 1) *
-                table.getPageCount(),
+                  (table.getState().pagination.pageIndex + 1) *
+                  table.getPageCount(),
               ),
             },
           ]}
         />
       </div>
-
-      <span className="fixed bottom-6 right-[50%] z-50 flex h-[40px] translate-x-[50%] gap-2 rounded-md bg-[#B3B6BD8C] px-3 py-2 text-xs font-medium backdrop-blur-[30px]">
+      <span className="text-text-onaccent-neutral-primary-onbelow600 bg-coloropacity-surface-accent-gray-400-55per fixed bottom-6 right-[50%] z-50 flex h-[40px] translate-x-[50%] gap-2 rounded-md px-3 py-2 text-xs font-medium backdrop-blur-[30px]">
         مجموعه ارزش خالص دارایی‌ها:
-        <span className="border-b border-[#06080F] text-sm text-[#06080F]">
+        <span className="border-text-onaccent-neutral-primary-onbelow600 border-b text-sm">
           10,986,249.09
         </span>
       </span>
-      <div className="fixed bottom-6 left-12 z-50 flex h-[40px] items-center gap-2 rounded-md bg-[#B3B6BD8C] px-3 py-2 backdrop-blur-[30px]">
-        <span className="text-gray-1000 flex items-center gap-1 text-xs font-medium">
+      <div className="bg-coloropacity-surface-accent-gray-400-55per fixed bottom-6 left-12 z-50 flex h-[40px] items-center gap-2 rounded-md px-3 py-2 backdrop-blur-[30px]">
+        <span className="text-text-onaccent-neutral-primary-onbelow600 flex items-center gap-1 text-xs font-medium">
           <div>
             {formatNumber(
               table.getState().pagination.pageSize *
-              (table.getState().pagination.pageIndex + 1),
+                (table.getState().pagination.pageIndex + 1),
               { commaSeparated: true },
             )}
             -
@@ -915,7 +914,7 @@ const Funds = () => {
         </span>
         <button
           className={cn('cursor-pointer rounded', {
-            'cursor-default text-[#B3B6BD]':
+            'text-icon-neutral-disable cursor-default':
               table.getState().pagination.pageIndex + 1 === 1,
           })}
           onClick={() => table.previousPage()}
@@ -925,7 +924,7 @@ const Funds = () => {
         </button>
         <button
           className={cn('cursor-pointer rounded', {
-            'cursor-default text-[#B3B6BD]': !table.getCanNextPage(),
+            'text-icon-neutral-disable cursor-default': !table.getCanNextPage(),
           })}
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
@@ -939,26 +938,30 @@ const Funds = () => {
         onClose={() => setIsSettingModal(false)}
         isOpen={isSettingModal}
       >
-        <div className="flex items-center justify-between">
+        <div dir="rtl" className="flex items-center justify-between">
           <div className="flex items-center justify-between">
-            <span
-              className={cn('p-6 text-xl font-medium', {
-                'text-red-600':
+            <span className="p-6 text-xl font-medium text-text-neutral-primary">
+              انتخاب ستون‌ها 
+              <span
+                className={cn('pr-0.5',{
+                  'text-text-message-error-primary-600':
+                    table
+                      .getAllLeafColumns()
+                      .filter((col) => col.getIsVisible()).length === 25,
+                })}
+              >
+                (
+                {
                   table.getAllLeafColumns().filter((col) => col.getIsVisible())
-                    .length === 25,
-              })}
-            >
-              انتخاب ستون‌ها (
-              {
-                table.getAllLeafColumns().filter((col) => col.getIsVisible())
-                  .length
-              }
-              /25)
+                    .length
+                }
+                /25)
+              </span>
             </span>
           </div>
           {isChanged && (
             <span
-              className="m-6 cursor-pointer text-base font-medium text-red-600"
+              className="text-button-error-label-plain-default m-6 cursor-pointer text-base font-medium"
               onClick={() => table.resetColumnVisibility()}
             >
               بازنشانی به پیشفرض
@@ -966,7 +969,7 @@ const Funds = () => {
           )}
         </div>
 
-        <div className="h-[2px] w-full bg-[#D1D3D7]"></div>
+        <div className="h-[2px] w-full bg-border-neutral-primary"></div>
         <div
           dir="rtl"
           className="scrollbar-md mb-6 h-[550px] overflow-x-hidden overflow-y-scroll"
@@ -981,7 +984,7 @@ const Funds = () => {
                 <div className="grid grid-cols-2 px-4 pb-6">
                   {item.columns.map((item, index) => (
                     <div
-                      className="hover:bg-brand-100 rounded-md p-3"
+                      className="hover:bg-surface-brand-100 rounded-md p-3"
                       key={index}
                     >
                       {item && (
@@ -1031,7 +1034,7 @@ const Funds = () => {
         onClose={() => setIsFilterModal(false)}
         isOpen={isFilterModal}
       >
-        <div className="scrollbar-md mb-4 w-full overflow-x-hidden rounded-3xl bg-white text-right">
+        <div className="scrollbar-md mb-4 w-full overflow-x-hidden rounded-3xl bg-surface-neutral-primary text-right">
           <FilterPopUpSection
             searchValue={fundSearchQuery}
             onSearchChange={setFundSearchQuery}
@@ -1055,7 +1058,7 @@ const Funds = () => {
           }}
         ></DatePicker>
       </Dialog>
-    </>
+    </div>
   );
 };
 

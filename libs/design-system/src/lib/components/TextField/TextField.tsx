@@ -55,6 +55,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
 
   return (
     <div
+      dir='rtl'
       data-twe-input-wrapper-init
       className={cn(
         'relative w-full',
@@ -70,7 +71,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
             (isFocused || inputValue) && (
               <label
                 className={cn('text-sm font-medium ', {
-                  'text-gray-400': disabled,
+                  'text-text-neutral-disable': disabled,
                 })}
               >
                 {label}
@@ -79,7 +80,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
           ) : (
             <label
               className={cn('text-sm font-medium', {
-                'text-gray-400': disabled,
+                'text-text-neutral-disable': disabled,
               })}
             >
               {label}
@@ -97,7 +98,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
             { 'top-11 block': mergeTitleAndPlaceholder && inputSize === 'default' },
             { 'top-10 block': mergeTitleAndPlaceholder && inputSize === 'md' },
             { 'top-9 block': mergeTitleAndPlaceholder && inputSize === 'sm' },
-            { 'text-gray-400': disabled },
+            { 'text-text-neutral-disable': disabled },
             { 'top-10': leadingIcon?.size === 'md' },
           )}
         >
@@ -122,8 +123,8 @@ export const TextField: React.FC<textFieldPropsType> = ({
               'top-[8px]': !label && inputSize === 'sm',
             },
             {
-              'text-gray-400': disabled,
-              'text-gray-500': leadingIcon.color === 'secondary',
+              'text-icon-neutral-disable': disabled,
+              'text-icon-neutral-primary': leadingIcon.color === 'secondary',
               'cursor-pointer': leadingIcon.onClick,
               'top-10': leadingIcon?.size === 'md' && label,
             },
@@ -138,6 +139,8 @@ export const TextField: React.FC<textFieldPropsType> = ({
           </div>
         </div>
       )}
+
+
       {longText ? (
         <textarea
           id={id}
@@ -149,16 +152,16 @@ export const TextField: React.FC<textFieldPropsType> = ({
           className={cn(
             'text-md h-12 w-full resize-none rounded-xl border p-2 font-normal outline-none transition-colors duration-150',
             {
-              'border-inherit bg-transparent opacity-100 placeholder:text-gray-400':
+              'border-inherit bg-transparent opacity-100 placeholder:text-text-neutral-disable':
                 disabled,
-              'placeholder:text-gray-500': !disabled,
+              'placeholder:text-text-neutral-tertiary': !disabled,
               'pl-20': trailingIcons.length === 2,
               'pl-10': trailingIcons.length === 1,
-              'bg-gray-100': mode === 'filled' && !disabled,
-              'hover:bg-gray-300': mode === 'filled' && !disabled && !isFocused,
-              'cursor-not-allowed !bg-gray-50': disabled && mode === 'filled',
-              'border-red-600 focus:border-[2.5px]': isError && !disabled,
-              'focus:border-brand-600 border-gray-300 focus:border-2 focus:outline-none':
+              'bg-surface-neutral-secondary': mode === 'filled' && !disabled,
+              'hover:bg-surface-neutral-secondarycontrast': mode === 'filled' && !disabled && !isFocused,
+              'cursor-not-allowed !bg-surface-neutral-disable': disabled && mode === 'filled',
+              'border-border-message-error-primary-600 focus:border-[2.5px]': isError && !disabled,
+              'focus:border-border-brand-primary-600 border-border-neutral-secondary focus:border-2 focus:outline-none':
                 !isError && !disabled,
               'pr-12': leadingIcon,
               'h-[134px]': longText,
@@ -190,16 +193,16 @@ export const TextField: React.FC<textFieldPropsType> = ({
             'text-md w-full rounded-xl border p-2 font-normal outline-none transition-colors duration-150',
             heightClass,
             {
-              'border-inherit bg-transparent opacity-100 placeholder:text-gray-400':
+              'border-inherit bg-transparent opacity-100 placeholder:text-text-neutral-disable':
                 disabled,
-              'placeholder:text-gray-500': !disabled,
+              'placeholder:text-text-neutral-tertiary': !disabled,
               'pl-20': trailingIcons.length === 2,
               'pl-10': trailingIcons.length === 1,
-              'bg-gray-100': mode === 'filled' && !disabled,
-              'hover:bg-gray-300': mode === 'filled' && !disabled && !isFocused,
-              'cursor-not-allowed !bg-gray-50': disabled && mode === 'filled',
-              'border-red-600 focus:border-[2.5px]': isError && !disabled,
-              'focus:border-brand-600 border-gray-300 focus:border-2 focus:outline-none':
+              'bg-surface-neutral-secondary': mode === 'filled' && !disabled,
+              'hover:bg-surface-neutral-secondarycontrast': mode === 'filled' && !disabled && !isFocused,
+              'cursor-not-allowed !bg-surface-neutral-disable': disabled && mode === 'filled',
+              'border-border-message-error-primary-600 focus:border-[2.5px]': isError && !disabled,
+              'focus:border-border-brand-primary-600 border-border-neutral-secondary focus:border-2 focus:outline-none':
                 !isError && !disabled,
               'pr-12': leadingIcon,
             },
@@ -233,8 +236,8 @@ export const TextField: React.FC<textFieldPropsType> = ({
       >
         {trailingIcons.map((icon) => {
           const isDisabled = cn({
-            'text-gray-400': disabled,
-            'text-gray-500': icon.color === 'secondary',
+            'text-text-icon-neutral-disable': disabled,
+            'text-icon-neutral-primary': icon.color === 'secondary',
           });
 
           if (icon.name === 'eye') {
@@ -279,9 +282,9 @@ export const TextField: React.FC<textFieldPropsType> = ({
       {supportText && (
         <div
           className={cn('h-[22px] pt-1 text-xs', {
-            'text-red-600': isError,
-            'text-gray-600': !isError,
-            'text-gray-400': disabled,
+            'text-text-message-error-primary-600': isError,
+            'text-text-neutral-secondary': !isError,
+            'text-text-neutral-disable': disabled,
             '-mt-2': longText,
           })}
         >
