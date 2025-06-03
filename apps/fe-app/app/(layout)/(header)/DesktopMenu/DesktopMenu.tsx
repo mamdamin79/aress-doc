@@ -93,9 +93,9 @@ export const DesktopMenu: React.FC<MenuProps> = ({ menuItems, activeTab }) => {
           item.dropdown
             ? 'group-hover:text-brand-600'
             : activeTab === index
-              ? 'group-hover:text-gray-1000'
+              ? 'group-hover:text-text-neutral-primary'
               : 'group-hover:text-gray-700',
-          activeTab === index ? 'text-gray-1000 font-medium' : 'text-gray-600',
+          activeTab === index ? 'text-text-neutral-primary font-medium' : 'text-gray-600',
         )}
       >
         <div className="relative">
@@ -144,7 +144,7 @@ export const DesktopMenu: React.FC<MenuProps> = ({ menuItems, activeTab }) => {
             <div
               className={cn(
                 'mb-2 h-8 select-none rounded-full p-1 text-lg font-extrabold transition-colors',
-                showMoreMenu ? 'text-gray-1000 bg-gray-100' : 'text-gray-600',
+                showMoreMenu ? 'text-text-neutral-primary bg-gray-100' : 'text-gray-600',
               )}
               onClick={() => setShowMoreMenu(!showMoreMenu)}
             >

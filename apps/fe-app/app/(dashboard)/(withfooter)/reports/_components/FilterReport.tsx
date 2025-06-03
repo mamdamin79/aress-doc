@@ -68,7 +68,7 @@ export const FilterReport = () => {
               checked={filter.onlyNew}
               onChange={() => handleFilterChange('onlyNew')}
               content="جدید"
-              className='text-gray-1000'
+              className='text-text-neutral-primary'
             />
           </div>
           <div className="py-2">

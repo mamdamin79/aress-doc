@@ -30,7 +30,7 @@ export const Button: React.FC<ButtonProps> = ({
     <button
       {...props}
       className={cn(
-        'group flex w-full items-center gap-2 px-2',
+        'group flex w-full items-center gap-2 px-2 transition-all',
         { 'cursor-default': isLoading || disabled },
         { 'justify-center': align === 'center' },
         { 'justify-start': align === 'right' },
@@ -75,30 +75,30 @@ export const Button: React.FC<ButtonProps> = ({
           (theme === 'brand'
             ? 'border-button-brand-border-disable text-button-brand-label-plain-disable border'
             : theme === 'error'
-              ? 'border border-button-error-border-disable text-button-error-label-plain-disable'
+              ? 'border-button-error-border-disable text-button-error-label-plain-disable border'
               : theme === 'success'
-                ? 'border border-button-success-border-disable text-button-success-label-plain-disable'
-                : 'border border-button-neutral-border-disable text-button-neutral-label-plain-disable'),
+                ? 'border-button-success-border-disable text-button-success-label-plain-disable border'
+                : 'border-button-neutral-border-disable text-button-neutral-label-plain-disable border'),
         mode === 'secondary' &&
           isLoading &&
           !disabled &&
           (theme === 'brand'
             ? 'border-button-brand-border-loading text-button-brand-label-plain-loading border'
             : theme === 'error'
-              ? 'border border-button-error-border-loading text-button-error-label-plain-loading'
+              ? 'border-button-error-border-loading text-button-error-label-plain-loading border'
               : theme === 'success'
-                ? 'border border-button-success-border-loading text-button-success-label-plain-loading'
+                ? 'border-button-success-border-loading text-button-success-label-plain-loading border'
                 : 'border-button-neutral-border-loading text-button-neutral-label-plain-loading'),
         mode === 'secondary' &&
           !isLoading &&
           !disabled &&
           (theme === 'brand'
-            ? 'border-button-brand-border-default hover:border-button-brand-border-hover active:border-button-brand-border-pressed text-button-brand-label-plain-default border active:bg-button-brand-surface-pressed hover:bg-button-brand-surface-hover hover:text-button-brand-label-onsurface'
+            ? 'border-button-brand-border-default hover:border-button-brand-border-hover active:border-button-brand-border-pressed text-button-brand-label-plain-default active:bg-button-brand-surface-pressed hover:bg-button-brand-surface-hover hover:text-button-brand-label-onsurface border'
             : theme === 'error'
-              ? 'border border-button-error-border-default hover:border-button-error-border-hover active:border-button-error-border-pressed text-button-error-label-plain-default hover:bg-button-error-surface-hover hover:text-button-error-label-onsurface active:bg-button-error-surface-pressed'
+              ? 'border-button-error-border-default hover:border-button-error-border-hover active:border-button-error-border-pressed text-button-error-label-plain-default hover:bg-button-error-surface-hover hover:text-button-error-label-onsurface active:bg-button-error-surface-pressed border'
               : theme === 'success'
-                ? 'border border-button-success-border-default hover:border-button-success-border-hover active:border-button-success-border-pressed text-button-success-label-plain-default hover:bg-button-success-surface-hover hover:text-button-success-label-onsurface active:bg-button-success-surface-pressed'
-                : 'border border-button-neutral-border-default hover:border-button-neutral-border-hover active:border-button-neutral-border-pressed text-button-neutral-label-plain-default hover:bg-button-neutral-surface-hover hover:text-button-neutral-label-onsurface active:bg-button-neutral-surface-pressed'),
+                ? 'border-button-success-border-default hover:border-button-success-border-hover active:border-button-success-border-pressed text-button-success-label-plain-default hover:bg-button-success-surface-hover hover:text-button-success-label-onsurface active:bg-button-success-surface-pressed border'
+                : 'border-button-neutral-border-default hover:border-button-neutral-border-hover active:border-button-neutral-border-pressed text-button-neutral-label-plain-default hover:bg-button-neutral-surface-hover hover:text-button-neutral-label-onsurface active:bg-button-neutral-surface-pressed border'),
 
         // TEXT MODE
         mode === 'text' &&
@@ -116,9 +116,9 @@ export const Button: React.FC<ButtonProps> = ({
           (theme === 'brand'
             ? 'border-button-brand-border-loading text-button-brand-label-plain-loading border'
             : theme === 'error'
-              ? 'border border-button-error-border-loading text-button-error-label-plain-loading'
+              ? 'border-button-error-border-loading text-button-error-label-plain-loading border'
               : theme === 'success'
-                ? 'border border-button-success-border-loading text-button-success-label-plain-loading'
+                ? 'border-button-success-border-loading text-button-success-label-plain-loading border'
                 : 'border-button-neutral-border-loading text-button-neutral-label-plain-loading'),
         mode === 'text' &&
           !isLoading &&
@@ -126,10 +126,10 @@ export const Button: React.FC<ButtonProps> = ({
           (theme === 'brand'
             ? 'text-button-brand-label-plain-default hover:border-button-brand-border-hover active:border-button-brand-border-pressed active:text-button-brand-label-plain-pressed hover:border'
             : theme === 'error'
-              ? 'hover:border text-button-error-label-plain-default hover:border-button-error-border-hover active:border-button-error-border-pressed active:text-button-error-label-plain-pressed'
+              ? 'text-button-error-label-plain-default hover:border-button-error-border-hover active:border-button-error-border-pressed active:text-button-error-label-plain-pressed hover:border'
               : theme === 'success'
-                ? 'hover:border text-button-success-label-plain-default hover:border-button-success-border-hover active:border-button-success-border-pressed active:text-button-success-label-plain-pressed'
-                : 'hover:border text-button-neutral-label-plain-default hover:border-button-neutral-border-hover active:border-button-neutral-border-pressed active:text-button-neutral-label-plain-pressed'),
+                ? 'text-button-success-label-plain-default hover:border-button-success-border-hover active:border-button-success-border-pressed active:text-button-success-label-plain-pressed hover:border'
+                : 'text-button-neutral-label-plain-default hover:border-button-neutral-border-hover active:border-button-neutral-border-pressed active:text-button-neutral-label-plain-pressed hover:border'),
 
         // UNDERLINE MODE
         mode === 'underline' &&
@@ -179,7 +179,7 @@ export const Button: React.FC<ButtonProps> = ({
               { 'text-center': align === 'center' },
               mode === 'underline' &&
                 !disabled &&
-                'underline-offset-8 transition-transform group-hover:border-b group-hover:underline',
+                'underline-offset-8 transition-transform group-hover:underline',
             )}
           >
             {children}

@@ -18,7 +18,7 @@ export function Bookmark({
 
   return (
     <div
-      dir='rtl'
+      dir="rtl"
       onMouseLeave={() => setIsOpen(false)}
       className="relative flex items-center gap-1 overflow-hidden py-2"
     >
@@ -44,9 +44,9 @@ export function Bookmark({
 
       <div
         style={{ transform: !isOpen ? `translateX(150%)` : `translateX(0)` }}
-        className="mr-6 flex h-[27px] items-center justify-between gap-2 rounded bg-surface-neutral-primary px-2 shadow-2xl transition-all duration-300"
+        className="bg-surface-neutral-primary mr-6 flex h-[27px] items-center justify-between gap-2 rounded px-2 shadow-2xl transition-all duration-300"
       >
-        <div className="absolute -right-3 top-1 w-fit fill-surface-neutral-primary">
+        <div className="fill-surface-neutral-primary absolute -right-3 top-1 w-fit">
           <Icon name="CustomArrow" />
         </div>
         {colors.map((color) => (
@@ -67,7 +67,7 @@ export function Bookmark({
           >
             <div
               className={cn(
-                'flex items-center justify-center rounded-full bg-white',
+                'bg-surface-neutral-primary flex items-center justify-center rounded-full',
                 {
                   'h-3.5 w-3.5': color === selectedColor,
                 },
@@ -78,17 +78,25 @@ export function Bookmark({
                   onColorChange(color);
                   setIsOpen(false);
                 }}
-                className={cn('h-2.5 w-2.5 flex justify-center items-center group/color cursor-pointer rounded-full', {
-                  'bg-surface-accent-pink-600': color === 'pink',
-                  'bg-surface-accent-blue-600': color === 'blue',
-                  'bg-surface-accent-vividgreen-600': color === 'green',
-                  'bg-surface-accent-yellow-600': color === 'yellow',
-                  'bg-surface-accent-purple-600': color === 'purple',
-                })}
+                className={cn(
+                  'group/color flex h-2.5 w-2.5 cursor-pointer items-center justify-center rounded-full',
+                  {
+                    'bg-surface-accent-pink-600': color === 'pink',
+                    'bg-surface-accent-blue-600': color === 'blue',
+                    'bg-surface-accent-vividgreen-600': color === 'green',
+                    'bg-surface-accent-yellow-600': color === 'yellow',
+                    'bg-surface-accent-purple-600': color === 'purple',
+                  },
+                )}
               >
-                <div className={cn("h-1.5 w-1.5 rounded-full invisible bg-white opacity-50", {
-                  'group-hover/color:visible': color !== selectedColor
-                })} />
+                <div
+                  className={cn(
+                    'bg-surface-neutral-primary invisible h-1.5 w-1.5 rounded-full opacity-50',
+                    {
+                      'group-hover/color:visible': color !== selectedColor,
+                    },
+                  )}
+                />
               </div>
             </div>
           </div>

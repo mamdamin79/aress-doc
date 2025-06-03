@@ -82,7 +82,7 @@ export const PrimarySection: React.FC<PrimarySectionProps> = ({
         <div
           dir="rtl"
           className={cn(
-            'text-gray-1000 overflow-hidden whitespace-nowrap',
+            'text-text-neutral-primary overflow-hidden whitespace-nowrap',
             getTextClass(primaryText.mode),
           )}
         >
@@ -106,7 +106,7 @@ export const PrimarySection: React.FC<PrimarySectionProps> = ({
       {secondaryText && (
         <div
           className={cn(
-            'text-right text-xs font-normal text-gray-600',
+            'text-text-neutral-secondary text-right text-xs font-normal',
             getTextClass(secondaryText.mode),
           )}
         >

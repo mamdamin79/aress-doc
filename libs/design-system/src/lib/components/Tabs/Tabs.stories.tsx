@@ -35,9 +35,7 @@ export const Default: Story = {
     },
   },
   render: (args) => (
-    <div
-      className={cn({ 'w-max bg-gray-100 p-10': args.colorMode === 'inverse' })}
-    >
+    <div className={cn({ 'w-max p-10': args.colorMode === 'inverse' })}>
       <Tabs {...args} />
     </div>
   ),
@@ -47,7 +45,7 @@ export const Default: Story = {
     tabs: [
       {
         content: (
-          <div className="bg-brand-500 flex items-center justify-between rounded-md p-3 text-white">
+          <div className="flex items-center justify-between rounded-md p-3">
             <p>خلاطه</p>
             <p>تحلیل بازدهی</p>
             <p>ارزیابی ریسک</p>

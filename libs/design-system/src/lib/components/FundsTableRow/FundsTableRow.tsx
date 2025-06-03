@@ -90,7 +90,7 @@ export function FundsTableRow({
           }
         </div>
         <Tooltip offset={2} position="left" title={name.length > 13 ? name : ''}>
-          <p className="text-gray-1000 w-[130px] hover:text-[#0F7575] truncate text-right text-sm font-medium">
+          <p className="text-text-neutral-primary w-[130px] hover:text-[#0F7575] truncate text-right text-sm font-medium">
             {name}
           </p>
         </Tooltip>

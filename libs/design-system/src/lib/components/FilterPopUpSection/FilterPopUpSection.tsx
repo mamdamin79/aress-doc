@@ -101,22 +101,24 @@ export function FilterPopUpSection({
 
   return (
     <div
-      className={cn('relative overflow-hidden h-[696px]')}
+      className={cn(
+        'bg-surface-neutral-primary relative h-[696px] overflow-hidden',
+      )}
     >
       {/* Header */}
       <div className="flex items-center justify-between px-6 pb-4 pt-6 text-xl font-medium">
-        <span className='text-text-neutral-primary'>فیلتر صندوق‌ها</span>
+        <span className="text-text-neutral-primary">فیلتر صندوق‌ها</span>
         {(Object.keys(selectedFilters).length > 0 || searchValue) && (
           <span
             onClick={handleClearAll}
-            className="cursor-pointer font-medium text-base text-button-error-label-plain-default"
+            className="text-button-error-label-plain-default cursor-pointer text-base font-medium"
           >
             بازنشانی به پیش‌فرض
           </span>
         )}
       </div>
-      <div className='w-full h-[2px] bg-[#D1D3D7]'></div>
-      <div className='h-[580px] pt-4 overflow-y-auto scrollbar-sm'>
+      <div className="bg-border-neutral-primary h-[2px] w-full"></div>
+      <div className="scrollbar-sm h-[580px] overflow-y-auto pt-4">
         {/* Search Input */}
         <div className="px-4">
           <TextField
@@ -138,14 +140,14 @@ export function FilterPopUpSection({
                 onClick={() => openFilter(item.title)}
                 className="rounded-lg border p-3"
               >
-                <div className="flex cursor-pointer text-text-neutral-primary font-medium text-sm items-center justify-between">
+                <div className="text-text-neutral-primary flex cursor-pointer items-center justify-between text-sm font-medium">
                   <span>{item.title}</span>
                   <Icon name="chevron-left" size="lg" />
                 </div>
 
                 {selectedFilters[item.title] && (
                   <div className="pt-2" onClick={(e) => e.stopPropagation()}>
-                    <hr className="h-0.5 bg-gray-100" />
+                    <hr className="bg-border-neutral-primary h-0.5" />
                     <div className="flex flex-wrap gap-2 pt-2">
                       {selectedFilters[item.title]?.map((option, i) => (
                         <RemovableLabel
@@ -183,18 +185,18 @@ export function FilterPopUpSection({
       {/* Filter Options List */}
       <div
         className={cn(
-          'absolute z-0 right-0 top-0 h-[695px] w-full translate-x-full bg-surface-neutral-primary transition-all duration-500',
+          'bg-surface-neutral-primary absolute right-0 top-0 z-0 h-[695px] w-full translate-x-full transition-all duration-500',
           { 'translate-x-0': activeFilter },
         )}
       >
         <div
-          className="flex cursor-pointer w-fit items-center text-text-neutral-primary gap-1 mx-6 mt-6 mb-4"
+          className="text-text-neutral-primary mx-6 mb-4 mt-6 flex w-fit cursor-pointer items-center gap-1"
           onClick={() => setActiveFilter(null)}
         >
           <Icon name="chevron-right" size="lg" />
-          <span className='font-medium'>{activeFilter}</span>
+          <span className="font-medium">{activeFilter}</span>
         </div>
-        <hr className="h-0.5 bg-gray-100" />
+        <hr className="bg-border-neutral-primary h-0.5" />
 
         {/* Options */}
         <div className="flex flex-col">
@@ -228,7 +230,7 @@ export function FilterPopUpSection({
         {/* Confirm Buttons */}
         <div className="absolute bottom-1.5 left-2.5 flex items-center gap-2 p-4">
           <Button
-            theme='brand'
+            theme="brand"
             onClick={() => setActiveFilter(null)}
             size="sm"
             mode="secondary"
@@ -238,7 +240,7 @@ export function FilterPopUpSection({
             بازگشت
           </Button>
           <Button
-            theme='brand'
+            theme="brand"
             className="whitespace-nowrap"
             onClick={handleConfirm}
             align="center"

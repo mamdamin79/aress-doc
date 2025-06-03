@@ -13,8 +13,8 @@ export const NumberSection = ({ value }: { value: number }) => {
       className={cn(
         'text-left text-xs font-medium',
 
-        formattedNumber > 0 && 'text-green-600',
-        formattedNumber < 0 && 'text-red-600',
+        formattedNumber > 0 && 'text-border-accent-green-600',
+        formattedNumber < 0 && 'text-text-accent-red-primary-600',
       )}
     >
       {formattedNumber > 0 ? '+' : '-'} ٪{Math.abs(formattedNumber)}

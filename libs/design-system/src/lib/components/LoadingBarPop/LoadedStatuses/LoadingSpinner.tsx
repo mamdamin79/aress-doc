@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { useEffect, useState, useRef } from 'react';
 
 export const LoadingSpinner = ({ duration }: { duration: number }) => {
@@ -39,7 +39,7 @@ export const LoadingSpinner = ({ duration }: { duration: number }) => {
   return (
     <div className="relative h-12 w-12">
       <div
-        className="border-surface-neutral-secondarycontrast absolute inset-0 rounded-full border-4"
+        className="border-surface-neutral-primary absolute inset-0 rounded-full border-4"
         style={{
           background: `conic-gradient(from 0deg at 50% 50%, #99D5D5 0deg, #008483 ${progress * 3.6}deg, transparent ${progress * 3.6}deg)`,
           maskImage: 'radial-gradient(circle, transparent 45%, black 46%)',

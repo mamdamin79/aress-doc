@@ -81,7 +81,7 @@ export function Footer() {
       <div className="mx-auto mt-10 grid grid-cols-1 grid-rows-4 items-center text-center sm:grid-cols-2 sm:grid-rows-2 md:text-start lg:grid-cols-4 lg:grid-rows-1">
         {linksFooter.map(({ title, links }, index) => (
           <div key={index} className="mt-8 self-start lg:mt-0">
-            <span className="text-gray-1000 mb-6 block text-2xl font-medium">
+            <span className="text-text-neutral-primary mb-6 block text-2xl font-medium">
               {title}
             </span>
             {links.map(({ title, icons, link }, index) => (

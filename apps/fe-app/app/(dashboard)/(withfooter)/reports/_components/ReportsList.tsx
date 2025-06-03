@@ -70,6 +70,7 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
                 videoBadge={report.hasVideo}
                 {...report}
                 image={baseURL + report.image}
+                shadowOnHover
               />
             </div>
           ))}

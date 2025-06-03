@@ -365,7 +365,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
           <div className="relative">
             <div className="absolute -top-6 right-[85px] z-50 items-center gap-1">
               <MonthSelect
-                type='start'
+                type="start"
                 months={listMonth}
                 calendar={calendars[0]}
                 setCurrentDate={setCurrentDate}
@@ -383,7 +383,7 @@ export function DatePicker({ min, max, setDateRange }: Props) {
         <div className="relative flex items-center gap-6">
           <div className="absolute -right-[122px] top-0 z-50 gap-1">
             <MonthSelect
-                type='end'
+              type="end"
               months={listMonth}
               calendar={calendars[1]}
               setCurrentDate={setCurrentDate}
@@ -819,7 +819,9 @@ export function DatePicker({ min, max, setDateRange }: Props) {
               `${endDate?.year}-${endDate?.month}-${endDate?.day}`,
             )}
           </span>
-          <span className="text-gray-1000 -mr-1.5 mb-1 font-medium">روز</span>
+          <span className="text-text-neutral-primary -mr-1.5 mb-1 font-medium">
+            روز
+          </span>
         </div>
       </div>
     </div>

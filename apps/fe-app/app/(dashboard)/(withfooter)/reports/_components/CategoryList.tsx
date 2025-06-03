@@ -55,7 +55,7 @@ export const CategoryList: React.FC<Props> = ({ categories, reports }) => {
             className={cn(
               'group mb-4 flex cursor-pointer items-center gap-2 rounded-md text-sm font-medium text-gray-600 hover:text-gray-700',
               {
-                'text-gray-1000':
+                'text-text-neutral-primary':
                   category.title === searchParams.get('category'),
               },
             )}

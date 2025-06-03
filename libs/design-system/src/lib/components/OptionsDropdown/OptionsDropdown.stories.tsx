@@ -155,7 +155,7 @@ export const CustomTriggerRender: Story = {
     customTriggerRender(props) {
       return (
         <div className="flex flex-row items-center gap-2 rounded-sm p-2 text-sm transition-colors">
-          <span className="text-gray-1000">
+          <span className="text-text-neutral-primary0">
             <span>متن انتخابی: </span>
             {props.selectedItem.text}
           </span>

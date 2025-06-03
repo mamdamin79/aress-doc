@@ -10,7 +10,9 @@ export const CustomTriggerWithoutLogo: React.FC<{
       className={cn(
         'flex w-full cursor-pointer flex-row items-center justify-between gap-1 rounded-md border-2 border-transparent px-2 transition-colors',
         'h-[34px] text-sm font-medium',
-        isActive ? 'border-brand-600 bg-white' : 'bg-white hover:bg-gray-100',
+        isActive
+          ? 'border-border-brand-primary-600 bg-surface-neutral-primary'
+          : 'bg-surface-neutral-primary hover:bg-surface-accent-gray-100',
       )}
     >
       <div className="flex flex-row items-center gap-1">{text}</div>

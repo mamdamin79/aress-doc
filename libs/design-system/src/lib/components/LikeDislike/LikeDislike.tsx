@@ -26,7 +26,7 @@ export const LikeDislike: React.FC<LikeDislikeProps> = ({
   return (
     <button
       onClick={handleReaction}
-      className={`sizing hover:text-gray-1000 text-text-neutral-secondarycontrast group flex w-fit items-center gap-2 transition-all`}
+      className={`sizing hover:text-text-neutral-primary text-text-neutral-secondarycontrast group flex w-fit items-center gap-2 transition-all`}
     >
       <div className="bg-baseBackground group-hover:bg-surface-neutral-secondarycontrast flex h-[26px] w-[40px] items-center justify-center gap-8 rounded-sm text-[14px] transition-all">
         {value}
@@ -37,7 +37,7 @@ export const LikeDislike: React.FC<LikeDislikeProps> = ({
             ? reaction === 'like'
               ? 'text-green-600 [&>*]:fill-green-600'
               : 'text-red-600 [&>*]:fill-red-600'
-            : 'hover:text-gray-1000 text-gray-700',
+            : 'hover:text-text-neutral-primary text-gray-700',
         )}
       >
         {/* Displaying the appropriate reaction icon based on the Reaction prop */}

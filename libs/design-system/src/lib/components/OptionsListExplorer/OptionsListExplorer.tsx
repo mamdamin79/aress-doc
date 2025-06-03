@@ -85,17 +85,17 @@ export function OptionsListExplorer({
   };
 
   return (
-    <div className={cn('h-full w-[500px] bg-white')}>
+    <div className={cn('bg-surface-neutral-primary h-full w-[500px]')}>
       <button
         aria-label="Go back"
         onClick={onBackButtonClick}
-        className="text-gray-1000 flex w-fit cursor-pointer items-center gap-1 bg-transparent px-4 py-2.5"
+        className="text-text-neutral-primary flex w-fit cursor-pointer items-center gap-1 bg-transparent px-4 py-2.5"
       >
         <Icon name="chevron-right" />
         <span className="text-sm font-medium">{title}</span>
       </button>
       {!items.categories && items.items.length < 10 && (
-        <div className="my-4 h-0.5 w-full bg-gray-300"></div>
+        <div className="bg-border-neutral-primary my-4 h-0.5 w-full"></div>
       )}
       {items.items.length > 10 && (
         <div className="mx-4 pb-2">
@@ -141,14 +141,14 @@ export function OptionsListExplorer({
             <div
               onClick={() => setCheckedItem(+item.id)}
               className={cn(
-                'flex h-14 w-full cursor-pointer justify-between border-b border-gray-200 px-4 py-3 last:border-b-0',
-                { 'bg-brand-100': checkedItem === item.id },
+                'border-border-accent-gray-200 flex h-14 w-full cursor-pointer justify-between border-b px-4 py-3 last:border-b-0',
+                { 'bg-surface-brand-100': checkedItem === item.id },
               )}
               key={item.id}
             >
               <div className="flex items-center gap-1">
                 <div
-                  className={cn('text-brand-700 invisible', {
+                  className={cn('text-text-brand-contrast-700 invisible', {
                     visible: checkedItem === item.id,
                   })}
                 >

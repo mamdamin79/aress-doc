@@ -55,7 +55,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
 
   return (
     <div
-      dir='rtl'
+      dir="rtl"
       data-twe-input-wrapper-init
       className={cn(
         'relative w-full',
@@ -70,7 +70,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
           {mergeTitleAndPlaceholder ? (
             (isFocused || inputValue) && (
               <label
-                className={cn('text-sm font-medium ', {
+                className={cn('text-sm font-medium', {
                   'text-text-neutral-disable': disabled,
                 })}
               >
@@ -93,9 +93,12 @@ export const TextField: React.FC<textFieldPropsType> = ({
         <label
           htmlFor={id}
           className={cn(
-            'absolute hidden top-9 cursor-text pr-4 text-sm font-medium',
+            'absolute top-9 hidden cursor-text pr-4 text-sm font-medium',
             { 'right-8': leadingIcon },
-            { 'top-11 block': mergeTitleAndPlaceholder && inputSize === 'default' },
+            {
+              'top-11 block':
+                mergeTitleAndPlaceholder && inputSize === 'default',
+            },
             { 'top-10 block': mergeTitleAndPlaceholder && inputSize === 'md' },
             { 'top-9 block': mergeTitleAndPlaceholder && inputSize === 'sm' },
             { 'text-text-neutral-disable': disabled },
@@ -140,7 +143,6 @@ export const TextField: React.FC<textFieldPropsType> = ({
         </div>
       )}
 
-
       {longText ? (
         <textarea
           id={id}
@@ -152,15 +154,18 @@ export const TextField: React.FC<textFieldPropsType> = ({
           className={cn(
             'text-md h-12 w-full resize-none rounded-xl border p-2 font-normal outline-none transition-colors duration-150',
             {
-              'border-inherit bg-transparent opacity-100 placeholder:text-text-neutral-disable':
+              'placeholder:text-text-neutral-disable border-inherit bg-transparent opacity-100':
                 disabled,
               'placeholder:text-text-neutral-tertiary': !disabled,
               'pl-20': trailingIcons.length === 2,
               'pl-10': trailingIcons.length === 1,
               'bg-surface-neutral-secondary': mode === 'filled' && !disabled,
-              'hover:bg-surface-neutral-secondarycontrast': mode === 'filled' && !disabled && !isFocused,
-              'cursor-not-allowed !bg-surface-neutral-disable': disabled && mode === 'filled',
-              'border-border-message-error-primary-600 focus:border-[2.5px]': isError && !disabled,
+              'hover:bg-surface-neutral-secondarycontrast':
+                mode === 'filled' && !disabled && !isFocused,
+              '!bg-surface-neutral-disable cursor-not-allowed':
+                disabled && mode === 'filled',
+              'border-border-message-error-primary-600 focus:border-[2.5px]':
+                isError && !disabled,
               'focus:border-border-brand-primary-600 border-border-neutral-secondary focus:border-2 focus:outline-none':
                 !isError && !disabled,
               'pr-12': leadingIcon,
@@ -193,15 +198,18 @@ export const TextField: React.FC<textFieldPropsType> = ({
             'text-md w-full rounded-xl border p-2 font-normal outline-none transition-colors duration-150',
             heightClass,
             {
-              'border-inherit bg-transparent opacity-100 placeholder:text-text-neutral-disable':
+              'placeholder:text-text-neutral-disable border-inherit bg-transparent opacity-100':
                 disabled,
               'placeholder:text-text-neutral-tertiary': !disabled,
               'pl-20': trailingIcons.length === 2,
               'pl-10': trailingIcons.length === 1,
               'bg-surface-neutral-secondary': mode === 'filled' && !disabled,
-              'hover:bg-surface-neutral-secondarycontrast': mode === 'filled' && !disabled && !isFocused,
-              'cursor-not-allowed !bg-surface-neutral-disable': disabled && mode === 'filled',
-              'border-border-message-error-primary-600 focus:border-[2.5px]': isError && !disabled,
+              'hover:bg-surface-neutral-secondarycontrast':
+                mode === 'filled' && !disabled && !isFocused,
+              '!bg-surface-neutral-disable cursor-not-allowed':
+                disabled && mode === 'filled',
+              'border-border-message-error-primary-600 focus:border-[2.5px]':
+                isError && !disabled,
               'focus:border-border-brand-primary-600 border-border-neutral-secondary focus:border-2 focus:outline-none':
                 !isError && !disabled,
               'pr-12': leadingIcon,

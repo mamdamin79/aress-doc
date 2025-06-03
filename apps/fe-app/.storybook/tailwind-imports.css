@@ -7,7 +7,9 @@
   --rt-transition-show-delay: 0.15s;
   --rt-transition-closing-delay: 0.15s;
 }
-
+html {
+  direction: rtl;
+}
 .drop-down::-webkit-scrollbar {
   width: 4px;
   background-color: #d8dbe1;

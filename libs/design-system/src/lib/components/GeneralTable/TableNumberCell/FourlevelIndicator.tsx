@@ -13,24 +13,24 @@ export const FourlevelIndicator = ({
 }: FourlevelIndicatorProps) => {
   const indicatorLevels = Array(max).fill(null);
   return (
-    <div className="mx-auto w-6 h-8 border border-gray-900 rounded-xs overflow-hidden flex flex-col-reverse transition-all">
+    <div className="border-border-accent-gray-900 rounded-xs mx-auto flex h-8 w-6 flex-col-reverse overflow-hidden border transition-all">
       {indicatorLevels.map((_, valueIndex: number) => {
         const currentLevel = valueIndex + 1 || 0;
         return (
           <div
             key={`level-${valueIndex}`}
             className={cn(
-              'w-full h-2 border-gray-700',
+              'border-border-accent-gray-700 h-2 w-full',
               currentLevel !== max && 'border-t',
               currentLevel < value
                 ? grayMode
-                  ? 'bg-gray-200'
-                  : 'bg-blue-200'
+                  ? 'bg-border-neutral-secondary'
+                  : 'bg-border-accent-blue-200'
                 : currentLevel > value
-                  ? 'bg-white'
+                  ? 'bg-icon-neutral-white'
                   : grayMode
-                    ? 'bg-gray-500'
-                    : 'bg-blue-700',
+                    ? 'bg-surface-accent-gray-500'
+                    : 'bg-surface-accent-blue-700',
             )}
           ></div>
         );

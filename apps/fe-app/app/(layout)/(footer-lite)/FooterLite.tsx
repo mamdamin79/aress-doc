@@ -27,7 +27,7 @@ export function FooterLite() {
             ارتباط با ما
           </Link>
           <div className="col-span-4 row-start-4 flex h-fit flex-col gap-2 md:col-span-1 md:row-start-2 lg:row-start-1">
-            <span className="text-gray-1000 text-lg">شبکه های اجتماعی:‌</span>
+            <span className="text-text-neutral-primary text-lg">شبکه های اجتماعی:‌</span>
             <div className="flex items-center gap-6">
               <Link href="/">
                 <Image
@@ -59,11 +59,11 @@ export function FooterLite() {
             </div>
           </div>
           <div className="col-span-4 row-start-3 flex h-fit flex-col gap-2 md:col-span-1 md:row-start-2 lg:row-start-1">
-            <span className="text-gray-1000 text-lg">تلفن پشتیبانی:‌</span>
+            <span className="text-text-neutral-primary text-lg">تلفن پشتیبانی:‌</span>
             <span className="text-gray-700">021-8091607</span>
           </div>
           <div className="col-span-4 row-start-2 flex h-fit flex-col gap-2 md:col-span-2 md:row-start-2 lg:row-start-1">
-            <span className="text-gray-1000 text-lg">آدرس پستی:</span>
+            <span className="text-text-neutral-primary text-lg">آدرس پستی:</span>
             <p className="break-words text-gray-700">
               تهران، یوسف آباد، بین خیابان ۶۳ و ۶۵، پلاک ۴۸۵، واحد ۹۲
             </p>
