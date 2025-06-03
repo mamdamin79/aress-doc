@@ -105,11 +105,11 @@ export function FilterPopUpSection({
     >
       {/* Header */}
       <div className="flex items-center justify-between px-6 pb-4 pt-6 text-xl font-medium">
-        <span>فیلتر صندوق‌ها</span>
+        <span className='text-text-neutral-primary'>فیلتر صندوق‌ها</span>
         {(Object.keys(selectedFilters).length > 0 || searchValue) && (
           <span
             onClick={handleClearAll}
-            className="cursor-pointer font-medium text-base text-[#DD3636]"
+            className="cursor-pointer font-medium text-base text-button-error-label-plain-default"
           >
             بازنشانی به پیش‌فرض
           </span>
@@ -138,7 +138,7 @@ export function FilterPopUpSection({
                 onClick={() => openFilter(item.title)}
                 className="rounded-lg border p-3"
               >
-                <div className="flex cursor-pointer font-medium text-sm items-center justify-between">
+                <div className="flex cursor-pointer text-text-neutral-primary font-medium text-sm items-center justify-between">
                   <span>{item.title}</span>
                   <Icon name="chevron-left" size="lg" />
                 </div>
@@ -183,12 +183,12 @@ export function FilterPopUpSection({
       {/* Filter Options List */}
       <div
         className={cn(
-          'absolute z-0 right-0 top-0 h-[695px] w-full translate-x-full bg-white transition-all duration-500',
+          'absolute z-0 right-0 top-0 h-[695px] w-full translate-x-full bg-surface-neutral-primary transition-all duration-500',
           { 'translate-x-0': activeFilter },
         )}
       >
         <div
-          className="flex cursor-pointer w-fit items-center gap-1 mx-6 mt-6 mb-4"
+          className="flex cursor-pointer w-fit items-center text-text-neutral-primary gap-1 mx-6 mt-6 mb-4"
           onClick={() => setActiveFilter(null)}
         >
           <Icon name="chevron-right" size="lg" />

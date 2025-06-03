@@ -35,11 +35,11 @@ export const DualSwitch: React.FC<DualSwitchProps> = ({
     <div
       className={cn(
         'shadow-xs flex h-fit w-fit flex-row gap-1 rounded-[100px] p-1 text-xs',
-        bgWhite ? 'bg-white' : 'bg-gray-100 transition-colors',
+        bgWhite ? 'bg-surface-neutral-primary' : 'bg-surface-neutral-secondary transition-colors',
         size === 'lg'
           ? disabled
-            ? 'border-brand-300 border'
-            : 'border-brand-600 border'
+            ? 'border-border-brand-disable-300 border'
+            : 'border-border-brand-primary-600 border'
           : '',
       )}
       role="radiogroup"
@@ -51,13 +51,13 @@ export const DualSwitch: React.FC<DualSwitchProps> = ({
             role="radio"
             aria-checked={activeItemIndex === index}
             className={cn(
-              'rounded-full bg-white p-[5px]',
+              'rounded-full bg-surface-neutral-primary p-[5px]',
               disabled
                 ? activeItemIndex === index
-                  ? 'bg-brand-300 cursor-default text-white'
-                  : 'cursor-default text-gray-400'
+                  ? 'bg-surface-brand-300-disable cursor-default text-icon-neutral-oncoloreddisable'
+                  : 'cursor-default text-icon-neutral-disable'
                 : activeItemIndex === index
-                  ? 'bg-brand-600 text-white transition-colors'
+                  ? 'bg-surface-brand-600-primary text-icon-onbrand-neutral-on600 transition-colors'
                   : '',
             )}
             onClick={() => !disabled && handleSwitchClick(index)}

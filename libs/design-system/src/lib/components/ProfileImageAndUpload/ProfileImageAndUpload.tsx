@@ -54,7 +54,7 @@ export const ProfileImageAndUpload: React.FC<FileUploadProps> = ({
   return (
     <div className="outline-none">
       <FileUploader handleChange={handleFileChange} name="file" types={types}>
-        <div className="bg-baseBackground relative h-32 w-32 rounded-full border-2 border-gray-100 p-1 outline-none">
+        <div className="bg-surface-neutral-primary relative h-32 w-32 rounded-full border-2 border-border-neutral-tertiary p-1 outline-none">
           <div className="flex h-full w-full items-end justify-center overflow-hidden rounded-full">
             <Image
               alt="profile image"
@@ -69,7 +69,7 @@ export const ProfileImageAndUpload: React.FC<FileUploadProps> = ({
               <div className="h-10 w-10 animate-spin rounded-full border-4 border-white border-t-transparent"></div>
             </div>
           )}
-          <div className="bg-baseBackground absolute left-[88px] top-[88px] flex h-10 w-10 items-center justify-center rounded-full text-gray-700 shadow-2xl">
+          <div className="bg-surface-neutral-primary absolute left-[88px] top-[88px] flex h-10 w-10 items-center justify-center rounded-full text-text-neutral-secondarycontrast shadow-2xl">
             <Icon name="image-up" size="lg" />
           </div>
         </div>
