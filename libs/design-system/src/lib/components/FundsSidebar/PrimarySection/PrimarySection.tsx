@@ -77,7 +77,7 @@ export const PrimarySection: React.FC<PrimarySectionProps> = ({
   );
 
   return (
-    <div className="flex h-[43px] min-w-5 max-w-full flex-col justify-center">
+    <div className="text-text-neutral-primary flex h-[43px] min-w-5 max-w-full flex-col justify-center">
       <div className="flex flex-row items-center gap-0.5 text-right text-sm font-normal">
         <div
           dir="rtl"

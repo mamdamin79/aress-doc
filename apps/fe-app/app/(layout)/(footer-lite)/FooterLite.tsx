@@ -8,7 +8,7 @@ import Image from 'next/image';
 
 export function FooterLite() {
   return (
-    <div className="relative mx-auto w-full overflow-hidden border-t border-[#e1e2e5] bg-white">
+    <div className="border-border-neutral-primary text-text-neutral-primary bg-surface-neutral-background relative mx-auto w-full overflow-hidden border-t">
       <div className="relative z-10 mx-auto max-w-[1680px] px-20 py-6">
         <Link href="/">
           <Image
@@ -27,7 +27,9 @@ export function FooterLite() {
             ارتباط با ما
           </Link>
           <div className="col-span-4 row-start-4 flex h-fit flex-col gap-2 md:col-span-1 md:row-start-2 lg:row-start-1">
-            <span className="text-text-neutral-primary text-lg">شبکه های اجتماعی:‌</span>
+            <span className="text-text-neutral-primary text-lg">
+              شبکه های اجتماعی:‌
+            </span>
             <div className="flex items-center gap-6">
               <Link href="/">
                 <Image
@@ -59,17 +61,23 @@ export function FooterLite() {
             </div>
           </div>
           <div className="col-span-4 row-start-3 flex h-fit flex-col gap-2 md:col-span-1 md:row-start-2 lg:row-start-1">
-            <span className="text-text-neutral-primary text-lg">تلفن پشتیبانی:‌</span>
-            <span className="text-gray-700">021-8091607</span>
+            <span className="text-text-neutral-primary text-lg">
+              تلفن پشتیبانی:‌
+            </span>
+            <span className="text-text-neutral-secondarycontrast">
+              021-8091607
+            </span>
           </div>
           <div className="col-span-4 row-start-2 flex h-fit flex-col gap-2 md:col-span-2 md:row-start-2 lg:row-start-1">
-            <span className="text-text-neutral-primary text-lg">آدرس پستی:</span>
-            <p className="break-words text-gray-700">
+            <span className="text-text-neutral-primary text-lg">
+              آدرس پستی:
+            </span>
+            <p className="text-text-neutral-secondarycontrast break-words">
               تهران، یوسف آباد، بین خیابان ۶۳ و ۶۵، پلاک ۴۸۵، واحد ۹۲
             </p>
           </div>
         </div>
-        <div className="mt-14 flex items-center justify-between text-xs font-semibold text-gray-700">
+        <div className="text-text-neutral-secondarycontrast mt-14 flex items-center justify-between text-xs font-semibold">
           <span>
             © تمامی حقوق اینترنتی برای پردازش اطلاعات مالی آرسس محفوظ است.
           </span>

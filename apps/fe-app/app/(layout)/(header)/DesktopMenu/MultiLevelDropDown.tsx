@@ -25,11 +25,11 @@ export const MultiLevelDropdown: React.FC<MultiLevelDropdownProps> = ({
   return (
     <div
       className={cn(
-        'shadow-8xl shadow-offset-y-10 absolute z-10 flex flex-row overflow-hidden rounded-xl border border-gray-300 bg-white',
+        'shadow-8xl shadow-offset-y-10 border-border-neutral-primary bg-surface-neutral-primary absolute z-10 flex flex-row overflow-hidden rounded-xl border',
         { hidden: !activeMenu, '-right-52': fixedDropdown },
       )}
     >
-      <div className="bg-baseBackground flex h-full w-fit max-w-[272px] flex-col gap-2 border-r border-gray-300 py-2 text-right">
+      <div className="bg-surface-neutral-primary border-border-neutral-primary flex h-full w-fit max-w-[272px] flex-col gap-2 border-r py-2 text-right">
         {menuItems.map((firstLayer, index) => (
           <div key={index} className="flex flex-col">
             <div
@@ -49,14 +49,14 @@ export const MultiLevelDropdown: React.FC<MultiLevelDropdownProps> = ({
       {activeSubMenu && (
         <div
           className={cn(
-            'flex w-fit max-w-[272px] flex-col gap-2 rounded-l-xl border-r border-gray-300 py-2 text-right',
+            'border-border-neutral-primary flex w-fit max-w-[272px] flex-col gap-2 rounded-l-xl border-r py-2 text-right',
             activeSubMenu ? 'visible' : 'invisible',
             activeSubMenu[0]?.groupLabel && 'py-4',
           )}
         >
           {activeSubMenu.map((dropdownItem, dropdownItemIndex) => (
             <div key={dropdownItemIndex} className="flex flex-col">
-              <div className="bg-baseBackground flex flex-row items-center gap-2 pr-4 text-sm font-normal text-gray-600">
+              <div className="bg-baseBackground text-text-neutral-secondary flex flex-row items-center gap-2 pr-4 text-sm font-normal">
                 {dropdownItem.groupLabel && dropdownItem.groupLabel}
                 {dropdownItem.counter && (
                   <>

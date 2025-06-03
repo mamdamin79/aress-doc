@@ -23,7 +23,7 @@ export const BurgerMenu: React.FC<MenuProps> = ({ menuItems }) => {
     setActiveSubMenu(null);
   };
   return (
-    <div className="flex items-center text-nowrap bg-white">
+    <div className="bg-surface-neutral-background text-text-neutral-primary flex items-center text-nowrap">
       <Popover className="group relative h-10" ref={ref}>
         <PopoverButton
           as="div"

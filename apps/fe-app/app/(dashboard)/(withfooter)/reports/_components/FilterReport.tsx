@@ -43,7 +43,7 @@ export const FilterReport = () => {
   };
 
   return (
-    <Popover>
+    <Popover className="text-text-neutral-primary">
       <PopoverButton className="outline-none">
         <Button
           align="center"
@@ -58,17 +58,21 @@ export const FilterReport = () => {
       <PopoverPanel
         transition
         anchor="bottom start"
-        className="z-20 shadow-8xl mt-2 w-[204px] rounded-xl border border-gray-200 bg-white py-2 transition duration-300 ease-in-out [--anchor-gap:var(--spacing-10)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
+        className="shadow-8xl border-border-neutral-primary bg-surface-neutral-primary z-20 mt-2 w-[204px] rounded-xl border py-2 transition duration-300 ease-in-out [--anchor-gap:var(--spacing-10)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
       >
-        <h4 className="text-md mb-1 py-1 pr-4 font-medium">فیلتر ها</h4>
-        <h5 className="pr-4 pt-2 text-sm font-medium">ویژگی‌های‌گزارش</h5>
+        <h4 className="text-md text-text-neutral-primary mb-1 py-1 pr-4 font-medium">
+          فیلتر ها
+        </h4>
+        <h5 className="text-text-neutral-primary pr-4 pt-2 text-sm font-medium">
+          ویژگی‌های‌گزارش
+        </h5>
         <div className="pr-4">
           <div className="py-2">
             <Checkbox
               checked={filter.onlyNew}
               onChange={() => handleFilterChange('onlyNew')}
               content="جدید"
-              className='text-text-neutral-primary'
+              className="text-text-neutral-primary"
             />
           </div>
           <div className="py-2">

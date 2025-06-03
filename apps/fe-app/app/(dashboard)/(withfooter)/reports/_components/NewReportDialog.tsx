@@ -71,7 +71,7 @@ export const NewReportDialog = () => {
         isOpen={isOpen}
         className="w-[480px] text-right xl:w-[584px]"
       >
-        <div className="mb-6 text-center text-lg font-medium text-[#06080F]">
+        <div className="mb-6 text-center text-lg font-medium">
           درخواست گزارش جدید
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>

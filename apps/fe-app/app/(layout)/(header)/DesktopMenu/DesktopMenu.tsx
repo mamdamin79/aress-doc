@@ -45,7 +45,7 @@ export const DesktopMenu: React.FC<MenuProps> = ({ menuItems, activeTab }) => {
   }, [throttledWidth, menuItems]);
 
   const renderDropdownMenu = (item: MenuItem, index: number) => (
-    <div className="bg-baseBackground shadow-offset-y-10 shadow-8xl absolute flex hidden flex-row rounded-xl border-2 border-gray-300 group-hover:block">
+    <div className="bg-surface-neutral-primary shadow-offset-y-10 shadow-8xl border-border-neutral-primary absolute flex hidden flex-row rounded-xl border-2 group-hover:block">
       <div className="flex h-fit w-fit max-w-[272px] flex-col gap-2 py-4 text-right">
         {item.dropdown?.map((dropdownItem, dropdownItemIndex) => (
           <div
@@ -54,10 +54,10 @@ export const DesktopMenu: React.FC<MenuProps> = ({ menuItems, activeTab }) => {
               'flex flex-col',
               dropdownItem.children[0]?.isDashboard ? 'gap-2' : '',
               dropdownItem.groupLabel == '' &&
-                'mb-2 border-b-2 border-t-2 border-gray-200',
+                'border-border-neutral-secondary mb-2 border-b-2 border-t-2',
             )}
           >
-            <div className="flex flex-row items-center gap-2 pr-4 text-sm font-normal text-gray-600">
+            <div className="text-text-neutral-secondary flex flex-row items-center gap-2 pr-4 text-sm font-normal">
               {dropdownItem.groupLabel && dropdownItem.groupLabel}
               {dropdownItem.counter && (
                 <>
@@ -91,11 +91,13 @@ export const DesktopMenu: React.FC<MenuProps> = ({ menuItems, activeTab }) => {
         className={cn(
           'text-shadow-sm relative flex items-center gap-2 py-1 text-sm font-normal outline-none transition-colors',
           item.dropdown
-            ? 'group-hover:text-brand-600'
+            ? 'group-hover:text-text-brand-primary-600'
             : activeTab === index
               ? 'group-hover:text-text-neutral-primary'
-              : 'group-hover:text-gray-700',
-          activeTab === index ? 'text-text-neutral-primary font-medium' : 'text-gray-600',
+              : 'group-hover:text-text-neutral-secondarycontrast',
+          activeTab === index
+            ? 'text-text-neutral-primary font-medium'
+            : 'text-text-neutral-secondary',
         )}
       >
         <div className="relative">
@@ -110,7 +112,7 @@ export const DesktopMenu: React.FC<MenuProps> = ({ menuItems, activeTab }) => {
             <span>{item.text}</span>
           )}
           <div
-            className={`bg-brand-600 absolute bottom-1 left-0 right-0 mx-auto -mb-2 h-1.5 w-6 rounded-full ${
+            className={`bg-surface-brand-600-primary absolute bottom-1 left-0 right-0 mx-auto -mb-2 h-1.5 w-6 rounded-full ${
               activeTab === index ? 'group-hover:block' : 'hidden'
             }`}
           />
@@ -133,7 +135,7 @@ export const DesktopMenu: React.FC<MenuProps> = ({ menuItems, activeTab }) => {
           if (menus.main.length > 2 && index == 2)
             return (
               <>
-                <div className="-mt-2 h-5 w-0.5 rounded-[100px] bg-gray-400"></div>
+                <div className="bg-border-neutral-contrast -mt-2 h-5 w-0.5 rounded-[100px]"></div>
                 {renderMenuItem(item, index)}
               </>
             );
@@ -144,7 +146,9 @@ export const DesktopMenu: React.FC<MenuProps> = ({ menuItems, activeTab }) => {
             <div
               className={cn(
                 'mb-2 h-8 select-none rounded-full p-1 text-lg font-extrabold transition-colors',
-                showMoreMenu ? 'text-text-neutral-primary bg-gray-100' : 'text-gray-600',
+                showMoreMenu
+                  ? 'text-text-neutral-primary bg-surface-neutral-secondary'
+                  : 'text-icon-neutral-secondary',
               )}
               onClick={() => setShowMoreMenu(!showMoreMenu)}
             >

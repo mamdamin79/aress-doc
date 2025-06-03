@@ -48,7 +48,7 @@ export const Dialog: React.FC<DialogProps> = ({
       <HeadlessDialog
         static
         as="div"
-        className="relative z-[100] w-screen"
+        className="text-text-neutral-primary relative z-[100] w-screen"
         aria-label="Close dialog"
         onClose={onClose}
       >

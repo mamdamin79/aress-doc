@@ -37,6 +37,7 @@ import { columns, columnVisibility, filterList } from './FundsTable.constants';
 import { ExportExel } from './_components/ExportExel';
 import { Bookmark } from 'libs/design-system/src/lib/components/Bookmark';
 import { useSmartTableScroll } from 'apps/fe-app/hooks/useSmartTableScroll';
+import { Toaster } from 'react-hot-toast';
 const Funds = () => {
   const [sortIndex, setSortIndex] = useState(0);
   const { isHeaderVisible, setIsHeaderVisible } = useHeaderVisibility();
@@ -940,10 +941,10 @@ const Funds = () => {
       >
         <div dir="rtl" className="flex items-center justify-between">
           <div className="flex items-center justify-between">
-            <span className="p-6 text-xl font-medium text-text-neutral-primary">
-              انتخاب ستون‌ها 
+            <span className="text-text-neutral-primary p-6 text-xl font-medium">
+              انتخاب ستون‌ها
               <span
-                className={cn('pr-0.5',{
+                className={cn('pr-0.5', {
                   'text-text-message-error-primary-600':
                     table
                       .getAllLeafColumns()
@@ -969,7 +970,7 @@ const Funds = () => {
           )}
         </div>
 
-        <div className="h-[2px] w-full bg-border-neutral-primary"></div>
+        <div className="bg-border-neutral-primary h-[2px] w-full"></div>
         <div
           dir="rtl"
           className="scrollbar-md mb-6 h-[550px] overflow-x-hidden overflow-y-scroll"
@@ -1034,7 +1035,7 @@ const Funds = () => {
         onClose={() => setIsFilterModal(false)}
         isOpen={isFilterModal}
       >
-        <div className="scrollbar-md mb-4 w-full overflow-x-hidden rounded-3xl bg-surface-neutral-primary text-right">
+        <div className="scrollbar-md bg-surface-neutral-primary mb-4 w-full overflow-x-hidden rounded-3xl text-right">
           <FilterPopUpSection
             searchValue={fundSearchQuery}
             onSearchChange={setFundSearchQuery}
@@ -1058,6 +1059,12 @@ const Funds = () => {
           }}
         ></DatePicker>
       </Dialog>
+      <Toaster
+        position="bottom-center"
+        containerStyle={{
+          bottom: 70,
+        }}
+      />
     </div>
   );
 };

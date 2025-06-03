@@ -58,7 +58,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
       dir="rtl"
       data-twe-input-wrapper-init
       className={cn(
-        'relative w-full',
+        'text-text-neutral-primary relative w-full',
         {
           'pointer-events-none': disabled,
         },
@@ -70,7 +70,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
           {mergeTitleAndPlaceholder ? (
             (isFocused || inputValue) && (
               <label
-                className={cn('text-sm font-medium', {
+                className={cn('text-text-neutral-primary text-sm font-medium', {
                   'text-text-neutral-disable': disabled,
                 })}
               >
@@ -152,7 +152,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
           value={inputValue}
           disabled={disabled}
           className={cn(
-            'text-md h-12 w-full resize-none rounded-xl border p-2 font-normal outline-none transition-colors duration-150',
+            'text-md h-12 w-full resize-none rounded-xl border bg-transparent p-2 font-normal outline-none transition-colors duration-150',
             {
               'placeholder:text-text-neutral-disable border-inherit bg-transparent opacity-100':
                 disabled,
@@ -195,7 +195,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
             }
           }}
           className={cn(
-            'text-md w-full rounded-xl border p-2 font-normal outline-none transition-colors duration-150',
+            'text-md w-full rounded-xl border bg-transparent p-2 font-normal outline-none transition-colors duration-150',
             heightClass,
             {
               'placeholder:text-text-neutral-disable border-inherit bg-transparent opacity-100':

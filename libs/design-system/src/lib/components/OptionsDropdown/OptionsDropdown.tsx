@@ -77,7 +77,10 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
     <Listbox value={selectedItem} onChange={handleSelectionChange}>
       <ListboxButton
         onKeyDown={handleKeyDown}
-        className={cn('outline-none', !dropDownStyles.fixedWidth && 'w-fit')}
+        className={cn(
+          'text-text-neutral-primary outline-none',
+          !dropDownStyles.fixedWidth && 'w-fit',
+        )}
         style={
           dropDownStyles.fixedWidth
             ? { width: `${dropDownStyles.fixedWidth}px` }

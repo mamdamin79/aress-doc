@@ -30,18 +30,23 @@ export const CategoryList: React.FC<Props> = ({ categories, reports }) => {
       <li
         onClick={() => handleCategory('همه‌ی گزارش‌‌‌‌‌‌ها')}
         className={cn(
-          'mb-4 flex cursor-pointer items-center gap-2 rounded-md text-sm font-medium text-gray-700',
-          { 'text-gray-900': !searchParams.get('category') },
+          'text-text-neutral-secondary group mb-4 flex cursor-pointer items-center gap-2 rounded-md text-sm font-medium',
+          { 'text-text-neutral-primary': !searchParams.get('category') },
         )}
       >
         <div
-          className={cn('h-4 w-[2px] rounded-md bg-gray-300', {
-            'bg-brand-600 h-5 w-1 text-gray-900': !searchParams.get('category'),
-          })}
+          className={cn(
+            'bg-border-neutral-contrast h-4 w-[2px] rounded-md transition-all duration-300 group-hover:h-5 group-hover:w-1',
+            {
+              'bg-surface-brand-600-primary text-text-neutral-secondary h-5 w-1':
+                !searchParams.get('category'),
+            },
+          )}
         ></div>
         <span
           className={cn({
-            'border-brand-600 border-b-[1.5px]': !searchParams.get('category'),
+            'border-border-brand-primary-600 border-b-[1.5px]':
+              !searchParams.get('category'),
           })}
         >
           همه‌ی گزارش‌‌‌‌‌‌ها ({reports.length})
@@ -53,7 +58,7 @@ export const CategoryList: React.FC<Props> = ({ categories, reports }) => {
             onClick={() => handleCategory(category.title)}
             key={category.identifier}
             className={cn(
-              'group mb-4 flex cursor-pointer items-center gap-2 rounded-md text-sm font-medium text-gray-600 hover:text-gray-700',
+              'text-text-neutral-secondary hover:text-text-neutral-secondarycontrast group mb-4 flex cursor-pointer items-center gap-2 rounded-md text-sm font-medium',
               {
                 'text-text-neutral-primary':
                   category.title === searchParams.get('category'),
@@ -62,16 +67,16 @@ export const CategoryList: React.FC<Props> = ({ categories, reports }) => {
           >
             <div
               className={cn(
-                'h-4 w-[2px] rounded-md bg-gray-400 transition-all duration-300 group-hover:h-5 group-hover:w-1 group-hover:bg-gray-500',
+                'bg-border-neutral-contrast group-hover:bg-border-neutral-highcontrast h-4 w-[2px] rounded-md transition-all duration-300 group-hover:h-5 group-hover:w-1',
                 {
-                  'bg-brand-600 h-5 w-1':
+                  'bg-border-brand-primary-600 h-5 w-1':
                     category.title === searchParams.get('category'),
                 },
               )}
             ></div>
             <span
               className={cn({
-                'border-brand-600 border-b-[1.5px] transition-colors group-hover:text-gray-700':
+                'border-border-brand-primary-600 group-hover:text-text-neutral-secondarycontrast border-b-[1.5px] transition-colors':
                   category.title === searchParams.get('category'),
               })}
             >
