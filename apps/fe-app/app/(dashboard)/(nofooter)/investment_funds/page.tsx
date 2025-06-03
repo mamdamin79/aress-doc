@@ -35,7 +35,7 @@ import {
   Tooltip,
   formatNumber,
   OptionsDropdown,
-  FundsTableRow,
+  FundsInfoCell,
   FilterPopUpSection,
   FundsColumnHeader,
   Dialog,
@@ -1023,7 +1023,7 @@ const Funds = () => {
                                       },
                                     )}
                                   >
-                                    <FundsTableRow
+                                    <FundsInfoCell
                                       tag={!isMainTab}
                                       category={
                                         isMainTab

@@ -1,5 +1,5 @@
 'use client';
-import { cn } from './../../../utils/classNames.utils';
+import { cn } from '../../../utils/classNames.utils';
 import { Icon } from '../Icon';
 import { OptionsDropdown } from '../OptionsDropdown';
 import { Tooltip } from '../Tooltip';
@@ -22,7 +22,7 @@ interface Props {
   tag: boolean;
 }
 
-export function FundsTableRow({
+export function FundsInfoCell({
   name,
   investmentMethod,
   tag,
