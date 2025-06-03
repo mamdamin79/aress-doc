@@ -1,12 +1,27 @@
-import { Header } from '../(layout)/(header)';
+'use client';
+import { useThemeToggle } from '../../hooks';
+import { IconProps, SquaredButton } from 'design-system';
 
 export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { toggleTheme, theme } = useThemeToggle();
+  const themeIcons: [IconProps, IconProps] | [IconProps] =
+    theme === 'light'
+      ? [{ name: 'sun' }, { name: 'moon' }]
+      : [{ name: 'moon' }, { name: 'sun' }];
   return (
     <div className="relative min-h-screen">
+      <div className="absolute left-8 top-8">
+        <SquaredButton
+          icons={themeIcons}
+          badge={{ enabled: false }}
+          onClick={toggleTheme}
+        />
+      </div>
+
       <svg
         className="text-surface-brand-100 absolute left-0 top-0 -z-10 h-full w-auto"
         width="408"
