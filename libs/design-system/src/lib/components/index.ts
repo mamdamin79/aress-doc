@@ -19,7 +19,7 @@ export * from './OptionsDropdown';
 export * from './FundsTag';
 export * from './FundsTableRow';
 export * from './FilterPopUpSection';
-export * from './FundsColumn';
+export * from './FundsColumnHeader';
 export * from './ReportCard';
 export * from './SquaredButton';
 export * from './Tooltip';

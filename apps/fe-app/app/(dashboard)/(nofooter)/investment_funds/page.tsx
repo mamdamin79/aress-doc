@@ -2,7 +2,6 @@
 import React, {
   CSSProperties,
   startTransition,
-  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -38,14 +37,13 @@ import {
   OptionsDropdown,
   FundsTableRow,
   FilterPopUpSection,
-  FundsColumn,
+  FundsColumnHeader,
   Dialog,
   Checkbox,
 } from 'design-system';
 import {
   Cell,
   ColumnDef,
-  ColumnFiltersState,
   Header,
   SortingState,
   flexRender,
@@ -56,7 +54,6 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import { Person, makeData } from './_components/makeData';
 import { columnVisibility, filterList } from './FundsTable.constants';
 import { ExportExel } from './_components/ExportExel';
@@ -69,13 +66,11 @@ const Funds = () => {
   }>({});
   const [canScrollVertical, setCanScrollVertical] = useState(false);
   const [activeIndexCategoryTab, setActiveIndexCategoryTab] = useState(0);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [data, setData] = useState(() => makeData(500));
+  const [data] = useState(() => makeData(500));
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [isScrollAtStart, setIsScrollAtStart] = useState<boolean>(false);
   const [isScrollAtEnd, setIsScrollAtEnd] = useState<boolean>(true);
-  const [isScrollTop, setIsScrollTop] = useState(false);
   const [fundSearchQuery, setFundSearchQuery] = useState<string>('');
   const tableRef = useRef<HTMLDivElement>(null);
   const [watchList, setWatchList] = useState<string[]>([]);
@@ -86,24 +81,12 @@ const Funds = () => {
       desc: false,
     },
   ]);
-  const [dragOverColumnId, setDragOverColumnId] = useState<string | null>(null);
   const [activeSortIndex, setActiveSortIndex] = useState(0);
   const headerRefs = useRef<(HTMLTableHeaderCellElement | null)[]>([]);
-  const [activeSortColumnId, setActiveSortColumnId] = useState<string | null>(
-    null,
-  );
   const [sortIndicatorPosition, setSortIndicatorPosition] = useState({
     right: headerRefs.current[0]?.offsetLeft,
     width: 0,
   });
-  const [dragPosition, setDragPosition] = useState<'left' | 'right' | null>(
-    null,
-  );
-  const [activeFilters, setActiveFilters] = useState<Record<string, string[]>>(
-    {},
-  );
-  const [isActiveDropdownPageCount, setIsActiveDropdownPageCount] =
-    useState(false);
   const [isRotating, setIsRotating] = useState(false);
   const [activeId, setActiveId] = useState<null | string>(null);
   const { handleScrollRight, handleScrollLeft } = useSmartTableScroll(
@@ -117,84 +100,98 @@ const Funds = () => {
         header: 'Fund Name',
         id: 'nameFund',
         size: 200,
+        enableSorting: true,
       },
       {
         accessorKey: 'unitCount',
         header: 'Unit Count',
         id: 'unitCount',
         size: 100,
+        enableSorting: true,
       },
       {
         accessorKey: 'profitPerUnit',
         header: 'Profit/Unit',
         id: 'profitPerUnit',
         size: 130,
+        enableSorting: true,
       },
       {
         accessorKey: 'netAssetValue',
         header: 'Net Asset Value',
         id: 'netAssetValue',
         size: 160,
+        enableSorting: true,
       },
       {
         accessorKey: 'monstatisticalPriceth',
         header: 'Statistical Price',
         id: 'monstatisticalPriceth',
         size: 160,
+        enableSorting: true,
       },
       {
         accessorKey: 'cancellationPrice',
         header: 'Cancellation Price',
         id: 'cancellationPrice',
         size: 150,
+        enableSorting: true,
       },
       {
         accessorKey: 'issuancePrice',
         header: 'Issuance Price',
         id: 'issuancePrice',
         size: 130,
+        enableSorting: true,
       },
       {
         accessorKey: 'dailyAlpha',
         header: 'Daily Alpha',
         id: 'dailyAlpha',
         size: 120,
+        enableSorting: true,
       },
       {
         accessorKey: 'weeklyAlpha',
         header: 'Weekly Alpha',
         id: 'weeklyAlpha',
         size: 120,
+        enableSorting: true,
       },
       {
         accessorKey: 'monthlyAlpha',
         header: 'Monthly Alpha',
         id: 'monthlyAlpha',
         size: 130,
+        enableSorting: true,
       },
       {
         accessorKey: 'quarterlyAlpha',
         header: 'Quarterly Alpha',
         id: 'quarterlyAlpha',
         size: 140,
+        enableSorting: true,
       },
       {
         accessorKey: 'dailyReturn',
         header: 'Daily Return',
         id: 'dailyReturn',
         size: 120,
+        enableSorting: true,
       },
       {
         accessorKey: 'weeklyReturn',
         header: 'Weekly Return',
         id: 'weeklyReturn',
         size: 130,
+        enableSorting: true,
       },
       {
         accessorKey: 'monthlyReturn',
         header: 'Monthly Return',
         id: 'monthlyReturn',
         size: 130,
+        enableSorting: true,
         meta: { group: '' },
       },
       {
@@ -202,24 +199,28 @@ const Funds = () => {
         header: 'Quarterly Return',
         id: 'quarterlyReturn',
         size: 140,
+        enableSorting: true,
       },
       {
         accessorKey: 'yearlyReturn',
         header: 'Yearly Return',
         id: 'yearlyReturn',
         size: 130,
+        enableSorting: true,
       },
       {
         accessorKey: 'progress',
         header: 'Progress',
         id: 'progress',
         size: 120,
+        enableSorting: true,
       },
       {
         accessorKey: 'startDate',
         header: 'Start Date',
         id: 'startDate',
         size: 160,
+        enableSorting: true,
         cell: (info) => new Date(info.getValue<number>()).toLocaleDateString(),
       },
       {
@@ -227,12 +228,14 @@ const Funds = () => {
         header: 'Investment Method',
         id: 'investmentMethod',
         size: 150,
+        enableSorting: true,
       },
       {
         accessorKey: 'logo',
         header: 'Logo',
         id: 'logo',
         size: 100,
+        enableSorting: true,
         cell: (info) => (
           <img
             src={info.getValue<string>()}
@@ -252,6 +255,51 @@ const Funds = () => {
     columns.map((c) => c.id!),
   );
 
+  type DragPosition = 'left' | 'right';
+
+  const dragOverRef = {
+    columnId: null as string | null,
+    position: null as DragPosition | null,
+  };
+
+  const useDragIndicator = () => {
+    const [, forceRender] = useState({});
+
+    useDndMonitor({
+      onDragOver(event) {
+        const overId = event.over?.id;
+        const activeId = event.active?.id;
+        const clientX = (event.activatorEvent as PointerEvent).clientX;
+
+        if (!overId || !activeId || !clientX) return;
+
+        const overEl = document.querySelector(
+          `[data-column-id="${overId}"]`,
+        ) as HTMLElement;
+        if (!overEl) return;
+
+        const overRect = overEl.getBoundingClientRect();
+        const midpoint = overRect.left + overRect.width / 2;
+
+        // اینجا فقط سمت ماوس نسبت به ستون مقصد (overId) رو بررسی می‌کنیم
+        const pos: DragPosition = clientX > midpoint ? 'right' : 'left';
+
+        if (dragOverRef.columnId !== overId || dragOverRef.position !== pos) {
+          dragOverRef.columnId = String(overId);
+          dragOverRef.position = pos;
+          forceRender({});
+        }
+      },
+      onDragEnd() {
+        dragOverRef.columnId = null;
+        dragOverRef.position = null;
+        forceRender({});
+      },
+    });
+
+    return dragOverRef;
+  };
+
   const DraggableTableHeader = ({
     header,
     children,
@@ -265,51 +313,35 @@ const Funds = () => {
       id: header.column.id,
     });
 
-    const style: CSSProperties = {
-      position: 'relative',
-      transition: 'width transform 0.2s ease-in-out',
-      whiteSpace: 'nowrap',
-      width,
-    };
+    const dragIndicator = useDragIndicator();
 
-    useDndMonitor({
-      onDragOver(event) {
-        const overId = event.over?.id;
-        const clientX = (event.activatorEvent as PointerEvent).clientX;
-
-        if (overId && clientX) {
-          const targetEl = document.querySelector(
-            `[data-column-id="${overId}"]`,
-          ) as HTMLElement;
-          if (!targetEl) return;
-
-          const rect = targetEl.getBoundingClientRect();
-          const midpoint = rect.left + rect.width / 2;
-
-          if (clientX > midpoint) {
-            setDragPosition('right');
-          } else {
-            setDragPosition('left');
-          }
-
-          setDragOverColumnId(String(overId));
-        }
-      },
-      onDragEnd() {
-        setDragOverColumnId(null);
-        setDragOverColumnId(null);
-      },
-    });
+    const isDraggingOver = dragIndicator.columnId === header.column.id;
+    const position = dragIndicator.position;
 
     return (
       <th
         data-column-id={header.id}
         {...attributes}
         {...listeners}
-        className="m-0 h-[64px] w-full bg-[#E3F8F8] text-sm font-medium"
         ref={setNodeRef}
-        style={style}
+        className="relative m-0 h-[64px] w-full bg-[#E3F8F8] p-0 text-sm font-medium"
+        style={{
+          transition: 'width transform 0.1s ease-in-out',
+          whiteSpace: 'nowrap',
+          width,
+        }}
       >
+        {isDraggingOver && position && (
+          <div
+            className={`bottom-0 absolute top-1 z-10 h-[90%] w-0.5 bg-[#0F7575] ${
+              position === 'left' ? 'right-0' : 'left-0'
+            }`}
+          >
+            <div className="absolute top-0 flex h-2.5 w-2.5 translate-x-1 items-center justify-center rounded-full bg-[#0F7575]">
+              <div className="h-1.5 w-1.5 rounded-full bg-white" />
+            </div>
+          </div>
+        )}
         {children}
       </th>
     );
@@ -358,7 +390,7 @@ const Funds = () => {
   const sensors = useSensors(
     useSensor(MouseSensor, {
       activationConstraint: {
-        delay: 300,
+        delay: 100,
         distance: 0,
       },
     }),
@@ -374,7 +406,7 @@ const Funds = () => {
   const table = useReactTable({
     data,
     columns: columns,
-    state: { columnOrder },
+    state: { columnOrder, sorting },
     initialState: {
       columnVisibility,
       sorting: sorting,
@@ -383,28 +415,14 @@ const Funds = () => {
       const newSorting =
         typeof updater === 'function' ? updater(sorting) : updater;
       const sortedColumnId = newSorting[0]?.id;
-
       setSorting(newSorting);
-      setActiveSortColumnId(sortedColumnId || null);
     },
-
-    // onColumnFiltersChange: setColumnFilters,
     onColumnOrderChange: setColumnOrder,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
-
-  const [updateTableHeaders, setUpdateTableHeaders] = useState(
-    table.getHeaderGroups()[0].headers,
-  );
-
-  const columnVisibilityHeader = table.getState().columnVisibility;  
-
-  useEffect(() => {
-    setUpdateTableHeaders([...table.getHeaderGroups()[0].headers]);
-  }, [columnVisibilityHeader, table]);
 
   const isChanged = useMemo(() => {
     return !Object.entries(table.getState().columnVisibility).every(
@@ -419,11 +437,6 @@ const Funds = () => {
         : [...prev, fund.id],
     );
   };
-
-  // useEffect(() => {
-  //   const index = columnOrder.findIndex((id) => id === activeSortColumnId);
-  //   setActiveSortIndex(index);
-  // }, [activeSortColumnId, columnOrder]);
 
   useEffect(() => {
     const node = headerRefs?.current[activeSortIndex];
@@ -510,26 +523,12 @@ const Funds = () => {
   }, [tableRef]);
 
   useEffect(() => {
-    startTransition(() => {
-      updateTableHeaders[0].column.setFilterValue(fundSearchQuery);
-    });
-  }, [fundSearchQuery, updateTableHeaders]);
-
-  useEffect(() => {
     document.documentElement.style.overflow = 'hidden';
 
     return () => {
       document.documentElement.style.overflow = 'auto';
     };
   }, [customColl.active]);
-
-  const handlerScroll = () => {
-    if (tableRef.current) {
-      if (tableRef.current.scrollTop) {
-        setIsScrollTop(true);
-      } else setIsScrollTop(false);
-    }
-  };
 
   const handlerMouseEnterTable = () => {
     requestAnimationFrame(() => {
@@ -592,12 +591,9 @@ const Funds = () => {
     };
   }, []);
 
-  console.log(sorting[0].id, activeSortIndex, activeSortColumnId);
-  
-
   useEffect(() => {
     columnOrder.findIndex((id, index) => {
-      if (id === sorting[0]?.id && activeSortIndex !== 0) {        
+      if (id === sorting[0]?.id && activeSortIndex !== 0) {
         setActiveSortIndex(index - 1);
       }
     });
@@ -637,28 +633,14 @@ const Funds = () => {
         <div
           onMouseEnter={handlerMouseEnterTable}
           ref={tableRef}
-          onScroll={handlerScroll}
-          className={cn(
-            'table-scroll group/table scrollbar-lg h-[calc(100vh-172px)] w-screen overflow-y-hidden scroll-smooth',
-            {
-              'hover:overflow-auto':
-                canScrollVertical && !isActiveDropdownPageCount,
-            },
-          )}
-        >
+          // onScroll={handlerScroll}
+          className='table-scroll group/table scrollbar-md h-[calc(100vh-172px)] w-screen scroll-smooth overflow-auto'>
           <table
             dir="rtl"
             className="w-full table-fixed rounded-xl bg-white text-center"
           >
             <DndContext
               onDragStart={(event) => {
-                if (
-                  event?.active?.data?.current?.target?.closest(
-                    '.icon-sort-cell',
-                  )
-                ) {
-                  event.activatorEvent.cancelable;
-                }
                 setIsRotating(true);
                 setActiveId(String(event.active.id));
               }}
@@ -685,8 +667,6 @@ const Funds = () => {
                     className={cn('z-[999999999999999] duration-300', {
                       'absolute bottom-0 z-20 transition-transform':
                         activeSortIndex !== 0,
-                      'transition group-hover/table:-right-2':
-                        activeSortIndex !== 0 && canScrollVertical,
                       'group-hover/table:-right-0':
                         activeSortIndex !== 0 &&
                         canScrollVertical &&
@@ -725,15 +705,7 @@ const Funds = () => {
                           {index === 0 && (
                             <th
                               key={index}
-                              className={cn(
-                                'sticky right-0 top-0 z-20 m-0 h-[64px] w-[385px] border-b bg-[#E3F8F8] py-0 pr-2',
-                                {
-                                  'group-hover/table:pr-0':
-                                    canScrollVertical &&
-                                    !isActiveDropdownPageCount,
-                                },
-                              )}
-                            >
+                              className='sticky right-0 top-0 z-20 m-0 h-[64px] w-[385px] border-b bg-[#E3F8F8] py-0' >
                               <div
                                 className={cn({
                                   'h-[75px] w-[385px] select-none bg-[#E3F8F8]':
@@ -744,9 +716,11 @@ const Funds = () => {
                               >
                                 <div className="mr-[75px] flex bg-[#E3F8F8]">
                                   <div className="mr-24">
-                                    <FundsColumn
-                                      activeSorticon={sorting[0].id === 'nameFund'}
-                                      active={true}
+                                    <FundsColumnHeader
+                                      activeSorticon={
+                                        sorting[0]?.id === 'nameFund'
+                                      }
+                                      active={!isRotating}
                                       clickFilterd={() => {
                                         setActiveSortIndex(0);
                                         header.column.toggleSorting(
@@ -765,10 +739,7 @@ const Funds = () => {
                                             ? 'inactive'
                                             : 'inactive'
                                       }
-                                      filterable={columnFilters.some(
-                                        (filterItem) =>
-                                          filterItem.id === header.id,
-                                      )}
+                                      filterable={false}
                                       title={String(
                                         flexRender(
                                           header.column.columnDef.header,
@@ -801,7 +772,7 @@ const Funds = () => {
                                       }}
                                       className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
                                     >
-                                      {(Object.entries(activeFilters).length >
+                                      {(Object.entries(selectedFilters).length >
                                         0 ||
                                         fundSearchQuery) && (
                                         <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
@@ -823,7 +794,7 @@ const Funds = () => {
                                   ),
                                 ).length > 10
                                   ? 200
-                                  : 140
+                                  : 144
                               }
                               key={header.id}
                               header={header}
@@ -836,7 +807,7 @@ const Funds = () => {
                                 }}
                                 key={index}
                                 className={cn(
-                                  'm-0 h-[64px] w-full text-nowrap bg-[#E3F8F8] text-sm font-medium',
+                                  'm-0 p-0 h-[64px] w-full text-nowrap bg-[#E3F8F8] text-sm font-medium',
                                   String(
                                     flexRender(
                                       header.column.columnDef.header,
@@ -845,24 +816,6 @@ const Funds = () => {
                                   ).length > 10
                                     ? 'w-[200px]'
                                     : 'w-[144px]',
-                                  {
-                                    'pr-4 group-hover/table:pr-0':
-                                      !isScrollAtStart &&
-                                      String(
-                                        flexRender(
-                                          header.column.columnDef.header,
-                                          header.getContext(),
-                                        ),
-                                      ).length > 10,
-                                    'pr-2 group-hover/table:pr-0':
-                                      !isScrollAtStart &&
-                                      String(
-                                        flexRender(
-                                          header.column.columnDef.header,
-                                          header.getContext(),
-                                        ),
-                                      ).length > 10,
-                                  },
                                 )}
                               >
                                 {index >= 2 && header.isPlaceholder ? null : (
@@ -873,19 +826,20 @@ const Funds = () => {
                                         : '',
                                     }}
                                   >
-                                    <FundsColumn
-                                      dragPosition={dragPosition ?? 'left'}
+                                    <FundsColumnHeader
                                       active={!isRotating}
                                       activeStyle={header.id === activeId}
                                       activePlaceholder={
-                                        activeId !== header.id &&
-                                        dragOverColumnId === header.id
+                                        activeId !== header.id
                                       }
                                       defaultSort={() => {
-                                        updateTableHeaders[0].column.getToggleSortingHandler()?.(
-                                          new Event('click'),
-                                        );
                                         setActiveSortIndex(0);
+                                        setSorting([
+                                          {
+                                            id: 'nameFund',
+                                            desc: false,
+                                          },
+                                        ]);
                                       }}
                                       clickFilterd={() => {
                                         setActiveSortIndex(index);
@@ -947,7 +901,7 @@ const Funds = () => {
                     >
                       {activeId ? (
                         <th
-                          className="absolute top-0 mt-8 flex -rotate-12 items-start justify-center"
+                          className="absolute transition-none top-0 mt-9 flex -rotate-12 items-start justify-center"
                           style={{
                             width:
                               String(activeId).length > 10 ? '200px' : '144px',
@@ -989,11 +943,10 @@ const Funds = () => {
                     )}
                   </div>
                 </tr>
-                <tr></tr>
               </thead>
             </DndContext>
 
-            {/* <tbody className="relative w-full overflow-hidden">
+            <tbody className="relative w-full overflow-hidden">
               {(() => {
                 const isMainTab = activeIndexCategoryTab === 0;
                 const allRows = table.getRowModel().rows;
@@ -1049,15 +1002,7 @@ const Funds = () => {
                               {index === 0 && (
                                 <td className="sticky right-0 top-0 z-40 m-0 flex items-center py-0">
                                   <div
-                                    className={cn(
-                                      'absolute right-2 z-50 pr-0',
-                                      {
-                                        'group-hover/table:right-0':
-                                          canScrollVertical &&
-                                          !isActiveDropdownPageCount,
-                                      },
-                                    )}
-                                  >
+                                    className='absolute z-50 pr-0'>
                                     <Bookmark
                                       selectedColor={
                                         rowMarks[activeIndexCategoryTab]?.[
@@ -1071,11 +1016,8 @@ const Funds = () => {
                                   </div>
                                   <div
                                     className={cn(
-                                      'pr-2 group-hover:bg-blue-50',
+                                      'group-hover:bg-blue-50',
                                       {
-                                        'group-hover/table:pr-0':
-                                          canScrollVertical &&
-                                          !isActiveDropdownPageCount,
                                         'bg-blue-50 group-hover:bg-blue-100':
                                           isPinned,
                                       },
@@ -1132,12 +1074,9 @@ const Funds = () => {
                                   <DragAlongCell key={cell.id} cell={cell}>
                                     <td
                                       className={cn(
-                                        'flex h-[46px] w-full items-center justify-center border-[#E1E2E5] py-0 pr-4 text-sm font-medium',
+                                        'flex h-[46px] w-full items-center justify-center border-[#E1E2E5] p-0 text-sm font-medium',
                                         {
-                                          'group-hover/table:pr-0':
-                                            canScrollVertical &&
-                                            !isActiveDropdownPageCount &&
-                                            !isScrollAtStart,
+  
                                           'bg-blue-50 group-hover:bg-blue-100':
                                             isPinned,
                                           'group-hover:bg-blue-50': !isPinned,
@@ -1176,7 +1115,7 @@ const Funds = () => {
               <tr className="h-16">
                 <td></td>
               </tr>
-            </tbody> */}
+            </tbody>
           </table>
         </div>
       </div>
@@ -1198,7 +1137,6 @@ const Funds = () => {
               checkSelected: true,
             }}
             customTriggerRender={({ isActive }) => {
-              setIsActiveDropdownPageCount(isActive);
               return (
                 <div className="flex h-[40px] items-center gap-2 pl-2 pr-3 text-xs font-medium">
                   <div className="flex gap-1">

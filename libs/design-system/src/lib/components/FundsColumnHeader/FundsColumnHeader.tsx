@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { Icon } from '../Icon';
 import { Tooltip } from '../Tooltip';
-import { cn } from './../../../utils';
+import { cn } from '../../../utils';
 
 interface Props {
   size: 'small' | 'medium' | 'large' | 'extraLarg';
@@ -16,17 +16,15 @@ interface Props {
   subTitle?: string;
   defaultSort?: () => void;
   activePlaceholder?: boolean;
-  dragPosition?: 'right' | 'left';
   activeStyle?: boolean;
   activeSorticon?: boolean;
 }
 
-export function FundsColumn({
+export function FundsColumnHeader({
   size,
   title,
   subTitle,
   activeStyle = false,
-  dragPosition,
   shadow = false,
   sortType,
   filterable,
@@ -38,6 +36,7 @@ export function FundsColumn({
   active,
 }: Props) {
   const [sortTypeValue, setSortTypeValue] = useState<Props['type']>(type);
+  
 
   useEffect(() => {
     setSortTypeValue(type);
@@ -50,7 +49,7 @@ export function FundsColumn({
     if (activeSorticon) {
       timeout = setTimeout(() => {
         setShowLine(true);
-      }, 300);
+      }, 200);
     } else {
       setShowLine(false);
     }
@@ -62,10 +61,10 @@ export function FundsColumn({
     <div
       className={cn(
         {
-          // 'w-28': size === 'small',
-          // 'w-36': size === 'medium',
-          // 'w-[215px]': size === 'large',
-          // 'w-[312px]': size === 'extraLarg',
+          'w-28': size === 'small',
+          'w-36': size === 'medium',
+          'w-[200px]': size === 'large',
+          'w-[312px]': size === 'extraLarg',
           'shadow-4xl': shadow && size === 'extraLarg',
           'bg-pink-200': size === 'extraLarg' && filterable && !active,
           'bg-[#E3F8F8]': size === 'extraLarg' && !filterable,
@@ -93,18 +92,6 @@ export function FundsColumn({
           },
         )}
       >
-        <div
-          className={cn(
-            'invisible relative h-[90%] w-0.5 rounded-full bg-[#0F7575]',
-            {
-              visible: activePlaceholder && dragPosition === 'left',
-            },
-          )}
-        >
-          <div className="absolute top-0 flex h-2.5 w-2.5 translate-x-1 items-center justify-center rounded-full bg-[#0F7575]">
-            <div className="h-1.5 w-1.5 rounded-full bg-white"></div>
-          </div>
-        </div>
         <div className={cn(filterable ? 'visible' : 'invisible')}>
           <Icon name="filter" />
         </div>
@@ -125,8 +112,7 @@ export function FundsColumn({
         <Tooltip
           className="text-md z-50 font-semibold"
           title={
-            activeStyle
-              ? sortType === 'ranked'
+            sortType === 'ranked'
                 ? type === 'inactive'
                   ? 'مرتب سازی نزولی'
                   : type === 'active-asc'
@@ -137,11 +123,10 @@ export function FundsColumn({
                   : type === 'active-asc'
                     ? 'حالت پیشفرض (بدون مرتب سازی)'
                     : 'مرتب سازی صعودی'
-              : ''
           }
         >
           <div
-            onClick={() => {
+            onClick={() => {              
               if (typeof clickFilterd === 'function') {
                 clickFilterd();
               }
@@ -149,10 +134,10 @@ export function FundsColumn({
                 defaultSort && defaultSort();
               }
             }}
-            className={cn({
+            className={cn('p-1', {
               'icon-sort-cell invisible text-[#545962] group-hover/first:visible':
                 type === 'inactive',
-              'hover:bg-brand-600 rounded-md p-1 duration-150 hover:text-white':
+              'hover:bg-brand-600 rounded-md duration-150 hover:text-white':
                 !activePlaceholder,
             })}
           >
@@ -169,18 +154,6 @@ export function FundsColumn({
             />
           </div>
         </Tooltip>
-        <div
-          className={cn(
-            'invisible relative h-[90%] w-0.5 rounded-full bg-[#0F7575]',
-            {
-              visible: activePlaceholder && dragPosition === 'right',
-            },
-          )}
-        >
-          <div className="absolute top-0 flex h-2.5 w-2.5 translate-x-1 items-center justify-center rounded-full bg-[#0F7575]">
-            <div className="h-1.5 w-1.5 rounded-full bg-white" />
-          </div>
-        </div>
       </div>
     </div>
   );

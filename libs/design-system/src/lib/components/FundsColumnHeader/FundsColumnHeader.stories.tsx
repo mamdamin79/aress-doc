@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { FundsColumn } from './FundsColumn';
+import { FundsColumn } from './FundsColumnHeader';
 
 // Meta configuration for the FundsColumn component in Storybook
 const meta: Meta<typeof FundsColumn> = {
