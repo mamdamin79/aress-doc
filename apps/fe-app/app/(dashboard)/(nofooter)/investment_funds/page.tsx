@@ -53,6 +53,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { useHotkeys } from 'react-hotkeys-hook';
 import { useSortable } from '@dnd-kit/sortable';
 import { Person, makeData } from './_components/makeData';
 import { columnVisibility, filterList } from './FundsTable.constants';
@@ -333,7 +334,7 @@ const Funds = () => {
       >
         {isDraggingOver && position && (
           <div
-            className={`bottom-0 absolute top-1 z-10 h-[90%] w-0.5 bg-[#0F7575] ${
+            className={`absolute bottom-0 top-1 z-10 h-[90%] w-0.5 bg-[#0F7575] ${
               position === 'left' ? 'right-0' : 'left-0'
             }`}
           >
@@ -459,6 +460,17 @@ const Funds = () => {
     }
   }, [isScrollAtStart, activeSortIndex, table]);
 
+  // event keyboard scroll
+  useHotkeys('a, arrowleft', () => handleScrollRight());
+  useHotkeys('d, arrowright', () => handleScrollLeft());
+  useHotkeys('w, arrowup', () =>
+    tableRef.current?.scrollBy({ top: -100, behavior: 'smooth' }),
+  );
+  useHotkeys('s, arrowdown', () =>
+    tableRef.current?.scrollBy({ top: 100, behavior: 'smooth' }),
+  );
+
+
   useEffect(() => {
     const handleScroll = () => {
       if (tableRef.current) {
@@ -480,47 +492,11 @@ const Funds = () => {
     const tableElem = tableRef.current;
     tableElem?.addEventListener('scroll', handleScroll);
 
-    // Keyboard handler for scrolling (horizontal and vertical)
-    const keyboardHandler = (e: KeyboardEvent) => {
-      if (e.code === 'KeyA') {
-        handleScrollRight();
-      }
-      if (e.code === 'KeyD') {
-        handleScrollLeft();
-      }
-      if (e.code === 'KeyS') {
-        tableRef.current?.scrollBy({ top: 100, behavior: 'smooth' });
-      }
-      if (e.code === 'KeyW') {
-        tableRef.current?.scrollBy({ top: -100, behavior: 'smooth' });
-      }
-    };
-
-    const keyboardArrow = (e: KeyboardEvent) => {
-      if (e.code === 'ArrowDown') {
-        tableRef.current?.scrollBy({ top: 100, behavior: 'smooth' });
-      }
-      if (e.code === 'ArrowUp') {
-        tableRef.current?.scrollBy({ top: -100, behavior: 'smooth' });
-      }
-      if (e.code === 'ArrowLeft') {
-        handleScrollRight();
-      }
-      if (e.code === 'ArrowRight') {
-        handleScrollLeft();
-      }
-    };
-
-    document.addEventListener('keypress', keyboardHandler);
-    document.addEventListener('keyup', keyboardArrow);
-
     // Cleanup: remove event listeners when component unmounts or dependencies change
     return () => {
       tableElem?.removeEventListener('scroll', handleScroll);
-      document.removeEventListener('keypress', keyboardHandler);
-      document.removeEventListener('keyup', keyboardArrow);
     };
-  }, [tableRef]);
+  }, []);
 
   useEffect(() => {
     document.documentElement.style.overflow = 'hidden';
@@ -585,6 +561,7 @@ const Funds = () => {
       stopScroll();
     };
 
+    table.setPageSize(200)
     window.addEventListener('mouseup', handleGlobalMouseUp);
     return () => {
       window.removeEventListener('mouseup', handleGlobalMouseUp);
@@ -633,8 +610,8 @@ const Funds = () => {
         <div
           onMouseEnter={handlerMouseEnterTable}
           ref={tableRef}
-          // onScroll={handlerScroll}
-          className='table-scroll group/table scrollbar-md h-[calc(100vh-172px)] w-screen scroll-smooth overflow-auto'>
+          className="table-scroll group/table scrollbar-md h-[calc(100vh-172px)] w-screen overflow-auto scroll-smooth"
+        >
           <table
             dir="rtl"
             className="w-full table-fixed rounded-xl bg-white text-center"
@@ -705,7 +682,8 @@ const Funds = () => {
                           {index === 0 && (
                             <th
                               key={index}
-                              className='sticky right-0 top-0 z-20 m-0 h-[64px] w-[385px] border-b bg-[#E3F8F8] py-0' >
+                              className="sticky right-0 top-0 z-20 m-0 h-[64px] w-[385px] border-b bg-[#E3F8F8] py-0"
+                            >
                               <div
                                 className={cn({
                                   'h-[75px] w-[385px] select-none bg-[#E3F8F8]':
@@ -807,7 +785,7 @@ const Funds = () => {
                                 }}
                                 key={index}
                                 className={cn(
-                                  'm-0 p-0 h-[64px] w-full text-nowrap bg-[#E3F8F8] text-sm font-medium',
+                                  'm-0 h-[64px] w-full text-nowrap bg-[#E3F8F8] p-0 text-sm font-medium',
                                   String(
                                     flexRender(
                                       header.column.columnDef.header,
@@ -829,9 +807,7 @@ const Funds = () => {
                                     <FundsColumnHeader
                                       active={!isRotating}
                                       activeStyle={header.id === activeId}
-                                      activePlaceholder={
-                                        activeId !== header.id
-                                      }
+                                      activePlaceholder={activeId !== header.id}
                                       defaultSort={() => {
                                         setActiveSortIndex(0);
                                         setSorting([
@@ -901,7 +877,7 @@ const Funds = () => {
                     >
                       {activeId ? (
                         <th
-                          className="absolute transition-none top-0 mt-9 flex -rotate-12 items-start justify-center"
+                          className="absolute top-0 mt-9 flex -rotate-12 items-start justify-center transition-none"
                           style={{
                             width:
                               String(activeId).length > 10 ? '200px' : '144px',
@@ -1001,8 +977,7 @@ const Funds = () => {
                             <>
                               {index === 0 && (
                                 <td className="sticky right-0 top-0 z-40 m-0 flex items-center py-0">
-                                  <div
-                                    className='absolute z-50 pr-0'>
+                                  <div className="absolute z-50 pr-0">
                                     <Bookmark
                                       selectedColor={
                                         rowMarks[activeIndexCategoryTab]?.[
@@ -1015,13 +990,10 @@ const Funds = () => {
                                     />
                                   </div>
                                   <div
-                                    className={cn(
-                                      'group-hover:bg-blue-50',
-                                      {
-                                        'bg-blue-50 group-hover:bg-blue-100':
-                                          isPinned,
-                                      },
-                                    )}
+                                    className={cn('group-hover:bg-blue-50', {
+                                      'bg-blue-50 group-hover:bg-blue-100':
+                                        isPinned,
+                                    })}
                                   >
                                     <FundsInfoCell
                                       tag={!isMainTab}
@@ -1076,7 +1048,6 @@ const Funds = () => {
                                       className={cn(
                                         'flex h-[46px] w-full items-center justify-center border-[#E1E2E5] p-0 text-sm font-medium',
                                         {
-  
                                           'bg-blue-50 group-hover:bg-blue-100':
                                             isPinned,
                                           'group-hover:bg-blue-50': !isPinned,
