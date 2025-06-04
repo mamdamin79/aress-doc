@@ -112,17 +112,17 @@ export function FundsColumnHeader({
         <Tooltip
           className="text-md z-50 font-semibold"
           title={
-            sortType === 'ranked'
-                ? type === 'inactive'
-                  ? 'مرتب سازی نزولی'
-                  : type === 'active-asc'
-                    ? 'مرتب سازی صعودی'
-                    : 'حالت پیشفرض (بدون مرتب سازی)'
-                : type === 'inactive'
-                  ? 'مرتب سازی نزولی'
-                  : type === 'active-asc'
-                    ? 'حالت پیشفرض (بدون مرتب سازی)'
-                    : 'مرتب سازی صعودی'
+            active ? (sortType === 'ranked'
+            ? type === 'inactive'
+              ? 'مرتب سازی نزولی'
+              : type === 'active-asc'
+                ? 'مرتب سازی صعودی'
+                : 'حالت پیشفرض (بدون مرتب سازی)'
+            : type === 'inactive'
+              ? 'مرتب سازی نزولی'
+              : type === 'active-asc'
+                ? 'حالت پیشفرض (بدون مرتب سازی)'
+                : 'مرتب سازی صعودی') : ''
           }
         >
           <div
@@ -138,7 +138,7 @@ export function FundsColumnHeader({
               'icon-sort-cell invisible text-[#545962] group-hover/first:visible':
                 type === 'inactive',
               'hover:bg-brand-600 rounded-md duration-150 hover:text-white':
-                !activePlaceholder,
+                active,
             })}
           >
             <Icon

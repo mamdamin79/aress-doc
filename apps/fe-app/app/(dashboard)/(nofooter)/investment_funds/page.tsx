@@ -560,8 +560,7 @@ const Funds = () => {
     const handleGlobalMouseUp = () => {
       stopScroll();
     };
-
-    table.setPageSize(200)
+    table.setPageSize(10)
     window.addEventListener('mouseup', handleGlobalMouseUp);
     return () => {
       window.removeEventListener('mouseup', handleGlobalMouseUp);
