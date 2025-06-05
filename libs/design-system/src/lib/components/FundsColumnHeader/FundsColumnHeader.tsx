@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Icon } from '../Icon';
 import { Tooltip } from '../Tooltip';
 import { cn } from '../../../utils';
@@ -57,6 +57,21 @@ export function FundsColumnHeader({
     return () => clearTimeout(timeout);
   }, [activeSorticon]);
 
+
+  const tooltipTitle = useMemo(() => {
+    if (!active) return '';
+    if (sortType === 'ranked') {
+      if (type === 'inactive') return 'مرتب سازی نزولی';
+      if (type === 'active-asc') return 'مرتب سازی صعودی';
+      return 'حالت پیشفرض (بدون مرتب سازی)';
+    } else {
+      if (type === 'inactive') return 'مرتب سازی نزولی';
+      if (type === 'active-asc') return 'حالت پیشفرض (بدون مرتب سازی)';
+      return 'مرتب سازی صعودی';
+    }
+  }, [active, sortType, type]);
+  
+
   return (
     <div
       className={cn(
@@ -96,7 +111,7 @@ export function FundsColumnHeader({
           <Icon name="filter" />
         </div>
 
-        {activeSorticon && showLine && (
+        {activeSorticon  && (
           <div className="bg-brand-600 absolute bottom-0 h-1.5 w-16 rounded-t-md"></div>
         )}
         <div className="font-] flex flex-col text-sm">
@@ -111,19 +126,7 @@ export function FundsColumnHeader({
 
         <Tooltip
           className="text-md z-50 font-semibold"
-          title={
-            active ? (sortType === 'ranked'
-            ? type === 'inactive'
-              ? 'مرتب سازی نزولی'
-              : type === 'active-asc'
-                ? 'مرتب سازی صعودی'
-                : 'حالت پیشفرض (بدون مرتب سازی)'
-            : type === 'inactive'
-              ? 'مرتب سازی نزولی'
-              : type === 'active-asc'
-                ? 'حالت پیشفرض (بدون مرتب سازی)'
-                : 'مرتب سازی صعودی') : ''
-          }
+          title={tooltipTitle}
         >
           <div
             onClick={() => {              

@@ -35,7 +35,6 @@ import {
   Tooltip,
   formatNumber,
   OptionsDropdown,
-  FundsInfoCell,
   FilterPopUpSection,
   FundsColumnHeader,
   Dialog,
@@ -61,6 +60,7 @@ import { ExportExel } from './_components/ExportExel';
 import { Bookmark } from 'libs/design-system/src/lib/components/Bookmark';
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { useSmartTableScroll } from 'apps/fe-app/hooks/useSmartTableScroll';
+import TableRow from './_components/TableRow';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
   const [rowMarks, setRowMarks] = useState<{
@@ -426,11 +426,11 @@ const Funds = () => {
     debugAll: true
   });
 
-  // const isChanged = useMemo(() => {
-  //   return !Object.entries(table.getState().columnVisibility).every(
-  //     ([key, value]) => columnVisibility[key] === value,
-  //   );
-  // }, [table.getState().columnVisibility]);
+  const isChanged = useMemo(() => {
+    return !Object.entries(table.getState().columnVisibility).every(
+      ([key, value]) => columnVisibility[key] === value,
+    );
+  }, [table.getState().columnVisibility]);
 
   const toggleWatchList = (fund: { id: string }) => {
     setWatchList((prev) =>
@@ -472,40 +472,40 @@ const Funds = () => {
   );
 
 
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     if (tableRef.current) {
-  //       const { scrollLeft, scrollWidth, clientWidth } = tableRef.current;
-  //       // Update scroll start state
-  //       if (Math.round(scrollLeft) === 0) {
-  //         setIsScrollAtStart(false);
-  //       } else if (scrollLeft < 0) {
-  //         setIsScrollAtStart(true);
-  //       }
-  //       // Update scroll end state; logic preserved from original code
-  //       setIsScrollAtEnd(
-  //         Math.round(scrollLeft * -1) + clientWidth <= scrollWidth - 1,
-  //       );
-  //     }
-  //   };
+  useEffect(() => {
+    const handleScroll = () => {
+      if (tableRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = tableRef.current;
+        // Update scroll start state
+        if (Math.round(scrollLeft) === 0) {
+          setIsScrollAtStart(false);
+        } else if (scrollLeft < 0) {
+          setIsScrollAtStart(true);
+        }
+        // Update scroll end state; logic preserved from original code
+        setIsScrollAtEnd(
+          Math.round(scrollLeft * -1) + clientWidth <= scrollWidth - 1,
+        );
+      }
+    };
 
-  //   // Register scroll event listener on the table element
-  //   const tableElem = tableRef.current;
-  //   tableElem?.addEventListener('scroll', handleScroll);
+    // Register scroll event listener on the table element
+    const tableElem = tableRef.current;
+    tableElem?.addEventListener('scroll', handleScroll);
 
-  //   // Cleanup: remove event listeners when component unmounts or dependencies change
-  //   return () => {
-  //     tableElem?.removeEventListener('scroll', handleScroll);
-  //   };
-  // }, []);
+    // Cleanup: remove event listeners when component unmounts or dependencies change
+    return () => {
+      tableElem?.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
-  // useEffect(() => {
-  //   document.documentElement.style.overflow = 'hidden';
+  useEffect(() => {
+    document.documentElement.style.overflow = 'hidden';
 
-  //   return () => {
-  //     document.documentElement.style.overflow = 'auto';
-  //   };
-  // }, [customColl.active]);
+    return () => {
+      document.documentElement.style.overflow = 'auto';
+    };
+  }, [customColl.active]);
 
   const handlerMouseEnterTable = () => {
     requestAnimationFrame(() => {
@@ -519,9 +519,9 @@ const Funds = () => {
 
   const tableCount = table.getPageCount();
 
-  // useEffect(() => {
-  //   handlerMouseEnterTable();
-  // }, [activeIndexCategoryTab, tableCount]);
+  useEffect(() => {
+    handlerMouseEnterTable();
+  }, [activeIndexCategoryTab, tableCount]);
 
   const handleColorChange = (id: string, color: string) => {
     setRowMarks((prev) => ({
@@ -558,23 +558,23 @@ const Funds = () => {
   };
 
   useEffect(() => {
-    // const handleGlobalMouseUp = () => {
-    //   stopScroll();
-    // };
-    // table.setPageSize(500);
-    // window.addEventListener('mouseup', handleGlobalMouseUp);
-    // return () => {
-    //   window.removeEventListener('mouseup', handleGlobalMouseUp);
-    // };
+    const handleGlobalMouseUp = () => {
+      stopScroll();
+    };
+    table.setPageSize(500);
+    window.addEventListener('mouseup', handleGlobalMouseUp);
+    return () => {
+      window.removeEventListener('mouseup', handleGlobalMouseUp);
+    };
   }, []);
 
-  // useEffect(() => {
-  //   columnOrder.findIndex((id, index) => {
-  //     if (id === sorting[0]?.id && activeSortIndex !== 0) {
-  //       setActiveSortIndex(index - 1);
-  //     }
-  //   });
-  // }, [columnOrder]);
+  useEffect(() => {
+    columnOrder.findIndex((id, index) => {
+      if (id === sorting[0]?.id && activeSortIndex !== 0) {
+        setActiveSortIndex(index - 1);
+      }
+    });
+  }, [columnOrder]);
 
 
   const { rows } = table.getRowModel()
@@ -586,6 +586,17 @@ const Funds = () => {
     estimateSize: () => 60,
     overscan: 1,
   })
+
+
+
+  interface VirtualItem {
+    index: number;
+    start: number;
+    end: number;
+    size: number;
+    key: string | number;
+    measureRef?: (el: HTMLElement | null) => void;
+  }
 
 
 
@@ -630,19 +641,20 @@ const Funds = () => {
             dir="rtl"
             className="w-full table-fixed rounded-xl bg-white text-center"
           >
-            <DndContext
-              onDragStart={(event) => {
-                setIsRotating(true);
-                setActiveId(String(event.active.id));
-              }}
-              collisionDetection={closestCenter}
-              modifiers={[restrictToHorizontalAxis]}
-              onDragEnd={handleDragEnd}
-              sensors={sensors}
-              onDragOver={() => setIsRotating(true)}
-              onDragCancel={() => setIsRotating(false)}
-            >
-              <thead className="group sticky right-0 top-0 z-50 m-0 p-0 duration-300 [box-shadow:0_2px_0_#bcebeb]">
+
+            <thead className="group sticky right-0 top-0 z-50 m-0 p-0 duration-300 [box-shadow:0_2px_0_#bcebeb]">
+              <DndContext
+                onDragStart={(event) => {
+                  setIsRotating(true);
+                  setActiveId(String(event.active.id));
+                }}
+                collisionDetection={closestCenter}
+                modifiers={[restrictToHorizontalAxis]}
+                onDragEnd={handleDragEnd}
+                sensors={sensors}
+                onDragOver={() => setIsRotating(true)}
+                onDragCancel={() => setIsRotating(false)}
+              >
                 <tr>
                   <div
                     style={{
@@ -751,9 +763,9 @@ const Funds = () => {
                                       }}
                                       className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
                                     >
-                                      {/* {isChanged && (
+                                      {isChanged && (
                                         <div className="absolute -right-1 -top-1 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
-                                      )} */}
+                                      )}
                                       <Icon size="lg" name="settings" />
                                     </div>
                                   </Tooltip>
@@ -818,7 +830,7 @@ const Funds = () => {
                                         : '',
                                     }}
                                   >
-                                    {/* <FundsColumnHeader
+                                    <FundsColumnHeader
                                       active={!isRotating}
                                       activeStyle={header.id === activeId}
                                       activePlaceholder={activeId !== header.id}
@@ -872,7 +884,7 @@ const Funds = () => {
                                           ? 'alphabetical'
                                           : 'ranked'
                                       }
-                                    /> */}
+                                    />
                                   </div>
                                 )}
                               </th>
@@ -933,8 +945,8 @@ const Funds = () => {
                     )}
                   </div>
                 </tr>
-              </thead>
-            </DndContext>
+              </DndContext>
+            </thead>
 
             <tbody>
 
@@ -944,83 +956,27 @@ const Funds = () => {
               </tr>
 
               {/* ردیف‌های مجازی */}
-              {virtualizer.getVirtualItems().map((virtualRow, index) => {
+              {virtualizer.getVirtualItems().map((virtualRow: VirtualItem) => {
                 const row = rows[virtualRow.index];
                 const isMainTab = activeIndexCategoryTab === 0;
 
                 return (
-                  <tr
+                  <TableRow
                     key={row.id}
-                    className="group h-[48px] border-b border-[#E1E2E5]"
-                  >
-                    <td className="sticky right-0 top-0 z-40 m-0 flex items-center py-0">
-                      <div className="absolute z-50 pr-0">
-                        <Bookmark
-                          selectedColor={
-                            rowMarks[activeIndexCategoryTab]?.[
-                            row.id
-                            ] || ''
-                          }
-                          onColorChange={(color) =>
-                            handleColorChange(row.id, color)
-                          }
-                        />
-                      </div>
-                      <div
-                      // className={cn('group-hover:bg-blue-50', {
-                      //   'bg-blue-50 group-hover:bg-blue-100':
-                      //     isPinned,
-                      // })}
-                      >
-                        <FundsInfoCell
-                          tag={!isMainTab}
-                          category={
-                            isMainTab
-                              ? watchList.includes(row.id)
-                                ? 'watchlist'
-                                : 'stocks'
-                              : 'watchlist'
-                          }
-                          canPin={false}
-                          toggleWatchList={() =>
-                            toggleWatchList({ id: row.id })
-                          }
-                          pinedFunction={() =>
-                            isMainTab
-                              ? row.pin('top', true)
-                              : setPineWatchList([
-                                ...pineWatchLis,
-                                row.id,
-                              ])
-                          }
-                          unPinedFunction={() =>
-                            isMainTab
-                              ? row.pin(false)
-                              : setPineWatchList((prev) =>
-                                prev.filter(
-                                  (id) => id !== row.id,
-                                ),
-                              )
-                          }
-                          isScrolled={isScrollAtStart}
-                          investmentMethod={
-                            row.original.investmentMethod
-                          }
-                          name={row.original.nameFund}
-                          pined={false}
-                          selected={false}
-                          logo={row.original.logo}
-                        />
-                      </div>
-                    </td>
-                    {row.getVisibleCells().map((item) => (
-                      <td>
-                        ffffffffff
-                      </td>
-                    ))}
-                  </tr>
+                    row={row}
+                    isMainTab={isMainTab}
+                    activeIndexCategoryTab={activeIndexCategoryTab}
+                    rowMarks={rowMarks}
+                    handleColorChange={handleColorChange}
+                    toggleWatchList={toggleWatchList}
+                    setPineWatchList={setPineWatchList}
+                    pineWatchLis={pineWatchLis}
+                    watchList={watchList}
+                    isScrollAtStart={isScrollAtStart}
+                  />
                 );
               })}
+
               {/* spacer پایین */}
               <tr
                 style={{
@@ -1184,14 +1140,14 @@ const Funds = () => {
               /25)
             </span>
           </div>
-          {/* {isChanged && (
+          {isChanged && (
             <span
               className="m-6 cursor-pointer text-base font-medium text-red-600"
               onClick={() => table.resetColumnVisibility()}
             >
               بازنشانی به پیشفرض
             </span>
-          )} */}
+          )}
         </div>
 
         <div className="h-[2px] w-full bg-[#D1D3D7]"></div>

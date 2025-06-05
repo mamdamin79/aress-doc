@@ -17,7 +17,6 @@ export * from './HeadProfile';
 export * from './NotesHeading';
 export * from './OptionsDropdown';
 export * from './FundsTag';
-export * from './FundsInfoCell';
 export * from './FilterPopUpSection';
 export * from './FundsColumnHeader';
 export * from './ReportCard';
