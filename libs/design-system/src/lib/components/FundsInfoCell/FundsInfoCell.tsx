@@ -37,9 +37,9 @@ export function FundsInfoCell({
   isScrolled,
   className,
 }: Props) {
-  const [isDropdownActive, setIsDropdownActive] = useState(false);
+  // const [isDropdownActive, setIsDropdownActive] = useState(false);
 
-  const { showProgressToast, showToast } = useCustomToast();
+  // const { showProgressToast, showToast } = useCustomToast();
 
   return (
     <div
@@ -87,13 +87,13 @@ export function FundsInfoCell({
             </div>
           }
         </div>
-        <Tooltip offset={2} position="left" title={name.length > 13 ? name : ''}>
+        {/* <Tooltip offset={2} position="left" title={name.length > 13 ? name : ''}>
           <p className="text-gray-1000 w-[130px] hover:text-[#0F7575] truncate text-right text-sm font-medium">
             {name}
           </p>
-        </Tooltip>
+        </Tooltip> */}
       </div>
-      <OptionsDropdown
+      {/* <OptionsDropdown
         className='!border-[#D1D3D7] shadow-7xl'
         dropDownStyles={{
           anchor: 'bottom start',
@@ -212,7 +212,7 @@ export function FundsInfoCell({
             </div>
           );
         }}
-      />
+      /> */}
     </div>
   );
 }

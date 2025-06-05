@@ -59,6 +59,7 @@ import { Person, makeData } from './_components/makeData';
 import { columnVisibility, filterList } from './FundsTable.constants';
 import { ExportExel } from './_components/ExportExel';
 import { Bookmark } from 'libs/design-system/src/lib/components/Bookmark';
+import { useVirtualizer } from '@tanstack/react-virtual'
 import { useSmartTableScroll } from 'apps/fe-app/hooks/useSmartTableScroll';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
@@ -73,7 +74,7 @@ const Funds = () => {
   const [isScrollAtStart, setIsScrollAtStart] = useState<boolean>(false);
   const [isScrollAtEnd, setIsScrollAtEnd] = useState<boolean>(true);
   const [fundSearchQuery, setFundSearchQuery] = useState<string>('');
-  const tableRef = useRef<HTMLDivElement>(null);
+  const tableRef = useRef<HTMLDivElement | any>(null);
   const [watchList, setWatchList] = useState<string[]>([]);
   const [pineWatchLis, setPineWatchList] = useState<string[]>([]);
   const [sorting, setSorting] = useState<SortingState>([
@@ -334,9 +335,8 @@ const Funds = () => {
       >
         {isDraggingOver && position && (
           <div
-            className={`absolute bottom-0 top-1 z-10 h-[90%] w-0.5 bg-[#0F7575] ${
-              position === 'left' ? 'right-0' : 'left-0'
-            }`}
+            className={`absolute bottom-0 top-1 z-10 h-[90%] w-0.5 bg-[#0F7575] ${position === 'left' ? 'right-0' : 'left-0'
+              }`}
           >
             <div className="absolute top-0 flex h-2.5 w-2.5 translate-x-1 items-center justify-center rounded-full bg-[#0F7575]">
               <div className="h-1.5 w-1.5 rounded-full bg-white" />
@@ -423,13 +423,14 @@ const Funds = () => {
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    debugAll: true
   });
 
-  const isChanged = useMemo(() => {
-    return !Object.entries(table.getState().columnVisibility).every(
-      ([key, value]) => columnVisibility[key] === value,
-    );
-  }, [table.getState().columnVisibility]);
+  // const isChanged = useMemo(() => {
+  //   return !Object.entries(table.getState().columnVisibility).every(
+  //     ([key, value]) => columnVisibility[key] === value,
+  //   );
+  // }, [table.getState().columnVisibility]);
 
   const toggleWatchList = (fund: { id: string }) => {
     setWatchList((prev) =>
@@ -471,40 +472,40 @@ const Funds = () => {
   );
 
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (tableRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } = tableRef.current;
-        // Update scroll start state
-        if (Math.round(scrollLeft) === 0) {
-          setIsScrollAtStart(false);
-        } else if (scrollLeft < 0) {
-          setIsScrollAtStart(true);
-        }
-        // Update scroll end state; logic preserved from original code
-        setIsScrollAtEnd(
-          Math.round(scrollLeft * -1) + clientWidth <= scrollWidth - 1,
-        );
-      }
-    };
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     if (tableRef.current) {
+  //       const { scrollLeft, scrollWidth, clientWidth } = tableRef.current;
+  //       // Update scroll start state
+  //       if (Math.round(scrollLeft) === 0) {
+  //         setIsScrollAtStart(false);
+  //       } else if (scrollLeft < 0) {
+  //         setIsScrollAtStart(true);
+  //       }
+  //       // Update scroll end state; logic preserved from original code
+  //       setIsScrollAtEnd(
+  //         Math.round(scrollLeft * -1) + clientWidth <= scrollWidth - 1,
+  //       );
+  //     }
+  //   };
 
-    // Register scroll event listener on the table element
-    const tableElem = tableRef.current;
-    tableElem?.addEventListener('scroll', handleScroll);
+  //   // Register scroll event listener on the table element
+  //   const tableElem = tableRef.current;
+  //   tableElem?.addEventListener('scroll', handleScroll);
 
-    // Cleanup: remove event listeners when component unmounts or dependencies change
-    return () => {
-      tableElem?.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+  //   // Cleanup: remove event listeners when component unmounts or dependencies change
+  //   return () => {
+  //     tableElem?.removeEventListener('scroll', handleScroll);
+  //   };
+  // }, []);
 
-  useEffect(() => {
-    document.documentElement.style.overflow = 'hidden';
+  // useEffect(() => {
+  //   document.documentElement.style.overflow = 'hidden';
 
-    return () => {
-      document.documentElement.style.overflow = 'auto';
-    };
-  }, [customColl.active]);
+  //   return () => {
+  //     document.documentElement.style.overflow = 'auto';
+  //   };
+  // }, [customColl.active]);
 
   const handlerMouseEnterTable = () => {
     requestAnimationFrame(() => {
@@ -518,9 +519,9 @@ const Funds = () => {
 
   const tableCount = table.getPageCount();
 
-  useEffect(() => {
-    handlerMouseEnterTable();
-  }, [activeIndexCategoryTab, tableCount]);
+  // useEffect(() => {
+  //   handlerMouseEnterTable();
+  // }, [activeIndexCategoryTab, tableCount]);
 
   const handleColorChange = (id: string, color: string) => {
     setRowMarks((prev) => ({
@@ -557,22 +558,36 @@ const Funds = () => {
   };
 
   useEffect(() => {
-    const handleGlobalMouseUp = () => {
-      stopScroll();
-    };
-    window.addEventListener('mouseup', handleGlobalMouseUp);
-    return () => {
-      window.removeEventListener('mouseup', handleGlobalMouseUp);
-    };
+    // const handleGlobalMouseUp = () => {
+    //   stopScroll();
+    // };
+    // table.setPageSize(500);
+    // window.addEventListener('mouseup', handleGlobalMouseUp);
+    // return () => {
+    //   window.removeEventListener('mouseup', handleGlobalMouseUp);
+    // };
   }, []);
 
-  useEffect(() => {
-    columnOrder.findIndex((id, index) => {
-      if (id === sorting[0]?.id && activeSortIndex !== 0) {
-        setActiveSortIndex(index - 1);
-      }
-    });
-  }, [columnOrder]);
+  // useEffect(() => {
+  //   columnOrder.findIndex((id, index) => {
+  //     if (id === sorting[0]?.id && activeSortIndex !== 0) {
+  //       setActiveSortIndex(index - 1);
+  //     }
+  //   });
+  // }, [columnOrder]);
+
+
+  const { rows } = table.getRowModel()
+
+
+  const virtualizer = useVirtualizer({
+    count: rows.length,
+    getScrollElement: () => tableRef.current,
+    estimateSize: () => 60,
+    overscan: 1,
+  })
+
+
 
   return (
     <>
@@ -599,6 +614,7 @@ const Funds = () => {
         </Tooltip>
       </div>
 
+
       <div
         dir="ltr"
         className={cn(
@@ -608,7 +624,7 @@ const Funds = () => {
         <div
           onMouseEnter={handlerMouseEnterTable}
           ref={tableRef}
-          className="table-scroll group/table scrollbar-md h-[calc(100vh-172px)] w-screen overflow-auto scroll-smooth"
+          className="table-scroll group/table scrollbar-lg h-[calc(100vh-172px)] w-screen overflow-auto scroll-smooth"
         >
           <table
             dir="rtl"
@@ -711,7 +727,7 @@ const Funds = () => {
                                         header.column.getIsSorted() === 'asc'
                                           ? 'active-asc'
                                           : header.column.getIsSorted() ===
-                                              'desc'
+                                            'desc'
                                             ? 'inactive'
                                             : 'inactive'
                                       }
@@ -735,9 +751,9 @@ const Funds = () => {
                                       }}
                                       className="bg-brand-600 relative cursor-pointer rounded-md p-1 text-white"
                                     >
-                                      {isChanged && (
+                                      {/* {isChanged && (
                                         <div className="absolute -right-1 -top-1 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
-                                      )}
+                                      )} */}
                                       <Icon size="lg" name="settings" />
                                     </div>
                                   </Tooltip>
@@ -751,8 +767,8 @@ const Funds = () => {
                                       {(Object.entries(selectedFilters).length >
                                         0 ||
                                         fundSearchQuery) && (
-                                        <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
-                                      )}
+                                          <div className="absolute -right-1 -top-1 z-30 box-content h-2.5 w-2.5 rounded-full border-2 border-white bg-pink-600"></div>
+                                        )}
                                       <Icon size="lg" name="filter" />
                                     </div>
                                   </Tooltip>
@@ -802,7 +818,7 @@ const Funds = () => {
                                         : '',
                                     }}
                                   >
-                                    <FundsColumnHeader
+                                    {/* <FundsColumnHeader
                                       active={!isRotating}
                                       activeStyle={header.id === activeId}
                                       activePlaceholder={activeId !== header.id}
@@ -835,7 +851,7 @@ const Funds = () => {
                                         header.column.getIsSorted() === 'asc'
                                           ? 'active-desc'
                                           : header.column.getIsSorted() ===
-                                              'desc'
+                                            'desc'
                                             ? 'active-asc'
                                             : 'inactive'
                                       }
@@ -856,7 +872,7 @@ const Funds = () => {
                                           ? 'alphabetical'
                                           : 'ranked'
                                       }
-                                    />
+                                    /> */}
                                   </div>
                                 )}
                               </th>
@@ -920,173 +936,105 @@ const Funds = () => {
               </thead>
             </DndContext>
 
-            <tbody className="relative w-full overflow-hidden">
-              {(() => {
+            <tbody>
+
+              {/* spacer بالا */}
+              <tr style={{ height: virtualizer.getVirtualItems()[0]?.start ?? 0 }}>
+                <td />
+              </tr>
+
+              {/* ردیف‌های مجازی */}
+              {virtualizer.getVirtualItems().map((virtualRow, index) => {
+                const row = rows[virtualRow.index];
                 const isMainTab = activeIndexCategoryTab === 0;
-                const allRows = table.getRowModel().rows;
-                const pinnedIds = isMainTab
-                  ? allRows.filter((r) => r.getIsPinned()).map((r) => r.id)
-                  : pineWatchLis;
 
-                const filteredRows = isMainTab
-                  ? allRows
-                  : allRows.filter((row) => watchList.includes(row.id));
-
-                const pinnedRows = filteredRows.filter((row) =>
-                  pinnedIds.includes(row.id),
-                );
-                const otherRows = filteredRows.filter(
-                  (row) => !pinnedIds.includes(row.id),
-                );
-
-                const rowsToRender = [...pinnedRows, ...otherRows];
-
-                if (rowsToRender.length === 0) {
-                  return (
-                    <tr className="fixed right-[calc(50%-150px)] mt-5 w-full text-gray-600">
-                      <td className="text-sm">
-                        {isMainTab
-                          ? 'صندوقی یافت نشد! لطفا فیلتر‌هارا بازنشانی کنید.'
-                          : watchList.length === 0
-                            ? 'صندوقی در دیده بان وجود ندارد.'
-                            : 'صندوقی یافت نشد! لطفا فیلتر هارا بازنشانی کنید.'}
-                      </td>
-                    </tr>
-                  );
-                }
-
-                return rowsToRender.map((row, rowIndex) => {
-                  const isPinned = pinnedIds.includes(row.id);
-
-                  return (
-                    <>
-                      <tr
-                        key={row.id}
-                        className={cn(
-                          'group h-[48px] border-b border-[#E1E2E5]',
-                          {
-                            'bg-blue-50 group-hover:bg-[#4991e9]': isPinned,
-                          },
-                        )}
+                return (
+                  <tr
+                    key={row.id}
+                    className="group h-[48px] border-b border-[#E1E2E5]"
+                  >
+                    <td className="sticky right-0 top-0 z-40 m-0 flex items-center py-0">
+                      <div className="absolute z-50 pr-0">
+                        <Bookmark
+                          selectedColor={
+                            rowMarks[activeIndexCategoryTab]?.[
+                            row.id
+                            ] || ''
+                          }
+                          onColorChange={(color) =>
+                            handleColorChange(row.id, color)
+                          }
+                        />
+                      </div>
+                      <div
+                      // className={cn('group-hover:bg-blue-50', {
+                      //   'bg-blue-50 group-hover:bg-blue-100':
+                      //     isPinned,
+                      // })}
                       >
-                        <td></td>
-                        {row.getVisibleCells().map((cell, index) => {
-                          return (
-                            <>
-                              {index === 0 && (
-                                <td className="sticky right-0 top-0 z-40 m-0 flex items-center py-0">
-                                  <div className="absolute z-50 pr-0">
-                                    <Bookmark
-                                      selectedColor={
-                                        rowMarks[activeIndexCategoryTab]?.[
-                                          row.id
-                                        ] || ''
-                                      }
-                                      onColorChange={(color) =>
-                                        handleColorChange(row.id, color)
-                                      }
-                                    />
-                                  </div>
-                                  <div
-                                    className={cn('group-hover:bg-blue-50', {
-                                      'bg-blue-50 group-hover:bg-blue-100':
-                                        isPinned,
-                                    })}
-                                  >
-                                    <FundsInfoCell
-                                      tag={!isMainTab}
-                                      category={
-                                        isMainTab
-                                          ? watchList.includes(row.id)
-                                            ? 'watchlist'
-                                            : 'stocks'
-                                          : 'watchlist'
-                                      }
-                                      canPin={pinnedRows.length <= 2}
-                                      toggleWatchList={() =>
-                                        toggleWatchList({ id: row.id })
-                                      }
-                                      pinedFunction={() =>
-                                        isMainTab
-                                          ? row.pin('top', true)
-                                          : setPineWatchList([
-                                              ...pineWatchLis,
-                                              row.id,
-                                            ])
-                                      }
-                                      unPinedFunction={() =>
-                                        isMainTab
-                                          ? row.pin(false)
-                                          : setPineWatchList((prev) =>
-                                              prev.filter(
-                                                (id) => id !== row.id,
-                                              ),
-                                            )
-                                      }
-                                      isScrolled={isScrollAtStart}
-                                      investmentMethod={
-                                        row.original.investmentMethod
-                                      }
-                                      name={row.original.nameFund}
-                                      pined={isPinned}
-                                      selected={false}
-                                      logo={row.original.logo}
-                                    />
-                                  </div>
-                                </td>
-                              )}
-                              {index > 0 && (
-                                <SortableContext
-                                  key={cell.id}
-                                  items={columnOrder}
-                                  strategy={horizontalListSortingStrategy}
-                                >
-                                  <DragAlongCell key={cell.id} cell={cell}>
-                                    <td
-                                      className={cn(
-                                        'flex h-[46px] w-full items-center justify-center border-[#E1E2E5] p-0 text-sm font-medium',
-                                        {
-                                          'bg-blue-50 group-hover:bg-blue-100':
-                                            isPinned,
-                                          'group-hover:bg-blue-50': !isPinned,
-                                        },
-                                      )}
-                                    >
-                                      {formatNumber(cell.getValue() as string, {
-                                        commaSeparated: true,
-                                      })}
-                                    </td>
-                                  </DragAlongCell>
-                                </SortableContext>
-                              )}
-                            </>
-                          );
-                        })}
-                      </tr>
-                      {rowIndex === rowsToRender.length - 1 && (
-                        <div className="sticky right-0 mb-2 mt-5 w-screen whitespace-nowrap text-sm text-gray-600">
-                          {formatNumber(
-                            table.getState().pagination.pageSize *
-                              (table.getState().pagination.pageIndex + 1),
-                            { commaSeparated: true },
-                          ) ===
-                            formatNumber(
-                              table.getPageCount() *
-                                table.getState().pagination.pageSize,
-                              { commaSeparated: true },
-                            ) && 'پایان لیست صندوق ها.'}
-                        </div>
-                      )}
-                    </>
-                  );
-                });
-              })()}
-              <tr className="h-16">
-                <td></td>
+                        <FundsInfoCell
+                          tag={!isMainTab}
+                          category={
+                            isMainTab
+                              ? watchList.includes(row.id)
+                                ? 'watchlist'
+                                : 'stocks'
+                              : 'watchlist'
+                          }
+                          canPin={false}
+                          toggleWatchList={() =>
+                            toggleWatchList({ id: row.id })
+                          }
+                          pinedFunction={() =>
+                            isMainTab
+                              ? row.pin('top', true)
+                              : setPineWatchList([
+                                ...pineWatchLis,
+                                row.id,
+                              ])
+                          }
+                          unPinedFunction={() =>
+                            isMainTab
+                              ? row.pin(false)
+                              : setPineWatchList((prev) =>
+                                prev.filter(
+                                  (id) => id !== row.id,
+                                ),
+                              )
+                          }
+                          isScrolled={isScrollAtStart}
+                          investmentMethod={
+                            row.original.investmentMethod
+                          }
+                          name={row.original.nameFund}
+                          pined={false}
+                          selected={false}
+                          logo={row.original.logo}
+                        />
+                      </div>
+                    </td>
+                    {row.getVisibleCells().map((item) => (
+                      <td>
+                        ffffffffff
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })}
+              {/* spacer پایین */}
+              <tr
+                style={{
+                  height:
+                    virtualizer.getTotalSize() -
+                    (virtualizer.getVirtualItems().at(-1)?.end ?? 0),
+                }}
+              >
+                <td />
               </tr>
             </tbody>
           </table>
         </div>
+
       </div>
 
       <div className="fixed bottom-6 right-0 z-50 mt-6 flex w-full justify-between px-8">
@@ -1112,7 +1060,7 @@ const Funds = () => {
                     <span>تعداد سطر در جدول: </span>
                     {formatNumber(
                       table.getState().pagination.pageSize *
-                        (table.getState().pagination.pageIndex + 1),
+                      (table.getState().pagination.pageIndex + 1),
                       { commaSeparated: true },
                     )}
                   </div>
@@ -1134,8 +1082,8 @@ const Funds = () => {
                   {
                     'pb-2':
                       table.getState().pagination.pageSize *
-                        (table.getState().pagination.pageIndex + 1) *
-                        table.getPageCount() ===
+                      (table.getState().pagination.pageIndex + 1) *
+                      table.getPageCount() ===
                       +prop.text,
                   },
                 )}
@@ -1144,7 +1092,7 @@ const Funds = () => {
                   {table.getState().pagination.pageSize *
                     (table.getState().pagination.pageIndex + 1) *
                     table.getPageCount() ===
-                  +prop.text
+                    +prop.text
                     ? 'همه'
                     : prop.text}
                 </span>
@@ -1158,8 +1106,8 @@ const Funds = () => {
               {
                 text: String(
                   table.getState().pagination.pageSize *
-                    (table.getState().pagination.pageIndex + 1) *
-                    table.getPageCount(),
+                  (table.getState().pagination.pageIndex + 1) *
+                  table.getPageCount(),
                 ),
               },
             ]}
@@ -1177,7 +1125,7 @@ const Funds = () => {
             <div>
               {formatNumber(
                 table.getState().pagination.pageSize *
-                  (table.getState().pagination.pageIndex + 1),
+                (table.getState().pagination.pageIndex + 1),
                 { commaSeparated: true },
               )}
               -
@@ -1236,14 +1184,14 @@ const Funds = () => {
               /25)
             </span>
           </div>
-          {isChanged && (
+          {/* {isChanged && (
             <span
               className="m-6 cursor-pointer text-base font-medium text-red-600"
               onClick={() => table.resetColumnVisibility()}
             >
               بازنشانی به پیشفرض
             </span>
-          )}
+          )} */}
         </div>
 
         <div className="h-[2px] w-full bg-[#D1D3D7]"></div>
