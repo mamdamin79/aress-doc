@@ -10,14 +10,14 @@ interface Props {
 export function Breadcrumb({ items }: Props) {
   return (
     <nav aria-label="Breadcrumbs" dir="rtl">
-      <ul className="font-vazirmatn flex items-center gap-1">
+      <ul className="flex items-center gap-1">
         {items.map((item: BreadcrumbItem, index: number) => (
           <li
             className={cn(
               'flex cursor-pointer items-center font-semibold',
               index + 1 === items.length
-                ? 'text-gray-1000'
-                : 'text-gray-600 hover:text-gray-700',
+                ? 'text-text-neutral-primary'
+                : 'text-text-neutral-secondary hover:text-text-neutral-secondarycontrast',
             )}
             key={index}
           >

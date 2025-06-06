@@ -10,17 +10,17 @@ export const icons = {
 
 // styles for different modes toast
 export const styleToasts = {
-  info: 'bg-blue-100 border-blue-400',
-  success: 'bg-green-100 border-green-400',
-  error: 'bg-red-100 border-red-400',
-  warning: 'bg-yellow-100 border-yellow-400',
+  info: 'bg-surface-message-info-100-soft border-border-message-success-info-400',
+  success: 'bg-surface-message-success-100-soft border-border-message-success-soft-400',
+  error: 'bg-surface-message-error-100-soft border-border-message-error-soft-400',
+  warning: 'bg-surface-message-warning-100-soft border-border-message-warning-soft-400',
 };
 
 export const bgIcon = {
-  info: 'bg-blue-600',
-  success: 'bg-green-600',
-  error: 'bg-red-600',
-  warning: 'bg-yellow-600',
+  info: 'bg-surface-message-info-600-primary',
+  success: 'bg-surface-message-success-600-primary',
+  error: 'bg-surface-message-error-600-primary',
+  warning: 'bg-surface-message-warning-600-primary',
 };
 
 // Default timeout for progress toast

@@ -21,7 +21,7 @@ export const ProfilePageContent: React.FC<AressApiUser> = (user) => {
 
   const [image, setImage] = useState<string | undefined>(undefined);
   return (
-    <div className="mx-auto flex w-full max-w-[1680px] justify-center">
+    <div className="text-text-neutral-primary mx-auto flex w-full max-w-[1680px] justify-center">
       <div className="flex w-full flex-row gap-14 px-8 pb-28 pt-12 lg:px-20">
         {!(activeSection && !isDesktop) && (
           <div className="flex w-full justify-center lg:w-[264px]">

@@ -48,7 +48,9 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
       return (
         <tr
           key={rowIndex}
-          className={cn(striped && rowIndex % 2 === 1 ? 'bg-gray-50' : '')}
+          className={cn(
+            striped && rowIndex % 2 === 1 ? 'bg-surface-neutral-tertiary' : '',
+          )}
         >
           {schema.map((column, colIndex) => {
             const value = row[column.key as keyof TableRow];
@@ -77,8 +79,10 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
                 {colIndex === 0 ? (
                   <div
                     className={cn(
-                      'w-fit pr-[6px] pl-[6px] h-[30px] rounded-sm flex items-center',
-                      isHoveredOrMatching ? 'bg-blue-600 text-white' : '',
+                      'flex h-[30px] w-fit items-center rounded-sm pl-[6px] pr-[6px]',
+                      isHoveredOrMatching
+                        ? 'bg-surface-accent-blue-600 text-text-neutral-white'
+                        : '',
                     )}
                   >
                     {column.render
@@ -120,7 +124,7 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
     <div className="relative w-[1280px]">
       {border && (
         <div
-          className="border border-gray-400 absolute top-16 rounded-2xl -z-10"
+          className="border-border-neutral-contrast absolute top-16 -z-10 rounded-2xl border"
           style={{
             width: `${tableDimensions.width}px`,
             height: `${tableDimensions.height - 40}px`,
@@ -134,7 +138,7 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
         role="grid"
         aria-label="Financial Records Table"
       >
-        <thead className="bg-transparent text-md font-medium h-16 after:content-[''] after:block after:h-4">
+        <thead className="text-md h-16 bg-transparent font-medium after:block after:h-4 after:content-['']">
           <tr>
             {schema.map((column, index) => (
               <th
@@ -142,18 +146,18 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
                 onMouseLeave={() => index !== 0 && setHoveredCol(null)}
                 key={index}
                 className={cn(
-                  'relative bg-gray-100',
+                  'bg-surface-neutral-secondary relative',
                   column.key === 'name' ? 'text-right' : '',
                 )}
               >
-                <div className="w-full flex justify-center items-center">
+                <div className="flex w-full items-center justify-center">
                   <div
                     className={cn(
-                      'w-fit pr-[6px] pl-[6px] h-[30px] rounded-sm',
+                      'h-[30px] w-fit rounded-sm pl-[6px] pr-[6px]',
                       matchingCol === index || hoveredCol === index
-                        ? 'bg-blue-600 text-white'
+                        ? 'bg-surface-accent-blue-600 text-text-neutral-white'
                         : '',
-                      column.key === 'name' && 'pr-6 w-[144px]',
+                      column.key === 'name' && 'w-[144px] pr-6',
                     )}
                   >
                     {column.header}
@@ -163,7 +167,7 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
                 {column.headerDivider && (
                   <div
                     className={cn(
-                      'absolute top-0 bottom-0 my-auto bg-gray-400 w-[1px] h-6 rounded-[100px]',
+                      'bg-surface-accent-gray-400 absolute bottom-0 top-0 my-auto h-6 w-[1px] rounded-[100px]',
                       column.headerDivider === 'left' ? 'left-0' : 'right-0',
                     )}
                   ></div>

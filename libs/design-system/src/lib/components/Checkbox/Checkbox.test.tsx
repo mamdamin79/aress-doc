@@ -14,7 +14,7 @@ describe('Checkbox Component', () => {
     const label = screen.getByText('Test Checkbox');
 
     expect(checkbox).toHaveAttribute('aria-checked', 'false');
-    expect(label).toHaveClass('text-gray-400');
+    expect(label).toHaveClass('text-text-neutral-disable');
 
     // کلیک باید بی‌اثر باشه
     fireEvent.click(checkbox);

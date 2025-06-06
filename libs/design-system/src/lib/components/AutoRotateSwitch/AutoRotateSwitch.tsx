@@ -41,9 +41,9 @@ export const AutoRotateSwitch: React.FC<AutoRotateProps> = ({
     <div
       key={option}
       className={cn(
-        'hover:bg-brand-200 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-colors',
+        'hover:bg-surface-brand-200 hover:text-text-onbrand-neutral-primary-onbelow600 bg-surface-neutral-primary text-text-neutral-primary flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-colors',
         activeRotateOption === option &&
-          'bg-brand-600 hover:bg-brand-600 text-white',
+          'bg-surface-brand-600-primary text-text-onbrand-neutral-primary-on600',
       )}
       onClick={() => changeActiveOption(option)}
     >
@@ -59,7 +59,7 @@ export const AutoRotateSwitch: React.FC<AutoRotateProps> = ({
     >
       <div
         className={cn(
-          'invisible flex h-full -translate-x-7 select-none flex-row-reverse items-center justify-center gap-1 rounded-full border border-gray-400 p-1 font-medium opacity-0 transition-all duration-300',
+          'border-border-neutral-contrast bg-surface-neutral-primary invisible flex h-full -translate-x-7 select-none flex-row-reverse items-center justify-center gap-1 rounded-full border p-1 font-medium opacity-0 transition-all duration-300',
           isOptionsMenuOpen &&
             'group-hover:visible group-hover:translate-x-0 group-hover:opacity-100',
         )}
@@ -68,22 +68,21 @@ export const AutoRotateSwitch: React.FC<AutoRotateProps> = ({
       </div>
       <div
         className={cn(
-          'border-brand-600 flex h-10 flex-row items-center justify-center gap-1 rounded-full border px-[6px] transition-all',
-          activeRotateOption ? 'bg-brand-600 p-1 text-white' : 'w-10',
-          isOptionsMenuOpen &&
-            activeRotateOption &&
-            'border-red-600 bg-red-600',
+          'border-border-brand-primary-600 bg-surface-neutral-primary flex h-10 flex-row items-center justify-center gap-1 rounded-full border px-[6px] font-medium transition-all',
+          activeRotateOption
+            ? 'bg-surface-brand-600-primary text-text-onbrand-neutral-primary-on600 p-1'
+            : 'w-10',
         )}
       >
         {activeRotateOption && !disabled && !isOptionsMenuOpen && (
-          <div className="bg-brand-600 hover:bg-brand-600 flex h-8 w-8 items-center justify-center rounded-full text-white">
+          <div className="bg-surface-brand-600-primary text-text-neutral-white flex h-8 w-8 items-center justify-center rounded-full">
             {activeRotateOption}s
           </div>
         )}
         <Tooltip title="گردش خودکار" position="bottom" offset={10}>
           <div
             className={cn(
-              'flex h-8 w-8 items-center justify-center transition-all duration-300',
+              'text-icon-neutral-primary flex h-8 w-8 items-center justify-center transition-all duration-300',
               !activeRotateOption && 'group-hover:rotate-90',
             )}
           >

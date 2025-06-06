@@ -13,7 +13,7 @@ type Story = StoryObj<typeof MenuTiles>;
 
 export const WithIconAndBadge: Story = {
   render: (args) => (
-    <div className="flex h-40 w-full items-center justify-center bg-gray-300">
+    <div className="flex h-40 w-full items-center justify-center">
       <MenuTiles {...args} />
     </div>
   ),
@@ -37,7 +37,7 @@ export const WithIconAndBadge: Story = {
 };
 export const WithIconOnly: Story = {
   render: (args) => (
-    <div className="flex h-40 w-full items-center justify-center bg-gray-300">
+    <div className="flex h-40 w-full items-center justify-center">
       <MenuTiles {...args} />
     </div>
   ),
@@ -61,7 +61,7 @@ export const WithIconOnly: Story = {
 };
 export const NoSubText: Story = {
   render: (args) => (
-    <div className="flex h-40 w-full items-center justify-center bg-gray-300">
+    <div className="flex h-40 w-full items-center justify-center">
       <MenuTiles {...args} />
     </div>
   ),
@@ -84,7 +84,7 @@ export const NoSubText: Story = {
 };
 export const justText: Story = {
   render: (args) => (
-    <div className="flex h-40 w-full items-center justify-center bg-gray-300">
+    <div className="flex h-40 w-full items-center justify-center">
       <MenuTiles {...args} />
     </div>
   ),
@@ -100,7 +100,7 @@ export const justText: Story = {
 };
 export const expandable: Story = {
   render: (args) => (
-    <div className="flex h-40 w-full items-center justify-center bg-gray-300">
+    <div className="flex h-40 w-full items-center justify-center">
       <MenuTiles {...args} />
     </div>
   ),

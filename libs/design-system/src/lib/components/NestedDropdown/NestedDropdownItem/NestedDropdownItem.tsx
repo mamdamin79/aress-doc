@@ -42,10 +42,10 @@ export const NestedDropdownItem: React.FC<NestedDropdownItemProps> = ({
     <Wrapper hasTooltip={hasTooltip} selectedOption={selectedOption}>
       <div
         className={cn(
-          'flex h-10 w-full cursor-pointer items-center justify-between rounded-md border border-gray-300 px-2 transition-colors',
-          status === 'normal' && 'hover:border-gray-500',
-          status === 'error' && 'border-red-600',
-          status === 'opened' && 'border-brand-600 border-2',
+          'flex h-10 w-full cursor-pointer items-center justify-between rounded-md border border-border-neutral-primary px-2 transition-colors',
+          status === 'normal' && 'hover:border-border-neutral-highcontrast',
+          status === 'error' && 'border-border-message-error-primary-600',
+          status === 'opened' && 'border-border-brand-primary-600 border-2',
         )}
         onClick={onClick}
       >
@@ -53,16 +53,16 @@ export const NestedDropdownItem: React.FC<NestedDropdownItemProps> = ({
           <span
             className={cn(
               'font-medium',
-              status === 'error' && !hasChildren && 'text-red-600',
+              status === 'error' && !hasChildren && 'text-text-message-error-primary-600',
             )}
           >
             {title}
           </span>
           {placeHolder && !selectedOption && (
-            <span className="font-normal text-gray-500">{placeHolder}</span>
+            <span className="font-normal text-text-neutral-tertiary">{placeHolder}</span>
           )}
           {selectedOption && (
-            <span className="text-gray-1000 max-w-[190px] overflow-hidden truncate whitespace-nowrap font-normal">
+            <span className="text-text-neutral-primary max-w-[190px] overflow-hidden truncate whitespace-nowrap font-normal">
               {selectedOption}
             </span>
           )}

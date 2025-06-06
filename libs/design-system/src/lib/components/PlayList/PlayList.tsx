@@ -24,7 +24,7 @@ export const PlayList: React.FC<PlayListPropsType> = ({
   return (
     <div>
       {isFullscreen ? (
-        <div className="h-screen w-[440px] bg-gray-900/90 text-white transition-all duration-300">
+        <div className="text-text-neutral-white h-screen w-[440px] bg-gray-900/90 transition-all duration-300">
           <div className="flex items-center justify-between px-6 pb-2 pt-8 text-xl font-medium">
             <span>{playListTitle}</span>
             <div
@@ -53,8 +53,8 @@ export const PlayList: React.FC<PlayListPropsType> = ({
           </div>
         </div>
       ) : (
-        <div className="text-gray-1000 border-1.5 h-[459px] w-[440px] overflow-auto rounded-3xl border-gray-300 text-lg font-medium">
-          <div className="border-b-1.5 border-gray-300 p-6">
+        <div className="text-text-neutral-primary border-1.5 border-border-neutral-primary h-[459px] w-[440px] overflow-auto rounded-3xl text-lg font-medium">
+          <div className="border-b-1.5 border-border-neutral-primary p-6">
             {playListTitle}
           </div>
           <div className="p-6">
@@ -111,12 +111,12 @@ const PlayListCell: React.FC<
   return (
     <div
       className={cn(
-        'group mb-3 flex cursor-pointer items-center gap-1 rounded-lg bg-gray-100 p-3 transition-colors duration-300 hover:bg-gray-200',
+        'bg-surface-neutral-secondary hover:bg-surface-neutral-secondarycontrast group mb-3 flex cursor-pointer items-center gap-1 rounded-lg p-3 transition-colors duration-300',
         {
           'bg-black/30 hover:bg-white/20': isFullscreen,
         },
         {
-          'bg-brand-600': selectedVideo.src === src,
+          'bg-surface-brand-600-primary': selectedVideo.src === src,
         },
       )}
       key={`title-${title}`}
@@ -124,12 +124,12 @@ const PlayListCell: React.FC<
     >
       <span
         className={cn(
-          'text-md text-gray-1000 min-w-5 text-center font-medium',
+          'text-md text-text-neutral-primary min-w-5 text-center font-medium',
           {
-            'text-white': isFullscreen,
+            'text-text-neutral-white': isFullscreen,
           },
           {
-            'text-white': selectedVideo.src === src,
+            'text-text-neutral-white': selectedVideo.src === src,
           },
         )}
       >
@@ -137,7 +137,7 @@ const PlayListCell: React.FC<
           {++index}
         </span>
         {selectedVideo.src === src && (
-          <span className="text-white">
+          <span className="text-text-neutral-white">
             <Icon name="play" />
           </span>
         )}
@@ -151,26 +151,26 @@ const PlayListCell: React.FC<
           src={src}
           onLoadedMetadata={(event) => handleLoadedMetadata(index, event)}
         ></video>
-        <span className="absolute right-10 text-white opacity-0 transition-all duration-300 group-hover:opacity-100">
+        <span className="text-text-neutral-white absolute right-10 opacity-0 transition-all duration-300 group-hover:opacity-100">
           <Icon name="play" />
         </span>
         {durations[index] && (
-          <span className="rounded-xs absolute bottom-1 right-1 bg-black/55 px-1 text-xs font-medium text-white">
+          <span className="rounded-xs text-text-neutral-white absolute bottom-1 right-1 bg-black/55 px-1 text-xs font-medium">
             {durations[index]}
           </span>
         )}
         <div>
           <div
             className={cn(
-              'text-gray-1000 relative w-[230px] overflow-hidden text-ellipsis whitespace-nowrap p-2 pr-1 text-sm font-medium',
+              'text-text-neutral-primary relative w-[230px] overflow-hidden text-ellipsis whitespace-nowrap p-2 pr-1 text-sm font-medium',
               {
-                'text-white': isFullscreen,
+                'text-text-neutral-white': isFullscreen,
               },
               {
-                'group-hover:text-gray-900': !isFullscreen,
+                'group-hover:text-text-gray900': !isFullscreen,
               },
               {
-                'text-white': selectedVideo.src === src,
+                'text-text-neutral-white': selectedVideo.src === src,
               },
             )}
           >
@@ -195,13 +195,13 @@ const PlayListCell: React.FC<
           </div>
           <span
             className={cn(
-              'flex items-center gap-1 text-xs font-medium text-gray-600',
-              { 'text-white': isFullscreen },
+              'text-text-neutral-secondary flex items-center gap-1 text-xs font-medium',
+              { 'text-text-neutral-white': isFullscreen },
               {
-                'text-white': selectedVideo.src === src,
+                'text-text-neutral-white': selectedVideo.src === src,
               },
               {
-                'group-hover:text-gray-600': !isFullscreen,
+                'group-hover:text-text-neutral-secondary': !isFullscreen,
               },
             )}
           >

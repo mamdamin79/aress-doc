@@ -20,7 +20,7 @@ const ForgotPasswordPage = () => {
           <div className="absolute left-1/2 top-[34px] flex -translate-x-1/2 justify-center md:left-auto md:right-0 md:mr-8 md:translate-x-0">
             <div className="hidden items-center gap-4 py-3 xl:flex">
               <Image alt="logo" src={Logo} width={38} height={38} />
-              <h1 className="text-lg font-semibold">
+              <h1 className="text-text-neutral-primary text-lg font-semibold">
                 پردازش اطلاعات مالی آرسس
               </h1>
             </div>

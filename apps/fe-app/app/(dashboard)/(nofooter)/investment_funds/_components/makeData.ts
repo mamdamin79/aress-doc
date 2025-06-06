@@ -19,7 +19,7 @@ export type Person = {
   dailyReturn: number;
   weeklyReturn: number;
   startDate: number;
-  logo: string;
+  // logo: string;
   investmentMethod: 'T' | 'I&C';
 };
 
@@ -37,7 +37,7 @@ const newPerson = (): Person => {
 
   return {
     investmentMethod: "I&C",
-    logo: faker.image.avatar(),
+    // logo: faker.image.avatar(),
     nameFund: faker.person.fullName(),
     startDate:
       fixedNow -

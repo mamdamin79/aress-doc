@@ -14,6 +14,6 @@ type Story = StoryObj<typeof LoadingBarPop>;
 
 export const Default: Story = {
   args: {
-    status: 'rejected',
+    status: 'loading',
   },
 };

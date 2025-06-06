@@ -31,7 +31,6 @@ export function FundsColumnHeader({
   type,
   activeSorticon = false,
   clickFilterd,
-  activePlaceholder = false,
   defaultSort,
   active,
 }: Props) {
@@ -81,29 +80,29 @@ export function FundsColumnHeader({
           'w-[200px]': size === 'large',
           'w-[312px]': size === 'extraLarg',
           'shadow-4xl': shadow && size === 'extraLarg',
-          'bg-pink-200': size === 'extraLarg' && filterable && !active,
-          'bg-[#E3F8F8]': size === 'extraLarg' && !filterable,
-          'bg-pink-300': active && size !== 'extraLarg' && filterable,
-          'bg-[#BCEBEB]':
+          'bg-surface-accent-pink-200': size === 'extraLarg' && filterable && !active,
+          'bg-surface-brand-100': size === 'extraLarg' && !filterable,
+          'bg-surface-accent-pink-300': active && size !== 'extraLarg' && filterable,
+          'bg-surface-brand-200':
             (active && size !== 'extraLarg' && !filterable) || activeStyle,
-          'bg-[#E3F8F8] hover:bg-[#BCEBEB]':
+          'bg-surface-brand-100 hover:bg-surface-brand-200':
             !filterable && size !== 'extraLarg' && active,
-          'bg-pink-200 hover:bg-pink-300': filterable && size !== 'extraLarg',
+          'bg-surface-accent-pink-200 hover:bg-surface-accent-pink-300': filterable && size !== 'extraLarg',
         },
-        'group/first w-full cursor-pointer',
+        'group/first w-full cursor-pointer text-text-neutral-primary',
       )}
     >
       <div
         className={cn(
-          'relative mx-auto flex h-[76px] w-fit items-center justify-center gap-1 px-1.5',
+          'relative mx-auto flex h-[75px] w-fit items-center justify-center gap-1 px-1.5',
           {
-            'group-hover/first:bg-pink-300': size === 'extraLarg' && filterable,
-            'hover:bg-[#BCEBEB]':
+            'group-hover/first:bg-surface-accent-pink-300': size === 'extraLarg' && filterable,
+            'hover:bg-surface-brand-200':
               activeStyle && !filterable && size !== 'extraLarg',
-            'group-hover/first:bg-[#BCEBEB]':
+            'group-hover/first:bg-surface-brand-200':
               size === 'extraLarg' && !filterable,
-            'bg-[#BCEBEB]': !filterable && active && size === 'extraLarg',
-            'bg-pink-300': filterable && active && size === 'extraLarg',
+            'bg-surface-brand-200': !filterable && active && size === 'extraLarg',
+            'bg-surface-accent-pink-300': filterable && active && size === 'extraLarg',
           },
         )}
       >
@@ -112,7 +111,7 @@ export function FundsColumnHeader({
         </div>
 
         {activeSorticon  && (
-          <div className="bg-brand-600 absolute bottom-0 h-1.5 w-16 rounded-t-md"></div>
+          <div className="bg-surface-brand-600-primary absolute bottom-0 h-1.5 w-16 rounded-t-md"></div>
         )}
         <div className="font-] flex flex-col text-sm">
           <span>{title}</span>
@@ -124,10 +123,10 @@ export function FundsColumnHeader({
           </span>
         </div>
 
-        <Tooltip
+        {/* <Tooltip
           className="text-md z-50 font-semibold"
           title={tooltipTitle}
-        >
+        > */}
           <div
             onClick={() => {              
               if (typeof clickFilterd === 'function') {
@@ -138,9 +137,9 @@ export function FundsColumnHeader({
               }
             }}
             className={cn('p-1', {
-              'icon-sort-cell invisible text-[#545962] group-hover/first:visible':
+              'icon-sort-cell invisible text-icon-neutral-secondarycontrast group-hover/first:visible':
                 type === 'inactive',
-              'hover:bg-brand-600 rounded-md duration-150 hover:text-white':
+              'hover:bg-surface-brand-600-primary rounded-md duration-150 hover:text-icon-onbrand-neutral-on600':
                 active,
             })}
           >
@@ -156,7 +155,7 @@ export function FundsColumnHeader({
               }
             />
           </div>
-        </Tooltip>
+        {/* </Tooltip> */}
       </div>
     </div>
   );

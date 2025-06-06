@@ -4,7 +4,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { OTPForm } from '../../OTPForm';
 
 const SectionHeader = ({ title }: { title: string }) => (
-  <span className="text-md text-center font-medium">{title}</span>
+  <span className="text-md text-text-neutral-primary text-center font-medium">
+    {title}
+  </span>
 );
 interface InputPasswordFormValues {
   password: string;
@@ -39,7 +41,7 @@ export const InputPasswordForm = ({
       onSubmit={handleSubmit(onSaveData)}
     >
       <SectionHeader title={title || ''} />
-      <span className="mt-4 text-sm">{subTitle}</span>
+      <span className="text-text-neutral-primary mt-4 text-sm">{subTitle}</span>
       <Controller
         name="password"
         control={control}
@@ -111,7 +113,7 @@ const NewNumber = ({
       <div className="flex w-full flex-row justify-between">
         <span className="w-1/3"></span>
         <SectionHeader title={title || ''} />
-        <div className="text-brand-600 flex w-1/3 flex-row justify-end text-sm font-medium"></div>
+        <div className="text-text-brand-primary-600 flex w-1/3 flex-row justify-end text-sm font-medium"></div>
       </div>
       <span className="mt-4 text-sm">
         <span className="text-right font-medium">شماره همراه فعلی: </span>

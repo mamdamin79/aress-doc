@@ -6,9 +6,9 @@ interface TextWithIconProps {
 }
 export const TextWithIcon: React.FC<TextWithIconProps> = ({ icon, text }) => {
   return (
-    <span className="flex flex-row items-center gap-1 text-gray-700">
+    <span className="text-text-neutral-secondarycontrast flex flex-row items-center justify-center gap-1">
       <Icon {...icon} />
-      {text}
+      <div> {text}</div>
     </span>
   );
 };

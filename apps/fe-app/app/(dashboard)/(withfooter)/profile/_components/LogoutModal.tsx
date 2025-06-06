@@ -21,7 +21,7 @@ export const LogoutModal: React.FC<LogoutModalProps> = ({
       isOpen={isOpen}
       className="flex h-[181px] w-[400px] flex-col justify-between"
     >
-      <div className="text-center text-xl font-bold text-gray-700">
+      <div className="text-text-neutral-secondarycontrast text-center text-xl font-bold">
         خروج از حساب کاربری
       </div>
       <div className="flex w-full flex-row justify-between gap-4">

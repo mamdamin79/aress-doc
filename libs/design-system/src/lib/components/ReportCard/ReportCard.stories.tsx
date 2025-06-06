@@ -35,5 +35,6 @@ export const MenuReportsCard: Story = {
     reportSubscription: 'گزارش رایگان',
     fixedBrief: true,
     userFavorite: true,
+    shadowOnHover: true,
   },
 };

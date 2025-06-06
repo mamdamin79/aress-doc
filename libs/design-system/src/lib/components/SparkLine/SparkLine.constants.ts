@@ -1,4 +1,4 @@
-import { Options } from "highcharts";
+import { Options } from 'highcharts';
 
 export const SPARKLINE_CONSTANTS = {
   DIMENSIONS: {
@@ -6,58 +6,58 @@ export const SPARKLINE_CONSTANTS = {
     DEFAULT_HEIGHT: 44,
   },
   COLORS: {
-    POSITIVE: 'rgb(var(--color-green-700))',
-    NEGATIVE: 'rgb(var(--color-red-700))',
+    POSITIVE: '#16883C',
+    NEGATIVE: '#DD3636',
   },
 };
 export const defaultOptions: Options = {
-    chart: {
-      backgroundColor: 'transparent',
-      borderWidth: 0,
-      type: 'area',
-      margin: [2, 0, 2, 0],
-      style: {
-        overflow: 'visible',
-      },
+  chart: {
+    backgroundColor: 'transparent',
+    borderWidth: 0,
+    type: 'area',
+    margin: [2, 0, 2, 0],
+    style: {
+      overflow: 'visible',
     },
-    title: {
-      text: '',
-    },
-    credits: {
-      enabled: false,
-    },
-    xAxis: {
-      visible: false,
-    },
-    yAxis: {
-      visible: false,
-    },
-    legend: {
-      enabled: false,
-    },
-    tooltip: {
-      enabled: false,
-    },
-    plotOptions: {
-      series: {
-        animation: false,
-        lineWidth: 2,
-        shadow: false,
-        states: {
-          hover: {
-            enabled: false,
-            lineWidth: 1,
-          },
-        },
-        marker: {
+  },
+  title: {
+    text: '',
+  },
+  credits: {
+    enabled: false,
+  },
+  xAxis: {
+    visible: false,
+  },
+  yAxis: {
+    visible: false,
+  },
+  legend: {
+    enabled: false,
+  },
+  tooltip: {
+    enabled: false,
+  },
+  plotOptions: {
+    series: {
+      animation: false,
+      lineWidth: 2,
+      shadow: false,
+      states: {
+        hover: {
           enabled: false,
+          lineWidth: 1,
         },
       },
-    },
-    series: [
-      {
-        data: [],
-        type: 'area',
+      marker: {
+        enabled: false,
       },
-    ],
-  };
+    },
+  },
+  series: [
+    {
+      data: [],
+      type: 'area',
+    },
+  ],
+};

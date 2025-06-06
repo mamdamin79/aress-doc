@@ -49,17 +49,19 @@ export const schema = (sampleData: RowData<TableRow>): Column<TableRow>[] => [
         },
         cn(
           'min-w-[133px] justify-center',
-          value && Number(value) > 0 ? 'text-green-600' : 'text-red-600',
-          [4, 5].includes(rowIndex) && 'text-gray-1000',
+          value && Number(value) > 0
+            ? 'text-text-accent-green-primary-600'
+            : 'text-text-accent-red-primary-600 ',
+          [4, 5].includes(rowIndex) && 'text-text-neutral-primary',
           hoveredCol !== null
             ? hoveredCol === colIndex
               ? 'opacity-100'
-              : 'opacity-60 text-gray-1000'
+              : 'opacity-60 text-text-neutral-primary'
             : '',
           hoveredRow !== null
             ? hoveredRow === rowIndex
               ? 'opacity-100'
-              : 'opacity-60 text-gray-1000'
+              : 'opacity-60 text-text-neutral-primary'
             : '',
           sharedStyle,
         ),
@@ -95,12 +97,12 @@ export const schema = (sampleData: RowData<TableRow>): Column<TableRow>[] => [
           hoveredCol !== null
             ? hoveredCol === colIndex
               ? 'opacity-100'
-              : 'opacity-60 text-gray-1000'
+              : 'opacity-60 text-text-neutral-primary'
             : '',
           hoveredRow !== null
             ? hoveredRow === rowIndex
               ? 'opacity-100'
-              : 'opacity-60 text-gray-1000'
+              : 'opacity-60 text-text-neutral-primary'
             : '',
           sharedStyle,
         ),
@@ -136,12 +138,12 @@ export const schema = (sampleData: RowData<TableRow>): Column<TableRow>[] => [
           hoveredCol !== null
             ? hoveredCol === colIndex
               ? 'opacity-100'
-              : 'opacity-60 text-gray-1000'
+              : 'opacity-60 text-text-neutral-primary'
             : '',
           hoveredRow !== null
             ? hoveredRow === rowIndex
               ? 'opacity-100'
-              : 'opacity-60 text-gray-1000'
+              : 'opacity-60 text-text-neutral-primary'
             : '',
         ),
       );

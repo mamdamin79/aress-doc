@@ -23,7 +23,9 @@ export const TabsWrapper: React.FC = () => {
 
   return (
     <section
-      className={cn('sticky z-30 mb-6 w-full bg-white px-2 py-3')}
+      className={cn(
+        'bg-surface-neutral-background sticky z-30 mb-6 w-full px-2 py-3',
+      )}
       style={{ top: 0 }}
     >
       <Tabs

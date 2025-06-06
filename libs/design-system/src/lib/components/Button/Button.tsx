@@ -30,137 +30,137 @@ export const Button: React.FC<ButtonProps> = ({
     <button
       {...props}
       className={cn(
-        'group flex w-full items-center gap-2 px-2 transition-all duration-300',
+        'group flex w-full items-center gap-2 px-2 transition-all',
         { 'cursor-default': isLoading || disabled },
         { 'justify-center': align === 'center' },
         { 'justify-start': align === 'right' },
         { 'h-12 rounded-lg': size === 'md' },
         { 'h-[38px] rounded-md': size === 'sm' },
-        mode === 'primary' && 'text-white',
+        mode === 'primary' && 'text-button-brand-label-onsurface',
 
         // PRIMARY MODE
         mode === 'primary' &&
           disabled &&
           (theme === 'brand'
-            ? 'bg-brand-300'
+            ? 'bg-button-brand-surface-disable'
             : theme === 'error'
-              ? 'bg-red-300'
+              ? 'bg-button-error-surface-disable'
               : theme === 'success'
-                ? 'bg-green-300'
-                : 'bg-gray-300'),
+                ? 'bg-button-success-surface-disable'
+                : 'bg-button-neutral-surface-disable'),
         mode === 'primary' &&
           isLoading &&
           !disabled &&
           (theme === 'brand'
-            ? 'bg-brand-600'
+            ? 'bg-button-brand-surface-loading'
             : theme === 'error'
-              ? 'bg-red-600'
+              ? 'bg-button-error-surface-loading'
               : theme === 'success'
-                ? 'bg-green-600'
-                : 'bg-gray-600'),
+                ? 'bg-button-green-surface-loading'
+                : 'bbg-button-dray-surface-loading'),
         mode === 'primary' &&
           !isLoading &&
           !disabled &&
           (theme === 'brand'
-            ? 'bg-brand-600 hover:bg-brand-700 active:bg-brand-800'
+            ? 'bg-button-brand-surface-default hover:bg-button-brand-surface-hover active:bg-button-brand-surface-pressed'
             : theme === 'error'
-              ? 'bg-red-600 hover:bg-red-700 active:bg-red-800'
+              ? 'bg-button-error-surface-default hover:bg-button-error-surface-hover active:bg-button-error-surface-pressed'
               : theme === 'success'
-                ? 'bg-green-600 hover:bg-green-700 active:bg-green-800'
-                : 'bg-gray-600 hover:bg-gray-700 active:bg-gray-800'),
+                ? 'bg-button-success-surface-default hover:bg-button-success-surface-hover active:bg-button-success-surface-pressed'
+                : 'bg-button-neutral-surface-default hover:bg-button-neutral-surface-hover active:bg-button-neutral-surface-pressed'),
 
         // SECONDARY MODE
         mode === 'secondary' &&
           disabled &&
           (theme === 'brand'
-            ? 'border-brand-300 text-brand-300 border'
+            ? 'border-button-brand-border-disable text-button-brand-label-plain-disable border'
             : theme === 'error'
-              ? 'border border-red-300 text-red-300'
+              ? 'border-button-error-border-disable text-button-error-label-plain-disable border'
               : theme === 'success'
-                ? 'border border-green-300 text-green-300'
-                : 'border border-gray-300 text-gray-300'),
+                ? 'border-button-success-border-disable text-button-success-label-plain-disable border'
+                : 'border-button-neutral-border-disable text-button-neutral-label-plain-disable border'),
         mode === 'secondary' &&
           isLoading &&
           !disabled &&
           (theme === 'brand'
-            ? 'border-brand-600 text-brand-600 border'
+            ? 'border-button-brand-border-loading text-button-brand-label-plain-loading border'
             : theme === 'error'
-              ? 'border border-red-600 text-red-600'
+              ? 'border-button-error-border-loading text-button-error-label-plain-loading border'
               : theme === 'success'
-                ? 'border border-green-600 text-green-600'
-                : 'text-gray-1000 border border-gray-600'),
+                ? 'border-button-success-border-loading text-button-success-label-plain-loading border'
+                : 'border-button-neutral-border-loading text-button-neutral-label-plain-loading'),
         mode === 'secondary' &&
           !isLoading &&
           !disabled &&
           (theme === 'brand'
-            ? 'border-brand-600 text-brand-600 hover:bg-brand-700 hover:border-brand-700 active:bg-brand-800 border bg-white hover:text-white active:border-red-800'
+            ? 'border-button-brand-border-default hover:border-button-brand-border-hover active:border-button-brand-border-pressed text-button-brand-label-plain-default active:bg-button-brand-surface-pressed hover:bg-button-brand-surface-hover hover:text-button-brand-label-onsurface border'
             : theme === 'error'
-              ? 'border border-red-600 bg-white text-red-600 hover:border-red-700 hover:bg-red-700 hover:text-white active:border-red-800 active:bg-red-800'
+              ? 'border-button-error-border-default hover:border-button-error-border-hover active:border-button-error-border-pressed text-button-error-label-plain-default hover:bg-button-error-surface-hover hover:text-button-error-label-onsurface active:bg-button-error-surface-pressed border'
               : theme === 'success'
-                ? 'border border-green-600 bg-white text-green-600 hover:border-green-700 hover:bg-green-700 hover:text-white active:border-green-800 active:bg-green-800'
-                : 'text-gray-1000 border border-gray-600 bg-white hover:border-gray-700 hover:bg-gray-700 hover:text-white active:border-gray-800 active:bg-gray-800'),
+                ? 'border-button-success-border-default hover:border-button-success-border-hover active:border-button-success-border-pressed text-button-success-label-plain-default hover:bg-button-success-surface-hover hover:text-button-success-label-onsurface active:bg-button-success-surface-pressed border'
+                : 'border-button-neutral-border-default hover:border-button-neutral-border-hover active:border-button-neutral-border-pressed text-button-neutral-label-plain-default hover:bg-button-neutral-surface-hover hover:text-button-neutral-label-onsurface active:bg-button-neutral-surface-pressed border'),
 
         // TEXT MODE
         mode === 'text' &&
           disabled &&
           (theme === 'brand'
-            ? 'text-brand-300'
+            ? 'text-button-brand-label-plain-default'
             : theme === 'error'
-              ? 'text-red-300'
+              ? 'text-button-error-label-plain-default'
               : theme === 'success'
-                ? 'text-green-300'
-                : 'text-gray-300'),
+                ? 'text-button-success-label-plain-default'
+                : 'text-button-neutral-label-plain-default'),
         mode === 'text' &&
           isLoading &&
           !disabled &&
           (theme === 'brand'
-            ? 'border-brand-600 text-brand-600 border'
+            ? 'border-button-brand-border-loading text-button-brand-label-plain-loading border'
             : theme === 'error'
-              ? 'border border-red-600 text-red-600'
+              ? 'border-button-error-border-loading text-button-error-label-plain-loading border'
               : theme === 'success'
-                ? 'border border-green-600 text-green-600'
-                : 'text-gray-1000 border border-gray-600'),
+                ? 'border-button-success-border-loading text-button-success-label-plain-loading border'
+                : 'border-button-neutral-border-loading text-button-neutral-label-plain-loading'),
         mode === 'text' &&
           !isLoading &&
           !disabled &&
           (theme === 'brand'
-            ? 'text-brand-600 hover:border-brand-600 active:border-brand-800 active:text-brand-800 hover:border'
+            ? 'text-button-brand-label-plain-default hover:border-button-brand-border-hover active:border-button-brand-border-pressed active:text-button-brand-label-plain-pressed hover:border'
             : theme === 'error'
-              ? 'text-red-600 hover:border hover:border-red-600 active:border-red-800 active:text-red-800'
+              ? 'text-button-error-label-plain-default hover:border-button-error-border-hover active:border-button-error-border-pressed active:text-button-error-label-plain-pressed hover:border'
               : theme === 'success'
-                ? 'text-green-600 hover:border hover:border-green-600 active:border-green-800 active:text-green-800'
-                : 'text-gray-1000 hover:border hover:border-gray-600 active:border-gray-800 active:text-gray-800'),
+                ? 'text-button-success-label-plain-default hover:border-button-success-border-hover active:border-button-success-border-pressed active:text-button-success-label-plain-pressed hover:border'
+                : 'text-button-neutral-label-plain-default hover:border-button-neutral-border-hover active:border-button-neutral-border-pressed active:text-button-neutral-label-plain-pressed hover:border'),
 
         // UNDERLINE MODE
         mode === 'underline' &&
           disabled &&
           (theme === 'brand'
-            ? 'text-brand-300'
+            ? 'text-button-brand-label-plain-disable'
             : theme === 'error'
-              ? 'text-red-300'
+              ? 'text-button-error-label-plain-disable'
               : theme === 'success'
-                ? 'text-green-300'
-                : 'text-gray-300'),
+                ? 'text-button-success-label-plain-disable'
+                : 'text-button-neutral-label-plain-disable'),
         mode === 'underline' &&
           isLoading &&
           !disabled &&
           (theme === 'brand'
-            ? 'text-brand-600'
+            ? 'text-button-brand-label-plain-loading'
             : theme === 'error'
-              ? 'text-red-600'
+              ? 'text-button-error-label-plain-loading'
               : theme === 'success'
-                ? 'text-green-600'
-                : 'text-gray-1000'),
+                ? 'text-button-success-label-plain-loading'
+                : 'text-button-neutral-label-plain-loading'),
         mode === 'underline' &&
           !isLoading &&
           !disabled &&
           (theme === 'brand'
-            ? 'text-brand-600 active:text-brand-800 active:border-brand-800'
+            ? 'text-button-brand-label-plain-default active:text-button-brand-label-plain-pressed active:border-button-brand-border-pressed hover:text-button-brand-label-plain-hover hover:border-button-brand-border-hover'
             : theme === 'error'
-              ? 'text-red-600 active:border-red-800 active:text-red-800'
+              ? 'text-button-error-label-plain-default active:text-button-error-label-plain-pressed active:border-button-error-border-pressed hover:text-button-error-label-plain-hover hover:border-button-error-border-hover'
               : theme === 'success'
-                ? 'text-green-600 active:border-green-800 active:text-green-800'
-                : 'text-gray-1000 active:border-gray-800 active:text-gray-800'),
+                ? 'text-button-success-label-plain-default active:text-button-success-label-plain-pressed active:border-button-success-border-pressed hover:text-button-success-label-plain-hover hover:border-button-success-border-hover'
+                : 'text-button-neutral-label-plain-default active:text-button-neutral-label-plain-pressed active:border-button-neutral-border-pressed hover:text-button-neutral-label-plain-hover hover:border-button-neutral-border-hover'),
         className,
       )}
     >
@@ -179,7 +179,7 @@ export const Button: React.FC<ButtonProps> = ({
               { 'text-center': align === 'center' },
               mode === 'underline' &&
                 !disabled &&
-                'underline-offset-8 transition-transform group-hover:border-b group-hover:underline',
+                'underline-offset-8 transition-transform group-hover:underline',
             )}
           >
             {children}

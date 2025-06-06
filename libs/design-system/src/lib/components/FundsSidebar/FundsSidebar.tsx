@@ -55,7 +55,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
 
   return (
     <div
-      className="bg-baseBackground flex h-[calc(100vh-24px)] w-full flex-col items-center overflow-x-hidden overflow-y-hidden rounded-tl-2xl rounded-tr-2xl border-2 border-b-0 border-gray-300 px-1 pt-4"
+      className="border-border-neutral-primary bg-surface-neutral-primary flex h-[calc(100vh-24px)] w-full flex-col items-center overflow-x-hidden overflow-y-hidden rounded-tl-2xl rounded-tr-2xl border-2 border-b-0 px-1 pt-4"
       ref={containerRef}
     >
       <div
@@ -128,9 +128,9 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
           </div>
         </div>
         <div className="w-full px-4">
-          <div className="h-0.5 w-full rounded-md bg-gray-300"></div>
+          <div className="bg-border-neutral-primary h-0.5 w-full rounded-md"></div>
         </div>
-        <div className="grid w-full grid-cols-[1fr_88px_60px] gap-4 px-4 py-2 text-xs font-medium text-gray-600">
+        <div className="text-text-neutral-secondary grid w-full grid-cols-[1fr_88px_60px] gap-4 px-4 py-2 text-xs font-medium">
           <div className="text-right">نام صندوق</div>
           <div className="text-center">نمودار</div>
           <div className="text-left">بازده</div>

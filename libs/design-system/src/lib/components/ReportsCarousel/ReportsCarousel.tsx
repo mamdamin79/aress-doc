@@ -89,7 +89,7 @@ export const ReportsCarousel: React.FC<ReportsCarouselProps> = ({ cards }) => {
         onClick={() => handleNavigation('next')}
         disabled={isNextDisabled}
         className={cn(
-          'shadow-4xl border-brand-600 text-brand-600 hover:bg-brand-600 absolute left-6 top-[40%] z-20 -translate-y-1/2 rounded-full border-2 bg-white p-3 transition-all duration-500 hover:text-white focus:outline-none',
+          'shadow-4xl border-border-brand-primary-600 text-text-brand-primary-600 hover:bg-surface-brand-600-primary bg-surface-neutral-primary hover:text-text-neutral-white absolute left-6 top-[40%] z-20 -translate-y-1/2 rounded-full border-2 p-3 transition-all duration-500 focus:outline-none',
           isNextDisabled && 'opacity-0',
         )}
       >
@@ -101,7 +101,7 @@ export const ReportsCarousel: React.FC<ReportsCarouselProps> = ({ cards }) => {
         onClick={() => handleNavigation('prev')}
         disabled={isPrevDisabled}
         className={cn(
-          'shadow-4xl border-brand-600 text-brand-600 hover:bg-brand-600 absolute right-6 top-[40%] z-20 -translate-y-1/2 rounded-full border-2 bg-white p-3 transition-all duration-500 hover:text-white focus:outline-none',
+          'shadow-4xl border-border-brand-primary-600 text-text-brand-primary-600 hover:bg-surface-brand-600-primary bg-surface-neutral-primary hover:text-text-neutral-white absolute right-6 top-[40%] z-20 -translate-y-1/2 rounded-full border-2 p-3 transition-all duration-500 focus:outline-none',
           isPrevDisabled && 'opacity-0',
         )}
       >
@@ -109,8 +109,8 @@ export const ReportsCarousel: React.FC<ReportsCarouselProps> = ({ cards }) => {
       </button>
 
       {/* Gradient Overlays */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-white to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-white to-transparent" />
+      <div className="from-surface-neutral-background pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r to-transparent" />
+      <div className="from-surface-neutral-background pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l to-transparent" />
 
       {/* Cards */}
       {cards.map((card, index) => (

@@ -41,18 +41,18 @@ export const Pagination: React.FC<PaginationProps> = ({
         forcePage={currentPage - 1}
         pageRangeDisplayed={3}
         onPageChange={handlePageChange}
-        containerClassName="flex text-gray-1000 items-center justify-center space-x-2 mt-4"
-        pageClassName="bg-gray-100 rounded-md w-12 h-12 flex items-center justify-center hover:bg-gray-200 duration-150 transition-colors cursor-pointer block"
+        containerClassName="flex text-text-neutral-primary items-center justify-center space-x-2 mt-4"
+        pageClassName="bg-surface-neutral-secondary rounded-md w-12 h-12 flex items-center justify-center hover:bg-surface-neutral-secondarycontrast duration-150 transition-colors cursor-pointer block"
         pageLinkClassName="w-12 h-12 flex items-center justify-center"
-        activeClassName="border-[2.5px] border-brand-600 pointer-events-none cursor-pointer"
+        activeClassName="border-[2.5px] border-border-brand-primary-600 pointer-events-none cursor-pointer"
         previousLinkClassName="flex items-center justify-center w-16 h-12"
         nextLinkClassName="flex items-center justify-center w-16 h-12"
-        previousClassName="bg-brand-600 w-16 h-12 ml-2 rounded-md text-white flex items-center justify-center hover:bg-brand-700 duration-150 transition-colors cursor-pointer block"
-        nextClassName="bg-brand-600 w-16 h-12 rounded-md text-white flex items-center justify-center hover:bg-brand-700 duration-150 transition-colors cursor-pointer block"
+        previousClassName="bg-surface-brand-600-primary  w-16 h-12 ml-2 rounded-md text-white flex items-center justify-center hover:bg-surface-brand-700-contrast duration-150 transition-colors cursor-pointer block"
+        nextClassName="bg-surface-brand-600-primary  w-16 h-12 rounded-md text-white flex items-center justify-center hover:bg-surface-brand-700-contrast duration-150 transition-colors cursor-pointer block"
         disabledClassName="opacity-50 cursor-not-allowed pointer-events-none"
         breakClassName="flex items-center justify-center"
       />
-      <div className="font-vazirmatn mt-2 text-center text-sm font-medium text-gray-600">
+      <div className="text-text-neutral-secondary mt-2 text-center text-sm font-medium">
         {startPost} - {endPost} از {totalItems} گزارش
       </div>
     </div>

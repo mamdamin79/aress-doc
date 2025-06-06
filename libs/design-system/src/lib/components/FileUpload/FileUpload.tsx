@@ -4,6 +4,7 @@ import { Icon } from '../Icon';
 import { FileUploader } from 'react-drag-drop-files';
 import { formatFileSize } from './FileUpload.utils';
 import { FileUploadErrorType } from './FileUpload.constants';
+import { cn } from 'libs/design-system/src/utils';
 
 type FileUploadProps = {
   types: string[];
@@ -48,7 +49,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
     onChange?.(selectedFile);
   };
 
-  const clearFile = (e: React.MouseEvent) => {
+  const clearFile = () => {
     setFile(null);
     onChange?.(null);
   };
@@ -56,34 +57,33 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   return (
     <>
       {file && (
-        <button onClick={clearFile} className="z-10 ml-[-40px] cursor-pointer">
+        <button onClick={clearFile} className="z-10 ml-[-40px] cursor-pointer text-icon-neutral-primary">
           <Icon name="trash-2" size="lg" />
         </button>
       )}
 
       <FileUploader handleChange={handleFileChange} name="file" types={types}>
         <div
-          className={`hover:border-brand-600 hover text- group relative flex w-full max-w-[384px] items-center gap-2 rounded-md border-2 p-[15px_16px] transition-all ${
-            file ? 'border-gray-200 pr-12' : 'border-dashed border-gray-300'
+          className={`hover:border-border-brand-primary-600 hover group relative flex w-full max-w-[384px] items-center gap-2 rounded-md border-2 p-[15px_16px] transition-all ${
+            file ? 'border-border-neutral-primary pr-12' : 'border-dashed border-border-neutral-primary'
           }`}
         >
           {!file && (
-            <div className="group-hover:text-brand-700 text-gray-500">
+            <div className="group-hover:text-icon-brand-primary-600 text-icon-neutral-secondary">
               <Icon name="paperclip" size="lg" />
             </div>
           )}
           <div
-            className={`${
-              file ? '' : 'group-hover:text-brand-700'
-            } font-vazirmatn flex w-full shrink-0 flex-row gap-2 text-right text-sm font-medium text-gray-500`}
-          >
+            className={cn('flex w-full shrink-0 flex-row gap-2 text-right text-sm font-medium', {
+              'group-hover:text-text-brand-contrast-700': !file,
+            })}>
             {file ? (
               <span
                 style={{ direction: 'ltr' }}
-                className="text-gray-1000 max-w-[235px] truncate font-medium"
+                className="text-text-neutral-primary max-w-[235px] truncate font-medium"
               >
                 {file.name}
-                <span className="ml-2 text-xs text-gray-600">
+                <span className="ml-2 text-xs text-text-neutral-secondary">
                   {formatFileSize(file)}
                 </span>
               </span>

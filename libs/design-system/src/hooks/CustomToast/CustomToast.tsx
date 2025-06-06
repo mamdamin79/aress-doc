@@ -28,16 +28,16 @@ const showToast = ({ message, type }: Props) => {
       role="alert"
       aria-live="assertive"
       className={cn(
-        'text-gray-1000 relative -top-96 scale-0 transform-gpu cursor-pointer rounded-xl border-[1.5px] p-3 font-medium transition-all duration-500 ease-in-out',
+        'relative -top-96 scale-0 transform-gpu cursor-pointer rounded-xl border-[1.5px] p-3 font-medium transition-all duration-500 ease-in-out',
         t.visible ? 'animate-toast top-0 scale-95' : 'opacity-0',
         styleToasts[type],
       )}
     >
       <div className="flex items-center gap-2">
-        <div className={cn('rounded-lg p-1.5 text-white', bgIcon[type])}>
+        <div className={cn('rounded-lg p-1.5 text-icon-onmessage-neutral-on600', bgIcon[type])}>
           {icons[type]}
         </div>
-        <span className="text-sm">{message}</span>
+        <span className="text-sm text-text-onmessage-neutral-primary-onbelow600">{message}</span>
       </div>
     </div>
   ));
@@ -50,7 +50,7 @@ const showProgressToast = ({
   timeout = DEFAULT_TOAST_TIMEOUT,
 }: ProgressToastProps): ReturnType<typeof toast.custom> => {
   const id = toast.custom(
-    (t) => (
+    () => (
       <ProgressToast
         title={title}
         trailingAction={trailingAction}

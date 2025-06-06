@@ -16,6 +16,7 @@ export const Default: Story = {
     onChangeIndex: () => {
       console.log('changed');
     },
+    onAddReportClick: () => console.log('hi'),
   },
 };
 export const withArrows: Story = {
@@ -26,6 +27,7 @@ export const withArrows: Story = {
     onChangeIndex: () => {
       console.log('changed');
     },
-    hasArrows:true
+    externalIndex: 0,
+    hasArrows: true,
   },
 };
