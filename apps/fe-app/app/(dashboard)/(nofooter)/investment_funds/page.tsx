@@ -572,6 +572,37 @@ const Funds = () => {
   }
 
 
+    // Scroll lock handler factory
+    const freezeScroll = (el: HTMLDivElement) => (e: Event) => {
+      if (el.dataset.scrollTop) {
+        el.scrollTop = parseInt(el.dataset.scrollTop);
+      }
+    };
+
+    useEffect(() => {
+      const el = tableRef.current;
+      if (!el) return;
+  
+      if (isRotating) {
+        // Save current scrollTop position
+        el.dataset.scrollTop = el.scrollTop.toString();
+  
+        // Create freeze scroll handler
+        const handler = freezeScroll(el);
+  
+        // Add scroll listener to prevent vertical scrolling
+        el.addEventListener('scroll', handler);
+  
+        // Disable smooth scrolling behavior
+        el.style.scrollBehavior = 'auto';
+  
+        // Cleanup: remove scroll handler when drag ends
+        return () => {
+          el.removeEventListener('scroll', handler);
+        };
+      }
+    }, [isRotating]);
+
   return (
     <>
       <div
