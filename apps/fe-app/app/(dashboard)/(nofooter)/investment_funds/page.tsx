@@ -59,7 +59,7 @@ import { Person, makeData } from './_components/makeData';
 import { columnVisibility, filterList } from './FundsTable.constants';
 import { ExportExel } from './_components/ExportExel';
 import { Bookmark } from 'libs/design-system/src/lib/components/Bookmark';
-import { useVirtualizer } from '@tanstack/react-virtual'
+import { useVirtualizer } from '@tanstack/react-virtual';
 import { useSmartTableScroll } from 'apps/fe-app/hooks/useSmartTableScroll';
 import TableRow from './_components/TableRow';
 const Funds = () => {
@@ -305,11 +305,9 @@ const Funds = () => {
   const DraggableTableHeader = ({
     header,
     children,
-    width,
   }: {
     header: Header<Person, unknown>;
     children: React.ReactNode;
-    width: number;
   }) => {
     const { attributes, listeners, setNodeRef } = useSortable({
       id: header.column.id,
@@ -326,20 +324,33 @@ const Funds = () => {
         {...attributes}
         {...listeners}
         ref={setNodeRef}
-        className="relative m-0 h-[64px] w-full bg-surface-brand-100 p-0 text-sm font-medium"
         style={{
           transition: 'width transform 0.1s ease-in-out',
           whiteSpace: 'nowrap',
-          width,
         }}
+        className={cn(
+          'bg-surface-brand-100 relative m-0 h-[64px] p-0 text-sm font-medium',
+          {
+            'w-[144px]':
+              !(String(
+                flexRender(header.column.columnDef.header, header.getContext()),
+              ).length > 10),
+            'w-[200px]':
+              String(
+                flexRender(header.column.columnDef.header, header.getContext()),
+              ).length > 10,
+          },
+          '6xl:w-full', 
+        )}
       >
         {isDraggingOver && position && (
           <div
-            className={`absolute bottom-0 top-1 z-10 h-[90%] w-0.5 bg-border-brand-contrast-700 ${position === 'left' ? 'right-0' : 'left-0'
-              }`}
+            className={`bg-border-brand-contrast-700 absolute bottom-0 top-1 z-10 h-[90%] w-0.5 ${
+              position === 'left' ? 'right-0' : 'left-0'
+            }`}
           >
-            <div className="absolute top-0 flex h-2.5 w-2.5 translate-x-1 items-center justify-center rounded-full bg-border-brand-contrast-700">
-              <div className="h-1.5 w-1.5 rounded-full bg-surface-neutral-primary" />
+            <div className="bg-border-brand-contrast-700 absolute top-0 flex h-2.5 w-2.5 translate-x-1 items-center justify-center rounded-full">
+              <div className="bg-surface-neutral-primary h-1.5 w-1.5 rounded-full" />
             </div>
           </div>
         )}
@@ -347,7 +358,6 @@ const Funds = () => {
       </th>
     );
   };
-
 
   // reorder columns after drag & drop
   function handleDragEnd(event: DragEndEvent) {
@@ -389,7 +399,6 @@ const Funds = () => {
     onSortingChange: (updater) => {
       const newSorting =
         typeof updater === 'function' ? updater(sorting) : updater;
-      const sortedColumnId = newSorting[0]?.id;
       setSorting(newSorting);
     },
     onColumnOrderChange: setColumnOrder,
@@ -397,7 +406,7 @@ const Funds = () => {
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    debugAll: true
+    debugAll: true,
   });
 
   const isChanged = useMemo(() => {
@@ -445,7 +454,6 @@ const Funds = () => {
     tableRef.current?.scrollBy({ top: 100, behavior: 'smooth' }),
   );
 
-
   useEffect(() => {
     const handleScroll = () => {
       if (tableRef.current) {
@@ -475,7 +483,6 @@ const Funds = () => {
 
   useEffect(() => {
     document.documentElement.style.overflow = 'hidden';
-
     return () => {
       document.documentElement.style.overflow = 'auto';
     };
@@ -549,18 +556,14 @@ const Funds = () => {
     });
   }, [columnOrder]);
 
-
-  const { rows } = table.getRowModel()
-
+  const { rows } = table.getRowModel();
 
   const virtualizer = useVirtualizer({
     count: rows.length,
     getScrollElement: () => tableRef.current,
     estimateSize: () => 60,
     overscan: 2,
-  })
-
-
+  });
 
   interface VirtualItem {
     index: number;
@@ -571,37 +574,36 @@ const Funds = () => {
     measureRef?: (el: HTMLElement | null) => void;
   }
 
+  // Scroll lock handler factory
+  const freezeScroll = (el: HTMLDivElement) => (e: Event) => {
+    if (el.dataset.scrollTop) {
+      el.scrollTop = parseInt(el.dataset.scrollTop);
+    }
+  };
 
-    // Scroll lock handler factory
-    const freezeScroll = (el: HTMLDivElement) => (e: Event) => {
-      if (el.dataset.scrollTop) {
-        el.scrollTop = parseInt(el.dataset.scrollTop);
-      }
-    };
+  useEffect(() => {
+    const el = tableRef.current;
+    if (!el) return;
 
-    useEffect(() => {
-      const el = tableRef.current;
-      if (!el) return;
-  
-      if (isRotating) {
-        // Save current scrollTop position
-        el.dataset.scrollTop = el.scrollTop.toString();
-  
-        // Create freeze scroll handler
-        const handler = freezeScroll(el);
-  
-        // Add scroll listener to prevent vertical scrolling
-        el.addEventListener('scroll', handler);
-  
-        // Disable smooth scrolling behavior
-        el.style.scrollBehavior = 'auto';
-  
-        // Cleanup: remove scroll handler when drag ends
-        return () => {
-          el.removeEventListener('scroll', handler);
-        };
-      }
-    }, [isRotating]);
+    if (isRotating) {
+      // Save current scrollTop position
+      el.dataset.scrollTop = el.scrollTop.toString();
+
+      // Create freeze scroll handler
+      const handler = freezeScroll(el);
+
+      // Add scroll listener to prevent vertical scrolling
+      el.addEventListener('scroll', handler);
+
+      // Disable smooth scrolling behavior
+      el.style.scrollBehavior = 'auto';
+
+      // Cleanup: remove scroll handler when drag ends
+      return () => {
+        el.removeEventListener('scroll', handler);
+      };
+    }
+  }, [isRotating]);
 
   return (
     <>
@@ -628,11 +630,10 @@ const Funds = () => {
         </Tooltip>
       </div>
 
-
       <div
         dir="ltr"
         className={cn(
-          'relative top-0 flex items-center overflow-hidden border-t-2 border-border-brand-soft-200',
+          'border-border-brand-soft-200 relative top-0 flex items-center overflow-hidden border-t-2',
         )}
       >
         <div
@@ -644,7 +645,6 @@ const Funds = () => {
             dir="rtl"
             className="w-full table-fixed rounded-xl text-center"
           >
-
             <thead className="group sticky right-0 top-0 z-50 m-0 p-0 duration-300 [box-shadow:0_2px_0_#bcebeb]">
               <DndContext
                 onDragStart={(event) => {
@@ -711,17 +711,17 @@ const Funds = () => {
                           {index === 0 && (
                             <th
                               key={index}
-                              className="sticky right-0 top-0 z-20 m-0 h-[64px] w-[385px] bg-surface-brand-100 py-0"
+                              className="bg-surface-brand-100 sticky right-0 top-0 z-20 m-0 h-[64px] w-[385px] py-0"
                             >
                               <div
                                 className={cn({
-                                  'h-[75px] w-[384px] select-none bg-surface-brand-100':
+                                  'bg-surface-brand-100 h-[75px] w-[384px] select-none':
                                     header.column.getCanSort(),
                                   'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]':
                                     isScrollAtStart,
                                 })}
                               >
-                                <div className="mr-[75px] flex bg-surface-brand-100">
+                                <div className="bg-surface-brand-100 mr-[75px] flex">
                                   <div className="mr-24">
                                     <FundsColumnHeader
                                       activeSorticon={
@@ -742,7 +742,7 @@ const Funds = () => {
                                         header.column.getIsSorted() === 'asc'
                                           ? 'active-asc'
                                           : header.column.getIsSorted() ===
-                                            'desc'
+                                              'desc'
                                             ? 'inactive'
                                             : 'inactive'
                                       }
@@ -764,11 +764,11 @@ const Funds = () => {
                                       onClick={() => {
                                         setIsSettingModalOpen(true);
                                       }}
-                                      className="bg-button-brand-surface-default relative cursor-pointer rounded-md p-1 text-button-brand-label-onsurface"
+                                      className="bg-button-brand-surface-default text-button-brand-label-onsurface relative cursor-pointer rounded-md p-1"
                                     >
                                       {isChanged && (
                                         <div className="absolute -right-1 -top-1">
-                                          <FundsTag color='pink' />
+                                          <FundsTag color="pink" />
                                         </div>
                                       )}
                                       <Icon size="lg" name="settings" />
@@ -779,15 +779,15 @@ const Funds = () => {
                                       onClick={() => {
                                         setIsFilterModalOpen(true);
                                       }}
-                                      className="bg-button-brand-surface-default relative cursor-pointer rounded-md p-1 text-button-brand-label-onsurface"
+                                      className="bg-button-brand-surface-default text-button-brand-label-onsurface relative cursor-pointer rounded-md p-1"
                                     >
                                       {(Object.entries(selectedFilters).length >
                                         0 ||
                                         fundSearchQuery) && (
-                                          <div className="absolute -right-1 -top-1 z-30">
-                                            <FundsTag color='pink' />
-                                          </div>
-                                        )}
+                                        <div className="absolute -right-1 -top-1 z-30">
+                                          <FundsTag color="pink" />
+                                        </div>
+                                      )}
                                       <Icon size="lg" name="filter" />
                                     </div>
                                   </Tooltip>
@@ -797,16 +797,6 @@ const Funds = () => {
                           )}
                           {index > 0 && (
                             <DraggableTableHeader
-                              width={
-                                String(
-                                  flexRender(
-                                    header.column.columnDef.header,
-                                    header.getContext(),
-                                  ),
-                                ).length > 10
-                                  ? 200
-                                  : 144
-                              }
                               key={header.id}
                               header={header}
                             >
@@ -818,7 +808,7 @@ const Funds = () => {
                                 }}
                                 key={index}
                                 className={cn(
-                                  'm-0 h-[64px] w-full text-nowrap bg-surface-brand-100 p-0 text-sm font-medium',
+                                  'bg-surface-brand-100 m-0 h-[64px] w-full text-nowrap p-0 text-sm font-medium',
                                   String(
                                     flexRender(
                                       header.column.columnDef.header,
@@ -870,7 +860,7 @@ const Funds = () => {
                                         header.column.getIsSorted() === 'asc'
                                           ? 'active-desc'
                                           : header.column.getIsSorted() ===
-                                            'desc'
+                                              'desc'
                                             ? 'active-asc'
                                             : 'inactive'
                                       }
@@ -922,7 +912,7 @@ const Funds = () => {
                           }}
                         >
                           {activeId && (
-                            <div className="flex h-20 w-full text-text-neutral-primary items-center justify-center bg-surface-brand-200">
+                            <div className="text-text-neutral-primary bg-surface-brand-200 flex h-20 w-full items-center justify-center">
                               {activeId}
                             </div>
                           )}
@@ -942,7 +932,7 @@ const Funds = () => {
                         <Tooltip title="پیمایش به چپ (A)">
                           <button
                             className={cn(
-                              'bg-button-brand-surface-default rounded-md p-1 text-button-brand-label-onsurface',
+                              'bg-button-brand-surface-default text-button-brand-label-onsurface rounded-md p-1',
                             )}
                           >
                             <Icon name="arrow-left" size="lg" />
@@ -955,12 +945,12 @@ const Funds = () => {
               </DndContext>
             </thead>
             <tbody>
-              {/* spacer بالا */}
-              <tr style={{ height: virtualizer.getVirtualItems()[0]?.start ?? 0 }}>
+              <tr
+                style={{ height: virtualizer.getVirtualItems()[0]?.start ?? 0 }}
+              >
                 <td />
               </tr>
 
-              {/* ردیف‌های مجازی */}
               {virtualizer.getVirtualItems().map((virtualRow: VirtualItem) => {
                 const row = rows[virtualRow.index];
                 const isMainTab = activeIndexCategoryTab === 0;
@@ -982,7 +972,6 @@ const Funds = () => {
                 );
               })}
 
-              {/* spacer پایین */}
               <tr
                 style={{
                   height:
@@ -995,11 +984,10 @@ const Funds = () => {
             </tbody>
           </table>
         </div>
-
       </div>
 
       <div className="fixed bottom-6 right-0 z-50 mt-6 flex w-full justify-between px-8">
-        <div className="rounded-md bg-coloropacity-surface-accent-gray-400-55per backdrop-blur-[30px]">
+        <div className="bg-coloropacity-surface-accent-gray-400-55per rounded-md backdrop-blur-[30px]">
           <OptionsDropdown
             className="-mt-2"
             onChange={(e) => {
@@ -1016,12 +1004,12 @@ const Funds = () => {
             }}
             customTriggerRender={({ isActive }) => {
               return (
-                <div className="flex h-[40px] text-text-onaccent-neutral-primary-onbelow600 items-center gap-2 pl-2 pr-3 text-xs font-medium">
+                <div className="text-text-onaccent-neutral-primary-onbelow600 flex h-[40px] items-center gap-2 pl-2 pr-3 text-xs font-medium">
                   <div className="flex gap-1">
                     <span>تعداد سطر در جدول: </span>
                     {formatNumber(
                       table.getState().pagination.pageSize *
-                      (table.getState().pagination.pageIndex + 1),
+                        (table.getState().pagination.pageIndex + 1),
                       { commaSeparated: true },
                     )}
                   </div>
@@ -1039,12 +1027,12 @@ const Funds = () => {
             customOptionRender={(prop) => (
               <div
                 className={cn(
-                  'w-full cursor-pointer bg-coloropacity-surface-accent-gray-400-55per px-3 pt-2 text-center text-xs font-medium text-text-onaccent-neutral-primary-onbelow600',
+                  'bg-coloropacity-surface-accent-gray-400-55per text-text-onaccent-neutral-primary-onbelow600 w-full cursor-pointer px-3 pt-2 text-center text-xs font-medium',
                   {
                     'pb-2':
                       table.getState().pagination.pageSize *
-                      (table.getState().pagination.pageIndex + 1) *
-                      table.getPageCount() ===
+                        (table.getState().pagination.pageIndex + 1) *
+                        table.getPageCount() ===
                       +prop.text,
                   },
                 )}
@@ -1053,7 +1041,7 @@ const Funds = () => {
                   {table.getState().pagination.pageSize *
                     (table.getState().pagination.pageIndex + 1) *
                     table.getPageCount() ===
-                    +prop.text
+                  +prop.text
                     ? 'همه'
                     : prop.text}
                 </span>
@@ -1067,26 +1055,26 @@ const Funds = () => {
               {
                 text: String(
                   table.getState().pagination.pageSize *
-                  (table.getState().pagination.pageIndex + 1) *
-                  table.getPageCount(),
+                    (table.getState().pagination.pageIndex + 1) *
+                    table.getPageCount(),
                 ),
               },
             ]}
           />
         </div>
 
-        <span className="flex h-[40px] gap-2 rounded-md text-text-onaccent-neutral-primary-onbelow600 bg-coloropacity-surface-accent-gray-400-55per px-3 py-2 text-xs font-medium backdrop-blur-[30px]">
+        <span className="text-text-onaccent-neutral-primary-onbelow600 bg-coloropacity-surface-accent-gray-400-55per flex h-[40px] gap-2 rounded-md px-3 py-2 text-xs font-medium backdrop-blur-[30px]">
           مجموعه ارزش خالص دارایی‌ها:
-          <span className="border-b border-text-onaccent-neutral-primary-onbelow600 text-sm">
+          <span className="border-text-onaccent-neutral-primary-onbelow600 border-b text-sm">
             10,986,249.09
           </span>
         </span>
-        <div className="flex h-[40px] items-center gap-2 rounded-md bg-coloropacity-surface-accent-gray-400-55per px-3 py-2 backdrop-blur-[30px]">
+        <div className="bg-coloropacity-surface-accent-gray-400-55per flex h-[40px] items-center gap-2 rounded-md px-3 py-2 backdrop-blur-[30px]">
           <span className="text-text-onaccent-neutral-primary-onbelow600 flex items-center gap-1 text-xs font-medium">
             <div>
               {formatNumber(
                 table.getState().pagination.pageSize *
-                (table.getState().pagination.pageIndex + 1),
+                  (table.getState().pagination.pageIndex + 1),
                 { commaSeparated: true },
               )}
               -
@@ -1102,19 +1090,26 @@ const Funds = () => {
             <span className="px-[1px]">صندوق</span>
           </span>
           <button
-            className={cn('cursor-pointer rounded text-icon-onaccent-neutral-onbelow600', {
-              'cursor-default text-icon-neutral-disable':
-                table.getState().pagination.pageIndex + 1 === 1,
-            })}
+            className={cn(
+              'text-icon-onaccent-neutral-onbelow600 cursor-pointer rounded',
+              {
+                'text-icon-neutral-disable cursor-default':
+                  table.getState().pagination.pageIndex + 1 === 1,
+              },
+            )}
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
             <Icon size="lg" name="chevron-right" />
           </button>
           <button
-            className={cn('cursor-pointer rounded text-icon-onaccent-neutral-onbelow600', {
-              'cursor-default text-text-icon-neutral-disable': !table.getCanNextPage(),
-            })}
+            className={cn(
+              'text-icon-onaccent-neutral-onbelow600 cursor-pointer rounded',
+              {
+                'text-text-icon-neutral-disable cursor-default':
+                  !table.getCanNextPage(),
+              },
+            )}
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
@@ -1131,30 +1126,36 @@ const Funds = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center justify-between">
             <span
-              className={cn('p-6 text-xl font-medium text-text-neutral-primary', {
-                'text-red-600':
-                  table.getAllLeafColumns().filter((col) => col.getIsVisible())
-                    .length === 25,
-              })}
+              className={cn(
+                'text-text-neutral-primary p-6 text-xl font-medium',
+                {
+                  'text-red-600':
+                    table
+                      .getAllLeafColumns()
+                      .filter((col) => col.getIsVisible()).length === 25,
+                },
+              )}
             >
               انتخاب ستون‌ها (
               {
                 table.getAllLeafColumns().filter((col) => col.getIsVisible())
                   .length
               }
-              <span className={cn({
-                'text-text-message-error-primary-600':
-                  table.getAllLeafColumns().filter((col) => col.getIsVisible())
-                    .length === 25,
-              })}>
-
+              <span
+                className={cn({
+                  'text-text-message-error-primary-600':
+                    table
+                      .getAllLeafColumns()
+                      .filter((col) => col.getIsVisible()).length === 25,
+                })}
+              >
                 /25)
               </span>
             </span>
           </div>
           {isChanged && (
             <span
-              className="m-6 cursor-pointer text-base font-medium text-button-error-label-plain-default"
+              className="text-button-error-label-plain-default m-6 cursor-pointer text-base font-medium"
               onClick={() => table.resetColumnVisibility()}
             >
               بازنشانی به پیشفرض
@@ -1162,7 +1163,7 @@ const Funds = () => {
           )}
         </div>
 
-        <div className="h-[2px] w-full bg-border-neutral-primary"></div>
+        <div className="bg-border-neutral-primary h-[2px] w-full"></div>
         <div
           dir="rtl"
           className="scrollbar-md mb-6 h-[550px] overflow-x-hidden overflow-y-scroll"
@@ -1211,7 +1212,9 @@ const Funds = () => {
                     )}
                   </div>
                 </div>
-                {index + 1 < table.getAllColumns().length && <hr className='border-border-neutral-primary' />}
+                {index + 1 < table.getAllColumns().length && (
+                  <hr className="border-border-neutral-primary" />
+                )}
               </div>
             );
           })}

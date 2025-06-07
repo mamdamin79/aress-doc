@@ -15,7 +15,13 @@ export const CustomIcon: React.FC<IconProps> = ({ name, size = 'md' }) => {
       <CustomIconComponent
         width={SIZE_VALUES[size]}
         height={SIZE_VALUES[size]}
-        strokeWidth={0}
+        strokeWidth={
+          name !== 'CustomBookmark' &&
+          name !== 'CustomArrow' &&
+          name !== 'CustomPin'
+            ? STROKE_VALUES[size]
+            : 0
+        }
         className={cn(
           `transition-all duration-150 ease-in-out`,
           {

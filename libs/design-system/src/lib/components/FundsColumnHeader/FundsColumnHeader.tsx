@@ -35,7 +35,6 @@ export function FundsColumnHeader({
   active,
 }: Props) {
   const [sortTypeValue, setSortTypeValue] = useState<Props['type']>(type);
-  
 
   useEffect(() => {
     setSortTypeValue(type);
@@ -56,7 +55,6 @@ export function FundsColumnHeader({
     return () => clearTimeout(timeout);
   }, [activeSorticon]);
 
-
   const tooltipTitle = useMemo(() => {
     if (!active) return '';
     if (sortType === 'ranked') {
@@ -69,7 +67,16 @@ export function FundsColumnHeader({
       return 'مرتب سازی صعودی';
     }
   }, [active, sortType, type]);
-  
+
+  const iconSort = useMemo(() => {
+    return sortType === 'ranked'
+      ? type === 'active-asc'
+        ? 'arrow-down-wide-narrow'
+        : 'arrow-up-narrow-wide'
+      : type === 'active-asc'
+        ? 'arrow-down-a-z'
+        : 'arrow-up-z-a';
+  }, [sortType, type]);
 
   return (
     <div
@@ -80,29 +87,35 @@ export function FundsColumnHeader({
           'w-[200px]': size === 'large',
           'w-[312px]': size === 'extraLarg',
           'shadow-4xl': shadow && size === 'extraLarg',
-          'bg-surface-accent-pink-200': size === 'extraLarg' && filterable && !active,
+          'bg-surface-accent-pink-200':
+            size === 'extraLarg' && filterable && !active,
           'bg-surface-brand-100': size === 'extraLarg' && !filterable,
-          'bg-surface-accent-pink-300': active && size !== 'extraLarg' && filterable,
+          'bg-surface-accent-pink-300':
+            active && size !== 'extraLarg' && filterable,
           'bg-surface-brand-200':
             (active && size !== 'extraLarg' && !filterable) || activeStyle,
           'bg-surface-brand-100 hover:bg-surface-brand-200':
             !filterable && size !== 'extraLarg' && active,
-          'bg-surface-accent-pink-200 hover:bg-surface-accent-pink-300': filterable && size !== 'extraLarg',
+          'bg-surface-accent-pink-200 hover:bg-surface-accent-pink-300':
+            filterable && size !== 'extraLarg',
         },
-        'group/first w-full cursor-pointer text-text-neutral-primary',
+        'group/first text-text-neutral-primary w-full cursor-pointer',
       )}
     >
       <div
         className={cn(
           'relative mx-auto flex h-[75px] w-fit items-center justify-center gap-1 px-1.5',
           {
-            'group-hover/first:bg-surface-accent-pink-300': size === 'extraLarg' && filterable,
+            'group-hover/first:bg-surface-accent-pink-300':
+              size === 'extraLarg' && filterable,
             'hover:bg-surface-brand-200':
               activeStyle && !filterable && size !== 'extraLarg',
             'group-hover/first:bg-surface-brand-200':
               size === 'extraLarg' && !filterable,
-            'bg-surface-brand-200': !filterable && active && size === 'extraLarg',
-            'bg-surface-accent-pink-300': filterable && active && size === 'extraLarg',
+            'bg-surface-brand-200':
+              !filterable && active && size === 'extraLarg',
+            'bg-surface-accent-pink-300':
+              filterable && active && size === 'extraLarg',
           },
         )}
       >
@@ -110,7 +123,7 @@ export function FundsColumnHeader({
           <Icon name="filter" />
         </div>
 
-        {activeSorticon  && (
+        {activeSorticon && (
           <div className="bg-surface-brand-600-primary absolute bottom-0 h-1.5 w-16 rounded-t-md"></div>
         )}
         <div className="font-] flex flex-col text-sm">
@@ -123,12 +136,9 @@ export function FundsColumnHeader({
           </span>
         </div>
 
-        {/* <Tooltip
-          className="text-md z-50 font-semibold"
-          title={tooltipTitle}
-        > */}
+        <Tooltip className="text-md z-50 font-semibold" title={tooltipTitle}>
           <div
-            onClick={() => {              
+            onClick={() => {
               if (typeof clickFilterd === 'function') {
                 clickFilterd();
               }
@@ -137,25 +147,17 @@ export function FundsColumnHeader({
               }
             }}
             className={cn('p-1', {
-              'icon-sort-cell invisible text-icon-neutral-secondarycontrast group-hover/first:visible':
+              'icon-sort-cell text-icon-neutral-secondarycontrast invisible group-hover/first:visible':
                 type === 'inactive',
-              'hover:bg-surface-brand-600-primary rounded-md duration-150 hover:text-icon-onbrand-neutral-on600':
+              'hover:bg-surface-brand-600-primary hover:text-icon-onbrand-neutral-on600 rounded-md duration-150':
                 active,
             })}
           >
             <Icon
-              name={
-                sortType === 'ranked'
-                  ? type === 'active-asc'
-                    ? 'arrow-down-wide-narrow'
-                    : 'arrow-up-narrow-wide'
-                  : type === 'active-asc'
-                    ? 'arrow-down-a-z'
-                    : 'arrow-up-z-a'
-              }
+              name={iconSort}
             />
           </div>
-        {/* </Tooltip> */}
+        </Tooltip>
       </div>
     </div>
   );
