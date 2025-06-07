@@ -32,7 +32,6 @@ const range = (len: number) => {
 };
 
 const newPerson = (): Person => {
-  const investmentMethods: ['T', 'I&C'] = ['T', 'I&C'];
   const fixedNow = new Date('2020-01-01').getTime(); // fixed reference point to avoid hydration error
 
   return {

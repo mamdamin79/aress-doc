@@ -1948,6 +1948,3 @@ input[type='password']::-webkit-password-eye {
   background-color: transparent;
   position: sticky;
 }
-.scrollbar-hidden {
-  /* scrollbar-color: transparent transparent; */
-}

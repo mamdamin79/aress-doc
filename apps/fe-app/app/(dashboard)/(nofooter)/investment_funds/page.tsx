@@ -62,6 +62,7 @@ import { Bookmark } from 'libs/design-system/src/lib/components/Bookmark';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useSmartTableScroll } from 'apps/fe-app/hooks/useSmartTableScroll';
 import TableRow from './_components/TableRow';
+import { useThemeToggle } from 'apps/fe-app/hooks';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
   const [rowMarks, setRowMarks] = useState<{
@@ -251,6 +252,10 @@ const Funds = () => {
     ],
     [],
   );
+  
+  
+    const { theme } = useThemeToggle();
+  
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string[]>
   >({});
@@ -561,8 +566,8 @@ const Funds = () => {
   const virtualizer = useVirtualizer({
     count: rows.length,
     getScrollElement: () => tableRef.current,
-    estimateSize: () => 60,
-    overscan: 2,
+    estimateSize: () => 46,
+    overscan: 3,
   });
 
   interface VirtualItem {
@@ -639,13 +644,15 @@ const Funds = () => {
         <div
           onMouseEnter={handlerMouseEnterTable}
           ref={tableRef}
-          className="table-scroll group/table bg-surface-neutral-primary scrollbar-lg h-[calc(100vh-172px)] w-screen overflow-auto scroll-smooth"
+        className="table-scroll group/table bg-surface-neutral-primary scrollbar-lg h-[calc(100vh-172px)] w-screen overflow-auto scroll-smooth"
         >
           <table
             dir="rtl"
             className="w-full table-fixed rounded-xl text-center"
           >
-            <thead className="group sticky right-0 top-0 z-50 m-0 p-0 duration-300 [box-shadow:0_2px_0_#bcebeb]">
+            <thead className={cn('group sticky right-0 z-50 top-0 m-0 p-0 duration-300 [box-shadow:0_2px_0_#bcebeb]', {
+              '[box-shadow:0_2px_0_#003838]': theme === 'dark'
+            })}>
               <DndContext
                 onDragStart={(event) => {
                   setIsRotating(true);

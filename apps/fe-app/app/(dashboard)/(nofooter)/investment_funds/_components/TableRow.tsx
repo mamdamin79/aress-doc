@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import type { Row } from '@tanstack/react-table';
 import { Bookmark } from 'libs/design-system/src/lib/components/Bookmark';
 import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
-import { Icon, OptionsDropdown, Tooltip, cn } from 'design-system';
+import { Icon, cn } from 'design-system';
 
 interface FundRow {
   nameFund: string;
@@ -25,7 +25,7 @@ interface TableRowProps<T extends FundRow> {
 
 interface FundsInfoCellProps {
   name: string;
-  // logo: string;
+  logo: string;
   pined: boolean;
   selected: boolean;
   isScrolled: boolean;
@@ -47,7 +47,7 @@ function FundsInfoCell({
   unPinedFunction,
   category,
   pinedFunction,
-  // logo,
+  logo,
   canPin,
   pined,
   selected,
