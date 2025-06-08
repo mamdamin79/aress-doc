@@ -2,14 +2,14 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { ReportCardBase } from '../../ReportCardBase';
 
-interface Report2Props {
+interface Props {
   categories: string[];
   data: number[];
   flow: 'inflow' | 'outflow';
   title: string;
 }
 
-export function Report2({ categories, data, flow, title }: Report2Props) {
+export function Report2({ categories, data, flow, title }: Props) {
   const seriesData = data.map((value) => ({
     y: value,
     color:
