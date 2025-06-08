@@ -10,19 +10,21 @@ import { cn } from 'libs/design-system/src/utils';
 import { LoadingBarPop } from '../LoadingBarPop';
 import { Button } from '../Button';
 import { ReportCardBaseProps } from './ReportCardBase.types';
-
+import { PopupInfo } from '../PopupInfo';
 export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
   title,
   switchIcons,
   optionsListItems,
   compactHeader = false,
   children,
+  popupInfoItems,
 }) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [optionsListOpen, setOptionsListOpen] = useState(false);
   const [loadingStatus, setLoadingStatus] = useState<
     null | 'loading' | 'done' | 'rejected'
   >(null);
+  const [popupInfoOpen, setPopupInfoOpen] = useState(false);
   const returnLoadingStatusText = () => {
     switch (loadingStatus) {
       case 'loading':
@@ -96,19 +98,22 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
           ]}
         />
       </SlideFromLeft>
-      <SlideFromLeft isOpen={optionsListOpen}>
-        <OptionsListExplorer
-          items={optionsListItems}
-          onBackButtonClick={() => setOptionsListOpen(false)}
-          onSearch={(value) => console.log(value)}
-          title="انتخاب دسته بندی اوراق"
-        />
-      </SlideFromLeft>
+      {optionsListItems && (
+        <SlideFromLeft isOpen={optionsListOpen}>
+          <OptionsListExplorer
+            items={optionsListItems}
+            onBackButtonClick={() => setOptionsListOpen(false)}
+            onSearch={(value) => console.log(value)}
+            title="انتخاب دسته بندی اوراق"
+          />
+        </SlideFromLeft>
+      )}
+
       <div className="relative w-full p-3 pb-2">
         <div className="flex w-full items-center justify-between">
           {!compactHeader ? (
             <div className="text-text-neutral-primary flex flex-row items-center text-xs font-semibold">
-              <div className="p-1.5">
+              <div onClick={() => setPopupInfoOpen(true)} className="cursor-pointer p-1.5">
                 <Icon name="info" size="md" />
               </div>
               <span className={cn(loadingStatus && 'opacity-30')}>{title}</span>
@@ -118,7 +123,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
           )}
 
           <div className={cn('flex flex-row items-center gap-2')}>
-            <DualSwitch {...switchIcons} size="sm" />
+            {switchIcons && <DualSwitch {...switchIcons} size="sm" />}
 
             {compactHeader ? (
               <div
@@ -146,7 +151,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                     title: 'جایگزینی گزارش',
                     onClick: () => console.log('اطلاعات بیشتر'),
                   },
-                                    {
+                  {
                     icon: 'share-2',
                     title: 'اشتراک گذاری',
                     onClick: () => console.log('اشتراک گذاری'),
@@ -170,9 +175,9 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
           )}
         ></div>
       </div>
-      <div className="bg-surface-neutral-primary flex h-[268px] w-full items-center justify-center p-3 pt-2">
-        {loadingStatus && (
-          <div className="flex h-full flex-col items-center justify-between pb-3 pt-16">
+      {loadingStatus && (
+        <div className="bg-surface-neutral-primary absolute top-4 z-10 flex h-full w-full items-center justify-center p-3 pt-2">
+          <div className="flex flex-col items-center gap-4">
             <div className="flex flex-col items-center justify-center gap-4">
               <LoadingBarPop status={loadingStatus} />
               <span>{returnLoadingStatusText()}</span>
@@ -185,6 +190,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                     isLoading={false}
                     mode="primary"
                     size="sm"
+                    onClick={mockLoading}
                   >
                     تلاش مجدد
                   </Button>
@@ -203,9 +209,18 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
               </div>
             </div>
           </div>
-        )}
-        {children}
-      </div>
+        </div>
+      )}
+
+      {children}
+      {popupInfoItems && (
+        <PopupInfo
+          isOpen={popupInfoOpen}
+          itemsList={popupInfoItems}
+          title="تعاریف مالی به کار رفته"
+          onClose={() => setPopupInfoOpen(false)}
+        />
+      )}
     </div>
   );
 };

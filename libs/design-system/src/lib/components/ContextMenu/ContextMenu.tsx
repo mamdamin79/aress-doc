@@ -23,11 +23,11 @@ export const ContextMenu: React.FC<Props> = ({
       <MenuButton className="outline-none">
         {/* if user provide a children we use it else we use the first item */}
         {children ? (
-          <div className="rounded-full bg-surface-neutral-primary p-2 shadow-md">
+          <div className="bg-surface-neutral-secondary rounded-full p-2 shadow-md">
             {children}
           </div>
         ) : (
-          <div className="text-icon-neutral-primary inline-flex w-40 items-center gap-2 rounded-sm bg-surface-neutral-primary p-2 text-sm font-medium shadow-md">
+          <div className="text-icon-neutral-primary bg-surface-neutral-primary inline-flex w-40 items-center gap-2 rounded-sm p-2 text-sm font-medium shadow-md">
             <Icon name={items[0].icon} size="md" />
             {items[0].title}
           </div>
@@ -37,12 +37,12 @@ export const ContextMenu: React.FC<Props> = ({
         modal={false}
         transition
         anchor={anchor}
-        className="shadow-7xl w-[180px] rounded-xl border border-border-neutral-primary bg-surface-neutral-primary text-sm transition duration-200 ease-out [--anchor-gap:8px] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
+        className="shadow-7xl border-border-neutral-primary bg-surface-neutral-primary w-[180px] rounded-xl border text-sm transition duration-200 ease-out [--anchor-gap:8px] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
       >
         {items.map((item, index) => (
           <React.Fragment key={index}>
             {item.dividerBefore && (
-              <hr className="w-full border border-border-neutral-secondary" />
+              <hr className="border-border-neutral-secondary w-full border" />
             )}
             <MenuItem>
               <button
@@ -50,8 +50,10 @@ export const ContextMenu: React.FC<Props> = ({
                 onClick={item.onClick}
                 className={cn(
                   'hover:bg-surface-brand-100 text-text-neutral-primary group flex w-full items-center gap-2 p-2 pr-3 text-sm font-medium',
-                  item.isActive && 'bg-surface-brand-50 text-text-onbrand-colored-primary-on200_100_50',
-                  item.disabled && 'pointer-events-none text-text-neutral-disable',
+                  item.isActive &&
+                    'bg-surface-brand-50 text-text-onbrand-colored-primary-on200_100_50',
+                  item.disabled &&
+                    'text-text-neutral-disable pointer-events-none',
                 )}
               >
                 <Icon name={item.icon} size="md" />
