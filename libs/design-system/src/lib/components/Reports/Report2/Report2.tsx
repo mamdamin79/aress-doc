@@ -49,7 +49,35 @@ export function Report2({ categories, data, flow, title }: Props) {
 
   return (
     <ReportCardBase
-      title={title}
+      settingOptions={[
+        {
+          type: 'basicSelection',
+          props: {
+            title: 'جریان:',
+            icon: { name: 'square-mouse-pointer', size: 'sm' },
+            status: 'normal',
+            selectedOption: 'ورودی',
+          },
+        },
+        {
+          type: 'basicSelection',
+          props: {
+            title: 'نوع سرمایه‌گذاران: ',
+            icon: { name: 'square-mouse-pointer', size: 'sm' },
+            status: 'normal',
+            selectedOption: 'حقیقی',
+          },
+        },
+        {
+          type: 'basicSelection',
+          props: {
+            title: 'بازه زمانی: ',
+            icon: { name: 'square-mouse-pointer', size: 'sm' },
+            status: 'normal',
+            selectedOption: 'یک ماه',
+          },
+        },
+      ]}      title={title}
       popupInfoItems={[
         {
           title: 'جریان ورودی',

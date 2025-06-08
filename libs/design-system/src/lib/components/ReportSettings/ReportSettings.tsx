@@ -8,7 +8,7 @@ import {
 } from '../NestedDropdown/NestedDropdown.types';
 import { NestedDropdownItem } from '../NestedDropdown/NestedDropdownItem';
 
-type optionProps = {
+export type optionProps = {
   type:
     | 'basicSelection'
     | 'extendedSelection'

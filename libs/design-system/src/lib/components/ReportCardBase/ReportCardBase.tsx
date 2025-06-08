@@ -18,6 +18,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
   compactHeader = false,
   children,
   popupInfoItems,
+  settingOptions,
 }) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [optionsListOpen, setOptionsListOpen] = useState(false);
@@ -48,54 +49,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
         <ReportSettings
           onSubmit={mockLoading}
           onClose={() => setSettingsOpen(false)}
-          options={[
-            {
-              type: 'nestedDropdown',
-              props: {
-                title: 'مبنای ارزش معاملات',
-                items: [
-                  {
-                    title: 'نوع بازار:',
-                    icon: { name: 'square-mouse-pointer', size: 'sm' },
-                    status: 'normal',
-                    selectedOption: 'کل بازار',
-                    onClick: () => setOptionsListOpen(true),
-                  },
-                  {
-                    title: 'صنعت:',
-                    icon: { name: 'square-mouse-pointer', size: 'sm' },
-                    status: 'normal',
-                    selectedOption: 'کانی‌ های فلزی',
-                    onClick: () => setOptionsListOpen(true),
-                  },
-                  {
-                    title: 'صنعت:',
-                    icon: { name: 'square-mouse-pointer', size: 'sm' },
-                    status: 'normal',
-                    selectedOption: 'کانی‌ های فلزی',
-                    onClick: () => setOptionsListOpen(true),
-                  },
-                  {
-                    title: 'ابزار مالی:',
-                    icon: { name: 'square-mouse-pointer', size: 'sm' },
-                    status: 'error',
-                    placeHolder: 'یک مورد را انتخاب کنید...',
-                    onClick: () => setOptionsListOpen(true),
-                  },
-                ],
-              },
-            },
-            {
-              type: 'basicSelection',
-              props: {
-                title: 'نوع نمودار:',
-                icon: { name: 'square-mouse-pointer', size: 'sm' },
-                status: 'normal',
-                selectedOption: 'خطی',
-                onClick: () => setOptionsListOpen(true),
-              },
-            },
-          ]}
+          options={settingOptions}
         />
       </SlideFromLeft>
       {optionsListItems && (
@@ -113,7 +67,10 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
         <div className="flex w-full items-center justify-between">
           {!compactHeader ? (
             <div className="text-text-neutral-primary flex flex-row items-center text-xs font-semibold">
-              <div onClick={() => setPopupInfoOpen(true)} className="cursor-pointer p-1.5">
+              <div
+                className="cursor-pointer p-1.5"
+                onClick={() => setPopupInfoOpen(true)}
+              >
                 <Icon name="info" size="md" />
               </div>
               <span className={cn(loadingStatus && 'opacity-30')}>{title}</span>

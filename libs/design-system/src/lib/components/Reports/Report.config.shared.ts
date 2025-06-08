@@ -58,7 +58,7 @@ export const baseOptions: Highcharts.Options = {
             <span style="color:{series.color}; font-size: 12px;">●</span>
             <div style="display: flex; align-items: center; gap: 4px; justify-content: space-between; width: 100%;">
               <span style="font-size: 14px; font-weight: 400;">{series.name}:</span>
-<span style="direction: ltr; unicode-bidi: plaintext; display: inline-block; min-width: 40px;">{point.y}</span>
+<span style="unicode-bidi: plaintext; display: inline-block; text-direction: left;">{point.y}</span>
             </div>
           </div>
         `,

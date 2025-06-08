@@ -4,7 +4,8 @@ import {
   OptionItem,
 } from '../OptionsListExplorer/OptionsListExplorer.types';
 import { PopupInfoProps } from '../PopupInfo/PopupInfo.types';
-type popupInfoItemType = PopupInfoProps['itemsList'];
+import { type optionProps } from '../ReportSettings';
+export type popupInfoItemType = PopupInfoProps['itemsList'];
 
 export interface ReportCardBaseProps {
   title: string;
@@ -16,4 +17,5 @@ export interface ReportCardBaseProps {
   compactHeader?: boolean;
   children?: React.ReactNode;
   popupInfoItems?: popupInfoItemType;
+  settingOptions: optionProps[]
 }
