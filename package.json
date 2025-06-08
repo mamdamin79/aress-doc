@@ -106,6 +106,7 @@
     "@uidotdev/usehooks": "^2.4.1",
     "clsx": "^2.1.1",
     "highcharts": "^12.1.2",
+    "highcharts-react-official": "^3.2.2",
     "hls.js": "^1.5.17",
     "jalaali-js": "^1.2.8",
     "keen-slider": "^6.8.6",
