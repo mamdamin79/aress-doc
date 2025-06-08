@@ -10,19 +10,22 @@ import { cn } from 'libs/design-system/src/utils';
 import { LoadingBarPop } from '../LoadingBarPop';
 import { Button } from '../Button';
 import { ReportCardBaseProps } from './ReportCardBase.types';
-
+import { PopupInfo } from '../PopupInfo';
 export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
   title,
   switchIcons,
   optionsListItems,
   compactHeader = false,
   children,
+  popupInfoItems,
+  settingOptions
 }) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [optionsListOpen, setOptionsListOpen] = useState(false);
   const [loadingStatus, setLoadingStatus] = useState<
     null | 'loading' | 'done' | 'rejected'
   >(null);
+  const [popupInfoOpen, setPopupInfoOpen] = useState(false);
   const returnLoadingStatusText = () => {
     switch (loadingStatus) {
       case 'loading':
@@ -111,7 +114,10 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
         <div className="flex w-full items-center justify-between">
           {!compactHeader ? (
             <div className="text-text-neutral-primary flex flex-row items-center text-xs font-semibold">
-              <div className="p-1.5">
+              <div
+                className="cursor-pointer p-1.5"
+                onClick={() => setPopupInfoOpen(true)}
+              >
                 <Icon name="info" size="md" />
               </div>
               <span className={cn(loadingStatus && 'opacity-30')}>{title}</span>
@@ -174,8 +180,8 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
         ></div>
       </div>
       {loadingStatus && (
-        <div className="bg-surface-neutral-primary flex h-[268px] w-full items-center justify-center p-3 pt-2">
-          <div className="flex h-full flex-col items-center">
+        <div className="bg-surface-neutral-primary absolute top-4 z-10 flex h-full w-full items-center justify-center p-3 pt-2">
+          <div className="flex flex-col items-center gap-4">
             <div className="flex flex-col items-center justify-center gap-4">
               <LoadingBarPop status={loadingStatus} />
               <span>{returnLoadingStatusText()}</span>
@@ -188,6 +194,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                     isLoading={false}
                     mode="primary"
                     size="sm"
+                    onClick={mockLoading}
                   >
                     تلاش مجدد
                   </Button>
@@ -210,6 +217,14 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
       )}
 
       {children}
+      {popupInfoItems && (
+        <PopupInfo
+          isOpen={popupInfoOpen}
+          itemsList={popupInfoItems}
+          title="تعاریف مالی به کار رفته"
+          onClose={() => setPopupInfoOpen(false)}
+        />
+      )}
     </div>
   );
 };

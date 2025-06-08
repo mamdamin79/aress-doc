@@ -3,6 +3,7 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { baseOptions, xAxisLabels, yAxisLabels } from '../Report.config.shared';
 import { ReportCardBase } from '../../ReportCardBase';
+import { financialDefinitions } from './Report6.constants';
 const months: string[] = [
   'فروردین',
   'اردیبهشت',
@@ -51,10 +52,7 @@ export const Report6: FC<Report6Props> = ({
       },
       {
         title: { text: '' },
-        min: -6,
-        max: 6,
         tickInterval: 2,
-        tickPositions: [-6, -4, -2, 0, 2, 4, 6],
         opposite: true,
         labels: yAxisLabels,
       },
@@ -85,7 +83,10 @@ export const Report6: FC<Report6Props> = ({
   };
 
   return (
-    <ReportCardBase title="شاخص کل، ورود و خروج ماهانه سرمایه‌گذاران حقیقی به سهام">
+    <ReportCardBase
+      title="شاخص کل، ورود و خروج ماهانه سرمایه‌گذاران حقیقی به سهام"
+      popupInfoItems={financialDefinitions}
+    >
       <HighchartsReact highcharts={Highcharts} options={options} />
     </ReportCardBase>
   );
