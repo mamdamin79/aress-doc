@@ -16,6 +16,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
   switchIcons,
   optionsListItems,
   compactHeader = false,
+  children,
 }) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [optionsListOpen, setOptionsListOpen] = useState(false);
@@ -95,14 +96,17 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
           ]}
         />
       </SlideFromLeft>
-      <SlideFromLeft isOpen={optionsListOpen}>
-        <OptionsListExplorer
-          items={optionsListItems}
-          onBackButtonClick={() => setOptionsListOpen(false)}
-          onSearch={(value) => console.log(value)}
-          title="انتخاب دسته بندی اوراق"
-        />
-      </SlideFromLeft>
+      {optionsListItems && (
+        <SlideFromLeft isOpen={optionsListOpen}>
+          <OptionsListExplorer
+            items={optionsListItems}
+            onBackButtonClick={() => setOptionsListOpen(false)}
+            onSearch={(value) => console.log(value)}
+            title="انتخاب دسته بندی اوراق"
+          />
+        </SlideFromLeft>
+      )}
+
       <div className="relative w-full p-3 pb-2">
         <div className="flex w-full items-center justify-between">
           {!compactHeader ? (
@@ -117,7 +121,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
           )}
 
           <div className={cn('flex flex-row items-center gap-2')}>
-            <DualSwitch {...switchIcons} size="sm" />
+            {switchIcons && <DualSwitch {...switchIcons} size="sm" />}
 
             {compactHeader ? (
               <div
@@ -132,28 +136,23 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                 items={[
                   {
                     icon: 'settings',
-                    title: 'تنظیمات گزارش',
+                    title: 'تنظیمات',
                     onClick: () => setSettingsOpen(true),
+                  },
+                  {
+                    icon: 'eye',
+                    title: 'مشاهده بررسی گزارش',
+                    onClick: () => console.log('تنظیمات گزارش'),
+                  },
+                  {
+                    icon: 'repeat',
+                    title: 'جایگزینی گزارش',
+                    onClick: () => console.log('اطلاعات بیشتر'),
                   },
                   {
                     icon: 'share-2',
                     title: 'اشتراک گذاری',
                     onClick: () => console.log('اشتراک گذاری'),
-                  },
-                  {
-                    icon: 'square-arrow-out-up-right',
-                    title: 'هدایت به نسخه مادر',
-                    onClick: () => console.log('تنظیمات گزارش'),
-                  },
-                  {
-                    icon: 'info',
-                    title: 'اطلاعات بیشتر',
-                    onClick: () => console.log('اطلاعات بیشتر'),
-                  },
-                  {
-                    icon: 'repeat',
-                    title: 'جایگزینی گزارش',
-                    onClick: () => console.log('جایگزینی گزارش'),
                   },
                   {
                     icon: 'trash-2',
@@ -174,9 +173,9 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
           )}
         ></div>
       </div>
-      <div className="bg-surface-neutral-primary flex h-[268px] w-full items-center justify-center p-3 pt-2">
-        {loadingStatus && (
-          <div className="flex h-full flex-col items-center justify-between pb-3 pt-16">
+      {loadingStatus && (
+        <div className="bg-surface-neutral-primary flex h-[268px] w-full items-center justify-center p-3 pt-2">
+          <div className="flex h-full flex-col items-center">
             <div className="flex flex-col items-center justify-center gap-4">
               <LoadingBarPop status={loadingStatus} />
               <span>{returnLoadingStatusText()}</span>
@@ -207,8 +206,10 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
               </div>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      {children}
     </div>
   );
 };
