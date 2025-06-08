@@ -17,5 +17,5 @@ export interface ReportCardBaseProps {
   compactHeader?: boolean;
   children?: React.ReactNode;
   popupInfoItems?: popupInfoItemType;
-  settingOptions?: optionProps
+  settingOptions: optionProps[]
 }

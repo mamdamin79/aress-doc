@@ -86,6 +86,35 @@ export const Report6: FC<Report6Props> = ({
     <ReportCardBase
       title="شاخص کل، ورود و خروج ماهانه سرمایه‌گذاران حقیقی به سهام"
       popupInfoItems={financialDefinitions}
+      settingOptions={[
+        {
+          type: 'basicSelection',
+          props: {
+            title: 'جریان پول: ',
+            icon: { name: 'square-mouse-pointer', size: 'sm' },
+            status: 'normal',
+            selectedOption: 'ورودی',
+          },
+        },
+        {
+          type: 'basicSelection',
+          props: {
+            title: 'نوع سرمایه‌گذار: ',
+            icon: { name: 'square-mouse-pointer', size: 'sm' },
+            status: 'normal',
+            selectedOption: 'حقیقی',
+          },
+        },
+        {
+          type: 'basicSelection',
+          props: {
+            title: 'بازه زمانی: ',
+            icon: { name: 'square-mouse-pointer', size: 'sm' },
+            status: 'normal',
+            selectedOption: 'یک ماه',
+          },
+        },
+      ]}
     >
       <HighchartsReact highcharts={Highcharts} options={options} />
     </ReportCardBase>
