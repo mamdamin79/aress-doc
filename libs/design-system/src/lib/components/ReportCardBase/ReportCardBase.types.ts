@@ -9,4 +9,5 @@ export interface ReportCardBaseProps {
     items: OptionItem[];
   };
   compactHeader?: boolean;
+  children: React.ReactNode;
 }

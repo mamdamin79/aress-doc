@@ -16,6 +16,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
   switchIcons,
   optionsListItems,
   compactHeader = false,
+  children,
 }) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [optionsListOpen, setOptionsListOpen] = useState(false);
@@ -132,28 +133,23 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                 items={[
                   {
                     icon: 'settings',
-                    title: 'تنظیمات گزارش',
+                    title: 'تنظیمات',
                     onClick: () => setSettingsOpen(true),
                   },
                   {
-                    icon: 'share-2',
-                    title: 'اشتراک گذاری',
-                    onClick: () => console.log('اشتراک گذاری'),
-                  },
-                  {
-                    icon: 'square-arrow-out-up-right',
-                    title: 'هدایت به نسخه مادر',
+                    icon: 'eye',
+                    title: 'مشاهده بررسی گزارش',
                     onClick: () => console.log('تنظیمات گزارش'),
-                  },
-                  {
-                    icon: 'info',
-                    title: 'اطلاعات بیشتر',
-                    onClick: () => console.log('اطلاعات بیشتر'),
                   },
                   {
                     icon: 'repeat',
                     title: 'جایگزینی گزارش',
-                    onClick: () => console.log('جایگزینی گزارش'),
+                    onClick: () => console.log('اطلاعات بیشتر'),
+                  },
+                                    {
+                    icon: 'share-2',
+                    title: 'اشتراک گذاری',
+                    onClick: () => console.log('اشتراک گذاری'),
                   },
                   {
                     icon: 'trash-2',
@@ -208,6 +204,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
             </div>
           </div>
         )}
+        {children}
       </div>
     </div>
   );
