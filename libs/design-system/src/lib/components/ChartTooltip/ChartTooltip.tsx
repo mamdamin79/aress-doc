@@ -41,8 +41,8 @@ export const ChartTooltip: React.FC<Props> = ({
         )}
       >
         <div className="text-sm font-medium">{title}</div>
-        {items.map((item) => (
-          <TooltipRow {...item} />
+        {items.map((item, index) => (
+          <TooltipRow key={`tooltip-row-${index}`} {...item} />
         ))}
       </ReactTooltip>
     </>
