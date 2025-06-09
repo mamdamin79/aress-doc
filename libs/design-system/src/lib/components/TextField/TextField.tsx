@@ -20,6 +20,8 @@ export const TextField: React.FC<textFieldPropsType> = ({
   className,
   inputSize = 'default',
   longText = false,
+  captchaValue,
+  onRefreshCaptcha,
   ...rest
 }) => {
   const [internalValue, setInternalValue] = useState('');
@@ -69,7 +71,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
           {mergeTitleAndPlaceholder ? (
             (isFocused || inputValue) && (
               <label
-                className={cn('text-sm font-medium ', {
+                className={cn('text-sm font-medium', {
                   'text-gray-400': disabled,
                 })}
               >
@@ -92,9 +94,12 @@ export const TextField: React.FC<textFieldPropsType> = ({
         <label
           htmlFor={id}
           className={cn(
-            'absolute hidden top-9 cursor-text pr-4 text-sm font-medium',
+            'absolute top-9 hidden cursor-text pr-4 text-sm font-medium',
             { 'right-8': leadingIcon },
-            { 'top-11 block': mergeTitleAndPlaceholder && inputSize === 'default' },
+            {
+              'top-11 block':
+                mergeTitleAndPlaceholder && inputSize === 'default',
+            },
             { 'top-10 block': mergeTitleAndPlaceholder && inputSize === 'md' },
             { 'top-9 block': mergeTitleAndPlaceholder && inputSize === 'sm' },
             { 'text-gray-400': disabled },
@@ -193,8 +198,9 @@ export const TextField: React.FC<textFieldPropsType> = ({
               'border-inherit bg-transparent opacity-100 placeholder:text-gray-400':
                 disabled,
               'placeholder:text-gray-500': !disabled,
-              'pl-20': trailingIcons.length === 2,
-              'pl-10': trailingIcons.length === 1,
+              'pl-[112px]': captchaValue, // extra padding for captcha image
+              'pl-20': !captchaValue && trailingIcons.length === 2,
+              'pl-10': !captchaValue && trailingIcons.length === 1,
               'bg-gray-100': mode === 'filled' && !disabled,
               'hover:bg-gray-300': mode === 'filled' && !disabled && !isFocused,
               'cursor-not-allowed !bg-gray-50': disabled && mode === 'filled',
@@ -206,6 +212,37 @@ export const TextField: React.FC<textFieldPropsType> = ({
           )}
           placeholder={mergeTitleAndPlaceholder ? '' : placeholder}
         />
+      )}
+
+      {/* Captcha image, if provided */}
+      {captchaValue && (
+        <div
+          className={cn(
+            'absolute left-0.5 z-20 flex items-center justify-center',
+            {
+              'top-[32px]':
+                label &&
+                (inputSize === 'default' ||
+                  inputSize === 'md' ||
+                  inputSize === 'sm'),
+              'top-[2px]':
+                !label && (inputSize === 'default' || inputSize === 'md'),
+              'top-[8px]': !label && inputSize === 'sm',
+            },
+          )}
+        >
+          <img
+            src={`data:image/png;base64,${captchaValue}`}
+            alt="captcha"
+            className={cn('rounded-bl-xl rounded-tl-xl object-fill', {
+              'h-[52px] w-[120px]': inputSize === 'default',
+              'h-[44px] w-[110px]': inputSize === 'md',
+              'h-[36px] w-[100px]': label && inputSize === 'sm',
+              'top-[8px]': !label && inputSize === 'sm',
+            })}
+            draggable={false}
+          />
+        </div>
       )}
 
       <div
@@ -230,6 +267,15 @@ export const TextField: React.FC<textFieldPropsType> = ({
               label,
           },
         )}
+        style={{
+          left: captchaValue
+            ? inputSize === 'sm'
+              ? '100px'
+              : inputSize === 'md'
+                ? '110px'
+                : '120px'
+            : '16px', // shift trailing icons if captcha present
+        }}
       >
         {trailingIcons.map((icon) => {
           const isDisabled = cn({
@@ -278,14 +324,23 @@ export const TextField: React.FC<textFieldPropsType> = ({
       </div>
       {supportText && (
         <div
-          className={cn('h-[22px] pt-1 text-xs', {
+          className={cn('flex h-[22px] justify-between pt-1 text-xs', {
             'text-red-600': isError,
             'text-gray-600': !isError,
             'text-gray-400': disabled,
             '-mt-2': longText,
           })}
         >
-          {supportText}
+          <span>{supportText}</span>
+
+          {captchaValue && (
+            <button
+              className="text-brand-500"
+              onClick={() => onRefreshCaptcha()}
+            >
+              <Icon size="lg" name="rotate-cw" />
+            </button>
+          )}
         </div>
       )}
     </div>
