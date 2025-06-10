@@ -1,6 +1,5 @@
 'use client';
 import React, {
-  CSSProperties,
   startTransition,
   useEffect,
   useMemo,
@@ -58,11 +57,9 @@ import { useSortable } from '@dnd-kit/sortable';
 import { Person, makeData } from './_components/makeData';
 import { columnVisibility, filterList } from './FundsTable.constants';
 import { ExportExel } from './_components/ExportExel';
-import { Bookmark } from 'libs/design-system/src/lib/components/Bookmark';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useSmartTableScroll } from 'apps/fe-app/hooks/useSmartTableScroll';
 import TableRow from './_components/TableRow';
-import { useThemeToggle } from 'apps/fe-app/hooks';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
   const [rowMarks, setRowMarks] = useState<{
@@ -234,28 +231,10 @@ const Funds = () => {
         size: 150,
         enableSorting: true,
       },
-      // {
-      //   accessorKey: 'logo',
-      //   header: 'Logo',
-      //   id: 'logo',
-      //   size: 100,
-      //   enableSorting: true,
-      //   cell: (info) => (
-      //     <img
-      //       src={info.getValue<string>()}
-      //       alt="Logo"
-      //       width={30}
-      //       height={30}
-      //     />
-      //   ),
-      // },
     ],
     [],
   );
-  
-  
-    const { theme } = useThemeToggle();
-  
+
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string[]>
   >({});
@@ -336,16 +315,17 @@ const Funds = () => {
         className={cn(
           'bg-surface-brand-100 relative m-0 h-[64px] p-0 text-sm font-medium',
           {
-            'w-[144px]':
-              !(String(
+            'w-[144px]': !(
+              String(
                 flexRender(header.column.columnDef.header, header.getContext()),
-              ).length > 10),
+              ).length > 10
+            ),
             'w-[200px]':
               String(
                 flexRender(header.column.columnDef.header, header.getContext()),
               ).length > 10,
           },
-          '6xl:w-full', 
+          '6xl:w-full',
         )}
       >
         {isDraggingOver && position && (
@@ -380,7 +360,7 @@ const Funds = () => {
   const sensors = useSensors(
     useSensor(MouseSensor, {
       activationConstraint: {
-        delay: 100,
+        delay: 250,
         distance: 0,
       },
     }),
@@ -556,7 +536,9 @@ const Funds = () => {
   useEffect(() => {
     columnOrder.findIndex((id, index) => {
       if (id === sorting[0]?.id && activeSortIndex !== 0) {
-        setActiveSortIndex(index - 1);
+        setTimeout(() => {
+          setActiveSortIndex(index - 1);
+        }, 300);
       }
     });
   }, [columnOrder]);
@@ -638,21 +620,24 @@ const Funds = () => {
       <div
         dir="ltr"
         className={cn(
-          'border-border-brand-soft-200 relative top-0 flex items-center overflow-hidden border-t-2',
+          'border-border-brand-soft-200 relative top-0 flex flex-col items-center overflow-hidden border-t-2',
         )}
       >
+        <div className="bg-border-brand-soft-200 absolute top-[75px] z-50 h-0.5 w-full"></div>
         <div
           onMouseEnter={handlerMouseEnterTable}
           ref={tableRef}
-        className="table-scroll group/table bg-surface-neutral-primary scrollbar-lg h-[calc(100vh-172px)] w-screen overflow-auto scroll-smooth"
+          className="table-scroll group/table bg-surface-neutral-primary scrollbar-lg h-[calc(100vh-172px)] w-screen overflow-auto scroll-smooth"
         >
           <table
             dir="rtl"
             className="w-full table-fixed rounded-xl text-center"
           >
-            <thead className={cn('group sticky right-0 z-50 top-0 m-0 p-0 duration-300 [box-shadow:0_2px_0_#bcebeb]', {
-              '[box-shadow:0_2px_0_#003838]': theme === 'dark'
-            })}>
+            <thead
+              className={cn(
+                'group sticky right-0 top-0 z-50 m-0 p-0 duration-300',
+              )}
+            >
               <DndContext
                 onDragStart={(event) => {
                   setIsRotating(true);
@@ -714,7 +699,7 @@ const Funds = () => {
                   >
                     {table.getHeaderGroups()[0].headers.map((header, index) => {
                       return (
-                        <React.Fragment key={index}>
+                        <>
                           {index === 0 && (
                             <th
                               key={index}
@@ -815,7 +800,7 @@ const Funds = () => {
                                 }}
                                 key={index}
                                 className={cn(
-                                  'bg-surface-brand-100 m-0 h-[64px] w-full text-nowrap p-0 text-sm font-medium',
+                                  'bg-surface-brand-100 m-0 h-full w-full text-nowrap p-0 text-sm font-medium',
                                   String(
                                     flexRender(
                                       header.column.columnDef.header,
@@ -894,7 +879,7 @@ const Funds = () => {
                               </div>
                             </DraggableTableHeader>
                           )}
-                        </React.Fragment>
+                        </>
                       );
                     })}
                     <DragOverlay
