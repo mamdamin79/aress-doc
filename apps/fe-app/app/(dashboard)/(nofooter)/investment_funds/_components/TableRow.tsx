@@ -301,10 +301,11 @@ function TableRowInner<T extends FundRow>({
             name={row.original.nameFund}
             pined={false}
             selected={false}
-            // logo={row.original.logo}
+            logo={row.original.logo}
           />
         </div>
       </td>
+      <td></td>
 
       {row.getVisibleCells().map((item) => (
         <td className='bg-surface-neutral-primary text-text-neutral-primary group-hover:bg-surface-accent-blue-50' key={item.id}>{item.getValue() as string}</td>

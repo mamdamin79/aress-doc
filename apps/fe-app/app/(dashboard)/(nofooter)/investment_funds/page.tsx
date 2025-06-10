@@ -86,7 +86,7 @@ const Funds = () => {
     },
   ]);
   const [activeSortIndex, setActiveSortIndex] = useState(0);
-  const headerRefs = useRef<(HTMLTableHeaderCellElement | null)[]>([]);
+  const headerRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [sortIndicatorPosition, setSortIndicatorPosition] = useState({
     right: headerRefs.current[0]?.offsetLeft,
     width: 0,
@@ -666,7 +666,7 @@ const Funds = () => {
                 onDragCancel={() => setIsRotating(false)}
               >
                 <tr>
-                  <div
+                  <th
                     style={{
                       transform:
                         activeSortIndex !== 0
@@ -690,8 +690,8 @@ const Funds = () => {
                     })}
                   >
                     <div className="bg-surface-brand-600-primary mx-auto h-1.5 w-16 rounded-t-[10px]"></div>
-                  </div>
-                  <div className="sticky right-[340px] z-30 mt-5 p-0">
+                  </th>
+                  <th className="sticky right-[340px] z-30 mt-5 p-0">
                     {isScrollAtStart && (
                       <div className="hidden group-hover:block">
                         <Tooltip title="پیمایش به راست (D)">
@@ -707,14 +707,14 @@ const Funds = () => {
                         </Tooltip>
                       </div>
                     )}
-                  </div>
+                  </th>
                   <SortableContext
                     items={columnOrder.slice(1)}
                     strategy={horizontalListSortingStrategy}
                   >
                     {table.getHeaderGroups()[0].headers.map((header, index) => {
                       return (
-                        <>
+                        <React.Fragment key={index}>
                           {index === 0 && (
                             <th
                               key={index}
@@ -807,7 +807,7 @@ const Funds = () => {
                               key={header.id}
                               header={header}
                             >
-                              <th
+                              <div
                                 ref={(el) => {
                                   if (headerRefs?.current) {
                                     headerRefs.current[index] = el;
@@ -891,10 +891,10 @@ const Funds = () => {
                                     />
                                   </div>
                                 )}
-                              </th>
+                              </div>
                             </DraggableTableHeader>
                           )}
-                        </>
+                        </React.Fragment>
                       );
                     })}
                     <DragOverlay
@@ -929,7 +929,7 @@ const Funds = () => {
                       )}
                     </DragOverlay>
                   </SortableContext>
-                  <div className="fixed left-[35px] m-0 mt-5">
+                  <th className="fixed left-[35px] m-0 mt-5">
                     {isScrollAtEnd && (
                       <div
                         onMouseDown={startScrollRight}
@@ -947,7 +947,7 @@ const Funds = () => {
                         </Tooltip>
                       </div>
                     )}
-                  </div>
+                  </th>
                 </tr>
               </DndContext>
             </thead>
@@ -978,7 +978,6 @@ const Funds = () => {
                   />
                 );
               })}
-
               <tr
                 style={{
                   height:

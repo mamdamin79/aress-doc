@@ -123,7 +123,7 @@ export function FundsColumnHeader({
           <Icon name="filter" />
         </div>
 
-        {activeSorticon && (
+        {activeSorticon && showLine && (
           <div className="bg-surface-brand-600-primary absolute bottom-0 h-1.5 w-16 rounded-t-md"></div>
         )}
         <div className="font-] flex flex-col text-sm">
