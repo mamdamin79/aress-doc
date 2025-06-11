@@ -20,9 +20,9 @@ const months: string[] = [
 ];
 
 export interface Report6Props {
-  inFlowData: (number | null)[];
-  outFlowData: (number | null)[];
-  indexData: (number | null)[];
+  inFlowData: ({ y: number; unit: string } | null)[];
+  outFlowData: ({ y: number; unit: string } | null)[];
+  indexData: ({ y: number; unit: string } | null)[];
 }
 export const Report6: FC<Report6Props> = ({
   inFlowData,
