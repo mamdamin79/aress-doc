@@ -107,5 +107,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('tailwind-clip-path')],
+  plugins: [],
 };

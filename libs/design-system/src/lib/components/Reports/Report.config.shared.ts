@@ -31,6 +31,7 @@ export const baseOptions: Highcharts.Options = {
     borderWidth: 0, // remove default border
     shadow: false, // remove default shadow
     style: {
+      zIndex: 1000, // set a high z-index value
       direction: 'rtl',
     },
     headerFormat: `
