@@ -80,6 +80,17 @@ export const Report6: FC<Report6Props> = ({
         yAxis: 1,
       },
     ],
+    legend: {
+      useHTML: true,
+      labelFormatter: function () {
+        if (this.name === 'ورود') {
+          return 'ورود <span style="color: var(--color-text-neutral-secondary); font-size: 11px;">(میلیارد ریال)</span>';
+        } else if (this.name === 'خروج') {
+          return 'خروج <span style="color: var(--color-text-neutral-secondary);">(میلیارد ریال)</span>';
+        }
+        return 'شاخص کل <span style="color: var(--color-text-neutral-secondary);">(میلیون واحد)</span>';
+      },
+    },
   };
 
   return (
