@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import type { Row } from '@tanstack/react-table';
 import { Bookmark } from 'libs/design-system/src/lib/components/Bookmark';
 import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
-import { Icon, cn } from 'design-system';
+import { Icon, OptionsDropdown, Tooltip, cn } from 'design-system';
 
 interface FundRow {
   nameFund: string;
@@ -12,6 +12,7 @@ interface FundRow {
 
 interface TableRowProps<T extends FundRow> {
   row: Row<T>;
+  logo: string;
   isMainTab: boolean;
   activeIndexCategoryTab: number;
   rowMarks: Record<number, Record<string, string>>;
@@ -37,6 +38,7 @@ interface FundsInfoCellProps {
   toggleWatchList: () => void;
   canPin: boolean;
   tag: boolean;
+  isRowHovered: boolean;
 }
 
 function FundsInfoCell({
@@ -53,41 +55,44 @@ function FundsInfoCell({
   selected,
   isScrolled,
   className,
+  isRowHovered,
 }: FundsInfoCellProps) {
-  const [isDropdownActive, setIsDropdownActive] = useState(false);
   const { showProgressToast, showToast } = useCustomToast();
-
+  const [isShowDropDown, setIsShowDropDown] = useState(false);
 
   return (
     <div
       className={cn(
-        'sticky right-0 top-0 py-0 m-0 flex bg-surface-neutral-primary text-text-neutral-primary h-[46px] w-[384px] items-center justify-between p-0',
+        'bg-surface-neutral-primary text-text-neutral-primary sticky right-0 top-0 m-0 flex h-[46px] w-[384px] items-center justify-between p-0 py-0',
         className,
         {
           'dark:shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]': isScrolled,
-          'bg-surface-accent-blue-50 group-hover:surface-accent-blue-100': pined,
+          'bg-surface-accent-blue-50 group-hover:surface-accent-blue-100':
+            pined,
           'bg-blue-200': selected,
-          'bottom-0 group-hover:bg-surface-accent-blue-50': !selected && !pined,
+          'group-hover:bg-surface-accent-blue-50 bottom-0': !selected && !pined,
         },
       )}
     >
-      <div className="relative pr-6 pl-2 h-full flex items-center gap-2">
+      <div className="relative flex h-full items-center gap-2 pl-2 pr-6">
         <span
           className={cn(
-            'border-border-accent-vividgreen-200 select-none w-fit text-text-onaccent-colored-onvividgreen-on200_100_50 bg-surface-accent-vividgreen-100 rounded-sm border px-2 pt-0.5 h-[25px] text-xs font-medium',
+            'border-border-accent-vividgreen-200 text-text-onaccent-colored-onvividgreen-on200_100_50 bg-surface-accent-vividgreen-100 h-[25px] w-fit select-none rounded-sm border px-2 pt-0.5 text-xs font-medium',
             {
-              'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]': investmentMethod === 'T',
-            }
+              'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]':
+                investmentMethod === 'T',
+            },
           )}
         >
           ETF
         </span>
         <span
           className={cn(
-            'border-border-accent-vividgreen-200 whitespace-nowrap select-none w-fit text-text-onaccent-colored-onvividgreen-on200_100_50 bg-surface-accent-vividgreen-100  rounded-sm border px-2 h-[25px] text-xs font-medium',
+            'border-border-accent-vividgreen-200 text-text-onaccent-colored-onvividgreen-on200_100_50 bg-surface-accent-vividgreen-100 h-[25px] w-fit select-none whitespace-nowrap rounded-sm border px-2 text-xs font-medium',
             {
-              'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]': investmentMethod === 'T',
-            }
+              'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]':
+                investmentMethod === 'T',
+            },
           )}
         >
           قابل خرید
@@ -102,7 +107,7 @@ function FundsInfoCell({
         ></div>
         <div className="group/img relative">
           <div className="h-8 w-8 overflow-hidden rounded-full">
-            {/* <img src={logo} alt="logo fund" /> */}
+            <img src={logo} alt="logo fund" />
           </div>
           {pined && (
             <div className="absolute -right-1 top-5">
@@ -112,129 +117,154 @@ function FundsInfoCell({
             </div>
           )}
         </div>
-        {/* <Tooltip offset={2} position="left" title={name.length > 13 ? name : ''}> */}
-          <p className="text-gray-1000 w-[130px] hover:text-text-brand-contrast-700 truncate text-right text-sm font-medium">
+        {name.length > 13 ? (
+          <Tooltip offset={2} position="left" title={name}>
+            <p className="text-gray-1000 hover:text-text-brand-contrast-700 w-[130px] truncate text-right text-sm font-medium">
+              {name}
+            </p>
+          </Tooltip>
+        ) : (
+          <p className="text-gray-1000 hover:text-text-brand-contrast-700 w-[130px] truncate text-right text-sm font-medium">
             {name}
           </p>
-        {/* </Tooltip> */}
-        {/* <OptionsDropdown
-          className='!border-border-neutral-primary shadow-7xl'
-          dropDownStyles={{
-            anchor: 'bottom start',
-            size: 'md',
-            bg: 'primary',
-            emphasize: 'medium',
-          }}
-          dropDownList={[
-            { text: 'مشاهده صندوق', icon: { name: 'eye', size: 'md' } },
-            { text: 'مشاهده ویدیو', icon: { name: 'video', size: 'md' } },
-            { text: 'نشان‌دار کردن', icon: { name: 'target', size: 'md' } },
-            {
-              text: pined ? 'برداشتن پین' : 'پین کردن',
-              icon: { name: pined ? 'pin-off' : 'pin', size: 'md' },
-            },
-            {
-              text:
-                category === 'stocks'
-                  ? 'افزودن به دیده‌بان'
-                  : 'حذف از دیده‌بان',
-              icon: {
-                name: category === 'stocks' ? 'plus' : 'minus',
-                size: 'md',
+        )}
+        {!isShowDropDown && (
+          <div
+            onMouseEnter={() => setIsShowDropDown(true)}
+            className={cn(
+              'text-icon-neutral-primary hover:bg-surface-neutral-primary invisible ml-1 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full p-1.5 group-hover:visible',
+              {
+                'hover:border-border-brand-primary-600 border border-blue-200':
+                  selected,
+                'hover:border-border-brand-primary-600 border border-blue-100':
+                  pined,
               },
-            },
-          ]}
-          customTriggerRender={(prop) => {
-            if (isDropdownActive !== prop.isActive) {
-              queueMicrotask(() => setIsDropdownActive(prop.isActive));
-            }
-            return (
-              <div
-                className={cn(
-                  'invisible w-8 h-8 ml-1 flex justify-center text-icon-neutral-primary items-center cursor-pointer rounded-full p-1.5 hover:bg-surface-neutral-primary group-hover:visible',
-                  {
-                    'hover:border-border-brand-primary-600 border border-blue-200': selected,
-                    'hover:border-border-brand-primary-600 border border-blue-100': pined,
-                    'visible border border-border-brand-primary-600': prop.isActive,
-                  },
-                )}
-              >
-                <Icon name="ellipsis-vertical" />
-              </div>
-            );
-          }}
-          customOptionRender={(prop) => {
-            return (
-              <div
-                onClick={() => {
-                  if (!canPin && prop.text === 'پین کردن') {
-                    showToast({
-                      message:
-                        'حداکثر میتوانید ۳ صندوق را در هر دسته بندی پین کنید.',
-                      type: 'warning',
-                    });
-                  }
-                  if (prop.text === 'پین کردن' && canPin) {
-                    pinedFunction();
-                    showProgressToast({
-                      timeout: 5000,
-                      title: 'صندوق مورد نظر پین شد.',
-                    });
-                  }
-                  if (prop.text === 'برداشتن پین') {
-                    unPinedFunction();
-                    showProgressToast({
-                      title: 'صندوق از لیست پین شده‌ها خارج شد.',
-                      timeout: 3000,
-                      leadingAction: {
-                        iconProps: { name: 'undo-2', size: 'sm' },
-                        onClick: () => pinedFunction(),
-                      },
-                    });
-                  }
+            )}
+          >
+            <Icon name="ellipsis-vertical" />
+          </div>
+        )}
+        {isShowDropDown && (
+          <OptionsDropdown
+            className="!border-border-neutral-primary shadow-7xl"
+            dropDownStyles={{
+              anchor: 'bottom start',
+              size: 'md',
+              bg: 'primary',
+              emphasize: 'medium',
+            }}
+            dropDownList={[
+              { text: 'مشاهده صندوق', icon: { name: 'eye', size: 'md' } },
+              { text: 'مشاهده ویدیو', icon: { name: 'video', size: 'md' } },
+              { text: 'نشان‌دار کردن', icon: { name: 'target', size: 'md' } },
+              {
+                text: pined ? 'برداشتن پین' : 'پین کردن',
+                icon: { name: pined ? 'pin-off' : 'pin', size: 'md' },
+              },
+              {
+                text:
+                  category === 'stocks'
+                    ? 'افزودن به دیده‌بان'
+                    : 'حذف از دیده‌بان',
+                icon: {
+                  name: category === 'stocks' ? 'plus' : 'minus',
+                  size: 'md',
+                },
+              },
+            ]}
+            customTriggerRender={(prop) => {
+              return (
+                <div
+                  className={cn(
+                    'text-icon-neutral-primary hover:bg-surface-neutral-primary invisible ml-1 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full p-1.5 group-hover:visible',
+                    {
+                      'hover:border-border-brand-primary-600 border border-blue-200':
+                        selected,
+                      'hover:border-border-brand-primary-600 border border-blue-100':
+                        pined,
+                      'border-border-brand-primary-600 visible border':
+                        prop.isActive,
+                    },
+                  )}
+                >
+                  <Icon name="ellipsis-vertical" />
+                </div>
+              );
+            }}
+            customOptionRender={(prop) => {
+              return (
+                <div
+                  onClick={() => {
+                    if (!canPin && prop.text === 'پین کردن') {
+                      showToast({
+                        message:
+                          'حداکثر میتوانید ۳ صندوق را در هر دسته بندی پین کنید.',
+                        type: 'warning',
+                      });
+                    }
+                    if (prop.text === 'پین کردن' && canPin) {
+                      pinedFunction();
+                      showProgressToast({
+                        timeout: 5000,
+                        title: 'صندوق مورد نظر پین شد.',
+                      });
+                    }
+                    if (prop.text === 'برداشتن پین') {
+                      unPinedFunction();
+                      showProgressToast({
+                        title: 'صندوق از لیست پین شده‌ها خارج شد.',
+                        timeout: 3000,
+                        leadingAction: {
+                          iconProps: { name: 'undo-2', size: 'sm' },
+                          onClick: () => pinedFunction(),
+                        },
+                      });
+                    }
 
-                  if (prop.text === 'افزودن به دیده‌بان') {
-                    toggleWatchList();
-                    showProgressToast({
-                      title: 'صندوق مورد نظر به دیده بان اضافه شد.',
-                      timeout: 3000,
-                    });
-                  }
-                  if (prop.text === 'حذف از دیده‌بان') {
-                    showProgressToast({
-                      title: 'صندوق مورد نظر از دیده بان حذف شد.',
-                      timeout: 3000,
-                      leadingAction: {
-                        iconProps: { name: 'undo-2', size: 'sm' },
-                        onClick: () => toggleWatchList(),
-                      },
-                    });
-                    toggleWatchList();
-                  }
-                }}
-                className={cn(
-                  'flex cursor-pointer font-medium w-[168px] text-text-neutral-primary pr-2 text-sm hover:text-text-brand-contrast-700 items-center gap-2 bg-surface-neutral-primary py-2',
-                  {
-                    'cursor-default hover:text-nowrap hover:text-text-neutral-disable text-text-neutral-disable':
-                      !canPin && prop.text === 'پین کردن',
-                  },
-                )}
-              >
-                {prop.icon?.name && (
-                  <div
-                    className={cn({
-                      'rotate-[25deg]':
-                        prop.icon.name === 'pin-off' || prop.icon.name === 'pin',
-                    })}
-                  >
-                    <Icon name={prop.icon?.name} size={prop.icon?.size} />
-                  </div>
-                )}
-                <span>{prop.text}</span>
-              </div>
-            );
-          }}
-        /> */}
+                    if (prop.text === 'افزودن به دیده‌بان') {
+                      toggleWatchList();
+                      showProgressToast({
+                        title: 'صندوق مورد نظر به دیده بان اضافه شد.',
+                        timeout: 3000,
+                      });
+                    }
+                    if (prop.text === 'حذف از دیده‌بان') {
+                      showProgressToast({
+                        title: 'صندوق مورد نظر از دیده بان حذف شد.',
+                        timeout: 3000,
+                        leadingAction: {
+                          iconProps: { name: 'undo-2', size: 'sm' },
+                          onClick: () => toggleWatchList(),
+                        },
+                      });
+                      toggleWatchList();
+                    }
+                  }}
+                  className={cn(
+                    'text-text-neutral-primary hover:text-text-brand-contrast-700 bg-surface-neutral-primary flex w-[168px] cursor-pointer items-center gap-2 py-2 pr-2 text-sm font-medium',
+                    {
+                      'hover:text-text-neutral-disable text-text-neutral-disable cursor-default hover:text-nowrap':
+                        !canPin && prop.text === 'پین کردن',
+                    },
+                  )}
+                >
+                  {prop.icon?.name && (
+                    <div
+                      className={cn({
+                        'rotate-[25deg]':
+                          prop.icon.name === 'pin-off' ||
+                          prop.icon.name === 'pin',
+                      })}
+                    >
+                      <Icon name={prop.icon?.name} size={prop.icon?.size} />
+                    </div>
+                  )}
+                  <span>{prop.text}</span>
+                </div>
+              );
+            }}
+          />
+        )}
       </div>
     </div>
   );
@@ -252,9 +282,10 @@ function TableRowInner<T extends FundRow>({
   watchList,
   isScrollAtStart,
 }: TableRowProps<T>) {
+  const [isHovered, setIsHovered] = useState(false);
   const handleToggleWatchList = useCallback(
     () => toggleWatchList({ id: row.id }),
-    [row.id, toggleWatchList]
+    [row.id, toggleWatchList],
   );
 
   const handlePin = useCallback(
@@ -262,7 +293,7 @@ function TableRowInner<T extends FundRow>({
       isMainTab
         ? row.pin?.('top', true)
         : setPineWatchList([...pineWatchLis, row.id]),
-    [isMainTab, pineWatchLis, row.id, setPineWatchList]
+    [isMainTab, pineWatchLis, row.id, setPineWatchList],
   );
 
   const handleUnPin = useCallback(
@@ -270,11 +301,16 @@ function TableRowInner<T extends FundRow>({
       isMainTab
         ? row.pin?.(false)
         : setPineWatchList((prev) => prev.filter((id) => id !== row.id)),
-    [isMainTab, row.id, setPineWatchList]
+    [isMainTab, row.id, setPineWatchList],
   );
 
   return (
-    <tr key={row.id} className="group h-[46px] border-b border-border-neutral-secondary">
+    <tr
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      key={row.id}
+      className="border-border-neutral-secondary group h-[46px] border-b"
+    >
       <td className="sticky right-0 top-0 z-40 m-0 flex items-center py-0">
         <div className="absolute z-50 pr-0">
           <Bookmark
@@ -284,6 +320,7 @@ function TableRowInner<T extends FundRow>({
         </div>
         <div>
           <FundsInfoCell
+            isRowHovered
             tag={!isMainTab}
             category={
               isMainTab
@@ -306,9 +343,13 @@ function TableRowInner<T extends FundRow>({
         </div>
       </td>
       <td></td>
-
       {row.getVisibleCells().map((item) => (
-        <td className='bg-surface-neutral-primary text-text-neutral-primary group-hover:bg-surface-accent-blue-50' key={item.id}>{item.getValue() as string}</td>
+        <td
+          className="bg-surface-neutral-primary text-text-neutral-primary group-hover:bg-surface-accent-blue-50"
+          key={item.id}
+        >
+          {item.getValue() as string}
+        </td>
       ))}
     </tr>
   );

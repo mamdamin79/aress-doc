@@ -41,7 +41,6 @@ import {
   FundsTag,
 } from 'design-system';
 import {
-  Cell,
   ColumnDef,
   Header,
   SortingState,
@@ -54,17 +53,14 @@ import {
 } from '@tanstack/react-table';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useSortable } from '@dnd-kit/sortable';
-import { Person, makeData } from './_components/makeData';
+import { makeData } from './_components/makeData';
 import { columnVisibility, filterList } from './FundsTable.constants';
 import { ExportExel } from './_components/ExportExel';
-import { useVirtualizer } from '@tanstack/react-virtual';
-import { useSmartTableScroll } from 'apps/fe-app/hooks/useSmartTableScroll';
-import TableRow from './_components/TableRow';
+import { useSmartTableScroll } from './../../../../hooks/useSmartTableScroll';
+import { TableBody } from './_components/TableBody';
+import { DragPosition, Person } from './types';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
-  const [rowMarks, setRowMarks] = useState<{
-    [tabIndex: number]: { [id: string]: string };
-  }>({});
   const [canScrollVertical, setCanScrollVertical] = useState(false);
   const [activeIndexCategoryTab, setActiveIndexCategoryTab] = useState(0);
   const [data] = useState(() => makeData(500));
@@ -73,9 +69,7 @@ const Funds = () => {
   const [isScrollAtStart, setIsScrollAtStart] = useState<boolean>(false);
   const [isScrollAtEnd, setIsScrollAtEnd] = useState<boolean>(true);
   const [fundSearchQuery, setFundSearchQuery] = useState<string>('');
-  const tableRef = useRef<HTMLDivElement | any>(null);
-  const [watchList, setWatchList] = useState<string[]>([]);
-  const [pineWatchLis, setPineWatchList] = useState<string[]>([]);
+  const tableRef = useRef<HTMLDivElement>(null);
   const [sorting, setSorting] = useState<SortingState>([
     {
       id: 'nameFund',
@@ -242,7 +236,6 @@ const Funds = () => {
     columns.map((c) => c.id!),
   );
 
-  type DragPosition = 'left' | 'right';
 
   const dragOverRef = {
     columnId: null as string | null,
@@ -298,7 +291,6 @@ const Funds = () => {
     });
 
     const dragIndicator = useDragIndicator();
-
     const isDraggingOver = dragIndicator.columnId === header.column.id;
     const position = dragIndicator.position;
 
@@ -398,15 +390,7 @@ const Funds = () => {
     return !Object.entries(table.getState().columnVisibility).every(
       ([key, value]) => columnVisibility[key] === value,
     );
-  }, [table.getState().columnVisibility]);
-
-  const toggleWatchList = (fund: { id: string }) => {
-    setWatchList((prev) =>
-      prev.includes(fund.id)
-        ? prev.filter((id: string) => id !== fund.id)
-        : [...prev, fund.id],
-    );
-  };
+  }, [table]);
 
   useEffect(() => {
     const node = headerRefs?.current[activeSortIndex];
@@ -489,15 +473,15 @@ const Funds = () => {
     handlerMouseEnterTable();
   }, [activeIndexCategoryTab, tableCount]);
 
-  const handleColorChange = (id: string, color: string) => {
-    setRowMarks((prev) => ({
-      ...prev,
-      [activeIndexCategoryTab]: {
-        ...(prev[activeIndexCategoryTab] || {}),
-        [id]: color,
-      },
-    }));
-  };
+  // const handleColorChange = (id: string, color: string) => {
+  //   setRowMarks((prev) => ({
+  //     ...prev,
+  //     [activeIndexCategoryTab]: {
+  //       ...(prev[activeIndexCategoryTab] || {}),
+  //       [id]: color,
+  //     },
+  //   }));
+  // };
 
   const scrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -541,25 +525,10 @@ const Funds = () => {
         }, 300);
       }
     });
-  }, [columnOrder]);
+  }, [activeSortIndex, columnOrder, sorting]);
 
   const { rows } = table.getRowModel();
 
-  const virtualizer = useVirtualizer({
-    count: rows.length,
-    getScrollElement: () => tableRef.current,
-    estimateSize: () => 46,
-    overscan: 3,
-  });
-
-  interface VirtualItem {
-    index: number;
-    start: number;
-    end: number;
-    size: number;
-    key: string | number;
-    measureRef?: (el: HTMLElement | null) => void;
-  }
 
   // Scroll lock handler factory
   const freezeScroll = (el: HTMLDivElement) => (e: Event) => {
@@ -591,6 +560,7 @@ const Funds = () => {
       };
     }
   }, [isRotating]);
+  
 
   return (
     <>
@@ -623,7 +593,7 @@ const Funds = () => {
           'border-border-brand-soft-200 relative top-0 flex flex-col items-center overflow-hidden border-t-2',
         )}
       >
-        <div className="bg-border-brand-soft-200 absolute top-[75px] z-50 h-0.5 w-full"></div>
+        <div className="bg-border-brand-soft-200 absolute right-[8px] top-[75px] z-50 h-0.5 w-full"></div>
         <div
           onMouseEnter={handlerMouseEnterTable}
           ref={tableRef}
@@ -792,6 +762,7 @@ const Funds = () => {
                               key={header.id}
                               header={header}
                             >
+
                               <div
                                 ref={(el) => {
                                   if (headerRefs?.current) {
@@ -878,6 +849,7 @@ const Funds = () => {
                                 )}
                               </div>
                             </DraggableTableHeader>
+
                           )}
                         </>
                       );
@@ -936,43 +908,7 @@ const Funds = () => {
                 </tr>
               </DndContext>
             </thead>
-            <tbody>
-              <tr
-                style={{ height: virtualizer.getVirtualItems()[0]?.start ?? 0 }}
-              >
-                <td />
-              </tr>
-
-              {virtualizer.getVirtualItems().map((virtualRow: VirtualItem) => {
-                const row = rows[virtualRow.index];
-                const isMainTab = activeIndexCategoryTab === 0;
-
-                return (
-                  <TableRow
-                    key={row.id}
-                    row={row}
-                    isMainTab={isMainTab}
-                    activeIndexCategoryTab={activeIndexCategoryTab}
-                    rowMarks={rowMarks}
-                    handleColorChange={handleColorChange}
-                    toggleWatchList={toggleWatchList}
-                    setPineWatchList={setPineWatchList}
-                    pineWatchLis={pineWatchLis}
-                    watchList={watchList}
-                    isScrollAtStart={isScrollAtStart}
-                  />
-                );
-              })}
-              <tr
-                style={{
-                  height:
-                    virtualizer.getTotalSize() -
-                    (virtualizer.getVirtualItems().at(-1)?.end ?? 0),
-                }}
-              >
-                <td />
-              </tr>
-            </tbody>
+            <TableBody tableRef={tableRef} rows={rows} activeIndexCategoryTab={activeIndexCategoryTab} rowMarks={[]} />
           </table>
         </div>
       </div>

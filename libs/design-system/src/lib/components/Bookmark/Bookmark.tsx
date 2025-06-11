@@ -75,7 +75,7 @@ export function Bookmark({
             >
               <div
                 onClick={() => {
-                  onColorChange(color);
+                  onColorChange(color); 
                   setIsOpen(false);
                 }}
                 className={cn(

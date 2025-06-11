@@ -1,27 +1,7 @@
 import { faker } from '@faker-js/faker';
+import { Person } from '../types';
 
-export type Person = {
-  nameFund: string;
-  unitCount: number;
-  profitPerUnit: number;
-  netAssetValue: number;
-  monstatisticalPriceth: number;
-  cancellationPrice: number;
-  dailyAlpha: number;
-  weeklyAlpha: number;
-  monthlyAlpha: number;
-  quarterlyAlpha: number;
-  issuancePrice: number;
-  progress: number;
-  monthlyReturn: number;
-  quarterlyReturn: number;
-  yearlyReturn: number;
-  dailyReturn: number;
-  weeklyReturn: number;
-  startDate: number;
-  // logo: string;
-  investmentMethod: 'T' | 'I&C';
-};
+
 
 const range = (len: number) => {
   const arr: number[] = [];

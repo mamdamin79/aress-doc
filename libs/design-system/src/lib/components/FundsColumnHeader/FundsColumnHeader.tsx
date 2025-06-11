@@ -126,7 +126,7 @@ export function FundsColumnHeader({
         {activeSorticon && showLine && (
           <div className="bg-surface-brand-600-primary absolute bottom-0 h-1.5 w-16 rounded-t-md"></div>
         )}
-        <div className="font-] flex flex-col text-sm">
+        <div className="flex flex-col text-sm">
           <span>{title}</span>
           <span>
             {subTitle !== 'مشخصات صندوق' &&
@@ -135,8 +135,7 @@ export function FundsColumnHeader({
               subTitle}
           </span>
         </div>
-
-        <Tooltip className="text-md z-50 font-semibold" title={tooltipTitle}>
+        <Tooltip className="text-md font-semibold" title={tooltipTitle}>
           <div
             onClick={() => {
               if (typeof clickFilterd === 'function') {
@@ -154,6 +153,7 @@ export function FundsColumnHeader({
             })}
           >
             <Icon
+              key={'index'}
               name={iconSort}
             />
           </div>
