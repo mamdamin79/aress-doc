@@ -1,6 +1,6 @@
 'use client';
 import { AressApiUser } from '@openapi';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ProfileForm } from '../../../../components';
 import { cn, Icon, ProfileSidebar } from 'design-system';
 import { LogoutModal } from './LogoutModal';

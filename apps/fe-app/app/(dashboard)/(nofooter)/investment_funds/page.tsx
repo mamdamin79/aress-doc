@@ -57,6 +57,8 @@ import {
   useDragIndicator,
   useTableDragSensors,
 } from './utils/investmentFunds.utils';
+import { OpenAPI, useFundsServiceGetFundsTable } from '@openapi';
+import { fetchToken } from 'apps/fe-app/app/(auth)/auth.utils';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
   const [activeIndexCategoryTab, setActiveIndexCategoryTab] = useState(0);
@@ -467,6 +469,51 @@ const Funds = () => {
     tableRef.current?.scrollBy({ top: 100, behavior: 'smooth' }),
   );
 
+  const query = useFundsServiceGetFundsTable({ tab: 1 }, undefined, {
+    enabled: false,
+  });
+
+  const fetchDataTable = async () => {
+    const token = await fetchToken();
+
+    if (!token) {
+      throw new Error('Failed to fetch access token');
+    }
+
+    OpenAPI.HEADERS = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    await query.refetch();
+  };
+
+  useEffect(() => {
+    fetchDataTable();
+  }, []);
+
+  const possibleTags = ['green', 'blue', 'yellow', 'purple', 'pink'];
+
+  type TagColor = (typeof possibleTags)[number];
+
+  const tabs: { title: string; tag?: TagColor; id: string }[] =
+    query.data?.tabs.map((tab) => {
+      const noTagTitles = ['دیده بان'];
+
+      return {
+        title: tab.title,
+        id: String(tab.identifier),
+        ...(noTagTitles.includes(tab.title)
+          ? {}
+          : {
+              tag: possibleTags[
+                Math.floor(Math.random() * possibleTags.length)
+              ],
+            }),
+      };
+    });
+
+    console.log(query.data?.selectedTabFunds);
+    
   return (
     <>
       <div
@@ -475,16 +522,15 @@ const Funds = () => {
           isHeaderVisible ? 'translate-y-0' : '-translate-y-full',
         )}
       >
-        <Tabs
-          variant="shaped-color"
-          onClickTab={(e) => setActiveIndexCategoryTab(e)}
-          activeTab={activeIndexCategoryTab}
-          colorMode="neutral"
-          tabs={[
-            { title: 'سهامی', tag: 'green', id: '1' },
-            { title: 'دیده بان', id: '2' },
-          ]}
-        />
+        {tabs?.length && (
+          <Tabs
+            variant="shaped-color"
+            onClickTab={(e) => setActiveIndexCategoryTab(e)}
+            activeTab={activeIndexCategoryTab}
+            colorMode="neutral"
+            tabs={tabs}
+          />
+        )}
         <Tooltip title="خروجی اکسل">
           <div className="border-button-border-default cursor-pointer rounded-md border p-1.5">
             <ExportExel />

@@ -40,17 +40,17 @@ export type OpenAPIConfig = {
 };
 
 export const OpenAPI: OpenAPIConfig = {
-	BASE: '',
-	CREDENTIALS: 'include',
-	ENCODE_PATH: undefined,
-	HEADERS: undefined,
-	PASSWORD: undefined,
-	TOKEN: undefined,
-	USERNAME: undefined,
-	VERSION: '0.0.1',
-	WITH_CREDENTIALS: false,
-	interceptors: {
-		request: new Interceptors(),
-		response: new Interceptors(),
-	},
-};
+  BASE: process.env.NEXT_PUBLIC_API_URL as string,
+  CREDENTIALS: 'include',
+  ENCODE_PATH: undefined,
+  HEADERS: undefined,
+  PASSWORD: undefined,
+  TOKEN: undefined,
+  USERNAME: undefined,
+  VERSION: '0.0.1',
+  WITH_CREDENTIALS: false,
+  interceptors: {
+    request: new Interceptors(),
+    response: new Interceptors(),
+  },
+}
