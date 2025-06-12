@@ -10,15 +10,9 @@ import { useHeaderVisibility } from '../../../../hooks/useHeaderVisiblity';
 // needed for table body level scope DnD setup
 import {
   DndContext,
-  KeyboardSensor,
-  MouseSensor,
-  TouchSensor,
   closestCenter,
   type DragEndEvent,
-  useSensor,
-  useSensors,
   DragOverlay,
-  useDndMonitor,
 } from '@dnd-kit/core';
 import { restrictToHorizontalAxis } from '@dnd-kit/modifiers';
 import {
@@ -58,10 +52,13 @@ import { columnVisibility, filterList } from './FundsTable.constants';
 import { ExportExel } from './_components/ExportExel';
 import { useSmartTableScroll } from './../../../../hooks/useSmartTableScroll';
 import { TableBody } from './_components/TableBody';
-import { DragPosition, Person } from './types';
+import { Person } from './types';
+import {
+  useDragIndicator,
+  useTableDragSensors,
+} from './utils/investmentFunds.utils';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
-  const [canScrollVertical, setCanScrollVertical] = useState(false);
   const [activeIndexCategoryTab, setActiveIndexCategoryTab] = useState(0);
   const [data] = useState(() => makeData(500));
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
@@ -235,49 +232,10 @@ const Funds = () => {
   const [columnOrder, setColumnOrder] = React.useState<string[]>(() =>
     columns.map((c) => c.id!),
   );
-
-
-  const dragOverRef = {
-    columnId: null as string | null,
-    position: null as DragPosition | null,
-  };
-
-  const useDragIndicator = () => {
-    const [, forceRender] = useState({});
-
-    useDndMonitor({
-      onDragOver(event) {
-        const overId = event.over?.id;
-        const activeId = event.active?.id;
-        const clientX = (event.activatorEvent as PointerEvent).clientX;
-
-        if (!overId || !activeId || !clientX) return;
-
-        const overEl = document.querySelector(
-          `[data-column-id="${overId}"]`,
-        ) as HTMLElement;
-        if (!overEl) return;
-
-        const overRect = overEl.getBoundingClientRect();
-        const midpoint = overRect.left + overRect.width / 2;
-
-        const pos: DragPosition = clientX > midpoint ? 'right' : 'left';
-
-        if (dragOverRef.columnId !== overId || dragOverRef.position !== pos) {
-          dragOverRef.columnId = String(overId);
-          dragOverRef.position = pos;
-          forceRender({});
-        }
-      },
-      onDragEnd() {
-        dragOverRef.columnId = null;
-        dragOverRef.position = null;
-        forceRender({});
-      },
-    });
-
-    return dragOverRef;
-  };
+  const [customColl, setCustomColl] = useState<{
+    active: boolean;
+    date: string;
+  }>({ active: false, date: '' });
 
   const DraggableTableHeader = ({
     header,
@@ -349,22 +307,6 @@ const Funds = () => {
     }
   }
 
-  const sensors = useSensors(
-    useSensor(MouseSensor, {
-      activationConstraint: {
-        delay: 250,
-        distance: 0,
-      },
-    }),
-    useSensor(TouchSensor, {}),
-    useSensor(KeyboardSensor, {}),
-  );
-
-  const [customColl, setCustomColl] = useState<{
-    active: boolean;
-    date: string;
-  }>({ active: false, date: '' });
-
   const table = useReactTable({
     data,
     columns: columns,
@@ -413,75 +355,12 @@ const Funds = () => {
     }
   }, [isScrollAtStart, activeSortIndex, table]);
 
-  // event keyboard scroll
-  useHotkeys('a, arrowleft', () => handleScrollRight());
-  useHotkeys('d, arrowright', () => handleScrollLeft());
-  useHotkeys('w, arrowup', () =>
-    tableRef.current?.scrollBy({ top: -100, behavior: 'smooth' }),
-  );
-  useHotkeys('s, arrowdown', () =>
-    tableRef.current?.scrollBy({ top: 100, behavior: 'smooth' }),
-  );
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (tableRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } = tableRef.current;
-        // Update scroll start state
-        if (Math.round(scrollLeft) === 0) {
-          setIsScrollAtStart(false);
-        } else if (scrollLeft < 0) {
-          setIsScrollAtStart(true);
-        }
-        // Update scroll end state; logic preserved from original code
-        setIsScrollAtEnd(
-          Math.round(scrollLeft * -1) + clientWidth <= scrollWidth - 1,
-        );
-      }
-    };
-
-    // Register scroll event listener on the table element
-    const tableElem = tableRef.current;
-    tableElem?.addEventListener('scroll', handleScroll);
-
-    // Cleanup: remove event listeners when component unmounts or dependencies change
-    return () => {
-      tableElem?.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
   useEffect(() => {
     document.documentElement.style.overflow = 'hidden';
     return () => {
       document.documentElement.style.overflow = 'auto';
     };
   }, [customColl.active]);
-
-  const handlerMouseEnterTable = () => {
-    requestAnimationFrame(() => {
-      if (tableRef.current) {
-        const hasVerticalScroll =
-          tableRef.current.scrollHeight > tableRef.current.clientHeight;
-        setCanScrollVertical(hasVerticalScroll);
-      }
-    });
-  };
-
-  const tableCount = table.getPageCount();
-
-  useEffect(() => {
-    handlerMouseEnterTable();
-  }, [activeIndexCategoryTab, tableCount]);
-
-  // const handleColorChange = (id: string, color: string) => {
-  //   setRowMarks((prev) => ({
-  //     ...prev,
-  //     [activeIndexCategoryTab]: {
-  //       ...(prev[activeIndexCategoryTab] || {}),
-  //       [id]: color,
-  //     },
-  //   }));
-  // };
 
   const scrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -512,7 +391,30 @@ const Funds = () => {
       stopScroll();
     };
     window.addEventListener('mouseup', handleGlobalMouseUp);
+
+    const handleScroll = () => {
+      if (tableRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = tableRef.current;
+        // Update scroll start state
+        if (Math.round(scrollLeft) === 0) {
+          setIsScrollAtStart(false);
+        } else if (scrollLeft < 0) {
+          setIsScrollAtStart(true);
+        }
+        // Update scroll end state; logic preserved from original code
+        setIsScrollAtEnd(
+          Math.round(scrollLeft * -1) + clientWidth <= scrollWidth - 1,
+        );
+      }
+    };
+
+    // Register scroll event listener on the table element
+    const tableElem = tableRef.current;
+    tableElem?.addEventListener('scroll', handleScroll);
     return () => {
+      // Cleanup: remove event listeners when component unmounts or dependencies change
+      tableElem?.removeEventListener('scroll', handleScroll);
+
       window.removeEventListener('mouseup', handleGlobalMouseUp);
     };
   }, []);
@@ -521,14 +423,17 @@ const Funds = () => {
     columnOrder.findIndex((id, index) => {
       if (id === sorting[0]?.id && activeSortIndex !== 0) {
         setTimeout(() => {
-          setActiveSortIndex(index - 1);
+          if (index === 1) {
+            setActiveSortIndex(1);
+          } else {
+            setActiveSortIndex(index - 1);
+          }
         }, 300);
       }
     });
   }, [activeSortIndex, columnOrder, sorting]);
 
   const { rows } = table.getRowModel();
-
 
   // Scroll lock handler factory
   const freezeScroll = (el: HTMLDivElement) => (e: Event) => {
@@ -542,25 +447,25 @@ const Funds = () => {
     if (!el) return;
 
     if (isRotating) {
-      // Save current scrollTop position
       el.dataset.scrollTop = el.scrollTop.toString();
-
-      // Create freeze scroll handler
       const handler = freezeScroll(el);
-
-      // Add scroll listener to prevent vertical scrolling
       el.addEventListener('scroll', handler);
-
-      // Disable smooth scrolling behavior
       el.style.scrollBehavior = 'auto';
-
-      // Cleanup: remove scroll handler when drag ends
       return () => {
         el.removeEventListener('scroll', handler);
       };
     }
   }, [isRotating]);
-  
+
+  // event keyboard scroll
+  useHotkeys('a, arrowleft', () => handleScrollRight());
+  useHotkeys('d, arrowright', () => handleScrollLeft());
+  useHotkeys('w, arrowup', () =>
+    tableRef.current?.scrollBy({ top: -100, behavior: 'smooth' }),
+  );
+  useHotkeys('s, arrowdown', () =>
+    tableRef.current?.scrollBy({ top: 100, behavior: 'smooth' }),
+  );
 
   return (
     <>
@@ -593,9 +498,8 @@ const Funds = () => {
           'border-border-brand-soft-200 relative top-0 flex flex-col items-center overflow-hidden border-t-2',
         )}
       >
-        <div className="bg-border-brand-soft-200 absolute right-[8px] top-[75px] z-50 h-0.5 w-full"></div>
+        <div className="bg-border-brand-soft-200 absolute right-[8px] top-[75px] z-50 h-0.5 w-full" />
         <div
-          onMouseEnter={handlerMouseEnterTable}
           ref={tableRef}
           className="table-scroll group/table bg-surface-neutral-primary scrollbar-lg h-[calc(100vh-172px)] w-screen overflow-auto scroll-smooth"
         >
@@ -616,7 +520,7 @@ const Funds = () => {
                 collisionDetection={closestCenter}
                 modifiers={[restrictToHorizontalAxis]}
                 onDragEnd={handleDragEnd}
-                sensors={sensors}
+                sensors={useTableDragSensors()}
                 onDragOver={() => setIsRotating(true)}
                 onDragCancel={() => setIsRotating(false)}
               >
@@ -632,13 +536,11 @@ const Funds = () => {
                           ? `${sortIndicatorPosition.width}px`
                           : '',
                     }}
-                    className={cn('z-[99999999] duration-300', {
+                    className={cn('z-[9999] duration-300', {
                       'absolute bottom-0 z-20 transition-transform':
                         activeSortIndex !== 0,
                       'group-hover/table:-right-0':
-                        activeSortIndex !== 0 &&
-                        canScrollVertical &&
-                        isScrollAtStart,
+                        activeSortIndex !== 0 && isScrollAtStart,
                       'fixed right-[215px] top-[240px] z-10 w-fit':
                         activeSortIndex === 0,
                       'top-[157px]': activeSortIndex === 0 && !isHeaderVisible,
@@ -762,7 +664,6 @@ const Funds = () => {
                               key={header.id}
                               header={header}
                             >
-
                               <div
                                 ref={(el) => {
                                   if (headerRefs?.current) {
@@ -849,7 +750,6 @@ const Funds = () => {
                                 )}
                               </div>
                             </DraggableTableHeader>
-
                           )}
                         </>
                       );
@@ -908,7 +808,12 @@ const Funds = () => {
                 </tr>
               </DndContext>
             </thead>
-            <TableBody tableRef={tableRef} rows={rows} activeIndexCategoryTab={activeIndexCategoryTab} rowMarks={[]} />
+            <TableBody
+              tableRef={tableRef}
+              rows={rows}
+              activeIndexCategoryTab={activeIndexCategoryTab}
+              rowMarks={[]}
+            />
           </table>
         </div>
       </div>
