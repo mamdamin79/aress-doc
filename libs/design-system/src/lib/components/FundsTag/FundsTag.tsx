@@ -5,16 +5,15 @@ export interface FundsTagProps {
 }
 export const FundsTag: React.FC<FundsTagProps> = ({ color }) => {
   return (
-    <div className='w-3 rounded-full h-3 bg-white flex items-center justify-center'>
+    <div className='w-3 rounded-full h-3 bg-surface-neutral-secondary flex items-center justify-center'>
       <div
         className={cn(
           'h-2.5 w-2.5 rounded-full',
-          color === 'green' && 'bg-vividGreen-600',
-          color === 'blue' && 'bg-blue-600',
-          color === 'purple' && 'bg-purple-600',
-          color === 'yellow' && 'bg-yellow-600',
-          color === 'yellow' && 'bg-yellow-600',
-          color === 'pink' && 'bg-pink-600',
+          color === 'green' && 'bg-surface-accent-vividgreen-600',
+          color === 'blue' && 'bg-surface-accent-blue-600',
+          color === 'purple' && 'bg-surface-accent-purple-600',
+          color === 'yellow' && 'bg-surface-accent-yellow-600',
+          color === 'pink' && 'bg-surface-accent-pink-600',
         )}
       ></div>
     </div>

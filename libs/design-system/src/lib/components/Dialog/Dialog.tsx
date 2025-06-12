@@ -48,7 +48,7 @@ export const Dialog: React.FC<DialogProps> = ({
       <HeadlessDialog
         static
         as="div"
-        className="relative z-[100] w-screen"
+        className="text-text-neutral-primary relative z-[100] w-screen"
         aria-label="Close dialog"
         onClose={onClose}
       >
@@ -77,7 +77,7 @@ export const Dialog: React.FC<DialogProps> = ({
             >
               <DialogPanel
                 className={cn(
-                  'relative transform rounded-2xl border-2 border-gray-300 bg-white p-6 text-left align-middle transition-all',
+                  'border-border-neutral-secondary bg-surface-neutral-primary relative transform rounded-2xl border-2 p-6 text-left align-middle transition-all',
                   className,
                 )}
                 style={{

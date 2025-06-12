@@ -5,7 +5,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { OTPForm } from '../../OTPForm';
 
 const SectionHeader = ({ title }: { title: string }) => (
-  <span className="text-md text-center font-medium">{title}</span>
+  <span className="text-md text-text-neutral-primary text-center font-medium">
+    {title}
+  </span>
 );
 interface NewMailFormValues {
   email: string;
@@ -41,10 +43,13 @@ const NewMailForm = ({
       <div className="flex w-full flex-row justify-between">
         <span className="w-1/3"></span>
         <SectionHeader title="ایمیل جدید" />
-        <div className="text-brand-600 flex w-1/3 flex-row justify-end text-sm font-medium"></div>
+        <div className="text-text-brand-primary-600 flex w-1/3 flex-row justify-end text-sm font-medium"></div>
       </div>
       <span className="mt-4 text-sm">
-        <span className="font-medium">ایمیل فعلی: </span> {email}
+        <span className="text-text-neutral-primary font-medium">
+          ایمیل فعلی:
+        </span>
+        {email}
       </span>
       <Controller
         name="email"
@@ -130,7 +135,7 @@ export const ChangeMail = ({
       {stage === ChangeMailStage.OTP && (
         <OTPForm
           description={`کد تایید ارسال شده به ${newMail} را وارد کنید.`}
-          backBtnLabel='ویرایش ایمیل'
+          backBtnLabel="ویرایش ایمیل"
           onBackBtn={() => setStage(ChangeMailStage.NEW_MAIL)}
           title="ایمیل جدید"
           onSubmit={() => {

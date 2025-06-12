@@ -12,7 +12,7 @@ export const HeadProfile: React.FC<HeadProfileProps> = ({ profileImage }) => {
       {/* Static Container */}
       <div
         className={cn(
-          'bg-brand-100 flex h-10 items-center gap-3 rounded-lg p-1 shadow-2xl',
+          'bg-surface-brand-100 flex h-10 items-center gap-3 rounded-lg p-1 shadow-2xl',
         )}
       >
         <Image

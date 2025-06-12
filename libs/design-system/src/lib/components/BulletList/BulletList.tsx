@@ -19,19 +19,19 @@ export function BulletList({ items, textColor = 'dark', size = 'md' }: Props) {
           <li
             className={cn(
               'flex items-start gap-2 text-sm font-medium',
-              status === 'error' && 'text-red-600',
-              status === 'success' && 'text-green-600',
+              status === 'error' && 'text-text-accent-red-primary-600',
+              status === 'success' && 'text-text-accent-green-primary-600',
               status === 'normal' &&
                 (textColor === 'dark'
-                  ? 'text-gray-1000 mr-2'
-                  : 'mr-2 text-gray-600'),
+                  ? 'text-text-neutral-primary mr-2'
+                  : 'text-text-neutral-secondary mr-2'),
               size == 'sm' && 'text-xs',
             )}
             key={index}
           >
             {/* Icon or bullet based on status */}
             {status === 'normal' && (
-              <span className="bg-gray-1000 mt-2.5 h-1 w-1 shrink-0 rounded-full"></span>
+              <span className="bg-text-neutral-primary mt-2.5 h-1 w-1 shrink-0 rounded-full"></span>
             )}
             {status === 'success' && (
               <div className="mt-1">

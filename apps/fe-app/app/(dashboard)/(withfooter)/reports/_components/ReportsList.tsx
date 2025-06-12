@@ -70,12 +70,13 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
                 videoBadge={report.hasVideo}
                 {...report}
                 image={baseURL + report.image}
+                shadowOnHover
               />
             </div>
           ))}
         </div>
       ) : (
-        <div className="4xl:w-[1591px] mx-auto flex h-full flex-col items-center justify-start md:w-[512px] xl:w-[904px]">
+        <div className="4xl:w-[1550px] mx-auto flex h-full flex-col items-center justify-start md:w-[512px] xl:w-[904px]">
           <Image
             src={emptyState}
             alt="empty state"

@@ -27,8 +27,8 @@ export const DotIndicator: React.FC<DotIndicatorProps> = ({
           aria-selected={index === currentIndex}
           aria-label={`Go to slide ${index + 1}`}
           className={cn(
-            `bg-brand-500 h-3 cursor-pointer rounded-full outline-none transition-all`,
-            index === currentIndex ? 'bg-brand-600 w-8' : 'w-3',
+            `bg-surface-brand-500 h-3 cursor-pointer rounded-full outline-none transition-all`,
+            index === currentIndex ? 'bg-surface-brand-600-primary w-8' : 'w-3',
           )}
           onClick={() => setIndex(index)}
           tabIndex={0}

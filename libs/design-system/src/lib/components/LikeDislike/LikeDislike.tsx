@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import React, { useState, useCallback } from 'react';
 import { LikeDislikeProps } from './LikeDislike.types';
 import { Icon } from '../Icon';
@@ -26,9 +26,9 @@ export const LikeDislike: React.FC<LikeDislikeProps> = ({
   return (
     <button
       onClick={handleReaction}
-      className={`sizing hover:text-gray-1000 group flex w-fit items-center gap-2 text-gray-700 transition-all`}
+      className={`sizing hover:text-text-neutral-primary text-text-neutral-secondarycontrast group flex w-fit items-center gap-2 transition-all`}
     >
-      <div className="font-vazirmatn bg-baseBackground flex h-[26px] w-[40px] items-center justify-center gap-8 rounded-sm text-[14px] transition-all group-hover:bg-gray-200">
+      <div className="bg-baseBackground group-hover:bg-surface-neutral-secondarycontrast flex h-[26px] w-[40px] items-center justify-center gap-8 rounded-sm text-[14px] transition-all">
         {value}
       </div>
       <div
@@ -37,7 +37,7 @@ export const LikeDislike: React.FC<LikeDislikeProps> = ({
             ? reaction === 'like'
               ? 'text-green-600 [&>*]:fill-green-600'
               : 'text-red-600 [&>*]:fill-red-600'
-            : 'hover:text-gray-1000 text-gray-700',
+            : 'hover:text-text-neutral-primary text-gray-700',
         )}
       >
         {/* Displaying the appropriate reaction icon based on the Reaction prop */}

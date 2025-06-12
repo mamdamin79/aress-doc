@@ -16,14 +16,14 @@ export function InfoPopover({ title, message, button }: Props) {
       <PopoverPanel
         transition
         anchor="bottom"
-        className="relative mt-4 max-w-96 !overflow-visible rounded-2xl bg-white p-6 shadow-lg transition duration-300 ease-in-out data-[closed]:-translate-y-1 data-[closed]:opacity-0"
+        className="relative mt-4 max-w-96 !overflow-visible rounded-2xl bg-surface-neutral-primary p-6 shadow-lg transition duration-300 ease-in-out data-[closed]:-translate-y-1 data-[closed]:opacity-0"
       >
         {({ close }) => (
           <div className="min-w-sm max-w-md">
-            <span className="text-gray-1000 font-vazirmatn text-right text-lg font-semibold">
+            <span className="text-text-neutral-primary text-right text-lg font-semibold">
               {title}
             </span>
-            <p className="font-vazirmatn pt-4 text-right text-sm text-gray-600">
+            <p className="font-vazirmatn pt-4 text-right text-sm text-text-neutral-secondary">
               {message}
             </p>
             <div

@@ -15,8 +15,16 @@ interface Props {
 
 // color variable for bg icon modal
 const colors = {
-  success: ['bg-vividGreen-100', 'bg-vividGreen-300', 'bg-vividGreen-600'],
-  error: ['bg-red-100', 'bg-red-300', 'bg-red-600'],
+  success: [
+    'bg-surface-accent-vividgreen-100',
+    'bg-surface-accent-vividgreen-300',
+    'bg-surface-accent-vividgreen-600',
+  ],
+  error: [
+    'bg-surface-message-error-100-soft',
+    'bg-surface-message-error-300-disable',
+    'bg-surface-message-error-600-primary',
+  ],
 };
 
 export function IconDialog({
@@ -49,7 +57,7 @@ export function IconDialog({
           >
             <div
               className={cn(
-                'flex h-16 w-16 items-center justify-center rounded-full text-white',
+                'text-icon-onaccent-neutral-on600 flex h-16 w-16 items-center justify-center rounded-full',
                 colors[mode][2],
               )}
             >

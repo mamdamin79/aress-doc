@@ -15,7 +15,7 @@ export const HamburgerMenuIcon: React.FC<HamburgerMenuIconProps> = ({
         {['top', 'middle', 'bottom'].map((position, index) => (
           <span
             key={position}
-            className={`absolute right-0 top-1/2 -mt-px block h-0.5 w-full rounded bg-black transition-all duration-300 ease-in-out ${
+            className={`bg-icon-neutral-primary absolute right-0 top-1/2 -mt-px block h-0.5 w-full rounded transition-all duration-300 ease-in-out ${
               open
                 ? position === 'middle'
                   ? 'opacity-0'

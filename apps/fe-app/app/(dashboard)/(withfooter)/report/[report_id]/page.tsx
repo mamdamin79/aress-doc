@@ -39,7 +39,7 @@ const page = async () => {
           ]}
         />
       </div>
-      <div className="mx-auto max-w-[1680px]">
+      <div className="text-text-neutral-primary mx-auto max-w-[1680px]">
         {/* Breadcrumb */}
 
         <section className="mb-16 flex w-full flex-col-reverse items-center gap-8 px-20 pt-6 xl:flex-row xl:justify-around">

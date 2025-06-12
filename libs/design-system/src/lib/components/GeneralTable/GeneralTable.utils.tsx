@@ -50,17 +50,17 @@ export const renderCell = (
 };
 
 export const getCellBackgroundColor = (value: number | null): string => {
-  if (value === null) return '';
-  if (value >= 15) return 'bg-green-500';
-  if (value >= 11) return 'bg-green-400';
-  if (value >= 7) return 'bg-green-300';
-  if (value >= 3) return 'bg-green-200';
-  if (value > 0) return 'bg-green-100';
-  if (value >= -3) return 'bg-red-100';
-  if (value >= -7) return 'bg-red-200';
-  if (value >= -11) return 'bg-red-300';
-  if (value >= -15) return 'bg-red-400';
-  if (value < -15) return 'bg-red-500';
+  if (value === null) return 'bg-surface-neutral-primary';
+  if (value >= 15) return 'bg-surface-accent-green-500';
+  if (value >= 11) return 'bg-surface-accent-green-400';
+  if (value >= 7) return 'bg-surface-accent-green-300';
+  if (value >= 3) return 'bg-surface-accent-green-200';
+  if (value > 0) return 'bg-surface-accent-green-100';
+  if (value >= -3) return 'bg-surface-accent-red-100';
+  if (value >= -7) return 'bg-surface-accent-red-200';
+  if (value >= -11) return 'bg-surface-accent-red-300';
+  if (value >= -15) return 'bg-surface-accent-red-400';
+  if (value < -15) return 'bg-surface-accent-red-500';
 
-  return ''; // Default fallback
+  return 'bg-surface-neutral-primary'; // Default fallback
 };

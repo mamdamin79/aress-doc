@@ -11,7 +11,7 @@ export const SeparatorLine: React.FC<SeperatorLineProps> = ({
   return (
     <tr {...rest}>
       <td colSpan={colSpan} className="font-semibold">
-        <div className="bg-gray-200 h-[1px] mt-3"></div>
+        <div className="bg-surface-neutral-secondarycontrast  mt-3 h-[1px]"></div>
         {label && <span>{label}</span>}
       </td>
     </tr>

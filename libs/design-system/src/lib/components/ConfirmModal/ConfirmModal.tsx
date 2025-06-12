@@ -102,8 +102,8 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
                 className={cn(
                   'text-md px-4 font-medium',
                   !inputValue && isWithInput
-                    ? 'bg-brand-300 cursor-not-allowed'
-                    : 'bg-brand-600 hover:bg-brand-700',
+                    ? 'bg-button-brand-surface-disable cursor-not-allowed'
+                    : 'bg-button-brand-surface-default hover:bg-button-brand-surface-hover',
                 )}
               >
                 {submitBtnLabel}

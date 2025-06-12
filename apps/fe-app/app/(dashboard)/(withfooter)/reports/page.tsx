@@ -61,7 +61,7 @@ export default async function ReportMenuPage({
   );
 
   return (
-    <div className="mx-auto flex justify-center px-20 xl:block">
+    <div className="text-text-neutral-primary mx-auto flex justify-center px-20 xl:block">
       <div className="flex flex-row-reverse items-stretch justify-between gap-8 md:max-w-[772px] xl:max-w-full xl:justify-center">
         <div>
           <ReportList reports={paginatedReports} />

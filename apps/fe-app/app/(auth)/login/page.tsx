@@ -15,7 +15,7 @@ const LoginPage = () => {
           <div className="absolute right-0 top-[34px] mr-8">
             <div className="hidden items-center gap-4 py-3 xl:flex">
               <Image alt="logo" src={Logo} width={38} height={38} />
-              <h1 className="text-lg font-semibold">
+              <h1 className="text-text-neutral-primary text-lg font-semibold">
                 پردازش اطلاعات مالی آرسس
               </h1>
             </div>

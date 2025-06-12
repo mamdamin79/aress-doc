@@ -67,7 +67,7 @@ export const OTPForm: React.FC<OTPFormProps> = ({
   return (
     <div
       className={cn(
-        'bg-baseBackground flex w-full flex-col gap-6 text-right',
+        'bg-surface-neutral-primary flex w-full flex-col gap-6 text-right',
         className,
       )}
     >
@@ -75,9 +75,11 @@ export const OTPForm: React.FC<OTPFormProps> = ({
         {onBackBtn ? (
           <>
             <span className="w-1/3"></span>
-            <span className="text-md text-center font-medium">{title}</span>
+            <span className="text-md text-text-neutral-primary text-center font-medium">
+              {title}
+            </span>
             <div
-              className="text-brand-600 flex w-1/3 cursor-pointer flex-row justify-end text-sm font-medium"
+              className="text-button-brand-label-plain-default flex w-1/3 cursor-pointer flex-row justify-end text-sm font-medium"
               onClick={onBackBtn}
             >
               {backBtnLabel}
@@ -85,17 +87,19 @@ export const OTPForm: React.FC<OTPFormProps> = ({
             </div>
           </>
         ) : (
-          <span className="text-md w-full text-center font-medium">
+          <span className="text-md text-text-neutral-primary w-full text-center font-medium">
             {title}
           </span>
         )}
       </div>
-      <span className="mt-4 text-sm font-medium">{description}</span>
+      <span className="text-text-neutral-primary mt-4 text-sm font-medium">
+        {description}
+      </span>
       <OtpInput
         shouldAutoFocus
         skipDefaultStyles
         containerStyle="flex flex-row-reverse w-full gap-2"
-        inputStyle="h-14 flex-1 min-w-0 basis-0 bg-gray-100 text-center border border-gray-200 rounded-xl"
+        inputStyle="h-14 flex-1 min-w-0 basis-0  bg-surface-neutral-secondary text-center border border-border-neutral-secondary rounded-xl text-text-neutral-primary"
         value={otp}
         onChange={setOtp}
         numInputs={6}
@@ -105,11 +109,11 @@ export const OTPForm: React.FC<OTPFormProps> = ({
       <div className="flex flex-row items-center gap-3">
         {countdown > 0 ? (
           <>
-            <div className="border-brand-600 text-brand-600 flex w-20 flex-row items-center justify-center gap-2 rounded-md border py-1 font-medium">
+            <div className="border-button-brand-border-default text-button-brand-label-plain-default flex w-20 flex-row items-center justify-center gap-2 rounded-md border py-1 font-medium">
               <Icon name="clock" size="md" />
               <span>{formatTime(countdown)}</span>
             </div>
-            <span className="text-sm font-medium text-gray-600">
+            <span className="text-text-neutral-secondary text-sm font-medium">
               تا ارسال مجدد کد
             </span>
           </>

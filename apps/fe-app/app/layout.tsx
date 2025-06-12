@@ -13,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-surface-neutral-background min-w-[768px]">
         <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
     </html>

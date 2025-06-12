@@ -44,12 +44,12 @@ export const NewPasswordForm: React.FC<NewPasswordFormProps> = ({
     <form
       dir="rtl"
       className={cn(
-        'bg-baseBackground flex w-full flex-col gap-6 rounded-3xl',
-        isStandAlone && 'border border-gray-300 p-6',
+        'bg-surface-neutral-primary flex w-full flex-col gap-6 rounded-3xl',
+        isStandAlone && 'border-border-neutral-primary border p-6',
       )}
       onSubmit={handleSubmit(onSubmit)}
     >
-      <h3 className="text-center text-xl font-medium">بازنشانی رمز عبور</h3>
+      <h3 className="text-center text-xl font-medium text-text-neutral-primary">بازنشانی رمز عبور</h3>
       <div className="flex flex-col gap-7">
         <div className="flex flex-col gap-4 text-right">
           <div>

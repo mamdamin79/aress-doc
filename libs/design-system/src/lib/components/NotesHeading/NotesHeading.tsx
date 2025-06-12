@@ -6,7 +6,7 @@ export interface NotesHeadingProps {
 }
 export const NotesHeading: React.FC<NotesHeadingProps> = ({ icon, title }) => {
   return (
-    <div className="flex flex-row items-center gap-2">
+    <div className="text-text-neutral-primary flex flex-row items-center gap-2">
       <Icon name={icon.name} key={icon.name} size={icon.size} />
       <span className="text-right text-xl font-medium">{title}</span>
     </div>

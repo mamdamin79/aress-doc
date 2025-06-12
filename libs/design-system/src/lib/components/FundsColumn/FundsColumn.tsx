@@ -15,6 +15,7 @@ interface Props {
   active?: boolean;
   subTitle?: string;
   defaultSort?: () => void;
+  activeSorticon?: boolean
 }
 
 export function FundsColumn({
@@ -25,24 +26,40 @@ export function FundsColumn({
   sortType,
   filterable,
   type,
+  activeSorticon = false,
   clickFilterd,
-  
   defaultSort,
   active,
 }: Props) {
   const [sortTypeValue, setSortTypeValue] = useState<Props['type']>(type);
 
   useEffect(() => {
-    setSortTypeValue(type)
-  }, [type])  
-  
+    setSortTypeValue(type);
+  }, [type]);
+
+  const [showLine, setShowLine] = useState(false);
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    if (activeSorticon) {
+      timeout = setTimeout(() => {
+        setShowLine(true);
+      }, 300);
+    } else {
+      setShowLine(false);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [activeSorticon]);
+
+
   return (
     <div
       className={cn(
         {
           'w-28': size === 'small',
           'w-36': size === 'medium',
-          'w-[200px]': size === 'large',
+          'w-[215px]': size === 'large',
           'w-[312px]': size === 'extraLarg',
           'shadow-4xl': shadow && size === 'extraLarg',
           'bg-pink-200': size === 'extraLarg' && filterable && !active,
@@ -53,15 +70,14 @@ export function FundsColumn({
             !filterable && size !== 'extraLarg' && !active,
           'bg-pink-200 hover:bg-pink-300': filterable && size !== 'extraLarg',
         },
-        'text-text-neutral-primary group/first cursor-pointer',
+        'group/first cursor-pointer',
       )}
     >
       <div
         className={cn(
-          'relative mx-auto px-1.5 flex h-[76px] w-fit items-center justify-center gap-1',
+          'relative mx-auto flex h-[76px] w-fit items-center justify-center gap-1 px-1.5',
           {
-            'group-hover/first:bg-pink-300':
-              size === 'extraLarg' && filterable,
+            'group-hover/first:bg-pink-300': size === 'extraLarg' && filterable,
             'group-hover/first:bg-[#BCEBEB]':
               size === 'extraLarg' && !filterable,
             'bg-[#BCEBEB]': !filterable && active && size === 'extraLarg',
@@ -72,11 +88,20 @@ export function FundsColumn({
         <div className={cn(filterable ? 'visible' : 'invisible')}>
           <Icon name="filter" />
         </div>
-        <div className='flex flex-col text-sm font-]'>
+        {activeSorticon && showLine && (
+          <div className="w-16 h-1.5 absolute bottom-0 bg-brand-600 rounded-t-md"></div>
+        )}
+        <div className="font-] flex flex-col text-sm">
           <span>{title}</span>
-          <span>{subTitle !== 'مشخصات صندوق' && subTitle !== 'ارکان صندوق' && subTitle !== 'سهم پرتفوی صندوق' && subTitle}</span>
+          <span>
+            {subTitle !== 'مشخصات صندوق' &&
+              subTitle !== 'ارکان صندوق' &&
+              subTitle !== 'سهم پرتفوی صندوق' &&
+              subTitle}
+          </span>
         </div>
         <Tooltip
+          className='text-md z-50 font-semibold'
           title={
             sortType === 'ranked'
               ? type === 'inactive'
@@ -88,15 +113,15 @@ export function FundsColumn({
                 ? 'مرتب سازی نزولی'
                 : type === 'active-asc'
                   ? 'حالت پیشفرض (بدون مرتب سازی)'
-                  : 'مرتب سازی صعودی'}>
+                  : 'مرتب سازی صعودی'
+          }
+        >
           <div
-            onClick={(e) => {
-              e.stopPropagation();
-              e.nativeEvent.stopImmediatePropagation();
+            onClick={() => {
               if (typeof clickFilterd === 'function') {
                 clickFilterd();
               }
-              if (sortTypeValue === 'active-desc') {                
+              if (sortTypeValue === 'active-desc') {
                 defaultSort && defaultSort();
               }
             }}
@@ -104,14 +129,20 @@ export function FundsColumn({
               {
                 'invisible text-[#545962] group-hover/first:visible':
                   type === 'inactive',
-                'visible': active,
+                visible: active,
               },
               'hover:bg-brand-600 rounded-md p-1 duration-150 hover:text-white',
             )}
           >
             <Icon
               name={
-                sortType === 'ranked' ? (type === 'active-asc' ? 'arrow-down-wide-narrow' : 'arrow-up-narrow-wide') : (type === 'active-asc' ? 'arrow-down-a-z' : 'arrow-up-z-a')
+                sortType === 'ranked'
+                  ? type === 'active-asc'
+                    ? 'arrow-down-wide-narrow'
+                    : 'arrow-up-narrow-wide'
+                  : type === 'active-asc'
+                    ? 'arrow-down-a-z'
+                    : 'arrow-up-z-a'
               }
             />
           </div>

@@ -32,7 +32,7 @@ export const Tooltip: React.FC<Props> = ({
         content={title}
         style={{ padding: '0 8px' }}
         className={cn(
-          'bg-gray-1000/85 shadow-5xl rounded-xs text-sm font-medium text-white z-50',
+          'bg-surface-neutral-invers shadow-5xl rounded-xs z-50 text-sm font-medium text-white',
           className,
         )}
       ></ReactTooltip>
@@ -40,4 +40,4 @@ export const Tooltip: React.FC<Props> = ({
   );
 };
 
-export default Tooltip; 
+export default Tooltip;

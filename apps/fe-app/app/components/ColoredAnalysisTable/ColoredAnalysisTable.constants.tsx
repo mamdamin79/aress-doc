@@ -61,7 +61,7 @@ export const schema: Column<TableRow>[] = [
           sharedStyle,
           'justify-center min-w-[50px]',
           rowIndex === STDDEV_ROW_INDEX
-            ? 'bg-gray-100'
+            ? 'bg-surface-neutral-secondary'
             : ((hoveredCol !== null && hoveredCol !== colIndex) ||
                   (hoveredRow !== null && hoveredRow !== rowIndex)) &&
                 rowIndex !== AVERAGE_ROW_INDEX

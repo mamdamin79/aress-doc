@@ -42,7 +42,7 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
         />
       )}
       {activeIndex === 1 && (
-        <div className="bg-baseBackground rounded-2xl border border-gray-300 p-6">
+        <div className="bg-surface-neutral-primary border-border-neutral-primary rounded-2xl border p-6">
           <OTPForm
             onSubmit={handleOtpSubmit}
             backBtnLabel="ویرایش شماره"

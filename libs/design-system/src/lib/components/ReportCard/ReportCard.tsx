@@ -34,23 +34,23 @@ export const ReportCard: React.FC<ReportCardProps> = ({
   userFavorite = false,
   link,
   onLike,
-  shadowOnHover = true,
+  shadowOnHover = false,
 }) => {
   return (
     <div
       className={cn(
-        `hover:shadow-7xl group relative flex flex-col overflow-hidden rounded-3xl border-[3px] border-gray-100 bg-gray-100 transition-all`,
+        `hover:shadow-7xl border-surface-neutral-secondary bg-surface-neutral-secondary group relative flex flex-col overflow-hidden rounded-3xl border-[2px] transition-all`,
         fixedBrief
           ? 'h-[448px] min-w-[380px] max-w-[512px] items-start'
           : 'h-[318px] min-w-[304px] max-w-[416px]',
-        shadowOnHover && 'hover:shadow-transparent',
+        !shadowOnHover && 'hover:shadow-transparent',
       )}
     >
       {/* Image Section */}
       <div className="mt-3 w-full px-3">
         <div
           className={cn(
-            `bg-baseBackground flex w-full items-center justify-center overflow-hidden rounded-xl shadow-md`,
+            `bg-surface-neutral-primary flex w-full items-center justify-center overflow-hidden rounded-xl shadow-md`,
             fixedBrief ? 'mx-auto h-[192px]' : 'h-[184px]',
           )}
         >
@@ -69,7 +69,7 @@ export const ReportCard: React.FC<ReportCardProps> = ({
         className={cn(
           `w-full`,
           !fixedBrief &&
-            'absolute bottom-0 left-0 h-full overflow-hidden bg-gradient-to-b from-[rgba(255,255,255,0)] via-white to-[rgba(255,255,255,1)] opacity-0 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:duration-500',
+            'absolute bottom-0 left-0 h-full overflow-hidden bg-gradient-to-b from-[rgba(255,255,255,0)] via-white to-[rgba(255,255,255,1)] opacity-0 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:duration-500 dark:from-[rgba(0,0,0,0)] dark:via-[#242528] dark:to-[rgba(36,37,40,1)]',
         )}
       ></div>
       <div
@@ -83,7 +83,7 @@ export const ReportCard: React.FC<ReportCardProps> = ({
         <div className="flex h-fit w-fit flex-col gap-2">
           <p
             className={cn(
-              'text-gray-1000 text-md max-h-14 overflow-hidden truncate text-ellipsis font-medium',
+              'text-text-neutral-primary text-md max-h-14 overflow-hidden truncate text-ellipsis font-medium',
               fixedBrief
                 ? 'max-w-[508px]'
                 : 'h-[26px] max-w-[416px] font-semibold',
@@ -91,7 +91,7 @@ export const ReportCard: React.FC<ReportCardProps> = ({
           >
             {title}
           </p>
-          <div className="flex flex-row gap-4 text-right text-sm font-medium text-gray-700">
+          <div className="text-text-neutral-secondarycontrast flex flex-row gap-4 text-right text-sm font-medium">
             {categoryType && (
               <span className="flex flex-row items-center gap-1">
                 <Icon name="layers-2" key={categoryType} size="md" />
@@ -114,7 +114,7 @@ export const ReportCard: React.FC<ReportCardProps> = ({
           {/* summary Section fixed */}
           {fixedBrief && (
             <>
-              <span className="line-clamp-3 text-right text-sm text-gray-600">
+              <span className="text-text-neutral-secondary line-clamp-3 text-right text-sm">
                 {summary}
               </span>
               <div className="absolute bottom-4 right-0 flex w-full items-center justify-between px-4">
@@ -146,7 +146,7 @@ export const ReportCard: React.FC<ReportCardProps> = ({
 
           {/* summary Section (Drawer Animation) */}
           {!fixedBrief && (
-            <span className="-mb-2 line-clamp-4 h-fit translate-y-12 transform overflow-hidden text-right text-sm text-gray-600 opacity-0 transition-all duration-500 ease-in-out group-hover:translate-y-0 group-hover:opacity-100">
+            <span className="text-text-neutral-secondary -mb-2 line-clamp-4 h-fit translate-y-12 transform overflow-hidden text-right text-sm text-gray-600 opacity-0 transition-all duration-500 ease-in-out group-hover:translate-y-0 group-hover:opacity-100">
               {summary}
             </span>
           )}

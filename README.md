@@ -204,3 +204,56 @@ export function Header({ title, classNames }: Props) {
   return <header className="bg-indigo-200">This is header!</header>;
 }
 ```
+
+
+# Tailwind CSS Design System Color Generator
+
+This script automatically extracts colors from your CSS files and adds them to your `tailwind.config.js` configuration. It also extracts CSS color variables for use in Tailwind projects into the `tailwind-imports.css` file.
+
+## Project Structure
+
+The project should be structured as follows:
+
+```bash
+project
+│
+├── scripts
+│   └── tailwindcss-design-system-color-generator
+│       ├── tailwindcss-design-system-color-generator.ts
+│       └── inputs
+│           ├── primitives
+│           │   └── example.css
+│           ├── files.css
+│           ├── 1.css
+│           └── token--dark.css
+├── libs
+│   └── design-system
+│       └── tailwind.config.js
+└── .storybook
+    └── tailwind-imports.css
+```
+
+
+- **inputs**: This folder should contain all of your CSS files. Primitive colors should be placed inside the `primitives` folder, and other CSS files should remain in the `inputs` folder.
+- **tailwind.config.js**: The Tailwind CSS configuration file where the extracted colors will be added.
+- **tailwind-imports.css**: The CSS file containing the extracted color variables for use in your project.
+
+## Usage
+
+1. **Prepare your project**:
+   - Place all of your CSS files inside the `inputs` folder.
+   - CSS files with primitive colors should go inside the `inputs/primitives` folder.
+   - CSS files containing dark theme colors should end with the `--dark.css` suffix.
+
+2. **Install Dependencies**:
+   Make sure you have **Node.js** and **npm** installed on your system.
+
+   Then, install TypeScript globally using the following command:
+
+ ```bash
+   npm i typescript -g
+ ```
+  
+  ```bash
+    ts-node scripts/tailwindcss-design-system-color-generator/tailwindcss-design-system-color-generator.ts
+  ```

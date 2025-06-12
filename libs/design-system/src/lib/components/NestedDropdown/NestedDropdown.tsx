@@ -50,8 +50,8 @@ export const NestedDropdown: React.FC<NestedDropdownProps> = ({
                 index === 2 && 'h-[136px] w-7',
                 index === 3 && 'h-[188px] w-9',
                 item.status === 'normal'
-                  ? 'border-brand-600'
-                  : 'border-red-600',
+                  ? 'border-border-brand-primary-600'
+                  : 'border-border-accent-red-600',
               )}
             />
           ))}

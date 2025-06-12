@@ -10,13 +10,13 @@ export const CustomAccordionItem: React.FC<CustomAccordionItemProps> = ({
   link,
 }) => {
   return (
-    <div className="flex flex-col gap-2 text-gray-600">
+    <div className="flex flex-col gap-2 text-text-neutral-secondary">
       <div className="text-right">{content}</div>
       {link && (
         <div className='flex items-center justify-end'>
         <Link
         href={link}
-        className="flex flex-row items-center w-fit gap-2 text-left text-xs font-semibold transition-colors hover:text-black hover:underline hover:underline-offset-8"
+        className="flex flex-row items-center w-fit gap-2 text-left text-xs font-semibold transition-colors hover:text-text-neutral-primary text-text-neutral-secondary hover:underline hover:underline-offset-8"
         >
 
           {POPUP_INFO_CONSTANTS.READ_MORE_TEXT}
@@ -39,9 +39,9 @@ export const PopupInfo: React.FC<PopupInfoProps> = ({
       onClose={onClose}
       isOpen={isOpen}
       aria-labelledby="popup-info-title"
-      className="bg-gray-100"
+      className="bg-surface-neutral-secondary"
     >
-      <div className="flex flex-row items-center gap-2 px-4 py-3 text-xl font-medium">
+      <div className="flex flex-row text-text-neutral-primary items-center gap-2 px-4 py-3 text-xl font-medium">
         <Icon name="book-open-text" />
         <span id="popup-info-title">{title}</span>
       </div>
