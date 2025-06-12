@@ -26,6 +26,8 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
     null | 'loading' | 'done' | 'rejected'
   >(null);
   const [popupInfoOpen, setPopupInfoOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const returnLoadingStatusText = () => {
     switch (loadingStatus) {
       case 'loading':
@@ -63,34 +65,42 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
         </SlideFromLeft>
       )}
 
-      <div className="relative w-full p-3 pb-2">
-        <div className="flex w-full items-center justify-between">
-          {!compactHeader ? (
-            <div className="text-text-neutral-primary flex flex-row items-center text-xs font-semibold">
-              <div
-                className="cursor-pointer p-1.5"
-                onClick={() => setPopupInfoOpen(true)}
-              >
-                <Icon name="info" size="md" />
-              </div>
-              <span className={cn(loadingStatus && 'opacity-30')}>{title}</span>
+      <div className="relative flex w-full items-center justify-between px-3 pt-3">
+        {!compactHeader ? (
+          <div className="text-text-neutral-primary flex flex-row items-center text-xs font-semibold">
+            <div
+              className="cursor-pointer p-1.5"
+              onClick={() => setPopupInfoOpen(true)}
+            >
+              <Icon name="info" size="md" />
+            </div>
+            <span className={cn(loadingStatus && 'opacity-30')}>{title}</span>
+          </div>
+        ) : (
+          <div></div>
+        )}
+
+        <div className={cn('flex flex-row items-center gap-2')}>
+          {switchIcons && <DualSwitch {...switchIcons} size="sm" />}
+
+          {compactHeader ? (
+            <div
+              className="bg-surface-neutral-secondary text-text-neutral-primary flex h-8 w-8 cursor-pointer items-center justify-center rounded-full"
+              onClick={() => setSettingsOpen(true)}
+            >
+              <Icon name="settings" size="md" />
             </div>
           ) : (
-            <div></div>
-          )}
-
-          <div className={cn('flex flex-row items-center gap-2')}>
-            {switchIcons && <DualSwitch {...switchIcons} size="sm" />}
-
-            {compactHeader ? (
-              <div
-                className="bg-surface-neutral-secondary text-text-neutral-primary flex h-8 w-8 cursor-pointer items-center justify-center rounded-full"
-                onClick={() => setSettingsOpen(true)}
-              >
-                <Icon name="settings" size="md" />
-              </div>
-            ) : (
+            <div
+              className={cn(
+                'transition-opacity',
+                menuOpen || settingsOpen
+                  ? 'opacity-100'
+                  : 'opacity-0 group-hover:opacity-100',
+              )}
+            >
               <ContextMenu
+                onOpenChange={setMenuOpen}
                 anchor="bottom end"
                 items={[
                   {
@@ -122,16 +132,16 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
               >
                 <Icon name="ellipsis-vertical" size="md" />
               </ContextMenu>
-            )}
-          </div>
+            </div>
+          )}
         </div>
         <div
           className={cn(
             'border-border-neutral-primary absolute bottom-0 w-[592px] border-b',
-            !compactHeader && 'group-hover:hidden',
           )}
         ></div>
       </div>
+
       {loadingStatus && (
         <div className="bg-surface-neutral-primary absolute top-4 z-10 flex h-full w-full items-center justify-center p-3 pt-2">
           <div className="flex flex-col items-center gap-4">
