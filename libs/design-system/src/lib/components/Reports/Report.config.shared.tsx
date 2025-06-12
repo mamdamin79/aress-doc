@@ -46,7 +46,7 @@ export const baseOptions: Highcharts.Options = {
       return ReactDOMServer.renderToStaticMarkup(
         <div
           dir="rtl"
-          className="font-vazirmatn mb-1 rounded-[10px] bg-neutral-900 px-4 py-2 text-right text-sm font-medium leading-6 text-white shadow-md backdrop-blur-[6px]"
+          className="font-vazirmatn bg-surface-neutral-inverse text-text-neutral-oninverse mb-1 rounded-[10px] px-4 py-2 text-right text-sm font-medium leading-6 shadow-md backdrop-blur-[6px]"
           style={{ zIndex: 1000 }}
         >
           <div className="font-medium">{this.key}</div>
