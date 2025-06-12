@@ -20,6 +20,9 @@ export const TextField: React.FC<textFieldPropsType> = ({
   className,
   inputSize = 'default',
   longText = false,
+  captchaValue,
+  onRefreshCaptcha,
+  maxLength,
   ...rest
 }) => {
   const [internalValue, setInternalValue] = useState('');
@@ -201,22 +204,52 @@ export const TextField: React.FC<textFieldPropsType> = ({
               'placeholder:text-text-neutral-disable border-inherit bg-transparent opacity-100':
                 disabled,
               'placeholder:text-text-neutral-tertiary': !disabled,
-              'pl-20': trailingIcons.length === 2,
-              'pl-10': trailingIcons.length === 1,
+              'pl-[112px]': captchaValue, // extra padding for captcha image
+              'pl-20': !captchaValue && trailingIcons.length === 2,
+              'pl-10': !captchaValue && trailingIcons.length === 1,
               'bg-surface-neutral-secondary': mode === 'filled' && !disabled,
-              'hover:bg-surface-neutral-secondarycontrast':
-                mode === 'filled' && !disabled && !isFocused,
-              '!bg-surface-neutral-disable cursor-not-allowed':
-                disabled && mode === 'filled',
-              'border-border-message-error-primary-600 focus:border-[2.5px]':
-                isError && !disabled,
+              'hover:bg-surface-neutral-secondarycontrast': mode === 'filled' && !disabled && !isFocused,
+              'cursor-not-allowed !bg-surface-neutral-disable': disabled && mode === 'filled',
+              'border-border-message-error-primary-600 focus:border-[2.5px]': isError && !disabled,
               'focus:border-border-brand-primary-600 border-border-neutral-secondary focus:border-2 focus:outline-none':
                 !isError && !disabled,
               'pr-12': leadingIcon,
             },
           )}
           placeholder={mergeTitleAndPlaceholder ? '' : placeholder}
+          maxLength={maxLength ?? 300}
         />
+      )}
+
+      {/* Captcha image, if provided */}
+      {captchaValue && (
+        <div
+          className={cn(
+            'absolute left-0.5 z-20 flex items-center justify-center',
+            {
+              'top-[32px]':
+                label &&
+                (inputSize === 'default' ||
+                  inputSize === 'md' ||
+                  inputSize === 'sm'),
+              'top-[2px]':
+                !label && (inputSize === 'default' || inputSize === 'md'),
+              'top-[8px]': !label && inputSize === 'sm',
+            },
+          )}
+        >
+          <img
+            src={`data:image/png;base64,${captchaValue}`}
+            alt="captcha"
+            className={cn('rounded-bl-xl rounded-tl-xl object-fill', {
+              'h-[52px] w-[120px]': inputSize === 'default',
+              'h-[44px] w-[110px]': inputSize === 'md',
+              'h-[36px] w-[100px]': label && inputSize === 'sm',
+              'top-[8px]': !label && inputSize === 'sm',
+            })}
+            draggable={false}
+          />
+        </div>
       )}
 
       <div
@@ -241,6 +274,15 @@ export const TextField: React.FC<textFieldPropsType> = ({
               label,
           },
         )}
+        style={{
+          left: captchaValue
+            ? inputSize === 'sm'
+              ? '100px'
+              : inputSize === 'md'
+                ? '110px'
+                : '120px'
+            : '16px', // shift trailing icons if captcha present
+        }}
       >
         {trailingIcons.map((icon) => {
           const isDisabled = cn({
@@ -296,7 +338,16 @@ export const TextField: React.FC<textFieldPropsType> = ({
             '-mt-2': longText,
           })}
         >
-          {supportText}
+          <span>{supportText}</span>
+
+          {captchaValue && (
+            <button
+              className="text-brand-500"
+              onClick={() => onRefreshCaptcha()}
+            >
+              <Icon size="lg" name="rotate-cw" />
+            </button>
+          )}
         </div>
       )}
     </div>
