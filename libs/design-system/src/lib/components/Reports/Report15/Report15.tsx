@@ -47,6 +47,7 @@ export const Report15: FC<Report15Props> = ({
     const yValues = scatterData.map((p) => p[1]);
 
     const minX = Math.min(...xValues);
+
     const maxX = Math.max(...xValues);
 
     const regressionLine = [
@@ -56,6 +57,7 @@ export const Report15: FC<Report15Props> = ({
 
     const xMean = getMean(xValues);
     const yMean = getMean(yValues);
+
     const minXY = Math.min(...xValues, ...yValues);
     const maxXY = Math.max(...xValues, ...yValues);
 
@@ -69,6 +71,8 @@ export const Report15: FC<Report15Props> = ({
       yMean,
       minXY,
       maxXY,
+      minX,
+      maxX,
       spacing: [
         verticalPadding,
         horizontalPadding,
@@ -150,11 +154,15 @@ export const Report15: FC<Report15Props> = ({
       {
         name: 'Y = βX+C',
         type: 'line',
-        data: chartData.regressionLine,
+        data: [
+          { x: chartData.minXY, y: beta * chartData.minXY + intercept },
+          { x: chartData.maxXY, y: beta * chartData.maxXY + intercept },
+        ],
         color: 'var(--color-border-accent-red-600)',
         lineWidth: 2,
         marker: { enabled: false },
         enableMouseTracking: false,
+        zIndex: 10,
       },
     ],
   };
