@@ -1,15 +1,12 @@
 'use client';
 import { cn, Icon } from 'design-system';
 import { CategoryList } from './CategoryList';
-import {
-  GetDashboardReportsCategoriesResponse,
-  GetDashboardReportsResponse,
-} from '@openapi';
+import { GetReportsCategoriesResponse, GetReportsResponse } from '@openapi';
 import { useHeaderVisibility } from '../../../../../hooks/useHeaderVisiblity';
 
 type Props = {
-  categories: GetDashboardReportsCategoriesResponse;
-  reports: GetDashboardReportsResponse;
+  categories: GetReportsCategoriesResponse;
+  reports: GetReportsResponse;
 };
 
 export const SideBar: React.FC<Props> = ({ categories, reports }) => {

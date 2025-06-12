@@ -2,12 +2,12 @@ import { fetchToken } from '../../../(auth)/auth.utils';
 import { NewReportDialog } from './_components/NewReportDialog';
 import { ReportList } from './_components/ReportsList';
 import { SideBar } from './_components/SideBar';
-import { DashboardService, GetDashboardReportsData, OpenAPI } from '@openapi';
+import { ReportsService, OpenAPI, GetReportsData } from '@openapi';
 import { Pagination } from 'design-system';
 
 const ITEMS_PER_PAGE = 6;
 
-async function getData(searchParams: GetDashboardReportsData) {
+async function getData(searchParams: GetReportsData) {
   const token = await fetchToken();
   if (!token) {
     throw new Error('Failed to fetch access token');
@@ -17,18 +17,17 @@ async function getData(searchParams: GetDashboardReportsData) {
   };
 
   const [reports, categories] = await Promise.all([
-    DashboardService.getDashboardReports({
+    ReportsService.getReports({
       ...searchParams,
     }),
-    DashboardService.getDashboardReportsCategories(),
+    ReportsService.getReportsCategories(),
   ]);
   return { reports, categories };
 }
-
 export default async function ReportMenuPage({
   searchParams,
 }: {
-  searchParams: GetDashboardReportsData & {
+  searchParams: GetReportsData & {
     page?: string;
     category?: string;
     search?: string;
