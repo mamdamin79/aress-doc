@@ -22,6 +22,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
   longText = false,
   captchaValue,
   onRefreshCaptcha,
+  maxLength,
   ...rest
 }) => {
   const [internalValue, setInternalValue] = useState('');
@@ -211,6 +212,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
             },
           )}
           placeholder={mergeTitleAndPlaceholder ? '' : placeholder}
+          maxLength={maxLength ?? 300}
         />
       )}
 
