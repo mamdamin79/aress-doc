@@ -1,14 +1,11 @@
 'use client';
-import {
-  GetDashboardReportsCategoriesResponse,
-  GetDashboardReportsResponse,
-} from '@openapi';
+import { GetReportsCategoriesResponse, GetReportsResponse } from '@openapi';
 import { cn } from 'design-system';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 type Props = {
-  categories: GetDashboardReportsCategoriesResponse;
-  reports: GetDashboardReportsResponse;
+  categories: GetReportsCategoriesResponse;
+  reports: GetReportsResponse;
 };
 
 export const CategoryList: React.FC<Props> = ({ categories, reports }) => {
@@ -52,11 +49,11 @@ export const CategoryList: React.FC<Props> = ({ categories, reports }) => {
           همه‌ی گزارش‌‌‌‌‌‌ها ({reports.length})
         </span>
       </li>
-      {categories.map((category) => (
+      {categories.map((category, index) => (
         <>
           <li
             onClick={() => handleCategory(category.title)}
-            key={category.identifier}
+            key={category.identifier + index}
             className={cn(
               'text-text-neutral-secondary hover:text-text-neutral-secondarycontrast group mb-4 flex cursor-pointer items-center gap-2 rounded-md text-sm font-medium',
               {
