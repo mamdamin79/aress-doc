@@ -329,6 +329,35 @@ export const showAllOptions: Story = {
         },
       ],
     },
+    settingOptions: [
+      {
+        type: 'basicSelection',
+        props: {
+          title: 'جریان پول: ',
+          icon: { name: 'square-mouse-pointer', size: 'sm' },
+          status: 'normal',
+          selectedOption: 'ورودی',
+        },
+      },
+      {
+        type: 'basicSelection',
+        props: {
+          title: 'نوع سرمایه‌گذار: ',
+          icon: { name: 'square-mouse-pointer', size: 'sm' },
+          status: 'normal',
+          selectedOption: 'حقیقی',
+        },
+      },
+      {
+        type: 'basicSelection',
+        props: {
+          title: 'بازه زمانی: ',
+          icon: { name: 'square-mouse-pointer', size: 'sm' },
+          status: 'normal',
+          selectedOption: 'یک ماه',
+        },
+      },
+    ],
   },
 };
 export const showSettingsOnly: Story = {
@@ -647,5 +676,34 @@ export const showSettingsOnly: Story = {
         },
       ],
     },
+    settingOptions: [
+      {
+        type: 'basicSelection',
+        props: {
+          title: 'جریان پول: ',
+          icon: { name: 'square-mouse-pointer', size: 'sm' },
+          status: 'normal',
+          selectedOption: 'ورودی',
+        },
+      },
+      {
+        type: 'basicSelection',
+        props: {
+          title: 'نوع سرمایه‌گذار: ',
+          icon: { name: 'square-mouse-pointer', size: 'sm' },
+          status: 'normal',
+          selectedOption: 'حقیقی',
+        },
+      },
+      {
+        type: 'basicSelection',
+        props: {
+          title: 'بازه زمانی: ',
+          icon: { name: 'square-mouse-pointer', size: 'sm' },
+          status: 'normal',
+          selectedOption: 'یک ماه',
+        },
+      },
+    ],
   },
 };
