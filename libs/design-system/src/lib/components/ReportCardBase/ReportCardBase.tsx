@@ -51,16 +51,44 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
         <ReportSettings
           onSubmit={mockLoading}
           onClose={() => setSettingsOpen(false)}
-          options={settingOptions}
+          options={[
+            {
+              type: 'basicSelection',
+              props: {
+                title: 'جریان پول: ',
+                icon: { name: 'square-mouse-pointer', size: 'sm' },
+                status: 'normal',
+                selectedOption: 'ورودی',
+                onClick: () => setOptionsListOpen(true),
+              },
+            },
+            {
+              type: 'basicSelection',
+              props: {
+                title: 'نوع سرمایه‌گذار: ',
+                icon: { name: 'square-mouse-pointer', size: 'sm' },
+                status: 'normal',
+                selectedOption: 'حقیقی',
+              },
+            },
+            {
+              type: 'basicSelection',
+              props: {
+                title: 'بازه زمانی: ',
+                icon: { name: 'square-mouse-pointer', size: 'sm' },
+                status: 'normal',
+                selectedOption: 'یک ماه',
+              },
+            },
+          ]}
         />
       </SlideFromLeft>
       {optionsListItems && (
         <SlideFromLeft isOpen={optionsListOpen}>
           <OptionsListExplorer
-            items={optionsListItems}
+          {...optionsListItems}
             onBackButtonClick={() => setOptionsListOpen(false)}
             onSearch={(value) => console.log(value)}
-            title="انتخاب دسته بندی اوراق"
           />
         </SlideFromLeft>
       )}
@@ -81,7 +109,19 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
         )}
 
         <div className={cn('flex flex-row items-center gap-2')}>
-          {switchIcons && <DualSwitch {...switchIcons} size="sm" />}
+          {switchIcons && (
+            <div
+              className={cn(
+                'transition-opacity',
+                menuOpen || settingsOpen
+                  ? 'opacity-100'
+                  : 'opacity-0 group-hover:opacity-100',
+                compactHeader && 'opacity-100',
+              )}
+            >
+              <DualSwitch {...switchIcons} size="sm" />
+            </div>
+          )}
 
           {compactHeader ? (
             <div
@@ -93,7 +133,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
           ) : (
             <div
               className={cn(
-                'transition-opacity',
+                'h-8 transition-opacity',
                 menuOpen || settingsOpen
                   ? 'opacity-100'
                   : 'opacity-0 group-hover:opacity-100',
