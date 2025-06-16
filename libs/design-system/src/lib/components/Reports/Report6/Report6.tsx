@@ -99,31 +99,108 @@ export const Report6: FC<Report6Props> = ({
       popupInfoItems={financialDefinitions}
       settingOptions={[
         {
-          type: 'basicSelection',
+          type: 'nestedDropdown',
           props: {
-            title: 'جریان پول: ',
-            icon: { name: 'square-mouse-pointer', size: 'sm' },
-            status: 'normal',
-            selectedOption: 'ورودی',
+            title: 'نمودار خطی',
+            items: [
+              {
+                title: 'نام شاخص:',
+                icon: { name: 'square-mouse-pointer', size: 'sm' },
+                status: 'normal',
+                selectedOption: 'شاخص کل',
+                optionsListProps: {
+                  selectedItemId: 1,
+                  searchable: false,
+                  title: 'نام شاخص',
+                  items: {
+                    items: [
+                      {
+                        id: 1,
+                        title: 'ذغال سنگ',
+                      },
+                      {
+                        id: 2,
+                        title: 'شاخص کل (هم‌وزن)',
+                      },
+                      {
+                        id: 3,
+                        title: 'شاخص قیمت (وزنی-ارزشی)',
+                      },
+                      {
+                        id: 4,
+                        title: 'شاخص قیمت (هم‌وزن)',
+                      },
+                    ],
+                  },
+                },
+              },
+            ],
           },
         },
         {
-          type: 'basicSelection',
+          type: 'nestedDropdown',
           props: {
-            title: 'نوع سرمایه‌گذار: ',
-            icon: { name: 'square-mouse-pointer', size: 'sm' },
-            status: 'normal',
-            selectedOption: 'حقیقی',
+            title: 'نمودار میله‌ای',
+            items: [
+              {
+                title: 'نوع سرمایه‌گذار:',
+                icon: { name: 'square-mouse-pointer', size: 'sm' },
+                status: 'normal',
+                selectedOption: 'حقیقی',
+                optionsListProps: {
+                  selectedItemId: 1,
+                  searchable: false,
+                  title: 'نوع سرمایه‌گذار',
+                  items: {
+                    items: [
+                      {
+                        id: 1,
+                        title: 'حقیقی',
+                      },
+                      {
+                        id: 2,
+                        title: 'حقوقی',
+                      },
+                    ],
+                  },
+                },
+              },
+            ],
           },
         },
         {
-          type: 'basicSelection',
           props: {
-            title: 'بازه زمانی: ',
+            title: 'تفکیک زمانی: ',
             icon: { name: 'square-mouse-pointer', size: 'sm' },
             status: 'normal',
-            selectedOption: 'یک ماه',
+            selectedOption: 'ماهانه',
+            optionsListProps: {
+              selectedItemId: 3,
+              searchable: false,
+              title: 'تفکیک زمانی',
+              items: {
+                items: [
+                  {
+                    id: 1,
+                    title: 'روزانه',
+                  },
+                  {
+                    id: 2,
+                    title: 'هفتگی',
+                  },
+                  {
+                    id: 3,
+                    title: 'ماهانه',
+                  },
+                  {
+                    id: 4,
+                    title: 'سالانه',
+                  },
+                ],
+              },
+            },
           },
+          type: 'basicSelection',
         },
       ]}
     >

@@ -89,7 +89,7 @@ export function OptionsListExplorer({
   };
 
   return (
-    <div className={cn('bg-surface-neutral-primary h-full w-[500px]')}>
+    <div className={cn('bg-surface-neutral-primary h-full min-w-[350px]')}>
       <button
         aria-label="Go back"
         onClick={onBackButtonClick}
@@ -137,7 +137,7 @@ export function OptionsListExplorer({
       {filteredItems.length ? (
         <div
           className={cn('flex max-h-60 flex-col', {
-            'custom-scrollbar overflow-y-scroll': filteredItems.length > 3,
+            'scrollbar-sm overflow-y-auto': filteredItems.length > 3,
           })}
         >
           {filteredItems.map((item: OptionItem) => (

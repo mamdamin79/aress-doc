@@ -41,7 +41,7 @@ export const NestedDropdown: React.FC<NestedDropdownProps> = ({
         className={cn(
           'flex w-full flex-col gap-3 pr-6 transition-all',
           isOpen
-            ? 'visible -translate-y-0 opacity-100'
+            ? 'visible mb-3 -translate-y-0 opacity-100'
             : 'invisible h-0 -translate-y-4 opacity-0',
         )}
       >
