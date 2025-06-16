@@ -7,7 +7,6 @@ export type popupInfoItemType = PopupInfoProps['itemsList'];
 export interface ReportCardBaseProps {
   title: string;
   switchIcons?: DualSwitchProps;
-  optionsListItems?: OptionsListExplorerProps[];
   compactHeader?: boolean;
   children?: React.ReactNode;
   popupInfoItems?: popupInfoItemType;

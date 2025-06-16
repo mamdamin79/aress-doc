@@ -36,19 +36,114 @@ export const showOnHover: Story = {
       bgWhite: false,
       initialIndex: 1,
     },
-    optionsListItems: {
-      searchable: true,
-      title: 'انتخاب دسته‌بندی اوراق',
-      items: {
-        items: [
-          {
-            id: 11,
-            title: 'ذغال سنگ',
-          },
-        ],
+    settingOptions: [
+      {
+        type: 'nestedDropdown',
+        props: {
+          title: 'مبنای ارزش معاملات',
+          items: [
+            {
+              title: 'نوع بازار:',
+              icon: { name: 'square-mouse-pointer', size: 'sm' },
+              status: 'normal',
+              selectedOption: 'کل بازار',
+              optionsListProps: {
+                selectedItemId: 11,
+                searchable: true,
+                title: 'انتخاب دسته‌بندی اوراق',
+                items: {
+                  items: [
+                    {
+                      id: 11,
+                      title: 'ذغال سنگ',
+                    },
+                  ],
+                },
+              },
+            },
+            {
+              title: 'صنعت:',
+              icon: { name: 'square-mouse-pointer', size: 'sm' },
+              status: 'normal',
+              selectedOption: 'کانی‌ های فلزی',
+              optionsListProps: {
+                selectedItemId: 11,
+                searchable: true,
+                title: 'انتخاب دسته‌بندی اوراق',
+                items: {
+                  items: [
+                    {
+                      id: 11,
+                      title: 'ذغال سنگ',
+                    },
+                  ],
+                },
+              },
+            },
+            {
+              title: 'صنعت:',
+              icon: { name: 'square-mouse-pointer', size: 'sm' },
+              status: 'normal',
+              selectedOption: 'کانی‌ های فلزی',
+              optionsListProps: {
+                selectedItemId: 11,
+                searchable: true,
+                title: 'انتخاب دسته‌بندی اوراق',
+                items: {
+                  items: [
+                    {
+                      id: 11,
+                      title: 'ذغال سنگ',
+                    },
+                  ],
+                },
+              },
+            },
+            {
+              title: 'ابزار مالی:',
+              icon: { name: 'square-mouse-pointer', size: 'sm' },
+              status: 'error',
+              placeHolder: 'یک مورد را انتخاب کنید...',
+              optionsListProps: {
+                selectedItemId: 11,
+                searchable: true,
+                title: 'انتخاب دسته‌بندی اوراق',
+                items: {
+                  items: [
+                    {
+                      id: 11,
+                      title: 'ذغال سنگ',
+                    },
+                  ],
+                },
+              },
+            },
+          ],
+        },
       },
-      selectedItemId: 11,
-    },
+      {
+        props: {
+          title: 'بازه زمانی: ',
+          icon: { name: 'square-mouse-pointer', size: 'sm' },
+          status: 'normal',
+          selectedOption: 'یک ماه',
+          optionsListProps: {
+            selectedItemId: 11,
+            searchable: true,
+            title: 'انتخاب دسته‌بندی اوراق',
+            items: {
+              items: [
+                {
+                  id: 11,
+                  title: 'ذغال سنگ',
+                },
+              ],
+            },
+          },
+        },
+        type: 'basicSelection',
+      },
+    ],
   },
 };
 export const showSettingsOnly: Story = {
@@ -74,18 +169,27 @@ export const showSettingsOnly: Story = {
       bgWhite: false,
       initialIndex: 1,
     },
-    optionsListItems: [
+    settingOptions: [
       {
-        searchable: true,
-        title: 'انتخاب دسته‌بندی اوراق',
-        items: {
-          items: [
-            {
-              id: 11,
-              title: 'ذغال سنگ',
+        props: {
+          title: 'بازه زمانی: ',
+          icon: { name: 'square-mouse-pointer', size: 'sm' },
+          status: 'normal',
+          selectedOption: 'یک ماه',
+          optionsListProps: {
+            searchable: true,
+            title: 'انتخاب دسته‌بندی اوراق',
+            items: {
+              items: [
+                {
+                  id: 11,
+                  title: 'ذغال سنگ',
+                },
+              ],
             },
-          ],
+          },
         },
+        type: 'basicSelection',
       },
     ],
   },

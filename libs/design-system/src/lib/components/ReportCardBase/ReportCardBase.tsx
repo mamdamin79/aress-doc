@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Icon } from '../Icon';
 import { DualSwitch } from '../DualSwitch';
 import { ReportSettings } from '../ReportSettings';
@@ -11,22 +11,23 @@ import { LoadingBarPop } from '../LoadingBarPop';
 import { Button } from '../Button';
 import { ReportCardBaseProps } from './ReportCardBase.types';
 import { PopupInfo } from '../PopupInfo';
+import { OptionsListExplorerProps } from '../OptionsListExplorer/OptionsListExplorer';
 export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
   title,
   switchIcons,
-  optionsListItems,
   compactHeader = false,
   children,
   popupInfoItems,
   settingOptions,
 }) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [optionsListOpen, setOptionsListOpen] = useState(false);
   const [loadingStatus, setLoadingStatus] = useState<
     null | 'loading' | 'done' | 'rejected'
   >(null);
   const [popupInfoOpen, setPopupInfoOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [optionsListItems, setOptionsListItems] =
+    useState<null | OptionsListExplorerProps>(null);
 
   const returnLoadingStatusText = () => {
     switch (loadingStatus) {
@@ -51,48 +52,24 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
         <ReportSettings
           onSubmit={mockLoading}
           onClose={() => setSettingsOpen(false)}
-          options={[
-            {
-              type: 'basicSelection',
-              props: {
-                title: 'جریان پول: ',
-                icon: { name: 'square-mouse-pointer', size: 'sm' },
-                status: 'normal',
-                selectedOption: 'ورودی',
-                onClick: () => setOptionsListOpen(true),
-              },
-            },
-            {
-              type: 'basicSelection',
-              props: {
-                title: 'نوع سرمایه‌گذار: ',
-                icon: { name: 'square-mouse-pointer', size: 'sm' },
-                status: 'normal',
-                selectedOption: 'حقیقی',
-              },
-            },
-            {
-              type: 'basicSelection',
-              props: {
-                title: 'بازه زمانی: ',
-                icon: { name: 'square-mouse-pointer', size: 'sm' },
-                status: 'normal',
-                selectedOption: 'یک ماه',
-              },
-            },
-          ]}
+          options={settingOptions}
+          onChangeOptionsListExplorerItem={(item) => setOptionsListItems(item)}
         />
       </SlideFromLeft>
-      {optionsListItems && (
-        <SlideFromLeft isOpen={optionsListOpen}>
-          <OptionsListExplorer
+      <SlideFromLeft isOpen={optionsListItems !== null}>
+        <OptionsListExplorer
           {...optionsListItems}
-            onBackButtonClick={() => setOptionsListOpen(false)}
-            onSearch={(value) => console.log(value)}
-          />
-        </SlideFromLeft>
-      )}
-
+          items={
+            optionsListItems?.items ?? {
+              items: [],
+              categories: [],
+            }
+          }
+          title={optionsListItems?.title ?? ''}
+          onBackButtonClick={() => setOptionsListItems(null)}
+          onSearch={(value) => console.log(value)}
+        />
+      </SlideFromLeft>
       <div className="relative flex w-full items-center justify-between px-3 pb-2 pt-3">
         {!compactHeader ? (
           <div className="text-text-neutral-primary flex flex-row items-center text-xs font-semibold">
@@ -181,7 +158,6 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
           )}
         ></div>
       </div>
-
       {loadingStatus && (
         <div className="bg-surface-neutral-primary absolute top-4 z-10 flex h-full w-full items-center justify-center p-3 pt-2">
           <div className="flex flex-col items-center gap-4">
@@ -218,7 +194,6 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
           </div>
         </div>
       )}
-
       {children}
       {popupInfoItems && (
         <PopupInfo
