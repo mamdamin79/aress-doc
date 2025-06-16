@@ -135,7 +135,10 @@ export const DesktopMenu: React.FC<MenuProps> = ({ menuItems, activeTab }) => {
           if (menus.main.length > 2 && index == 2)
             return (
               <>
-                <div className="bg-border-neutral-contrast -mt-2 h-5 w-0.5 rounded-[100px]"></div>
+                <div
+                  className="bg-border-neutral-contrast -mt-2 h-5 w-0.5 rounded-[100px]"
+                  key={index}
+                ></div>
                 {renderMenuItem(item, index)}
               </>
             );

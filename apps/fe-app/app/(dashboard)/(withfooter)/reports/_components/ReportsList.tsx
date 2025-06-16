@@ -1,9 +1,9 @@
 'use client';
 import {
-  GetDashboardReportsResponse,
+  GetReportsResponse,
   OpenAPI,
-  useDashboardServiceDeleteDashboardReportsByReportIdFavorite,
-  useDashboardServicePostDashboardReportsByReportIdFavorite,
+  useReportsServiceDeleteReportsByReportIdFavorite,
+  useReportsServicePostReportsByReportIdFavorite,
 } from '@openapi';
 import { ReportCard } from 'design-system';
 import React from 'react';
@@ -14,14 +14,14 @@ import { SearchBar } from './SearchBar';
 import { fetchToken } from '../../../../(auth)/auth.utils';
 
 type Props = {
-  reports: GetDashboardReportsResponse;
+  reports: GetReportsResponse;
 };
 
 export const ReportList: React.FC<Props> = ({ reports }) => {
   const addFavoriteMutation =
-    useDashboardServicePostDashboardReportsByReportIdFavorite();
+    useReportsServicePostReportsByReportIdFavorite();
   const deleteFavoriteMutation =
-    useDashboardServiceDeleteDashboardReportsByReportIdFavorite();
+    useReportsServiceDeleteReportsByReportIdFavorite();
 
   const handleLike = async (reportId: number, isFavorite: boolean) => {
     const token = await fetchToken();

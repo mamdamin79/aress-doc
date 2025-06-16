@@ -1,8 +1,12 @@
 // generated with @7nohe/openapi-react-query-codegen@1.6.2 
 
 import { UseQueryResult } from "@tanstack/react-query";
-import { DashboardService, UsersService } from "../requests/services.gen";
+import { DashboardsService, FundsService, HealthService, ReportsService, UsersService } from "../requests/services.gen";
 import { CaptchaType } from "../requests/types.gen";
+export type HealthServiceGetHealthDefaultResponse = Awaited<ReturnType<typeof HealthService.getHealth>>;
+export type HealthServiceGetHealthQueryResult<TData = HealthServiceGetHealthDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
+export const useHealthServiceGetHealthKey = "HealthServiceGetHealth";
+export const UseHealthServiceGetHealthKeyFn = (queryKey?: Array<unknown>) => [useHealthServiceGetHealthKey, ...(queryKey ?? [])];
 export type UsersServiceGetUsersLoginCaptchaDefaultResponse = Awaited<ReturnType<typeof UsersService.getUsersLoginCaptcha>>;
 export type UsersServiceGetUsersLoginCaptchaQueryResult<TData = UsersServiceGetUsersLoginCaptchaDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
 export const useUsersServiceGetUsersLoginCaptchaKey = "UsersServiceGetUsersLoginCaptcha";
@@ -15,25 +19,80 @@ export type UsersServiceGetUsersMeDefaultResponse = Awaited<ReturnType<typeof Us
 export type UsersServiceGetUsersMeQueryResult<TData = UsersServiceGetUsersMeDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
 export const useUsersServiceGetUsersMeKey = "UsersServiceGetUsersMe";
 export const UseUsersServiceGetUsersMeKeyFn = (queryKey?: Array<unknown>) => [useUsersServiceGetUsersMeKey, ...(queryKey ?? [])];
-export type DashboardServiceGetDashboardReportsDefaultResponse = Awaited<ReturnType<typeof DashboardService.getDashboardReports>>;
-export type DashboardServiceGetDashboardReportsQueryResult<TData = DashboardServiceGetDashboardReportsDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
-export const useDashboardServiceGetDashboardReportsKey = "DashboardServiceGetDashboardReports";
-export const UseDashboardServiceGetDashboardReportsKeyFn = ({ onlyFavorite, onlyHavingVideo, onlyNew }: {
+export type UsersServiceGetUsersProfilePasswordChangeOtpDefaultResponse = Awaited<ReturnType<typeof UsersService.getUsersProfilePasswordChangeOtp>>;
+export type UsersServiceGetUsersProfilePasswordChangeOtpQueryResult<TData = UsersServiceGetUsersProfilePasswordChangeOtpDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
+export const useUsersServiceGetUsersProfilePasswordChangeOtpKey = "UsersServiceGetUsersProfilePasswordChangeOtp";
+export const UseUsersServiceGetUsersProfilePasswordChangeOtpKeyFn = (queryKey?: Array<unknown>) => [useUsersServiceGetUsersProfilePasswordChangeOtpKey, ...(queryKey ?? [])];
+export type ReportsServiceGetReportsDefaultResponse = Awaited<ReturnType<typeof ReportsService.getReports>>;
+export type ReportsServiceGetReportsQueryResult<TData = ReportsServiceGetReportsDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
+export const useReportsServiceGetReportsKey = "ReportsServiceGetReports";
+export const UseReportsServiceGetReportsKeyFn = ({ onlyFavorite, onlyHavingVideo, onlyNew }: {
   onlyFavorite?: boolean;
   onlyHavingVideo?: boolean;
   onlyNew?: boolean;
-} = {}, queryKey?: Array<unknown>) => [useDashboardServiceGetDashboardReportsKey, ...(queryKey ?? [{ onlyFavorite, onlyHavingVideo, onlyNew }])];
-export type DashboardServiceGetDashboardReportsByReportIdDefaultResponse = Awaited<ReturnType<typeof DashboardService.getDashboardReportsByReportId>>;
-export type DashboardServiceGetDashboardReportsByReportIdQueryResult<TData = DashboardServiceGetDashboardReportsByReportIdDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
-export const useDashboardServiceGetDashboardReportsByReportIdKey = "DashboardServiceGetDashboardReportsByReportId";
-export const UseDashboardServiceGetDashboardReportsByReportIdKeyFn = ({ reportId }: {
+} = {}, queryKey?: Array<unknown>) => [useReportsServiceGetReportsKey, ...(queryKey ?? [{ onlyFavorite, onlyHavingVideo, onlyNew }])];
+export type ReportsServiceGetReportsByReportIdDefaultResponse = Awaited<ReturnType<typeof ReportsService.getReportsByReportId>>;
+export type ReportsServiceGetReportsByReportIdQueryResult<TData = ReportsServiceGetReportsByReportIdDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
+export const useReportsServiceGetReportsByReportIdKey = "ReportsServiceGetReportsByReportId";
+export const UseReportsServiceGetReportsByReportIdKeyFn = ({ reportId }: {
   reportId: number;
-}, queryKey?: Array<unknown>) => [useDashboardServiceGetDashboardReportsByReportIdKey, ...(queryKey ?? [{ reportId }])];
-export type DashboardServiceGetDashboardReportsCategoriesDefaultResponse = Awaited<ReturnType<typeof DashboardService.getDashboardReportsCategories>>;
-export type DashboardServiceGetDashboardReportsCategoriesQueryResult<TData = DashboardServiceGetDashboardReportsCategoriesDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
-export const useDashboardServiceGetDashboardReportsCategoriesKey = "DashboardServiceGetDashboardReportsCategories";
-export const UseDashboardServiceGetDashboardReportsCategoriesKeyFn = (queryKey?: Array<unknown>) => [useDashboardServiceGetDashboardReportsCategoriesKey, ...(queryKey ?? [])];
+}, queryKey?: Array<unknown>) => [useReportsServiceGetReportsByReportIdKey, ...(queryKey ?? [{ reportId }])];
+export type ReportsServiceGetReportsCategoriesDefaultResponse = Awaited<ReturnType<typeof ReportsService.getReportsCategories>>;
+export type ReportsServiceGetReportsCategoriesQueryResult<TData = ReportsServiceGetReportsCategoriesDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
+export const useReportsServiceGetReportsCategoriesKey = "ReportsServiceGetReportsCategories";
+export const UseReportsServiceGetReportsCategoriesKeyFn = (queryKey?: Array<unknown>) => [useReportsServiceGetReportsCategoriesKey, ...(queryKey ?? [])];
+export type DashboardsServiceGetDashboardsDefaultResponse = Awaited<ReturnType<typeof DashboardsService.getDashboards>>;
+export type DashboardsServiceGetDashboardsQueryResult<TData = DashboardsServiceGetDashboardsDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
+export const useDashboardsServiceGetDashboardsKey = "DashboardsServiceGetDashboards";
+export const UseDashboardsServiceGetDashboardsKeyFn = (queryKey?: Array<unknown>) => [useDashboardsServiceGetDashboardsKey, ...(queryKey ?? [])];
+export type DashboardsServiceGetDashboardsByDashboardIdDefaultResponse = Awaited<ReturnType<typeof DashboardsService.getDashboardsByDashboardId>>;
+export type DashboardsServiceGetDashboardsByDashboardIdQueryResult<TData = DashboardsServiceGetDashboardsByDashboardIdDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
+export const useDashboardsServiceGetDashboardsByDashboardIdKey = "DashboardsServiceGetDashboardsByDashboardId";
+export const UseDashboardsServiceGetDashboardsByDashboardIdKeyFn = ({ dashboardId }: {
+  dashboardId: number;
+}, queryKey?: Array<unknown>) => [useDashboardsServiceGetDashboardsByDashboardIdKey, ...(queryKey ?? [{ dashboardId }])];
+export type DashboardsServiceGetDashboardsByDashboardIdItemsPreviewDefaultResponse = Awaited<ReturnType<typeof DashboardsService.getDashboardsByDashboardIdItemsPreview>>;
+export type DashboardsServiceGetDashboardsByDashboardIdItemsPreviewQueryResult<TData = DashboardsServiceGetDashboardsByDashboardIdItemsPreviewDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
+export const useDashboardsServiceGetDashboardsByDashboardIdItemsPreviewKey = "DashboardsServiceGetDashboardsByDashboardIdItemsPreview";
+export const UseDashboardsServiceGetDashboardsByDashboardIdItemsPreviewKeyFn = ({ dashboardId }: {
+  dashboardId: number;
+}, queryKey?: Array<unknown>) => [useDashboardsServiceGetDashboardsByDashboardIdItemsPreviewKey, ...(queryKey ?? [{ dashboardId }])];
+export type FundsServiceGetFundsDefaultResponse = Awaited<ReturnType<typeof FundsService.getFunds>>;
+export type FundsServiceGetFundsQueryResult<TData = FundsServiceGetFundsDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
+export const useFundsServiceGetFundsKey = "FundsServiceGetFunds";
+export const UseFundsServiceGetFundsKeyFn = (queryKey?: Array<unknown>) => [useFundsServiceGetFundsKey, ...(queryKey ?? [])];
+export type FundsServiceGetFundsTypeByFundTypeDefaultResponse = Awaited<ReturnType<typeof FundsService.getFundsTypeByFundType>>;
+export type FundsServiceGetFundsTypeByFundTypeQueryResult<TData = FundsServiceGetFundsTypeByFundTypeDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
+export const useFundsServiceGetFundsTypeByFundTypeKey = "FundsServiceGetFundsTypeByFundType";
+export const UseFundsServiceGetFundsTypeByFundTypeKeyFn = ({ fundType }: {
+  fundType: number;
+}, queryKey?: Array<unknown>) => [useFundsServiceGetFundsTypeByFundTypeKey, ...(queryKey ?? [{ fundType }])];
+export type FundsServiceGetFundsTableDefaultResponse = Awaited<ReturnType<typeof FundsService.getFundsTable>>;
+export type FundsServiceGetFundsTableQueryResult<TData = FundsServiceGetFundsTableDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
+export const useFundsServiceGetFundsTableKey = "FundsServiceGetFundsTable";
+export const UseFundsServiceGetFundsTableKeyFn = ({ tab }: {
+  tab?: number;
+} = {}, queryKey?: Array<unknown>) => [useFundsServiceGetFundsTableKey, ...(queryKey ?? [{ tab }])];
 export type UsersServicePostUsersLoginMutationResult = Awaited<ReturnType<typeof UsersService.postUsersLogin>>;
 export type UsersServicePostUsersTokenMutationResult = Awaited<ReturnType<typeof UsersService.postUsersToken>>;
-export type DashboardServicePostDashboardReportsByReportIdFavoriteMutationResult = Awaited<ReturnType<typeof DashboardService.postDashboardReportsByReportIdFavorite>>;
-export type DashboardServiceDeleteDashboardReportsByReportIdFavoriteMutationResult = Awaited<ReturnType<typeof DashboardService.deleteDashboardReportsByReportIdFavorite>>;
+export type UsersServicePostUsersPasswordForgotCaptchaMutationResult = Awaited<ReturnType<typeof UsersService.postUsersPasswordForgotCaptcha>>;
+export type UsersServicePostUsersPasswordForgotOtpMutationResult = Awaited<ReturnType<typeof UsersService.postUsersPasswordForgotOtp>>;
+export type UsersServicePostUsersPasswordForgotResetMutationResult = Awaited<ReturnType<typeof UsersService.postUsersPasswordForgotReset>>;
+export type UsersServicePostUsersProfilePasswordChangeMutationResult = Awaited<ReturnType<typeof UsersService.postUsersProfilePasswordChange>>;
+export type UsersServicePostUsersProfilePasswordValidateMutationResult = Awaited<ReturnType<typeof UsersService.postUsersProfilePasswordValidate>>;
+export type UsersServicePostUsersProfilePhoneChangeOtpMutationResult = Awaited<ReturnType<typeof UsersService.postUsersProfilePhoneChangeOtp>>;
+export type UsersServicePostUsersProfilePhoneChangeMutationResult = Awaited<ReturnType<typeof UsersService.postUsersProfilePhoneChange>>;
+export type UsersServicePostUsersProfileUsernameChangeMutationResult = Awaited<ReturnType<typeof UsersService.postUsersProfileUsernameChange>>;
+export type UsersServicePostUsersProfilePictureChangeMutationResult = Awaited<ReturnType<typeof UsersService.postUsersProfilePictureChange>>;
+export type ReportsServicePostReportsByReportIdMutationResult = Awaited<ReturnType<typeof ReportsService.postReportsByReportId>>;
+export type ReportsServicePostReportsByReportIdFavoriteMutationResult = Awaited<ReturnType<typeof ReportsService.postReportsByReportIdFavorite>>;
+export type DashboardsServicePostDashboardsByDashboardIdMutationResult = Awaited<ReturnType<typeof DashboardsService.postDashboardsByDashboardId>>;
+export type DashboardsServicePostDashboardsByDashboardIdItemsMutationResult = Awaited<ReturnType<typeof DashboardsService.postDashboardsByDashboardIdItems>>;
+export type DashboardsServicePostDashboardsByDashboardIdItemsReorderMutationResult = Awaited<ReturnType<typeof DashboardsService.postDashboardsByDashboardIdItemsReorder>>;
+export type FundsServicePostFundsTablePinMutationResult = Awaited<ReturnType<typeof FundsService.postFundsTablePin>>;
+export type FundsServicePostFundsTableUnpinMutationResult = Awaited<ReturnType<typeof FundsService.postFundsTableUnpin>>;
+export type DashboardsServicePutDashboardsMutationResult = Awaited<ReturnType<typeof DashboardsService.putDashboards>>;
+export type DashboardsServicePutDashboardsByDashboardIdItemsMutationResult = Awaited<ReturnType<typeof DashboardsService.putDashboardsByDashboardIdItems>>;
+export type ReportsServiceDeleteReportsByReportIdFavoriteMutationResult = Awaited<ReturnType<typeof ReportsService.deleteReportsByReportIdFavorite>>;
+export type DashboardsServiceDeleteDashboardsByDashboardIdMutationResult = Awaited<ReturnType<typeof DashboardsService.deleteDashboardsByDashboardId>>;
+export type DashboardsServiceDeleteDashboardsByDashboardIdItemsMutationResult = Awaited<ReturnType<typeof DashboardsService.deleteDashboardsByDashboardIdItems>>;

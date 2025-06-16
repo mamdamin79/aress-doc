@@ -10,7 +10,7 @@ async function getData() {
   }
   OpenAPI.HEADERS = {
     Authorization: `Bearer ${token}`,
-  };
+  };  
 
   const user = (await UsersService.getUsersMe()) as AressApiUser;
   return user;
