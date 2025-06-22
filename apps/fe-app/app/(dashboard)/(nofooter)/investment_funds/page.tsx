@@ -687,7 +687,7 @@ const Funds = () => {
                                   <div
                                     {...{
                                       className: header.column.getCanSort()
-                                        ? 'cursor-pointer h-[75px] select-none'
+                                        ? 'cursor-movee h-[75px] select-none'
                                         : '',
                                     }}
                                   >

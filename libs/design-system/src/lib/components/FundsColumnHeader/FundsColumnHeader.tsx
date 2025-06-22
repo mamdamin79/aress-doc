@@ -99,7 +99,7 @@ export function FundsColumnHeader({
           'bg-surface-accent-pink-200 hover:bg-surface-accent-pink-300':
             filterable && size !== 'extraLarg',
         },
-        'group/first text-text-neutral-primary w-full cursor-pointer',
+        'group/first text-text-neutral-primary w-full',
       )}
     >
       <div
@@ -135,7 +135,7 @@ export function FundsColumnHeader({
               subTitle}
           </span>
         </div>
-        <Tooltip className="text-md font-semibold" title={tooltipTitle}>
+        <Tooltip className="text-md font-semibold cursor-pointer" title={tooltipTitle}>
           <div
             onClick={() => {
               if (typeof clickFilterd === 'function') {
@@ -145,7 +145,7 @@ export function FundsColumnHeader({
                 defaultSort && defaultSort();
               }
             }}
-            className={cn('p-1', {
+            className={cn('p-1 cursor-pointer', {
               'icon-sort-cell text-icon-neutral-secondarycontrast invisible group-hover/first:visible':
                 type === 'inactive',
               'hover:bg-surface-brand-600-primary hover:text-icon-onbrand-neutral-on600 rounded-md duration-150':
