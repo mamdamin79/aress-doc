@@ -81,6 +81,7 @@ export const Report6: FC<Report6Props> = ({
       },
     ],
     legend: {
+      ...baseOptions.legend,
       useHTML: true,
       labelFormatter: function () {
         if (this.name === 'ورود') {

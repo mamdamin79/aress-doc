@@ -43,6 +43,7 @@ export const baseOptions: Highcharts.Options = {
       direction: 'rtl',
     },
     formatter: function () {
+      console.log(this.points);
       return ReactDOMServer.renderToStaticMarkup(
         <div
           dir="rtl"
@@ -52,8 +53,8 @@ export const baseOptions: Highcharts.Options = {
           <div className="font-medium">{this.key}</div>
           {this.points?.map((p: extendedPoint) => (
             <div key={p.series.name} className="mt-1 flex items-center gap-1">
-              <span style={{ color: p.color as any }} className="text-xs">
-                ●
+              <span style={{ color: p.color as any }} className="text-sm">
+                {p.series.userOptions.type === 'spline' ? '●' : '■'}
               </span>
               <div className="flex w-full items-center justify-between gap-3">
                 <span className="text-sm font-normal">{p.series.name}:</span>
