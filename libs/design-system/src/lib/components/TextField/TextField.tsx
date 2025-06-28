@@ -208,9 +208,12 @@ export const TextField: React.FC<textFieldPropsType> = ({
               'pl-20': !captchaValue && trailingIcons.length === 2,
               'pl-10': !captchaValue && trailingIcons.length === 1,
               'bg-surface-neutral-secondary': mode === 'filled' && !disabled,
-              'hover:bg-surface-neutral-secondarycontrast': mode === 'filled' && !disabled && !isFocused,
-              'cursor-not-allowed !bg-surface-neutral-disable': disabled && mode === 'filled',
-              'border-border-message-error-primary-600 focus:border-[2.5px]': isError && !disabled,
+              'hover:bg-surface-neutral-secondarycontrast':
+                mode === 'filled' && !disabled && !isFocused,
+              '!bg-surface-neutral-disable cursor-not-allowed':
+                disabled && mode === 'filled',
+              'border-border-message-error-primary-600 focus:border-[2.5px]':
+                isError && !disabled,
               'focus:border-border-brand-primary-600 border-border-neutral-secondary focus:border-2 focus:outline-none':
                 !isError && !disabled,
               'pr-12': leadingIcon,
@@ -343,7 +346,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
           {captchaValue && (
             <button
               className="text-brand-500"
-              onClick={() => onRefreshCaptcha()}
+              onClick={() => onRefreshCaptcha?.()}
             >
               <Icon size="lg" name="rotate-cw" />
             </button>
