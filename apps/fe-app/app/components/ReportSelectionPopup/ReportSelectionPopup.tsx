@@ -4,6 +4,7 @@ import {
   Dialog,
   Icon,
   NewBadge,
+  Report6,
   ReportCardBase,
   VideoBadge,
 } from 'design-system';
@@ -56,7 +57,50 @@ export const ReportSelectionPopup: React.FC<ReportSelectionPopupProps> = ({
               <span className="text-sm font-normal">{summary}</span>
             </div>
             <div className="flex w-full justify-center py-4">
-              <ReportCardBase {...report} />
+              <Report6
+                indexData={[
+                  { y: -2.5, unit: 'میلیون واحد' },
+                  { y: 2.5, unit: 'میلیون واحد' },
+                  { y: -2.5, unit: 'میلیون واحد' },
+                  { y: -2, unit: 'میلیون واحد' },
+                  { y: -1.5, unit: 'میلیون واحد' },
+                  { y: -4, unit: 'میلیون واحد' },
+                  { y: 2, unit: 'میلیون واحد' },
+                  { y: 5.5, unit: 'میلیون واحد' },
+                  { y: 3.5, unit: 'میلیون واحد' },
+                  { y: -4.5, unit: 'میلیون واحد' },
+                  { y: 0.5, unit: 'میلیون واحد' },
+                  { y: 3.5, unit: 'میلیون واحد' },
+                ]}
+                inFlowData={[
+                  { y: 115, unit: 'میلیارد ریال' },
+                  { y: 105, unit: 'میلیارد ریال' },
+                  null,
+                  null,
+                  { y: 85, unit: 'میلیارد ریال' },
+                  null,
+                  { y: 115, unit: 'میلیارد ریال' },
+                  { y: 95, unit: 'میلیارد ریال' },
+                  null,
+                  null,
+                  { y: 85, unit: 'میلیارد ریال' },
+                  { y: 105, unit: 'میلیارد ریال' },
+                ]}
+                outFlowData={[
+                  null,
+                  null,
+                  { y: -55, unit: 'میلیارد ریال' },
+                  { y: -45, unit: 'میلیارد ریال' },
+                  null,
+                  { y: -90, unit: 'میلیارد ریال' },
+                  null,
+                  null,
+                  { y: -10, unit: 'میلیارد ریال' },
+                  { y: -75, unit: 'میلیارد ریال' },
+                  null,
+                  null,
+                ]}
+              />
             </div>
           </div>
         </div>
