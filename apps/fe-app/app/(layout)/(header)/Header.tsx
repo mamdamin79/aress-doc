@@ -1,8 +1,8 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import PRODUCT_LOGO from '@aress-assets/icons/fullLogo.svg';
-import { useWindowSize } from '@uidotdev/usehooks';
+import { useWindowSize, useWindowScroll } from '@uidotdev/usehooks';
 import {
   cn,
   HeadProfile,
@@ -15,38 +15,125 @@ import { DESKTOP_BREAKPOINT } from './Header.constants';
 import { BurgerMenu } from './BurgerMenu';
 import { DesktopMenu } from './DesktopMenu';
 import { MenuData } from './HeaderDataLite';
-import { useWindowScroll } from '@uidotdev/usehooks';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useThemeToggle } from '../../../hooks';
-export const HeaderMenu: React.FC = () => {
-  const { width } = useWindowSize();
-  const pathname = usePathname();
-  const activeTabIndex = MenuData.map((menuItem) => menuItem.link).indexOf(
-    pathname,
-  );
+import {
+  DashboardsService,
+  OpenAPI,
+  useDashboardsServiceGetDashboards,
+  useDashboardsServicePutDashboards,
+  useDashboardsServicePutDashboardsByDashboardIdItems,
+} from '@openapi';
+import { fetchToken } from '../../(auth)/auth.utils';
+import { queryClient } from '../../lib/react-query';
 
-  if (typeof width !== 'number') return null;
-  return width >= DESKTOP_BREAKPOINT ? (
-    <DesktopMenu menuItems={MenuData} activeTab={activeTabIndex} />
-  ) : (
-    <BurgerMenu menuItems={MenuData} />
-  );
-};
 export const Header: React.FC = () => {
+  const [menuData, setMenuData] = useState(MenuData);
+  const [token, setToken] = useState<string | null>(null);
+
   const { isHeaderVisible } = useHeaderVisibility();
   const [{ y: scrollY }] = useWindowScroll();
   const currentScrollY = scrollY ?? 0;
   const htmlPaddingRight = useHtmlPaddingRight();
   const { toggleTheme, theme } = useThemeToggle();
+  const query = useDashboardsServiceGetDashboards(undefined, {
+    enabled: token != null,
+  });
+
+  const fetchData = async () => {
+    const token = await fetchToken();
+    if (!token) {
+      throw new Error('Failed to fetch access token');
+    }
+    setToken(token);
+    OpenAPI.HEADERS = {
+      Authorization: `Bearer ${token}`,
+    };
+    await query.refetch();
+  };
+
+  useEffect(() => {
+    fetchData().catch(console.error);
+  }, []); // run once on mount
+
   const themeIcons: [IconProps, IconProps] | [IconProps] =
     theme === 'light'
       ? [{ name: 'sun' }, { name: 'moon' }]
       : [{ name: 'moon' }, { name: 'sun' }];
+
+  const { width } = useWindowSize();
+  const pathname = usePathname();
+
+  const activeTabIndex = MenuData.findIndex(
+    (menuItem) => menuItem.link === pathname,
+  );
+
+  useEffect(() => {
+    if (!query || !query.data) return;
+
+    // Deep clone MenuData to avoid direct mutation
+    const updatedMenuData = JSON.parse(JSON.stringify(MenuData));
+    const targetItem = updatedMenuData[0]?.dropdown?.[2];
+
+    if (targetItem) {
+      targetItem.children = query.data.map((dashboard, index) => ({
+        text: dashboard.name,
+        link: `/dashboard/${dashboard.identifier}`,
+        isDashboard: true,
+        isActive:
+          pathname === `/dashboard/${dashboard.identifier}` ||
+          (index === 2 && pathname === '/'),
+      }));
+    }
+    setMenuData(updatedMenuData);
+  }, [pathname, query.data]);
+
+  if (typeof width !== 'number') return null;
+
   return (
-    <ModalProvider>
+    <ModalProvider
+      onActions={{
+        newDashboard: async ({ input, checked }) => {
+          const token = await fetchToken();
+          OpenAPI.HEADERS = { Authorization: `Bearer ${token}` };
+          await DashboardsService.putDashboards({
+            requestBody: { name: input ?? '' },
+          });
+
+          if (checked && window.open) window.open('/', '_blank');
+          queryClient.invalidateQueries({
+            queryKey: ['DashboardsServiceGetDashboards'],
+          });
+        },
+        deleteDashboard: async () => {
+          const token = await fetchToken();
+          OpenAPI.HEADERS = { Authorization: `Bearer ${token}` };
+          await DashboardsService.deleteDashboardsByDashboardId({
+            dashboardId: 3,
+          });
+          queryClient.invalidateQueries({
+            queryKey: ['DashboardsServiceGetDashboards'],
+          });
+        },
+        changeDashboardName: async ({ input }) => {
+          const token = await fetchToken();
+          OpenAPI.HEADERS = { Authorization: `Bearer ${token}` };
+          await DashboardsService.postDashboardsByDashboardId({
+            dashboardId: 3,
+            requestBody: { name: input ?? '' },
+          });
+          queryClient.invalidateQueries({
+            queryKey: ['DashboardsServiceGetDashboards'],
+          });
+        },
+        copyDashboard: async ({ input, checked }) => {
+          // Add your copy logic here
+          console.log('copy', input, checked);
+        },
+      }}
+    >
       <div>
-        {/* Always fixed top header */}
         <div
           className={cn(
             'bg-surface-neutral-background fixed right-0 top-0 z-[51] flex w-full flex-row items-center justify-between border-b-2 px-8 pb-3 pt-4 transition-transform duration-300',
@@ -55,9 +142,7 @@ export const Header: React.FC = () => {
               : 'border-border-neutral-secondary shadow-sm',
             isHeaderVisible ? 'translate-y-0' : '-translate-y-full',
           )}
-          style={{
-            right: htmlPaddingRight,
-          }}
+          style={{ right: htmlPaddingRight }}
         >
           <div className="flex flex-row items-center gap-6">
             <Link href={'/'}>
@@ -70,15 +155,16 @@ export const Header: React.FC = () => {
               />
             </Link>
             <div className="pt-2">
-              <HeaderMenu />
+              {width >= DESKTOP_BREAKPOINT ? (
+                <DesktopMenu menuItems={menuData} activeTab={activeTabIndex} />
+              ) : (
+                <BurgerMenu menuItems={menuData} />
+              )}
             </div>
           </div>
-
           <div
             className="flex flex-row gap-3"
-            style={{
-              paddingLeft: htmlPaddingRight,
-            }}
+            style={{ paddingLeft: htmlPaddingRight }}
           >
             <SquaredButton
               icons={themeIcons}
@@ -90,7 +176,7 @@ export const Header: React.FC = () => {
             </Link>
           </div>
         </div>
-        <div className={cn('invisible', `h-[80px]`)}></div>
+        <div className="invisible h-[80px]" />
       </div>
     </ModalProvider>
   );

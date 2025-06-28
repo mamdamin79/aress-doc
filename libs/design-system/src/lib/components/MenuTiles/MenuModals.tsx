@@ -1,16 +1,22 @@
 import React from 'react';
 import { ConfirmModal } from '../ConfirmModal';
 
-type CommonProps = {
-  onClose: () => void;
-  onConfirm?: (data: any) => void;
-  isOpen?: boolean;
+type ConfirmModalInput = {
+  input?: string;
+  checked?: boolean;
 };
 
+type CommonProps = {
+  isOpen?: boolean;
+  onClose: () => void;
+  onConfirm?: (data: ConfirmModalInput) => void;
+};
+
+// Change Dashboard Name Modal
 export const ChangeDashboardNameModal: React.FC<CommonProps> = ({
+  isOpen = false,
   onClose,
   onConfirm,
-  isOpen = false,
 }) => (
   <ConfirmModal
     isOpen={isOpen}
@@ -19,27 +25,23 @@ export const ChangeDashboardNameModal: React.FC<CommonProps> = ({
       label: 'نام جدید را وارد کنید',
       placeholder: 'نام مد نظر خود را وارد کنید ...',
     }}
-    checkBoxText=""
     onClose={onClose}
-    onConfirm={() => {
-      // Perform delete
-      onClose();
+    checkBoxText=""
+    onConfirm={async (data) => {
+      onConfirm?.(data);
     }}
   />
 );
 
+// Delete Dashboard Modal
 export const DeleteDashboardModal: React.FC<CommonProps> = ({
-  onClose,
   isOpen = false,
+  onClose,
+  onConfirm,
 }) => (
   <ConfirmModal
     isOpen={isOpen}
     title="تایید حذف داشبورد"
-    onClose={onClose}
-    onConfirm={() => {
-      // Perform delete
-      onClose();
-    }}
     cancelBtnLabel="خیر"
     submitBtnLabel="بله"
     description={
@@ -47,12 +49,18 @@ export const DeleteDashboardModal: React.FC<CommonProps> = ({
         آیا مطمئن هستید که می‌خواهید داشبورد <b>صندوق کالایی</b> را حذف کنید؟
       </div>
     }
+    onClose={onClose}
+    onConfirm={async (data) => {
+      onConfirm?.(data);
+    }}
   />
 );
 
+// New Dashboard Modal
 export const NewDashboardModal: React.FC<CommonProps> = ({
-  onClose,
   isOpen = false,
+  onClose,
+  onConfirm,
 }) => (
   <ConfirmModal
     isOpen={isOpen}
@@ -63,15 +71,17 @@ export const NewDashboardModal: React.FC<CommonProps> = ({
     }}
     checkBoxText="باز کردن در تب جدید"
     onClose={onClose}
-    onConfirm={(data) => {
-      onClose();
+    onConfirm={async (data) => {
+      onConfirm?.(data);
     }}
   />
 );
 
+// Copy Dashboard Modal
 export const CopyDashboardModal: React.FC<CommonProps> = ({
-  onClose,
   isOpen = false,
+  onClose,
+  onConfirm,
 }) => (
   <ConfirmModal
     isOpen={isOpen}
@@ -80,11 +90,10 @@ export const CopyDashboardModal: React.FC<CommonProps> = ({
       label: 'نام جدید',
       placeholder: 'نام مد نظر خود را وارد کنید ...',
     }}
-    onClose={onClose}
     checkBoxText="باز کردن در تب جدید"
-    onConfirm={(data) => {
-      // Handle copy
-      onClose();
+    onClose={onClose}
+    onConfirm={async (data) => {
+      onConfirm?.(data);
     }}
   />
 );

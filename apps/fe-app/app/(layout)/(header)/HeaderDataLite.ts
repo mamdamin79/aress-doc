@@ -63,24 +63,7 @@ export const MenuData: MenuItem[] = [
         groupLabel: 'داشبوردهای‌شما',
         counter: true,
 
-        children: [
-          {
-            link: '#',
-            text: 'تحلیل صنعت پتروشیمی',
-            isDashboard: true,
-          },
-          {
-            link: '#',
-            text: 'صندوق کالایی',
-            isDashboard: true,
-            isActive: true,
-          },
-          {
-            link: '#',
-            text: 'صندوق‌های پربازده',
-            isDashboard: true,
-          },
-        ],
+        children: [],
       },
     ],
   },
