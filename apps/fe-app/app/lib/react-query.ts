@@ -12,7 +12,7 @@ export const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
       throwOnError: false,
       gcTime: 0,
-      staleTime: 0,
+      staleTime: 5 * 60 * 1000,
     },
   },
 });

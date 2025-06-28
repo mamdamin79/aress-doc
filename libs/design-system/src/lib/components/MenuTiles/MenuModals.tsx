@@ -1,5 +1,6 @@
 import React from 'react';
 import { ConfirmModal } from '../ConfirmModal';
+import { useSearchParams } from 'next/navigation';
 
 type ConfirmModalInput = {
   input?: string;
@@ -38,23 +39,29 @@ export const DeleteDashboardModal: React.FC<CommonProps> = ({
   isOpen = false,
   onClose,
   onConfirm,
-}) => (
-  <ConfirmModal
-    isOpen={isOpen}
-    title="تایید حذف داشبورد"
-    cancelBtnLabel="خیر"
-    submitBtnLabel="بله"
-    description={
-      <div className="text-sm font-normal">
-        آیا مطمئن هستید که می‌خواهید داشبورد <b>صندوق کالایی</b> را حذف کنید؟
-      </div>
-    }
-    onClose={onClose}
-    onConfirm={async (data) => {
-      onConfirm?.(data);
-    }}
-  />
-);
+}) => {
+  const searchParams = useSearchParams();
+  const dashboardNameParam = searchParams.get('dashboardName');
+
+  return (
+    <ConfirmModal
+      isOpen={isOpen}
+      title="تایید حذف داشبورد"
+      cancelBtnLabel="خیر"
+      submitBtnLabel="بله"
+      description={
+        <div className="text-sm font-normal">
+          آیا مطمئن هستید که می‌خواهید داشبورد <b>{dashboardNameParam}</b> را
+          حذف کنید؟
+        </div>
+      }
+      onClose={onClose}
+      onConfirm={async (data) => {
+        onConfirm?.(data);
+      }}
+    />
+  );
+};
 
 // New Dashboard Modal
 export const NewDashboardModal: React.FC<CommonProps> = ({

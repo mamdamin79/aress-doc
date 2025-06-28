@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import Image from 'next/image';
 import PRODUCT_LOGO from '@aress-assets/icons/fullLogo.svg';
 import { useWindowSize, useWindowScroll } from '@uidotdev/usehooks';
@@ -16,20 +16,17 @@ import { BurgerMenu } from './BurgerMenu';
 import { DesktopMenu } from './DesktopMenu';
 import { MenuData } from './HeaderDataLite';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useThemeToggle } from '../../../hooks';
 import {
   DashboardsService,
   OpenAPI,
   useDashboardsServiceGetDashboards,
-  useDashboardsServicePutDashboards,
-  useDashboardsServicePutDashboardsByDashboardIdItems,
 } from '@openapi';
 import { fetchToken } from '../../(auth)/auth.utils';
 import { queryClient } from '../../lib/react-query';
 
 export const Header: React.FC = () => {
-  const [menuData, setMenuData] = useState(MenuData);
   const [token, setToken] = useState<string | null>(null);
 
   const { isHeaderVisible } = useHeaderVisibility();
@@ -37,25 +34,87 @@ export const Header: React.FC = () => {
   const currentScrollY = scrollY ?? 0;
   const htmlPaddingRight = useHtmlPaddingRight();
   const { toggleTheme, theme } = useThemeToggle();
-  const query = useDashboardsServiceGetDashboards(undefined, {
-    enabled: token != null,
-  });
 
-  const fetchData = async () => {
-    const token = await fetchToken();
-    if (!token) {
-      throw new Error('Failed to fetch access token');
-    }
-    setToken(token);
-    OpenAPI.HEADERS = {
-      Authorization: `Bearer ${token}`,
-    };
-    await query.refetch();
-  };
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    fetchData().catch(console.error);
-  }, []); // run once on mount
+    fetchToken()
+      .then((t) => {
+        if (!t) throw new Error('Failed to fetch token');
+        OpenAPI.HEADERS = { Authorization: `Bearer ${t}` };
+        setToken(t);
+      })
+      .catch(console.error);
+  }, []);
+
+  const query = useDashboardsServiceGetDashboards(undefined, {
+    enabled: !!token,
+  });
+
+  // Inside your effect for setting active dashboard in URL:
+
+  useEffect(() => {
+    if (!query.data) return;
+
+    const storedDashboard = localStorage.getItem('activeDashboard');
+    // Try to get dashboardId from URL, fallback to stored, fallback to default 3
+    const dashboardIdParam = searchParams.get('dashboardId');
+    const dashboardNameParam = searchParams.get('dashboardName');
+
+    // Find dashboard object matching dashboardIdParam or storedDashboard or default 3
+    const activeDashboard =
+      query.data.find((d) => String(d.identifier) === dashboardIdParam) ||
+      query.data.find((d) => String(d.identifier) === storedDashboard) ||
+      query.data.find((d) => d.identifier === 3);
+
+    if (!activeDashboard) return;
+
+    const activeId = String(activeDashboard.identifier);
+    const activeName = activeDashboard.name;
+
+    // If URL params don't match active dashboard, replace URL
+    if (dashboardIdParam !== activeId || dashboardNameParam !== activeName) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set('dashboardId', activeId);
+      params.set('dashboardName', activeName);
+      router.replace(`${window.location.pathname}?${params.toString()}`);
+    }
+
+    localStorage.setItem('activeDashboard', activeId);
+  }, [query.data, router, searchParams]);
+
+  const menuData = useMemo(() => {
+    if (!query.data) return MenuData;
+
+    const updatedMenuData = [...MenuData];
+    const targetItem = updatedMenuData[0]?.dropdown?.[2];
+
+    if (targetItem) {
+      targetItem.children = query.data.map((dashboard) => {
+        const isActive =
+          pathname === '/' &&
+          String(dashboard.identifier) ===
+            (searchParams.get('dashboardId') ??
+              localStorage.getItem('activeDashboard'));
+
+        return {
+          text: dashboard.name,
+          // include both dashboardId and dashboardName in URL params
+          link: `/?dashboardId=${dashboard.identifier}&dashboardName=${encodeURIComponent(dashboard.name)}`,
+          isDashboard: true,
+          isActive,
+        };
+      });
+    }
+
+    return updatedMenuData;
+  }, [query.data, pathname, searchParams]);
+
+  const activeTabIndex = useMemo(() => {
+    return menuData.findIndex((menuItem) => menuItem.link === pathname);
+  }, [menuData, pathname]);
 
   const themeIcons: [IconProps, IconProps] | [IconProps] =
     theme === 'light'
@@ -63,40 +122,14 @@ export const Header: React.FC = () => {
       : [{ name: 'moon' }, { name: 'sun' }];
 
   const { width } = useWindowSize();
-  const pathname = usePathname();
-
-  const activeTabIndex = MenuData.findIndex(
-    (menuItem) => menuItem.link === pathname,
-  );
-
-  useEffect(() => {
-    if (!query || !query.data) return;
-
-    // Deep clone MenuData to avoid direct mutation
-    const updatedMenuData = JSON.parse(JSON.stringify(MenuData));
-    const targetItem = updatedMenuData[0]?.dropdown?.[2];
-
-    if (targetItem) {
-      targetItem.children = query.data.map((dashboard, index) => ({
-        text: dashboard.name,
-        link: `/dashboard/${dashboard.identifier}`,
-        isDashboard: true,
-        isActive:
-          pathname === `/dashboard/${dashboard.identifier}` ||
-          (index === 2 && pathname === '/'),
-      }));
-    }
-    setMenuData(updatedMenuData);
-  }, [pathname, query.data]);
-
   if (typeof width !== 'number') return null;
 
   return (
     <ModalProvider
       onActions={{
         newDashboard: async ({ input, checked }) => {
-          const token = await fetchToken();
-          OpenAPI.HEADERS = { Authorization: `Bearer ${token}` };
+          const t = await fetchToken();
+          OpenAPI.HEADERS = { Authorization: `Bearer ${t}` };
           await DashboardsService.putDashboards({
             requestBody: { name: input ?? '' },
           });
@@ -107,20 +140,22 @@ export const Header: React.FC = () => {
           });
         },
         deleteDashboard: async () => {
-          const token = await fetchToken();
-          OpenAPI.HEADERS = { Authorization: `Bearer ${token}` };
+          const t = await fetchToken();
+          OpenAPI.HEADERS = { Authorization: `Bearer ${t}` };
           await DashboardsService.deleteDashboardsByDashboardId({
-            dashboardId: 3,
+            dashboardId: Number(searchParams.get('dashboardId')),
           });
           queryClient.invalidateQueries({
             queryKey: ['DashboardsServiceGetDashboards'],
           });
+          localStorage.removeItem('activeDashboard');
+          window.location.replace('/');
         },
         changeDashboardName: async ({ input }) => {
-          const token = await fetchToken();
-          OpenAPI.HEADERS = { Authorization: `Bearer ${token}` };
+          const t = await fetchToken();
+          OpenAPI.HEADERS = { Authorization: `Bearer ${t}` };
           await DashboardsService.postDashboardsByDashboardId({
-            dashboardId: 3,
+            dashboardId: Number(searchParams.get('dashboardId')),
             requestBody: { name: input ?? '' },
           });
           queryClient.invalidateQueries({
@@ -128,7 +163,6 @@ export const Header: React.FC = () => {
           });
         },
         copyDashboard: async ({ input, checked }) => {
-          // Add your copy logic here
           console.log('copy', input, checked);
         },
       }}
