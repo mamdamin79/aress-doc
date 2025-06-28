@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Icon } from '../Icon';
 import { DualSwitch } from '../DualSwitch';
 import { ReportSettings } from '../ReportSettings';
@@ -11,21 +11,24 @@ import { LoadingBarPop } from '../LoadingBarPop';
 import { Button } from '../Button';
 import { ReportCardBaseProps } from './ReportCardBase.types';
 import { PopupInfo } from '../PopupInfo';
+import { OptionsListExplorerProps } from '../OptionsListExplorer/OptionsListExplorer';
 export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
   title,
   switchIcons,
-  optionsListItems,
   compactHeader = false,
   children,
   popupInfoItems,
   settingOptions,
 }) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [optionsListOpen, setOptionsListOpen] = useState(false);
   const [loadingStatus, setLoadingStatus] = useState<
     null | 'loading' | 'done' | 'rejected'
   >(null);
   const [popupInfoOpen, setPopupInfoOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [optionsListItems, setOptionsListItems] =
+    useState<null | OptionsListExplorerProps>(null);
+
   const returnLoadingStatusText = () => {
     switch (loadingStatus) {
       case 'loading':
@@ -44,53 +47,77 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
     }, 3000);
   };
   return (
-    <div className="bg-surface-neutral-primary shadow-6xl border-border-neutral-secondary group relative flex w-[616px] flex-col overflow-hidden rounded-2xl border-2">
+    <div className="bg-surface-neutral-primary shadow-6xl border-border-neutral-secondary group relative flex h-[336px] w-[616px] flex-col overflow-hidden rounded-2xl border-2">
       <SlideFromLeft isOpen={settingsOpen}>
         <ReportSettings
           onSubmit={mockLoading}
           onClose={() => setSettingsOpen(false)}
           options={settingOptions}
+          onChangeOptionsListExplorerItem={(item) => setOptionsListItems(item)}
         />
       </SlideFromLeft>
-      {optionsListItems && (
-        <SlideFromLeft isOpen={optionsListOpen}>
-          <OptionsListExplorer
-            items={optionsListItems}
-            onBackButtonClick={() => setOptionsListOpen(false)}
-            onSearch={(value) => console.log(value)}
-            title="انتخاب دسته بندی اوراق"
-          />
-        </SlideFromLeft>
-      )}
-
-      <div className="relative w-full p-3 pb-2">
-        <div className="flex w-full items-center justify-between">
-          {!compactHeader ? (
-            <div className="text-text-neutral-primary flex flex-row items-center text-xs font-semibold">
-              <div
-                className="cursor-pointer p-1.5"
-                onClick={() => setPopupInfoOpen(true)}
-              >
-                <Icon name="info" size="md" />
-              </div>
-              <span className={cn(loadingStatus && 'opacity-30')}>{title}</span>
+      <SlideFromLeft isOpen={optionsListItems !== null}>
+        <OptionsListExplorer
+          {...optionsListItems}
+          items={
+            optionsListItems?.items ?? {
+              items: [],
+              categories: [],
+            }
+          }
+          title={optionsListItems?.title ?? ''}
+          onBackButtonClick={() => setOptionsListItems(null)}
+          onSearch={(value) => console.log(value)}
+        />
+      </SlideFromLeft>
+      <div className="relative flex w-full items-center justify-between px-3 pb-2 pt-3">
+        {!compactHeader ? (
+          <div className="text-text-neutral-primary flex flex-row items-center text-xs font-semibold">
+            <div
+              className="cursor-pointer p-1.5"
+              onClick={() => setPopupInfoOpen(true)}
+            >
+              <Icon name="info" size="md" />
             </div>
-          ) : (
-            <div></div>
+            <span className={cn(loadingStatus && 'opacity-30')}>{title}</span>
+          </div>
+        ) : (
+          <div></div>
+        )}
+
+        <div className={cn('flex flex-row items-center gap-2')}>
+          {switchIcons && (
+            <div
+              className={cn(
+                'transition-opacity',
+                menuOpen || settingsOpen
+                  ? 'opacity-100'
+                  : 'opacity-0 group-hover:opacity-100',
+                compactHeader && 'opacity-100',
+              )}
+            >
+              <DualSwitch {...switchIcons} size="sm" />
+            </div>
           )}
 
-          <div className={cn('flex flex-row items-center gap-2')}>
-            {switchIcons && <DualSwitch {...switchIcons} size="sm" />}
-
-            {compactHeader ? (
-              <div
-                className="bg-surface-neutral-secondary text-text-neutral-primary flex h-8 w-8 cursor-pointer items-center justify-center rounded-full"
-                onClick={() => setSettingsOpen(true)}
-              >
-                <Icon name="settings" size="md" />
-              </div>
-            ) : (
+          {compactHeader ? (
+            <div
+              className="bg-surface-neutral-secondary text-text-neutral-primary flex h-8 w-8 cursor-pointer items-center justify-center rounded-full"
+              onClick={() => setSettingsOpen(true)}
+            >
+              <Icon name="settings" size="md" />
+            </div>
+          ) : (
+            <div
+              className={cn(
+                'h-8 transition-opacity',
+                menuOpen || settingsOpen
+                  ? 'opacity-100'
+                  : 'opacity-0 group-hover:opacity-100',
+              )}
+            >
               <ContextMenu
+                onOpenChange={setMenuOpen}
                 anchor="bottom end"
                 items={[
                   {
@@ -122,13 +149,12 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
               >
                 <Icon name="ellipsis-vertical" size="md" />
               </ContextMenu>
-            )}
-          </div>
+            </div>
+          )}
         </div>
         <div
           className={cn(
             'border-border-neutral-primary absolute bottom-0 w-[592px] border-b',
-            !compactHeader && 'group-hover:hidden',
           )}
         ></div>
       </div>
@@ -168,7 +194,6 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
           </div>
         </div>
       )}
-
       {children}
       {popupInfoItems && (
         <PopupInfo

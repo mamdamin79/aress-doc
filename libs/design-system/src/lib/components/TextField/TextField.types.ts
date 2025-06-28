@@ -29,8 +29,8 @@ export type textFieldPropsType = InputHTMLAttributes<HTMLInputElement> & {
   trailingIcons: TrailingIcons;
   longText?: boolean;
   inputSize?: TextFieldInputSize;
-  captchaValue:string;
-  onRefreshCaptcha:()=>void
+  captchaValue?:string;
+  onRefreshCaptcha?:()=>void
 };
 
 export type TextFieldInputSize = 'default' | 'md' | 'sm';
