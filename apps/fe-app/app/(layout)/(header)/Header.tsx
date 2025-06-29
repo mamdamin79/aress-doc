@@ -16,15 +16,12 @@ import { BurgerMenu } from './BurgerMenu';
 import { DesktopMenu } from './DesktopMenu';
 import { MenuData } from './HeaderDataLite';
 import Link from 'next/link';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useThemeToggle } from '../../../hooks';
-import {
-  DashboardsService,
-  OpenAPI,
-  useDashboardsServiceGetDashboards,
-} from '@openapi';
+import { OpenAPI, useDashboardsServiceGetDashboards } from '@openapi';
 import { fetchToken } from '../../(auth)/auth.utils';
-import { queryClient } from '../../lib/react-query';
+import { buildDashboardUrl, useDashboardActions } from './header.utils';
+import { Toaster } from 'react-hot-toast';
 
 export const Header: React.FC = () => {
   const [token, setToken] = useState<string | null>(null);
@@ -35,7 +32,6 @@ export const Header: React.FC = () => {
   const htmlPaddingRight = useHtmlPaddingRight();
   const { toggleTheme, theme } = useThemeToggle();
 
-  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -53,46 +49,47 @@ export const Header: React.FC = () => {
     enabled: !!token,
   });
 
-  // Inside your effect for setting active dashboard in URL:
-
   useEffect(() => {
     if (!query.data) return;
 
-    const storedDashboard = localStorage.getItem('activeDashboard');
-    // Try to get dashboardId from URL, fallback to stored, fallback to default 3
+    const searchParams = new URLSearchParams(window.location.search);
     const dashboardIdParam = searchParams.get('dashboardId');
     const dashboardNameParam = searchParams.get('dashboardName');
 
-    // Find dashboard object matching dashboardIdParam or storedDashboard or default 3
+    const storedDashboard = localStorage.getItem('activeDashboard');
+
     const activeDashboard =
       query.data.find((d) => String(d.identifier) === dashboardIdParam) ||
       query.data.find((d) => String(d.identifier) === storedDashboard) ||
-      query.data.find((d) => d.identifier === 3);
+      query.data.find((d) => d.identifier === 0);
 
     if (!activeDashboard) return;
 
     const activeId = String(activeDashboard.identifier);
     const activeName = activeDashboard.name;
+    const safeName = activeName.replace(/[\s\u200C]+/g, '-');
 
-    // If URL params don't match active dashboard, replace URL
-    if (dashboardIdParam !== activeId || dashboardNameParam !== activeName) {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set('dashboardId', activeId);
-      params.set('dashboardName', activeName);
-      router.replace(`${window.location.pathname}?${params.toString()}`);
+    if (dashboardIdParam !== activeId || dashboardNameParam !== safeName) {
+      const newParams = new URLSearchParams(window.location.search);
+      newParams.set('dashboardId', activeId);
+      newParams.set('dashboardName', safeName);
+
+      const newUrl = `${window.location.pathname}?${newParams.toString()}`;
+      window.history.replaceState(null, '', newUrl);
     }
 
     localStorage.setItem('activeDashboard', activeId);
-  }, [query.data, router, searchParams]);
+  }, [query.data]);
 
   const menuData = useMemo(() => {
     if (!query.data) return MenuData;
 
     const updatedMenuData = [...MenuData];
-    const targetItem = updatedMenuData[0]?.dropdown?.[2];
-
-    if (targetItem) {
-      targetItem.children = query.data.map((dashboard) => {
+    const dashboardSection = updatedMenuData[0]?.dropdown?.find(
+      (group) => group.id === 'userDashboards',
+    );
+    if (dashboardSection) {
+      dashboardSection.children = query.data.map((dashboard) => {
         const isActive =
           pathname === '/' &&
           String(dashboard.identifier) ===
@@ -101,8 +98,7 @@ export const Header: React.FC = () => {
 
         return {
           text: dashboard.name,
-          // include both dashboardId and dashboardName in URL params
-          link: `/?dashboardId=${dashboard.identifier}&dashboardName=${encodeURIComponent(dashboard.name)}`,
+          link: buildDashboardUrl(dashboard.identifier, dashboard.name),
           isDashboard: true,
           isActive,
         };
@@ -122,51 +118,11 @@ export const Header: React.FC = () => {
       : [{ name: 'moon' }, { name: 'sun' }];
 
   const { width } = useWindowSize();
+  const dashboardActions = useDashboardActions();
   if (typeof width !== 'number') return null;
 
   return (
-    <ModalProvider
-      onActions={{
-        newDashboard: async ({ input, checked }) => {
-          const t = await fetchToken();
-          OpenAPI.HEADERS = { Authorization: `Bearer ${t}` };
-          await DashboardsService.putDashboards({
-            requestBody: { name: input ?? '' },
-          });
-
-          if (checked && window.open) window.open('/', '_blank');
-          queryClient.invalidateQueries({
-            queryKey: ['DashboardsServiceGetDashboards'],
-          });
-        },
-        deleteDashboard: async () => {
-          const t = await fetchToken();
-          OpenAPI.HEADERS = { Authorization: `Bearer ${t}` };
-          await DashboardsService.deleteDashboardsByDashboardId({
-            dashboardId: Number(searchParams.get('dashboardId')),
-          });
-          queryClient.invalidateQueries({
-            queryKey: ['DashboardsServiceGetDashboards'],
-          });
-          localStorage.removeItem('activeDashboard');
-          window.location.replace('/');
-        },
-        changeDashboardName: async ({ input }) => {
-          const t = await fetchToken();
-          OpenAPI.HEADERS = { Authorization: `Bearer ${t}` };
-          await DashboardsService.postDashboardsByDashboardId({
-            dashboardId: Number(searchParams.get('dashboardId')),
-            requestBody: { name: input ?? '' },
-          });
-          queryClient.invalidateQueries({
-            queryKey: ['DashboardsServiceGetDashboards'],
-          });
-        },
-        copyDashboard: async ({ input, checked }) => {
-          console.log('copy', input, checked);
-        },
-      }}
-    >
+    <ModalProvider onActions={dashboardActions}>
       <div>
         <div
           className={cn(

@@ -62,7 +62,7 @@ export const MenuData: MenuItem[] = [
       {
         groupLabel: 'داشبوردهای‌شما',
         counter: true,
-
+        id: 'userDashboards',
         children: [],
       },
     ],

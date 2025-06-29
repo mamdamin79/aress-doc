@@ -42,7 +42,6 @@ export const DeleteDashboardModal: React.FC<CommonProps> = ({
 }) => {
   const searchParams = useSearchParams();
   const dashboardNameParam = searchParams.get('dashboardName');
-
   return (
     <ConfirmModal
       isOpen={isOpen}
@@ -51,8 +50,8 @@ export const DeleteDashboardModal: React.FC<CommonProps> = ({
       submitBtnLabel="بله"
       description={
         <div className="text-sm font-normal">
-          آیا مطمئن هستید که می‌خواهید داشبورد <b>{dashboardNameParam}</b> را
-          حذف کنید؟
+          آیا مطمئن هستید که می‌خواهید داشبورد{' '}
+          <b>{dashboardNameParam?.replace(/-/g, ' ')}</b> را حذف کنید؟
         </div>
       }
       onClose={onClose}

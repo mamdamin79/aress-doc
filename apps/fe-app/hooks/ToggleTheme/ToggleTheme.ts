@@ -22,7 +22,6 @@ export const useThemeToggle = (): {
 
   const toggleTheme = (): void => {
     setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
-    window.location.reload();
   };
 
   return { theme, toggleTheme };
