@@ -1,5 +1,5 @@
 export const tempData = {
-  title: 'تایتل (اسم گزارش)',
+  title: 'شاخص کل، ورود و خروج ماهانه سرمایه‌گذاران حقیقی به سهام',
   switchIcons: {
     items: [
       {
@@ -16,99 +16,110 @@ export const tempData = {
     bgWhite: false,
     initialIndex: 1,
   },
-  optionsListItems: {
-    categories: [
-      {
-        id: 1,
-        title: 'همه',
+  settingOptions: [
+    {
+      type: 'nestedDropdown',
+      props: {
+        title: 'نمودار خطی',
+        items: [
+          {
+            title: 'نام شاخص:',
+            icon: { name: 'square-mouse-pointer', size: 'sm' },
+            status: 'normal',
+            selectedOption: 'شاخص کل',
+            optionsListProps: {
+              selectedItemId: 1,
+              searchable: false,
+              title: 'نام شاخص',
+              items: {
+                items: [
+                  {
+                    id: 1,
+                    title: 'ذغال سنگ',
+                  },
+                  {
+                    id: 2,
+                    title: 'شاخص کل (هم‌وزن)',
+                  },
+                  {
+                    id: 3,
+                    title: 'شاخص قیمت (وزنی-ارزشی)',
+                  },
+                  {
+                    id: 4,
+                    title: 'شاخص قیمت (هم‌وزن)',
+                  },
+                ],
+              },
+            },
+          },
+        ],
       },
-      {
-        id: 2,
-        title: 'سهامی',
+    },
+    {
+      type: 'nestedDropdown',
+      props: {
+        title: 'نمودار میله‌ای',
+        items: [
+          {
+            title: 'نوع سرمایه‌گذار:',
+            icon: { name: 'square-mouse-pointer', size: 'sm' },
+            status: 'normal',
+            selectedOption: 'حقیقی',
+            optionsListProps: {
+              selectedItemId: 1,
+              searchable: false,
+              title: 'نوع سرمایه‌گذار',
+              items: {
+                items: [
+                  {
+                    id: 1,
+                    title: 'حقیقی',
+                  },
+                  {
+                    id: 2,
+                    title: 'حقوقی',
+                  },
+                ],
+              },
+            },
+          },
+        ],
       },
-      {
-        id: 3,
-        title: 'درآمد ثابت',
+    },
+    {
+      props: {
+        title: 'تفکیک زمانی: ',
+        icon: { name: 'square-mouse-pointer', size: 'sm' },
+        status: 'normal',
+        selectedOption: 'ماهانه',
+        optionsListProps: {
+          selectedItemId: 3,
+          searchable: false,
+          title: 'تفکیک زمانی',
+          items: {
+            items: [
+              {
+                id: 1,
+                title: 'روزانه',
+              },
+              {
+                id: 2,
+                title: 'هفتگی',
+              },
+              {
+                id: 3,
+                title: 'ماهانه',
+              },
+              {
+                id: 4,
+                title: 'سالانه',
+              },
+            ],
+          },
+        },
       },
-      {
-        id: 4,
-        title: 'کالایی',
-      },
-      {
-        id: 5,
-        title: 'مختلط',
-      },
-      {
-        id: 6,
-        title: 'دیده بان',
-      },
-    ],
-    items: [
-      {
-        title: 'ذغال سنگ',
-        categoryId: 2,
-        priceRials: 11250,
-        type: 'سهامی',
-      },
-      {
-        title: 'مس',
-      },
-      {
-        title: 'آلومینیوم',
-        categoryId: 5,
-        priceChangePercent: -1.1,
-        priceRials: 30000,
-        type: 'مختلط',
-      },
-      {
-        title: 'پتروشیمی',
-        categoryId: 6,
-        priceChangePercent: 3.5,
-        priceRials: 22000,
-        type: 'دیده بان',
-      },
-      {
-        title: 'معدنی',
-        categoryId: 2,
-        priceChangePercent: 0.5,
-        priceRials: 18000,
-        type: 'سهامی',
-      },
-      {
-        title: 'گاز',
-        categoryId: 3,
-        priceChangePercent: -2.5,
-        priceRials: 35000,
-        type: 'درآمد ثابت',
-      },
-      {
-        title: 'برق',
-        categoryId: 3,
-        priceChangePercent: 4.0,
-        priceRials: 15000,
-        type: 'درآمد ثابت',
-      },
-      {
-        title: 'کاشی',
-        categoryId: 3,
-        priceChangePercent: -1.5,
-        priceRials: 27000,
-        type: 'درآمد ثابت',
-      },
-      {
-        title: 'شیمیایی',
-        categoryId: 4,
-        priceChangePercent: 5.0,
-        priceRials: 33000,
-        type: 'کالایی',
-      },
-      {
-        title: 'برق',
-        categoryId: 3,
-        priceChangePercent: 4.0,
-        priceRials: 15000,
-        type: 'درآمد ثابت',
-      },
-    ],
-  },
+      type: 'basicSelection',
+    },
+  ],
 };
