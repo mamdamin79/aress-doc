@@ -7,13 +7,14 @@ import { TextField } from '../TextField';
 import { Tabs } from '../Tabs';
 import { Icon } from '../Icon/Icon';
 
-interface Props {
+export interface OptionsListExplorerProps {
   title: string;
-  onSearch: (value: string) => void;
-  onBackButtonClick: () => void;
+  onSearch?: (value: string) => void;
+  onBackButtonClick?: () => void;
   search?: {
     placeholder: string;
   };
+  searchable?: boolean;
   selectedItemId?: number | string;
   emptyStateMessage?: string;
   items: {
@@ -26,21 +27,20 @@ export function OptionsListExplorer({
   title,
   onBackButtonClick,
   search,
+  searchable = false,
   emptyStateMessage = 'صندوقی یافت نشد...',
   onSearch,
   selectedItemId,
   items,
-}: Props) {
+}: OptionsListExplorerProps) {
   const [checkedItem, setCheckedItem] = useState(0);
   const [filteredItems, setFilteredItems] = useState<OptionItem[]>(items.items);
   const [activeTab, setActiveTab] = useState(1);
   const [inputValue, setInputValue] = useState('');
-  const itemsToShow =
-    items.items.length > 10 ? filteredItems.slice(0, 3) : filteredItems;
 
   const handleInputChange = (value: string) => {
     setInputValue(value);
-    onSearch(value);
+    onSearch?.(value);
   };
 
   useEffect(() => {
@@ -64,18 +64,22 @@ export function OptionsListExplorer({
     const filterListByTab = (tab: number) => {
       return items.items.filter((item: OptionItem) => item.categoryId === tab);
     };
+
     if (activeTab === 1) {
-      if (inputValue.trim()) {
-        setFilteredItems(filterListByTitle(inputValue));
-      } else {
-        setFilteredItems(items.items);
-      }
-    } else if (activeTab > 1) {
-      const listCategory = filterListByTab(activeTab);
-      const filterItems = listCategory.filter((item) =>
-        item.title.toLocaleLowerCase().includes(inputValue.toLocaleLowerCase()),
+      setFilteredItems(
+        inputValue.trim() ? filterListByTitle(inputValue) : items.items,
       );
-      setFilteredItems(filterItems);
+    } else {
+      const listCategory = filterListByTab(activeTab);
+      setFilteredItems(
+        inputValue.trim()
+          ? listCategory.filter((item) =>
+              item.title
+                .toLocaleLowerCase()
+                .includes(inputValue.toLocaleLowerCase()),
+            )
+          : listCategory,
+      );
     }
   }, [inputValue, activeTab, items.items]);
 
@@ -85,7 +89,7 @@ export function OptionsListExplorer({
   };
 
   return (
-    <div className={cn('bg-surface-neutral-primary h-full w-[500px]')}>
+    <div className={cn('bg-surface-neutral-primary h-full min-w-[350px]')}>
       <button
         aria-label="Go back"
         onClick={onBackButtonClick}
@@ -94,10 +98,10 @@ export function OptionsListExplorer({
         <Icon name="chevron-right" />
         <span className="text-sm font-medium">{title}</span>
       </button>
-      {!items.categories && items.items.length < 10 && (
-        <div className="bg-border-neutral-primary my-4 h-0.5 w-full"></div>
+      {!searchable && (
+        <div className="border-border-neutral-primary mb-4 w-full border"></div>
       )}
-      {items.items.length > 10 && (
+      {searchable && (
         <div className="mx-4 pb-2">
           <TextField
             value={inputValue}
@@ -114,6 +118,7 @@ export function OptionsListExplorer({
           />
         </div>
       )}
+
       {items.categories && (
         <div className="mx-4 mt-2">
           <Tabs
@@ -128,16 +133,14 @@ export function OptionsListExplorer({
           />
         </div>
       )}
+
       {filteredItems.length ? (
         <div
           className={cn('flex max-h-60 flex-col', {
-            'custom-scrollbar h-3/5 overflow-y-scroll':
-              items.items.length <= 10 &&
-              items.items.length > 3 &&
-              filteredItems.length > 3,
+            'scrollbar-sm overflow-y-auto': filteredItems.length > 3,
           })}
         >
-          {itemsToShow.map((item: OptionItem, index: number) => (
+          {filteredItems.map((item: OptionItem) => (
             <div
               onClick={() => setCheckedItem(+item.id)}
               className={cn(

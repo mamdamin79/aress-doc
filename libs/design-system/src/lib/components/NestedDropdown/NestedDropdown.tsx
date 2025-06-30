@@ -10,6 +10,7 @@ import { cn } from 'libs/design-system/src/utils';
 export const NestedDropdown: React.FC<NestedDropdownProps> = ({
   title,
   items,
+  onChildClick,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [childHasErr, setChildHasErr] = useState(false);
@@ -27,6 +28,12 @@ export const NestedDropdown: React.FC<NestedDropdownProps> = ({
           title={title}
           activeIcon={{ name: 'list-minus', size: 'sm' }}
           onClick={toggleDropdown}
+          optionsListProps={{
+            items: {
+              items: [],
+            },
+            title: '',
+          }}
           hasChildren
         />
       </div>
@@ -34,7 +41,7 @@ export const NestedDropdown: React.FC<NestedDropdownProps> = ({
         className={cn(
           'flex w-full flex-col gap-3 pr-6 transition-all',
           isOpen
-            ? 'visible -translate-y-0 opacity-100'
+            ? 'visible mb-3 -translate-y-0 opacity-100'
             : 'invisible h-0 -translate-y-4 opacity-0',
         )}
       >
@@ -68,9 +75,10 @@ export const NestedDropdown: React.FC<NestedDropdownProps> = ({
               icon={child.icon}
               status={child.status}
               title={child.title}
-              onClick={child.onClick}
+              onClick={(list) => onChildClick?.(list)}
               selectedOption={child.selectedOption}
               placeHolder={child.placeHolder}
+              optionsListProps={child.optionsListProps}
             />
           </div>
         ))}

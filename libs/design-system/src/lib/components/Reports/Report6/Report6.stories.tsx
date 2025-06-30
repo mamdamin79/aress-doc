@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { Report6 } from './Report6';
+
 const meta: Meta<typeof Report6> = {
   component: Report6,
 };
@@ -10,19 +11,45 @@ type Story = StoryObj<typeof Report6>;
 
 export const Default: Story = {
   args: {
-    indexData: [-2.5, 2.5, -2.5, -2, -1.5, -4, 2, 5.5, 3.5, -4.5, 0.5, 3.5],
-    inFlowData: [115, 105, null, null, 85, null, 115, 95, null, null, 85, 105],
+    indexData: [
+      { y: -2.5, unit: 'میلیون واحد' },
+      { y: 2.5, unit: 'میلیون واحد' },
+      { y: -2.5, unit: 'میلیون واحد' },
+      { y: -2, unit: 'میلیون واحد' },
+      { y: -1.5, unit: 'میلیون واحد' },
+      { y: -4, unit: 'میلیون واحد' },
+      { y: 2, unit: 'میلیون واحد' },
+      { y: 5.5, unit: 'میلیون واحد' },
+      { y: 3.5, unit: 'میلیون واحد' },
+      { y: -4.5, unit: 'میلیون واحد' },
+      { y: 0.5, unit: 'میلیون واحد' },
+      { y: 3.5, unit: 'میلیون واحد' },
+    ],
+    inFlowData: [
+      { y: 115, unit: 'میلیارد ریال' },
+      { y: 105, unit: 'میلیارد ریال' },
+      null,
+      null,
+      { y: 85, unit: 'میلیارد ریال' },
+      null,
+      { y: 115, unit: 'میلیارد ریال' },
+      { y: 95, unit: 'میلیارد ریال' },
+      null,
+      null,
+      { y: 85, unit: 'میلیارد ریال' },
+      { y: 105, unit: 'میلیارد ریال' },
+    ],
     outFlowData: [
       null,
       null,
-      -55,
-      -45,
+      { y: -55, unit: 'میلیارد ریال' },
+      { y: -45, unit: 'میلیارد ریال' },
       null,
-      -90,
+      { y: -90, unit: 'میلیارد ریال' },
       null,
       null,
-      -10,
-      -75,
+      { y: -10, unit: 'میلیارد ریال' },
+      { y: -75, unit: 'میلیارد ریال' },
       null,
       null,
     ],

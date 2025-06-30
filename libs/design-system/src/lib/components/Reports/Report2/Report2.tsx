@@ -1,7 +1,7 @@
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { ReportCardBase } from '../../ReportCardBase';
-import {baseOptions, yAxisLabels, xAxisLabels} from './../Report.config.shared'
+import { baseOptions, yAxisLabels, xAxisLabels } from './../Report.config.shared'
 
 
 interface Props {
@@ -30,7 +30,7 @@ export function Report2({ categories, data, flow, title }: Props) {
       title: { text: null },
       labels: yAxisLabels,
     },
-    legend: {enabled: false},
+    legend: { enabled: false },
     series: [
       {
         name: 'صنعت',
@@ -49,35 +49,99 @@ export function Report2({ categories, data, flow, title }: Props) {
 
   return (
     <ReportCardBase
-      settingOptions={[
-        {
-          type: 'basicSelection',
-          props: {
-            title: 'جریان:',
-            icon: { name: 'square-mouse-pointer', size: 'sm' },
-            status: 'normal',
-            selectedOption: 'ورودی',
+
+      settingOptions={
+        [
+          {
+            props: {
+              title: 'جریان: ',
+              icon: { name: 'square-mouse-pointer', size: 'sm' },
+              status: 'normal',
+              selectedOption: 'ورودی',
+              optionsListProps: {
+                searchable: false,
+                title: 'انتخاب دسته‌بندی اوراق',
+                items: {
+                  items: [
+                    {
+                      id: 11,
+                      title: 'ورودی',
+                    },
+                    {
+                      id: 12,
+                      title: 'خروجی',
+                    },
+                  ],
+                },
+              },
+            },
+            type: 'basicSelection',
           },
-        },
-        {
-          type: 'basicSelection',
-          props: {
-            title: 'نوع سرمایه‌گذاران: ',
-            icon: { name: 'square-mouse-pointer', size: 'sm' },
-            status: 'normal',
-            selectedOption: 'حقیقی',
+          {
+            props: {
+              title: 'نوع سرمایه‌گذاران: ',
+              icon: { name: 'square-mouse-pointer', size: 'sm' },
+              status: 'normal',
+              selectedOption: 'حقیقی',
+              optionsListProps: {
+                searchable: false,
+                title: 'انتخاب دسته‌بندی اوراق',
+                items: {
+                  items: [
+                    {
+                      id: 13,
+                      title: 'حقیقی',
+                    },
+                    {
+                      id: 14,
+                      title: 'حقوقی',
+                    },
+                  ],
+                },
+              },
+            },
+            type: 'basicSelection',
           },
-        },
-        {
-          type: 'basicSelection',
-          props: {
-            title: 'بازه زمانی: ',
-            icon: { name: 'square-mouse-pointer', size: 'sm' },
-            status: 'normal',
-            selectedOption: 'یک ماه',
+          {
+            props: {
+              title: 'بازه زمانی: ',
+              icon: { name: 'square-mouse-pointer', size: 'sm' },
+              status: 'normal',
+              selectedOption: 'شش ماه',
+              optionsListProps: {
+                searchable: false,
+                title: 'انتخاب دسته‌بندی اوراق',
+                items: {
+                  items: [
+                    {
+                      id: 15,
+                      title: 'یک ماه',
+                    },
+                    {
+                      id: 16,
+                      title: 'سه ماه',
+                    },
+                    {
+                      id: 17,
+                      title: 'شش ماه',
+                    },
+                    {
+                      id: 18,
+                      title: 'نه ماه',
+                    },
+                    {
+                      id: 19,
+                      title: 'یک سال',
+                    },
+                  ],
+                },
+              },
+            },
+            type: 'basicSelection',
           },
-        },
-      ]}      title={title}
+        ]
+      }
+      title={title}
       popupInfoItems={[
         {
           title: 'جریان ورودی',
