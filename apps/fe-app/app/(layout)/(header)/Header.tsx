@@ -61,7 +61,7 @@ export const Header: React.FC = () => {
     const activeDashboard =
       query.data.find((d) => String(d.identifier) === dashboardIdParam) ||
       query.data.find((d) => String(d.identifier) === storedDashboard) ||
-      query.data.find((d) => d.identifier === 0);
+      query.data.find((d) => d.identifier === 64);
 
     if (!activeDashboard) return;
 
