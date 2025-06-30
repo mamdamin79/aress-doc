@@ -1,11 +1,4 @@
-import React from 'react';
-import ReactDOMServer from 'react-dom/server';
 import type Highcharts from 'highcharts';
-interface extendedPoint extends Highcharts.Point {
-  point?: {
-    unit?: string;
-  };
-}
 export const baseOptions: Highcharts.Options = {
   chart: {
     backgroundColor: 'var(--color-surface-neutral-primary)',
@@ -42,34 +35,29 @@ export const baseOptions: Highcharts.Options = {
       zIndex: 1000,
       direction: 'rtl',
     },
-    formatter: function () {
-      console.log(this.points);
-      return ReactDOMServer.renderToStaticMarkup(
-        <div
-          dir="rtl"
-          className="font-vazirmatn mb-1 rounded-[10px] bg-neutral-900 px-4 py-2 text-right text-sm font-medium leading-6 text-white shadow-md backdrop-blur-[6px]"
-          style={{ zIndex: 1000 }}
-        >
-          <div className="font-medium">{this.key}</div>
-          {this.points?.map((p: extendedPoint) => (
-            <div key={p.series.name} className="mt-1 flex items-center gap-1">
-              <span style={{ color: p.color as any }} className="text-sm">
-                {p.series.userOptions.type === 'spline' ? '●' : '■'}
+    formatter: function (this: any) {
+      return `
+        <div dir="rtl" style="font-family: vazirmatn, sans-serif; margin-bottom: 0.25rem; border-radius: 10px; background-color: #171717; padding: 0.5rem 1rem; text-align: right; font-size: 0.875rem; font-weight: 500; line-height: 1.5rem; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); backdrop-filter: blur(6px); z-index: 1000;">
+          <div style="font-weight: 500;">${this.key}</div>
+          ${this.points
+            ?.map(
+              (p:any) => `
+            <div style="margin-top: 0.25rem; display: flex; align-items: center; gap: 0.25rem;">
+              <span style="color: ${p.color}; font-size: 0.875rem;">
+                ${p.series.userOptions.type === 'spline' ? '●' : '■'}
               </span>
-              <div className="flex w-full items-center justify-between gap-3">
-                <span className="text-sm font-normal">{p.series.name}:</span>
-                <span
-                  className="inline-block"
-                  style={{ unicodeBidi: 'plaintext' }}
-                >
-                  {p.y && p.y < 0 ? `${Math.abs(p.y)}-` : p.y}
-                  {p.point && 'unit' in p.point ? ` ${p.point.unit}` : ''}
+              <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; width: 100%;">
+                <span style="font-size: 0.875rem; font-weight: 400;">${p.series.name}:</span>
+                <span style="unicode-bidi: plaintext;">
+                  ${p.y < 0 ? Math.abs(p.y) + '-' : p.y}${p.point?.unit ? ' ' + p.point.unit : ''}
                 </span>
               </div>
             </div>
-          ))}
-        </div>,
-      );
+          `,
+            )
+            .join('')}
+        </div>
+      `;
     },
   },
 

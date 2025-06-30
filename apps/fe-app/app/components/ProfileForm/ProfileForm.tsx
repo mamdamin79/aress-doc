@@ -20,6 +20,7 @@ import { ChangeNumber } from './ChangeNumber';
 import { ChangeUsername } from './ChangeUsername';
 import { ChangeMail } from './ChangeMail';
 import { ChangePassword } from './ChangePassword';
+import { queryClient } from '../../lib/react-query';
 
 export const ProfileForm: React.FC<ProfileFormProps> = ({
   email,
@@ -29,6 +30,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
   username,
   image,
   onImageChange,
+  refetch,
 }) => {
   const [editDialog, setEditDialog] = useState<editDialogStatus>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -53,7 +55,6 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
   const [iconDialogText, setIconDialogText] = useState<editDialogVerbs>(
     editDialogVerbs.phoneNumber,
   );
-
 
   const formSchema: FormSchemaType[] = [
     {
@@ -127,7 +128,11 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             )}
             {editDialog === 'username' && (
               <ChangeUsername
-                onClose={(success) => setEditDialog(success ? 'success' : null)}
+                onClose={(success) => {
+                  setEditDialog(success ? 'success' : null);
+                  refetch();
+                }}
+                username={username}
               />
             )}
             {editDialog === 'email' && (
