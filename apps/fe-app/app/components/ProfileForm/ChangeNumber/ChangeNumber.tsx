@@ -157,7 +157,7 @@ const NewNumber = ({
         onError: (error) => {
           setError('phoneNumber', {
             type: 'manual',
-            message: 'امکان تغییر به این شماره وجود ندارد.',
+            message: 'خطایی رخ داد.',
           });
         },
       },
