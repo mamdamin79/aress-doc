@@ -21,7 +21,6 @@ import { useThemeToggle } from '../../../hooks';
 import { OpenAPI, useDashboardsServiceGetDashboards } from '@openapi';
 import { fetchToken } from '../../(auth)/auth.utils';
 import { buildDashboardUrl, useDashboardActions } from './header.utils';
-import { Toaster } from 'react-hot-toast';
 
 export const Header: React.FC = () => {
   const [token, setToken] = useState<string | null>(null);
@@ -45,9 +44,26 @@ export const Header: React.FC = () => {
       .catch(console.error);
   }, []);
 
+
+  useEffect(() => {
+    fetchToken()
+      .then((t) => {
+        if (!t) throw new Error('Failed to fetch token');
+        OpenAPI.HEADERS = { Authorization: `Bearer ${t}` };
+        setToken(t);
+      })
+      .catch(console.error);
+  }, []);
+
   const query = useDashboardsServiceGetDashboards(undefined, {
-    enabled: !!token,
+    enabled: false, // prevent auto-fetch
   });
+
+  useEffect(() => {
+    if (token) {
+      query.refetch(); // manually trigger when token arrives
+    }
+  }, [token]);
 
   useEffect(() => {
     if (!query.data) return;
@@ -61,7 +77,7 @@ export const Header: React.FC = () => {
     const activeDashboard =
       query.data.find((d) => String(d.identifier) === dashboardIdParam) ||
       query.data.find((d) => String(d.identifier) === storedDashboard) ||
-      query.data.find((d) => d.identifier === 64);
+      query.data[0];
 
     if (!activeDashboard) return;
 

@@ -2,7 +2,7 @@
 
 import { UseMutationOptions, UseQueryOptions, useMutation, useQuery } from "@tanstack/react-query";
 import { DashboardsService, FundsService, HealthService, ReportsService, UsersService } from "../requests/services.gen";
-import { AddReportToDashboardForUserBody, Body_change_profile_picture_users_profile_picture_change_post, Body_login_for_access_token_users_login_post, Body_test_user_access_token_users_token_post, CaptchaType, ChangeDashboardReportItemSortOrderBody, ChangePasswordByOtpBody, ChangePhoneByOtpBody, ChangePhoneGetOtpBody, ChangeUsernameBody, CreateDashboardForUserBody, DeleteDashboardItemFromDashboardBody, ForgotPasswordResetByOtpBody, GetDashboardItemCalculationsBody, GetForgotPasswordOtpBody, GetReportCalculationsBody, PinFundInTableTabBody, RenameDashboardForUserBody, UnpinFundInTableTabBody, ValidatePasswordForUserBody } from "../requests/types.gen";
+import { AddReportToDashboardForUserBody, Body_change_profile_picture_users_profile_picture_change_post, Body_login_for_access_token_users_login_post, Body_test_user_access_token_users_token_post, CaptchaType, ChangeDashboardReportItemSortOrderBody, ChangePasswordByOtpBody, ChangePhoneByOtpBody, ChangePhoneGetOtpBody, ChangeUsernameBody, CreateDashboardForUserBody, DeleteDashboardItemFromDashboardBody, DuplicateDashboardForUserBody, ForgotPasswordResetByOtpBody, GetDashboardItemCalculationsBody, GetForgotPasswordOtpBody, GetReportCalculationsBody, PinFundInTableTabBody, RenameDashboardForUserBody, UnpinFundInTableTabBody, ValidatePasswordForUserBody } from "../requests/types.gen";
 import * as Common from "./common";
 export const useHealthServiceGetHealth = <TData = Common.HealthServiceGetHealthDefaultResponse, TError = unknown, TQueryKey extends Array<unknown> = unknown[]>(queryKey?: TQueryKey, options?: Omit<UseQueryOptions<TData, TError>, "queryKey" | "queryFn">) => useQuery<TData, TError>({ queryKey: Common.UseHealthServiceGetHealthKeyFn(queryKey), queryFn: () => HealthService.getHealth() as TData, ...options });
 export const useUsersServiceGetUsersLoginCaptcha = <TData = Common.UsersServiceGetUsersLoginCaptchaDefaultResponse, TError = unknown, TQueryKey extends Array<unknown> = unknown[]>({ captchaHeight, captchaType, captchaWidth }: {
@@ -117,6 +117,13 @@ export const useDashboardsServicePostDashboardsByDashboardId = <TData = Common.D
   dashboardId: number;
   requestBody: RenameDashboardForUserBody;
 }, TContext>({ mutationFn: ({ dashboardId, requestBody }) => DashboardsService.postDashboardsByDashboardId({ dashboardId, requestBody }) as unknown as Promise<TData>, ...options });
+export const useDashboardsServicePostDashboardsByDashboardIdDuplicate = <TData = Common.DashboardsServicePostDashboardsByDashboardIdDuplicateMutationResult, TError = unknown, TContext = unknown>(options?: Omit<UseMutationOptions<TData, TError, {
+  dashboardId: number;
+  requestBody: DuplicateDashboardForUserBody;
+}, TContext>, "mutationFn">) => useMutation<TData, TError, {
+  dashboardId: number;
+  requestBody: DuplicateDashboardForUserBody;
+}, TContext>({ mutationFn: ({ dashboardId, requestBody }) => DashboardsService.postDashboardsByDashboardIdDuplicate({ dashboardId, requestBody }) as unknown as Promise<TData>, ...options });
 export const useDashboardsServicePostDashboardsByDashboardIdItems = <TData = Common.DashboardsServicePostDashboardsByDashboardIdItemsMutationResult, TError = unknown, TContext = unknown>(options?: Omit<UseMutationOptions<TData, TError, {
   dashboardId: number;
   requestBody: GetDashboardItemCalculationsBody;

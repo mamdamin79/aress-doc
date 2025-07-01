@@ -14,21 +14,23 @@ export function buildDashboardUrl(identifier: number | string, name: string) {
 
 export const handleRedirect = (
   checked: boolean,
-  identifier: string | number,
-  name: string,
+  identifier: string | number | undefined,
+  name: string | undefined,
   searchParams: URLSearchParams,
   router: AppRouterInstance,
 ) => {
   const params = new URLSearchParams(searchParams.toString());
   params.set('dashboardId', String(identifier));
-  params.set('dashboardName', name.replace(/[\s\u200C]+/g, '-'));
+
+  const safeName = name ? name.replace(/[\s\u200C]+/g, '-') : '';
+  params.set('dashboardName', safeName);
 
   const url = `${window.location.pathname}?${params.toString()}`;
 
   if (checked) {
     window.open(url, '_blank');
   } else {
-    router.replace(`${window.location.pathname}?${params.toString()}`);
+    router.replace(url);
   }
 };
 
@@ -70,15 +72,14 @@ export function useDashboardActions() {
       const t = await updateToken();
       if (!t) return;
 
-      const { name, identifier } = await DashboardsService.putDashboards({
+      const {createdDashboardId,dashboards} = await DashboardsService.putDashboards({
         requestBody: { name: input },
       });
-
       queryClient.invalidateQueries({
         queryKey: ['DashboardsServiceGetDashboards'],
       });
-
-      handleRedirect(checked, identifier, name, searchParams, router);
+      const newDashboard = dashboards.find((d) => d.identifier === createdDashboardId) 
+      handleRedirect(checked, newDashboard?.identifier, newDashboard?.name, searchParams, router);
       showToast({ message: 'داشبورد جدید ساخته شد.', type: 'success' });
     },
     [router, searchParams, updateToken],
@@ -137,7 +138,14 @@ export function useDashboardActions() {
 
   const copyDashboard = useCallback(
     async (data?: { input?: string; checked?: boolean }) => {
-      console.log('copy', data?.input, data?.checked); // TODO: implement
+      await DashboardsService.postDashboardsByDashboardIdDuplicate({
+        dashboardId: Number(searchParams.get('dashboardId')),
+        requestBody: { name: data?.input ?? '' },
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['DashboardsServiceGetDashboards'],
+      });
       showToast({ message: 'داشبورد کپی شد.', type: 'info' });
     },
     [],
