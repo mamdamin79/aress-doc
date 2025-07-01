@@ -45,15 +45,15 @@ const ProfilePage = () => {
   const userPhoneNumber = user?.phoneNumber
     ? `${user.phoneNumber.replace('+', '')}+`
     : '';
-
+  const fullName = (user?.firstName ?? '') + ' ' + (user?.lastName ?? '');
   return (
     <div className="text-text-neutral-primary mx-auto flex w-full max-w-[1680px] justify-center">
       <div className="flex w-full flex-row gap-14 px-8 pb-28 pt-12 lg:px-20">
         {!(activeSection && !isDesktop) && (
           <div className="flex w-full justify-center lg:w-[264px]">
             <ProfileSidebar
-              image={image}
-              title={`نام`}
+              image={user?.profilePicture}
+              title={fullName}
               subTitle={userPhoneNumber}
               onLogoutBtn={() => setIsLogoutModalOpen(true)}
               onNavigation={(section) => setActiveSection(section)}
@@ -80,10 +80,10 @@ const ProfilePage = () => {
             )}
 
             <ProfileForm
-              image={image}
+              image={user?.profilePicture}
               onImageChange={setImage}
               email={user?.email ?? ''}
-              fnameAndLname={`نام`}
+              fnameAndLname={fullName}
               nationalID={
                 user?.nationalCode ? Number(user.nationalCode) : undefined
               }

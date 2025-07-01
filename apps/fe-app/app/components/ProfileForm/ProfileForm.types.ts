@@ -8,9 +8,11 @@ export interface ProfileFormProps {
   nationalID?: number;
   email?: string;
   username?: string;
-  image?: string;
-  onImageChange?: (image:string)=>void;
-  refetch: (options?: RefetchOptions) => Promise<QueryObserverResult<GetUsersMeResponse, unknown>>
+  image?: string | null;
+  onImageChange?: (image: string) => void;
+  refetch: (
+    options?: RefetchOptions,
+  ) => Promise<QueryObserverResult<GetUsersMeResponse, unknown>>;
 }
 export type editDialogStatus =
   | 'phoneNumber'

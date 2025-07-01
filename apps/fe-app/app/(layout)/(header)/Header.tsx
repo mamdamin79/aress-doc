@@ -44,7 +44,6 @@ export const Header: React.FC = () => {
       .catch(console.error);
   }, []);
 
-
   useEffect(() => {
     fetchToken()
       .then((t) => {
@@ -61,12 +60,12 @@ export const Header: React.FC = () => {
 
   useEffect(() => {
     if (token) {
-      query.refetch(); // manually trigger when token arrives
+      query.refetch(); 
     }
   }, [token]);
 
   useEffect(() => {
-    if (!query.data) return;
+    if (!query.data || pathname !== '/') return;
 
     const searchParams = new URLSearchParams(window.location.search);
     const dashboardIdParam = searchParams.get('dashboardId');
@@ -95,7 +94,7 @@ export const Header: React.FC = () => {
     }
 
     localStorage.setItem('activeDashboard', activeId);
-  }, [query.data]);
+  }, [query.data, pathname]);
 
   const menuData = useMemo(() => {
     if (!query.data) return MenuData;

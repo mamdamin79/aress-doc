@@ -20,7 +20,7 @@ import { ChangeNumber } from './ChangeNumber';
 import { ChangeUsername } from './ChangeUsername';
 import { ChangeMail } from './ChangeMail';
 import { ChangePassword } from './ChangePassword';
-import { queryClient } from '../../lib/react-query';
+import { useUsersServicePostUsersProfilePictureChange } from '@openapi';
 
 export const ProfileForm: React.FC<ProfileFormProps> = ({
   email,
@@ -36,6 +36,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [profileImage, setProfileImage] = useState(image);
+  const { mutate, isPending } = useUsersServicePostUsersProfilePictureChange();
 
   const handleImageUpload = useCallback(async (croppedImage: string) => {
     if (!croppedImage) return console.error('Cropped image is null');
@@ -45,6 +46,21 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
       const blob = await (await fetch(croppedImage)).blob();
       setProfileImage(URL.createObjectURL(blob));
       onImageChange?.(URL.createObjectURL(blob));
+      mutate(
+        {
+          formData: {
+            file: blob,
+          },
+        },
+        {
+          onSuccess: (response) => {
+            console.log(response);
+          },
+          onError: (error) => {
+            console.log(error);
+          },
+        },
+      );
     } catch (error) {
       console.error('Failed to convert Blob URL to Blob:', error);
     } finally {
