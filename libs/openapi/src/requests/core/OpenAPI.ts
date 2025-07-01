@@ -40,7 +40,7 @@ export type OpenAPIConfig = {
 };
 
 export const OpenAPI: OpenAPIConfig = {
-  BASE: process.env.NEXT_PUBLIC_API_URL as string,
+  BASE: 'http://185.236.36.153:8000' as string,
   CREDENTIALS: 'include',
   ENCODE_PATH: undefined,
   HEADERS: undefined,

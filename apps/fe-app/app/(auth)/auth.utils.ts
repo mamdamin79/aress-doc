@@ -1,6 +1,6 @@
 export async function fetchToken(): Promise<string> {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/users/token`,
+    `http://185.236.36.153:8000/users/token`,
     {
       method: 'POST',
       headers: {

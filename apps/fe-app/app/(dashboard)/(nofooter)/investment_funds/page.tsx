@@ -491,28 +491,17 @@ const Funds = () => {
     fetchDataTable();
   }, []);
 
-  const possibleTags = ['green', 'blue', 'yellow', 'purple', 'pink'];
+  const tabs = query.data?.tabs.map(({ color, ...rest }) => ({
+    ...rest,
+    tag: color === 'vividgreen' ? 'green' : (color || ''),
 
-  type TagColor = (typeof possibleTags)[number];
+  }));
+  
+  console.log(query.data?.tabs);
 
-  const tabs: { title: string; tag?: TagColor; id: string }[] =
-    query.data?.tabs.map((tab) => {
-      const noTagTitles = ['دیده بان'];
-
-      return {
-        title: tab.title,
-        id: String(tab.identifier),
-        ...(noTagTitles.includes(tab.title)
-          ? {}
-          : {
-              tag: possibleTags[
-                Math.floor(Math.random() * possibleTags.length)
-              ],
-            }),
-      };
-    });
-
-    console.log(query.data?.selectedTabFunds);
+  console.log(activeIndexCategoryTab);
+  
+  
     
   return (
     <>
@@ -522,10 +511,10 @@ const Funds = () => {
           isHeaderVisible ? 'translate-y-0' : '-translate-y-full',
         )}
       >
-        {tabs?.length && (
+        {query.data?.tabs && (
           <Tabs
             variant="shaped-color"
-            onClickTab={(e) => setActiveIndexCategoryTab(e)}
+            onClickTab={(e) => setActiveIndexCategoryTab(query.data.tabs[e].identifier)}
             activeTab={activeIndexCategoryTab}
             colorMode="neutral"
             tabs={tabs}
