@@ -233,7 +233,7 @@ export const SlidersBox: React.FC = () => {
   const { showToast } = useCustomToast();
 
   return (
-    <div>
+    <div className="w-fit">
       <div className="flex w-full justify-between">
         <DashboardNumberAndName number={2} title="صندوق کالایی" />
         <AutoRotateSwitch
@@ -248,14 +248,14 @@ export const SlidersBox: React.FC = () => {
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
       >
-        <section className="mt-6 flex w-fit max-w-full justify-center">
+        <section className="mt-6 flex w-full justify-center">
           <SortableContext
             items={items.map((i) => i.id)}
             strategy={rectSortingStrategy}
           >
             <div
               ref={containerRef}
-              className="grid grid-cols-1 gap-6 xl:grid-cols-2"
+              className="grid w-full grid-cols-1 gap-6 xl:grid-cols-2"
             >
               {items.map((item) => (
                 <SortableItem key={item.id} item={item} />
