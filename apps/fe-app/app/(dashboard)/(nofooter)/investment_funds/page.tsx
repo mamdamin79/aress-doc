@@ -60,6 +60,7 @@ import {
 import { OpenAPI, useFundsServiceGetFundsTable } from '@openapi';
 import { fetchToken } from 'apps/fe-app/app/(auth)/auth.utils';
 import { TabsSkeleton } from './_components/TabsSkeleton';
+import { RowSkeleton } from './_components/RowSkeleton';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
   const [activeIndexCategoryTab, setActiveIndexCategoryTab] = useState(1);
@@ -535,7 +536,10 @@ const Funds = () => {
       >
         {
           !query.data ? (
+            <div className='-mt-2'>
+
             <TabsSkeleton />
+            </div>
           ) : (
             query.data.tabs && (
               <Tabs
@@ -873,12 +877,26 @@ const Funds = () => {
                 </tr>
               </DndContext>
             </thead>
-            <TableBody
-              tableRef={tableRef}
-              rows={rows}
-              activeIndexCategoryTab={activeIndexCategoryTab}
-              rowMarks={[]}
-            />
+            {
+              rows.length ?
+                <TableBody
+                  tableRef={tableRef}
+                  rows={rows}
+                  activeIndexCategoryTab={activeIndexCategoryTab}
+                  rowMarks={[]}
+                /> : <>
+                  <RowSkeleton />
+                  <RowSkeleton />
+                  <RowSkeleton />
+                  <RowSkeleton />
+                  <RowSkeleton />
+                  <RowSkeleton />
+                  <RowSkeleton />
+                  <RowSkeleton />
+                  <RowSkeleton />
+                  <RowSkeleton />
+                </>
+            }
           </table>
         </div>
       </div>
