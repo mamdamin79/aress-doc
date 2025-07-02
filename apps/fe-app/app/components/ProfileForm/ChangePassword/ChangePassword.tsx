@@ -5,6 +5,7 @@ import { fetchToken } from '../../../(auth)/auth.utils';
 import {
   OpenAPI,
   useUsersServiceGetUsersProfilePasswordChangeOtp,
+  useUsersServicePostUsersProfilePasswordChange,
 } from '@openapi';
 import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
 enum ChangeNumberStage {
@@ -15,15 +16,37 @@ interface ChangePasswordProps {
   onClose?: (success?: boolean) => void;
   phone: string;
 }
+const genericErrorText = 'خطایی رخ داد.';
+
+const extractErrorMessage = (error: any) =>
+  error?.body?.message || error?.message || genericErrorText;
 export const ChangePassword: React.FC<ChangePasswordProps> = ({
   phone,
   onClose,
 }) => {
-  const [stage, setStage] = useState<ChangeNumberStage | null>(0);
-  useUsersServiceGetUsersProfilePasswordChangeOtp();
+  const [stage, setStage] = useState<ChangeNumberStage | null>(1);
+  const [newPassword, setNewPassword] = useState('');
+  const { data, refetch } = useUsersServiceGetUsersProfilePasswordChangeOtp();
+  const { mutate, isPending } = useUsersServicePostUsersProfilePasswordChange();
   const { showToast } = useCustomToast();
-  const { mutate, isPending } = useusers();
-  const onSaveData = async (code: string) => {
+  const passwordMutate = (password: string, otpCode: string) => {
+    mutate(
+      {
+        requestBody: {
+          newPassword: password,
+          otp: otpCode,
+        },
+      },
+      {
+        onError: (error) =>
+          showToast({ message: extractErrorMessage(error), type: 'error' }),
+        onSuccess(response) {
+          onClose?.(true);
+        },
+      },
+    );
+  };
+  const onSaveData = async (password: string, otpCode: string) => {
     const token = await fetchToken();
     if (!token) {
       throw new Error('Failed to fetch access token');
@@ -31,45 +54,29 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({
     OpenAPI.HEADERS = {
       Authorization: `Bearer ${token}`,
     };
-    mutate(
-      {
-        requestBody: {
-          otp: code,
-        },
-      },
-      {
-        onSuccess: (response) => {
-          onClose?.(true);
-          queryClient.invalidateQueries({
-            queryKey: ['UsersServiceGetUsersMe'],
-          });
-        },
-        onError: (error: any) => {
-          let errorText;
-          if (error?.body?.message) {
-            errorText = error.body.message;
-          } else if (error?.message) {
-            errorText = error.message;
-          }
-          showToast({ message: errorText, type: 'error' });
-        },
-      },
-    );
+    passwordMutate(password, otpCode);
   };
   return (
     <>
+      {stage === ChangeNumberStage.NEW_PASSWORD && (
+        <NewPasswordForm
+          onSubmit={(data) => {
+            setNewPassword(data.password);
+            setStage(ChangeNumberStage.OTP);
+          }}
+          isStandAlone={false}
+        />
+      )}
       {stage === ChangeNumberStage.OTP && (
         <OTPForm
           description={`جهت تغییر رمز عبور، ابتدا کد تایید ارسال شده به شماره ${phone} را وارد کنید.`}
           title="کد تایید را وارد کنید"
-          onSubmit={() => {}}
+          onSubmit={(code) => {
+            onSaveData(newPassword, code);
+          }}
           isLoading={false}
-        />
-      )}
-      {stage === ChangeNumberStage.NEW_PASSWORD && (
-        <NewPasswordForm
-          onSubmit={(values) => onClose?.(true)}
-          isStandAlone={false}
+          countdownSeconds={data?.retrySeconds ?? 120}
+          onResendCode={refetch}
         />
       )}
     </>
