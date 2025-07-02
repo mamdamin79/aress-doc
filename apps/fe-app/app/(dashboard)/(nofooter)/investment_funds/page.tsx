@@ -59,6 +59,7 @@ import {
 } from './utils/investmentFunds.utils';
 import { OpenAPI, useFundsServiceGetFundsTable } from '@openapi';
 import { fetchToken } from 'apps/fe-app/app/(auth)/auth.utils';
+import { TabsSkeleton } from './_components/TabsSkeleton';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
   const [activeIndexCategoryTab, setActiveIndexCategoryTab] = useState(1);
@@ -532,17 +533,23 @@ const Funds = () => {
           isHeaderVisible ? 'translate-y-0' : '-translate-y-full',
         )}
       >
-        <div className='h-12'>
-          {query.data?.tabs && (
-            <Tabs
-              variant="shaped-color"
-              onClickTab={(e) => setActiveIndexCategoryTab(query.data.tabs[e].identifier)}
-              activeTab={activeIndexCategoryTab - 1}
-              colorMode="neutral"
-              tabs={tabs}
-            />
-          )}
-        </div>
+        {
+          !query.data ? (
+            <TabsSkeleton />
+          ) : (
+            query.data.tabs && (
+              <Tabs
+                variant="shaped-color"
+                onClickTab={(e) =>
+                  setActiveIndexCategoryTab(query.data.tabs[e].identifier)
+                }
+                activeTab={activeIndexCategoryTab - 1}
+                colorMode="neutral"
+                tabs={tabs}
+              />
+            )
+          )
+        }
         <Tooltip title="خروجی اکسل">
           <div className="border-button-border-default cursor-pointer rounded-md border p-1.5">
             <ExportExel />
