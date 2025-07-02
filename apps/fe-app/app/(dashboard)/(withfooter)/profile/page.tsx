@@ -7,10 +7,10 @@ import { LogoutModal } from './_components/LogoutModal';
 import { useThrottle, useWindowSize } from '@uidotdev/usehooks';
 import { AressApiUser, OpenAPI, useUsersServiceGetUsersMe } from '@openapi';
 import { fetchToken } from '../../../(auth)/auth.utils';
+import { Toaster } from 'react-hot-toast';
 
 const ProfilePage = () => {
   const [isApiReady, setIsApiReady] = useState(false);
-  const [image, setImage] = useState<string | undefined>(undefined);
   const [activeSection, setActiveSection] = useState<undefined | string>(
     undefined,
   );
@@ -40,11 +40,11 @@ const ProfilePage = () => {
   const { data, refetch } = useUsersServiceGetUsersMe(undefined, {
     enabled: isApiReady,
   });
-
+  const baseURL = process.env.NEXT_PUBLIC_API_URL;
   const user = data as AressApiUser | undefined;
-  const userPhoneNumber = user?.phoneNumber
-    ? `${user.phoneNumber.replace('+', '')}+`
-    : '';
+  const profilePicture = user?.profilePicture
+    ? baseURL + user.profilePicture
+    : null;
   const fullName = (user?.firstName ?? '') + ' ' + (user?.lastName ?? '');
   return (
     <div className="text-text-neutral-primary mx-auto flex w-full max-w-[1680px] justify-center">
@@ -52,9 +52,9 @@ const ProfilePage = () => {
         {!(activeSection && !isDesktop) && (
           <div className="flex w-full justify-center lg:w-[264px]">
             <ProfileSidebar
-              image={user?.profilePicture}
+              image={profilePicture}
               title={fullName}
-              subTitle={userPhoneNumber}
+              subTitle={user?.phoneNumber ?? ''}
               onLogoutBtn={() => setIsLogoutModalOpen(true)}
               onNavigation={(section) => setActiveSection(section)}
               activeSection={isDesktop ? 'profile' : activeSection}
@@ -80,14 +80,13 @@ const ProfilePage = () => {
             )}
 
             <ProfileForm
-              image={user?.profilePicture}
-              onImageChange={setImage}
+              image={profilePicture}
               email={user?.email ?? ''}
               fnameAndLname={fullName}
               nationalID={
                 user?.nationalCode ? Number(user.nationalCode) : undefined
               }
-              phoneNumber={userPhoneNumber}
+              phoneNumber={user?.phoneNumber ?? ''}
               username={user?.username}
               refetch={refetch}
             />
@@ -98,6 +97,7 @@ const ProfilePage = () => {
         isOpen={isLogoutModalOpen}
         onClose={() => setIsLogoutModalOpen(false)}
       />
+      <Toaster position="top-left" />
     </div>
   );
 };

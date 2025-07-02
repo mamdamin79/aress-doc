@@ -12,6 +12,7 @@ export interface OTPFormProps {
   className?: string;
   onResendCode?: () => void;
   backBtnLabel?: string;
+  isLoading?: boolean;
 }
 
 export const OTPForm: React.FC<OTPFormProps> = ({
@@ -22,9 +23,9 @@ export const OTPForm: React.FC<OTPFormProps> = ({
   className,
   onResendCode,
   backBtnLabel = 'ویرایش',
+  isLoading = false,
 }) => {
   const [otp, setOtp] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [countdown, setCountdown] = useState(DEFAULT_COUNTDOWN_SECONDS);
   const [showResendButton, setShowResendButton] = useState(false);
 
@@ -51,11 +52,7 @@ export const OTPForm: React.FC<OTPFormProps> = ({
   };
 
   const handleSubmit = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      onSubmit?.(otp);
-    }, 1000);
+    onSubmit?.(otp);
   };
 
   const handleResendCode = () => {

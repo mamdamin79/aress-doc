@@ -5,10 +5,13 @@ import { OTPForm } from '../../OTPForm';
 import {
   OpenAPI,
   useUsersServicePostUsersProfilePasswordValidate,
+  useUsersServicePostUsersProfilePhoneChange,
   useUsersServicePostUsersProfilePhoneChangeOtp,
 } from '@openapi';
 import { fetchToken } from '../../../(auth)/auth.utils';
-
+import { queryClient } from '../../../lib/react-query';
+import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
+const genericErrorText = 'خطایی رخ داد.';
 const SectionHeader = ({ title }: { title: string }) => (
   <span className="text-md text-text-neutral-primary text-center font-medium">
     {title}
@@ -57,10 +60,17 @@ export const InputPasswordForm = ({
         onSuccess: (response) => {
           onSubmit?.(response.passwordVerificationToken);
         },
-        onError: (error) => {
+        onError: (error: any) => {
+          let errorText;
+          if (error?.body?.message) {
+            errorText = error.body.message;
+          } else if (error?.message) {
+            errorText = error.message;
+          }
+
           setError('password', {
             type: 'manual',
-            message: 'رمز عبور اشتباه است.',
+            message: errorText ?? genericErrorText,
           });
         },
       },
@@ -154,10 +164,17 @@ const NewNumber = ({
           onSubmit?.({ phoneNumber: response.phoneNumber });
           console.log(response);
         },
-        onError: (error) => {
+        onError: (error: any) => {
+          let errorText;
+          if (error?.body?.message) {
+            errorText = error.body.message;
+          } else if (error?.message) {
+            errorText = error.message;
+          }
+
           setError('phoneNumber', {
             type: 'manual',
-            message: 'خطایی رخ داد.',
+            message: errorText ?? genericErrorText,
           });
         },
       },
@@ -243,8 +260,40 @@ export const ChangeNumber = ({
   const [passwordVerificationToken, setPasswordVerificationToken] =
     useState('');
 
+  const { mutate, isPending } = useUsersServicePostUsersProfilePhoneChange();
+  const { showToast } = useCustomToast();
   const onSaveData = async (code: string) => {
-    // Send data to server
+    const token = await fetchToken();
+    if (!token) {
+      throw new Error('Failed to fetch access token');
+    }
+    OpenAPI.HEADERS = {
+      Authorization: `Bearer ${token}`,
+    };
+    mutate(
+      {
+        requestBody: {
+          otp: code,
+        },
+      },
+      {
+        onSuccess: (response) => {
+          onClose?.(true);
+          queryClient.invalidateQueries({
+            queryKey: ['UsersServiceGetUsersMe'],
+          });
+        },
+        onError: (error: any) => {
+          let errorText;
+          if (error?.body?.message) {
+            errorText = error.body.message;
+          } else if (error?.message) {
+            errorText = error.message;
+          }
+          showToast({ message: errorText, type: 'error' });
+        },
+      },
+    );
   };
   return (
     <>
@@ -277,8 +326,8 @@ export const ChangeNumber = ({
           title="شماره همراه جدید"
           onSubmit={(code) => {
             onSaveData(code);
-            onClose?.(true);
           }}
+          isLoading={isPending}
         />
       )}
     </>
