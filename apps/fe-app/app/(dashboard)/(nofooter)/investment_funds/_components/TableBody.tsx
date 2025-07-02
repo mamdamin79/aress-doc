@@ -5,7 +5,7 @@ import { VirtualItem } from '../types';
 export function TableBody({ rows, tableRef, activeIndexCategoryTab }: any) {
 
   const virtualizer = useVirtualizer({
-    count: rows.length,
+    count: rows?.length,
     getScrollElement: () => tableRef.current,
     estimateSize: () => 46,
     overscan: 3,

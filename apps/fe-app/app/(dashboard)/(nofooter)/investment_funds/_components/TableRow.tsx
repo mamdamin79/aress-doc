@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import type { Row } from '@tanstack/react-table';
 import { Bookmark } from 'libs/design-system/src/lib/components/Bookmark';
 import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
-import { Icon, OptionsDropdown, Tooltip, cn } from 'design-system';
+import { Icon, OptionsDropdown, Tooltip, cn, formatNumber } from 'design-system';
 
 interface FundRow {
   nameFund: string;
@@ -334,21 +334,24 @@ function TableRowInner<T extends FundRow>({
             pinedFunction={handlePin}
             unPinedFunction={handleUnPin}
             isScrolled={isScrollAtStart}
-            investmentMethod={row.original.investmentMethod}
-            name={row.original.nameFund}
+            investmentMethod={row.original?.investmentMethod}
+            name={row.original?.nameFund}
             pined={false}
             selected={false}
-            logo={row.original.logo}
+            logo={row.original?.logo}
           />
         </div>
       </td>
       <td></td>
-      {row.getVisibleCells().map((item) => (
+      {row?.getVisibleCells().map((item) => (
         <td
-          className="bg-surface-neutral-primary text-text-neutral-primary group-hover:bg-surface-accent-blue-50"
+          dir='ltr'
+          className={cn("bg-surface-neutral-primary text-text-neutral-primary group-hover:bg-surface-accent-blue-50", {
+            'text-text-accent-red-contrast-700': item.getValue() as number < 0
+          })}
           key={item.id}
         >
-          {item.getValue() as string}
+          {formatNumber(item.getValue() as string, {decimals: 2, commaSeparated: false})}
         </td>
       ))}
     </tr>

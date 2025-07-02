@@ -61,7 +61,7 @@ import { OpenAPI, useFundsServiceGetFundsTable } from '@openapi';
 import { fetchToken } from 'apps/fe-app/app/(auth)/auth.utils';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
-  const [activeIndexCategoryTab, setActiveIndexCategoryTab] = useState(0);
+  const [activeIndexCategoryTab, setActiveIndexCategoryTab] = useState(1);
   const [data] = useState(() => makeData(500));
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
@@ -75,6 +75,7 @@ const Funds = () => {
       desc: false,
     },
   ]);
+
   const [activeSortIndex, setActiveSortIndex] = useState(0);
   const headerRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [sortIndicatorPosition, setSortIndicatorPosition] = useState({
@@ -282,9 +283,8 @@ const Funds = () => {
       >
         {isDraggingOver && position && (
           <div
-            className={`bg-border-brand-contrast-700 absolute bottom-0 top-1 z-10 h-[90%] w-0.5 ${
-              position === 'left' ? 'right-0' : 'left-0'
-            }`}
+            className={`bg-border-brand-contrast-700 absolute bottom-0 top-1 z-10 h-[90%] w-0.5 ${position === 'left' ? 'right-0' : 'left-0'
+              }`}
           >
             <div className="bg-border-brand-contrast-700 absolute top-0 flex h-2.5 w-2.5 translate-x-1 items-center justify-center rounded-full">
               <div className="bg-surface-neutral-primary h-1.5 w-1.5 rounded-full" />
@@ -309,8 +309,62 @@ const Funds = () => {
     }
   }
 
+
+
+  const query = useFundsServiceGetFundsTable({ tab: activeIndexCategoryTab }, undefined, {
+    enabled: false,
+  });
+
+  const fetchDataTable = async () => {
+    const token = await fetchToken();
+
+    if (!token) {
+      throw new Error('Failed to fetch access token');
+    }
+
+    OpenAPI.HEADERS = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    await query.refetch();
+  };
+
+  useEffect(() => {
+    fetchDataTable();
+  }, [activeIndexCategoryTab]);
+
+  const tabs = query.data?.tabs.map(({ color, ...rest }) => ({
+    ...rest,
+    tag: color === 'vividgreen' ? 'green' : (color || ''),
+
+  }));
+
+
+  const simplifiedFunds = useMemo(() => {
+    return query.data?.selectedTabFunds.map(({ fund, pinned }) => ({
+      pinned: pinned,
+      investemntFundsMethod: 'T',
+      nameFund: fund.name || fund.abbreviatedName,
+      dailyAlpha: fund.alphaLastDay,
+      weeklyAlpha: fund.alphaLastWeek,
+      monthlyAlpha: fund.alphaLastMonth,
+      quarterlyAlpha: fund.alphaLast3Months,
+      weeklyReturn: fund.returnLastWeekPercent,
+      monthlyReturn: fund.returnLastMonthPercent,
+      quarterlyReturn: fund.returnLast3MonthsPercent,
+      yearlyReturn: fund.returnLastYearPercent,
+      profitPerUnit: fund.redeemNavRials,
+      issuancePrice: fund.issueNavRials,
+      cancellationPrice: fund.redeemNavRials,
+      netAssetValue: fund.statisticalNavRials,
+      unitCount: fund.numberOfUnits,
+      startDate: fund.initiationDate,
+      fundType: fund.fundType?.title,
+    }));
+  }, [query.data?.selectedTabFunds]);
+
   const table = useReactTable({
-    data,
+    data: simplifiedFunds ?? [],
     columns: columns,
     state: { columnOrder, sorting },
     initialState: {
@@ -469,40 +523,7 @@ const Funds = () => {
     tableRef.current?.scrollBy({ top: 100, behavior: 'smooth' }),
   );
 
-  const query = useFundsServiceGetFundsTable({ tab: 1 }, undefined, {
-    enabled: false,
-  });
 
-  const fetchDataTable = async () => {
-    const token = await fetchToken();
-
-    if (!token) {
-      throw new Error('Failed to fetch access token');
-    }
-
-    OpenAPI.HEADERS = {
-      Authorization: `Bearer ${token}`,
-    };
-
-    await query.refetch();
-  };
-
-  useEffect(() => {
-    fetchDataTable();
-  }, []);
-
-  const tabs = query.data?.tabs.map(({ color, ...rest }) => ({
-    ...rest,
-    tag: color === 'vividgreen' ? 'green' : (color || ''),
-
-  }));
-  
-  console.log(query.data?.tabs);
-
-  console.log(activeIndexCategoryTab);
-  
-  
-    
   return (
     <>
       <div
@@ -511,15 +532,17 @@ const Funds = () => {
           isHeaderVisible ? 'translate-y-0' : '-translate-y-full',
         )}
       >
-        {query.data?.tabs && (
-          <Tabs
-            variant="shaped-color"
-            onClickTab={(e) => setActiveIndexCategoryTab(query.data.tabs[e].identifier)}
-            activeTab={activeIndexCategoryTab}
-            colorMode="neutral"
-            tabs={tabs}
-          />
-        )}
+        <div className='h-12'>
+          {query.data?.tabs && (
+            <Tabs
+              variant="shaped-color"
+              onClickTab={(e) => setActiveIndexCategoryTab(query.data.tabs[e].identifier)}
+              activeTab={activeIndexCategoryTab - 1}
+              colorMode="neutral"
+              tabs={tabs}
+            />
+          )}
+        </div>
         <Tooltip title="خروجی اکسل">
           <div className="border-button-border-default cursor-pointer rounded-md border p-1.5">
             <ExportExel />
@@ -533,7 +556,7 @@ const Funds = () => {
           'border-border-brand-soft-200 relative top-0 flex flex-col items-center overflow-hidden border-t-2',
         )}
       >
-        <div className="bg-border-brand-soft-200 absolute right-[8px] top-[75px] z-50 h-0.5 w-full" />
+        <div className="bg-border-brand-soft-200 absolute right-0 top-[75px] z-50 h-0.5 w-full" />
         <div
           ref={tableRef}
           className="table-scroll group/table bg-surface-neutral-primary scrollbar-lg h-[calc(100vh-172px)] w-screen overflow-auto scroll-smooth"
@@ -641,7 +664,7 @@ const Funds = () => {
                                         header.column.getIsSorted() === 'asc'
                                           ? 'active-asc'
                                           : header.column.getIsSorted() ===
-                                              'desc'
+                                            'desc'
                                             ? 'inactive'
                                             : 'inactive'
                                       }
@@ -683,10 +706,10 @@ const Funds = () => {
                                       {(Object.entries(selectedFilters).length >
                                         0 ||
                                         fundSearchQuery) && (
-                                        <div className="absolute -right-1 -top-1 z-30">
-                                          <FundsTag color="pink" />
-                                        </div>
-                                      )}
+                                          <div className="absolute -right-1 -top-1 z-30">
+                                            <FundsTag color="pink" />
+                                          </div>
+                                        )}
                                       <Icon size="lg" name="filter" />
                                     </div>
                                   </Tooltip>
@@ -759,7 +782,7 @@ const Funds = () => {
                                         header.column.getIsSorted() === 'asc'
                                           ? 'active-desc'
                                           : header.column.getIsSorted() ===
-                                              'desc'
+                                            'desc'
                                             ? 'active-asc'
                                             : 'inactive'
                                       }
@@ -876,7 +899,7 @@ const Funds = () => {
                     <span>تعداد سطر در جدول: </span>
                     {formatNumber(
                       table.getState().pagination.pageSize *
-                        (table.getState().pagination.pageIndex + 1),
+                      (table.getState().pagination.pageIndex + 1),
                       { commaSeparated: true },
                     )}
                   </div>
@@ -898,8 +921,8 @@ const Funds = () => {
                   {
                     'pb-2':
                       table.getState().pagination.pageSize *
-                        (table.getState().pagination.pageIndex + 1) *
-                        table.getPageCount() ===
+                      (table.getState().pagination.pageIndex + 1) *
+                      table.getPageCount() ===
                       +prop.text,
                   },
                 )}
@@ -908,7 +931,7 @@ const Funds = () => {
                   {table.getState().pagination.pageSize *
                     (table.getState().pagination.pageIndex + 1) *
                     table.getPageCount() ===
-                  +prop.text
+                    +prop.text
                     ? 'همه'
                     : prop.text}
                 </span>
@@ -922,8 +945,8 @@ const Funds = () => {
               {
                 text: String(
                   table.getState().pagination.pageSize *
-                    (table.getState().pagination.pageIndex + 1) *
-                    table.getPageCount(),
+                  (table.getState().pagination.pageIndex + 1) *
+                  table.getPageCount(),
                 ),
               },
             ]}
@@ -941,7 +964,7 @@ const Funds = () => {
             <div>
               {formatNumber(
                 table.getState().pagination.pageSize *
-                  (table.getState().pagination.pageIndex + 1),
+                (table.getState().pagination.pageIndex + 1),
                 { commaSeparated: true },
               )}
               -
