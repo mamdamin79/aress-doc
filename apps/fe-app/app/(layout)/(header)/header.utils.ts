@@ -72,14 +72,23 @@ export function useDashboardActions() {
       const t = await updateToken();
       if (!t) return;
 
-      const {createdDashboardId,dashboards} = await DashboardsService.putDashboards({
-        requestBody: { name: input },
-      });
+      const { createdDashboardId, dashboards } =
+        await DashboardsService.putDashboards({
+          requestBody: { name: input },
+        });
       queryClient.invalidateQueries({
         queryKey: ['DashboardsServiceGetDashboards'],
       });
-      const newDashboard = dashboards.find((d) => d.identifier === createdDashboardId) 
-      handleRedirect(checked, newDashboard?.identifier, newDashboard?.name, searchParams, router);
+      const newDashboard = dashboards.find(
+        (d) => d.identifier === createdDashboardId,
+      );
+      handleRedirect(
+        checked,
+        newDashboard?.identifier,
+        newDashboard?.name,
+        searchParams,
+        router,
+      );
       showToast({ message: 'داشبورد جدید ساخته شد.', type: 'success' });
     },
     [router, searchParams, updateToken],
@@ -91,7 +100,7 @@ export function useDashboardActions() {
 
     const dashboardID = Number(searchParams.get('dashboardId'));
 
-    await DashboardsService.deleteDashboardsByDashboardId({
+    const dashboards = await DashboardsService.deleteDashboardsByDashboardId({
       dashboardId: dashboardID,
     });
 
@@ -105,9 +114,9 @@ export function useDashboardActions() {
       query.data?.findIndex((d) => Number(d.identifier) === dashboardID) ?? 1;
 
     const indexToRedirectTo = currentIndex === 0 ? 1 : currentIndex - 1;
+
     const fallback = query.data?.[indexToRedirectTo];
     if (!fallback) return;
-
     handleRedirect(
       false,
       fallback.identifier,
@@ -131,6 +140,7 @@ export function useDashboardActions() {
       queryClient.invalidateQueries({
         queryKey: ['DashboardsServiceGetDashboards'],
       });
+
       showToast({ message: 'نام داشبورد تغییر یافت.', type: 'info' });
     },
     [searchParams, updateToken],
@@ -138,14 +148,23 @@ export function useDashboardActions() {
 
   const copyDashboard = useCallback(
     async (data?: { input?: string; checked?: boolean }) => {
-      await DashboardsService.postDashboardsByDashboardIdDuplicate({
-        dashboardId: Number(searchParams.get('dashboardId')),
-        requestBody: { name: data?.input ?? '' },
-      });
+      const copiedDashboard =
+        await DashboardsService.postDashboardsByDashboardIdDuplicate({
+          dashboardId: Number(searchParams.get('dashboardId')),
+          requestBody: { name: data?.input ?? '' },
+        });
 
       queryClient.invalidateQueries({
         queryKey: ['DashboardsServiceGetDashboards'],
       });
+      handleRedirect(
+        data?.checked ?? false,
+        copiedDashboard.identifier,
+        copiedDashboard?.name,
+        searchParams,
+        router,
+      );
+
       showToast({ message: 'داشبورد کپی شد.', type: 'info' });
     },
     [],
