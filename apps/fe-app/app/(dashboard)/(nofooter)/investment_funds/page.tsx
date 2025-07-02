@@ -61,6 +61,7 @@ import { OpenAPI, useFundsServiceGetFundsTable } from '@openapi';
 import { fetchToken } from 'apps/fe-app/app/(auth)/auth.utils';
 import { TabsSkeleton } from './_components/TabsSkeleton';
 import { RowSkeleton } from './_components/RowSkeleton';
+import { HeaderTableSkeleton } from './_components/HeaderTableSkeleton';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
   const [activeIndexCategoryTab, setActiveIndexCategoryTab] = useState(1);
@@ -311,8 +312,6 @@ const Funds = () => {
     }
   }
 
-
-
   const query = useFundsServiceGetFundsTable({ tab: activeIndexCategoryTab }, undefined, {
     enabled: false,
   });
@@ -525,6 +524,8 @@ const Funds = () => {
     tableRef.current?.scrollBy({ top: 100, behavior: 'smooth' }),
   );
 
+  const sensors = useTableDragSensors();
+
 
   return (
     <>
@@ -538,7 +539,7 @@ const Funds = () => {
           !query.data ? (
             <div className='-mt-2'>
 
-            <TabsSkeleton />
+              <TabsSkeleton />
             </div>
           ) : (
             query.data.tabs && (
@@ -563,8 +564,9 @@ const Funds = () => {
 
       <div
         dir="ltr"
-        className={cn(
-          'border-border-brand-soft-200 relative top-0 flex flex-col items-center overflow-hidden border-t-2',
+        className={cn('', {
+          'border-border-brand-soft-200 relative top-0 flex flex-col items-center overflow-hidden border-t-2': rows.length
+        }
         )}
       >
         <div className="bg-border-brand-soft-200 absolute right-0 top-[75px] z-50 h-0.5 w-full" />
@@ -576,307 +578,310 @@ const Funds = () => {
             dir="rtl"
             className="w-full table-fixed rounded-xl text-center"
           >
-            <thead
-              className={cn(
-                'group sticky right-0 top-0 z-50 m-0 p-0 duration-300',
-              )}
-            >
-              <DndContext
-                onDragStart={(event) => {
-                  setIsRotating(true);
-                  setActiveId(String(event.active.id));
-                }}
-                collisionDetection={closestCenter}
-                modifiers={[restrictToHorizontalAxis]}
-                onDragEnd={handleDragEnd}
-                sensors={useTableDragSensors()}
-                onDragOver={() => setIsRotating(true)}
-                onDragCancel={() => setIsRotating(false)}
-              >
-                <tr>
-                  <th
-                    style={{
-                      transform:
-                        activeSortIndex !== 0
-                          ? `translateX(-${sortIndicatorPosition.right}px)`
-                          : '',
-                      width:
-                        activeSortIndex !== 0
-                          ? `${sortIndicatorPosition.width}px`
-                          : '',
+            {
+              rows.length === 0 ?
+                <HeaderTableSkeleton /> : <thead
+                  className={cn(
+                    'group sticky right-0 top-0 z-50 m-0 p-0 duration-300',
+                  )}
+                >
+                  <DndContext
+                    onDragStart={(event) => {
+                      setIsRotating(true);
+                      setActiveId(String(event.active.id));
                     }}
-                    className={cn('z-[9999] duration-300', {
-                      'absolute bottom-0 z-20 transition-transform':
-                        activeSortIndex !== 0,
-                      'group-hover/table:-right-0':
-                        activeSortIndex !== 0 && isScrollAtStart,
-                      'fixed right-[215px] top-[240px] z-10 w-fit':
-                        activeSortIndex === 0,
-                      'top-[157px]': activeSortIndex === 0 && !isHeaderVisible,
-                    })}
+                    collisionDetection={closestCenter}
+                    modifiers={[restrictToHorizontalAxis]}
+                    onDragEnd={handleDragEnd}
+                    sensors={sensors}
+                    onDragOver={() => setIsRotating(true)}
+                    onDragCancel={() => setIsRotating(false)}
                   >
-                    <div className="bg-surface-brand-600-primary mx-auto h-1.5 w-16 rounded-t-[10px]"></div>
-                  </th>
-                  <th className="sticky right-[340px] z-30 mt-5 p-0">
-                    {isScrollAtStart && (
-                      <div className="hidden group-hover:block">
-                        <Tooltip title="پیمایش به راست (D)">
-                          <button
-                            onMouseDown={startScrollLeft}
-                            onMouseLeave={stopScroll}
-                            className={cn(
-                              'bg-button-brand-surface-default rounded-md p-1 text-white',
-                            )}
-                          >
-                            <Icon name="arrow-right" size="lg" />
-                          </button>
-                        </Tooltip>
-                      </div>
-                    )}
-                  </th>
-                  <SortableContext
-                    items={columnOrder.slice(1)}
-                    strategy={horizontalListSortingStrategy}
-                  >
-                    {table.getHeaderGroups()[0].headers.map((header, index) => {
-                      return (
-                        <>
-                          {index === 0 && (
-                            <th
-                              key={index}
-                              className="bg-surface-brand-100 sticky right-0 top-0 z-20 m-0 h-[64px] w-[385px] py-0"
-                            >
-                              <div
-                                className={cn({
-                                  'bg-surface-brand-100 h-[75px] w-[384px] select-none':
-                                    header.column.getCanSort(),
-                                  'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]':
-                                    isScrollAtStart,
-                                })}
-                              >
-                                <div className="bg-surface-brand-100 mr-[75px] flex">
-                                  <div className="mr-24">
-                                    <FundsColumnHeader
-                                      activeSorticon={
-                                        sorting[0]?.id === 'nameFund'
-                                      }
-                                      active={!isRotating}
-                                      clickFilterd={() => {
-                                        setActiveSortIndex(0);
-                                        header.column.toggleSorting(
-                                          header.column.getIsSorted() === 'desc'
-                                            ? false
-                                            : true,
-                                        );
-                                      }}
-                                      size="medium"
-                                      shadow={false}
-                                      type={
-                                        header.column.getIsSorted() === 'asc'
-                                          ? 'active-asc'
-                                          : header.column.getIsSorted() ===
-                                            'desc'
-                                            ? 'inactive'
-                                            : 'inactive'
-                                      }
-                                      filterable={false}
-                                      title={String(
-                                        flexRender(
-                                          header.column.columnDef.header,
-                                          header.getContext(),
-                                        ),
-                                      )}
-                                      sortType={'alphabetical'}
-                                    />
-                                  </div>
-                                </div>
-
-                                <div className="absolute top-[19px] flex items-center gap-2 pr-[24px]">
-                                  <Tooltip title="انتخاب ستون‌ها">
-                                    <div
-                                      onClick={() => {
-                                        setIsSettingModalOpen(true);
-                                      }}
-                                      className="bg-button-brand-surface-default text-button-brand-label-onsurface relative cursor-pointer rounded-md p-1"
-                                    >
-                                      {isChanged && (
-                                        <div className="absolute -right-1 -top-1">
-                                          <FundsTag color="pink" />
-                                        </div>
-                                      )}
-                                      <Icon size="lg" name="settings" />
-                                    </div>
-                                  </Tooltip>
-                                  <Tooltip title="فیلتر صندوق‌ها">
-                                    <div
-                                      onClick={() => {
-                                        setIsFilterModalOpen(true);
-                                      }}
-                                      className="bg-button-brand-surface-default text-button-brand-label-onsurface relative cursor-pointer rounded-md p-1"
-                                    >
-                                      {(Object.entries(selectedFilters).length >
-                                        0 ||
-                                        fundSearchQuery) && (
-                                          <div className="absolute -right-1 -top-1 z-30">
-                                            <FundsTag color="pink" />
-                                          </div>
-                                        )}
-                                      <Icon size="lg" name="filter" />
-                                    </div>
-                                  </Tooltip>
-                                </div>
-                              </div>
-                            </th>
-                          )}
-                          {index > 0 && (
-                            <DraggableTableHeader
-                              key={header.id}
-                              header={header}
-                            >
-                              <div
-                                ref={(el) => {
-                                  if (headerRefs?.current) {
-                                    headerRefs.current[index] = el;
-                                  }
-                                }}
-                                key={index}
+                    <tr>
+                      <th
+                        style={{
+                          transform:
+                            activeSortIndex !== 0
+                              ? `translateX(-${sortIndicatorPosition.right}px)`
+                              : '',
+                          width:
+                            activeSortIndex !== 0
+                              ? `${sortIndicatorPosition.width}px`
+                              : '',
+                        }}
+                        className={cn('z-[9999] duration-300', {
+                          'absolute bottom-0 z-20 transition-transform':
+                            activeSortIndex !== 0,
+                          'group-hover/table:-right-0':
+                            activeSortIndex !== 0 && isScrollAtStart,
+                          'fixed right-[215px] top-[240px] z-10 w-fit':
+                            activeSortIndex === 0,
+                          'top-[157px]': activeSortIndex === 0 && !isHeaderVisible,
+                        })}
+                      >
+                        <div className="bg-surface-brand-600-primary mx-auto h-1.5 w-16 rounded-t-[10px]"></div>
+                      </th>
+                      <th className="sticky right-[340px] z-30 mt-5 p-0">
+                        {isScrollAtStart && (
+                          <div className="hidden group-hover:block">
+                            <Tooltip title="پیمایش به راست (D)">
+                              <button
+                                onMouseDown={startScrollLeft}
+                                onMouseLeave={stopScroll}
                                 className={cn(
-                                  'bg-surface-brand-100 m-0 h-full w-full text-nowrap p-0 text-sm font-medium',
-                                  String(
-                                    flexRender(
-                                      header.column.columnDef.header,
-                                      header.getContext(),
-                                    ),
-                                  ).length > 10
-                                    ? 'w-[200px]'
-                                    : 'w-[144px]',
+                                  'bg-button-brand-surface-default rounded-md p-1 text-white',
                                 )}
                               >
-                                {index >= 2 && header.isPlaceholder ? null : (
+                                <Icon name="arrow-right" size="lg" />
+                              </button>
+                            </Tooltip>
+                          </div>
+                        )}
+                      </th>
+                      <SortableContext
+                        items={columnOrder.slice(1)}
+                        strategy={horizontalListSortingStrategy}
+                      >
+                        {table.getHeaderGroups()[0].headers.map((header, index) => {
+                          return (
+                            <>
+                              {index === 0 && (
+                                <th
+                                  key={index}
+                                  className="bg-surface-brand-100 sticky right-0 top-0 z-20 m-0 h-[64px] w-[385px] py-0"
+                                >
                                   <div
-                                    {...{
-                                      className: header.column.getCanSort()
-                                        ? 'cursor-pointer h-[75px] select-none'
-                                        : '',
-                                    }}
+                                    className={cn({
+                                      'bg-surface-brand-100 h-[75px] w-[384px] select-none':
+                                        header.column.getCanSort(),
+                                      'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]':
+                                        isScrollAtStart,
+                                    })}
                                   >
-                                    <FundsColumnHeader
-                                      active={!isRotating}
-                                      activeStyle={header.id === activeId}
-                                      activePlaceholder={activeId !== header.id}
-                                      defaultSort={() => {
-                                        setActiveSortIndex(0);
-                                        setSorting([
-                                          {
-                                            id: 'nameFund',
-                                            desc: false,
-                                          },
-                                        ]);
-                                      }}
-                                      clickFilterd={() => {
-                                        setActiveSortIndex(index);
-                                        header.column.getToggleSortingHandler()?.(
-                                          new Event('click'),
-                                        );
-                                      }}
-                                      size={
-                                        String(
-                                          flexRender(
-                                            header.column.columnDef.header,
-                                            header.getContext(),
-                                          ),
-                                        ).length > 10
-                                          ? 'large'
-                                          : 'medium'
+                                    <div className="bg-surface-brand-100 mr-[75px] flex">
+                                      <div className="mr-24">
+                                        <FundsColumnHeader
+                                          activeSorticon={
+                                            sorting[0]?.id === 'nameFund'
+                                          }
+                                          active={!isRotating}
+                                          clickFilterd={() => {
+                                            setActiveSortIndex(0);
+                                            header.column.toggleSorting(
+                                              header.column.getIsSorted() === 'desc'
+                                                ? false
+                                                : true,
+                                            );
+                                          }}
+                                          size="medium"
+                                          shadow={false}
+                                          type={
+                                            header.column.getIsSorted() === 'asc'
+                                              ? 'active-asc'
+                                              : header.column.getIsSorted() ===
+                                                'desc'
+                                                ? 'inactive'
+                                                : 'inactive'
+                                          }
+                                          filterable={false}
+                                          title={String(
+                                            flexRender(
+                                              header.column.columnDef.header,
+                                              header.getContext(),
+                                            ),
+                                          )}
+                                          sortType={'alphabetical'}
+                                        />
+                                      </div>
+                                    </div>
+
+                                    <div className="absolute top-[19px] flex items-center gap-2 pr-[24px]">
+                                      <Tooltip title="انتخاب ستون‌ها">
+                                        <div
+                                          onClick={() => {
+                                            setIsSettingModalOpen(true);
+                                          }}
+                                          className="bg-button-brand-surface-default text-button-brand-label-onsurface relative cursor-pointer rounded-md p-1"
+                                        >
+                                          {isChanged && (
+                                            <div className="absolute -right-1 -top-1">
+                                              <FundsTag color="pink" />
+                                            </div>
+                                          )}
+                                          <Icon size="lg" name="settings" />
+                                        </div>
+                                      </Tooltip>
+                                      <Tooltip title="فیلتر صندوق‌ها">
+                                        <div
+                                          onClick={() => {
+                                            setIsFilterModalOpen(true);
+                                          }}
+                                          className="bg-button-brand-surface-default text-button-brand-label-onsurface relative cursor-pointer rounded-md p-1"
+                                        >
+                                          {(Object.entries(selectedFilters).length >
+                                            0 ||
+                                            fundSearchQuery) && (
+                                              <div className="absolute -right-1 -top-1 z-30">
+                                                <FundsTag color="pink" />
+                                              </div>
+                                            )}
+                                          <Icon size="lg" name="filter" />
+                                        </div>
+                                      </Tooltip>
+                                    </div>
+                                  </div>
+                                </th>
+                              )}
+                              {index > 0 && (
+                                <DraggableTableHeader
+                                  key={header.id}
+                                  header={header}
+                                >
+                                  <div
+                                    ref={(el) => {
+                                      if (headerRefs?.current) {
+                                        headerRefs.current[index] = el;
                                       }
-                                      type={
-                                        header.column.getIsSorted() === 'asc'
-                                          ? 'active-desc'
-                                          : header.column.getIsSorted() ===
-                                            'desc'
-                                            ? 'active-asc'
-                                            : 'inactive'
-                                      }
-                                      filterable={false}
-                                      subTitle={header.column.parent?.id}
-                                      title={String(
+                                    }}
+                                    key={index}
+                                    className={cn(
+                                      'bg-surface-brand-100 m-0 h-full w-full text-nowrap p-0 text-sm font-medium',
+                                      String(
                                         flexRender(
                                           header.column.columnDef.header,
                                           header.getContext(),
                                         ),
-                                      )}
-                                      sortType={
-                                        (
-                                          columns[index]?.meta as {
-                                            type?: string;
+                                      ).length > 10
+                                        ? 'w-[200px]'
+                                        : 'w-[144px]',
+                                    )}
+                                  >
+                                    {index >= 2 && header.isPlaceholder ? null : (
+                                      <div
+                                        {...{
+                                          className: header.column.getCanSort()
+                                            ? 'cursor-pointer h-[75px] select-none'
+                                            : '',
+                                        }}
+                                      >
+                                        <FundsColumnHeader
+                                          active={!isRotating}
+                                          activeStyle={header.id === activeId}
+                                          activePlaceholder={activeId !== header.id}
+                                          defaultSort={() => {
+                                            setActiveSortIndex(0);
+                                            setSorting([
+                                              {
+                                                id: 'nameFund',
+                                                desc: false,
+                                              },
+                                            ]);
+                                          }}
+                                          clickFilterd={() => {
+                                            setActiveSortIndex(index);
+                                            header.column.getToggleSortingHandler()?.(
+                                              new Event('click'),
+                                            );
+                                          }}
+                                          size={
+                                            String(
+                                              flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext(),
+                                              ),
+                                            ).length > 10
+                                              ? 'large'
+                                              : 'medium'
                                           }
-                                        )?.type === 'text'
-                                          ? 'alphabetical'
-                                          : 'ranked'
-                                      }
-                                    />
+                                          type={
+                                            header.column.getIsSorted() === 'asc'
+                                              ? 'active-desc'
+                                              : header.column.getIsSorted() ===
+                                                'desc'
+                                                ? 'active-asc'
+                                                : 'inactive'
+                                          }
+                                          filterable={false}
+                                          subTitle={header.column.parent?.id}
+                                          title={String(
+                                            flexRender(
+                                              header.column.columnDef.header,
+                                              header.getContext(),
+                                            ),
+                                          )}
+                                          sortType={
+                                            (
+                                              columns[index]?.meta as {
+                                                type?: string;
+                                              }
+                                            )?.type === 'text'
+                                              ? 'alphabetical'
+                                              : 'ranked'
+                                          }
+                                        />
+                                      </div>
+                                    )}
                                   </div>
-                                )}
-                              </div>
-                            </DraggableTableHeader>
-                          )}
-                        </>
-                      );
-                    })}
-                    <DragOverlay
-                      adjustScale={false}
-                      zIndex={100}
-                      style={{
-                        zIndex: 9999,
-                        pointerEvents: 'none',
-                      }}
-                    >
-                      {activeId ? (
-                        <th
-                          className="absolute top-0 mt-9 flex -rotate-12 items-start justify-center transition-none"
+                                </DraggableTableHeader>
+                              )}
+                            </>
+                          );
+                        })}
+                        <DragOverlay
+                          adjustScale={false}
+                          zIndex={100}
                           style={{
-                            width:
-                              String(activeId).length > 10 ? '200px' : '144px',
-                            backgroundColor: '#E3F8F8',
-                            borderBottom: '1px solid #eee',
-                            padding: '0',
-                            zIndex: 100,
-                            height: '64px',
+                            zIndex: 9999,
+                            pointerEvents: 'none',
                           }}
                         >
-                          {activeId && (
-                            <div className="text-text-neutral-primary bg-surface-brand-200 flex h-20 w-full items-center justify-center">
-                              {activeId}
-                            </div>
+                          {activeId ? (
+                            <th
+                              className="absolute top-0 mt-9 flex -rotate-12 items-start justify-center transition-none"
+                              style={{
+                                width:
+                                  String(activeId).length > 10 ? '200px' : '144px',
+                                backgroundColor: '#E3F8F8',
+                                borderBottom: '1px solid #eee',
+                                padding: '0',
+                                zIndex: 100,
+                                height: '64px',
+                              }}
+                            >
+                              {activeId && (
+                                <div className="text-text-neutral-primary bg-surface-brand-200 flex h-20 w-full items-center justify-center">
+                                  {activeId}
+                                </div>
+                              )}
+                            </th>
+                          ) : (
+                            <></>
                           )}
-                        </th>
-                      ) : (
-                        <></>
-                      )}
-                    </DragOverlay>
-                  </SortableContext>
-                  <th className="fixed left-[35px] m-0 mt-5">
-                    {isScrollAtEnd && (
-                      <div
-                        onMouseDown={startScrollRight}
-                        onMouseLeave={stopScroll}
-                        className={cn('hidden group-hover:block')}
-                      >
-                        <Tooltip title="پیمایش به چپ (A)">
-                          <button
-                            className={cn(
-                              'bg-button-brand-surface-default text-button-brand-label-onsurface rounded-md p-1',
-                            )}
+                        </DragOverlay>
+                      </SortableContext>
+                      <th className="fixed left-[35px] m-0 mt-5">
+                        {isScrollAtEnd && (
+                          <div
+                            onMouseDown={startScrollRight}
+                            onMouseLeave={stopScroll}
+                            className={cn('hidden group-hover:block')}
                           >
-                            <Icon name="arrow-left" size="lg" />
-                          </button>
-                        </Tooltip>
-                      </div>
-                    )}
-                  </th>
-                </tr>
-              </DndContext>
-            </thead>
+                            <Tooltip title="پیمایش به چپ (A)">
+                              <button
+                                className={cn(
+                                  'bg-button-brand-surface-default text-button-brand-label-onsurface rounded-md p-1',
+                                )}
+                              >
+                                <Icon name="arrow-left" size="lg" />
+                              </button>
+                            </Tooltip>
+                          </div>
+                        )}
+                      </th>
+                    </tr>
+                  </DndContext>
+                </thead>
+            }
             {
               rows.length ?
                 <TableBody
