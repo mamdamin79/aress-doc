@@ -1,38 +1,39 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { baseOptions, xAxisLabels, yAxisLabels } from '../Report.config.shared';
-import { ReportCardBase } from '../../ReportCardBase';
 import { financialDefinitions } from './Report6.constants';
-const months: string[] = [
-  'فروردین',
-  'اردیبهشت',
-  'خرداد',
-  'تیر',
-  'مرداد',
-  'شهریور',
-  'مهر',
-  'آبان',
-  'آذر',
-  'دی',
-  'بهمن',
-  'اسفند',
-];
+import { ReportCardBase } from 'design-system';
+import { Report6CalculationResult } from '@openapi';
 
-export interface Report6Props {
-  inFlowData: ({ y: number; unit: string } | null)[];
-  outFlowData: ({ y: number; unit: string } | null)[];
-  indexData: ({ y: number; unit: string } | null)[];
-}
-export const Report6: FC<Report6Props> = ({
-  inFlowData,
-  indexData,
-  outFlowData,
-}) => {
+export const Report6: FC<Report6CalculationResult> = ({ data }) => {
+  const { xCategories, inFlowData, outFlowData, indexData } = useMemo(() => {
+    const xCategories: string[] = [];
+    const inFlowData: number[] = [];
+    const outFlowData: number[] = [];
+    const indexData: number[] = [];
+
+    data.forEach((item) => {
+      xCategories.push(item.dt); // use raw dt
+      indexData.push(item.indexValue ?? null);
+
+      const flow = item.netFlow ?? 0;
+      if (flow >= 0) {
+        inFlowData.push(flow);
+        outFlowData.push(0);
+      } else {
+        inFlowData.push(0);
+        outFlowData.push(Math.abs(flow));
+      }
+    });
+
+    return { xCategories, inFlowData, outFlowData, indexData };
+  }, [data]);
+
   const options: Highcharts.Options = {
     ...baseOptions,
     xAxis: {
-      categories: months,
+      categories: xCategories,
       crosshair: true,
       labels: xAxisLabels,
     },
@@ -115,22 +116,10 @@ export const Report6: FC<Report6Props> = ({
                   title: 'نام شاخص',
                   items: {
                     items: [
-                      {
-                        id: 1,
-                        title: 'ذغال سنگ',
-                      },
-                      {
-                        id: 2,
-                        title: 'شاخص کل (هم‌وزن)',
-                      },
-                      {
-                        id: 3,
-                        title: 'شاخص قیمت (وزنی-ارزشی)',
-                      },
-                      {
-                        id: 4,
-                        title: 'شاخص قیمت (هم‌وزن)',
-                      },
+                      { id: 1, title: 'ذغال سنگ' },
+                      { id: 2, title: 'شاخص کل (هم‌وزن)' },
+                      { id: 3, title: 'شاخص قیمت (وزنی-ارزشی)' },
+                      { id: 4, title: 'شاخص قیمت (هم‌وزن)' },
                     ],
                   },
                 },
@@ -154,14 +143,8 @@ export const Report6: FC<Report6Props> = ({
                   title: 'نوع سرمایه‌گذار',
                   items: {
                     items: [
-                      {
-                        id: 1,
-                        title: 'حقیقی',
-                      },
-                      {
-                        id: 2,
-                        title: 'حقوقی',
-                      },
+                      { id: 1, title: 'حقیقی' },
+                      { id: 2, title: 'حقوقی' },
                     ],
                   },
                 },
@@ -170,6 +153,7 @@ export const Report6: FC<Report6Props> = ({
           },
         },
         {
+          type: 'basicSelection',
           props: {
             title: 'تفکیک زمانی: ',
             icon: { name: 'square-mouse-pointer', size: 'sm' },
@@ -181,27 +165,14 @@ export const Report6: FC<Report6Props> = ({
               title: 'تفکیک زمانی',
               items: {
                 items: [
-                  {
-                    id: 1,
-                    title: 'روزانه',
-                  },
-                  {
-                    id: 2,
-                    title: 'هفتگی',
-                  },
-                  {
-                    id: 3,
-                    title: 'ماهانه',
-                  },
-                  {
-                    id: 4,
-                    title: 'سالانه',
-                  },
+                  { id: 1, title: 'روزانه' },
+                  { id: 2, title: 'هفتگی' },
+                  { id: 3, title: 'ماهانه' },
+                  { id: 4, title: 'سالانه' },
                 ],
               },
             },
           },
-          type: 'basicSelection',
         },
       ]}
     >

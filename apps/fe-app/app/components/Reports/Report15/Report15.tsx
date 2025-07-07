@@ -2,8 +2,8 @@ import React, { FC, useMemo } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { baseOptions } from '../Report.config.shared';
-import { ReportCardBase } from '../../ReportCardBase';
 import { financialDefinitions } from './Report15.constants';
+import { ReportCardBase } from 'design-system';
 
 interface InfoBoxProps {
   label: string;

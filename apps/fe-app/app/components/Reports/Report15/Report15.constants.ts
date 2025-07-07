@@ -1,4 +1,4 @@
-import { popupInfoItemType } from '../../ReportCardBase/ReportCardBase.types';
+import { popupInfoItemType } from '../../../../../../libs/design-system/src/lib/components/ReportCardBase/ReportCardBase.types';
 
 export const financialDefinitions: popupInfoItemType = [
   {
