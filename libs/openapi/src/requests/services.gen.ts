@@ -3,7 +3,7 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
-import type { GetHealthResponse, GetUsersLoginCaptchaData, GetUsersLoginCaptchaResponse, PostUsersLoginData, PostUsersLoginResponse, PostUsersTokenData, PostUsersTokenResponse, GetUsersMeResponse, PostUsersPasswordForgotCaptchaData, PostUsersPasswordForgotCaptchaResponse, PostUsersPasswordForgotOtpData, PostUsersPasswordForgotOtpResponse, PostUsersPasswordForgotResetData, PostUsersPasswordForgotResetResponse, GetUsersProfilePasswordChangeOtpResponse, PostUsersProfilePasswordChangeData, PostUsersProfilePasswordChangeResponse, PostUsersProfilePasswordValidateData, PostUsersProfilePasswordValidateResponse, PostUsersProfilePhoneChangeOtpData, PostUsersProfilePhoneChangeOtpResponse, PostUsersProfilePhoneChangeData, PostUsersProfilePhoneChangeResponse, PostUsersProfileUsernameChangeData, PostUsersProfileUsernameChangeResponse, PostUsersProfilePictureChangeData, PostUsersProfilePictureChangeResponse, GetReportsData, GetReportsResponse, GetReportsByReportIdData, GetReportsByReportIdResponse, PostReportsByReportIdData, PostReportsByReportIdResponse, GetReportsCategoriesResponse, PostReportsByReportIdFavoriteData, PostReportsByReportIdFavoriteResponse, DeleteReportsByReportIdFavoriteData, DeleteReportsByReportIdFavoriteResponse, GetDashboardsResponse, PutDashboardsData, PutDashboardsResponse, PostDashboardsByDashboardIdData, PostDashboardsByDashboardIdResponse, DeleteDashboardsByDashboardIdData, DeleteDashboardsByDashboardIdResponse, GetDashboardsByDashboardIdData, GetDashboardsByDashboardIdResponse, GetDashboardsByDashboardIdItemsPreviewData, GetDashboardsByDashboardIdItemsPreviewResponse, PutDashboardsByDashboardIdItemsData, PutDashboardsByDashboardIdItemsResponse, DeleteDashboardsByDashboardIdItemsData, DeleteDashboardsByDashboardIdItemsResponse, PostDashboardsByDashboardIdItemsData, PostDashboardsByDashboardIdItemsResponse, PostDashboardsByDashboardIdItemsReorderData, PostDashboardsByDashboardIdItemsReorderResponse, GetFundsResponse, GetFundsTypeByFundTypeData, GetFundsTypeByFundTypeResponse, GetFundsTableData, GetFundsTableResponse, PostFundsTablePinData, PostFundsTablePinResponse, PostFundsTableUnpinData, PostFundsTableUnpinResponse } from './types.gen';
+import type { GetHealthResponse, GetUsersLoginCaptchaData, GetUsersLoginCaptchaResponse, PostUsersLoginData, PostUsersLoginResponse, PostUsersTokenData, PostUsersTokenResponse, GetUsersMeResponse, PostUsersPasswordForgotCaptchaData, PostUsersPasswordForgotCaptchaResponse, PostUsersPasswordForgotOtpData, PostUsersPasswordForgotOtpResponse, PostUsersPasswordForgotResetData, PostUsersPasswordForgotResetResponse, GetUsersProfilePasswordChangeOtpResponse, PostUsersProfilePasswordChangeData, PostUsersProfilePasswordChangeResponse, PostUsersProfilePasswordValidateData, PostUsersProfilePasswordValidateResponse, PostUsersProfilePhoneChangeOtpData, PostUsersProfilePhoneChangeOtpResponse, PostUsersProfilePhoneChangeData, PostUsersProfilePhoneChangeResponse, PostUsersProfileUsernameChangeData, PostUsersProfileUsernameChangeResponse, PostUsersProfilePictureChangeData, PostUsersProfilePictureChangeResponse, GetReportsData, GetReportsResponse, GetReportsByReportIdData, GetReportsByReportIdResponse, PostReportsByReportIdData, PostReportsByReportIdResponse, GetReportsCategoriesResponse, PostReportsByReportIdFavoriteData, PostReportsByReportIdFavoriteResponse, DeleteReportsByReportIdFavoriteData, DeleteReportsByReportIdFavoriteResponse, GetDashboardsResponse, PutDashboardsData, PutDashboardsResponse, GetDashboardsByDashboardIdData, GetDashboardsByDashboardIdResponse, PostDashboardsByDashboardIdData, PostDashboardsByDashboardIdResponse, DeleteDashboardsByDashboardIdData, DeleteDashboardsByDashboardIdResponse, PostDashboardsByDashboardIdDuplicateData, PostDashboardsByDashboardIdDuplicateResponse, GetDashboardsByDashboardIdItemsPreviewData, GetDashboardsByDashboardIdItemsPreviewResponse, PutDashboardsByDashboardIdItemsData, PutDashboardsByDashboardIdItemsResponse, DeleteDashboardsByDashboardIdItemsData, DeleteDashboardsByDashboardIdItemsResponse, PostDashboardsByDashboardIdItemsData, PostDashboardsByDashboardIdItemsResponse, PostDashboardsByDashboardIdItemsReorderData, PostDashboardsByDashboardIdItemsReorderResponse, GetFundsResponse, GetFundsTypeByFundTypeData, GetFundsTypeByFundTypeResponse, GetFundsTableData, GetFundsTableResponse, PostFundsTablePinData, PostFundsTablePinResponse, PostFundsTableUnpinData, PostFundsTableUnpinResponse } from './types.gen';
 
 export class HealthService {
     /**
@@ -456,7 +456,7 @@ export class DashboardsService {
      * Add dashboard for user.
      * @param data The data for the request.
      * @param data.requestBody
-     * @returns DashboardListItemApiModel Successful Response
+     * @returns CreateDashboardResponseApiModel Successful Response
      * @throws ApiError
      */
     public static putDashboards(data: PutDashboardsData): CancelablePromise<PutDashboardsResponse> {
@@ -465,6 +465,27 @@ export class DashboardsService {
             url: '/dashboards',
             body: data.requestBody,
             mediaType: 'application/json',
+            errors: {
+                422: 'Validation Error'
+            }
+        });
+    }
+    
+    /**
+     * Dashboard Details
+     * Get dashboard details.
+     * @param data The data for the request.
+     * @param data.dashboardId
+     * @returns DashboardDetailsApiModel Successful Response
+     * @throws ApiError
+     */
+    public static getDashboardsByDashboardId(data: GetDashboardsByDashboardIdData): CancelablePromise<GetDashboardsByDashboardIdResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/dashboards/{dashboard_id}',
+            path: {
+                dashboard_id: data.dashboardId
+            },
             errors: {
                 422: 'Validation Error'
             }
@@ -500,7 +521,7 @@ export class DashboardsService {
      * Delete dashboard.
      * @param data The data for the request.
      * @param data.dashboardId
-     * @returns unknown Successful Response
+     * @returns DashboardListItemApiModel Successful Response
      * @throws ApiError
      */
     public static deleteDashboardsByDashboardId(data: DeleteDashboardsByDashboardIdData): CancelablePromise<DeleteDashboardsByDashboardIdResponse> {
@@ -518,19 +539,22 @@ export class DashboardsService {
     
     /**
      * Dashboard Details
-     * Get dashboard details.
+     * Duplicate dashboard
      * @param data The data for the request.
      * @param data.dashboardId
+     * @param data.requestBody
      * @returns DashboardDetailsApiModel Successful Response
      * @throws ApiError
      */
-    public static getDashboardsByDashboardId(data: GetDashboardsByDashboardIdData): CancelablePromise<GetDashboardsByDashboardIdResponse> {
+    public static postDashboardsByDashboardIdDuplicate(data: PostDashboardsByDashboardIdDuplicateData): CancelablePromise<PostDashboardsByDashboardIdDuplicateResponse> {
         return __request(OpenAPI, {
-            method: 'GET',
-            url: '/dashboards/{dashboard_id}',
+            method: 'POST',
+            url: '/dashboards/{dashboard_id}/duplicate',
             path: {
                 dashboard_id: data.dashboardId
             },
+            body: data.requestBody,
+            mediaType: 'application/json',
             errors: {
                 422: 'Validation Error'
             }

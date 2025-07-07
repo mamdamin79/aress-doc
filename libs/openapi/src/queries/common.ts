@@ -87,6 +87,7 @@ export type UsersServicePostUsersProfilePictureChangeMutationResult = Awaited<Re
 export type ReportsServicePostReportsByReportIdMutationResult = Awaited<ReturnType<typeof ReportsService.postReportsByReportId>>;
 export type ReportsServicePostReportsByReportIdFavoriteMutationResult = Awaited<ReturnType<typeof ReportsService.postReportsByReportIdFavorite>>;
 export type DashboardsServicePostDashboardsByDashboardIdMutationResult = Awaited<ReturnType<typeof DashboardsService.postDashboardsByDashboardId>>;
+export type DashboardsServicePostDashboardsByDashboardIdDuplicateMutationResult = Awaited<ReturnType<typeof DashboardsService.postDashboardsByDashboardIdDuplicate>>;
 export type DashboardsServicePostDashboardsByDashboardIdItemsMutationResult = Awaited<ReturnType<typeof DashboardsService.postDashboardsByDashboardIdItems>>;
 export type DashboardsServicePostDashboardsByDashboardIdItemsReorderMutationResult = Awaited<ReturnType<typeof DashboardsService.postDashboardsByDashboardIdItemsReorder>>;
 export type FundsServicePostFundsTablePinMutationResult = Awaited<ReturnType<typeof FundsService.postFundsTablePin>>;

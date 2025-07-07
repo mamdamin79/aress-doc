@@ -1115,7 +1115,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DashboardListItemApiModel"
+                  "$ref": "#/components/schemas/CreateDashboardResponseApiModel"
                 }
               }
             }
@@ -1139,6 +1139,52 @@
       }
     },
     "/dashboards/{dashboard_id}": {
+      "get": {
+        "tags": [
+          "Dashboards"
+        ],
+        "summary": "Dashboard Details",
+        "description": "Get dashboard details.",
+        "operationId": "dashboard_details_dashboards__dashboard_id__get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "dashboard_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dashboard Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardDetailsApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "tags": [
           "Dashboards"
@@ -1223,7 +1269,13 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DashboardListItemApiModel"
+                  },
+                  "title": "Response Delete Dashboard Dashboards  Dashboard Id  Delete"
+                }
               }
             }
           },
@@ -1238,14 +1290,16 @@
             }
           }
         }
-      },
-      "get": {
+      }
+    },
+    "/dashboards/{dashboard_id}/duplicate": {
+      "post": {
         "tags": [
           "Dashboards"
         ],
         "summary": "Dashboard Details",
-        "description": "Get dashboard details.",
-        "operationId": "dashboard_details_dashboards__dashboard_id__get",
+        "description": "Duplicate dashboard",
+        "operationId": "dashboard_details_dashboards__dashboard_id__duplicate_post",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -1262,6 +1316,16 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DuplicateDashboardForUserBody"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -1861,6 +1925,42 @@
             "type": "boolean",
             "title": "Active",
             "description": "Whether this user is active or not, is always \"true\" for logged in user."
+          },
+          "firstName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Firstname",
+            "description": "First name of user."
+          },
+          "lastName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lastname",
+            "description": "Last name the user."
+          },
+          "profilePicture": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profilepicture",
+            "description": "Profile picture url of the user."
           }
         },
         "type": "object",
@@ -1870,7 +1970,10 @@
           "email",
           "phoneNumber",
           "nationalCode",
-          "active"
+          "active",
+          "firstName",
+          "lastName",
+          "profilePicture"
         ],
         "title": "AressApiUser"
       },
@@ -2201,6 +2304,27 @@
         ],
         "title": "CreateDashboardForUserBody"
       },
+      "CreateDashboardResponseApiModel": {
+        "properties": {
+          "createdDashboardId": {
+            "type": "integer",
+            "title": "Createddashboardid"
+          },
+          "dashboards": {
+            "items": {
+              "$ref": "#/components/schemas/DashboardListItemApiModel"
+            },
+            "type": "array",
+            "title": "Dashboards"
+          }
+        },
+        "type": "object",
+        "required": [
+          "createdDashboardId",
+          "dashboards"
+        ],
+        "title": "CreateDashboardResponseApiModel"
+      },
       "DashboardDetailsApiModel": {
         "properties": {
           "identifier": {
@@ -2483,6 +2607,19 @@
         ],
         "title": "DeleteDashboardItemFromDashboardBody"
       },
+      "DuplicateDashboardForUserBody": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "DuplicateDashboardForUserBody"
+      },
       "FinancialReportCalculationApiModel": {
         "properties": {
           "calculation": {
@@ -2545,7 +2682,7 @@
       "FinancialReportDetailsApiModel": {
         "properties": {
           "identifier": {
-            "type": "integer",
+            "type": "string",
             "title": "Identifier",
             "description": "Unique identifier of report"
           },
@@ -2695,7 +2832,7 @@
       "FinancialReportListItemApiModel": {
         "properties": {
           "identifier": {
-            "type": "integer",
+            "type": "string",
             "title": "Identifier",
             "description": "Unique identifier of report"
           },
@@ -2767,22 +2904,27 @@
         "properties": {
           "identifier": {
             "type": "integer",
-            "title": "Identifier"
+            "title": "Identifier",
+            "description": "شناسه صندوق"
           },
           "registrationNumber": {
             "type": "integer",
-            "title": "Registrationnumber"
+            "title": "Registrationnumber",
+            "description": "شماره ثبت نزد سازمان بورس"
           },
           "name": {
             "type": "string",
-            "title": "Name"
+            "title": "Name",
+            "description": "نام کامل صندوق"
           },
           "abbreviatedName": {
             "type": "string",
-            "title": "Abbreviatedname"
+            "title": "Abbreviatedname",
+            "description": "نام صندوق"
           },
           "fundType": {
-            "$ref": "#/components/schemas/FundTypeApiModel"
+            "$ref": "#/components/schemas/FundTypeApiModel",
+            "description": "نوع صندوق"
           },
           "logoMedium": {
             "anyOf": [
@@ -2793,7 +2935,8 @@
                 "type": "null"
               }
             ],
-            "title": "Logomedium"
+            "title": "Logomedium",
+            "description": "آدرس لوگوی صندوق - سایز متوسط"
           },
           "logoThumbnail": {
             "anyOf": [
@@ -2804,73 +2947,98 @@
                 "type": "null"
               }
             ],
-            "title": "Logothumbnail"
+            "title": "Logothumbnail",
+            "description": "آدرس لوگوی صندوق - سایز کوچک"
           },
           "website": {
             "type": "string",
-            "title": "Website"
+            "title": "Website",
+            "description": "وبسایت صندوق"
           },
           "statuteUrl": {
             "type": "string",
-            "title": "Statuteurl"
+            "title": "Statuteurl",
+            "description": "اساسنامه صندوق"
           },
           "prospectusUrl": {
             "type": "string",
-            "title": "Prospectusurl"
+            "title": "Prospectusurl",
+            "description": "امیدنامه صندوق"
           },
           "isEtf": {
             "type": "boolean",
-            "title": "Isetf"
+            "title": "Isetf",
+            "description": "آیا صندوق etf است"
           },
           "isCharity": {
             "type": "boolean",
-            "title": "Ischarity"
+            "title": "Ischarity",
+            "description": "آیا صندوق نیکوکاری است"
+          },
+          "hasVideo": {
+            "type": "boolean",
+            "title": "Hasvideo",
+            "description": "دارای ویدیو بررسی"
           },
           "manager": {
             "type": "string",
-            "title": "Manager"
+            "title": "Manager",
+            "description": "مدیر صنودق"
           },
           "custodian": {
             "type": "string",
-            "title": "Custodian"
+            "title": "Custodian",
+            "description": "متولی صندوق"
           },
           "auditor": {
             "type": "string",
-            "title": "Auditor"
+            "title": "Auditor",
+            "description": "حسابرس صندوق"
           },
           "liquidityGuarantor": {
             "type": "string",
-            "title": "Liquidityguarantor"
+            "title": "Liquidityguarantor",
+            "description": "ضامن نقد شوندگی صندوق"
+          },
+          "marketMaker": {
+            "type": "string",
+            "title": "Marketmaker",
+            "description": "بازارگردان"
           },
           "initiationDate": {
             "type": "string",
             "title": "Initiationdate",
-            "description": "Gregorian date of fund initiation in YYYY-mm-dd format"
+            "description": "تاریخ آغاز فعالیت میلادی"
           },
           "initiationJdate": {
             "type": "string",
             "title": "Initiationjdate",
-            "description": "Jalali date of fund initiation in YYYY-mm-dd format"
+            "description": "تاریخ آغاز فعالیت"
           },
           "issueNavRials": {
             "type": "integer",
-            "title": "Issuenavrials"
+            "title": "Issuenavrials",
+            "description": "قیمت صدور"
           },
           "redeemNavRials": {
             "type": "integer",
-            "title": "Redeemnavrials"
+            "title": "Redeemnavrials",
+            "description": "قیمت ابطال"
           },
           "statisticalNavRials": {
             "type": "integer",
-            "title": "Statisticalnavrials"
+            "title": "Statisticalnavrials",
+            "description": "قیمت آماری"
           },
           "assetUnderManagementRials": {
             "type": "integer",
-            "title": "Assetundermanagementrials"
+            "title": "Assetundermanagementrials",
+            "description": "دارایی تحت مدیریت"
           },
           "numberOfUnits": {
             "type": "integer",
-            "title": "Numberofunits"
+            "title": "Numberofunits",
+            "description": "تعداد واحد"
           },
           "returnLastWeekPercent": {
             "anyOf": [
@@ -2881,7 +3049,8 @@
                 "type": "null"
               }
             ],
-            "title": "Returnlastweekpercent"
+            "title": "Returnlastweekpercent",
+            "description": "بازدهی هفته اخیر"
           },
           "returnLastMonthPercent": {
             "anyOf": [
@@ -2892,7 +3061,8 @@
                 "type": "null"
               }
             ],
-            "title": "Returnlastmonthpercent"
+            "title": "Returnlastmonthpercent",
+            "description": "بازدهی ماه اخیر"
           },
           "returnLast3MonthsPercent": {
             "anyOf": [
@@ -2903,7 +3073,8 @@
                 "type": "null"
               }
             ],
-            "title": "Returnlast3Monthspercent"
+            "title": "Returnlast3Monthspercent",
+            "description": "بازدهی سه ماه اخیر"
           },
           "returnLastYearPercent": {
             "anyOf": [
@@ -2914,7 +3085,8 @@
                 "type": "null"
               }
             ],
-            "title": "Returnlastyearpercent"
+            "title": "Returnlastyearpercent",
+            "description": "بازدهی سال اخیر"
           },
           "returnLastWeekVsTedpixPercent": {
             "anyOf": [
@@ -2925,7 +3097,8 @@
                 "type": "null"
               }
             ],
-            "title": "Returnlastweekvstedpixpercent"
+            "title": "Returnlastweekvstedpixpercent",
+            "description": "بازدهی هفته اخیر به شاخص"
           },
           "returnLastMonthVsTedpixPercent": {
             "anyOf": [
@@ -2936,7 +3109,8 @@
                 "type": "null"
               }
             ],
-            "title": "Returnlastmonthvstedpixpercent"
+            "title": "Returnlastmonthvstedpixpercent",
+            "description": "بازدهی ماه اخیر به شاخص"
           },
           "returnLast3MonthsVsTedpixPercent": {
             "anyOf": [
@@ -2947,7 +3121,8 @@
                 "type": "null"
               }
             ],
-            "title": "Returnlast3Monthsvstedpixpercent"
+            "title": "Returnlast3Monthsvstedpixpercent",
+            "description": "بازدهی سه ماه اخیر به شاخص"
           },
           "returnLastYearVsTedpixPercent": {
             "anyOf": [
@@ -2958,39 +3133,48 @@
                 "type": "null"
               }
             ],
-            "title": "Returnlastyearvstedpixpercent"
+            "title": "Returnlastyearvstedpixpercent",
+            "description": "بازدهی سال اخیر به شاخص"
           },
           "assetAllocationBondPercent": {
             "type": "number",
-            "title": "Assetallocationbondpercent"
+            "title": "Assetallocationbondpercent",
+            "description": "سهم اوراق از پورتفوی"
           },
           "assetAllocationBankDepositPercent": {
             "type": "number",
-            "title": "Assetallocationbankdepositpercent"
+            "title": "Assetallocationbankdepositpercent",
+            "description": "سهم سپرده بانکی از پورتفوی"
           },
           "assetAllocationCommodityDepositCertificatePercent": {
             "type": "number",
-            "title": "Assetallocationcommoditydepositcertificatepercent"
+            "title": "Assetallocationcommoditydepositcertificatepercent",
+            "description": "سهم گواهی سپرده کالایی از پورتفوی"
           },
           "assetAllocationCashPercent": {
             "type": "number",
-            "title": "Assetallocationcashpercent"
+            "title": "Assetallocationcashpercent",
+            "description": "سهم وجه نقد از پورتفوی"
           },
           "assetAllocationStocksIncludingTop5Percent": {
             "type": "number",
-            "title": "Assetallocationstocksincludingtop5Percent"
+            "title": "Assetallocationstocksincludingtop5Percent",
+            "description": "سهم سهام از پورتفوی"
           },
           "assetAllocationFundUnitsPercent": {
             "type": "number",
-            "title": "Assetallocationfundunitspercent"
+            "title": "Assetallocationfundunitspercent",
+            "description": "سهم واحد صندوق‌ها از پورتفوی"
           },
           "assetAllocationOtherPercent": {
             "type": "number",
-            "title": "Assetallocationotherpercent"
+            "title": "Assetallocationotherpercent",
+            "description": "سهم سایر از پورتفوی"
           },
           "assetAllocationTop5StocksPercent": {
             "type": "number",
-            "title": "Assetallocationtop5Stockspercent"
+            "title": "Assetallocationtop5Stockspercent",
+            "description": "سهم پنج سهم برتر از پورتفوی"
           },
           "averageLeverageLastWeek": {
             "anyOf": [
@@ -3001,7 +3185,8 @@
                 "type": "null"
               }
             ],
-            "title": "Averageleveragelastweek"
+            "title": "Averageleveragelastweek",
+            "description": "میانگین اهرم هفته اخیر"
           },
           "averageLeverageLastMonth": {
             "anyOf": [
@@ -3012,7 +3197,8 @@
                 "type": "null"
               }
             ],
-            "title": "Averageleveragelastmonth"
+            "title": "Averageleveragelastmonth",
+            "description": "میانگین اهرم ماه اخیر"
           },
           "averageLeverageLast3Months": {
             "anyOf": [
@@ -3023,7 +3209,8 @@
                 "type": "null"
               }
             ],
-            "title": "Averageleveragelast3Months"
+            "title": "Averageleveragelast3Months",
+            "description": "میانگین اهرم سه ماه اخیر"
           },
           "averageLeverageLastYear": {
             "anyOf": [
@@ -3034,7 +3221,8 @@
                 "type": "null"
               }
             ],
-            "title": "Averageleveragelastyear"
+            "title": "Averageleveragelastyear",
+            "description": "میانگین اهرم سال اخیر"
           },
           "standardDeviationLastWeek": {
             "anyOf": [
@@ -3045,7 +3233,8 @@
                 "type": "null"
               }
             ],
-            "title": "Standarddeviationlastweek"
+            "title": "Standarddeviationlastweek",
+            "description": "انحراف از میانگین هفته اخیر"
           },
           "standardDeviationLastMonth": {
             "anyOf": [
@@ -3056,7 +3245,8 @@
                 "type": "null"
               }
             ],
-            "title": "Standarddeviationlastmonth"
+            "title": "Standarddeviationlastmonth",
+            "description": "انحراف از میانگین ماه اخیر"
           },
           "standardDeviationLast3Month": {
             "anyOf": [
@@ -3067,7 +3257,8 @@
                 "type": "null"
               }
             ],
-            "title": "Standarddeviationlast3Month"
+            "title": "Standarddeviationlast3Month",
+            "description": "انحراف از میانگین سه ماه اخیر"
           },
           "standardDeviationLastYear": {
             "anyOf": [
@@ -3078,7 +3269,8 @@
                 "type": "null"
               }
             ],
-            "title": "Standarddeviationlastyear"
+            "title": "Standarddeviationlastyear",
+            "description": "انحراف از میانگین سال اخیر"
           },
           "sharpeRatioLastWeek": {
             "anyOf": [
@@ -3089,7 +3281,8 @@
                 "type": "null"
               }
             ],
-            "title": "Sharperatiolastweek"
+            "title": "Sharperatiolastweek",
+            "description": "نسبت شارپی هفته اخیر"
           },
           "sharpeRatioLastMonth": {
             "anyOf": [
@@ -3100,7 +3293,8 @@
                 "type": "null"
               }
             ],
-            "title": "Sharperatiolastmonth"
+            "title": "Sharperatiolastmonth",
+            "description": "نسبت شارپی ماه اخیر"
           },
           "sharpeRatioLast3Months": {
             "anyOf": [
@@ -3111,7 +3305,8 @@
                 "type": "null"
               }
             ],
-            "title": "Sharperatiolast3Months"
+            "title": "Sharperatiolast3Months",
+            "description": "نسبت شارپی سه ماه اخیر"
           },
           "sharpeRatioLastYear": {
             "anyOf": [
@@ -3122,7 +3317,8 @@
                 "type": "null"
               }
             ],
-            "title": "Sharperatiolastyear"
+            "title": "Sharperatiolastyear",
+            "description": "نسبت شارپی سال اخیر"
           },
           "informationRatioLastWeek": {
             "anyOf": [
@@ -3133,7 +3329,8 @@
                 "type": "null"
               }
             ],
-            "title": "Informationratiolastweek"
+            "title": "Informationratiolastweek",
+            "description": "نسبت اصلاعاتی هفته اخیر"
           },
           "informationRatioLastMonth": {
             "anyOf": [
@@ -3144,7 +3341,8 @@
                 "type": "null"
               }
             ],
-            "title": "Informationratiolastmonth"
+            "title": "Informationratiolastmonth",
+            "description": "نسبت اصلاعاتی ماه اخیر"
           },
           "informationRatioLast3Months": {
             "anyOf": [
@@ -3155,7 +3353,8 @@
                 "type": "null"
               }
             ],
-            "title": "Informationratiolast3Months"
+            "title": "Informationratiolast3Months",
+            "description": "نسبت اصلاعاتی سه ماه اخیر"
           },
           "informationRatioLastYear": {
             "anyOf": [
@@ -3166,7 +3365,8 @@
                 "type": "null"
               }
             ],
-            "title": "Informationratiolastyear"
+            "title": "Informationratiolastyear",
+            "description": "نسبت اصلاعاتی سال اخیر"
           },
           "alphaLastDay": {
             "anyOf": [
@@ -3177,7 +3377,8 @@
                 "type": "null"
               }
             ],
-            "title": "Alphalastday"
+            "title": "Alphalastday",
+            "description": "آلفا روز اخیر"
           },
           "alphaLastWeek": {
             "anyOf": [
@@ -3188,7 +3389,8 @@
                 "type": "null"
               }
             ],
-            "title": "Alphalastweek"
+            "title": "Alphalastweek",
+            "description": "آلفا هفته اخیر"
           },
           "alphaLastMonth": {
             "anyOf": [
@@ -3199,7 +3401,8 @@
                 "type": "null"
               }
             ],
-            "title": "Alphalastmonth"
+            "title": "Alphalastmonth",
+            "description": "آلفا ماه اخیر"
           },
           "alphaLast3Months": {
             "anyOf": [
@@ -3210,7 +3413,8 @@
                 "type": "null"
               }
             ],
-            "title": "Alphalast3Months"
+            "title": "Alphalast3Months",
+            "description": "آلفا سه ماه اخیر"
           },
           "alphaLastYear": {
             "anyOf": [
@@ -3221,7 +3425,8 @@
                 "type": "null"
               }
             ],
-            "title": "Alphalastyear"
+            "title": "Alphalastyear",
+            "description": "آلفا سال اخیر"
           },
           "betaLastDay": {
             "anyOf": [
@@ -3232,7 +3437,8 @@
                 "type": "null"
               }
             ],
-            "title": "Betalastday"
+            "title": "Betalastday",
+            "description": "بتا روز اخیر"
           },
           "betaLastWeek": {
             "anyOf": [
@@ -3243,7 +3449,8 @@
                 "type": "null"
               }
             ],
-            "title": "Betalastweek"
+            "title": "Betalastweek",
+            "description": "بتا هفته اخیر"
           },
           "betaLastMonth": {
             "anyOf": [
@@ -3254,7 +3461,8 @@
                 "type": "null"
               }
             ],
-            "title": "Betalastmonth"
+            "title": "Betalastmonth",
+            "description": "بتا ماه اخیر"
           },
           "betaLast3Months": {
             "anyOf": [
@@ -3265,7 +3473,8 @@
                 "type": "null"
               }
             ],
-            "title": "Betalast3Months"
+            "title": "Betalast3Months",
+            "description": "بتا سه ماه اخیر"
           },
           "betaLastYear": {
             "anyOf": [
@@ -3276,9 +3485,10 @@
                 "type": "null"
               }
             ],
-            "title": "Betalastyear"
+            "title": "Betalastyear",
+            "description": "بتا سال اخیر"
           },
-          "maxDrawDawnWeek": {
+          "maxDrawdownWeek": {
             "anyOf": [
               {
                 "type": "number"
@@ -3287,9 +3497,10 @@
                 "type": "null"
               }
             ],
-            "title": "Maxdrawdawnweek"
+            "title": "Maxdrawdownweek",
+            "description": "ماکزیمم افت هفته اخیر"
           },
-          "maxDrawDawnMonth": {
+          "maxDrawdownMonth": {
             "anyOf": [
               {
                 "type": "number"
@@ -3298,9 +3509,10 @@
                 "type": "null"
               }
             ],
-            "title": "Maxdrawdawnmonth"
+            "title": "Maxdrawdownmonth",
+            "description": "ماکزیمم افت ماه اخیر"
           },
-          "maxDrawDawn3Month": {
+          "maxDrawdown3Month": {
             "anyOf": [
               {
                 "type": "number"
@@ -3309,9 +3521,10 @@
                 "type": "null"
               }
             ],
-            "title": "Maxdrawdawn3Month"
+            "title": "Maxdrawdown3Month",
+            "description": "ماکزیمم افت سه ماه اخیر"
           },
-          "maxDrawDawnYear": {
+          "maxDrawdownYear": {
             "anyOf": [
               {
                 "type": "number"
@@ -3320,7 +3533,8 @@
                 "type": "null"
               }
             ],
-            "title": "Maxdrawdawnyear"
+            "title": "Maxdrawdownyear",
+            "description": "ماکزیمم افت سال اخیر"
           }
         },
         "type": "object",
@@ -3337,10 +3551,12 @@
           "prospectusUrl",
           "isEtf",
           "isCharity",
+          "hasVideo",
           "manager",
           "custodian",
           "auditor",
           "liquidityGuarantor",
+          "marketMaker",
           "initiationDate",
           "initiationJdate",
           "issueNavRials",
@@ -3390,10 +3606,10 @@
           "betaLastMonth",
           "betaLast3Months",
           "betaLastYear",
-          "maxDrawDawnWeek",
-          "maxDrawDawnMonth",
-          "maxDrawDawn3Month",
-          "maxDrawDawnYear"
+          "maxDrawdownWeek",
+          "maxDrawdownMonth",
+          "maxDrawdown3Month",
+          "maxDrawdownYear"
         ],
         "title": "FundListItemApiModel"
       },
@@ -3436,7 +3652,7 @@
             "type": "string",
             "title": "Title"
           },
-          "colorHexRgb": {
+          "color": {
             "anyOf": [
               {
                 "type": "string"
@@ -3445,14 +3661,14 @@
                 "type": "null"
               }
             ],
-            "title": "Colorhexrgb"
+            "title": "Color"
           }
         },
         "type": "object",
         "required": [
           "identifier",
           "title",
-          "colorHexRgb"
+          "color"
         ],
         "title": "FundTableTabApiModel"
       },

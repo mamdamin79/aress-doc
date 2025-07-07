@@ -31,7 +31,6 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { useHtmlPaddingRight, useThemeToggle } from '../../../../hooks';
 import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
-import { Toaster } from 'react-hot-toast';
 
 interface Item {
   id: string;
@@ -88,46 +87,9 @@ export const SlidersBox: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [items, setItems] = useState<Item[]>([]);
-  const initialItems = [
-    '/charts/Report 6.png?v=2',
-    '/charts/Report 7.png?v=2',
-    '/charts/Report 8.png?v=2',
-    '/charts/Report 9.png?v=2',
-    '/charts/Report 10.png?v=2',
-    '/charts/Report 6.png?v=2',
-    '/charts/Report 7.png?v=2',
-    '/charts/Report 8.png?v=2',
-    '/charts/Report 9.png?v=2',
-    '/charts/Report 10.png?v=2',
-  ];
-  useEffect(() => {
-    const updatedImages =
-      theme === 'light'
-        ? initialItems
-        : [
-            '/charts/Report 6-dark.png?v=2',
-            '/charts/Report 7-dark.png?v=2',
-            '/charts/Report 8-dark.png?v=2',
-            '/charts/Report 9-dark.png?v=2',
-            '/charts/Report 10-dark.png?v=2',
-            '/charts/Report 6-dark.png?v=2',
-            '/charts/Report 7-dark.png?v=2',
-            '/charts/Report 8-dark.png?v=2',
-            '/charts/Report 9-dark.png?v=2',
-            '/charts/Report 10-dark.png?v=2',
-          ];
-
-    setItems((prev) =>
-      updatedImages.map((url, index) => ({
-        id: `image-${index}`,
-        type: 'image',
-        content: `${url}?v=2&t=${theme}`,
-      })),
-    );
-  }, [theme]);
   const [isReportSelectionPopupOpen, setIsReportSelectionPopupOpen] =
     useState(false);
-  const [addReportBoxCount, setAddReportBoxCount] = useState(0);
+  const [addReportBoxCount, setAddReportBoxCount] = useState(3);
   function generateTooltips(totalSlides: number): string[] {
     const groups = Math.ceil(totalSlides / slidesPerView);
     const tooltips: string[] = [];
@@ -271,7 +233,7 @@ export const SlidersBox: React.FC = () => {
   const { showToast } = useCustomToast();
 
   return (
-    <div>
+    <div className="w-fit">
       <div className="flex w-full justify-between">
         <DashboardNumberAndName number={2} title="صندوق کالایی" />
         <AutoRotateSwitch
@@ -286,14 +248,14 @@ export const SlidersBox: React.FC = () => {
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
       >
-        <section className="mt-6 flex w-fit max-w-full justify-center">
+        <section className="mt-6 flex w-full justify-center">
           <SortableContext
             items={items.map((i) => i.id)}
             strategy={rectSortingStrategy}
           >
             <div
               ref={containerRef}
-              className="grid grid-cols-1 gap-6 xl:grid-cols-2"
+              className="grid w-full grid-cols-1 gap-6 xl:grid-cols-2"
             >
               {items.map((item) => (
                 <SortableItem key={item.id} item={item} />
@@ -365,7 +327,6 @@ export const SlidersBox: React.FC = () => {
         video
         report={tempData}
       />
-      <Toaster />
     </div>
   );
 };
