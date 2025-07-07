@@ -25,13 +25,15 @@ const generateScatterData = (
 };
 
 const scatterData = generateScatterData(80, 1.2, 2.3, 8);
-
+const graphData = scatterData.map(([x, y]) => ({
+  Items: { x, y },
+}));
 export const Default: Story = {
   args: {
-    scatterData: scatterData,
+    graphData: graphData,
     beta: 1.2,
-    adjustedBeta: 1.1,
-    intercept: 2.3,
+    betaAdjusted: 1.1,
+    yIntersect: 2.3,
     rSquared: 0.86,
     pValue: '۰.۰۰۲',
   },
