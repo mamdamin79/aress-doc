@@ -29,18 +29,17 @@ import {
   rectSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { useHtmlPaddingRight, useThemeToggle } from '../../../../../hooks';
+import { useHtmlPaddingRight } from '../../../../../hooks';
 import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
-import { Report6 } from '../../../../components/Reports/Report6';
 import {
   FinancialReportFilterApiModel,
   OpenAPI,
-  Report6CalculationResult,
   useDashboardsServiceGetDashboardsByDashboardId,
-  useReportsServiceGetReportsByReportId,
+  useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemId,
 } from '@openapi';
 import { fetchToken } from '../../../../(auth)/auth.utils';
 import { DynamicReportRenderer } from './DynamicReportRenderer';
+import { OptionItem } from 'libs/design-system/src/lib/components/OptionsListExplorer/OptionsListExplorer.types';
 
 interface Item {
   id: string;
@@ -91,7 +90,7 @@ export const SlidersBox: React.FC = () => {
   const [currIndex, setCurrIndex] = useState(0);
   const [activeRotate, setActiveRotate] = useState<number | null>(null);
   const [barsNumber, setBarsNumber] = useState(0);
-  const [isProgamScroll, setIsProgramScroll] = useState(false);
+  const [isProgramScroll, setIsProgramScroll] = useState(false);
   const [slidesPerView, setSlidesPerView] = useState(2);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -99,6 +98,11 @@ export const SlidersBox: React.FC = () => {
   const [isReportSelectionPopupOpen, setIsReportSelectionPopupOpen] =
     useState(false);
   const [tokenLoaded, setTokenLoaded] = useState(false);
+
+  // Store updated data per dashboardItemId
+  const [reportDataMap, setReportDataMap] = useState<
+    Record<number, { data: any; filters: FinancialReportFilterApiModel[] }>
+  >({});
 
   useEffect(() => {
     async function initToken() {
@@ -115,14 +119,17 @@ export const SlidersBox: React.FC = () => {
     initToken();
   }, []);
 
-  const { data } = useDashboardsServiceGetDashboardsByDashboardId(
-    { dashboardId: 2},
-    undefined,
-    {
-      enabled: tokenLoaded,
-    },
-  );
+  const { data: dashboardData } =
+    useDashboardsServiceGetDashboardsByDashboardId(
+      { dashboardId: 2 },
+      undefined,
+      {
+        enabled: tokenLoaded,
+      },
+    );
+
   const [addReportBoxCount, setAddReportBoxCount] = useState(3);
+
   function generateTooltips(totalSlides: number): string[] {
     const groups = Math.ceil(totalSlides / slidesPerView);
     const tooltips: string[] = [];
@@ -163,7 +170,7 @@ export const SlidersBox: React.FC = () => {
     let scrollTimeout: number | null = null;
 
     const onScroll = () => {
-      if (isProgamScroll) {
+      if (isProgramScroll) {
         // Ignore this scroll event, reset the flag after a short delay
         if (scrollTimeout) clearTimeout(scrollTimeout);
         scrollTimeout = window.setTimeout(() => setIsProgramScroll(false), 300);
@@ -194,7 +201,7 @@ export const SlidersBox: React.FC = () => {
       window.removeEventListener('keydown', handleEsc);
       if (scrollTimeout) clearTimeout(scrollTimeout);
     };
-  }, [barsNumber, currIndex, activeRotate, isProgamScroll]);
+  }, [barsNumber, currIndex, activeRotate, isProgramScroll]);
 
   const handleScroll = useCallback(
     (index: number) => {
@@ -202,7 +209,7 @@ export const SlidersBox: React.FC = () => {
       setCurrIndex(bounded);
       setIsProgramScroll(true);
       const scrollAmount =
-        bounded == 0 ? 160 : bounded * CARD_HEIGHT * 2.15 + 160;
+        bounded === 0 ? 160 : bounded * CARD_HEIGHT * 2.15 + 160;
       window.scrollTo({
         top: scrollAmount,
         behavior: 'smooth',
@@ -212,14 +219,15 @@ export const SlidersBox: React.FC = () => {
   );
 
   // Auto-rotate index increment
-  const scrollProgammaticly = () => {
+  const scrollProgrammatically = () => {
     setIsProgramScroll(true);
     setCurrIndex((prev) => (prev + 1) % barsNumber);
   };
+
   useEffect(() => {
     if (activeRotate !== null && barsNumber > 1) {
       const intervalId = setInterval(() => {
-        scrollProgammaticly();
+        scrollProgrammatically();
       }, activeRotate * 1000);
       return () => clearInterval(intervalId);
     }
@@ -230,7 +238,7 @@ export const SlidersBox: React.FC = () => {
     if (activeRotate !== null) {
       setIsProgramScroll(true);
       const scrollAmount =
-        currIndex == 0 ? 160 : currIndex * CARD_HEIGHT * 2.15 + 160;
+        currIndex === 0 ? 160 : currIndex * CARD_HEIGHT * 2.15 + 160;
       window.scrollTo({
         top: scrollAmount,
         behavior: 'smooth',
@@ -262,8 +270,48 @@ export const SlidersBox: React.FC = () => {
       setActiveRotate(null);
     }
   };
+
   const htmlPaddingRight = useHtmlPaddingRight();
   const { showToast } = useCustomToast();
+
+  const { mutateAsync } =
+    useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemId();
+
+  const handleSubmit = async (
+    dashboardItemId: number,
+    changedOptions: Record<string, OptionItem>,
+  ) => {
+    try {
+      // Await mutation result
+      const updatedReport = await mutateAsync({
+        dashboardId: dashboardData?.identifier ?? 1,
+        dashboardItemId,
+        requestBody: {
+          selectedFilters: Object.fromEntries(
+            Object.entries(changedOptions).map(([key, { id }]) => [
+              key,
+              String(id),
+            ]),
+          ),
+        },
+      });
+
+      // Update only this report's data and filters in state
+      setReportDataMap((prev) => ({
+        ...prev,
+        [dashboardItemId]: {
+          data: updatedReport.report.reportCalculation?.calculation,
+          filters: updatedReport.report.reportCalculation
+            ?.filters as FinancialReportFilterApiModel[],
+        },
+      }));
+
+      return true;
+    } catch (error) {
+      console.error('Error submitting report update', error);
+      return false;
+    }
+  };
 
   return (
     <div className="w-fit">
@@ -293,23 +341,32 @@ export const SlidersBox: React.FC = () => {
               {items.map((item) => (
                 <SortableItem key={item.id} item={item} />
               ))}
-              {data && (
+
+              {dashboardData?.items?.map(({ identifier, report }, index) => (
                 <DynamicReportRenderer
-                  identifier={data.reports[0].report.identifier}
-                  data={data.reports[0].report.reportCalculation?.calculation}
-                  filters={data.reports[0].report.reportCalculation?.filters}
+                  key={`report-${index}`}
+                  title={report.title}
+                  identifier={report.identifier}
+                  data={
+                    reportDataMap[identifier]?.data ??
+                    report.reportCalculation?.calculation
+                  }
+                  filters={
+                    reportDataMap[identifier]?.filters ??
+                    report.reportCalculation?.filters
+                  }
+                  onSubmit={(changedOptions) =>
+                    handleSubmit(identifier, changedOptions)
+                  }
                 />
-              )}
+              ))}
+
               {[...Array(addReportBoxCount)].map((_, index) => (
                 <AddReportButton
                   key={index}
                   onClick={() => setIsReportSelectionPopupOpen(true)}
                 />
               ))}
-
-              <AddReportButton
-                onClick={() => setIsReportSelectionPopupOpen(true)}
-              />
             </div>
           </SortableContext>
         </section>
@@ -333,7 +390,7 @@ export const SlidersBox: React.FC = () => {
           externalIndex={currIndex}
           autoRotate={Boolean(activeRotate)}
           autoRotateDuration={activeRotate || undefined}
-          tooltips={generateTooltips(10)}
+          tooltips={generateTooltips(barsNumber * slidesPerView)}
           onAddReportClick={() => {
             if (addReportBoxCount + items.length <= 16) {
               setAddReportBoxCount((prev) => prev + 1);

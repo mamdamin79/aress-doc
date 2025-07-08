@@ -85,7 +85,7 @@ export const xAxisLabels: Highcharts.XAxisLabelsOptions = {
     const chart = this.axis.chart;
     const totalLabels = this.axis.categories?.length ?? 12;
     const spacePerLabel = chart.plotWidth / totalLabels;
-    const maxChars = spacePerLabel < 50 ? 3 : 30;
+    const maxChars = spacePerLabel < 50 ? 10 : 30;
     const label = this.value as string;
     return label.length > maxChars ? label.slice(0, maxChars) : label;
   },

@@ -82,7 +82,6 @@ export type CaptchaApiModel = {
 export type CaptchaType = 'image' | 'audio';
 
 export type ChangeDashboardReportItemSortOrderBody = {
-    dashboardItemId: number;
     order: number;
 };
 
@@ -138,7 +137,7 @@ export type CreateDashboardResponseApiModel = {
 export type DashboardDetailsApiModel = {
     identifier: number;
     name: string;
-    reports: Array<DashboardItemApiModel>;
+    items: Array<DashboardItemApiModel>;
     fundsByCategory: Array<DashboardFundCategoryApiModel>;
 };
 
@@ -151,6 +150,7 @@ export type DashboardFundApiModel = {
     returnLastMonthPercent: number | null;
     returnLast3MonthsPercent: number | null;
     returnLastYearPercent: number | null;
+    dailyRedeemNavMonth: Array<(number)> | null;
 };
 
 export type DashboardFundCategoryApiModel = {
@@ -196,10 +196,6 @@ export type DashboardReportPreviewApiModel = {
     identifier: number;
     title: string;
     image: string;
-};
-
-export type DeleteDashboardItemFromDashboardBody = {
-    dashboardItemId: number;
 };
 
 export type DuplicateDashboardForUserBody = {
@@ -555,6 +551,10 @@ export type FundListItemApiModel = {
      * ماکزیمم افت سال اخیر
      */
     maxDrawdownYear: number | null;
+    /**
+     * قیمت ابطال روزانه ماه اخیر
+     */
+    dailyRedeemNavMonth: Array<(number)> | null;
 };
 
 export type FundTableResponseApiModel = {
@@ -580,7 +580,6 @@ export type FundsTableItemApiModel = {
 };
 
 export type GetDashboardItemCalculationsBody = {
-    dashboardItemId: number;
     selectedFilters?: {
     [key: string]: unknown;
 } | null;
@@ -956,13 +955,13 @@ export type GetReportsData = {
 export type GetReportsResponse = Array<FinancialReportListItemApiModel>;
 
 export type GetReportsByReportIdData = {
-    reportId: number;
+    reportId: string;
 };
 
 export type GetReportsByReportIdResponse = FinancialReportDetailsApiModel;
 
 export type PostReportsByReportIdData = {
-    reportId: number;
+    reportId: string;
     requestBody: GetReportCalculationsBody;
 };
 
@@ -971,7 +970,7 @@ export type PostReportsByReportIdResponse = FinancialReportCalculationApiModel;
 export type GetReportsCategoriesResponse = Array<FinancialReportCategoryApiModel>;
 
 export type PostReportsByReportIdFavoriteData = {
-    reportId: number;
+    reportId: string;
 };
 
 export type PostReportsByReportIdFavoriteResponse = UserReportFavoriteStatus;
@@ -1009,6 +1008,13 @@ export type DeleteDashboardsByDashboardIdData = {
 
 export type DeleteDashboardsByDashboardIdResponse = Array<DashboardListItemApiModel>;
 
+export type PutDashboardsByDashboardIdData = {
+    dashboardId: number;
+    requestBody: AddReportToDashboardForUserBody;
+};
+
+export type PutDashboardsByDashboardIdResponse = DashboardItemApiModel;
+
 export type PostDashboardsByDashboardIdDuplicateData = {
     dashboardId: number;
     requestBody: DuplicateDashboardForUserBody;
@@ -1016,39 +1022,34 @@ export type PostDashboardsByDashboardIdDuplicateData = {
 
 export type PostDashboardsByDashboardIdDuplicateResponse = DashboardDetailsApiModel;
 
-export type GetDashboardsByDashboardIdItemsPreviewData = {
+export type GetDashboardsByDashboardIdPreviewData = {
     dashboardId: number;
 };
 
-export type GetDashboardsByDashboardIdItemsPreviewResponse = Array<DashboardItemPreviewApiModel>;
+export type GetDashboardsByDashboardIdPreviewResponse = Array<DashboardItemPreviewApiModel>;
 
-export type PutDashboardsByDashboardIdItemsData = {
+export type DeleteDashboardsByDashboardIdItemsByDashboardItemIdData = {
     dashboardId: number;
-    requestBody: AddReportToDashboardForUserBody;
+    dashboardItemId: number;
 };
 
-export type PutDashboardsByDashboardIdItemsResponse = DashboardItemApiModel;
+export type DeleteDashboardsByDashboardIdItemsByDashboardItemIdResponse = unknown;
 
-export type DeleteDashboardsByDashboardIdItemsData = {
+export type PostDashboardsByDashboardIdItemsByDashboardItemIdData = {
     dashboardId: number;
-    requestBody: DeleteDashboardItemFromDashboardBody;
-};
-
-export type DeleteDashboardsByDashboardIdItemsResponse = unknown;
-
-export type PostDashboardsByDashboardIdItemsData = {
-    dashboardId: number;
+    dashboardItemId: number;
     requestBody: GetDashboardItemCalculationsBody;
 };
 
-export type PostDashboardsByDashboardIdItemsResponse = DashboardItemApiModel;
+export type PostDashboardsByDashboardIdItemsByDashboardItemIdResponse = DashboardItemApiModel;
 
-export type PostDashboardsByDashboardIdItemsReorderData = {
+export type PostDashboardsByDashboardIdItemsByDashboardItemIdReorderData = {
     dashboardId: number;
+    dashboardItemId: number;
     requestBody: ChangeDashboardReportItemSortOrderBody;
 };
 
-export type PostDashboardsByDashboardIdItemsReorderResponse = unknown;
+export type PostDashboardsByDashboardIdItemsByDashboardItemIdReorderResponse = unknown;
 
 export type GetFundsResponse = Array<FundListItemApiModel>;
 
@@ -1435,6 +1436,19 @@ export type $OpenApiTs = {
                 422: HTTPValidationError;
             };
         };
+        put: {
+            req: PutDashboardsByDashboardIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                200: DashboardItemApiModel;
+                /**
+                 * Validation Error
+                 */
+                422: HTTPValidationError;
+            };
+        };
     };
     '/dashboards/{dashboard_id}/duplicate': {
         post: {
@@ -1451,9 +1465,9 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/dashboards/{dashboard_id}/items/preview': {
+    '/dashboards/{dashboard_id}/preview': {
         get: {
-            req: GetDashboardsByDashboardIdItemsPreviewData;
+            req: GetDashboardsByDashboardIdPreviewData;
             res: {
                 /**
                  * Successful Response
@@ -1466,22 +1480,9 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/dashboards/{dashboard_id}/items': {
-        put: {
-            req: PutDashboardsByDashboardIdItemsData;
-            res: {
-                /**
-                 * Successful Response
-                 */
-                200: DashboardItemApiModel;
-                /**
-                 * Validation Error
-                 */
-                422: HTTPValidationError;
-            };
-        };
+    '/dashboards/{dashboard_id}/items/{dashboard_item_id}': {
         delete: {
-            req: DeleteDashboardsByDashboardIdItemsData;
+            req: DeleteDashboardsByDashboardIdItemsByDashboardItemIdData;
             res: {
                 /**
                  * Successful Response
@@ -1494,7 +1495,7 @@ export type $OpenApiTs = {
             };
         };
         post: {
-            req: PostDashboardsByDashboardIdItemsData;
+            req: PostDashboardsByDashboardIdItemsByDashboardItemIdData;
             res: {
                 /**
                  * Successful Response
@@ -1507,9 +1508,9 @@ export type $OpenApiTs = {
             };
         };
     };
-    '/dashboards/{dashboard_id}/items/reorder': {
+    '/dashboards/{dashboard_id}/items/{dashboard_item_id}/reorder': {
         post: {
-            req: PostDashboardsByDashboardIdItemsReorderData;
+            req: PostDashboardsByDashboardIdItemsByDashboardItemIdReorderData;
             res: {
                 /**
                  * Successful Response

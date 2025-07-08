@@ -273,17 +273,13 @@ export const $CaptchaType = {
 
 export const $ChangeDashboardReportItemSortOrderBody = {
     properties: {
-        dashboardItemId: {
-            type: 'integer',
-            title: 'Dashboarditemid'
-        },
         order: {
             type: 'integer',
             title: 'Order'
         }
     },
     type: 'object',
-    required: ['dashboardItemId', 'order'],
+    required: ['order'],
     title: 'ChangeDashboardReportItemSortOrderBody'
 } as const;
 
@@ -452,12 +448,12 @@ export const $DashboardDetailsApiModel = {
             type: 'string',
             title: 'Name'
         },
-        reports: {
+        items: {
             items: {
                 '$ref': '#/components/schemas/DashboardItemApiModel'
             },
             type: 'array',
-            title: 'Reports'
+            title: 'Items'
         },
         fundsByCategory: {
             items: {
@@ -468,7 +464,7 @@ export const $DashboardDetailsApiModel = {
         }
     },
     type: 'object',
-    required: ['identifier', 'name', 'reports', 'fundsByCategory'],
+    required: ['identifier', 'name', 'items', 'fundsByCategory'],
     title: 'DashboardDetailsApiModel'
 } as const;
 
@@ -533,10 +529,24 @@ export const $DashboardFundApiModel = {
                 }
             ],
             title: 'Returnlastyearpercent'
+        },
+        dailyRedeemNavMonth: {
+            anyOf: [
+                {
+                    items: {
+                        type: 'integer'
+                    },
+                    type: 'array'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Dailyredeemnavmonth'
         }
     },
     type: 'object',
-    required: ['identifier', 'registrationNumber', 'name', 'abbreviatedName', 'returnLastWeekPercent', 'returnLastMonthPercent', 'returnLast3MonthsPercent', 'returnLastYearPercent'],
+    required: ['identifier', 'registrationNumber', 'name', 'abbreviatedName', 'returnLastWeekPercent', 'returnLastMonthPercent', 'returnLast3MonthsPercent', 'returnLastYearPercent', 'dailyRedeemNavMonth'],
     title: 'DashboardFundApiModel'
 } as const;
 
@@ -678,18 +688,6 @@ export const $DashboardReportPreviewApiModel = {
     type: 'object',
     required: ['identifier', 'title', 'image'],
     title: 'DashboardReportPreviewApiModel'
-} as const;
-
-export const $DeleteDashboardItemFromDashboardBody = {
-    properties: {
-        dashboardItemId: {
-            type: 'integer',
-            title: 'Dashboarditemid'
-        }
-    },
-    type: 'object',
-    required: ['dashboardItemId'],
-    title: 'DeleteDashboardItemFromDashboardBody'
 } as const;
 
 export const $DuplicateDashboardForUserBody = {
@@ -1590,10 +1588,25 @@ export const $FundListItemApiModel = {
             ],
             title: 'Maxdrawdownyear',
             description: 'ماکزیمم افت سال اخیر'
+        },
+        dailyRedeemNavMonth: {
+            anyOf: [
+                {
+                    items: {
+                        type: 'integer'
+                    },
+                    type: 'array'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Dailyredeemnavmonth',
+            description: 'قیمت ابطال روزانه ماه اخیر'
         }
     },
     type: 'object',
-    required: ['identifier', 'registrationNumber', 'name', 'abbreviatedName', 'fundType', 'logoMedium', 'logoThumbnail', 'website', 'statuteUrl', 'prospectusUrl', 'isEtf', 'isCharity', 'hasVideo', 'manager', 'custodian', 'auditor', 'liquidityGuarantor', 'marketMaker', 'initiationDate', 'initiationJdate', 'issueNavRials', 'redeemNavRials', 'statisticalNavRials', 'assetUnderManagementRials', 'numberOfUnits', 'returnLastWeekPercent', 'returnLastMonthPercent', 'returnLast3MonthsPercent', 'returnLastYearPercent', 'returnLastWeekVsTedpixPercent', 'returnLastMonthVsTedpixPercent', 'returnLast3MonthsVsTedpixPercent', 'returnLastYearVsTedpixPercent', 'assetAllocationBondPercent', 'assetAllocationBankDepositPercent', 'assetAllocationCommodityDepositCertificatePercent', 'assetAllocationCashPercent', 'assetAllocationStocksIncludingTop5Percent', 'assetAllocationFundUnitsPercent', 'assetAllocationOtherPercent', 'assetAllocationTop5StocksPercent', 'averageLeverageLastWeek', 'averageLeverageLastMonth', 'averageLeverageLast3Months', 'averageLeverageLastYear', 'standardDeviationLastWeek', 'standardDeviationLastMonth', 'standardDeviationLast3Month', 'standardDeviationLastYear', 'sharpeRatioLastWeek', 'sharpeRatioLastMonth', 'sharpeRatioLast3Months', 'sharpeRatioLastYear', 'informationRatioLastWeek', 'informationRatioLastMonth', 'informationRatioLast3Months', 'informationRatioLastYear', 'alphaLastDay', 'alphaLastWeek', 'alphaLastMonth', 'alphaLast3Months', 'alphaLastYear', 'betaLastDay', 'betaLastWeek', 'betaLastMonth', 'betaLast3Months', 'betaLastYear', 'maxDrawdownWeek', 'maxDrawdownMonth', 'maxDrawdown3Month', 'maxDrawdownYear'],
+    required: ['identifier', 'registrationNumber', 'name', 'abbreviatedName', 'fundType', 'logoMedium', 'logoThumbnail', 'website', 'statuteUrl', 'prospectusUrl', 'isEtf', 'isCharity', 'hasVideo', 'manager', 'custodian', 'auditor', 'liquidityGuarantor', 'marketMaker', 'initiationDate', 'initiationJdate', 'issueNavRials', 'redeemNavRials', 'statisticalNavRials', 'assetUnderManagementRials', 'numberOfUnits', 'returnLastWeekPercent', 'returnLastMonthPercent', 'returnLast3MonthsPercent', 'returnLastYearPercent', 'returnLastWeekVsTedpixPercent', 'returnLastMonthVsTedpixPercent', 'returnLast3MonthsVsTedpixPercent', 'returnLastYearVsTedpixPercent', 'assetAllocationBondPercent', 'assetAllocationBankDepositPercent', 'assetAllocationCommodityDepositCertificatePercent', 'assetAllocationCashPercent', 'assetAllocationStocksIncludingTop5Percent', 'assetAllocationFundUnitsPercent', 'assetAllocationOtherPercent', 'assetAllocationTop5StocksPercent', 'averageLeverageLastWeek', 'averageLeverageLastMonth', 'averageLeverageLast3Months', 'averageLeverageLastYear', 'standardDeviationLastWeek', 'standardDeviationLastMonth', 'standardDeviationLast3Month', 'standardDeviationLastYear', 'sharpeRatioLastWeek', 'sharpeRatioLastMonth', 'sharpeRatioLast3Months', 'sharpeRatioLastYear', 'informationRatioLastWeek', 'informationRatioLastMonth', 'informationRatioLast3Months', 'informationRatioLastYear', 'alphaLastDay', 'alphaLastWeek', 'alphaLastMonth', 'alphaLast3Months', 'alphaLastYear', 'betaLastDay', 'betaLastWeek', 'betaLastMonth', 'betaLast3Months', 'betaLastYear', 'maxDrawdownWeek', 'maxDrawdownMonth', 'maxDrawdown3Month', 'maxDrawdownYear', 'dailyRedeemNavMonth'],
     title: 'FundListItemApiModel'
 } as const;
 
@@ -1683,10 +1696,6 @@ export const $FundsTableItemApiModel = {
 
 export const $GetDashboardItemCalculationsBody = {
     properties: {
-        dashboardItemId: {
-            type: 'integer',
-            title: 'Dashboarditemid'
-        },
         selectedFilters: {
             anyOf: [
                 {
@@ -1701,7 +1710,6 @@ export const $GetDashboardItemCalculationsBody = {
         }
     },
     type: 'object',
-    required: ['dashboardItemId'],
     title: 'GetDashboardItemCalculationsBody'
 } as const;
 

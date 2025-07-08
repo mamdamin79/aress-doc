@@ -8,18 +8,103 @@ import {
   FinancialReportFilterApiModel,
   Report6CalculationResult,
 } from '@openapi';
+import { OptionItem } from 'libs/design-system/src/lib/components/OptionsListExplorer/OptionsListExplorer.types';
+import { IconName } from 'libs/design-system/src/lib/components/Icon/Icon.types';
+
 interface Report6Props {
+  title?: string;
   data: Report6CalculationResult;
   filters: FinancialReportFilterApiModel[];
+  onSubmit?: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
 }
-export const Report6: FC<Report6Props> = ({ data, filters }) => {
-  const [dataState, setDataState] = useState<Report6CalculationResult>(data);
-  const [filterState, setFilterState] =
-    useState<FinancialReportFilterApiModel[]>(filters);
+
+export const Report6: FC<Report6Props> = ({
+  data,
+  filters,
+  onSubmit,
+  title,
+}) => {
+  const [dataState, setDataState] = useState(data);
+  const [filterState, setFilterState] = useState(filters);
+  const [changedOptions, setChangedOptions] = useState<
+    Record<string, OptionItem>
+  >({});
+
   useEffect(() => {
     setDataState(data);
     setFilterState(filters);
   }, [data, filters]);
+
+  const updateOption = (optionType: string, item: OptionItem) => {
+    setChangedOptions((prev) => ({ ...prev, [optionType]: item }));
+    setFilterState((prev) =>
+      prev.map((f) =>
+        f.optionType === optionType
+          ? {
+              ...f,
+              selectedOption: {
+                identifier: item.id.toString(),
+                title: item.title,
+              },
+            }
+          : f,
+      ),
+    );
+  };
+
+  const handleSubmit = async (): Promise<boolean> => {
+    if (!onSubmit || Object.keys(changedOptions).length === 0) return true;
+    try {
+      const success = await onSubmit(changedOptions);
+      if (success) setChangedOptions({});
+      return success;
+    } catch (error) {
+      console.error('Submit failed:', error);
+      return false;
+    }
+  };
+
+  const toOptionListProps = (filter: FinancialReportFilterApiModel) => ({
+    onChange: (item: OptionItem) => updateOption(filter.optionType, item),
+    selectedItemId: Number(filter.selectedOption.identifier),
+    searchable: filter.searchable,
+    title: filter.title,
+    items: {
+      items: filter.options.map((opt) => ({
+        id: Number(opt.identifier),
+        title: opt.title,
+      })),
+    },
+  });
+
+  const icon = (name: IconName) => ({ name, size: 'sm' as const });
+
+  const toDropdownSetting = (filter: FinancialReportFilterApiModel) => ({
+    type: 'nestedDropdown' as const,
+    props: {
+      title: filter.parentTitle ?? '',
+      items: [
+        {
+          title: filter.title,
+          icon: icon('square-mouse-pointer'),
+          status: 'normal' as const,
+          selectedOption: filter.selectedOption.title,
+          optionsListProps: toOptionListProps(filter),
+        },
+      ],
+    },
+  });
+
+  const toBasicSetting = (filter: FinancialReportFilterApiModel) => ({
+    type: 'basicSelection' as const,
+    props: {
+      title: filter.title,
+      icon: icon('square-mouse-pointer'),
+      status: 'normal' as const,
+      selectedOption: filter.selectedOption.title,
+      optionsListProps: toOptionListProps(filter),
+    },
+  });
 
   const { xCategories, inFlowData, outFlowData, indexData } = useMemo(() => {
     const xCategories: string[] = [];
@@ -43,7 +128,7 @@ export const Report6: FC<Report6Props> = ({ data, filters }) => {
     return { xCategories, inFlowData, outFlowData, indexData };
   }, [dataState]);
 
-  const options: Highcharts.Options = {
+  const chartOptions: Highcharts.Options = {
     ...baseOptions,
     xAxis: {
       categories: xCategories,
@@ -53,14 +138,8 @@ export const Report6: FC<Report6Props> = ({ data, filters }) => {
     yAxis: [
       {
         title: { text: '' },
-
         labels: yAxisLabels,
-        plotLines: [
-          {
-            value: 0,
-            width: 0,
-          },
-        ],
+        plotLines: [{ value: 0, width: 0 }],
       },
       {
         title: { text: '' },
@@ -107,95 +186,16 @@ export const Report6: FC<Report6Props> = ({ data, filters }) => {
 
   return (
     <ReportCardBase
-      title="شاخص کل، ورود و خروج ماهانه سرمایه‌گذاران حقیقی به سهام"
+      title={title ?? ''}
       popupInfoItems={financialDefinitions}
       settingOptions={[
-        {
-          type: 'nestedDropdown',
-          props: {
-            title: filterState[0].parentTitle ?? '',
-            items: [
-              {
-                title: filterState[0].title,
-                icon: { name: 'square-mouse-pointer', size: 'sm' },
-                status: 'normal',
-                selectedOption: filterState[0].selectedOption.title,
-                optionsListProps: {
-                  onChange: (item) => {
-                    console.log(item);
-                  },
-                  selectedItemId: Number(
-                    filterState[0].selectedOption.identifier,
-                  ),
-                  searchable: filterState[0].searchable,
-                  title: filterState[0].title,
-                  items: {
-                    items: filterState[0].options.map((option) => ({
-                      id: Number(option.identifier),
-                      title: option.title,
-                    })),
-                  },
-                },
-              },
-            ],
-          },
-        },
-        {
-          type: 'nestedDropdown',
-          props: {
-            title: filterState[1].parentTitle ?? '',
-            items: [
-              {
-                title: filterState[1].title,
-                icon: { name: 'square-mouse-pointer', size: 'sm' },
-                status: 'normal',
-                selectedOption: filterState[1].selectedOption.title,
-                optionsListProps: {
-                  onChange: (item) => {
-                    console.log(item);
-                  },
-                  selectedItemId: Number(
-                    filterState[1].selectedOption.identifier,
-                  ),
-                  searchable: filterState[1].searchable,
-                  title: filterState[1].title,
-                  items: {
-                    items: filterState[1].options.map((option) => ({
-                      id: Number(option.identifier),
-                      title: option.title,
-                    })),
-                  },
-                },
-              },
-            ],
-          },
-        },
-        {
-          type: 'basicSelection',
-          props: {
-            title: filterState[2].title,
-            icon: { name: 'square-mouse-pointer', size: 'sm' },
-            status: 'normal',
-            selectedOption: filterState[2].selectedOption.title,
-            optionsListProps: {
-              onChange: (item) => {
-                console.log(item);
-              },
-              selectedItemId: Number(filterState[2].selectedOption.identifier),
-              searchable: filterState[2].searchable,
-              title: filterState[2].title,
-              items: {
-                items: filterState[2].options.map((option) => ({
-                  id: Number(option.identifier),
-                  title: option.title,
-                })),
-              },
-            },
-          },
-        },
+        toDropdownSetting(filterState[0]),
+        toDropdownSetting(filterState[1]),
+        toBasicSetting(filterState[2]),
       ]}
+      onSubmit={handleSubmit}
     >
-      <HighchartsReact highcharts={Highcharts} options={options} />
+      <HighchartsReact highcharts={Highcharts} options={chartOptions} />
     </ReportCardBase>
   );
 };

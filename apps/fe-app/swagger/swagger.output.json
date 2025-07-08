@@ -857,7 +857,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
+              "type": "string",
               "title": "Report Id"
             }
           }
@@ -903,7 +903,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
+              "type": "string",
               "title": "Report Id"
             }
           }
@@ -987,7 +987,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
+              "type": "string",
               "title": "Report Id"
             }
           }
@@ -1290,6 +1290,62 @@
             }
           }
         }
+      },
+      "put": {
+        "tags": [
+          "Dashboards"
+        ],
+        "summary": "Add Report To Dashboard",
+        "description": "Add report item to dashboard.",
+        "operationId": "add_report_to_dashboard_dashboards__dashboard_id__put",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "dashboard_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dashboard Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddReportToDashboardForUserBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardItemApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/dashboards/{dashboard_id}/duplicate": {
@@ -1350,14 +1406,14 @@
         }
       }
     },
-    "/dashboards/{dashboard_id}/items/preview": {
+    "/dashboards/{dashboard_id}/preview": {
       "get": {
         "tags": [
           "Dashboards"
         ],
         "summary": "Get Dashboard Items For Preview",
         "description": "Get dashboard items for preview in dashboard list.",
-        "operationId": "get_dashboard_items_for_preview_dashboards__dashboard_id__items_preview_get",
+        "operationId": "get_dashboard_items_for_preview_dashboards__dashboard_id__preview_get",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -1384,7 +1440,7 @@
                   "items": {
                     "$ref": "#/components/schemas/DashboardItemPreviewApiModel"
                   },
-                  "title": "Response Get Dashboard Items For Preview Dashboards  Dashboard Id  Items Preview Get"
+                  "title": "Response Get Dashboard Items For Preview Dashboards  Dashboard Id  Preview Get"
                 }
               }
             }
@@ -1402,70 +1458,14 @@
         }
       }
     },
-    "/dashboards/{dashboard_id}/items": {
-      "put": {
-        "tags": [
-          "Dashboards"
-        ],
-        "summary": "Add Report To Dashboard",
-        "description": "Add items to dashboard.",
-        "operationId": "add_report_to_dashboard_dashboards__dashboard_id__items_put",
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "dashboard_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Dashboard Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddReportToDashboardForUserBody"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DashboardItemApiModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
+    "/dashboards/{dashboard_id}/items/{dashboard_item_id}": {
       "delete": {
         "tags": [
           "Dashboards"
         ],
         "summary": "Remove Item From Dashboard",
         "description": "Remove items from dashboard.",
-        "operationId": "remove_item_from_dashboard_dashboards__dashboard_id__items_delete",
+        "operationId": "remove_item_from_dashboard_dashboards__dashboard_id__items__dashboard_item_id__delete",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -1480,18 +1480,17 @@
               "type": "integer",
               "title": "Dashboard Id"
             }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeleteDashboardItemFromDashboardBody"
-              }
+          },
+          {
+            "name": "dashboard_item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dashboard Item Id"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -1519,7 +1518,7 @@
         ],
         "summary": "Get Dashboard Item Calculations",
         "description": "Get dashboard item calculations.",
-        "operationId": "get_dashboard_item_calculations_dashboards__dashboard_id__items_post",
+        "operationId": "get_dashboard_item_calculations_dashboards__dashboard_id__items__dashboard_item_id__post",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -1533,6 +1532,15 @@
             "schema": {
               "type": "integer",
               "title": "Dashboard Id"
+            }
+          },
+          {
+            "name": "dashboard_item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dashboard Item Id"
             }
           }
         ],
@@ -1570,14 +1578,14 @@
         }
       }
     },
-    "/dashboards/{dashboard_id}/items/reorder": {
+    "/dashboards/{dashboard_id}/items/{dashboard_item_id}/reorder": {
       "post": {
         "tags": [
           "Dashboards"
         ],
         "summary": "Change Dashboard Item Sort Order",
         "description": "Change dashboard item sort order.",
-        "operationId": "change_dashboard_item_sort_order_dashboards__dashboard_id__items_reorder_post",
+        "operationId": "change_dashboard_item_sort_order_dashboards__dashboard_id__items__dashboard_item_id__reorder_post",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -1591,6 +1599,15 @@
             "schema": {
               "type": "integer",
               "title": "Dashboard Id"
+            }
+          },
+          {
+            "name": "dashboard_item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dashboard Item Id"
             }
           }
         ],
@@ -2138,10 +2155,6 @@
       },
       "ChangeDashboardReportItemSortOrderBody": {
         "properties": {
-          "dashboardItemId": {
-            "type": "integer",
-            "title": "Dashboarditemid"
-          },
           "order": {
             "type": "integer",
             "title": "Order"
@@ -2149,7 +2162,6 @@
         },
         "type": "object",
         "required": [
-          "dashboardItemId",
           "order"
         ],
         "title": "ChangeDashboardReportItemSortOrderBody"
@@ -2335,12 +2347,12 @@
             "type": "string",
             "title": "Name"
           },
-          "reports": {
+          "items": {
             "items": {
               "$ref": "#/components/schemas/DashboardItemApiModel"
             },
             "type": "array",
-            "title": "Reports"
+            "title": "Items"
           },
           "fundsByCategory": {
             "items": {
@@ -2354,7 +2366,7 @@
         "required": [
           "identifier",
           "name",
-          "reports",
+          "items",
           "fundsByCategory"
         ],
         "title": "DashboardDetailsApiModel"
@@ -2420,6 +2432,20 @@
               }
             ],
             "title": "Returnlastyearpercent"
+          },
+          "dailyRedeemNavMonth": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dailyredeemnavmonth"
           }
         },
         "type": "object",
@@ -2431,7 +2457,8 @@
           "returnLastWeekPercent",
           "returnLastMonthPercent",
           "returnLast3MonthsPercent",
-          "returnLastYearPercent"
+          "returnLastYearPercent",
+          "dailyRedeemNavMonth"
         ],
         "title": "DashboardFundApiModel"
       },
@@ -2593,19 +2620,6 @@
           "image"
         ],
         "title": "DashboardReportPreviewApiModel"
-      },
-      "DeleteDashboardItemFromDashboardBody": {
-        "properties": {
-          "dashboardItemId": {
-            "type": "integer",
-            "title": "Dashboarditemid"
-          }
-        },
-        "type": "object",
-        "required": [
-          "dashboardItemId"
-        ],
-        "title": "DeleteDashboardItemFromDashboardBody"
       },
       "DuplicateDashboardForUserBody": {
         "properties": {
@@ -3535,6 +3549,21 @@
             ],
             "title": "Maxdrawdownyear",
             "description": "ماکزیمم افت سال اخیر"
+          },
+          "dailyRedeemNavMonth": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dailyredeemnavmonth",
+            "description": "قیمت ابطال روزانه ماه اخیر"
           }
         },
         "type": "object",
@@ -3609,7 +3638,8 @@
           "maxDrawdownWeek",
           "maxDrawdownMonth",
           "maxDrawdown3Month",
-          "maxDrawdownYear"
+          "maxDrawdownYear",
+          "dailyRedeemNavMonth"
         ],
         "title": "FundListItemApiModel"
       },
@@ -3709,10 +3739,6 @@
       },
       "GetDashboardItemCalculationsBody": {
         "properties": {
-          "dashboardItemId": {
-            "type": "integer",
-            "title": "Dashboarditemid"
-          },
           "selectedFilters": {
             "anyOf": [
               {
@@ -3727,9 +3753,6 @@
           }
         },
         "type": "object",
-        "required": [
-          "dashboardItemId"
-        ],
         "title": "GetDashboardItemCalculationsBody"
       },
       "GetForgotPasswordOtpBody": {

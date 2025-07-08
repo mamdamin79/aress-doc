@@ -18,16 +18,16 @@ export const prefetchUseReportsServiceGetReports = (queryClient: QueryClient, { 
   onlyNew?: boolean;
 } = {}) => queryClient.prefetchQuery({ queryKey: Common.UseReportsServiceGetReportsKeyFn({ onlyFavorite, onlyHavingVideo, onlyNew }), queryFn: () => ReportsService.getReports({ onlyFavorite, onlyHavingVideo, onlyNew }) });
 export const prefetchUseReportsServiceGetReportsByReportId = (queryClient: QueryClient, { reportId }: {
-  reportId: number;
+  reportId: string;
 }) => queryClient.prefetchQuery({ queryKey: Common.UseReportsServiceGetReportsByReportIdKeyFn({ reportId }), queryFn: () => ReportsService.getReportsByReportId({ reportId }) });
 export const prefetchUseReportsServiceGetReportsCategories = (queryClient: QueryClient) => queryClient.prefetchQuery({ queryKey: Common.UseReportsServiceGetReportsCategoriesKeyFn(), queryFn: () => ReportsService.getReportsCategories() });
 export const prefetchUseDashboardsServiceGetDashboards = (queryClient: QueryClient) => queryClient.prefetchQuery({ queryKey: Common.UseDashboardsServiceGetDashboardsKeyFn(), queryFn: () => DashboardsService.getDashboards() });
 export const prefetchUseDashboardsServiceGetDashboardsByDashboardId = (queryClient: QueryClient, { dashboardId }: {
   dashboardId: number;
 }) => queryClient.prefetchQuery({ queryKey: Common.UseDashboardsServiceGetDashboardsByDashboardIdKeyFn({ dashboardId }), queryFn: () => DashboardsService.getDashboardsByDashboardId({ dashboardId }) });
-export const prefetchUseDashboardsServiceGetDashboardsByDashboardIdItemsPreview = (queryClient: QueryClient, { dashboardId }: {
+export const prefetchUseDashboardsServiceGetDashboardsByDashboardIdPreview = (queryClient: QueryClient, { dashboardId }: {
   dashboardId: number;
-}) => queryClient.prefetchQuery({ queryKey: Common.UseDashboardsServiceGetDashboardsByDashboardIdItemsPreviewKeyFn({ dashboardId }), queryFn: () => DashboardsService.getDashboardsByDashboardIdItemsPreview({ dashboardId }) });
+}) => queryClient.prefetchQuery({ queryKey: Common.UseDashboardsServiceGetDashboardsByDashboardIdPreviewKeyFn({ dashboardId }), queryFn: () => DashboardsService.getDashboardsByDashboardIdPreview({ dashboardId }) });
 export const prefetchUseFundsServiceGetFunds = (queryClient: QueryClient) => queryClient.prefetchQuery({ queryKey: Common.UseFundsServiceGetFundsKeyFn(), queryFn: () => FundsService.getFunds() });
 export const prefetchUseFundsServiceGetFundsTypeByFundType = (queryClient: QueryClient, { fundType }: {
   fundType: number;

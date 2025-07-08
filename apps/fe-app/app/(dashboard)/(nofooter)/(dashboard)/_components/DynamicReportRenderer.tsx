@@ -1,23 +1,44 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
-import {  FinancialReportFilterApiModel, Report13Dot1CalculationResult, Report13Dot2CalculationResult, Report13Dot3CalculationResult, Report15CalculationResult, Report2CalculationResult, Report6CalculationResult } from '@openapi';
+import {
+  FinancialReportFilterApiModel,
+  Report13Dot1CalculationResult,
+  Report13Dot2CalculationResult,
+  Report13Dot3CalculationResult,
+  Report15CalculationResult,
+  Report2CalculationResult,
+  Report6CalculationResult,
+} from '@openapi';
+import { OptionItem } from 'libs/design-system/src/lib/components/OptionsListExplorer/OptionsListExplorer.types';
 
-// Lazy imports
+// Lazy load report components
 const reportComponents: Record<number, any> = {
-  6: dynamic(() => import('../../../../components/Reports/Report6').then(mod => mod.Report6)),
-//   we list all reports here to import them dynamically based on API Response
+  6: dynamic(() =>
+    import('../../../../components/Reports/Report6').then((mod) => mod.Report6),
+  ),
+  // Add others as needed
 };
 
 interface DynamicReportRendererProps {
+    title?:string,
   identifier: number;
-  data?:  Report2CalculationResult | Report6CalculationResult | Report13Dot1CalculationResult | Report13Dot2CalculationResult | Report13Dot3CalculationResult | Report15CalculationResult;
+  data?:
+    | Report2CalculationResult
+    | Report6CalculationResult
+    | Report13Dot1CalculationResult
+    | Report13Dot2CalculationResult
+    | Report13Dot3CalculationResult
+    | Report15CalculationResult;
   filters?: FinancialReportFilterApiModel[];
+  onSubmit?: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
 }
 
 export const DynamicReportRenderer: React.FC<DynamicReportRendererProps> = ({
   identifier,
   data,
   filters,
+  onSubmit,
+  title
 }) => {
   const ReportComponent = reportComponents[identifier];
 
@@ -26,5 +47,12 @@ export const DynamicReportRenderer: React.FC<DynamicReportRendererProps> = ({
     return null;
   }
 
-  return <ReportComponent data={data} filters={filters} />;
+  return (
+    <ReportComponent
+      data={data}
+      filters={filters}
+      onSubmit={onSubmit}
+      title={title}
+    />
+  );
 };
