@@ -9,7 +9,7 @@ import {
   Report6CalculationResult,
 } from '@openapi';
 import { OptionItem } from 'libs/design-system/src/lib/components/OptionsListExplorer/OptionsListExplorer.types';
-import { IconName } from 'libs/design-system/src/lib/components/Icon/Icon.types';
+import { toBasicSetting, toDropdownSetting } from '../Report.utils';
 
 interface Report6Props {
   title?: string;
@@ -63,48 +63,6 @@ export const Report6: FC<Report6Props> = ({
       return false;
     }
   };
-
-  const toOptionListProps = (filter: FinancialReportFilterApiModel) => ({
-    onChange: (item: OptionItem) => updateOption(filter.optionType, item),
-    selectedItemId: Number(filter.selectedOption.identifier),
-    searchable: filter.searchable,
-    title: filter.title,
-    items: {
-      items: filter.options.map((opt) => ({
-        id: Number(opt.identifier),
-        title: opt.title,
-      })),
-    },
-  });
-
-  const icon = (name: IconName) => ({ name, size: 'sm' as const });
-
-  const toDropdownSetting = (filter: FinancialReportFilterApiModel) => ({
-    type: 'nestedDropdown' as const,
-    props: {
-      title: filter.parentTitle ?? '',
-      items: [
-        {
-          title: filter.title,
-          icon: icon('square-mouse-pointer'),
-          status: 'normal' as const,
-          selectedOption: filter.selectedOption.title,
-          optionsListProps: toOptionListProps(filter),
-        },
-      ],
-    },
-  });
-
-  const toBasicSetting = (filter: FinancialReportFilterApiModel) => ({
-    type: 'basicSelection' as const,
-    props: {
-      title: filter.title,
-      icon: icon('square-mouse-pointer'),
-      status: 'normal' as const,
-      selectedOption: filter.selectedOption.title,
-      optionsListProps: toOptionListProps(filter),
-    },
-  });
 
   const { xCategories, inFlowData, outFlowData, indexData } = useMemo(() => {
     const xCategories: string[] = [];
@@ -189,9 +147,9 @@ export const Report6: FC<Report6Props> = ({
       title={title ?? ''}
       popupInfoItems={financialDefinitions}
       settingOptions={[
-        toDropdownSetting(filterState[0]),
-        toDropdownSetting(filterState[1]),
-        toBasicSetting(filterState[2]),
+        toDropdownSetting(filterState[0], updateOption),
+        toDropdownSetting(filterState[1], updateOption),
+        toBasicSetting(filterState[2], updateOption),
       ]}
       onSubmit={handleSubmit}
     >
