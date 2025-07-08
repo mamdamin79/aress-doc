@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { baseOptions, xAxisLabels, yAxisLabels } from '../Report.config.shared';
@@ -13,16 +13,23 @@ interface Report6Props {
   filters: FinancialReportFilterApiModel[];
 }
 export const Report6: FC<Report6Props> = ({ data, filters }) => {
+  const [dataState, setDataState] = useState<Report6CalculationResult>(data);
+  const [filterState, setFilterState] =
+    useState<FinancialReportFilterApiModel[]>(filters);
+  useEffect(() => {
+    setDataState(data);
+    setFilterState(filters);
+  }, [data, filters]);
+
   const { xCategories, inFlowData, outFlowData, indexData } = useMemo(() => {
     const xCategories: string[] = [];
     const inFlowData: (number | null)[] = [];
     const outFlowData: (number | null)[] = [];
     const indexData: number[] = [];
 
-    data.data.forEach((item) => {
+    dataState.data.forEach((item) => {
       xCategories.push(item.dt);
       indexData.push(item.indexValue ?? null);
-
       const flow = item.netFlow ?? 0;
       if (flow >= 0) {
         inFlowData.push(flow);
@@ -34,7 +41,7 @@ export const Report6: FC<Report6Props> = ({ data, filters }) => {
     });
 
     return { xCategories, inFlowData, outFlowData, indexData };
-  }, [data]);
+  }, [dataState]);
 
   const options: Highcharts.Options = {
     ...baseOptions,
@@ -106,22 +113,24 @@ export const Report6: FC<Report6Props> = ({ data, filters }) => {
         {
           type: 'nestedDropdown',
           props: {
-            title: filters[0].parentTitle ?? '',
+            title: filterState[0].parentTitle ?? '',
             items: [
               {
-                title: filters[0].title,
+                title: filterState[0].title,
                 icon: { name: 'square-mouse-pointer', size: 'sm' },
                 status: 'normal',
-                selectedOption: filters[0].selectedOption.title,
+                selectedOption: filterState[0].selectedOption.title,
                 optionsListProps: {
                   onChange: (item) => {
                     console.log(item);
                   },
-                  selectedItemId: Number(filters[0].selectedOption.identifier),
-                  searchable: filters[0].searchable,
-                  title: filters[0].title,
+                  selectedItemId: Number(
+                    filterState[0].selectedOption.identifier,
+                  ),
+                  searchable: filterState[0].searchable,
+                  title: filterState[0].title,
                   items: {
-                    items: filters[0].options.map((option) => ({
+                    items: filterState[0].options.map((option) => ({
                       id: Number(option.identifier),
                       title: option.title,
                     })),
@@ -134,22 +143,24 @@ export const Report6: FC<Report6Props> = ({ data, filters }) => {
         {
           type: 'nestedDropdown',
           props: {
-            title: filters[1].parentTitle ?? '',
+            title: filterState[1].parentTitle ?? '',
             items: [
               {
-                title: filters[1].title,
+                title: filterState[1].title,
                 icon: { name: 'square-mouse-pointer', size: 'sm' },
                 status: 'normal',
-                selectedOption: filters[1].selectedOption.title,
+                selectedOption: filterState[1].selectedOption.title,
                 optionsListProps: {
                   onChange: (item) => {
                     console.log(item);
                   },
-                  selectedItemId: Number(filters[1].selectedOption.identifier),
-                  searchable: filters[1].searchable,
-                  title: filters[1].title,
+                  selectedItemId: Number(
+                    filterState[1].selectedOption.identifier,
+                  ),
+                  searchable: filterState[1].searchable,
+                  title: filterState[1].title,
                   items: {
-                    items: filters[1].options.map((option) => ({
+                    items: filterState[1].options.map((option) => ({
                       id: Number(option.identifier),
                       title: option.title,
                     })),
@@ -162,19 +173,19 @@ export const Report6: FC<Report6Props> = ({ data, filters }) => {
         {
           type: 'basicSelection',
           props: {
-            title: filters[2].title,
+            title: filterState[2].title,
             icon: { name: 'square-mouse-pointer', size: 'sm' },
             status: 'normal',
-            selectedOption: filters[2].selectedOption.title,
+            selectedOption: filterState[2].selectedOption.title,
             optionsListProps: {
               onChange: (item) => {
                 console.log(item);
               },
-              selectedItemId: Number(filters[2].selectedOption.identifier),
-              searchable: filters[2].searchable,
-              title: filters[2].title,
+              selectedItemId: Number(filterState[2].selectedOption.identifier),
+              searchable: filterState[2].searchable,
+              title: filterState[2].title,
               items: {
-                items: filters[2].options.map((option) => ({
+                items: filterState[2].options.map((option) => ({
                   id: Number(option.identifier),
                   title: option.title,
                 })),
