@@ -26,9 +26,6 @@ export const Report6: FC<Report6Props> = ({
 }) => {
   const [dataState, setDataState] = useState(data);
   const [filterState, setFilterState] = useState(filters);
-  const [changedOptions, setChangedOptions] = useState<
-    Record<string, OptionItem>
-  >({});
 
   useEffect(() => {
     setDataState(data);
@@ -36,7 +33,6 @@ export const Report6: FC<Report6Props> = ({
   }, [data, filters]);
 
   const updateOption = (optionType: string, item: OptionItem) => {
-    setChangedOptions((prev) => ({ ...prev, [optionType]: item }));
     setFilterState((prev) =>
       prev.map((f) =>
         f.optionType === optionType
@@ -53,10 +49,19 @@ export const Report6: FC<Report6Props> = ({
   };
 
   const handleSubmit = async (): Promise<boolean> => {
-    if (!onSubmit || Object.keys(changedOptions).length === 0) return true;
+    if (!onSubmit) return true;
     try {
-      const success = await onSubmit(changedOptions);
-      if (success) setChangedOptions({});
+      const filterOptions: Record<string, OptionItem> = Object.fromEntries(
+        filterState.map((filter) => [
+          filter.optionType,
+          {
+            id: Number(filter.selectedOption.identifier),
+            title: filter.selectedOption.title,
+          },
+        ]),
+      );
+
+      const success = await onSubmit(filterOptions);
       return success;
     } catch (error) {
       console.error('Submit failed:', error);
