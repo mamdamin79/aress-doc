@@ -344,7 +344,8 @@ const Funds = () => {
   const simplifiedFunds = useMemo(() => {
     return query.data?.selectedTabFunds.map(({ fund, pinned }) => ({
       pinned: pinned,
-      investemntFundsMethod: 'T',
+      isEtf: fund.isEtf,
+      isTradable: fund.isCharity,
       nameFund: fund.name || fund.abbreviatedName,
       dailyAlpha: fund.alphaLastDay,
       weeklyAlpha: fund.alphaLastWeek,
@@ -538,7 +539,6 @@ const Funds = () => {
         {
           !query.data ? (
             <div className='-mt-2'>
-
               <TabsSkeleton />
             </div>
           ) : (
@@ -579,7 +579,7 @@ const Funds = () => {
             className="w-full table-fixed rounded-xl text-center"
           >
             {
-              rows.length === 0 ?
+              query.isLoading || query.isFetching || query.status === 'pending' ?
                 <HeaderTableSkeleton /> : <thead
                   className={cn(
                     'group sticky right-0 top-0 z-50 m-0 p-0 duration-300',
@@ -614,7 +614,7 @@ const Funds = () => {
                             activeSortIndex !== 0,
                           'group-hover/table:-right-0':
                             activeSortIndex !== 0 && isScrollAtStart,
-                          'fixed right-[215px] top-[240px] z-10 w-fit':
+                          'fixed right-[208px] top-[240px] z-10 w-fit':
                             activeSortIndex === 0,
                           'top-[157px]': activeSortIndex === 0 && !isHeaderVisible,
                         })}
@@ -886,6 +886,7 @@ const Funds = () => {
               rows.length ?
                 <TableBody
                   tableRef={tableRef}
+                  isScrollAtStart={isScrollAtStart}
                   rows={rows}
                   activeIndexCategoryTab={activeIndexCategoryTab}
                   rowMarks={[]}

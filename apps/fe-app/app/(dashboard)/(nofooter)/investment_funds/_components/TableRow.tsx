@@ -6,8 +6,9 @@ import { Icon, OptionsDropdown, Tooltip, cn, formatNumber } from 'design-system'
 
 interface FundRow {
   nameFund: string;
-  investmentMethod: 'T' | 'I&C';
+  isEtf: boolean;
   logo: string;
+  isTradable: boolean;
 }
 
 interface TableRowProps<T extends FundRow> {
@@ -31,7 +32,7 @@ interface FundsInfoCellProps {
   selected: boolean;
   isScrolled: boolean;
   className?: string;
-  investmentMethod: 'T' | 'I&C';
+  isEtf: boolean;
   pinedFunction: () => void;
   category: 'stocks' | 'watchlist';
   unPinedFunction: () => void;
@@ -39,11 +40,12 @@ interface FundsInfoCellProps {
   canPin: boolean;
   tag: boolean;
   isRowHovered: boolean;
+  isTradable: boolean;
 }
 
 function FundsInfoCell({
   name,
-  investmentMethod,
+  isEtf,
   tag,
   toggleWatchList,
   unPinedFunction,
@@ -55,6 +57,7 @@ function FundsInfoCell({
   selected,
   isScrolled,
   className,
+  isTradable,
   isRowHovered,
 }: FundsInfoCellProps) {
   const { showProgressToast, showToast } = useCustomToast();
@@ -66,7 +69,7 @@ function FundsInfoCell({
         'bg-surface-neutral-primary text-text-neutral-primary sticky right-0 top-0 m-0 flex h-[46px] w-[384px] items-center justify-between p-0 py-0',
         className,
         {
-          'dark:shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]': isScrolled,
+          'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]': isScrolled,
           'bg-surface-accent-blue-50 group-hover:surface-accent-blue-100':
             pined,
           'bg-blue-200': selected,
@@ -80,7 +83,7 @@ function FundsInfoCell({
             'border-border-accent-vividgreen-200 text-text-onaccent-colored-onvividgreen-on200_100_50 bg-surface-accent-vividgreen-100 h-[25px] w-fit select-none rounded-sm border px-2 pt-0.5 text-xs font-medium',
             {
               'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]':
-                investmentMethod === 'T',
+                !isEtf,
             },
           )}
         >
@@ -91,7 +94,7 @@ function FundsInfoCell({
             'border-border-accent-vividgreen-200 text-text-onaccent-colored-onvividgreen-on200_100_50 bg-surface-accent-vividgreen-100 h-[25px] w-fit select-none whitespace-nowrap rounded-sm border px-2 text-xs font-medium',
             {
               'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]':
-                investmentMethod === 'T',
+              !isTradable,
             },
           )}
         >
@@ -334,7 +337,8 @@ function TableRowInner<T extends FundRow>({
             pinedFunction={handlePin}
             unPinedFunction={handleUnPin}
             isScrolled={isScrollAtStart}
-            investmentMethod={row.original?.investmentMethod}
+            isEtf={!!row.original?.isEtf}
+            isTradable={row.original.isTradable}
             name={row.original?.nameFund}
             pined={false}
             selected={false}
@@ -351,7 +355,7 @@ function TableRowInner<T extends FundRow>({
           })}
           key={item.id}
         >
-          {formatNumber(item.getValue() as string, {decimals: 2, commaSeparated: false})}
+          {typeof item.getValue() !== 'undefined'  ? formatNumber(item.getValue() as string, { decimals: 2, commaSeparated: false }) : '-'}
         </td>
       ))}
     </tr>
