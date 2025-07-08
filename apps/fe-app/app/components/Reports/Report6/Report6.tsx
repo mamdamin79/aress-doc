@@ -4,26 +4,32 @@ import HighchartsReact from 'highcharts-react-official';
 import { baseOptions, xAxisLabels, yAxisLabels } from '../Report.config.shared';
 import { financialDefinitions } from './Report6.constants';
 import { ReportCardBase } from 'design-system';
-import { Report6CalculationResult } from '@openapi';
-
-export const Report6: FC<Report6CalculationResult> = ({ data }) => {
+import {
+  FinancialReportFilterApiModel,
+  Report6CalculationResult,
+} from '@openapi';
+interface Report6Props {
+  data: Report6CalculationResult;
+  filters: FinancialReportFilterApiModel[];
+}
+export const Report6: FC<Report6Props> = ({ data, filters }) => {
   const { xCategories, inFlowData, outFlowData, indexData } = useMemo(() => {
     const xCategories: string[] = [];
-    const inFlowData: number[] = [];
-    const outFlowData: number[] = [];
+    const inFlowData: (number | null)[] = [];
+    const outFlowData: (number | null)[] = [];
     const indexData: number[] = [];
 
-    data.forEach((item) => {
-      xCategories.push(item.dt); // use raw dt
+    data.data.forEach((item) => {
+      xCategories.push(item.dt);
       indexData.push(item.indexValue ?? null);
 
       const flow = item.netFlow ?? 0;
       if (flow >= 0) {
         inFlowData.push(flow);
-        outFlowData.push(0);
+        outFlowData.push(null);
       } else {
-        inFlowData.push(0);
-        outFlowData.push(Math.abs(flow));
+        inFlowData.push(null);
+        outFlowData.push(flow);
       }
     });
 
@@ -40,9 +46,7 @@ export const Report6: FC<Report6CalculationResult> = ({ data }) => {
     yAxis: [
       {
         title: { text: '' },
-        min: -100,
-        max: 120,
-        tickInterval: 20,
+
         labels: yAxisLabels,
         plotLines: [
           {
@@ -53,7 +57,6 @@ export const Report6: FC<Report6CalculationResult> = ({ data }) => {
       },
       {
         title: { text: '' },
-        tickInterval: 2,
         opposite: true,
         labels: yAxisLabels,
       },
@@ -103,24 +106,25 @@ export const Report6: FC<Report6CalculationResult> = ({ data }) => {
         {
           type: 'nestedDropdown',
           props: {
-            title: 'نمودار خطی',
+            title: filters[0].parentTitle ?? '',
             items: [
               {
-                title: 'نام شاخص:',
+                title: filters[0].title,
                 icon: { name: 'square-mouse-pointer', size: 'sm' },
                 status: 'normal',
-                selectedOption: 'شاخص کل',
+                selectedOption: filters[0].selectedOption.title,
                 optionsListProps: {
-                  selectedItemId: 1,
-                  searchable: false,
-                  title: 'نام شاخص',
+                  onChange: (item) => {
+                    console.log(item);
+                  },
+                  selectedItemId: Number(filters[0].selectedOption.identifier),
+                  searchable: filters[0].searchable,
+                  title: filters[0].title,
                   items: {
-                    items: [
-                      { id: 1, title: 'ذغال سنگ' },
-                      { id: 2, title: 'شاخص کل (هم‌وزن)' },
-                      { id: 3, title: 'شاخص قیمت (وزنی-ارزشی)' },
-                      { id: 4, title: 'شاخص قیمت (هم‌وزن)' },
-                    ],
+                    items: filters[0].options.map((option) => ({
+                      id: Number(option.identifier),
+                      title: option.title,
+                    })),
                   },
                 },
               },
@@ -130,22 +134,25 @@ export const Report6: FC<Report6CalculationResult> = ({ data }) => {
         {
           type: 'nestedDropdown',
           props: {
-            title: 'نمودار میله‌ای',
+            title: filters[1].parentTitle ?? '',
             items: [
               {
-                title: 'نوع سرمایه‌گذار:',
+                title: filters[1].title,
                 icon: { name: 'square-mouse-pointer', size: 'sm' },
                 status: 'normal',
-                selectedOption: 'حقیقی',
+                selectedOption: filters[1].selectedOption.title,
                 optionsListProps: {
-                  selectedItemId: 1,
-                  searchable: false,
-                  title: 'نوع سرمایه‌گذار',
+                  onChange: (item) => {
+                    console.log(item);
+                  },
+                  selectedItemId: Number(filters[1].selectedOption.identifier),
+                  searchable: filters[1].searchable,
+                  title: filters[1].title,
                   items: {
-                    items: [
-                      { id: 1, title: 'حقیقی' },
-                      { id: 2, title: 'حقوقی' },
-                    ],
+                    items: filters[1].options.map((option) => ({
+                      id: Number(option.identifier),
+                      title: option.title,
+                    })),
                   },
                 },
               },
@@ -155,21 +162,22 @@ export const Report6: FC<Report6CalculationResult> = ({ data }) => {
         {
           type: 'basicSelection',
           props: {
-            title: 'تفکیک زمانی: ',
+            title: filters[2].title,
             icon: { name: 'square-mouse-pointer', size: 'sm' },
             status: 'normal',
-            selectedOption: 'ماهانه',
+            selectedOption: filters[2].selectedOption.title,
             optionsListProps: {
-              selectedItemId: 3,
-              searchable: false,
-              title: 'تفکیک زمانی',
+              onChange: (item) => {
+                console.log(item);
+              },
+              selectedItemId: Number(filters[2].selectedOption.identifier),
+              searchable: filters[2].searchable,
+              title: filters[2].title,
               items: {
-                items: [
-                  { id: 1, title: 'روزانه' },
-                  { id: 2, title: 'هفتگی' },
-                  { id: 3, title: 'ماهانه' },
-                  { id: 4, title: 'سالانه' },
-                ],
+                items: filters[2].options.map((option) => ({
+                  id: Number(option.identifier),
+                  title: option.title,
+                })),
               },
             },
           },

@@ -1,42 +1,122 @@
-import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { Report6 } from './Report6';
-import {
-  Report6CalculationResult,
-  useReportsServiceGetReportsByReportId,
-} from '@openapi';
-import { QueryClientProvider } from '@tanstack/react-query';
-import { queryClient } from '../../../lib/react-query';
 
 const meta: Meta<typeof Report6> = {
   component: Report6,
-  title: 'Reports/Report6',
-  decorators: [
-    (Story) => (
-      <QueryClientProvider client={queryClient}>
-        <Story />
-      </QueryClientProvider>
-    ),
-  ],
 };
 
 export default meta;
 
 type Story = StoryObj<typeof Report6>;
 
-const Report6WithData = () => {
-  const { data, isLoading } = useReportsServiceGetReportsByReportId({
-    reportId: 6,
-  });
-
-  if (isLoading || !data) return <div>Loading...</div>;
-
-  const report6Data = data.reportCalculation
-    ?.calculation as Report6CalculationResult;
-
-  return <Report6 data={report6Data.data} />;
-};
-
 export const Default: Story = {
-  render: () => <Report6WithData />,
+  args: {
+    data: {
+      data: [
+        {
+          dt: '2025-06-28',
+          indexValue: 2984605.4,
+          netFlow: -21029069838598,
+        },
+        {
+          dt: '2025-06-29',
+          indexValue: 2984605.4,
+          netFlow: -17965255919854,
+        },
+        {
+          dt: '2025-06-30',
+          indexValue: 2984605.4,
+          netFlow: -47107096710076,
+        },
+        {
+          dt: '2025-07-01',
+          indexValue: 2984605.4,
+          netFlow: -62606584961446,
+        },
+        {
+          dt: '2025-07-02',
+          indexValue: 2922629.1,
+          netFlow: -90901711933910,
+        },
+      ],
+    },
+    filters: [
+      {
+        parentTitle: 'نمودار خطی',
+        title: 'نام شاخص',
+        searchable: false,
+        options: [
+          {
+            identifier: '1',
+            title: 'شاخص کل',
+          },
+          {
+            identifier: '2',
+            title: 'شاخص کل (هم وزن)',
+          },
+          {
+            identifier: '3',
+            title: 'شاخص قیمت(وزنی-ارزشی)',
+          },
+          {
+            identifier: '4',
+            title: 'شاخص قیمت (هم وزن)',
+          },
+        ],
+        selectedOption: {
+          identifier: '1',
+          title: 'شاخص کل',
+        },
+        optionType: 'IndexNameFilterOption',
+      },
+      {
+        parentTitle: 'نمودار میله ای',
+        title: 'نوع سرمایه گذار',
+        searchable: false,
+        options: [
+          {
+            identifier: '1',
+            title: 'حقیقی',
+          },
+          {
+            identifier: '2',
+            title: 'حقوقی',
+          },
+        ],
+        selectedOption: {
+          identifier: '1',
+          title: 'حقیقی',
+        },
+        optionType: 'ClientTypeFilterOption',
+      },
+      {
+        parentTitle: null,
+        title: 'تفکیک زمانی',
+        searchable: false,
+        options: [
+          {
+            identifier: '1',
+            title: 'روزانه',
+          },
+          {
+            identifier: '2',
+            title: 'هفتگی',
+          },
+          {
+            identifier: '3',
+            title: 'ماهانه',
+          },
+          {
+            identifier: '4',
+            title: 'سالانه',
+          },
+        ],
+        selectedOption: {
+          identifier: '1',
+          title: 'روزانه',
+        },
+        optionType: 'JDateRangeSeparatedFilerOption',
+      },
+    ],
+  },
 };

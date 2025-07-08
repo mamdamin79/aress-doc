@@ -1,7 +1,7 @@
 import React from 'react';
 import { SlidersBox } from './_components';
 import { FundsSidebarWrapper } from './_components/FundsSidebarWrapper';
-import { fetchToken } from '../../(auth)/auth.utils';
+import { fetchToken } from '../../../(auth)/auth.utils';
 import { OpenAPI } from '@openapi';
 import { Toaster } from 'react-hot-toast';
 const page = async () => {

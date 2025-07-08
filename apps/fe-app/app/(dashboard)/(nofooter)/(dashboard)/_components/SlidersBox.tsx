@@ -10,7 +10,7 @@ import {
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { DashboardNumberAndName } from './DashboardNumberAndName';
 import Image from 'next/image';
-import { ReportSelectionPopup } from '../../../components';
+import { ReportSelectionPopup } from '../../../../components';
 import { tempData } from './ReportCardTestData';
 import {
   DndContext,
@@ -29,8 +29,18 @@ import {
   rectSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { useHtmlPaddingRight, useThemeToggle } from '../../../../hooks';
+import { useHtmlPaddingRight, useThemeToggle } from '../../../../../hooks';
 import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
+import { Report6 } from '../../../../components/Reports/Report6';
+import {
+  FinancialReportFilterApiModel,
+  OpenAPI,
+  Report6CalculationResult,
+  useDashboardsServiceGetDashboardsByDashboardId,
+  useReportsServiceGetReportsByReportId,
+} from '@openapi';
+import { fetchToken } from '../../../../(auth)/auth.utils';
+import { DynamicReportRenderer } from './DynamicReportRenderer';
 
 interface Item {
   id: string;
@@ -78,7 +88,6 @@ function SortableItem({ item }: { item: Item }) {
 const CARD_HEIGHT = 336;
 
 export const SlidersBox: React.FC = () => {
-  const { theme } = useThemeToggle();
   const [currIndex, setCurrIndex] = useState(0);
   const [activeRotate, setActiveRotate] = useState<number | null>(null);
   const [barsNumber, setBarsNumber] = useState(0);
@@ -89,6 +98,30 @@ export const SlidersBox: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [isReportSelectionPopupOpen, setIsReportSelectionPopupOpen] =
     useState(false);
+  const [tokenLoaded, setTokenLoaded] = useState(false);
+
+  useEffect(() => {
+    async function initToken() {
+      const token = await fetchToken();
+      if (!token) {
+        throw new Error('Failed to fetch access token');
+      }
+      OpenAPI.HEADERS = {
+        Authorization: `Bearer ${token}`,
+      };
+      setTokenLoaded(true);
+    }
+
+    initToken();
+  }, []);
+
+  const { data } = useDashboardsServiceGetDashboardsByDashboardId(
+    { dashboardId: 2},
+    undefined,
+    {
+      enabled: tokenLoaded,
+    },
+  );
   const [addReportBoxCount, setAddReportBoxCount] = useState(3);
   function generateTooltips(totalSlides: number): string[] {
     const groups = Math.ceil(totalSlides / slidesPerView);
@@ -260,6 +293,13 @@ export const SlidersBox: React.FC = () => {
               {items.map((item) => (
                 <SortableItem key={item.id} item={item} />
               ))}
+              {data && (
+                <DynamicReportRenderer
+                  identifier={data.reports[0].report.identifier}
+                  data={data.reports[0].report.reportCalculation?.calculation}
+                  filters={data.reports[0].report.reportCalculation?.filters}
+                />
+              )}
               {[...Array(addReportBoxCount)].map((_, index) => (
                 <AddReportButton
                   key={index}
