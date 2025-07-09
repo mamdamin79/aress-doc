@@ -88,14 +88,27 @@ const Funds = () => {
     headerRefs,
     tableRef,
   );
+
   const columns = React.useMemo<ColumnDef<Person>[]>(
     () => [
       {
         accessorKey: 'nameFund',
         header: 'Fund Name',
         id: 'nameFund',
-        size: 200,
-        enableSorting: true,
+        sortingFn: (rowA, rowB, columnId) => {
+          const pinnedA = rowA.original.pinned;
+          const pinnedB = rowB.original.pinned;
+
+          // اگر فقط یکی پین‌شده باشه → همیشه pinned بیاد بالا
+          if (pinnedA !== pinnedB) {
+            return pinnedA ? -1 : 1;
+          }
+
+          // هر دو پین‌شده یا هر دو ناپین‌: سورت دستی
+          const a = rowA.getValue(columnId);
+          const b = rowB.getValue(columnId);
+          return String(a).localeCompare(String(b), 'fa', { sensitivity: 'base' });
+        },
       },
       {
         accessorKey: 'unitCount',
@@ -310,7 +323,6 @@ const Funds = () => {
   }
 
 
-
   const query = useFundsServiceGetFundsTable({ tab: activeIndexCategoryTab }, undefined, {
     enabled: false,
   });
@@ -331,6 +343,7 @@ const Funds = () => {
 
   useEffect(() => {
     fetchDataTable();
+    table.setPageSize(10);
   }, [activeIndexCategoryTab]);
 
   const tabs = query.data?.tabs.map(({ color, ...rest }) => ({
@@ -341,8 +354,11 @@ const Funds = () => {
 
 
   const simplifiedFunds = useMemo(() => {
-    return query.data?.selectedTabFunds.map(({ fund, pinned }) => ({
-      pinned: pinned,
+    if (!query.data?.selectedTabFunds) return [];
+
+    const funds = query.data.selectedTabFunds.map(({ fund }, index) => ({
+      id: fund.id,
+      pinned: query.data.selectedTabFunds[index]?.pinned,
       investemntFundsMethod: 'T',
       nameFund: fund.name || fund.abbreviatedName,
       dailyAlpha: fund.alphaLastDay,
@@ -361,19 +377,50 @@ const Funds = () => {
       startDate: fund.initiationDate,
       fundType: fund.fundType?.title,
     }));
+
+    return funds.sort((a, b) => Number(b.pinned) - Number(a.pinned));
   }, [query.data?.selectedTabFunds]);
 
+
+  const sortedFunds = useMemo(() => {
+    if (!simplifiedFunds) return [];
+
+    // جدا کردن پین‌شده‌ها و ناپین‌ها
+    const pinned = simplifiedFunds.filter(f => f.pinned);
+    const unpinned = simplifiedFunds.filter(f => !f.pinned);
+
+    if (sorting.length === 0) {
+      return [...pinned, ...unpinned];
+    }
+
+    const [{ id, desc }] = sorting;
+
+    // سورت فقط روی unpinned
+    const sortedUnpinned = [...unpinned].sort((a, b) => {
+      const aVal = a[id];
+      const bVal = b[id];
+
+      const aStr = String(aVal ?? '');
+      const bStr = String(bVal ?? '');
+
+      const compare = aStr.localeCompare(bStr, 'fa', { sensitivity: 'base' });
+
+      return desc ? -compare : compare;
+    });
+
+    return [...pinned, ...sortedUnpinned];
+  }, [simplifiedFunds, sorting]);
+
   const table = useReactTable({
-    data: simplifiedFunds ?? [],
-    columns: columns,
+    data: sortedFunds,
+    columns,
     state: { columnOrder, sorting },
     initialState: {
       columnVisibility,
-      sorting: sorting,
+      sorting,
     },
     onSortingChange: (updater) => {
-      const newSorting =
-        typeof updater === 'function' ? updater(sorting) : updater;
+      const newSorting = typeof updater === 'function' ? updater(sorting) : updater;
       setSorting(newSorting);
     },
     onColumnOrderChange: setColumnOrder,
@@ -381,7 +428,7 @@ const Funds = () => {
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    debugAll: true,
+    manualSorting: true,
   });
 
   const isChanged = useMemo(() => {
@@ -523,6 +570,34 @@ const Funds = () => {
     tableRef.current?.scrollBy({ top: 100, behavior: 'smooth' }),
   );
 
+  console.log(rows);
+
+
+
+
+
+
+
+
+
+
+
+  const totalCount = query.data?.selectedTabFunds.length
+    
+
+  const staticOptions = [10, 25, 50, 100].filter((size) => totalCount && size < totalCount);
+
+  console.log(query.data?.selectedTabFunds.length);
+  
+
+  const pageSizeOptions = [
+    ...staticOptions,
+    totalCount
+  ];
+
+  const options = pageSizeOptions.map((size) => ({
+    text: String(size),
+  }));
 
   return (
     <>
@@ -928,28 +1003,14 @@ const Funds = () => {
                 )}
               >
                 <span>
-                  {table.getState().pagination.pageSize *
-                    (table.getState().pagination.pageIndex + 1) *
-                    table.getPageCount() ===
+                  {totalCount ===
                     +prop.text
                     ? 'همه'
                     : prop.text}
                 </span>
               </div>
             )}
-            dropDownList={[
-              { text: '10' },
-              { text: '25' },
-              { text: '50' },
-              { text: '100' },
-              {
-                text: String(
-                  table.getState().pagination.pageSize *
-                  (table.getState().pagination.pageIndex + 1) *
-                  table.getPageCount(),
-                ),
-              },
-            ]}
+            dropDownList={options}
           />
         </div>
 

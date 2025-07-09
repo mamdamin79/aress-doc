@@ -117,7 +117,7 @@ function FundsInfoCell({
             </div>
           )}
         </div>
-        {name.length > 13 ? (
+        {name.length > 21 ? (
           <Tooltip offset={2} position="left" title={name}>
             <p className="text-gray-1000 hover:text-text-brand-contrast-700 w-[130px] truncate text-right text-sm font-medium">
               {name}
@@ -329,14 +329,14 @@ function TableRowInner<T extends FundRow>({
                   : 'stocks'
                 : 'watchlist'
             }
-            canPin={false}
+            canPin={true}
             toggleWatchList={handleToggleWatchList}
             pinedFunction={handlePin}
             unPinedFunction={handleUnPin}
             isScrolled={isScrollAtStart}
             investmentMethod={row.original?.investmentMethod}
             name={row.original?.nameFund}
-            pined={false}
+            pined={row.original.pinned}
             selected={false}
             logo={row.original?.logo}
           />
@@ -347,7 +347,8 @@ function TableRowInner<T extends FundRow>({
         <td
           dir='ltr'
           className={cn("bg-surface-neutral-primary text-text-neutral-primary group-hover:bg-surface-accent-blue-50", {
-            'text-text-accent-red-contrast-700': item.getValue() as number < 0
+            'text-text-accent-red-contrast-700': item.getValue() as number < 0,
+            'bg-surface-accent-blue-50 group-hover:surface-accent-blue-100': row.original.pinned
           })}
           key={item.id}
         >

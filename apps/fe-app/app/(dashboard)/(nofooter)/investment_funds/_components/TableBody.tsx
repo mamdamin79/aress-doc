@@ -30,10 +30,6 @@ export function TableBody({ rows, tableRef, activeIndexCategoryTab }: any) {
             activeIndexCategoryTab={activeIndexCategoryTab}
             rowMarks={[]}
             handleColorChange={() => void 0}
-            toggleWatchList={() => void 0}
-            setPineWatchList={() => void 0}
-            pineWatchLis={[]}
-            watchList={[]}
             isScrollAtStart={false}
           />
         );
