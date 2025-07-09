@@ -11,7 +11,6 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { DashboardNumberAndName } from './DashboardNumberAndName';
 import Image from 'next/image';
 import { ReportSelectionPopup } from '../../../../components';
-import { tempData } from './ReportCardTestData';
 import {
   DndContext,
   closestCenter,
@@ -413,7 +412,7 @@ export const SlidersBox: React.FC = () => {
         )}
       </div>
 
-      <ReportSelectionPopup
+      {/* <ReportSelectionPopup
         isOpen={isReportSelectionPopupOpen}
         category="درآمد ثابت"
         isNew
@@ -423,7 +422,7 @@ export const SlidersBox: React.FC = () => {
         title="سهم تاثیر بازدهی صنایع در شاخص"
         video
         report={tempData}
-      />
+      /> */}
     </div>
   );
 };
