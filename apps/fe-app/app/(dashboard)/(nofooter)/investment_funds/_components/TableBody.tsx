@@ -23,7 +23,6 @@ export function TableBody({ rows, tableRef, activeIndexCategoryTab }: any) {
 
         return (
           <TableRow
-            logo=''
             key={row.id}
             row={row}
             isMainTab={isMainTab}

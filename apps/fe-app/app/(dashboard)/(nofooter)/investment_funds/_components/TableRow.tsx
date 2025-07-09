@@ -3,11 +3,15 @@ import type { Row } from '@tanstack/react-table';
 import { Bookmark } from 'libs/design-system/src/lib/components/Bookmark';
 import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
 import { Icon, OptionsDropdown, Tooltip, cn, formatNumber } from 'design-system';
+import { useFundsServicePostFundsTablePin, useFundsServicePostFundsTableUnpin } from '@openapi';
+import { Toaster } from 'react-hot-toast';
 
 interface FundRow {
   nameFund: string;
   investmentMethod: 'T' | 'I&C';
   logo: string;
+  pinned: boolean;
+  id: number;
 }
 
 interface TableRowProps<T extends FundRow> {
@@ -195,34 +199,9 @@ function FundsInfoCell({
               return (
                 <div
                   onClick={() => {
-                    if (!canPin && prop.text === 'پین کردن') {
-                      showToast({
-                        message:
-                          'حداکثر میتوانید ۳ صندوق را در هر دسته بندی پین کنید.',
-                        type: 'warning',
-                      });
-                    }
-                    if (prop.text === 'پین کردن' && canPin) {
-                      pinedFunction();
-                      showProgressToast({
-                        timeout: 5000,
-                        title: 'صندوق مورد نظر پین شد.',
-                      });
-                    }
-                    if (prop.text === 'برداشتن پین') {
-                      unPinedFunction();
-                      showProgressToast({
-                        title: 'صندوق از لیست پین شده‌ها خارج شد.',
-                        timeout: 3000,
-                        leadingAction: {
-                          iconProps: { name: 'undo-2', size: 'sm' },
-                          onClick: () => pinedFunction(),
-                        },
-                      });
-                    }
-
+                    if (prop.text === 'پین کردن' && canPin) pinedFunction();
+                    if (prop.text === 'برداشتن پین') unPinedFunction();
                     if (prop.text === 'افزودن به دیده‌بان') {
-                      toggleWatchList();
                       showProgressToast({
                         title: 'صندوق مورد نظر به دیده بان اضافه شد.',
                         timeout: 3000,
@@ -237,7 +216,6 @@ function FundsInfoCell({
                           onClick: () => toggleWatchList(),
                         },
                       });
-                      toggleWatchList();
                     }
                   }}
                   className={cn(
@@ -288,19 +266,71 @@ function TableRowInner<T extends FundRow>({
     [row.id, toggleWatchList],
   );
 
+  const { showProgressToast, showToast } = useCustomToast();
+
+  const [pinnedList, setPinnedList] = useState<number[]>([]);
+
+
+  const pinFundMutation = useFundsServicePostFundsTablePin();
+  const unPinFundMutation = useFundsServicePostFundsTableUnpin();
+
+
+
+  const handlePinFund = async (fundId: number, isShowToast: boolean) => {
+    try {
+      await pinFundMutation.mutateAsync({
+        requestBody: {
+          tab: activeIndexCategoryTab,
+          fund: fundId,
+        },
+      });
+
+      if (isShowToast) {
+        showProgressToast({
+          timeout: 5000,
+          title: 'صندوق مورد نظر پین شد.',
+        });
+      }
+    } catch (err) {
+      showToast({
+        message:
+          'حداکثر میتوانید ۳ صندوق را در هر دسته بندی پین کنید.',
+        type: 'warning',
+      }); 
+    }
+  };
+
+  const handleUnPinFund = async (fundId: number) => {
+    try {
+      await unPinFundMutation.mutateAsync({
+        requestBody: {
+          tab: activeIndexCategoryTab,
+          fund: fundId,
+        },
+      });
+
+      showProgressToast({
+        title: 'صندوق از لیست پین شده‌ها خارج شد.',
+        timeout: 3000,
+        leadingAction: {
+          iconProps: { name: 'undo-2', size: 'sm' },
+          onClick: () => handlePinFund(row.original.id, false),
+        },
+      });
+    } catch (err) {
+      alert("خطا در unPin کردن صندوق");
+      console.error(err);
+    }
+  };
+
+
   const handlePin = useCallback(
-    () =>
-      isMainTab
-        ? row.pin?.('top', true)
-        : setPineWatchList([...pineWatchLis, row.id]),
+    () => (handlePinFund(row.original.id, true)),
     [isMainTab, pineWatchLis, row.id, setPineWatchList],
   );
 
   const handleUnPin = useCallback(
-    () =>
-      isMainTab
-        ? row.pin?.(false)
-        : setPineWatchList((prev) => prev.filter((id) => id !== row.id)),
+    () => (handleUnPinFund(row.original.id)),
     [isMainTab, row.id, setPineWatchList],
   );
 
@@ -342,6 +372,7 @@ function TableRowInner<T extends FundRow>({
           />
         </div>
       </td>
+      <Toaster position='bottom-center' />
       <td></td>
       {row?.getVisibleCells().map((item) => (
         <td
@@ -352,7 +383,7 @@ function TableRowInner<T extends FundRow>({
           })}
           key={item.id}
         >
-          {formatNumber(item.getValue() as string, {decimals: 2, commaSeparated: false})}
+          {formatNumber(item.getValue() as string, { decimals: 2, commaSeparated: false })}
         </td>
       ))}
     </tr>

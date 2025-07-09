@@ -104,7 +104,6 @@ const Funds = () => {
             return pinnedA ? -1 : 1;
           }
 
-          // هر دو پین‌شده یا هر دو ناپین‌: سورت دستی
           const a = rowA.getValue(columnId);
           const b = rowB.getValue(columnId);
           return String(a).localeCompare(String(b), 'fa', { sensitivity: 'base' });
@@ -357,7 +356,7 @@ const Funds = () => {
     if (!query.data?.selectedTabFunds) return [];
 
     const funds = query.data.selectedTabFunds.map(({ fund }, index) => ({
-      id: fund.id,
+      id: fund.identifier,
       pinned: query.data.selectedTabFunds[index]?.pinned,
       investemntFundsMethod: 'T',
       nameFund: fund.name || fund.abbreviatedName,
