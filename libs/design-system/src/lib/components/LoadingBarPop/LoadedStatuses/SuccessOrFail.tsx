@@ -6,7 +6,7 @@ export const SuccessOrFail = ({ status }: { status: 'done' | 'rejected' }) => {
   return (
     <div
       className={cn(
-        'flex h-14 w-14 items-center justify-center rounded-full',
+        'text-text-neutral-primary flex h-14 w-14 items-center justify-center rounded-full',
         status === 'done' && 'bg-surface-accent-vividgreen-100',
         status === 'rejected' && 'bg-surface-accent-red-100',
       )}

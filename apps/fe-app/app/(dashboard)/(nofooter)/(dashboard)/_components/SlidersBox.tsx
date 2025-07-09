@@ -9,7 +9,6 @@ import {
 } from 'design-system';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { DashboardNumberAndName } from './DashboardNumberAndName';
-import Image from 'next/image';
 import { ReportSelectionPopup } from '../../../../components';
 import {
   DndContext,
@@ -39,14 +38,15 @@ import {
 import { fetchToken } from '../../../../(auth)/auth.utils';
 import { DynamicReportRenderer } from './DynamicReportRenderer';
 import { OptionItem } from 'libs/design-system/src/lib/components/OptionsListExplorer/OptionsListExplorer.types';
+import { useAutoRotate } from './useAutoRotate';
 
-interface Item {
-  id: string;
-  type: 'image' | 'button';
-  content: string;
-}
-
-function SortableItem({ item }: { item: Item }) {
+const SortableReport: React.FC<{
+  identifier: number;
+  report: any;
+  data: any;
+  filters: FinancialReportFilterApiModel[] | undefined;
+  onSubmit: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
+}> = ({ identifier, report, data, filters, onSubmit }) => {
   const {
     attributes,
     listeners,
@@ -54,51 +54,44 @@ function SortableItem({ item }: { item: Item }) {
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: item.id });
+  } = useSortable({ id: identifier });
 
   const style: React.CSSProperties = {
     transition,
-    zIndex: isDragging ? 10 : undefined,
     transform: CSS.Translate.toString(transform),
-    rotate: isDragging ? '-8deg' : undefined,
+    zIndex: isDragging ? 10 : undefined,
   };
+
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-      className="shadow-6xl border-border-neutral-secondary relative h-[336px] overflow-hidden rounded-2xl border-2"
-    >
-      {item.type === 'image' && (
-        <Image
-          src={item.content}
-          alt="slider-image"
-          width={616}
-          height={336}
-          className="h-full object-contain"
-        />
-      )}
+    <div ref={setNodeRef} style={style} className="relative">
+      <div
+        className="absolute top-0 z-10 h-14 w-[550px] cursor-grab p-1"
+        {...attributes}
+        {...listeners}
+      >
+        {/* A handle icon could go here */}
+      </div>
+      <DynamicReportRenderer
+        title={report.title}
+        identifier={report.identifier}
+        data={data}
+        filters={filters}
+        onSubmit={onSubmit}
+      />
     </div>
   );
-}
-
-const CARD_HEIGHT = 336;
+};
 
 export const SlidersBox: React.FC = () => {
-  const [currIndex, setCurrIndex] = useState(0);
-  const [activeRotate, setActiveRotate] = useState<number | null>(null);
+  const [reportOrder, setReportOrder] = useState<number[]>([]);
+  const [addReportBoxCount, setAddReportBoxCount] = useState(4);
   const [barsNumber, setBarsNumber] = useState(0);
-  const [isProgramScroll, setIsProgramScroll] = useState(false);
   const [slidesPerView, setSlidesPerView] = useState(2);
   const containerRef = useRef<HTMLDivElement>(null);
-
-  const [items, setItems] = useState<Item[]>([]);
   const [isReportSelectionPopupOpen, setIsReportSelectionPopupOpen] =
     useState(false);
   const [tokenLoaded, setTokenLoaded] = useState(false);
 
-  // Store updated data per dashboardItemId
   const [reportDataMap, setReportDataMap] = useState<
     Record<number, { data: any; filters: FinancialReportFilterApiModel[] }>
   >({});
@@ -106,43 +99,24 @@ export const SlidersBox: React.FC = () => {
   useEffect(() => {
     async function initToken() {
       const token = await fetchToken();
-      if (!token) {
-        throw new Error('Failed to fetch access token');
-      }
-      OpenAPI.HEADERS = {
-        Authorization: `Bearer ${token}`,
-      };
+      if (!token) throw new Error('Failed to fetch access token');
+      OpenAPI.HEADERS = { Authorization: `Bearer ${token}` };
       setTokenLoaded(true);
     }
 
     initToken();
   }, []);
 
+  const searchParams = new URLSearchParams(window.location.search);
+  const dashboardIdParam = searchParams.get('dashboardId');
   const { data: dashboardData } =
     useDashboardsServiceGetDashboardsByDashboardId(
-      { dashboardId: 2 },
+      { dashboardId: Number(dashboardIdParam) },
       undefined,
       {
         enabled: tokenLoaded,
       },
     );
-
-  const [addReportBoxCount, setAddReportBoxCount] = useState(3);
-
-  function generateTooltips(totalSlides: number): string[] {
-    const groups = Math.ceil(totalSlides / slidesPerView);
-    const tooltips: string[] = [];
-    for (let i = 0; i < groups; i++) {
-      const start = i * slidesPerView + 1;
-      const end = Math.min((i + 1) * slidesPerView, totalSlides);
-      if (start !== end) {
-        tooltips.push(`اسلاید ${end}-${start}`);
-      } else {
-        tooltips.push(`اسلاید ${end}`);
-      }
-    }
-    return tooltips;
-  }
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -151,121 +125,43 @@ export const SlidersBox: React.FC = () => {
     }),
   );
 
-  // Compute number of scroll positions
   useEffect(() => {
-    const calculateBars = () => {
-      const total = items.length + addReportBoxCount; // include AddReportButton
-      const cols = window.matchMedia('(min-width: 1280px)').matches ? 4 : 2;
-      setSlidesPerView(cols);
-      setBarsNumber(Math.ceil(total / cols));
-    };
-    calculateBars();
-    window.addEventListener('resize', calculateBars);
-    return () => window.removeEventListener('resize', calculateBars);
-  }, [items, addReportBoxCount]);
-
-  // Manual scroll sync and stop auto-rotate
-  useEffect(() => {
-    let scrollTimeout: number | null = null;
-
-    const onScroll = () => {
-      if (isProgramScroll) {
-        // Ignore this scroll event, reset the flag after a short delay
-        if (scrollTimeout) clearTimeout(scrollTimeout);
-        scrollTimeout = window.setTimeout(() => setIsProgramScroll(false), 300);
-        return;
-      }
-      if (activeRotate !== null) {
-        // User scrolled during auto-rotate, stop auto-rotation
-        setActiveRotate(null);
-      }
-      const index = Math.floor(((window.scrollY / CARD_HEIGHT) * 2) / 3);
-      const bounded = Math.min(Math.max(index, 0), barsNumber - 1);
-      if (bounded !== currIndex) {
-        setCurrIndex(bounded);
-      }
-    };
-
-    const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onScroll();
-      }
-    };
-
-    window.addEventListener('keydown', handleEsc, { passive: true });
-    window.addEventListener('scroll', onScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('keydown', handleEsc);
-      if (scrollTimeout) clearTimeout(scrollTimeout);
-    };
-  }, [barsNumber, currIndex, activeRotate, isProgramScroll]);
-
-  const handleScroll = useCallback(
-    (index: number) => {
-      const bounded = Math.min(Math.max(index, 0), barsNumber - 1);
-      setCurrIndex(bounded);
-      setIsProgramScroll(true);
-      const scrollAmount =
-        bounded === 0 ? 160 : bounded * CARD_HEIGHT * 2.15 + 160;
-      window.scrollTo({
-        top: scrollAmount,
-        behavior: 'smooth',
-      });
-    },
-    [barsNumber],
-  );
-
-  // Auto-rotate index increment
-  const scrollProgrammatically = () => {
-    setIsProgramScroll(true);
-    setCurrIndex((prev) => (prev + 1) % barsNumber);
-  };
+    const total = (dashboardData?.items?.length ?? 0) + addReportBoxCount;
+    const cols = window.matchMedia('(min-width: 1280px)').matches ? 4 : 2;
+    setSlidesPerView(cols);
+    setBarsNumber(Math.ceil(total / cols));
+  }, [dashboardData, addReportBoxCount]);
 
   useEffect(() => {
-    if (activeRotate !== null && barsNumber > 1) {
-      const intervalId = setInterval(() => {
-        scrollProgrammatically();
-      }, activeRotate * 1000);
-      return () => clearInterval(intervalId);
+    if (dashboardData?.items) {
+      const sorted = [...dashboardData.items].sort((a, b) => a.order - b.order);
+      setReportOrder(sorted.map((item) => item.identifier));
+      const dashboardItemsLength = dashboardData.items.length;
+      const calculatedAddReportBoxCount =
+        dashboardItemsLength >= 4 ? 1 : 4 - dashboardItemsLength;
+      setAddReportBoxCount(calculatedAddReportBoxCount);
     }
-  }, [activeRotate, barsNumber]);
+  }, [dashboardData?.items]);
 
-  // Auto-scroll on index change
-  useEffect(() => {
-    if (activeRotate !== null) {
-      setIsProgramScroll(true);
-      const scrollAmount =
-        currIndex === 0 ? 160 : currIndex * CARD_HEIGHT * 2.15 + 160;
-      window.scrollTo({
-        top: scrollAmount,
-        behavior: 'smooth',
-      });
-    }
-  }, [currIndex, activeRotate]);
-
-  const handleRotation = (seconds: number | null) => {
-    setActiveRotate(seconds);
-    if (seconds !== null) {
-      setCurrIndex(-1);
-      setTimeout(() => {
-        setCurrIndex(0);
-      }, 50);
-
-      window.scrollTo({ top: CARD_HEIGHT, behavior: 'smooth' });
-    }
-  };
+  const {
+    currIndex,
+    activeRotate,
+    setActiveRotate,
+    handleRotation,
+    scrollToIndex: handleScroll,
+  } = useAutoRotate({
+    barsNumber,
+    onRotate: () => {},
+  });
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (over && active.id !== over.id) {
-      setItems((list) => {
-        const oldIdx = list.findIndex((i) => i.id === active.id);
-        const newIdx = list.findIndex((i) => i.id === over.id);
-        return arrayMove(list, oldIdx, newIdx);
+      setReportOrder((prev) => {
+        const oldIndex = prev.findIndex((id) => id === active.id);
+        const newIndex = prev.findIndex((id) => id === over.id);
+        return arrayMove(prev, oldIndex, newIndex);
       });
-      setCurrIndex(0);
       setActiveRotate(null);
     }
   };
@@ -281,7 +177,6 @@ export const SlidersBox: React.FC = () => {
     changedOptions: Record<string, OptionItem>,
   ) => {
     try {
-      // Await mutation result
       const updatedReport = await mutateAsync({
         dashboardId: dashboardData?.identifier ?? 1,
         dashboardItemId,
@@ -295,7 +190,6 @@ export const SlidersBox: React.FC = () => {
         },
       });
 
-      // Update only this report's data and filters in state
       setReportDataMap((prev) => ({
         ...prev,
         [dashboardItemId]: {
@@ -312,10 +206,22 @@ export const SlidersBox: React.FC = () => {
     }
   };
 
+  const generateTooltips = (totalSlides: number): string[] => {
+    const groups = Math.ceil(totalSlides / slidesPerView);
+    return Array.from({ length: groups }).map((_, i) => {
+      const start = i * slidesPerView + 1;
+      const end = Math.min((i + 1) * slidesPerView, totalSlides);
+      return start !== end ? `اسلاید ${end}-${start}` : `اسلاید ${end}`;
+    });
+  };
+
   return (
     <div className="w-fit">
       <div className="flex w-full justify-between">
-        <DashboardNumberAndName number={2} title="صندوق کالایی" />
+        <DashboardNumberAndName
+          number={dashboardData?.identifier}
+          title={dashboardData?.name}
+        />
         <AutoRotateSwitch
           onChange={handleRotation}
           rotateOptions={[5, 10, 15]}
@@ -329,36 +235,36 @@ export const SlidersBox: React.FC = () => {
         onDragEnd={handleDragEnd}
       >
         <section className="mt-6 flex w-full justify-center">
-          <SortableContext
-            items={items.map((i) => i.id)}
-            strategy={rectSortingStrategy}
-          >
+          <SortableContext items={reportOrder} strategy={rectSortingStrategy}>
             <div
               ref={containerRef}
               className="grid w-full grid-cols-1 gap-6 xl:grid-cols-2"
             >
-              {items.map((item) => (
-                <SortableItem key={item.id} item={item} />
-              ))}
+              {reportOrder.map((identifier) => {
+                const item = dashboardData?.items?.find(
+                  (i) => i.identifier === identifier,
+                );
+                if (!item) return null;
 
-              {dashboardData?.items?.map(({ identifier, report }, index) => (
-                <DynamicReportRenderer
-                  key={`report-${index}`}
-                  title={report.title}
-                  identifier={report.identifier}
-                  data={
-                    reportDataMap[identifier]?.data ??
-                    report.reportCalculation?.calculation
-                  }
-                  filters={
-                    reportDataMap[identifier]?.filters ??
-                    report.reportCalculation?.filters
-                  }
-                  onSubmit={(changedOptions) =>
-                    handleSubmit(identifier, changedOptions)
-                  }
-                />
-              ))}
+                return (
+                  <SortableReport
+                    key={identifier}
+                    identifier={identifier}
+                    report={item.report}
+                    data={
+                      reportDataMap[identifier]?.data ??
+                      item.report.reportCalculation?.calculation
+                    }
+                    filters={
+                      reportDataMap[identifier]?.filters ??
+                      item.report.reportCalculation?.filters
+                    }
+                    onSubmit={(changedOptions) =>
+                      handleSubmit(identifier, changedOptions)
+                    }
+                  />
+                );
+              })}
 
               {[...Array(addReportBoxCount)].map((_, index) => (
                 <AddReportButton
@@ -376,9 +282,7 @@ export const SlidersBox: React.FC = () => {
           'fixed right-4 top-1/2 z-10 flex -translate-y-1/2 flex-col items-center gap-2',
           activeRotate && 'pt-1',
         )}
-        style={{
-          paddingRight: htmlPaddingRight,
-        }}
+        style={{ paddingRight: htmlPaddingRight }}
       >
         <HorizontalScrollBar
           onChangeIndex={(index) => {
@@ -391,38 +295,27 @@ export const SlidersBox: React.FC = () => {
           autoRotateDuration={activeRotate || undefined}
           tooltips={generateTooltips(barsNumber * slidesPerView)}
           onAddReportClick={() => {
-            if (addReportBoxCount + items.length <= 16) {
-              setAddReportBoxCount((prev) => prev + 1);
-              setTimeout(() => {
-                window.scrollTo({
-                  top: document.body.scrollHeight,
-                  behavior: 'smooth',
-                });
-              }, 100);
-            } else {
+            const total = reportOrder.length + addReportBoxCount;
+            if (total >= 16) {
               showToast({
                 message: 'حداکثر تعداد گزارش در هر داشبورد 16 عدد است',
                 type: 'warning',
               });
+              return;
             }
+            setAddReportBoxCount((prev) => prev + 1);
+            setTimeout(() => {
+              window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth',
+              });
+            }, 100);
           }}
         />
         {activeRotate && (
           <AutoRotationOff onClick={() => setActiveRotate(null)} />
         )}
       </div>
-
-      {/* <ReportSelectionPopup
-        isOpen={isReportSelectionPopupOpen}
-        category="درآمد ثابت"
-        isNew
-        onSubmit={() => setIsReportSelectionPopupOpen(false)}
-        onClose={() => setIsReportSelectionPopupOpen(false)}
-        summary="این گزارش نرخ بازده تا سررسید (YTM) اوراق با درآمد ثابت را به نمایش گذاشته است. این نرخ به ساختار اقتصادی کشور مربوط می‌باشد و اگر تغییرات شدید نرخ با عدم تغییر ساختار اقتصادی همراه باشد به میانگین تاریخی خود باز می‌گردد."
-        title="سهم تاثیر بازدهی صنایع در شاخص"
-        video
-        report={tempData}
-      /> */}
     </div>
   );
 };

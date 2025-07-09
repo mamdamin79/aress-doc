@@ -22,10 +22,13 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
   onSubmit,
 }) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [loadingStatus, setLoadingStatus] = useState<null | 'loading' | 'done' | 'rejected'>(null);
+  const [loadingStatus, setLoadingStatus] = useState<
+    null | 'loading' | 'done' | 'rejected'
+  >(null);
   const [popupInfoOpen, setPopupInfoOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [optionsListItems, setOptionsListItems] = useState<null | OptionsListExplorerProps>(null);
+  const [optionsListItems, setOptionsListItems] =
+    useState<null | OptionsListExplorerProps>(null);
 
   const returnLoadingStatusText = () => {
     switch (loadingStatus) {
@@ -78,8 +81,11 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
 
       <div className="relative flex w-full items-center justify-between px-3 pb-2 pt-3">
         {!compactHeader ? (
-          <div className="text-text-neutral-primary flex flex-row items-center text-xs font-semibold">
-            <div className="cursor-pointer p-1.5" onClick={() => setPopupInfoOpen(true)}>
+          <div className="text-icon-neutral-primary flex flex-row items-center text-xs font-semibold">
+            <div
+              className="cursor-pointer p-1.5"
+              onClick={() => setPopupInfoOpen(true)}
+            >
               <Icon name="info" size="md" />
             </div>
             <span className={cn(loadingStatus && 'opacity-30')}>{title}</span>
@@ -96,7 +102,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                 menuOpen || settingsOpen
                   ? 'opacity-100'
                   : 'opacity-0 group-hover:opacity-100',
-                compactHeader && 'opacity-100'
+                compactHeader && 'opacity-100',
               )}
             >
               <DualSwitch {...switchIcons} size="sm" />
@@ -105,7 +111,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
 
           {compactHeader ? (
             <div
-              className="bg-surface-neutral-secondary text-text-neutral-primary flex h-8 w-8 cursor-pointer items-center justify-center rounded-full"
+              className="bg-surface-neutral-secondary text-icon-neutral-primary flex h-8 w-8 cursor-pointer items-center justify-center rounded-full"
               onClick={() => setSettingsOpen(true)}
             >
               <Icon name="settings" size="md" />
@@ -114,18 +120,40 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
             <div
               className={cn(
                 'h-8 transition-opacity',
-                menuOpen || settingsOpen ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                menuOpen || settingsOpen
+                  ? 'opacity-100'
+                  : 'opacity-0 group-hover:opacity-100',
               )}
             >
               <ContextMenu
                 onOpenChange={setMenuOpen}
                 anchor="bottom end"
                 items={[
-                  { icon: 'settings', title: 'تنظیمات', onClick: () => setSettingsOpen(true) },
-                  { icon: 'eye', title: 'مشاهده بررسی گزارش', onClick: () => console.log('تنظیمات گزارش') },
-                  { icon: 'repeat', title: 'جایگزینی گزارش', onClick: () => console.log('اطلاعات بیشتر') },
-                  { icon: 'share-2', title: 'اشتراک گذاری', onClick: () => console.log('اشتراک گذاری') },
-                  { icon: 'trash-2', title: 'حذف گزارش از این فضا', onClick: () => console.log('حذف گزارش از این فضا') },
+                  {
+                    icon: 'settings',
+                    title: 'تنظیمات',
+                    onClick: () => setSettingsOpen(true),
+                  },
+                  {
+                    icon: 'eye',
+                    title: 'مشاهده بررسی گزارش',
+                    onClick: () => console.log('تنظیمات گزارش'),
+                  },
+                  {
+                    icon: 'repeat',
+                    title: 'جایگزینی گزارش',
+                    onClick: () => console.log('اطلاعات بیشتر'),
+                  },
+                  {
+                    icon: 'share-2',
+                    title: 'اشتراک گذاری',
+                    onClick: () => console.log('اشتراک گذاری'),
+                  },
+                  {
+                    icon: 'trash-2',
+                    title: 'حذف گزارش از این فضا',
+                    onClick: () => console.log('حذف گزارش از این فضا'),
+                  },
                 ]}
               >
                 <Icon name="ellipsis-vertical" size="md" />
@@ -142,12 +170,20 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
           <div className="flex flex-col items-center gap-4">
             <div className="flex flex-col items-center justify-center gap-4">
               <LoadingBarPop status={loadingStatus} />
-              <span>{returnLoadingStatusText()}</span>
+              <span className="text-text-neutral-secondarycontrast">
+                {returnLoadingStatusText()}
+              </span>
             </div>
             <div className="flex flex-row gap-2">
               {loadingStatus === 'rejected' && (
                 <div className="w-fit">
-                  <Button align="center" isLoading={false} mode="primary" size="sm" onClick={handleSubmit}>
+                  <Button
+                    align="center"
+                    isLoading={false}
+                    mode="primary"
+                    size="sm"
+                    onClick={handleSubmit}
+                  >
                     تلاش مجدد
                   </Button>
                 </div>

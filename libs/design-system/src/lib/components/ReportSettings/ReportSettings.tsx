@@ -30,7 +30,11 @@ export const ReportSettings: React.FC<ReportSettingsProps> = ({
   onChangeOptionsListExplorerItem,
 }) => {
   return (
-    <div className={cn('bg-surface-neutral-primary flex h-full flex-col')}>
+    <div
+      className={cn(
+        'bg-surface-neutral-primary text-text-neutral-primary flex h-full flex-col',
+      )}
+    >
       <div className="text-md w-full py-2 pr-4 font-medium">تنظیمات گزارش</div>
       <div
         className={cn(

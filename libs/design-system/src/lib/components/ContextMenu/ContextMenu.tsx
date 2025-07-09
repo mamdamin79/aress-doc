@@ -33,7 +33,7 @@ export const ContextMenu: React.FC<Props> = ({
 
         return (
           <>
-            <MenuButton className="outline-none">
+            <MenuButton className="text-icon-neutral-primary outline-none">
               {children ? (
                 <div
                   className={cn(

@@ -1,7 +1,7 @@
 import React from 'react';
 export interface DashboardNumberAndNameProps {
-  number: number;
-  title: string;
+  number?: number;
+  title?: string;
 }
 export const DashboardNumberAndName: React.FC<DashboardNumberAndNameProps> = ({
   number,
