@@ -118,7 +118,6 @@ function FundsInfoCell({
             dropDownList={[
               { text: 'مشاهده صندوق', icon: { name: 'eye', size: 'md' } },
               { text: 'مشاهده ویدیو', icon: { name: 'video', size: 'md' } },
-              { text: 'نشان‌دار کردن', icon: { name: 'target', size: 'md' } },
               {
                 text: pined ? 'برداشتن پین' : 'پین کردن',
                 icon: { name: pined ? 'pin-off' : 'pin', size: 'md' },
