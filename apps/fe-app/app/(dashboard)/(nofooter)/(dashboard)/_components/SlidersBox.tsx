@@ -119,7 +119,6 @@ const SortableAddReportButton: React.FC<{
 };
 
 export const SlidersBox: React.FC = () => {
-  const [reportOrder, setReportOrder] = useState<number[]>([]);
   const [slotsToRender, setSlotsToRender] = useState<number[]>([]);
   const [barsNumber, setBarsNumber] = useState(0);
   const [slidesPerView, setSlidesPerView] = useState(2);
@@ -156,8 +155,8 @@ export const SlidersBox: React.FC = () => {
     const total = dashboardData?.items?.length ?? 0;
     const cols = window.matchMedia('(min-width: 1280px)').matches ? 4 : 2;
     setSlidesPerView(cols);
-    setBarsNumber(Math.ceil(Math.max(total, MAX_INITIAL_SLOTS) / cols));
-  }, [dashboardData]);
+    setBarsNumber(Math.ceil(slotsToRender.length / cols));
+  }, [dashboardData, slotsToRender]);
 
   useEffect(() => {
     if (!dashboardData?.items) {
@@ -181,7 +180,6 @@ export const SlidersBox: React.FC = () => {
     }
 
     setSlotsToRender(slots);
-    setReportOrder(reports.map((r) => r.identifier));
   }, [dashboardData]);
 
   const {
@@ -282,7 +280,6 @@ export const SlidersBox: React.FC = () => {
         },
       });
     });
-    setReportOrder(updatedItems.map((r) => r.identifier));
 
     // Update slot render order visually
     setSlotsToRender((prev) => {
