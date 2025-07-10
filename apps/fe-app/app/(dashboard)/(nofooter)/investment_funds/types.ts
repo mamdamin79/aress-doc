@@ -1,3 +1,6 @@
+import { Row } from "@tanstack/react-table";
+import type { MutableRefObject } from 'react';
+
 export type DragPosition = 'left' | 'right';
 export type Person = {
   nameFund: string;
@@ -18,7 +21,6 @@ export type Person = {
   dailyReturn: number;
   weeklyReturn: number;
   startDate: number;
-  //   logo: string;
   investmentMethod: 'T' | 'I&C';
 };
 
@@ -29,4 +31,49 @@ export interface VirtualItem {
   size: number;
   key: string | number | bigint;
   measureRef?: (el: HTMLElement | null) => void;
+}
+
+
+export interface FundRow {
+  nameFund: string;
+  investmentMethod: 'T' | 'I&C';
+  logo: string;
+  pinned: boolean;
+  id: number;
+}
+
+export interface TableBodyProps {
+  rows: Row<FundRow>[];
+  tableRef: MutableRefObject<HTMLDivElement | null>;
+  activeIndexCategoryTab: number;
+  handlerPinned: (id: number) => void;
+  handlerUnPinned: (id: number) => void;
+}
+
+
+export interface TableRowProps<T extends FundRow> {
+  row: Row<T>;
+  logo: string;
+  isMainTab: boolean;
+  handlerPinned: (e: number) => void;
+  handlerUnPinned: (e: number) => void;
+  activeIndexCategoryTab: number;
+  rowMarks: Record<number, Record<string, string>>;
+  handleColorChange: (id: string, color: string) => void;
+  isScrollAtStart: boolean;
+}
+
+export interface FundsInfoCellProps {
+  name: string;
+  logo: string;
+  pined: boolean;
+  selected: boolean;
+  isScrolled: boolean;
+  className?: string;
+  investmentMethod: 'T' | 'I&C';
+  pinedFunction: () => void;
+  unPinedFunction: () => void;
+  canPin: boolean;
+  tag: boolean;
+  isRowHovered: boolean;
 }

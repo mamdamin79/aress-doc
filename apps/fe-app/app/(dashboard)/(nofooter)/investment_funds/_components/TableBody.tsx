@@ -1,9 +1,8 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
 import TableRow from './TableRow';
-import { VirtualItem } from '../types';
+import { TableBodyProps, VirtualItem } from '../types';
 
-export function TableBody({ rows, tableRef, activeIndexCategoryTab }: any) {
-
+export function TableBody({ rows, tableRef, activeIndexCategoryTab, handlerPinned, handlerUnPinned }: TableBodyProps) {
   const virtualizer = useVirtualizer({
     count: rows?.length,
     getScrollElement: () => tableRef.current,
@@ -19,17 +18,20 @@ export function TableBody({ rows, tableRef, activeIndexCategoryTab }: any) {
 
       {virtualizer.getVirtualItems().map((virtualRow: VirtualItem) => {
         const row = rows[virtualRow.index];
-        const isMainTab = activeIndexCategoryTab === 0;
+        const isMainTab = activeIndexCategoryTab === 0;           
 
         return (
           <TableRow
-            key={row.id}
             row={row}
             isMainTab={isMainTab}
             activeIndexCategoryTab={activeIndexCategoryTab}
             rowMarks={[]}
             handleColorChange={() => void 0}
             isScrollAtStart={false}
+            handlerUnPinned={handlerUnPinned}
+            handlerPinned={handlerPinned}
+            key={row.id}
+            logo={row.original.logo}
           />
         );
       })}

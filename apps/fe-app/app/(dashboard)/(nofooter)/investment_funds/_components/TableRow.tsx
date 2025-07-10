@@ -1,57 +1,15 @@
 import React, { useCallback, useState } from 'react';
-import type { Row } from '@tanstack/react-table';
 import { Bookmark } from 'libs/design-system/src/lib/components/Bookmark';
 import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
 import { Icon, OptionsDropdown, Tooltip, cn, formatNumber } from 'design-system';
 import { useFundsServicePostFundsTablePin, useFundsServicePostFundsTableUnpin } from '@openapi';
-import { Toaster } from 'react-hot-toast';
-
-interface FundRow {
-  nameFund: string;
-  investmentMethod: 'T' | 'I&C';
-  logo: string;
-  pinned: boolean;
-  id: number;
-}
-
-interface TableRowProps<T extends FundRow> {
-  row: Row<T>;
-  logo: string;
-  isMainTab: boolean;
-  activeIndexCategoryTab: number;
-  rowMarks: Record<number, Record<string, string>>;
-  handleColorChange: (id: string, color: string) => void;
-  toggleWatchList: (args: { id: string }) => void;
-  setPineWatchList: React.Dispatch<React.SetStateAction<string[]>>;
-  pineWatchLis: string[];
-  watchList: string[];
-  isScrollAtStart: boolean;
-}
-
-interface FundsInfoCellProps {
-  name: string;
-  logo: string;
-  pined: boolean;
-  selected: boolean;
-  isScrolled: boolean;
-  className?: string;
-  investmentMethod: 'T' | 'I&C';
-  pinedFunction: () => void;
-  category: 'stocks' | 'watchlist';
-  unPinedFunction: () => void;
-  toggleWatchList: () => void;
-  canPin: boolean;
-  tag: boolean;
-  isRowHovered: boolean;
-}
+import { FundRow, FundsInfoCellProps, TableRowProps } from '../types';
 
 function FundsInfoCell({
   name,
   investmentMethod,
   tag,
-  toggleWatchList,
   unPinedFunction,
-  category,
   pinedFunction,
   logo,
   canPin,
@@ -165,16 +123,17 @@ function FundsInfoCell({
                 text: pined ? 'برداشتن پین' : 'پین کردن',
                 icon: { name: pined ? 'pin-off' : 'pin', size: 'md' },
               },
-              {
-                text:
-                  category === 'stocks'
-                    ? 'افزودن به دیده‌بان'
-                    : 'حذف از دیده‌بان',
-                icon: {
-                  name: category === 'stocks' ? 'plus' : 'minus',
-                  size: 'md',
-                },
-              },
+              // {
+              //   text:
+              //     category === 'stocks'
+              //       ? 'افزودن به دیده‌بان'
+              //       : 'حذف از دیده‌بان',
+              //   icon: {
+              //     name: category === 'stocks' ? 'plus' : 'minus',
+              //     size: 'md',
+              //   },
+              // },
+              {text: 'افزودن به دیده بان'}
             ]}
             customTriggerRender={(prop) => {
               return (
@@ -213,7 +172,7 @@ function FundsInfoCell({
                         timeout: 3000,
                         leadingAction: {
                           iconProps: { name: 'undo-2', size: 'sm' },
-                          onClick: () => toggleWatchList(),
+                          onClick: () => void 0,
                         },
                       });
                     }
@@ -254,27 +213,15 @@ function TableRowInner<T extends FundRow>({
   activeIndexCategoryTab,
   rowMarks,
   handleColorChange,
-  toggleWatchList,
-  setPineWatchList,
-  pineWatchLis,
-  watchList,
   isScrollAtStart,
+  handlerPinned,
+  handlerUnPinned,
 }: TableRowProps<T>) {
-  const [isHovered, setIsHovered] = useState(false);
-  const handleToggleWatchList = useCallback(
-    () => toggleWatchList({ id: row.id }),
-    [row.id, toggleWatchList],
-  );
 
   const { showProgressToast, showToast } = useCustomToast();
 
-  const [pinnedList, setPinnedList] = useState<number[]>([]);
-
-
   const pinFundMutation = useFundsServicePostFundsTablePin();
   const unPinFundMutation = useFundsServicePostFundsTableUnpin();
-
-
 
   const handlePinFund = async (fundId: number, isShowToast: boolean) => {
     try {
@@ -284,7 +231,7 @@ function TableRowInner<T extends FundRow>({
           fund: fundId,
         },
       });
-
+      handlerPinned(fundId);
       if (isShowToast) {
         showProgressToast({
           timeout: 5000,
@@ -296,7 +243,7 @@ function TableRowInner<T extends FundRow>({
         message:
           'حداکثر میتوانید ۳ صندوق را در هر دسته بندی پین کنید.',
         type: 'warning',
-      }); 
+      });
     }
   };
 
@@ -307,14 +254,14 @@ function TableRowInner<T extends FundRow>({
           tab: activeIndexCategoryTab,
           fund: fundId,
         },
-      });
-
+      })
+      handlerUnPinned(fundId);
       showProgressToast({
         title: 'صندوق از لیست پین شده‌ها خارج شد.',
         timeout: 3000,
         leadingAction: {
           iconProps: { name: 'undo-2', size: 'sm' },
-          onClick: () => handlePinFund(row.original.id, false),
+          onClick: () => handlePinFund(fundId, false),
         },
       });
     } catch (err) {
@@ -323,21 +270,19 @@ function TableRowInner<T extends FundRow>({
     }
   };
 
-
   const handlePin = useCallback(
     () => (handlePinFund(row.original.id, true)),
-    [isMainTab, pineWatchLis, row.id, setPineWatchList],
+    [isMainTab, row.id],
   );
 
-  const handleUnPin = useCallback(
-    () => (handleUnPinFund(row.original.id)),
-    [isMainTab, row.id, setPineWatchList],
-  );
+  const handleUnPin = () => {
+    if (row.original.pinned) {
+      (handleUnPinFund(row.original.id))
+    }
+  }
 
   return (
     <tr
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       key={row.id}
       className="border-border-neutral-secondary group h-[46px] border-b"
     >
@@ -352,15 +297,7 @@ function TableRowInner<T extends FundRow>({
           <FundsInfoCell
             isRowHovered
             tag={!isMainTab}
-            category={
-              isMainTab
-                ? watchList.includes(row.id)
-                  ? 'watchlist'
-                  : 'stocks'
-                : 'watchlist'
-            }
             canPin={true}
-            toggleWatchList={handleToggleWatchList}
             pinedFunction={handlePin}
             unPinedFunction={handleUnPin}
             isScrolled={isScrollAtStart}
@@ -372,7 +309,6 @@ function TableRowInner<T extends FundRow>({
           />
         </div>
       </td>
-      <Toaster position='bottom-center' />
       <td></td>
       {row?.getVisibleCells().map((item) => (
         <td

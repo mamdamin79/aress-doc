@@ -47,7 +47,6 @@ import {
 } from '@tanstack/react-table';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useSortable } from '@dnd-kit/sortable';
-import { makeData } from './_components/makeData';
 import { columnVisibility, filterList } from './FundsTable.constants';
 import { ExportExel } from './_components/ExportExel';
 import { useSmartTableScroll } from './../../../../hooks/useSmartTableScroll';
@@ -59,16 +58,17 @@ import {
 } from './utils/investmentFunds.utils';
 import { OpenAPI, useFundsServiceGetFundsTable } from '@openapi';
 import { fetchToken } from 'apps/fe-app/app/(auth)/auth.utils';
+import { Toaster } from 'react-hot-toast';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
   const [activeIndexCategoryTab, setActiveIndexCategoryTab] = useState(1);
-  const [data] = useState(() => makeData(500));
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [isScrollAtStart, setIsScrollAtStart] = useState<boolean>(false);
   const [isScrollAtEnd, setIsScrollAtEnd] = useState<boolean>(true);
   const [fundSearchQuery, setFundSearchQuery] = useState<string>('');
   const tableRef = useRef<HTMLDivElement>(null);
+  const [pinnedList, setPinnedList] = useState<number[]>([]);
   const [sorting, setSorting] = useState<SortingState>([
     {
       id: 'nameFund',
@@ -99,7 +99,6 @@ const Funds = () => {
           const pinnedA = rowA.original.pinned;
           const pinnedB = rowB.original.pinned;
 
-          // اگر فقط یکی پین‌شده باشه → همیشه pinned بیاد بالا
           if (pinnedA !== pinnedB) {
             return pinnedA ? -1 : 1;
           }
@@ -322,10 +321,12 @@ const Funds = () => {
   }
 
 
+  // request to get funds table data
   const query = useFundsServiceGetFundsTable({ tab: activeIndexCategoryTab }, undefined, {
     enabled: false,
   });
 
+  // set token
   const fetchDataTable = async () => {
     const token = await fetchToken();
 
@@ -340,6 +341,7 @@ const Funds = () => {
     await query.refetch();
   };
 
+
   useEffect(() => {
     fetchDataTable();
     table.setPageSize(10);
@@ -348,43 +350,59 @@ const Funds = () => {
   const tabs = query.data?.tabs.map(({ color, ...rest }) => ({
     ...rest,
     tag: color === 'vividgreen' ? 'green' : (color || ''),
-
   }));
+
+  // set pinned list fund
+  useEffect(() => {
+    if (
+      query.isLoading ||
+      query.isFetching ||
+      !query.data?.selectedTabFunds
+    ) return;
+
+    const initialPinnedList = query.data.selectedTabFunds
+      .filter(fund => fund.pinned)
+      .map(fund => fund.fund.identifier);
+
+    setPinnedList(initialPinnedList);
+  }, [query.isLoading, query.isFetching, query.data?.selectedTabFunds]);
 
 
   const simplifiedFunds = useMemo(() => {
     if (!query.data?.selectedTabFunds) return [];
 
-    const funds = query.data.selectedTabFunds.map(({ fund }, index) => ({
-      id: fund.identifier,
-      pinned: query.data.selectedTabFunds[index]?.pinned,
-      investemntFundsMethod: 'T',
-      nameFund: fund.name || fund.abbreviatedName,
-      dailyAlpha: fund.alphaLastDay,
-      weeklyAlpha: fund.alphaLastWeek,
-      monthlyAlpha: fund.alphaLastMonth,
-      quarterlyAlpha: fund.alphaLast3Months,
-      weeklyReturn: fund.returnLastWeekPercent,
-      monthlyReturn: fund.returnLastMonthPercent,
-      quarterlyReturn: fund.returnLast3MonthsPercent,
-      yearlyReturn: fund.returnLastYearPercent,
-      profitPerUnit: fund.redeemNavRials,
-      issuancePrice: fund.issueNavRials,
-      cancellationPrice: fund.redeemNavRials,
-      netAssetValue: fund.statisticalNavRials,
-      unitCount: fund.numberOfUnits,
-      startDate: fund.initiationDate,
-      fundType: fund.fundType?.title,
-    }));
+    const funds = query.data.selectedTabFunds.map(({ fund }) => {
+      const id = fund.identifier;
+      return {
+        id,
+        pinned: pinnedList.includes(id),
+        investemntFundsMethod: 'T',
+        nameFund: fund.name || fund.abbreviatedName,
+        dailyAlpha: fund.alphaLastDay,
+        weeklyAlpha: fund.alphaLastWeek,
+        monthlyAlpha: fund.alphaLastMonth,
+        quarterlyAlpha: fund.alphaLast3Months,
+        weeklyReturn: fund.returnLastWeekPercent,
+        monthlyReturn: fund.returnLastMonthPercent,
+        quarterlyReturn: fund.returnLast3MonthsPercent,
+        yearlyReturn: fund.returnLastYearPercent,
+        profitPerUnit: fund.redeemNavRials,
+        issuancePrice: fund.issueNavRials,
+        cancellationPrice: fund.redeemNavRials,
+        netAssetValue: fund.statisticalNavRials,
+        unitCount: fund.numberOfUnits,
+        startDate: fund.initiationDate,
+        fundType: fund.fundType?.title,
+      };
+    });
 
     return funds.sort((a, b) => Number(b.pinned) - Number(a.pinned));
-  }, [query.data?.selectedTabFunds]);
+  }, [query.data?.selectedTabFunds, pinnedList]);
 
 
   const sortedFunds = useMemo(() => {
     if (!simplifiedFunds) return [];
 
-    // جدا کردن پین‌شده‌ها و ناپین‌ها
     const pinned = simplifiedFunds.filter(f => f.pinned);
     const unpinned = simplifiedFunds.filter(f => !f.pinned);
 
@@ -394,7 +412,6 @@ const Funds = () => {
 
     const [{ id, desc }] = sorting;
 
-    // سورت فقط روی unpinned
     const sortedUnpinned = [...unpinned].sort((a, b) => {
       const aVal = a[id];
       const bVal = b[id];
@@ -409,7 +426,7 @@ const Funds = () => {
 
     return [...pinned, ...sortedUnpinned];
   }, [simplifiedFunds, sorting]);
-
+  
   const table = useReactTable({
     data: sortedFunds,
     columns,
@@ -569,34 +586,38 @@ const Funds = () => {
     tableRef.current?.scrollBy({ top: 100, behavior: 'smooth' }),
   );
 
-  console.log(rows);
-
-
-
-
-
-
 
 
 
 
 
   const totalCount = query.data?.selectedTabFunds.length
-    
-
   const staticOptions = [10, 25, 50, 100].filter((size) => totalCount && size < totalCount);
-
-  console.log(query.data?.selectedTabFunds.length);
-  
 
   const pageSizeOptions = [
     ...staticOptions,
     totalCount
   ];
-
   const options = pageSizeOptions.map((size) => ({
     text: String(size),
   }));
+
+  const handlerPinned = (e: number) => {
+    setPinnedList(prev => [...prev, e])
+  }
+
+  const handlerUnPinned = (e: number) => {
+    setPinnedList(prev => {
+      const updated = prev.filter(id => id !== e);
+      return updated;
+    });
+
+
+
+  };
+
+
+
 
   return (
     <>
@@ -941,6 +962,8 @@ const Funds = () => {
               </DndContext>
             </thead>
             <TableBody
+              handlerPinned={handlerPinned}
+              handlerUnPinned={handlerUnPinned}
               tableRef={tableRef}
               rows={rows}
               activeIndexCategoryTab={activeIndexCategoryTab}
@@ -1199,6 +1222,7 @@ const Funds = () => {
           }}
         ></DatePicker>
       </Dialog>
+      <Toaster position='bottom-center' />
     </>
   );
 };
