@@ -95,7 +95,13 @@ export const Header: React.FC = () => {
 
     localStorage.setItem('activeDashboard', activeId);
   }, [query.data, pathname]);
-
+  useEffect(() => {
+    const dashboardIdParam = searchParams.get('dashboardId');
+    const current = localStorage.getItem('activeDashboard');
+    if (dashboardIdParam && dashboardIdParam !== current) {
+      localStorage.setItem('activeDashboard', dashboardIdParam);
+    }
+  }, [searchParams]);
   const menuData = useMemo(() => {
     if (!query.data) return MenuData;
 
