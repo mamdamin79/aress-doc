@@ -17,13 +17,15 @@ const reportComponents: Record<number, any> = {
     import('../../../../components/Reports/Report6').then((mod) => mod.Report6),
   ),
   15: dynamic(() =>
-    import('../../../../components/Reports/Report15').then((mod) => mod.Report15),
+    import('../../../../components/Reports/Report15').then(
+      (mod) => mod.Report15,
+    ),
   ),
   // Add others as needed
 };
 
 interface DynamicReportRendererProps {
-    title?:string,
+  title?: string;
   identifier: number;
   data?:
     | Report2CalculationResult
@@ -41,12 +43,11 @@ export const DynamicReportRenderer: React.FC<DynamicReportRendererProps> = ({
   data,
   filters,
   onSubmit,
-  title
+  title,
 }) => {
   const ReportComponent = reportComponents[identifier];
 
   if (!ReportComponent) {
-    console.warn(`No report component found for identifier ${identifier}`);
     return null;
   }
 

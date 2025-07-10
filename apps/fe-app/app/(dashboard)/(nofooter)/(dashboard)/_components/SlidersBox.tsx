@@ -7,9 +7,11 @@ import {
   cn,
   HorizontalScrollBar,
 } from 'design-system';
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { DashboardNumberAndName } from './DashboardNumberAndName';
 import { ReportSelectionPopup } from '../../../../components';
+import { useSearchParams } from 'next/navigation';
+
 import {
   DndContext,
   closestCenter,
@@ -34,19 +36,24 @@ import {
   OpenAPI,
   useDashboardsServiceGetDashboardsByDashboardId,
   useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemId,
+  useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdReorder,
 } from '@openapi';
 import { fetchToken } from '../../../../(auth)/auth.utils';
 import { DynamicReportRenderer } from './DynamicReportRenderer';
 import { OptionItem } from 'libs/design-system/src/lib/components/OptionsListExplorer/OptionsListExplorer.types';
 import { useAutoRotate } from './useAutoRotate';
 
+const MAX_INITIAL_SLOTS = 4;
+const MAX_TOTAL_SLOTS = 16;
+
 const SortableReport: React.FC<{
+  slotId: string;
   identifier: number;
   report: any;
   data: any;
   filters: FinancialReportFilterApiModel[] | undefined;
   onSubmit: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
-}> = ({ identifier, report, data, filters, onSubmit }) => {
+}> = ({ slotId, identifier, report, data, filters, onSubmit }) => {
   const {
     attributes,
     listeners,
@@ -54,26 +61,24 @@ const SortableReport: React.FC<{
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: identifier });
+  } = useSortable({ id: slotId });
 
   const style: React.CSSProperties = {
     transition,
     transform: CSS.Translate.toString(transform),
-    zIndex: isDragging ? 10 : undefined,
+    zIndex: isDragging ? 10 : 'auto',
   };
 
   return (
     <div ref={setNodeRef} style={style} className="relative">
       <div
-        className="absolute top-0 z-10 h-14 w-[550px] cursor-grab p-1"
+        className="absolute right-0 top-0 z-10 h-14 w-[550px] cursor-grab"
         {...attributes}
         {...listeners}
-      >
-        {/* A handle icon could go here */}
-      </div>
+      />
       <DynamicReportRenderer
         title={report.title}
-        identifier={report.identifier}
+        identifier={identifier}
         data={data}
         filters={filters}
         onSubmit={onSubmit}
@@ -82,15 +87,46 @@ const SortableReport: React.FC<{
   );
 };
 
+const SortableAddReportButton: React.FC<{
+  slotId: string;
+  onClick: () => void;
+}> = ({ slotId, onClick }) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: slotId });
+
+  const style: React.CSSProperties = {
+    transition,
+    transform: CSS.Translate.toString(transform),
+    zIndex: isDragging ? 10 : 'auto',
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} className="relative">
+      <div
+        className="absolute left-0 top-0 z-10 h-14 w-full cursor-grab"
+        {...attributes}
+        {...listeners}
+      />
+      <AddReportButton onClick={onClick} />
+    </div>
+  );
+};
+
 export const SlidersBox: React.FC = () => {
   const [reportOrder, setReportOrder] = useState<number[]>([]);
-  const [addReportBoxCount, setAddReportBoxCount] = useState(4);
+  const [slotsToRender, setSlotsToRender] = useState<number[]>([]);
   const [barsNumber, setBarsNumber] = useState(0);
   const [slidesPerView, setSlidesPerView] = useState(2);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [tokenLoaded, setTokenLoaded] = useState(false);
   const [isReportSelectionPopupOpen, setIsReportSelectionPopupOpen] =
     useState(false);
-  const [tokenLoaded, setTokenLoaded] = useState(false);
 
   const [reportDataMap, setReportDataMap] = useState<
     Record<number, { data: any; filters: FinancialReportFilterApiModel[] }>
@@ -107,41 +143,46 @@ export const SlidersBox: React.FC = () => {
     initToken();
   }, []);
 
-  const searchParams = new URLSearchParams(window.location.search);
+  const searchParams = useSearchParams();
   const dashboardIdParam = searchParams.get('dashboardId');
-  const { data: dashboardData } =
+  const { data: dashboardData, isLoading: isDashboardLoading } =
     useDashboardsServiceGetDashboardsByDashboardId(
       { dashboardId: Number(dashboardIdParam) },
       undefined,
-      {
-        enabled: tokenLoaded,
-      },
+      { enabled: tokenLoaded && !!dashboardIdParam },
     );
 
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    }),
-  );
-
   useEffect(() => {
-    const total = (dashboardData?.items?.length ?? 0) + addReportBoxCount;
+    const total = dashboardData?.items?.length ?? 0;
     const cols = window.matchMedia('(min-width: 1280px)').matches ? 4 : 2;
     setSlidesPerView(cols);
-    setBarsNumber(Math.ceil(total / cols));
-  }, [dashboardData, addReportBoxCount]);
+    setBarsNumber(Math.ceil(Math.max(total, MAX_INITIAL_SLOTS) / cols));
+  }, [dashboardData]);
 
   useEffect(() => {
-    if (dashboardData?.items) {
-      const sorted = [...dashboardData.items].sort((a, b) => a.order - b.order);
-      setReportOrder(sorted.map((item) => item.identifier));
-      const dashboardItemsLength = dashboardData.items.length;
-      const calculatedAddReportBoxCount =
-        dashboardItemsLength >= 4 ? 1 : 4 - dashboardItemsLength;
-      setAddReportBoxCount(calculatedAddReportBoxCount);
+    if (!dashboardData?.items) {
+      setSlotsToRender(Array.from({ length: MAX_INITIAL_SLOTS }, (_, i) => i));
+      return;
     }
-  }, [dashboardData?.items]);
+
+    const reports = dashboardData.items;
+    const filledOrders = new Set(reports.map((r) => r.order));
+    let slots: number[] = [];
+
+    const maxOrder = Math.max(
+      ...Array.from(filledOrders),
+      MAX_INITIAL_SLOTS - 1,
+    );
+
+    for (let i = 0; i <= maxOrder; i++) slots.push(i);
+
+    if (reports.length >= MAX_INITIAL_SLOTS && slots.length < MAX_TOTAL_SLOTS) {
+      slots.push(slots.length); // new slot
+    }
+
+    setSlotsToRender(slots);
+    setReportOrder(reports.map((r) => r.identifier));
+  }, [dashboardData]);
 
   const {
     currIndex,
@@ -149,25 +190,10 @@ export const SlidersBox: React.FC = () => {
     setActiveRotate,
     handleRotation,
     scrollToIndex: handleScroll,
-  } = useAutoRotate({
-    barsNumber,
-    onRotate: () => {},
-  });
+  } = useAutoRotate({ barsNumber, onRotate: () => {} });
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (over && active.id !== over.id) {
-      setReportOrder((prev) => {
-        const oldIndex = prev.findIndex((id) => id === active.id);
-        const newIndex = prev.findIndex((id) => id === over.id);
-        return arrayMove(prev, oldIndex, newIndex);
-      });
-      setActiveRotate(null);
-    }
-  };
-
-  const htmlPaddingRight = useHtmlPaddingRight();
   const { showToast } = useCustomToast();
+  const htmlPaddingRight = useHtmlPaddingRight();
 
   const { mutateAsync } =
     useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemId();
@@ -206,6 +232,66 @@ export const SlidersBox: React.FC = () => {
     }
   };
 
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
+  const { mutate: updateOrder } =
+    useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdReorder();
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    const from = parseInt(active.id.toString().replace('slot-', ''), 10);
+    const to = parseInt(over.id.toString().replace('slot-', ''), 10);
+
+    const fromReport = dashboardData?.items?.find((r) => r.order === from);
+    const toReport = dashboardData?.items?.find((r) => r.order === to);
+
+    if (!fromReport) return;
+
+    // Update orders
+    const updatedItems = dashboardData?.items?.map((item) => {
+      if (item.identifier === fromReport.identifier) {
+        return { ...item, order: to };
+      }
+      if (toReport && item.identifier === toReport.identifier) {
+        return { ...item, order: from };
+      }
+      return item;
+    });
+
+    if (!updatedItems) return;
+
+    // Get list of changed reports
+    const changedReports = updatedItems.filter((updated) => {
+      const original = dashboardData?.items?.find(
+        (originalItem) => originalItem.identifier === updated.identifier,
+      );
+      return original?.order !== updated.order;
+    });
+
+    changedReports.map((changedReport) => {
+      updateOrder({
+        dashboardId: Number(dashboardIdParam),
+        dashboardItemId: changedReport.identifier,
+        requestBody: {
+          order: changedReport.order,
+        },
+      });
+    });
+    setReportOrder(updatedItems.map((r) => r.identifier));
+
+    // Update slot render order visually
+    setSlotsToRender((prev) => {
+      const fromIdx = prev.indexOf(from);
+      const toIdx = prev.indexOf(to);
+      return arrayMove(prev, fromIdx, toIdx);
+    });
+  };
+
   const generateTooltips = (totalSlides: number): string[] => {
     const groups = Math.ceil(totalSlides / slidesPerView);
     return Array.from({ length: groups }).map((_, i) => {
@@ -214,7 +300,13 @@ export const SlidersBox: React.FC = () => {
       return start !== end ? `اسلاید ${end}-${start}` : `اسلاید ${end}`;
     });
   };
-
+  if (!tokenLoaded || !dashboardIdParam || isDashboardLoading) {
+    return (
+      <div className="text-text-neutral-secondary flex h-64 w-full items-center justify-center">
+        در حال بارگذاری داشبورد...
+      </div>
+    );
+  }
   return (
     <div className="w-fit">
       <div className="flex w-full justify-between">
@@ -235,43 +327,49 @@ export const SlidersBox: React.FC = () => {
         onDragEnd={handleDragEnd}
       >
         <section className="mt-6 flex w-full justify-center">
-          <SortableContext items={reportOrder} strategy={rectSortingStrategy}>
+          <SortableContext
+            items={slotsToRender.map((order) => `slot-${order}`)}
+            strategy={rectSortingStrategy}
+          >
             <div
               ref={containerRef}
               className="grid w-full grid-cols-1 gap-6 xl:grid-cols-2"
             >
-              {reportOrder.map((identifier) => {
-                const item = dashboardData?.items?.find(
-                  (i) => i.identifier === identifier,
+              {slotsToRender.map((order) => {
+                const report = dashboardData?.items?.find(
+                  (r) => r.order === order,
                 );
-                if (!item) return null;
+                const slotId = `slot-${order}`;
+                if (report) {
+                  return (
+                    <SortableReport
+                      key={slotId}
+                      slotId={slotId}
+                      identifier={report.report.identifier}
+                      report={report.report}
+                      data={
+                        reportDataMap[report.identifier]?.data ??
+                        report.report.reportCalculation?.calculation
+                      }
+                      filters={
+                        reportDataMap[report.identifier]?.filters ??
+                        report.report.reportCalculation?.filters
+                      }
+                      onSubmit={(changedOptions) =>
+                        handleSubmit(report.identifier, changedOptions)
+                      }
+                    />
+                  );
+                }
 
                 return (
-                  <SortableReport
-                    key={identifier}
-                    identifier={identifier}
-                    report={item.report}
-                    data={
-                      reportDataMap[identifier]?.data ??
-                      item.report.reportCalculation?.calculation
-                    }
-                    filters={
-                      reportDataMap[identifier]?.filters ??
-                      item.report.reportCalculation?.filters
-                    }
-                    onSubmit={(changedOptions) =>
-                      handleSubmit(identifier, changedOptions)
-                    }
+                  <SortableAddReportButton
+                    key={slotId}
+                    slotId={slotId}
+                    onClick={() => setIsReportSelectionPopupOpen(true)}
                   />
                 );
               })}
-
-              {[...Array(addReportBoxCount)].map((_, index) => (
-                <AddReportButton
-                  key={index}
-                  onClick={() => setIsReportSelectionPopupOpen(true)}
-                />
-              ))}
             </div>
           </SortableContext>
         </section>
@@ -295,15 +393,15 @@ export const SlidersBox: React.FC = () => {
           autoRotateDuration={activeRotate || undefined}
           tooltips={generateTooltips(barsNumber * slidesPerView)}
           onAddReportClick={() => {
-            const total = reportOrder.length + addReportBoxCount;
-            if (total >= 16) {
+            const total = slotsToRender.length;
+            if (total >= MAX_TOTAL_SLOTS) {
               showToast({
                 message: 'حداکثر تعداد گزارش در هر داشبورد 16 عدد است',
                 type: 'warning',
               });
               return;
             }
-            setAddReportBoxCount((prev) => prev + 1);
+            setSlotsToRender((prev) => [...prev, prev.length]);
             setTimeout(() => {
               window.scrollTo({
                 top: document.body.scrollHeight,
@@ -316,6 +414,13 @@ export const SlidersBox: React.FC = () => {
           <AutoRotationOff onClick={() => setActiveRotate(null)} />
         )}
       </div>
+
+      {/* {isReportSelectionPopupOpen && (
+        <ReportSelectionPopup
+          isOpen={isReportSelectionPopupOpen}
+          onClose={() => setIsReportSelectionPopupOpen(false)}
+        />
+      )} */}
     </div>
   );
 };
