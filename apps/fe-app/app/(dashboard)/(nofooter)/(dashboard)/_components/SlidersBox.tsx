@@ -6,6 +6,7 @@ import {
   AutoRotateSwitch,
   AutoRotationOff,
   cn,
+  ConfirmModal,
   HorizontalScrollBar,
 } from 'design-system';
 import React, { useEffect, useRef, useState } from 'react';
@@ -35,9 +36,19 @@ import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomT
 import {
   FinancialReportFilterApiModel,
   OpenAPI,
+  useDashboardsServiceDeleteDashboardsByDashboardId,
+  useDashboardsServiceDeleteDashboardsByDashboardIdItemsByDashboardItemId,
   useDashboardsServiceGetDashboardsByDashboardId,
   useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemId,
   useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdReorder,
+} from '@openapi';
+import {
+  Report13Dot1CalculationResult,
+  Report13Dot2CalculationResult,
+  Report13Dot3CalculationResult,
+  Report15CalculationResult,
+  Report2CalculationResult,
+  Report6CalculationResult,
 } from '@openapi';
 import { fetchToken } from '../../../../(auth)/auth.utils';
 import { DynamicReportRenderer } from './DynamicReportRenderer';
@@ -54,7 +65,16 @@ const SortableReport: React.FC<{
   data: any;
   filters: FinancialReportFilterApiModel[] | undefined;
   onSubmit: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
-}> = ({ slotId, identifier, report, data, filters, onSubmit }) => {
+  onRemoveReport: () => void;
+}> = ({
+  slotId,
+  identifier,
+  report,
+  data,
+  filters,
+  onSubmit,
+  onRemoveReport,
+}) => {
   const {
     attributes,
     listeners,
@@ -83,6 +103,7 @@ const SortableReport: React.FC<{
         data={data}
         filters={filters}
         onSubmit={onSubmit}
+        onRemove={onRemoveReport}
       />
     </div>
   );
@@ -127,9 +148,26 @@ export const SlidersBox: React.FC = () => {
   const [tokenLoaded, setTokenLoaded] = useState(false);
   const [isReportSelectionPopupOpen, setIsReportSelectionPopupOpen] =
     useState(false);
+  const [isRemoveReportOpen, setIsRemoveReportOpen] = useState({
+    open: false,
+    dashboardName: '',
+    dashboardItemID: 0,
+  });
 
   const [reportDataMap, setReportDataMap] = useState<
-    Record<number, { data: any; filters: FinancialReportFilterApiModel[] }>
+    Record<
+      number,
+      {
+        data:
+          | Report2CalculationResult
+          | Report6CalculationResult
+          | Report13Dot1CalculationResult
+          | Report13Dot2CalculationResult
+          | Report13Dot3CalculationResult
+          | Report15CalculationResult;
+        filters: FinancialReportFilterApiModel[];
+      }
+    >
   >({});
 
   useEffect(() => {
@@ -176,8 +214,14 @@ export const SlidersBox: React.FC = () => {
 
     for (let i = 0; i <= maxOrder; i++) slots.push(i);
 
+    if (slots.length < MAX_INITIAL_SLOTS) {
+      for (let i = slots.length; i < MAX_INITIAL_SLOTS; i++) {
+        slots.push(i);
+      }
+    }
+
     if (reports.length >= MAX_INITIAL_SLOTS && slots.length < MAX_TOTAL_SLOTS) {
-      slots.push(slots.length); // new slot
+      slots.push(slots.length);
     }
 
     setSlotsToRender(slots);
@@ -196,6 +240,8 @@ export const SlidersBox: React.FC = () => {
 
   const { mutateAsync } =
     useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemId();
+  const { mutate: removeReport } =
+    useDashboardsServiceDeleteDashboardsByDashboardIdItemsByDashboardItemId();
 
   const handleSubmit = async (
     dashboardItemId: number,
@@ -218,7 +264,7 @@ export const SlidersBox: React.FC = () => {
       setReportDataMap((prev) => ({
         ...prev,
         [dashboardItemId]: {
-          data: updatedReport.report.reportCalculation?.calculation,
+          data: updatedReport.report.reportCalculation?.calculation as any,
           filters: updatedReport.report.reportCalculation
             ?.filters as FinancialReportFilterApiModel[],
         },
@@ -229,6 +275,45 @@ export const SlidersBox: React.FC = () => {
       console.error('Error submitting report update', error);
       return false;
     }
+  };
+  const handleRemoveReport = () => {
+    removeReport(
+      {
+        dashboardId: Number(dashboardIdParam),
+        dashboardItemId: isRemoveReportOpen.dashboardItemID,
+      },
+      {
+        onSuccess: async () => {
+          setIsRemoveReportOpen({
+            open: false,
+            dashboardName: '',
+            dashboardItemID: 0,
+          });
+
+          setReportDataMap((prev) => {
+            const newMap = { ...prev };
+            delete newMap[isRemoveReportOpen.dashboardItemID];
+            return newMap;
+          });
+
+          if (dashboardData) {
+            const updatedItems = dashboardData.items?.filter(
+              (item) => item.identifier !== isRemoveReportOpen.dashboardItemID,
+            );
+
+            dashboardData.items = updatedItems ?? [];
+            setSlotsToRender((prev) => {
+              const removedOrder = dashboardData.items?.find(
+                (item) =>
+                  item.identifier === isRemoveReportOpen.dashboardItemID,
+              )?.order;
+              if (removedOrder === undefined) return prev;
+              return prev.filter((order) => order !== removedOrder);
+            });
+          }
+        },
+      },
+    );
   };
 
   const sensors = useSensors(
@@ -365,6 +450,13 @@ export const SlidersBox: React.FC = () => {
                           onSubmit={(changedOptions) =>
                             handleSubmit(report.identifier, changedOptions)
                           }
+                          onRemoveReport={() =>
+                            setIsRemoveReportOpen({
+                              dashboardItemID: report.identifier,
+                              dashboardName: report.report.title,
+                              open: true,
+                            })
+                          }
                         />
                       );
                     }
@@ -433,6 +525,30 @@ export const SlidersBox: React.FC = () => {
           onClose={() => setIsReportSelectionPopupOpen(false)}
         />
       )} */}
+      <ConfirmModal
+        isOpen={isRemoveReportOpen.open}
+        onConfirm={() => handleRemoveReport()}
+        title="تایید حذف گزارش"
+        cancelBtnLabel="خیر"
+        submitBtnLabel="بله"
+        description={
+          <span>
+            آیا مطمئن هستید که می‌خواهید گزارش
+            <span className="font-medium">
+              {' '}
+              {isRemoveReportOpen.dashboardName}{' '}
+            </span>
+            را از این فضا حذف کنید؟
+          </span>
+        }
+        onClose={() =>
+          setIsRemoveReportOpen({
+            dashboardItemID: 0,
+            dashboardName: '',
+            open: false,
+          })
+        }
+      />
     </div>
   );
 };

@@ -20,6 +20,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
   popupInfoItems,
   settingOptions,
   onSubmit,
+  onRemove,
 }) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [loadingStatus, setLoadingStatus] = useState<
@@ -135,11 +136,6 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                     onClick: () => setSettingsOpen(true),
                   },
                   {
-                    icon: 'eye',
-                    title: 'مشاهده بررسی گزارش',
-                    onClick: () => console.log('تنظیمات گزارش'),
-                  },
-                  {
                     icon: 'repeat',
                     title: 'جایگزینی گزارش',
                     onClick: () => console.log('اطلاعات بیشتر'),
@@ -152,7 +148,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                   {
                     icon: 'trash-2',
                     title: 'حذف گزارش از این فضا',
-                    onClick: () => console.log('حذف گزارش از این فضا'),
+                    onClick: () => onRemove?.(),
                   },
                 ]}
               >

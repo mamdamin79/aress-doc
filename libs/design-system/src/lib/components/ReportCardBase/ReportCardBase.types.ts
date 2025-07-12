@@ -11,4 +11,5 @@ export interface ReportCardBaseProps {
   popupInfoItems?: popupInfoItemType;
   settingOptions: optionProps[];
   onSubmit?: () => Promise<boolean>;
+  onRemove?: () => void;
 }

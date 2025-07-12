@@ -16,6 +16,7 @@ interface Report6Props {
   data: Report6CalculationResult;
   filters: FinancialReportFilterApiModel[];
   onSubmit?: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
+  onRemove?: ()=>void;
 }
 
 export const Report6: FC<Report6Props> = ({
@@ -23,6 +24,7 @@ export const Report6: FC<Report6Props> = ({
   filters,
   onSubmit,
   title,
+  onRemove
 }) => {
   const [dataState, setDataState] = useState(data);
   const [filterState, setFilterState] = useState(filters);
@@ -157,6 +159,7 @@ export const Report6: FC<Report6Props> = ({
         toBasicSetting(filterState[2], updateOption),
       ]}
       onSubmit={handleSubmit}
+      onRemove={onRemove}
     >
       <HighchartsReact highcharts={Highcharts} options={chartOptions} />
     </ReportCardBase>

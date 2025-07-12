@@ -36,6 +36,7 @@ interface DynamicReportRendererProps {
     | Report15CalculationResult;
   filters?: FinancialReportFilterApiModel[];
   onSubmit?: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
+  onRemove?: () => void;
 }
 
 export const DynamicReportRenderer: React.FC<DynamicReportRendererProps> = ({
@@ -44,6 +45,7 @@ export const DynamicReportRenderer: React.FC<DynamicReportRendererProps> = ({
   filters,
   onSubmit,
   title,
+  onRemove,
 }) => {
   const ReportComponent = reportComponents[identifier];
 
@@ -57,6 +59,7 @@ export const DynamicReportRenderer: React.FC<DynamicReportRendererProps> = ({
       filters={filters}
       onSubmit={onSubmit}
       title={title}
+      onRemove={onRemove}
     />
   );
 };
