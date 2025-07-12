@@ -113,7 +113,7 @@ const data: FundsSidebarData[] = [
   },
 ];
 import React from 'react';
-import { useHeaderVisibility } from '../../../../hooks';
+import { useHeaderVisibility } from '../../../../../hooks';
 export const FundsSidebarWrapper: React.FC = () => {
   const { isHeaderVisible } = useHeaderVisibility();
 

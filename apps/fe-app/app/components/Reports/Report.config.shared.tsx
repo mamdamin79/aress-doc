@@ -49,7 +49,7 @@ export const baseOptions: Highcharts.Options = {
               <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; width: 100%;">
                 <span style="font-size: 0.875rem; font-weight: 400;">${p.series.name}:</span>
                 <span style="unicode-bidi: plaintext;">
-                  ${p.y < 0 ? Math.abs(p.y) + '-' : p.y}${p.point?.unit ? ' ' + p.point.unit : ''}
+                  ${p.y < 0 ? '-' + Math.abs(p.y) : p.y}${p.point?.unit ? ' ' + p.point.unit : ''}
                 </span>
               </div>
             </div>
@@ -88,7 +88,7 @@ export const xAxisLabels: Highcharts.XAxisLabelsOptions = {
     const chart = this.axis.chart;
     const totalLabels = this.axis.categories?.length ?? 12;
     const spacePerLabel = chart.plotWidth / totalLabels;
-    const maxChars = spacePerLabel < 50 ? 3 : 6;
+    const maxChars = spacePerLabel < 50 ? 10 : 30;
     const label = this.value as string;
     return label.length > maxChars ? label.slice(0, maxChars) : label;
   },

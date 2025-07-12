@@ -7,22 +7,22 @@ export const SuccessOrFail = ({ status }: { status: 'done' | 'rejected' }) => {
     <div
       className={cn(
         'flex h-14 w-14 items-center justify-center rounded-full',
-        status === 'done' && 'bg-vividGreen-100',
-        status === 'rejected' && 'bg-red-100',
+        status === 'done' && 'bg-surface-accent-vividgreen-100',
+        status === 'rejected' && 'bg-surface-accent-red-100',
       )}
     >
       <div
         className={cn(
           'flex h-12 w-12 items-center justify-center rounded-full',
-          status === 'done' && 'bg-vividGreen-300',
-          status === 'rejected' && 'bg-red-300',
+          status === 'done' && 'bg-surface-accent-vividgreen-300',
+          status === 'rejected' && 'bg-surface-accent-red-300',
         )}
       >
         <div
           className={cn(
-            'flex h-10 w-10 items-center justify-center rounded-full text-white',
-            status === 'done' && 'bg-vividGreen-600',
-            status === 'rejected' && 'bg-red-600',
+            'text-icon-onaccent-neutral-on600 flex h-10 w-10 items-center justify-center rounded-full',
+            status === 'done' && 'bg-surface-accent-vividgreen-600',
+            status === 'rejected' && 'bg-surface-accent-red-600',
           )}
         >
           {status === 'done' && <Icon name="check" size="lg" />}

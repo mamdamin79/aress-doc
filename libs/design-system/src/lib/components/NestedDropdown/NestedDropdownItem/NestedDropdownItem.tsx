@@ -38,6 +38,7 @@ export const NestedDropdownItem: React.FC<NestedDropdownItemProps> = ({
   hasTooltip = false,
   hasChildren = false,
   optionsListProps,
+  disabled,
 }) => {
   return (
     <Wrapper hasTooltip={hasTooltip} selectedOption={selectedOption}>
@@ -47,8 +48,10 @@ export const NestedDropdownItem: React.FC<NestedDropdownItemProps> = ({
           status === 'normal' && 'hover:border-border-neutral-highcontrast',
           status === 'error' && 'border-border-message-error-primary-600',
           status === 'opened' && 'border-border-brand-primary-600 border-2',
+          disabled &&
+            'border-border-neutral-disable text-text-neutral-disable hover:border-border-neutral-disable cursor-default',
         )}
-        onClick={() => onClick?.(optionsListProps)}
+        onClick={() => !disabled && onClick?.(optionsListProps)}
       >
         <div className="flex flex-row items-center gap-2 text-sm">
           <span
@@ -67,7 +70,12 @@ export const NestedDropdownItem: React.FC<NestedDropdownItemProps> = ({
             </span>
           )}
           {selectedOption && (
-            <span className="text-text-neutral-primary max-w-[190px] overflow-hidden truncate whitespace-nowrap font-normal">
+            <span
+              className={cn(
+                'text-text-neutral-primary max-w-[190px] overflow-hidden truncate whitespace-nowrap font-normal',
+                disabled && 'text-text-neutral-disable',
+              )}
+            >
               {selectedOption}
             </span>
           )}

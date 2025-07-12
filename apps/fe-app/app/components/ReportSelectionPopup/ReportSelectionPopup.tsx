@@ -1,13 +1,6 @@
+import { Report6 } from '../Reports/Report6';
 import { ReportSelectionPopupProps } from './ReportSelectionPopup.types';
-import {
-  Button,
-  Dialog,
-  Icon,
-  NewBadge,
-  Report6,
-  ReportCardBase,
-  VideoBadge,
-} from 'design-system';
+import { Button, Dialog, Icon, NewBadge, VideoBadge } from 'design-system';
 
 export const ReportSelectionPopup: React.FC<ReportSelectionPopupProps> = ({
   isOpen,

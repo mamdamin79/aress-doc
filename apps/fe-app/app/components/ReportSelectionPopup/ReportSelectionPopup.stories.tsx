@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { ReportSelectionPopup } from './ReportSelectionPopup';
 import { useState } from 'react';
-import { tempData } from './ReportCardTestData';
 const meta: Meta<typeof ReportSelectionPopup> = {
   component: ReportSelectionPopup,
 };
@@ -24,9 +23,9 @@ export const Default: Story = {
           summary="این گزارش نرخ بازده تا سررسید (YTM) اوراق با درآمد ثابت را به نمایش گذاشته است. این نرخ به ساختار اقتصادی کشور مربوط می‌باشد و اگر تغییرات شدید نرخ با عدم تغییر ساختار اقتصادی همراه باشد به میانگین تاریخی خود باز می‌گردد."
           title="سهم تاثیر بازدهی صنایع در شاخص"
           video
-          report={tempData}
         />
       </div>
     );
+    ``;
   },
 };
