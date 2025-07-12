@@ -21,6 +21,8 @@ import { useThemeToggle } from '../../../hooks';
 import { OpenAPI, useDashboardsServiceGetDashboards } from '@openapi';
 import { fetchToken } from '../../(auth)/auth.utils';
 import { buildDashboardUrl, useDashboardActions } from './header.utils';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 export const Header: React.FC = () => {
   const [token, setToken] = useState<string | null>(null);
@@ -166,7 +168,9 @@ export const Header: React.FC = () => {
               />
             </Link>
             <div className="pt-2">
-              {width >= DESKTOP_BREAKPOINT ? (
+              {query.isLoading || !query.data ? (
+                <Skeleton width={300} height={40} />
+              ) : width >= DESKTOP_BREAKPOINT ? (
                 <DesktopMenu menuItems={menuData} activeTab={activeTabIndex} />
               ) : (
                 <BurgerMenu menuItems={menuData} />

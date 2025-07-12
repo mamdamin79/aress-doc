@@ -1,5 +1,6 @@
 'use client';
-
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import {
   AddReportButton,
   AutoRotateSwitch,
@@ -297,20 +298,28 @@ export const SlidersBox: React.FC = () => {
       return start !== end ? `اسلاید ${end}-${start}` : `اسلاید ${end}`;
     });
   };
-  if (!tokenLoaded || !dashboardIdParam || isDashboardLoading) {
-    return (
-      <div className="text-text-neutral-secondary flex h-64 w-full items-center justify-center">
-        در حال بارگذاری داشبورد...
-      </div>
-    );
+  {
+    !tokenLoaded ||
+      !dashboardIdParam ||
+      (isDashboardLoading &&
+        Array.from(
+          [1, 2, 3, 4].map((arr) => {
+            return <Skeleton />;
+          }),
+        ));
   }
   return (
     <div className="w-fit">
       <div className="flex w-full justify-between">
-        <DashboardNumberAndName
-          number={dashboardData?.identifier}
-          title={dashboardData?.name}
-        />
+        {dashboardData ? (
+          <DashboardNumberAndName
+            number={dashboardData?.identifier}
+            title={dashboardData?.name}
+          />
+        ) : (
+          <Skeleton width={187} height={40} />
+        )}
+
         <AutoRotateSwitch
           onChange={handleRotation}
           rotateOptions={[5, 10, 15]}
@@ -332,41 +341,47 @@ export const SlidersBox: React.FC = () => {
               ref={containerRef}
               className="grid w-full grid-cols-1 gap-6 xl:grid-cols-2"
             >
-              {slotsToRender.map((order) => {
-                const report = dashboardData?.items?.find(
-                  (r) => r.order === order,
-                );
-                const slotId = `slot-${order}`;
-                if (report) {
-                  return (
-                    <SortableReport
-                      key={slotId}
-                      slotId={slotId}
-                      identifier={report.report.identifier}
-                      report={report.report}
-                      data={
-                        reportDataMap[report.identifier]?.data ??
-                        report.report.reportCalculation?.calculation
-                      }
-                      filters={
-                        reportDataMap[report.identifier]?.filters ??
-                        report.report.reportCalculation?.filters
-                      }
-                      onSubmit={(changedOptions) =>
-                        handleSubmit(report.identifier, changedOptions)
-                      }
-                    />
-                  );
-                }
+              {dashboardData
+                ? slotsToRender.map((order) => {
+                    const report = dashboardData?.items?.find(
+                      (r) => r.order === order,
+                    );
+                    const slotId = `slot-${order}`;
+                    if (report) {
+                      return (
+                        <SortableReport
+                          key={slotId}
+                          slotId={slotId}
+                          identifier={report.report.identifier}
+                          report={report.report}
+                          data={
+                            reportDataMap[report.identifier]?.data ??
+                            report.report.reportCalculation?.calculation
+                          }
+                          filters={
+                            reportDataMap[report.identifier]?.filters ??
+                            report.report.reportCalculation?.filters
+                          }
+                          onSubmit={(changedOptions) =>
+                            handleSubmit(report.identifier, changedOptions)
+                          }
+                        />
+                      );
+                    }
 
-                return (
-                  <SortableAddReportButton
-                    key={slotId}
-                    slotId={slotId}
-                    onClick={() => setIsReportSelectionPopupOpen(true)}
-                  />
-                );
-              })}
+                    return (
+                      <SortableAddReportButton
+                        key={slotId}
+                        slotId={slotId}
+                        onClick={() => setIsReportSelectionPopupOpen(true)}
+                      />
+                    );
+                  })
+                : Array.from(
+                    [1, 2, 3, 4].map((i) => (
+                      <Skeleton width={616} height={336} />
+                    )),
+                  )}
             </div>
           </SortableContext>
         </section>
