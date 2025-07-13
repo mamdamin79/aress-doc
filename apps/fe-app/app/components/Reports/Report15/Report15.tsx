@@ -1,9 +1,15 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { baseOptions } from '../Report.config.shared';
 import { financialDefinitions } from './Report15.constants';
 import { ReportCardBase } from 'design-system';
+import {
+  FinancialReportFilterApiModel,
+  Report15CalculationResult,
+} from '@openapi';
+import { OptionItem } from 'libs/design-system/src/lib/components/OptionsListExplorer/OptionsListExplorer.types';
+import { toBasicSetting, toDropdownSetting } from '../Report.utils';
 
 interface InfoBoxProps {
   label: string;
@@ -18,45 +24,70 @@ const InfoBox: FC<InfoBoxProps> = ({ label, value }) => (
 );
 
 export interface Report15Props {
-  graphData: {
-    Items: {
-      x: number;
-      y: number;
-    };
-  }[];
-  beta: number;
-  betaAdjusted: number;
-  yIntersect: number;
-  rSquared: number;
-  pValue: string;
+  title?: string;
+  data: Report15CalculationResult;
+  filters: FinancialReportFilterApiModel[];
+  onSubmit?: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
+  onRemove?: () => void;
 }
 
 export const Report15: FC<Report15Props> = ({
-  graphData,
-  beta,
-  betaAdjusted,
-  yIntersect,
-  rSquared,
-  pValue,
+  data,
+  filters,
+  onRemove,
+  onSubmit,
+  title,
 }) => {
+  const [dataState, setDataState] = useState(data);
+  const [filterState, setFilterState] = useState(filters);
+
+  useEffect(() => {
+    setDataState(data);
+    setFilterState(filters);
+  }, [data, filters]);
+
+  const updateOption = (optionType: string, item: OptionItem) => {
+    setFilterState((prev) =>
+      prev.map((f) =>
+        f.optionType === optionType
+          ? {
+              ...f,
+              selectedOption: {
+                identifier: item.id.toString(),
+                title: item.title,
+              },
+            }
+          : f,
+      ),
+    );
+  };
+
+  const handleSubmit = async (): Promise<boolean> => {
+    if (!onSubmit) return true;
+    try {
+      const filterOptions: Record<string, OptionItem> = Object.fromEntries(
+        filterState.map((filter) => [
+          filter.optionType,
+          {
+            id: Number(filter.selectedOption.identifier),
+            title: filter.selectedOption.title,
+          },
+        ]),
+      );
+
+      const success = await onSubmit(filterOptions);
+      return success;
+    } catch (error) {
+      console.error('Submit failed:', error);
+      return false;
+    }
+  };
   const containerWidth = 367;
   const containerHeight = 223;
 
-  const scatterData = useMemo(() => {
-    if (!Array.isArray(graphData)) return [];
-    return graphData
-      .filter(
-        (d) =>
-          d?.Items &&
-          typeof d.Items.x === 'number' &&
-          typeof d.Items.y === 'number',
-      )
-      .map(({ Items }) => [Items.x, Items.y]);
-  }, [graphData]);
-
   const chartData = useMemo(() => {
-    const xValues = scatterData.map((p) => p[0]);
-    const yValues = scatterData.map((p) => p[1]);
+    const xValues = data.graphData.map((p) => p.x);
+    const yValues = data.graphData.map((p) => p.y);
 
     const minX = Math.min(...xValues);
     const maxX = Math.max(...xValues);
@@ -68,8 +99,8 @@ export const Report15: FC<Report15Props> = ({
     const fullMax = Math.max(maxX, maxY);
 
     const regressionLine = [
-      [fullMin, beta * fullMin + yIntersect],
-      [fullMax, beta * fullMax + yIntersect],
+      [fullMin, data.beta * fullMin + data.yIntersect],
+      [fullMax, data.beta * fullMax + data.yIntersect],
     ];
 
     const squareSize = Math.min(containerWidth, containerHeight);
@@ -87,7 +118,7 @@ export const Report15: FC<Report15Props> = ({
         horizontalPadding,
       ],
     };
-  }, [scatterData, beta, yIntersect]);
+  }, [data.graphData, data.beta, data.yIntersect]);
 
   const tickInterval = (chartData.maxXY - chartData.minXY) / 10;
 
@@ -176,7 +207,7 @@ export const Report15: FC<Report15Props> = ({
       {
         name: 'داده‌های واقعی',
         type: 'scatter',
-        data: scatterData,
+        data: data.graphData,
         marker: {
           symbol: 'diamond',
           radius: 5,
@@ -199,85 +230,11 @@ export const Report15: FC<Report15Props> = ({
   return (
     <ReportCardBase
       settingOptions={[
-        {
-          type: 'nestedDropdown',
-          props: {
-            title: 'محور افقی',
-            items: [
-              {
-                title: 'نام شاخص:',
-                icon: { name: 'square-mouse-pointer', size: 'sm' },
-                selectedOption: 'شاخص قیمت (وزنی ارزشی)',
-                disabled: true,
-                status: 'normal',
-                optionsListProps: {
-                  title: 'نام شاخص',
-                  items: {
-                    items: [],
-                  },
-                },
-              },
-            ],
-          },
-        },
-        {
-          type: 'nestedDropdown',
-          props: {
-            title: 'محور عمودی',
-            items: [
-              {
-                title: 'شاخص صنعت:',
-                icon: { name: 'square-mouse-pointer', size: 'sm' },
-                selectedOption: 'پالایشی',
-                optionsListProps: {
-                  selectedItemId: 1,
-                  searchable: false,
-                  title: 'شاخص صنعت',
-                  items: {
-                    items: [
-                      {
-                        id: 1,
-                        title: 'پالایشی',
-                      },
-                      {
-                        id: 2,
-                        title: 'ذغال سنگ',
-                      },
-                    ],
-                  },
-                },
-              },
-            ],
-          },
-        },
-        {
-          type: 'basicSelection',
-          props: {
-            title: 'بازه زمانی: ',
-            icon: { name: 'square-mouse-pointer', size: 'sm' },
-            status: 'normal',
-            selectedOption: 'یک سال',
-            optionsListProps: {
-              selectedItemId: 3,
-              searchable: false,
-              title: 'تفکیک زمانی',
-              items: {
-                items: [
-                  {
-                    id: 1,
-                    title: 'یک سال',
-                  },
-                  {
-                    id: 2,
-                    title: 'دو سال',
-                  },
-                ],
-              },
-            },
-          },
-        },
+        toDropdownSetting(filterState[0], updateOption),
+        toDropdownSetting(filterState[1], updateOption),
+        toBasicSetting(filterState[2], updateOption),
       ]}
-      title="رابطه بین شاخص قیمت (وزنی-ارزشی) و شاخص پالایشی در یک سال گذشته"
+      title={title ?? ''}
       popupInfoItems={financialDefinitions}
     >
       <div className="flex flex-col gap-1">
@@ -302,11 +259,11 @@ export const Report15: FC<Report15Props> = ({
 
         <div className="flex flex-row gap-3 px-3 pb-3" dir="rtl">
           <div className="flex flex-col gap-2 pt-[18px]">
-            <InfoBox label="بتا (β)" value={beta} />
-            <InfoBox label="بتای تعدیل شده" value={betaAdjusted} />
-            <InfoBox label="عرض از مبدا (C)" value={`${yIntersect}%+`} />
-            <InfoBox label="ضریب تعیین (R2)" value={rSquared} />
-            <InfoBox label="سطح معنادار (P-Value)" value={pValue} />
+            <InfoBox label="بتا (β)" value={data.beta} />
+            <InfoBox label="بتای تعدیل شده" value={data.betaAdjusted} />
+            <InfoBox label="عرض از مبدا (C)" value={`${data.yIntersect}%+`} />
+            <InfoBox label="ضریب تعیین (R2)" value={data.rSquared} />
+            <InfoBox label="سطح معنادار (P-Value)" value={data.pValue} />
           </div>
           <div className="h-[223px] w-[367px] pt-[18px]">
             <HighchartsReact highcharts={Highcharts} options={options} />

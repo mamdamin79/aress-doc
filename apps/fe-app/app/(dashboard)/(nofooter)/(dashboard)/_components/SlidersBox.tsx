@@ -39,7 +39,7 @@ import {
   useDashboardsServiceDeleteDashboardsByDashboardId,
   useDashboardsServiceDeleteDashboardsByDashboardIdItemsByDashboardItemId,
   useDashboardsServiceGetDashboardsByDashboardId,
-  useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemId,
+  useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdCalculations,
   useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdReorder,
 } from '@openapi';
 import {
@@ -239,7 +239,7 @@ export const SlidersBox: React.FC = () => {
   const htmlPaddingRight = useHtmlPaddingRight();
 
   const { mutateAsync } =
-    useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemId();
+    useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdCalculations();
   const { mutate: removeReport } =
     useDashboardsServiceDeleteDashboardsByDashboardIdItemsByDashboardItemId();
 

@@ -2,7 +2,7 @@
 
 import { UseMutationOptions, UseQueryOptions, useMutation, useQuery } from "@tanstack/react-query";
 import { DashboardsService, FundsService, HealthService, ReportsService, UsersService } from "../requests/services.gen";
-import { AddReportToDashboardForUserBody, Body_change_profile_picture_users_profile_picture_change_post, Body_login_for_access_token_users_login_post, Body_test_user_access_token_users_token_post, CaptchaType, ChangeDashboardReportItemSortOrderBody, ChangePasswordByOtpBody, ChangePhoneByOtpBody, ChangePhoneGetOtpBody, ChangeUsernameBody, CreateDashboardForUserBody, DuplicateDashboardForUserBody, ForgotPasswordResetByOtpBody, GetDashboardItemCalculationsBody, GetForgotPasswordOtpBody, GetReportCalculationsBody, PinFundInTableTabBody, RenameDashboardForUserBody, UnpinFundInTableTabBody, ValidatePasswordForUserBody } from "../requests/types.gen";
+import { AddReportToDashboardForUserBody, Body_change_profile_picture_users_profile_picture_change_post, Body_login_for_access_token_users_login_post, Body_test_user_access_token_users_token_post, CaptchaType, ChangeDashboardReportItemSortOrderBody, ChangePasswordByOtpBody, ChangePhoneByOtpBody, ChangePhoneGetOtpBody, ChangeUsernameBody, CreateDashboardForUserBody, DuplicateDashboardForUserBody, ForgotPasswordResetByOtpBody, GetDashboardItemCalculationsBody, GetForgotPasswordOtpBody, GetReportCalculationsBody, PinFundInTableTabBody, RenameDashboardForUserBody, ReplaceDashboardItemCalculationsBody, UnpinFundInTableTabBody, ValidatePasswordForUserBody } from "../requests/types.gen";
 import * as Common from "./common";
 export const useHealthServiceGetHealth = <TData = Common.HealthServiceGetHealthDefaultResponse, TError = unknown, TQueryKey extends Array<unknown> = unknown[]>(queryKey?: TQueryKey, options?: Omit<UseQueryOptions<TData, TError>, "queryKey" | "queryFn">) => useQuery<TData, TError>({ queryKey: Common.UseHealthServiceGetHealthKeyFn(queryKey), queryFn: () => HealthService.getHealth() as TData, ...options });
 export const useUsersServiceGetUsersLoginCaptcha = <TData = Common.UsersServiceGetUsersLoginCaptchaDefaultResponse, TError = unknown, TQueryKey extends Array<unknown> = unknown[]>({ captchaHeight, captchaType, captchaWidth }: {
@@ -124,7 +124,16 @@ export const useDashboardsServicePostDashboardsByDashboardIdDuplicate = <TData =
   dashboardId: number;
   requestBody: DuplicateDashboardForUserBody;
 }, TContext>({ mutationFn: ({ dashboardId, requestBody }) => DashboardsService.postDashboardsByDashboardIdDuplicate({ dashboardId, requestBody }) as unknown as Promise<TData>, ...options });
-export const useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemId = <TData = Common.DashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdMutationResult, TError = unknown, TContext = unknown>(options?: Omit<UseMutationOptions<TData, TError, {
+export const useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdReplace = <TData = Common.DashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdReplaceMutationResult, TError = unknown, TContext = unknown>(options?: Omit<UseMutationOptions<TData, TError, {
+  dashboardId: number;
+  dashboardItemId: number;
+  requestBody: ReplaceDashboardItemCalculationsBody;
+}, TContext>, "mutationFn">) => useMutation<TData, TError, {
+  dashboardId: number;
+  dashboardItemId: number;
+  requestBody: ReplaceDashboardItemCalculationsBody;
+}, TContext>({ mutationFn: ({ dashboardId, dashboardItemId, requestBody }) => DashboardsService.postDashboardsByDashboardIdItemsByDashboardItemIdReplace({ dashboardId, dashboardItemId, requestBody }) as unknown as Promise<TData>, ...options });
+export const useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdCalculations = <TData = Common.DashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsMutationResult, TError = unknown, TContext = unknown>(options?: Omit<UseMutationOptions<TData, TError, {
   dashboardId: number;
   dashboardItemId: number;
   requestBody: GetDashboardItemCalculationsBody;
@@ -132,7 +141,7 @@ export const useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItem
   dashboardId: number;
   dashboardItemId: number;
   requestBody: GetDashboardItemCalculationsBody;
-}, TContext>({ mutationFn: ({ dashboardId, dashboardItemId, requestBody }) => DashboardsService.postDashboardsByDashboardIdItemsByDashboardItemId({ dashboardId, dashboardItemId, requestBody }) as unknown as Promise<TData>, ...options });
+}, TContext>({ mutationFn: ({ dashboardId, dashboardItemId, requestBody }) => DashboardsService.postDashboardsByDashboardIdItemsByDashboardItemIdCalculations({ dashboardId, dashboardItemId, requestBody }) as unknown as Promise<TData>, ...options });
 export const useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdReorder = <TData = Common.DashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdReorderMutationResult, TError = unknown, TContext = unknown>(options?: Omit<UseMutationOptions<TData, TError, {
   dashboardId: number;
   dashboardItemId: number;

@@ -21,6 +21,9 @@ const reportComponents: Record<number, any> = {
       (mod) => mod.Report15,
     ),
   ),
+  2: dynamic(() =>
+    import('../../../../components/Reports/Report2').then((mod) => mod.Report2),
+  ),
   // Add others as needed
 };
 

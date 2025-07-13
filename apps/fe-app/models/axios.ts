@@ -315,6 +315,9 @@ export interface DashboardReportPreviewApiModel {
   image: string;
 }
 
+/** DeleteDashboardItemResponseApiModel */
+export type DeleteDashboardItemResponseApiModel = object;
+
 /** DuplicateDashboardForUserBody */
 export interface DuplicateDashboardForUserBody {
   /** Name */
@@ -912,6 +915,12 @@ export interface PinFundInTableTabResponseApiModel {
 export interface RenameDashboardForUserBody {
   /** Name */
   name: string;
+}
+
+/** ReplaceDashboardItemCalculationsBody */
+export interface ReplaceDashboardItemCalculationsBody {
+  /** Newreportidentifier */
+  newReportIdentifier: string;
 }
 
 /** Report13Dot1CalculationResult */
@@ -2217,7 +2226,7 @@ export class Api<
       dashboardItemId: number,
       params: RequestParams = {},
     ) =>
-      this.request<any, HTTPValidationError>({
+      this.request<DeleteDashboardItemResponseApiModel, HTTPValidationError>({
         path: `/dashboards/${dashboardId}/items/${dashboardItemId}`,
         method: "DELETE",
         secure: true,
@@ -2226,22 +2235,22 @@ export class Api<
       }),
 
     /**
-     * @description Get dashboard item calculations.
+     * @description Replace item in dashboard.
      *
      * @tags Dashboards
-     * @name GetDashboardItemCalculationsDashboardsDashboardIdItemsDashboardItemIdPost
-     * @summary Get Dashboard Item Calculations
-     * @request POST:/dashboards/{dashboard_id}/items/{dashboard_item_id}
+     * @name ReplaceDashboardItemDashboardsDashboardIdItemsDashboardItemIdReplacePost
+     * @summary Replace Dashboard Item
+     * @request POST:/dashboards/{dashboard_id}/items/{dashboard_item_id}/replace
      * @secure
      */
-    getDashboardItemCalculationsDashboardsDashboardIdItemsDashboardItemIdPost: (
+    replaceDashboardItemDashboardsDashboardIdItemsDashboardItemIdReplacePost: (
       dashboardId: number,
       dashboardItemId: number,
-      data: GetDashboardItemCalculationsBody,
+      data: ReplaceDashboardItemCalculationsBody,
       params: RequestParams = {},
     ) =>
       this.request<DashboardItemApiModel, HTTPValidationError>({
-        path: `/dashboards/${dashboardId}/items/${dashboardItemId}`,
+        path: `/dashboards/${dashboardId}/items/${dashboardItemId}/replace`,
         method: "POST",
         body: data,
         secure: true,
@@ -2249,6 +2258,32 @@ export class Api<
         format: "json",
         ...params,
       }),
+
+    /**
+     * @description Get dashboard item calculations.
+     *
+     * @tags Dashboards
+     * @name GetDashboardItemCalculationsDashboardsDashboardIdItemsDashboardItemIdCalculationsPost
+     * @summary Get Dashboard Item Calculations
+     * @request POST:/dashboards/{dashboard_id}/items/{dashboard_item_id}/calculations
+     * @secure
+     */
+    getDashboardItemCalculationsDashboardsDashboardIdItemsDashboardItemIdCalculationsPost:
+      (
+        dashboardId: number,
+        dashboardItemId: number,
+        data: GetDashboardItemCalculationsBody,
+        params: RequestParams = {},
+      ) =>
+        this.request<DashboardItemApiModel, HTTPValidationError>({
+          path: `/dashboards/${dashboardId}/items/${dashboardItemId}/calculations`,
+          method: "POST",
+          body: data,
+          secure: true,
+          type: ContentType.Json,
+          format: "json",
+          ...params,
+        }),
 
     /**
      * @description Change dashboard item sort order.
@@ -2367,12 +2402,12 @@ export class Api<
      * @description Unpin fund in table tab
      *
      * @tags Funds
-     * @name PinFundInTableTabFundsTableUnpinPost
-     * @summary Pin Fund In Table Tab
+     * @name UnpinFundInTableTabFundsTableUnpinPost
+     * @summary Unpin Fund In Table Tab
      * @request POST:/funds/table/unpin
      * @secure
      */
-    pinFundInTableTabFundsTableUnpinPost: (
+    unpinFundInTableTabFundsTableUnpinPost: (
       data: UnpinFundInTableTabBody,
       params: RequestParams = {},
     ) =>

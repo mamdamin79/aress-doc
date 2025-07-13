@@ -1496,7 +1496,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteDashboardItemResponseApiModel"
+                }
               }
             }
           },
@@ -1511,14 +1513,83 @@
             }
           }
         }
-      },
+      }
+    },
+    "/dashboards/{dashboard_id}/items/{dashboard_item_id}/replace": {
+      "post": {
+        "tags": [
+          "Dashboards"
+        ],
+        "summary": "Replace Dashboard Item",
+        "description": "Replace item in dashboard.",
+        "operationId": "replace_dashboard_item_dashboards__dashboard_id__items__dashboard_item_id__replace_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "dashboard_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dashboard Id"
+            }
+          },
+          {
+            "name": "dashboard_item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dashboard Item Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReplaceDashboardItemCalculationsBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardItemApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboards/{dashboard_id}/items/{dashboard_item_id}/calculations": {
       "post": {
         "tags": [
           "Dashboards"
         ],
         "summary": "Get Dashboard Item Calculations",
         "description": "Get dashboard item calculations.",
-        "operationId": "get_dashboard_item_calculations_dashboards__dashboard_id__items__dashboard_item_id__post",
+        "operationId": "get_dashboard_item_calculations_dashboards__dashboard_id__items__dashboard_item_id__calculations_post",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -1817,9 +1888,9 @@
         "tags": [
           "Funds"
         ],
-        "summary": "Pin Fund In Table Tab",
+        "summary": "Unpin Fund In Table Tab",
         "description": "Unpin fund in table tab",
-        "operationId": "pin_fund_in_table_tab_funds_table_unpin_post",
+        "operationId": "unpin_fund_in_table_tab_funds_table_unpin_post",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2620,6 +2691,11 @@
           "image"
         ],
         "title": "DashboardReportPreviewApiModel"
+      },
+      "DeleteDashboardItemResponseApiModel": {
+        "properties": {},
+        "type": "object",
+        "title": "DeleteDashboardItemResponseApiModel"
       },
       "DuplicateDashboardForUserBody": {
         "properties": {
@@ -3919,6 +3995,19 @@
           "name"
         ],
         "title": "RenameDashboardForUserBody"
+      },
+      "ReplaceDashboardItemCalculationsBody": {
+        "properties": {
+          "newReportIdentifier": {
+            "type": "string",
+            "title": "Newreportidentifier"
+          }
+        },
+        "type": "object",
+        "required": [
+          "newReportIdentifier"
+        ],
+        "title": "ReplaceDashboardItemCalculationsBody"
       },
       "Report13Dot1CalculationResult": {
         "properties": {

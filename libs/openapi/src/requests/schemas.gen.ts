@@ -690,6 +690,12 @@ export const $DashboardReportPreviewApiModel = {
     title: 'DashboardReportPreviewApiModel'
 } as const;
 
+export const $DeleteDashboardItemResponseApiModel = {
+    properties: {},
+    type: 'object',
+    title: 'DeleteDashboardItemResponseApiModel'
+} as const;
+
 export const $DuplicateDashboardForUserBody = {
     properties: {
         name: {
@@ -1861,6 +1867,18 @@ export const $RenameDashboardForUserBody = {
     type: 'object',
     required: ['name'],
     title: 'RenameDashboardForUserBody'
+} as const;
+
+export const $ReplaceDashboardItemCalculationsBody = {
+    properties: {
+        newReportIdentifier: {
+            type: 'string',
+            title: 'Newreportidentifier'
+        }
+    },
+    type: 'object',
+    required: ['newReportIdentifier'],
+    title: 'ReplaceDashboardItemCalculationsBody'
 } as const;
 
 export const $Report13Dot1CalculationResult = {

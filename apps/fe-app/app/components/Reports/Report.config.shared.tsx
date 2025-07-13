@@ -67,6 +67,9 @@ export const baseOptions: Highcharts.Options = {
       borderWidth: 0,
       borderRadius: 4,
     },
+    series: {
+      borderWidth: 0,
+    },
     spline: {
       marker: {
         enabled: false,

@@ -198,6 +198,10 @@ export type DashboardReportPreviewApiModel = {
     image: string;
 };
 
+export type DeleteDashboardItemResponseApiModel = {
+    [key: string]: unknown;
+};
+
 export type DuplicateDashboardForUserBody = {
     name: string;
 };
@@ -631,6 +635,10 @@ export type RenameDashboardForUserBody = {
     name: string;
 };
 
+export type ReplaceDashboardItemCalculationsBody = {
+    newReportIdentifier: string;
+};
+
 export type Report13Dot1CalculationResult = {
     lastDay: Report13Dot1CalculationResultColumn;
     lastDayNormalized: Report13Dot1CalculationResultColumnNormalized;
@@ -1033,15 +1041,23 @@ export type DeleteDashboardsByDashboardIdItemsByDashboardItemIdData = {
     dashboardItemId: number;
 };
 
-export type DeleteDashboardsByDashboardIdItemsByDashboardItemIdResponse = unknown;
+export type DeleteDashboardsByDashboardIdItemsByDashboardItemIdResponse = DeleteDashboardItemResponseApiModel;
 
-export type PostDashboardsByDashboardIdItemsByDashboardItemIdData = {
+export type PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceData = {
+    dashboardId: number;
+    dashboardItemId: number;
+    requestBody: ReplaceDashboardItemCalculationsBody;
+};
+
+export type PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceResponse = DashboardItemApiModel;
+
+export type PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsData = {
     dashboardId: number;
     dashboardItemId: number;
     requestBody: GetDashboardItemCalculationsBody;
 };
 
-export type PostDashboardsByDashboardIdItemsByDashboardItemIdResponse = DashboardItemApiModel;
+export type PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsResponse = DashboardItemApiModel;
 
 export type PostDashboardsByDashboardIdItemsByDashboardItemIdReorderData = {
     dashboardId: number;
@@ -1487,15 +1503,32 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                200: unknown;
+                200: DeleteDashboardItemResponseApiModel;
                 /**
                  * Validation Error
                  */
                 422: HTTPValidationError;
             };
         };
+    };
+    '/dashboards/{dashboard_id}/items/{dashboard_item_id}/replace': {
         post: {
-            req: PostDashboardsByDashboardIdItemsByDashboardItemIdData;
+            req: PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                200: DashboardItemApiModel;
+                /**
+                 * Validation Error
+                 */
+                422: HTTPValidationError;
+            };
+        };
+    };
+    '/dashboards/{dashboard_id}/items/{dashboard_item_id}/calculations': {
+        post: {
+            req: PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsData;
             res: {
                 /**
                  * Successful Response
