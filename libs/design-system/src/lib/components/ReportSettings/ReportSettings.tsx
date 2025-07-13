@@ -7,13 +7,10 @@ import {
   NestedDropdownProps,
 } from '../NestedDropdown/NestedDropdown.types';
 import { NestedDropdownItem } from '../NestedDropdown/NestedDropdownItem';
+import { OptionsListExplorerProps } from '../OptionsListExplorer/OptionsListExplorer';
 
 export type optionProps = {
-  type:
-    | 'basicSelection'
-    | 'extendedSelection'
-    | 'categorizedSelection'
-    | 'nestedDropdown';
+  type: 'basicSelection' | 'nestedDropdown';
   props: NestedDropdownProps | NestedDropdownItemProps;
 };
 
@@ -21,15 +18,23 @@ interface ReportSettingsProps {
   options: optionProps[];
   onSubmit: () => void;
   onClose: () => void;
+  onChangeOptionsListExplorerItem: (
+    selectedList: OptionsListExplorerProps,
+  ) => void;
 }
 
 export const ReportSettings: React.FC<ReportSettingsProps> = ({
   options,
   onClose,
   onSubmit,
+  onChangeOptionsListExplorerItem,
 }) => {
   return (
-    <div className={cn('bg-surface-neutral-primary flex h-full flex-col')}>
+    <div
+      className={cn(
+        'bg-surface-neutral-primary text-text-neutral-primary flex h-full flex-col',
+      )}
+    >
       <div className="text-md w-full py-2 pr-4 font-medium">تنظیمات گزارش</div>
       <div
         className={cn(
@@ -39,17 +44,25 @@ export const ReportSettings: React.FC<ReportSettingsProps> = ({
       >
         {options.map((option: optionProps, index: number) => {
           if (option.type === 'nestedDropdown') {
+            const castedProps = option.props as NestedDropdownProps;
             return (
               <NestedDropdown
                 key={index}
-                {...(option.props as NestedDropdownProps)}
+                {...castedProps}
+                onChildClick={(list) => onChangeOptionsListExplorerItem(list)}
               />
             );
           } else if (option.type === 'basicSelection') {
+            const castedProps = option.props as NestedDropdownItemProps;
             return (
               <div className="mb-4" key={index}>
                 <NestedDropdownItem
-                  {...(option.props as NestedDropdownItemProps)}
+                  {...castedProps}
+                  onClick={() =>
+                    onChangeOptionsListExplorerItem(
+                      castedProps.optionsListProps,
+                    )
+                  }
                 />
               </div>
             );

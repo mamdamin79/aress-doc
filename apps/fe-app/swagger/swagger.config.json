@@ -1,7 +1,7 @@
 {
     "inputs": [
       {
-        "inputURL": "http://185.141.213.190:8000/openapi.json"
+        "inputURL": "http://185.236.36.153:8000/openapi.json"
       }
     ],
     "output": "./swagger.output.json"

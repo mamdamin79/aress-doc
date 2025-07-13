@@ -27,27 +27,48 @@ export const Default: Story = {
         status: 'normal',
         selectedOption: 'کل بازار',
         onClick: () => console.log('نوع بازار clicked'),
+        optionsListProps: {
+          items: {
+            items: [],
+          },
+          title: '',
+        },
       },
       {
         title: 'صنعت:',
         icon: { name: 'square-mouse-pointer', size: 'sm' },
         status: 'normal',
         selectedOption: 'کانی‌ های فلزی',
-        onClick: () => console.log('صنعت clicked'),
+        optionsListProps: {
+          items: {
+            items: [],
+          },
+          title: '',
+        },
       },
       {
         title: 'صنعت:',
         icon: { name: 'square-mouse-pointer', size: 'sm' },
         status: 'normal',
         selectedOption: 'کانی‌ های فلزی',
-        onClick: () => console.log('صنعت clicked'),
+        optionsListProps: {
+          items: {
+            items: [],
+          },
+          title: '',
+        },
       },
       {
         title: 'ابزار مالی:',
         icon: { name: 'square-mouse-pointer', size: 'sm' },
         status: 'error',
         placeHolder: 'یک مورد را انتخاب کنید...',
-        onClick: () => console.log('ابزار مالی clicked'),
+        optionsListProps: {
+          items: {
+            items: [],
+          },
+          title: '',
+        },
       },
     ],
   },

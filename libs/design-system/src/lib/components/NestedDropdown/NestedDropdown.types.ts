@@ -1,18 +1,22 @@
 import { IconProps } from '../Icon';
+import { OptionsListExplorerProps } from '../OptionsListExplorer/OptionsListExplorer';
 
 export interface NestedDropdownItemProps {
   title: string;
   status?: 'normal' | 'opened' | 'error';
   icon: IconProps;
-  onClick?: () => void;
+  onClick?: (selectedList: OptionsListExplorerProps) => void;
   activeIcon?: IconProps;
   placeHolder?: string;
   selectedOption?: string;
   hasTooltip?: boolean;
   hasChildren?: boolean;
+  optionsListProps: OptionsListExplorerProps;
+  disabled?: boolean;
 }
 
-export interface NestedDropdownProps  {
+export interface NestedDropdownProps {
   title: string;
   items: NestedDropdownItemProps[];
+  onChildClick?: (selectedList: OptionsListExplorerProps) => void;
 }
