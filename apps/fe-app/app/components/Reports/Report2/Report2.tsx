@@ -88,7 +88,12 @@ export function Report2({ data, filters, onSubmit, title }: Report2Props) {
         gridLineColor: 'var(--color-border-neutral-secondary)',
         reversed: true,
         min: 0,
-        title: { text: null },
+        title: {
+          text: 'میلیارد ریال',
+          textAlign: 'right',
+          offset: 15,
+          x: 590,
+        },
         labels: yAxisLabels,
       },
       legend: { enabled: false },
@@ -103,7 +108,11 @@ export function Report2({ data, filters, onSubmit, title }: Report2Props) {
       xAxis: {
         opposite: true,
         lineColor: 'var(--color-border-neutral-highcontrast)',
-        labels: xAxisLabels,
+        labels: {
+          ...xAxisLabels,
+          align: 'right',
+          reserveSpace: true,
+        },
         categories: dataState.data.map((item) => item.sectorTitle),
       },
     };
