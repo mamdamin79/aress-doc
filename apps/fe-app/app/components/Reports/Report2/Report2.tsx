@@ -49,7 +49,6 @@ export function Report2({ data, filters, onSubmit, title }: Report2Props) {
 
   const handleSubmit = async (): Promise<boolean> => {
     if (!onSubmit) return true;
-
     try {
       const filterOptions: Record<string, OptionItem> = Object.fromEntries(
         filterState.map((filter) => [
