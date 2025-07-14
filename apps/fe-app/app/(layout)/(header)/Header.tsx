@@ -25,8 +25,6 @@ import {
 } from '@openapi';
 import { fetchToken } from '../../(auth)/auth.utils';
 import { buildDashboardUrl, useDashboardActions } from './header.utils';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
 
 export const Header: React.FC = () => {
   const [token, setToken] = useState<string | null>(null);
