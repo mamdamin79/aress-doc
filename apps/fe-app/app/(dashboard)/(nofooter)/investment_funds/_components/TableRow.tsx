@@ -69,7 +69,7 @@ function FundsInfoCell({
         ></div>
         <div className="group/img relative">
           <div className="h-8 w-8 overflow-hidden rounded-full">
-            <img src={logo} alt="logo fund" />
+            <img src={`http://185.236.36.153:8000${logo}`} alt="logo fund" />
           </div>
           {pined && (
             <div className="absolute -right-1 top-5">
@@ -215,7 +215,8 @@ function TableRowInner<T extends FundRow>({
   isScrollAtStart,
   handlerPinned,
   handlerUnPinned,
-}: TableRowProps<T>) {
+  logo,
+}: TableRowProps<T>) {  
 
   const { showProgressToast, showToast } = useCustomToast();
 

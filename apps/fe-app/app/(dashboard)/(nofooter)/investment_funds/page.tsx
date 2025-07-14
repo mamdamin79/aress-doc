@@ -374,6 +374,7 @@ const Funds = () => {
     const funds = query.data.selectedTabFunds.map(({ fund }) => {
       const id = fund.identifier;
       return {
+        logo: fund.logoMedium,
         id,
         pinned: pinnedList.includes(id),
         investemntFundsMethod: 'T',
