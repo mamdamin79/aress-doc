@@ -34,7 +34,6 @@ export default async function ReportMenuPage({
   };
 }) {
   const { reports, categories } = await getData(searchParams);
-
   const filteredReports = reports.filter((report) => {
     const matchesCategory = searchParams.category
       ? report.category.title === searchParams.category

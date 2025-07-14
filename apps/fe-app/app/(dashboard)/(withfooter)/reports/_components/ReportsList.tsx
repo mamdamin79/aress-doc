@@ -18,8 +18,7 @@ type Props = {
 };
 
 export const ReportList: React.FC<Props> = ({ reports }) => {
-  const addFavoriteMutation =
-    useReportsServicePostReportsByReportIdFavorite();
+  const addFavoriteMutation = useReportsServicePostReportsByReportIdFavorite();
   const deleteFavoriteMutation =
     useReportsServiceDeleteReportsByReportIdFavorite();
 
@@ -34,7 +33,7 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
     if (isFavorite) {
       deleteFavoriteMutation.mutate({ reportId });
     } else {
-      addFavoriteMutation.mutate({ reportId });
+      addFavoriteMutation.mutate({ reportId: String(reportId) });
     }
   };
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
@@ -64,7 +63,10 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
                 // hasVideo has error because of the type of report is old
                 newBadge={report.isNew}
                 onLike={() =>
-                  handleLike(report.identifier, report?.userFavorite ?? false)
+                  handleLike(
+                    Number(report.identifier),
+                    report?.userFavorite ?? false,
+                  )
                 }
                 userFavorite={report.userFavorite}
                 videoBadge={report.hasVideo}
