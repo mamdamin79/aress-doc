@@ -8,6 +8,8 @@ import { useThrottle, useWindowSize } from '@uidotdev/usehooks';
 import { AressApiUser, OpenAPI, useUsersServiceGetUsersMe } from '@openapi';
 import { fetchToken } from '../../../(auth)/auth.utils';
 import { Toaster } from 'react-hot-toast';
+import { ProfileSidebarSkeleton } from './_components/skeletons/ProfileSidebarSkeleton';
+import { ProfileFormSkeleton } from './_components/skeletons/ProfileFormSkeleton';
 
 const ProfilePage = () => {
   const [isApiReady, setIsApiReady] = useState(false);
@@ -51,14 +53,18 @@ const ProfilePage = () => {
       <div className="flex w-full flex-row gap-14 px-8 pb-28 pt-12 lg:px-20">
         {!(activeSection && !isDesktop) && (
           <div className="flex w-full justify-center lg:w-[264px]">
-            <ProfileSidebar
-              image={profilePicture}
-              title={fullName}
-              subTitle={user?.phoneNumber ?? ''}
-              onLogoutBtn={() => setIsLogoutModalOpen(true)}
-              onNavigation={(section) => setActiveSection(section)}
-              activeSection={isDesktop ? 'profile' : activeSection}
-            />
+            {
+              data ?
+                <ProfileSidebar
+                  image={profilePicture}
+                  title={fullName}
+                  subTitle={user?.phoneNumber ?? ''}
+                  onLogoutBtn={() => setIsLogoutModalOpen(true)}
+                  onNavigation={(section) => setActiveSection(section)}
+                  activeSection={isDesktop ? 'profile' : activeSection}
+                />
+                : <ProfileSidebarSkeleton />
+            }
           </div>
         )}
 
@@ -78,18 +84,20 @@ const ProfilePage = () => {
                 حساب کاربری
               </button>
             )}
-
-            <ProfileForm
-              image={profilePicture}
-              email={user?.email ?? ''}
-              fnameAndLname={fullName}
-              nationalID={
-                user?.nationalCode ? Number(user.nationalCode) : undefined
-              }
-              phoneNumber={user?.phoneNumber ?? ''}
-              username={user?.username}
-              refetch={refetch}
-            />
+            {
+              data ?
+                <ProfileForm
+                  image={profilePicture}
+                  email={user?.email ?? ''}
+                  fnameAndLname={fullName}
+                  nationalID={
+                    user?.nationalCode ? Number(user.nationalCode) : undefined
+                  }
+                  phoneNumber={user?.phoneNumber ?? ''}
+                  username={user?.username}
+                  refetch={refetch}
+                /> : <ProfileFormSkeleton />
+            }
           </div>
         </div>
       </div>

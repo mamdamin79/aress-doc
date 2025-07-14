@@ -3,6 +3,30 @@
 @tailwind utilities;
 @import url('./../src/assets/fonts/vazirmant.css');
 
+@layer utilities {
+  .skeleton-shimmer {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-surface-neutral-secondary);
+  }
+
+  .skeleton-shimmer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 100%;
+    height: 100%;
+    width: 200%;
+    background: linear-gradient(to left, transparent 0%, var(--color-surface-neutral-secondarycontrast) 50%, transparent 100%);
+    animation: shimmer-rtl 1.5s infinite;
+  }
+
+  @keyframes shimmer-rtl {
+    100% {
+      right: -100%;
+    }
+  }
+}
 :root {
   --rt-transition-show-delay: 0.15s;
   --rt-transition-closing-delay: 0.15s;
