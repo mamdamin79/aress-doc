@@ -37,6 +37,18 @@ export type AressApiUser = {
      * Whether this user is active or not, is always "true" for logged in user.
      */
     active: boolean;
+    /**
+     * First name of user.
+     */
+    firstName: string | null;
+    /**
+     * Last name the user.
+     */
+    lastName: string | null;
+    /**
+     * Profile picture url of the user.
+     */
+    profilePicture: string | null;
 };
 
 export type Body_change_profile_picture_users_profile_picture_change_post = {
@@ -118,6 +130,11 @@ export type CreateDashboardForUserBody = {
     name: string;
 };
 
+export type CreateDashboardResponseApiModel = {
+    createdDashboardId: number;
+    dashboards: Array<DashboardListItemApiModel>;
+};
+
 export type DashboardDetailsApiModel = {
     identifier: number;
     name: string;
@@ -185,6 +202,10 @@ export type DeleteDashboardItemFromDashboardBody = {
     dashboardItemId: number;
 };
 
+export type DuplicateDashboardForUserBody = {
+    name: string;
+};
+
 export type FinancialReportCalculationApiModel = {
     calculation: Report2CalculationResult | Report6CalculationResult | Report13Dot1CalculationResult | Report13Dot2CalculationResult | Report13Dot3CalculationResult | Report15CalculationResult;
     filters: Array<FinancialReportFilterApiModel>;
@@ -202,7 +223,7 @@ export type FinancialReportDetailsApiModel = {
     /**
      * Unique identifier of report
      */
-    identifier: number;
+    identifier: string;
     title: string;
     category: FinancialReportCategoryApiModel;
     image: string;
@@ -233,7 +254,7 @@ export type FinancialReportListItemApiModel = {
     /**
      * Unique identifier of report
      */
-    identifier: number;
+    identifier: string;
     title: string;
     category: FinancialReportCategoryApiModel;
     image: string;
@@ -250,81 +271,290 @@ export type ForgotPasswordResetByOtpBody = {
 };
 
 export type FundListItemApiModel = {
+    /**
+     * شناسه صندوق
+     */
     identifier: number;
+    /**
+     * شماره ثبت نزد سازمان بورس
+     */
     registrationNumber: number;
+    /**
+     * نام کامل صندوق
+     */
     name: string;
+    /**
+     * نام صندوق
+     */
     abbreviatedName: string;
+    /**
+     * نوع صندوق
+     */
     fundType: FundTypeApiModel;
+    /**
+     * آدرس لوگوی صندوق - سایز متوسط
+     */
     logoMedium: string | null;
+    /**
+     * آدرس لوگوی صندوق - سایز کوچک
+     */
     logoThumbnail: string | null;
+    /**
+     * وبسایت صندوق
+     */
     website: string;
+    /**
+     * اساسنامه صندوق
+     */
     statuteUrl: string;
+    /**
+     * امیدنامه صندوق
+     */
     prospectusUrl: string;
+    /**
+     * آیا صندوق etf است
+     */
     isEtf: boolean;
+    /**
+     * آیا صندوق نیکوکاری است
+     */
     isCharity: boolean;
+    /**
+     * دارای ویدیو بررسی
+     */
+    hasVideo: boolean;
+    /**
+     * مدیر صنودق
+     */
     manager: string;
+    /**
+     * متولی صندوق
+     */
     custodian: string;
+    /**
+     * حسابرس صندوق
+     */
     auditor: string;
+    /**
+     * ضامن نقد شوندگی صندوق
+     */
     liquidityGuarantor: string;
     /**
-     * Gregorian date of fund initiation in YYYY-mm-dd format
+     * بازارگردان
+     */
+    marketMaker: string;
+    /**
+     * تاریخ آغاز فعالیت میلادی
      */
     initiationDate: string;
     /**
-     * Jalali date of fund initiation in YYYY-mm-dd format
+     * تاریخ آغاز فعالیت
      */
     initiationJdate: string;
+    /**
+     * قیمت صدور
+     */
     issueNavRials: number;
+    /**
+     * قیمت ابطال
+     */
     redeemNavRials: number;
+    /**
+     * قیمت آماری
+     */
     statisticalNavRials: number;
+    /**
+     * دارایی تحت مدیریت
+     */
     assetUnderManagementRials: number;
+    /**
+     * تعداد واحد
+     */
     numberOfUnits: number;
+    /**
+     * بازدهی هفته اخیر
+     */
     returnLastWeekPercent: number | null;
+    /**
+     * بازدهی ماه اخیر
+     */
     returnLastMonthPercent: number | null;
+    /**
+     * بازدهی سه ماه اخیر
+     */
     returnLast3MonthsPercent: number | null;
+    /**
+     * بازدهی سال اخیر
+     */
     returnLastYearPercent: number | null;
+    /**
+     * بازدهی هفته اخیر به شاخص
+     */
     returnLastWeekVsTedpixPercent: number | null;
+    /**
+     * بازدهی ماه اخیر به شاخص
+     */
     returnLastMonthVsTedpixPercent: number | null;
+    /**
+     * بازدهی سه ماه اخیر به شاخص
+     */
     returnLast3MonthsVsTedpixPercent: number | null;
+    /**
+     * بازدهی سال اخیر به شاخص
+     */
     returnLastYearVsTedpixPercent: number | null;
+    /**
+     * سهم اوراق از پورتفوی
+     */
     assetAllocationBondPercent: number;
+    /**
+     * سهم سپرده بانکی از پورتفوی
+     */
     assetAllocationBankDepositPercent: number;
+    /**
+     * سهم گواهی سپرده کالایی از پورتفوی
+     */
     assetAllocationCommodityDepositCertificatePercent: number;
+    /**
+     * سهم وجه نقد از پورتفوی
+     */
     assetAllocationCashPercent: number;
+    /**
+     * سهم سهام از پورتفوی
+     */
     assetAllocationStocksIncludingTop5Percent: number;
+    /**
+     * سهم واحد صندوق‌ها از پورتفوی
+     */
     assetAllocationFundUnitsPercent: number;
+    /**
+     * سهم سایر از پورتفوی
+     */
     assetAllocationOtherPercent: number;
+    /**
+     * سهم پنج سهم برتر از پورتفوی
+     */
     assetAllocationTop5StocksPercent: number;
+    /**
+     * میانگین اهرم هفته اخیر
+     */
     averageLeverageLastWeek: number | null;
+    /**
+     * میانگین اهرم ماه اخیر
+     */
     averageLeverageLastMonth: number | null;
+    /**
+     * میانگین اهرم سه ماه اخیر
+     */
     averageLeverageLast3Months: number | null;
+    /**
+     * میانگین اهرم سال اخیر
+     */
     averageLeverageLastYear: number | null;
+    /**
+     * انحراف از میانگین هفته اخیر
+     */
     standardDeviationLastWeek: number | null;
+    /**
+     * انحراف از میانگین ماه اخیر
+     */
     standardDeviationLastMonth: number | null;
+    /**
+     * انحراف از میانگین سه ماه اخیر
+     */
     standardDeviationLast3Month: number | null;
+    /**
+     * انحراف از میانگین سال اخیر
+     */
     standardDeviationLastYear: number | null;
+    /**
+     * نسبت شارپی هفته اخیر
+     */
     sharpeRatioLastWeek: number | null;
+    /**
+     * نسبت شارپی ماه اخیر
+     */
     sharpeRatioLastMonth: number | null;
+    /**
+     * نسبت شارپی سه ماه اخیر
+     */
     sharpeRatioLast3Months: number | null;
+    /**
+     * نسبت شارپی سال اخیر
+     */
     sharpeRatioLastYear: number | null;
+    /**
+     * نسبت اصلاعاتی هفته اخیر
+     */
     informationRatioLastWeek: number | null;
+    /**
+     * نسبت اصلاعاتی ماه اخیر
+     */
     informationRatioLastMonth: number | null;
+    /**
+     * نسبت اصلاعاتی سه ماه اخیر
+     */
     informationRatioLast3Months: number | null;
+    /**
+     * نسبت اصلاعاتی سال اخیر
+     */
     informationRatioLastYear: number | null;
+    /**
+     * آلفا روز اخیر
+     */
     alphaLastDay: number | null;
+    /**
+     * آلفا هفته اخیر
+     */
     alphaLastWeek: number | null;
+    /**
+     * آلفا ماه اخیر
+     */
     alphaLastMonth: number | null;
+    /**
+     * آلفا سه ماه اخیر
+     */
     alphaLast3Months: number | null;
+    /**
+     * آلفا سال اخیر
+     */
     alphaLastYear: number | null;
+    /**
+     * بتا روز اخیر
+     */
     betaLastDay: number | null;
+    /**
+     * بتا هفته اخیر
+     */
     betaLastWeek: number | null;
+    /**
+     * بتا ماه اخیر
+     */
     betaLastMonth: number | null;
+    /**
+     * بتا سه ماه اخیر
+     */
     betaLast3Months: number | null;
+    /**
+     * بتا سال اخیر
+     */
     betaLastYear: number | null;
-    maxDrawDawnWeek: number | null;
-    maxDrawDawnMonth: number | null;
-    maxDrawDawn3Month: number | null;
-    maxDrawDawnYear: number | null;
+    /**
+     * ماکزیمم افت هفته اخیر
+     */
+    maxDrawdownWeek: number | null;
+    /**
+     * ماکزیمم افت ماه اخیر
+     */
+    maxDrawdownMonth: number | null;
+    /**
+     * ماکزیمم افت سه ماه اخیر
+     */
+    maxDrawdown3Month: number | null;
+    /**
+     * ماکزیمم افت سال اخیر
+     */
+    maxDrawdownYear: number | null;
 };
 
 export type FundTableResponseApiModel = {
@@ -336,7 +566,7 @@ export type FundTableResponseApiModel = {
 export type FundTableTabApiModel = {
     identifier: number;
     title: string;
-    colorHexRgb: string | null;
+    color: string | null;
 };
 
 export type FundTypeApiModel = {
@@ -758,7 +988,13 @@ export type PutDashboardsData = {
     requestBody: CreateDashboardForUserBody;
 };
 
-export type PutDashboardsResponse = DashboardListItemApiModel;
+export type PutDashboardsResponse = CreateDashboardResponseApiModel;
+
+export type GetDashboardsByDashboardIdData = {
+    dashboardId: number;
+};
+
+export type GetDashboardsByDashboardIdResponse = DashboardDetailsApiModel;
 
 export type PostDashboardsByDashboardIdData = {
     dashboardId: number;
@@ -771,13 +1007,14 @@ export type DeleteDashboardsByDashboardIdData = {
     dashboardId: number;
 };
 
-export type DeleteDashboardsByDashboardIdResponse = unknown;
+export type DeleteDashboardsByDashboardIdResponse = Array<DashboardListItemApiModel>;
 
-export type GetDashboardsByDashboardIdData = {
+export type PostDashboardsByDashboardIdDuplicateData = {
     dashboardId: number;
+    requestBody: DuplicateDashboardForUserBody;
 };
 
-export type GetDashboardsByDashboardIdResponse = DashboardDetailsApiModel;
+export type PostDashboardsByDashboardIdDuplicateResponse = DashboardDetailsApiModel;
 
 export type GetDashboardsByDashboardIdItemsPreviewData = {
     dashboardId: number;
@@ -1150,7 +1387,7 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                200: DashboardListItemApiModel;
+                200: CreateDashboardResponseApiModel;
                 /**
                  * Validation Error
                  */
@@ -1159,6 +1396,19 @@ export type $OpenApiTs = {
         };
     };
     '/dashboards/{dashboard_id}': {
+        get: {
+            req: GetDashboardsByDashboardIdData;
+            res: {
+                /**
+                 * Successful Response
+                 */
+                200: DashboardDetailsApiModel;
+                /**
+                 * Validation Error
+                 */
+                422: HTTPValidationError;
+            };
+        };
         post: {
             req: PostDashboardsByDashboardIdData;
             res: {
@@ -1178,15 +1428,17 @@ export type $OpenApiTs = {
                 /**
                  * Successful Response
                  */
-                200: unknown;
+                200: Array<DashboardListItemApiModel>;
                 /**
                  * Validation Error
                  */
                 422: HTTPValidationError;
             };
         };
-        get: {
-            req: GetDashboardsByDashboardIdData;
+    };
+    '/dashboards/{dashboard_id}/duplicate': {
+        post: {
+            req: PostDashboardsByDashboardIdDuplicateData;
             res: {
                 /**
                  * Successful Response
