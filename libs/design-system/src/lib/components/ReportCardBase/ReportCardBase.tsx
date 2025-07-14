@@ -19,6 +19,8 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
   children,
   popupInfoItems,
   settingOptions,
+  onSubmit,
+  onRemove,
 }) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [loadingStatus, setLoadingStatus] = useState<
@@ -37,42 +39,54 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
         return 'انجام شد';
       case 'rejected':
         return 'انجام نشد!';
+      default:
+        return '';
     }
   };
-  const mockLoading = () => {
+
+  const handleSubmit = async () => {
     setSettingsOpen(false);
     setLoadingStatus('loading');
-    setTimeout(() => {
+    try {
+      const result = await onSubmit?.();
+      if (result === true) {
+        setLoadingStatus('done');
+      } else {
+        setLoadingStatus('rejected');
+      }
+    } catch {
       setLoadingStatus('rejected');
-    }, 3000);
+    }
   };
+
   return (
     <div className="bg-surface-neutral-primary shadow-6xl border-border-neutral-secondary group relative flex h-[336px] w-[616px] flex-col overflow-hidden rounded-2xl border-2">
       <SlideFromLeft isOpen={settingsOpen}>
         <ReportSettings
-          onSubmit={mockLoading}
+          onSubmit={handleSubmit} // <- use new async handler
           onClose={() => setSettingsOpen(false)}
           options={settingOptions}
           onChangeOptionsListExplorerItem={(item) => setOptionsListItems(item)}
         />
       </SlideFromLeft>
+
       <SlideFromLeft isOpen={optionsListItems !== null}>
         <OptionsListExplorer
           {...optionsListItems}
-          items={
-            optionsListItems?.items ?? {
-              items: [],
-              categories: [],
-            }
-          }
+          items={optionsListItems?.items ?? { items: [], categories: [] }}
           title={optionsListItems?.title ?? ''}
           onBackButtonClick={() => setOptionsListItems(null)}
           onSearch={(value) => console.log(value)}
+          onChange={(item) => {
+            optionsListItems && optionsListItems.onChange?.(item);
+            setOptionsListItems(null);
+          }}
         />
       </SlideFromLeft>
+
       <div className="relative flex w-full items-center justify-between px-3 pb-2 pt-3">
         {!compactHeader ? (
-          <div className="text-text-neutral-primary flex flex-row items-center text-xs font-semibold">
+          <div className="text-icon-neutral-primary flex flex-row items-center text-xs font-semibold">
             <div
               className="cursor-pointer p-1.5"
               onClick={() => setPopupInfoOpen(true)}
@@ -102,7 +116,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
 
           {compactHeader ? (
             <div
-              className="bg-surface-neutral-secondary text-text-neutral-primary flex h-8 w-8 cursor-pointer items-center justify-center rounded-full"
+              className="bg-surface-neutral-secondary text-icon-neutral-primary flex h-8 w-8 cursor-pointer items-center justify-center rounded-full"
               onClick={() => setSettingsOpen(true)}
             >
               <Icon name="settings" size="md" />
@@ -126,11 +140,6 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                     onClick: () => setSettingsOpen(true),
                   },
                   {
-                    icon: 'eye',
-                    title: 'مشاهده بررسی گزارش',
-                    onClick: () => console.log('تنظیمات گزارش'),
-                  },
-                  {
                     icon: 'repeat',
                     title: 'جایگزینی گزارش',
                     onClick: () => console.log('اطلاعات بیشتر'),
@@ -143,7 +152,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                   {
                     icon: 'trash-2',
                     title: 'حذف گزارش از این فضا',
-                    onClick: () => console.log('حذف گزارش از این فضا'),
+                    onClick: () => onRemove?.(),
                   },
                 ]}
               >
@@ -152,18 +161,18 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
             </div>
           )}
         </div>
-        <div
-          className={cn(
-            'border-border-neutral-primary absolute bottom-0 w-[592px] border-b',
-          )}
-        ></div>
+
+        <div className="border-border-neutral-primary absolute bottom-0 w-[592px] border-b"></div>
       </div>
+
       {loadingStatus && (
         <div className="bg-surface-neutral-primary absolute top-4 z-10 flex h-full w-full items-center justify-center p-3 pt-2">
           <div className="flex flex-col items-center gap-4">
             <div className="flex flex-col items-center justify-center gap-4">
               <LoadingBarPop status={loadingStatus} />
-              <span>{returnLoadingStatusText()}</span>
+              <span className="text-text-neutral-secondarycontrast">
+                {returnLoadingStatusText()}
+              </span>
             </div>
             <div className="flex flex-row gap-2">
               {loadingStatus === 'rejected' && (
@@ -173,7 +182,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                     isLoading={false}
                     mode="primary"
                     size="sm"
-                    onClick={mockLoading}
+                    onClick={handleSubmit}
                   >
                     تلاش مجدد
                   </Button>
@@ -194,7 +203,9 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
           </div>
         </div>
       )}
+
       {children}
+
       {popupInfoItems && (
         <PopupInfo
           isOpen={popupInfoOpen}

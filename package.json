@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky",
     "merge:swagger": "npx openapi-merge-cli --config ./apps/fe-app/swagger/swagger.config.json",
-    "generate:sdk": "npx swagger-typescript-api -p ./apps/fe-app/swagger/swagger.output.json -o ./apps/fe-app/models -n axios.ts",
+    "generate:sdk": "npx swagger-typescript-api generate -p ./apps/fe-app/swagger/swagger.output.json -o ./apps/fe-app/models -n axios.ts",
     "output:swagger": "npm run merge:swagger && npm run generate:sdk",
     "generate:query": "rm -rf ./libs/openapi/src/queries ./libs/openapi/src/requests && npx --package @7nohe/openapi-react-query-codegen openapi-rq -i ./apps/fe-app/swagger/swagger.output.json -o ./libs/openapi/src -c fetch",
     "test:ui": "vitest --ui"
@@ -124,6 +124,7 @@
     "react-easy-crop": "^5.4.0",
     "react-hook-form": "^7.54.2",
     "react-hot-toast": "^2.4.1",
+    "react-loading-skeleton": "^3.5.0",
     "react-hotkeys-hook": "^5.1.0",
     "react-markdown": "^9.0.3",
     "react-otp-input": "^3.1.1",

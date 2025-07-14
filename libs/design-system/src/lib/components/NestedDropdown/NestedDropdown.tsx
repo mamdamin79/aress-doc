@@ -79,6 +79,7 @@ export const NestedDropdown: React.FC<NestedDropdownProps> = ({
               selectedOption={child.selectedOption}
               placeHolder={child.placeHolder}
               optionsListProps={child.optionsListProps}
+              disabled={child.disabled}
             />
           </div>
         ))}

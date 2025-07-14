@@ -137,8 +137,6 @@ export interface CaptchaApiModel {
 
 /** ChangeDashboardReportItemSortOrderBody */
 export interface ChangeDashboardReportItemSortOrderBody {
-  /** Dashboarditemid */
-  dashboardItemId: number;
   /** Order */
   order: number;
 }
@@ -225,8 +223,8 @@ export interface DashboardDetailsApiModel {
   identifier: number;
   /** Name */
   name: string;
-  /** Reports */
-  reports: DashboardItemApiModel[];
+  /** Items */
+  items: DashboardItemApiModel[];
   /** Fundsbycategory */
   fundsByCategory: DashboardFundCategoryApiModel[];
 }
@@ -249,6 +247,8 @@ export interface DashboardFundApiModel {
   returnLast3MonthsPercent: number | null;
   /** Returnlastyearpercent */
   returnLastYearPercent: number | null;
+  /** Dailyredeemnavmonth */
+  dailyRedeemNavMonth: number[] | null;
 }
 
 /** DashboardFundCategoryApiModel */
@@ -315,11 +315,8 @@ export interface DashboardReportPreviewApiModel {
   image: string;
 }
 
-/** DeleteDashboardItemFromDashboardBody */
-export interface DeleteDashboardItemFromDashboardBody {
-  /** Dashboarditemid */
-  dashboardItemId: number;
-}
+/** DeleteDashboardItemResponseApiModel */
+export type DeleteDashboardItemResponseApiModel = object;
 
 /** DuplicateDashboardForUserBody */
 export interface DuplicateDashboardForUserBody {
@@ -802,6 +799,11 @@ export interface FundListItemApiModel {
    * ماکزیمم افت سال اخیر
    */
   maxDrawdownYear: number | null;
+  /**
+   * Dailyredeemnavmonth
+   * قیمت ابطال روزانه ماه اخیر
+   */
+  dailyRedeemNavMonth: number[] | null;
 }
 
 /** FundTableResponseApiModel */
@@ -841,8 +843,6 @@ export interface FundsTableItemApiModel {
 
 /** GetDashboardItemCalculationsBody */
 export interface GetDashboardItemCalculationsBody {
-  /** Dashboarditemid */
-  dashboardItemId: number;
   /** Selectedfilters */
   selectedFilters?: Record<string, any> | null;
 }
@@ -915,6 +915,12 @@ export interface PinFundInTableTabResponseApiModel {
 export interface RenameDashboardForUserBody {
   /** Name */
   name: string;
+}
+
+/** ReplaceDashboardItemCalculationsBody */
+export interface ReplaceDashboardItemCalculationsBody {
+  /** Newreportidentifier */
+  newReportIdentifier: string;
 }
 
 /** Report13Dot1CalculationResult */
@@ -1936,7 +1942,7 @@ export class Api<
      * @secure
      */
     reportDetailsReportsReportIdGet: (
-      reportId: number,
+      reportId: string,
       params: RequestParams = {},
     ) =>
       this.request<FinancialReportDetailsApiModel, HTTPValidationError>({
@@ -1957,7 +1963,7 @@ export class Api<
      * @secure
      */
     getReportCalculationsReportsReportIdPost: (
-      reportId: number,
+      reportId: string,
       data: GetReportCalculationsBody,
       params: RequestParams = {},
     ) =>
@@ -1997,7 +2003,7 @@ export class Api<
      * @secure
      */
     addReportToFavoritesReportsReportIdFavoritePost: (
-      reportId: number,
+      reportId: string,
       params: RequestParams = {},
     ) =>
       this.request<UserReportFavoriteStatus, HTTPValidationError>({
@@ -2138,6 +2144,30 @@ export class Api<
       }),
 
     /**
+     * @description Add report item to dashboard.
+     *
+     * @tags Dashboards
+     * @name AddReportToDashboardDashboardsDashboardIdPut
+     * @summary Add Report To Dashboard
+     * @request PUT:/dashboards/{dashboard_id}
+     * @secure
+     */
+    addReportToDashboardDashboardsDashboardIdPut: (
+      dashboardId: number,
+      data: AddReportToDashboardForUserBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardItemApiModel, HTTPValidationError>({
+        path: `/dashboards/${dashboardId}`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
      * @description Duplicate dashboard
      *
      * @tags Dashboards
@@ -2165,43 +2195,19 @@ export class Api<
      * @description Get dashboard items for preview in dashboard list.
      *
      * @tags Dashboards
-     * @name GetDashboardItemsForPreviewDashboardsDashboardIdItemsPreviewGet
+     * @name GetDashboardItemsForPreviewDashboardsDashboardIdPreviewGet
      * @summary Get Dashboard Items For Preview
-     * @request GET:/dashboards/{dashboard_id}/items/preview
+     * @request GET:/dashboards/{dashboard_id}/preview
      * @secure
      */
-    getDashboardItemsForPreviewDashboardsDashboardIdItemsPreviewGet: (
+    getDashboardItemsForPreviewDashboardsDashboardIdPreviewGet: (
       dashboardId: number,
       params: RequestParams = {},
     ) =>
       this.request<DashboardItemPreviewApiModel[], HTTPValidationError>({
-        path: `/dashboards/${dashboardId}/items/preview`,
+        path: `/dashboards/${dashboardId}/preview`,
         method: "GET",
         secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Add items to dashboard.
-     *
-     * @tags Dashboards
-     * @name AddReportToDashboardDashboardsDashboardIdItemsPut
-     * @summary Add Report To Dashboard
-     * @request PUT:/dashboards/{dashboard_id}/items
-     * @secure
-     */
-    addReportToDashboardDashboardsDashboardIdItemsPut: (
-      dashboardId: number,
-      data: AddReportToDashboardForUserBody,
-      params: RequestParams = {},
-    ) =>
-      this.request<DashboardItemApiModel, HTTPValidationError>({
-        path: `/dashboards/${dashboardId}/items`,
-        method: "PUT",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -2210,19 +2216,42 @@ export class Api<
      * @description Remove items from dashboard.
      *
      * @tags Dashboards
-     * @name RemoveItemFromDashboardDashboardsDashboardIdItemsDelete
+     * @name RemoveItemFromDashboardDashboardsDashboardIdItemsDashboardItemIdDelete
      * @summary Remove Item From Dashboard
-     * @request DELETE:/dashboards/{dashboard_id}/items
+     * @request DELETE:/dashboards/{dashboard_id}/items/{dashboard_item_id}
      * @secure
      */
-    removeItemFromDashboardDashboardsDashboardIdItemsDelete: (
+    removeItemFromDashboardDashboardsDashboardIdItemsDashboardItemIdDelete: (
       dashboardId: number,
-      data: DeleteDashboardItemFromDashboardBody,
+      dashboardItemId: number,
       params: RequestParams = {},
     ) =>
-      this.request<any, HTTPValidationError>({
-        path: `/dashboards/${dashboardId}/items`,
+      this.request<DeleteDashboardItemResponseApiModel, HTTPValidationError>({
+        path: `/dashboards/${dashboardId}/items/${dashboardItemId}`,
         method: "DELETE",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Replace item in dashboard.
+     *
+     * @tags Dashboards
+     * @name ReplaceDashboardItemDashboardsDashboardIdItemsDashboardItemIdReplacePost
+     * @summary Replace Dashboard Item
+     * @request POST:/dashboards/{dashboard_id}/items/{dashboard_item_id}/replace
+     * @secure
+     */
+    replaceDashboardItemDashboardsDashboardIdItemsDashboardItemIdReplacePost: (
+      dashboardId: number,
+      dashboardItemId: number,
+      data: ReplaceDashboardItemCalculationsBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardItemApiModel, HTTPValidationError>({
+        path: `/dashboards/${dashboardId}/items/${dashboardItemId}/replace`,
+        method: "POST",
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -2234,49 +2263,53 @@ export class Api<
      * @description Get dashboard item calculations.
      *
      * @tags Dashboards
-     * @name GetDashboardItemCalculationsDashboardsDashboardIdItemsPost
+     * @name GetDashboardItemCalculationsDashboardsDashboardIdItemsDashboardItemIdCalculationsPost
      * @summary Get Dashboard Item Calculations
-     * @request POST:/dashboards/{dashboard_id}/items
+     * @request POST:/dashboards/{dashboard_id}/items/{dashboard_item_id}/calculations
      * @secure
      */
-    getDashboardItemCalculationsDashboardsDashboardIdItemsPost: (
-      dashboardId: number,
-      data: GetDashboardItemCalculationsBody,
-      params: RequestParams = {},
-    ) =>
-      this.request<DashboardItemApiModel, HTTPValidationError>({
-        path: `/dashboards/${dashboardId}/items`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
+    getDashboardItemCalculationsDashboardsDashboardIdItemsDashboardItemIdCalculationsPost:
+      (
+        dashboardId: number,
+        dashboardItemId: number,
+        data: GetDashboardItemCalculationsBody,
+        params: RequestParams = {},
+      ) =>
+        this.request<DashboardItemApiModel, HTTPValidationError>({
+          path: `/dashboards/${dashboardId}/items/${dashboardItemId}/calculations`,
+          method: "POST",
+          body: data,
+          secure: true,
+          type: ContentType.Json,
+          format: "json",
+          ...params,
+        }),
 
     /**
      * @description Change dashboard item sort order.
      *
      * @tags Dashboards
-     * @name ChangeDashboardItemSortOrderDashboardsDashboardIdItemsReorderPost
+     * @name ChangeDashboardItemSortOrderDashboardsDashboardIdItemsDashboardItemIdReorderPost
      * @summary Change Dashboard Item Sort Order
-     * @request POST:/dashboards/{dashboard_id}/items/reorder
+     * @request POST:/dashboards/{dashboard_id}/items/{dashboard_item_id}/reorder
      * @secure
      */
-    changeDashboardItemSortOrderDashboardsDashboardIdItemsReorderPost: (
-      dashboardId: number,
-      data: ChangeDashboardReportItemSortOrderBody,
-      params: RequestParams = {},
-    ) =>
-      this.request<any, HTTPValidationError>({
-        path: `/dashboards/${dashboardId}/items/reorder`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
+    changeDashboardItemSortOrderDashboardsDashboardIdItemsDashboardItemIdReorderPost:
+      (
+        dashboardId: number,
+        dashboardItemId: number,
+        data: ChangeDashboardReportItemSortOrderBody,
+        params: RequestParams = {},
+      ) =>
+        this.request<any, HTTPValidationError>({
+          path: `/dashboards/${dashboardId}/items/${dashboardItemId}/reorder`,
+          method: "POST",
+          body: data,
+          secure: true,
+          type: ContentType.Json,
+          format: "json",
+          ...params,
+        }),
   };
   funds = {
     /**
@@ -2369,12 +2402,12 @@ export class Api<
      * @description Unpin fund in table tab
      *
      * @tags Funds
-     * @name PinFundInTableTabFundsTableUnpinPost
-     * @summary Pin Fund In Table Tab
+     * @name UnpinFundInTableTabFundsTableUnpinPost
+     * @summary Unpin Fund In Table Tab
      * @request POST:/funds/table/unpin
      * @secure
      */
-    pinFundInTableTabFundsTableUnpinPost: (
+    unpinFundInTableTabFundsTableUnpinPost: (
       data: UnpinFundInTableTabBody,
       params: RequestParams = {},
     ) =>
