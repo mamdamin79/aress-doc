@@ -9,7 +9,7 @@ import leftWaveSVG from '@aress-assets/images/leftwaves.svg';
 
 import Image from 'next/image';
 import { OpenAPI, ReportsService } from '@openapi';
-import { DynamicReportRenderer } from '../../../(nofooter)/(dashboard)/_components/DynamicReportRenderer';
+import { ReportWrapper } from './_components/ReportWrapper';
 async function getData(id: number) {
   const token = await fetchToken();
   if (!token) {
@@ -41,18 +41,14 @@ const page = async () => {
       <div className="text-text-neutral-primary mx-auto max-w-[1680px]">
         {/* Breadcrumb */}
 
-        <section className="mb-16 flex w-full flex-col-reverse items-center gap-8 px-20 pt-6 xl:flex-row xl:justify-around">
+        <section className="mb-16 flex w-full flex-col-reverse items-center gap-8 px-20 pt-6 xl:flex-row xl:items-start xl:justify-around">
           <div className="flex w-fit flex-col gap-6">
-            {/* <DynamicReportRenderer
-        title={report.title}
-        identifier={identifier}
-        data={data}
-        filters={filters}
-        onSubmit={onSubmit}
-        onRemove={onRemoveReport}
-      /> */}
+            <ReportWrapper
+              data={REPORT.reportCalculation}
+              title={REPORT.title}
+              identifier={REPORT.identifier}
+            />
 
-            <div className="bg-surface-accent-red-500 h-[336px] w-[616px]"></div>
             <div className="flex w-fit flex-row items-center gap-1 text-sm font-normal">
               <Icon name="info" size="md" />
               <span>با زدن بر روی آیکون </span>
@@ -75,7 +71,7 @@ const page = async () => {
         <section className="flex w-full flex-col items-center px-20" id="0">
           <SectionTitle align="center" level={3} title="ویدیو بررسی" />
           <div className="mt-10">
-            <VideoPlayerWrapper />
+            <VideoPlayerWrapper data={REPORT.video} />
           </div>
         </section>
 
