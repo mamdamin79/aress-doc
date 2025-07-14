@@ -20,10 +20,16 @@ interface Report2Props {
   data: Report2CalculationResult;
   filters: FinancialReportFilterApiModel[];
   onSubmit?: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
-  onRemove?: ()=>void;
+  onRemove?: () => void;
 }
 
-export function Report2({ data, filters, onSubmit, title,onRemove }: Report2Props) {
+export function Report2({
+  data,
+  filters,
+  onSubmit,
+  title,
+  onRemove,
+}: Report2Props) {
   const [dataState, setDataState] = useState(data);
   const [filterState, setFilterState] = useState(filters);
 

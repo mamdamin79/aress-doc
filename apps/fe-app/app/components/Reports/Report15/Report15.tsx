@@ -117,6 +117,8 @@ export const Report15: FC<Report15Props> = ({
         verticalPadding,
         horizontalPadding,
       ],
+      xMiddle: (minX + maxX) / 2,
+      yMiddle: (minY + maxY) / 2,
     };
   }, [data.graphData, data.beta, data.yIntersect]);
 
@@ -151,7 +153,7 @@ export const Report15: FC<Report15Props> = ({
         {
           color: 'var(--color-border-accent-blue-600)',
           width: 1,
-          value: 0,
+          value: chartData.xMiddle,
           zIndex: 3,
         },
       ],
@@ -197,7 +199,7 @@ export const Report15: FC<Report15Props> = ({
         {
           color: 'var(--color-border-accent-blue-600)',
           width: 1,
-          value: 0,
+          value: chartData.yMiddle,
           zIndex: 3,
         },
       ],
@@ -236,6 +238,8 @@ export const Report15: FC<Report15Props> = ({
       ]}
       title={title ?? ''}
       popupInfoItems={financialDefinitions}
+      onSubmit={handleSubmit}
+      onRemove={onRemove}
     >
       <div className="flex flex-col gap-1">
         <div className="text-text-neutral-primary flex items-center justify-start gap-6 px-3 pt-1 text-xs font-medium">
@@ -249,7 +253,7 @@ export const Report15: FC<Report15Props> = ({
           </div>
           <div className="flex items-center gap-2">
             <span className="text-surface-accent-blue-600">Y</span>
-            <span>بازدهی شاخص پالایشی</span>
+            <span>بازدهی شاخص {filters[1].selectedOption.title}</span>
           </div>
           <div className="flex items-center gap-2">
             <span>Y = βX+C</span>
