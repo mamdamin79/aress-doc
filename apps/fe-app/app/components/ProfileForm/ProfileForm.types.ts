@@ -1,4 +1,6 @@
+import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query';
 import { IconName } from '../../../../../libs/design-system/src/lib/components/Icon/Icon.types';
+import { GetUsersMeResponse } from '@openapi';
 
 export interface ProfileFormProps {
   fnameAndLname?: string;
@@ -6,8 +8,11 @@ export interface ProfileFormProps {
   nationalID?: number;
   email?: string;
   username?: string;
-  image?: string;
-  onImageChange?: (image:string)=>void;
+  image?: string | null;
+  onImageChange?: (image: string) => void;
+  refetch: (
+    options?: RefetchOptions,
+  ) => Promise<QueryObserverResult<GetUsersMeResponse, unknown>>;
 }
 export type editDialogStatus =
   | 'phoneNumber'

@@ -41,7 +41,7 @@ export const baseOptions: Highcharts.Options = {
           <div style="font-weight: 500;">${this.key}</div>
           ${this.points
             ?.map(
-              (p: any) => `
+              (p:any) => `
             <div style="margin-top: 0.25rem; display: flex; align-items: center; gap: 0.25rem;">
               <span style="color: ${p.color}; font-size: 0.875rem;">
                 ${p.series.userOptions.type === 'spline' ? '●' : '■'}

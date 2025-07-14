@@ -1,9 +1,9 @@
 import { cn } from '../../../utils/classNames.utils';
 import Image from 'next/image';
 import React from 'react';
-
+import USER_SVG from '../../../assets/icons/profile vector-large.svg';
 interface HeadProfileProps {
-  profileImage: string;
+  profileImage?: string | null;
 }
 
 export const HeadProfile: React.FC<HeadProfileProps> = ({ profileImage }) => {
@@ -16,8 +16,8 @@ export const HeadProfile: React.FC<HeadProfileProps> = ({ profileImage }) => {
         )}
       >
         <Image
-          src={profileImage}
-          className="h-8 w-8 rounded-lg object-cover shadow-sm"
+          src={profileImage ?? USER_SVG}
+          className="h-8 w-8 rounded-lg object-contain shadow-sm"
           alt="profile picture"
           width={32}
           height={32}

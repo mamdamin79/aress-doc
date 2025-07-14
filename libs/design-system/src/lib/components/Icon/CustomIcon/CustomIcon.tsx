@@ -15,9 +15,15 @@ export const CustomIcon: React.FC<IconProps> = ({ name, size = 'md' }) => {
       <CustomIconComponent
         width={SIZE_VALUES[size]}
         height={SIZE_VALUES[size]}
-        strokeWidth={STROKE_VALUES[size]}
+        strokeWidth={
+          name !== 'CustomBookmark' &&
+          name !== 'CustomArrow' &&
+          name !== 'CustomPin'
+            ? STROKE_VALUES[size]
+            : 0
+        }
         className={cn(
-          `stroke-current transition-all duration-150 ease-in-out`,
+          `transition-all duration-150 ease-in-out`,
           {
             'hover:-rotate-6': name === 'CustomBadge' || name === 'CustomBeta',
           },
