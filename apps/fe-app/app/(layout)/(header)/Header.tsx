@@ -18,7 +18,11 @@ import { MenuData } from './HeaderDataLite';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useThemeToggle } from '../../../hooks';
-import { OpenAPI, useDashboardsServiceGetDashboards } from '@openapi';
+import {
+  OpenAPI,
+  useDashboardsServiceGetDashboards,
+  useUsersServiceGetUsersMe,
+} from '@openapi';
 import { fetchToken } from '../../(auth)/auth.utils';
 import { buildDashboardUrl, useDashboardActions } from './header.utils';
 
@@ -57,10 +61,17 @@ export const Header: React.FC = () => {
   const query = useDashboardsServiceGetDashboards(undefined, {
     enabled: false, // prevent auto-fetch
   });
+  const { data: user, refetch: refetchUser } = useUsersServiceGetUsersMe(
+    undefined,
+    {
+      enabled: false,
+    },
+  );
 
   useEffect(() => {
     if (token) {
       query.refetch();
+      refetchUser();
     }
   }, [token]);
 
@@ -134,6 +145,10 @@ export const Header: React.FC = () => {
 
   const { width } = useWindowSize();
   const dashboardActions = useDashboardActions();
+  const baseURL = process.env.NEXT_PUBLIC_API_URL ?? '';
+  const profilePicture = user?.profilePicture
+    ? baseURL + user.profilePicture
+    : null;
   if (typeof width !== 'number') return null;
 
   return (
@@ -177,7 +192,7 @@ export const Header: React.FC = () => {
               onClick={toggleTheme}
             />
             <Link href={'/profile'}>
-              <HeadProfile profileImage="https://picsum.photos/200" />
+              <HeadProfile profileImage={profilePicture} />
             </Link>
           </div>
         </div>

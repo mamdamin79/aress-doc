@@ -4,7 +4,7 @@ import { ProfileSidebarOption } from './ProfileSidebarOption';
 import UserSVG from '../../../assets/icons/profile-vector-large.svg';
 import { cn } from 'libs/design-system/src/utils';
 export interface ProfileSidebarProps {
-  image?: string;
+  image?: string | null;
   title?: string;
   subTitle?: string;
   onNavigation?: (section: string) => void;
