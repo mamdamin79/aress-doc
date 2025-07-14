@@ -1,18 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { FundsColumn } from './FundsColumn';
+import { FundsColumnHeader } from './FundsColumnHeader';
 
-// Meta configuration for the FundsColumn component in Storybook
-const meta: Meta<typeof FundsColumn> = {
+// Meta configuration for the FundsColumnHeader component in Storybook
+const meta: Meta<typeof FundsColumnHeader> = {
   title: 'Components/FundsColumn', // Defines the title in Storybook's UI
-  component: FundsColumn, // Links to the actual component
+  component: FundsColumnHeader, // Links to the actual component
   tags: ['autodocs'], // Optional: Add any additional tags for better categorization
 };
 
 export default meta;
 
-type Story = StoryObj<typeof FundsColumn>;
+type Story = StoryObj<typeof FundsColumnHeader>;
 
-// A default story for the FundsColumn component
+// A default story for the FundsColumnHeader component
 export const Default: Story = {
   args: {
     filterable: true,

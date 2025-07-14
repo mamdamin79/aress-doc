@@ -28,7 +28,7 @@ export function Bookmark({
           if (selectedColor) setIsOpen(true);
         }}
         className={cn(
-          'absolute top-[13px] z-10 h-fit w-fit cursor-pointer border-none fill-[#D1D3D7]',
+          'absolute top-[13px] z-10 h-fit w-fit cursor-pointer border-none fill-surface-neutral-secondary',
           {
             'fill-surface-accent-pink-600': selectedColor === 'pink',
             'fill-surface-accent-blue-600': selectedColor === 'blue',
@@ -75,7 +75,7 @@ export function Bookmark({
             >
               <div
                 onClick={() => {
-                  onColorChange(color);
+                  onColorChange(color); 
                   setIsOpen(false);
                 }}
                 className={cn(
