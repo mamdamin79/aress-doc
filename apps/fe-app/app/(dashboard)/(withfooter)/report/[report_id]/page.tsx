@@ -1,16 +1,15 @@
 import { Breadcrumb, Icon, ReportsCarousel, SectionTitle } from 'design-system';
 import { ReportOverview } from './_components/ReportOverview';
 import { TabsWrapper } from './_components/TabsWrapper';
-import { ReportCardBaseWrapper } from './_components/ReportCardBaseWrapper';
-import { ReportDetailPageApiResponse } from './_types/api.types';
 import { VideoPlayerWrapper } from './_components/VideoPlayerWrapper';
-import { DashboardService, OpenAPI } from '@openapi';
 import { fetchToken } from '../../../../(auth)/auth.utils';
 import { MarkdownRender } from './_components/MarkdownRender';
 import rightWaveSVG from '@aress-assets/images/rightwaves.svg';
 import leftWaveSVG from '@aress-assets/images/leftwaves.svg';
 
 import Image from 'next/image';
+import { OpenAPI, ReportsService } from '@openapi';
+import { DynamicReportRenderer } from '../../../(nofooter)/(dashboard)/_components/DynamicReportRenderer';
 async function getData(id: number) {
   const token = await fetchToken();
   if (!token) {
@@ -19,13 +18,13 @@ async function getData(id: number) {
   OpenAPI.HEADERS = {
     Authorization: `Bearer ${token}`,
   };
-  const user = (await DashboardService.getDashboardReportsByReportId({
-    reportId: id,
-  })) as ReportDetailPageApiResponse;
+  const user = await ReportsService.getReportsByReportId({
+    reportId: String(id),
+  });
   return user;
 }
 const page = async () => {
-  const REPORT = await getData(1);
+  const REPORT = await getData(6);
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
   return (
     <>
@@ -44,8 +43,16 @@ const page = async () => {
 
         <section className="mb-16 flex w-full flex-col-reverse items-center gap-8 px-20 pt-6 xl:flex-row xl:justify-around">
           <div className="flex w-fit flex-col gap-6">
-            <ReportCardBaseWrapper />
+            {/* <DynamicReportRenderer
+        title={report.title}
+        identifier={identifier}
+        data={data}
+        filters={filters}
+        onSubmit={onSubmit}
+        onRemove={onRemoveReport}
+      /> */}
 
+            <div className="bg-surface-accent-red-500 h-[336px] w-[616px]"></div>
             <div className="flex w-fit flex-row items-center gap-1 text-sm font-normal">
               <Icon name="info" size="md" />
               <span>با زدن بر روی آیکون </span>
@@ -88,7 +95,7 @@ const page = async () => {
           <SectionTitle align="center" level={3} title="اطلاعات بیشتر" />
           <div className="mt-2 flex flex-col text-right">
             {/* Section Component */}
-            <MarkdownRender markdown={REPORT?.markdownDescription} />
+            <MarkdownRender markdown={REPORT?.markdownDescription ?? ''} />
           </div>
         </section>
 
@@ -105,7 +112,7 @@ const page = async () => {
                   fixedBrief: false,
                   newBadge: REPORT.isNew,
                   userFavorite: REPORT.userFavorite,
-                  videoBadge: !!REPORT.video,
+                  videoBadge: !!REPORT.hasVideo,
                 };
               })}
             />
