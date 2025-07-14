@@ -50,6 +50,7 @@ export const ReportWrapper: React.FC<ReportWrapperProps> = ({
         data={reportData?.calculation}
         filters={reportData?.filters}
         onSubmit={(changed) => handleSubmit(changed)}
+        title={title}
       />
     )
   );
