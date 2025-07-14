@@ -9,6 +9,7 @@ import { AressApiUser, OpenAPI, useUsersServiceGetUsersMe } from '@openapi';
 import { fetchToken } from '../../../(auth)/auth.utils';
 import { Toaster } from 'react-hot-toast';
 import { ProfileSidebarSkeleton } from './_components/skeletons/ProfileSidebarSkeleton';
+import { ProfileFormSkeleton } from './_components/skeletons/ProfileFormSkeleton';
 
 const ProfilePage = () => {
   const [isApiReady, setIsApiReady] = useState(false);
@@ -83,18 +84,20 @@ const ProfilePage = () => {
                 حساب کاربری
               </button>
             )}
-
-            <ProfileForm
-              image={profilePicture}
-              email={user?.email ?? ''}
-              fnameAndLname={fullName}
-              nationalID={
-                user?.nationalCode ? Number(user.nationalCode) : undefined
-              }
-              phoneNumber={user?.phoneNumber ?? ''}
-              username={user?.username}
-              refetch={refetch}
-            />
+            {
+              data ?
+                <ProfileForm
+                  image={profilePicture}
+                  email={user?.email ?? ''}
+                  fnameAndLname={fullName}
+                  nationalID={
+                    user?.nationalCode ? Number(user.nationalCode) : undefined
+                  }
+                  phoneNumber={user?.phoneNumber ?? ''}
+                  username={user?.username}
+                  refetch={refetch}
+                /> : <ProfileFormSkeleton />
+            }
           </div>
         </div>
       </div>
