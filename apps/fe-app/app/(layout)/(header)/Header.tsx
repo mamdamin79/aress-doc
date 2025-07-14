@@ -183,9 +183,7 @@ export const Header: React.FC = () => {
               />
             </Link>
             <div className="pt-2">
-              {query.isLoading || !query.data ? (
-                <Skeleton width={300} height={40} />
-              ) : width >= DESKTOP_BREAKPOINT ? (
+              {width >= DESKTOP_BREAKPOINT ? (
                 <DesktopMenu menuItems={menuData} activeTab={activeTabIndex} />
               ) : (
                 <BurgerMenu menuItems={menuData} />

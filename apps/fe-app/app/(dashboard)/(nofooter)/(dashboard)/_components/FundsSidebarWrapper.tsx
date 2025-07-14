@@ -112,10 +112,21 @@ const data: FundsSidebarData[] = [
     title: 'صندوق تک سهم بورس',
   },
 ];
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHeaderVisibility } from '../../../../../hooks';
+import { SidebarSkeleton } from './skeletons/SideBarSkeleton';
+import { SidebarItemSkeleton } from './skeletons/SidebarItemSkeleton';
 export const FundsSidebarWrapper: React.FC = () => {
   const { isHeaderVisible } = useHeaderVisibility();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div
@@ -126,7 +137,16 @@ export const FundsSidebarWrapper: React.FC = () => {
         top: isHeaderVisible ? `104px` : `24px`,
       }}
     >
-      <FundsSidebar data={data} />
-    </div>
+      {
+        isLoading ? (
+          <SidebarSkeleton>
+            {Array.from({ length: 12 }).map((_, idx) => (
+              <SidebarItemSkeleton key={idx} />
+            ))}
+          </SidebarSkeleton>
+        ) : (
+          <FundsSidebar data={data} />
+        )
+      }    </div>
   );
 };
