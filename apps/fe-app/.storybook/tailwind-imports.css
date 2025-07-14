@@ -1941,10 +1941,3 @@ input[type='password']::-webkit-password-eye {
   background-color: #d8dbe1;
   border-radius: 8px;
 }
-
-.scrollbar-hidden::-webkit-scrollbar-track,
-.scrollbar-hidden::-webkit-scrollbar-thumb,
-.scrollbar-hidden::-webkit-scrollbar {
-  background-color: transparent;
-  position: sticky;
-}
