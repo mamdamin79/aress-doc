@@ -77,6 +77,10 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
           title={optionsListItems?.title ?? ''}
           onBackButtonClick={() => setOptionsListItems(null)}
           onSearch={(value) => console.log(value)}
+          onChange={(item) => {
+            optionsListItems && optionsListItems.onChange?.(item);
+            setOptionsListItems(null);
+          }}
         />
       </SlideFromLeft>
 
