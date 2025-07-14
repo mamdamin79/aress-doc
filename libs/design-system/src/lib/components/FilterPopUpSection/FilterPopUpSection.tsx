@@ -117,7 +117,7 @@ export function FilterPopUpSection({
           </span>
         )}
       </div>
-      <div className="bg-border-neutral-primary h-[2px] w-full"></div>
+      <div className="bg-border-neutral-primary h-[2px] w-full" />
       <div className="scrollbar-sm h-[580px] overflow-y-auto pt-4">
         {/* Search Input */}
         <div className="px-4">
@@ -138,8 +138,7 @@ export function FilterPopUpSection({
             <div key={index}>
               <div
                 onClick={() => openFilter(item.title)}
-                className="rounded-lg border p-3"
-              >
+                className="rounded-lg border-border-neutral-primary border p-3">
                 <div className="text-text-neutral-primary flex cursor-pointer items-center justify-between text-sm font-medium">
                   <span>{item.title}</span>
                   <Icon name="chevron-left" size="lg" />
@@ -147,7 +146,7 @@ export function FilterPopUpSection({
 
                 {selectedFilters[item.title] && (
                   <div className="pt-2" onClick={(e) => e.stopPropagation()}>
-                    <hr className="bg-border-neutral-primary h-0.5" />
+                    <div className="bg-border-neutral-primary h-[2px] w-full" />
                     <div className="flex flex-wrap gap-2 pt-2">
                       {selectedFilters[item.title]?.map((option, i) => (
                         <RemovableLabel
@@ -196,8 +195,7 @@ export function FilterPopUpSection({
           <Icon name="chevron-right" size="lg" />
           <span className="font-medium">{activeFilter}</span>
         </div>
-        <hr className="bg-border-neutral-primary h-0.5" />
-
+        <div className="bg-border-neutral-primary h-[2px] w-full" />
         {/* Options */}
         <div className="flex flex-col">
           {activeFilter &&

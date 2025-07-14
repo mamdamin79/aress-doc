@@ -1,27 +1,7 @@
 import { faker } from '@faker-js/faker';
+import { Person } from '../types';
 
-export type Person = {
-  nameFund: string;
-  unitCount: number;
-  profitPerUnit: number;
-  netAssetValue: number;
-  monstatisticalPriceth: number;
-  cancellationPrice: number;
-  dailyAlpha: number;
-  weeklyAlpha: number;
-  monthlyAlpha: number;
-  quarterlyAlpha: number;
-  issuancePrice: number;
-  progress: number;
-  monthlyReturn: number;
-  quarterlyReturn: number;
-  yearlyReturn: number;
-  dailyReturn: number;
-  weeklyReturn: number;
-  startDate: number;
-  logo: string;
-  investmentMethod: 'T' | 'I&C';
-};
+
 
 const range = (len: number) => {
   const arr: number[] = [];
@@ -32,12 +12,11 @@ const range = (len: number) => {
 };
 
 const newPerson = (): Person => {
-  const investmentMethods: ['T', 'I&C'] = ['T', 'I&C'];
   const fixedNow = new Date('2020-01-01').getTime(); // fixed reference point to avoid hydration error
 
   return {
     investmentMethod: "I&C",
-    logo: faker.image.avatar(),
+    // logo: faker.image.avatar(),
     nameFund: faker.person.fullName(),
     startDate:
       fixedNow -
