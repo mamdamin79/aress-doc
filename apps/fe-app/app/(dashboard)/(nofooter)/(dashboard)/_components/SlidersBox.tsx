@@ -50,6 +50,7 @@ import { SortableAddReportButton } from './SortableAddReportButton';
 import { calculateSlotsToRender, generateTooltips } from './utils';
 import { useDashboardData } from './hooks/useDashboardData';
 import { useDashboardActions } from './hooks/useDashboardActions';
+import { useReportSelection } from './hooks/useReportSelection';
 
 const MAX_TOTAL_SLOTS = 16;
 
@@ -132,75 +133,17 @@ export const SlidersBox: React.FC = () => {
       coordinateGetter: sortableKeyboardCoordinates,
     }),
   );
-  const ITEMS_PER_PAGE = 6;
-
-  const categoryInSearchParams = searchParams.get('category') || '';
-  const searchInSearchParams = searchParams.get('search') || '';
-  const pageInSearchParams = searchParams.get('page') || '1';
-
-  const queryParams: Record<string, any> = {};
-
-  if (searchParams.has('onlyFavorite')) {
-    queryParams.onlyFavorite = Boolean(searchParams.get('onlyFavorite'));
-  }
-  if (searchParams.has('onlyHavingVideo')) {
-    queryParams.onlyHavingVideo = Boolean(searchParams.get('onlyHavingVideo'));
-  }
-  if (searchParams.has('onlyNew')) {
-    queryParams.onlyNew = Boolean(searchParams.get('onlyNew'));
-  }
-
-  const { data: reportsList, refetch: fetchReportsList } =
-    useReportsServiceGetReports(queryParams, undefined, { enabled: false });
-  const { data: reportCategories, refetch: fetchReportsCategories } =
-    useReportsServiceGetReportsCategories();
-  const [reports, setReports] = useState<GetReportsResponse | null>();
-  const [categories, setCategories] =
-    useState<GetReportsCategoriesResponse | null>();
-
-  const filteredReports = useMemo(() => {
-    return reportsList?.filter((report) => {
-      const matchesCategory = categoryInSearchParams
-        ? report.category.title === categoryInSearchParams
-        : true;
-
-      const matchesSearch = searchInSearchParams
-        ? report.title
-            .toLowerCase()
-            .includes(searchInSearchParams.toLowerCase())
-        : true;
-
-      return matchesCategory && matchesSearch;
-    });
-  }, [reports, categoryInSearchParams, searchInSearchParams]);
-
-  const currentPage = parseInt(pageInSearchParams, 10) || 1;
-
-  const paginatedReports = useMemo(() => {
-    return filteredReports?.slice(
-      (currentPage - 1) * ITEMS_PER_PAGE,
-      currentPage * ITEMS_PER_PAGE,
-    );
-  }, [filteredReports, currentPage]);
-
-  const totalPages = filteredReports
-    ? Math.ceil(filteredReports.length / ITEMS_PER_PAGE)
-    : 0;
-  const handleReportSelectionPopupOpen = async () => {
-    const [reportsRes, categoriesRes] = await Promise.all([
-      fetchReportsList(),
-      fetchReportsCategories(),
-    ]);
-
-    if (reportsRes.data) setReports(reportsRes.data);
-    if (categoriesRes.data) setCategories(categoriesRes.data);
-
-    setIsReportSelectionPopupOpen(true);
-  };
-  const { data: reportsPreviewData, refetch: fetchReportPreview } =
-    useReportsServiceGetReportsByReportId({
-      reportId: selectedReportID ?? '6',
-    });
+  const {
+    previewData: reportsPreviewData,
+    openPopup: handleReportSelectionPopupOpen,
+    ITEMS_PER_PAGE,
+    currentPage,
+    fetchReportPreview,
+    filteredReports,
+    paginatedReports,
+    categories,
+    totalPages,
+  } = useReportSelection(selectedReportID);
   useEffect(() => {
     const cols = window.matchMedia('(min-width: 1280px)').matches ? 4 : 2;
     setSlidesPerView(cols);
@@ -299,9 +242,10 @@ export const SlidersBox: React.FC = () => {
                       <SortableAddReportButton
                         key={slotId}
                         slotId={slotId}
-                        onClick={() => {
-                          handleReportSelectionPopupOpen();
+                        onClick={async () => {
+                          await handleReportSelectionPopupOpen();
                           setActiveReportPlacementOrder(slotId);
+                          setIsReportSelectionPopupOpen(true);
                         }}
                       />
                     );
@@ -358,7 +302,7 @@ export const SlidersBox: React.FC = () => {
         <ReportSelectionPopup
           isOpen={isReportSelectionPopupOpen}
           onClose={() => setIsReportSelectionPopupOpen(false)}
-          categories={reportCategories ?? []}
+          categories={categories ?? []}
           currentPage={currentPage}
           pageCount={totalPages}
           pageSize={ITEMS_PER_PAGE}
