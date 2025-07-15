@@ -15,9 +15,10 @@ import { fetchToken } from '../../../../(auth)/auth.utils';
 
 type Props = {
   reports: GetReportsResponse;
+  onReportClick?: (identifier: number | string) => void;
 };
 
-export const ReportList: React.FC<Props> = ({ reports }) => {
+export const ReportList: React.FC<Props> = ({ reports, onReportClick }) => {
   const addFavoriteMutation = useReportsServicePostReportsByReportIdFavorite();
   const deleteFavoriteMutation =
     useReportsServiceDeleteReportsByReportIdFavorite();
@@ -52,6 +53,7 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
         <div className="4xl:grid-cols-3 4xl:max-w-[1591px] grid max-w-[1048px] grid-cols-1 items-center gap-6 xl:grid-cols-2">
           {reports.map((report, idx) => (
             <div
+              onClick={() => onReportClick?.(report.identifier)}
               key={report.identifier}
               className="3xl:max-w-[512px] 3xl:min-w-[512px] 4xl:min-w-[500px] 4xl:max-w-[500px] sm:max-w-[380px] md:min-w-[512px] md:max-w-[512px] xl:min-w-[442px] xl:max-w-[442px]"
             >
@@ -60,7 +62,6 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
                 categoryType={report.category.title}
                 reportSubscription="رایگان"
                 fixedBrief={true}
-                // hasVideo has error because of the type of report is old
                 newBadge={report.isNew}
                 onLike={() =>
                   handleLike(
@@ -70,9 +71,10 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
                 }
                 userFavorite={report.userFavorite}
                 videoBadge={report.hasVideo}
-                {...report}
                 image={baseURL + report.image}
                 shadowOnHover
+                summary={report.summary}
+                title={report.title}
               />
             </div>
           ))}

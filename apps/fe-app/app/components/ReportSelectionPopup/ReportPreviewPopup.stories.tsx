@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { ReportSelectionPopup } from './ReportSelectionPopup';
+import { ReportSelectionPopup } from './ReportPreviewPopup';
 import { useState } from 'react';
 const meta: Meta<typeof ReportSelectionPopup> = {
   component: ReportSelectionPopup,

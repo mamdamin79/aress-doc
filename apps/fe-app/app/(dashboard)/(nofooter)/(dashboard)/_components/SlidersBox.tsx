@@ -2,16 +2,14 @@
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import {
-  AddReportButton,
   AutoRotateSwitch,
   AutoRotationOff,
   cn,
   ConfirmModal,
   HorizontalScrollBar,
 } from 'design-system';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { DashboardNumberAndName } from './DashboardNumberAndName';
-import { ReportSelectionPopup } from '../../../../components';
 import { useSearchParams } from 'next/navigation';
 
 import {
@@ -24,132 +22,49 @@ import {
   DragEndEvent,
 } from '@dnd-kit/core';
 import {
-  arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
-  useSortable,
   rectSortingStrategy,
 } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import { useHtmlPaddingRight } from '../../../../../hooks';
 import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
 import {
-  FinancialReportFilterApiModel,
+  FinancialReportCalculationApiModel,
+  GetReportsCategoriesResponse,
+  GetReportsResponse,
   OpenAPI,
-  useDashboardsServiceDeleteDashboardsByDashboardId,
-  useDashboardsServiceDeleteDashboardsByDashboardIdItemsByDashboardItemId,
-  useDashboardsServiceGetDashboardsByDashboardId,
-  useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdCalculations,
-  useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdReorder,
-} from '@openapi';
-import {
-  Report13Dot1CalculationResult,
-  Report13Dot2CalculationResult,
-  Report13Dot3CalculationResult,
-  Report15CalculationResult,
-  Report2CalculationResult,
-  Report6CalculationResult,
+  useReportsServiceGetReports,
+  useReportsServiceGetReportsByReportId,
+  useReportsServiceGetReportsCategories,
 } from '@openapi';
 import { fetchToken } from '../../../../(auth)/auth.utils';
-import { DynamicReportRenderer } from './DynamicReportRenderer';
-import { OptionItem } from 'libs/design-system/src/lib/components/OptionsListExplorer/OptionsListExplorer.types';
-import { useAutoRotate } from './useAutoRotate';
+import { useAutoRotate } from './hooks/useAutoRotate';
 import { ReportTitleSkeleton } from './skeletons/ReportTitleSkeleton';
 import { ReportSectionSkeleton } from './skeletons/ReportSectionSkeleton';
+import {
+  ReportPreviewPopup,
+  ReportSelectionPopup,
+} from '../../../../components';
+import { SortableReport } from './SortableReport';
+import { SortableAddReportButton } from './SortableAddReportButton';
+import { calculateSlotsToRender, generateTooltips } from './utils';
+import { useDashboardData } from './hooks/useDashboardData';
+import { useDashboardActions } from './hooks/useDashboardActions';
 
-const MAX_INITIAL_SLOTS = 4;
 const MAX_TOTAL_SLOTS = 16;
 
-const SortableReport: React.FC<{
-  slotId: string;
-  identifier: number;
-  report: any;
-  data: any;
-  filters: FinancialReportFilterApiModel[] | undefined;
-  onSubmit: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
-  onRemoveReport: () => void;
-}> = ({
-  slotId,
-  identifier,
-  report,
-  data,
-  filters,
-  onSubmit,
-  onRemoveReport,
-}) => {
-    const {
-      attributes,
-      listeners,
-      setNodeRef,
-      transform,
-      transition,
-      isDragging,
-    } = useSortable({ id: slotId });
-
-    const style: React.CSSProperties = {
-      transition,
-      transform: CSS.Translate.toString(transform),
-      zIndex: isDragging ? 10 : 'auto',
-    };
-
-    return (
-      <div ref={setNodeRef} style={style} className="relative">
-        <div
-          className="absolute right-0 top-0 z-10 h-14 w-[550px] cursor-grab"
-          {...attributes}
-          {...listeners}
-        />
-        <DynamicReportRenderer
-          title={report.title}
-          identifier={identifier}
-          data={data}
-          filters={filters}
-          onSubmit={onSubmit}
-          onRemove={onRemoveReport}
-        />
-      </div>
-    );
-  };
-
-const SortableAddReportButton: React.FC<{
-  slotId: string;
-  onClick: () => void;
-}> = ({ slotId, onClick }) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: slotId });
-
-  const style: React.CSSProperties = {
-    transition,
-    transform: CSS.Translate.toString(transform),
-    zIndex: isDragging ? 10 : 'auto',
-  };
-
-  return (
-    <div ref={setNodeRef} style={style} className="relative">
-      <div
-        className="absolute left-0 top-0 z-10 h-14 w-full cursor-grab"
-        {...attributes}
-        {...listeners}
-      />
-      <AddReportButton onClick={onClick} />
-    </div>
-  );
-};
-
 export const SlidersBox: React.FC = () => {
-  const [slotsToRender, setSlotsToRender] = useState<number[]>([]);
   const [barsNumber, setBarsNumber] = useState(0);
   const [slidesPerView, setSlidesPerView] = useState(2);
   const containerRef = useRef<HTMLDivElement>(null);
   const [tokenLoaded, setTokenLoaded] = useState(false);
   const [isReportSelectionPopupOpen, setIsReportSelectionPopupOpen] =
     useState(false);
+  const [isReportPreviewOpen, setIsReportPreviewOpen] = useState(false);
+  const [selectedReportID, setSelectedReportID] = useState<string | null>(null);
+  const [activeReportPlacementOrder, setActiveReportPlacementOrder] = useState<
+    string | null
+  >(null);
   const [isRemoveReportOpen, setIsRemoveReportOpen] = useState({
     open: false,
     dashboardName: '',
@@ -160,14 +75,8 @@ export const SlidersBox: React.FC = () => {
     Record<
       number,
       {
-        data:
-        | Report2CalculationResult
-        | Report6CalculationResult
-        | Report13Dot1CalculationResult
-        | Report13Dot2CalculationResult
-        | Report13Dot3CalculationResult
-        | Report15CalculationResult;
-        filters: FinancialReportFilterApiModel[];
+        data: FinancialReportCalculationApiModel['calculation'];
+        filters: FinancialReportCalculationApiModel['filters'];
       }
     >
   >({});
@@ -184,139 +93,38 @@ export const SlidersBox: React.FC = () => {
   }, []);
 
   const searchParams = useSearchParams();
-  const dashboardIdParam = searchParams.get('dashboardId');
-  const { data: dashboardData, isLoading: isDashboardLoading } =
-    useDashboardsServiceGetDashboardsByDashboardId(
-      { dashboardId: Number(dashboardIdParam) },
-      undefined,
-      { enabled: tokenLoaded && !!dashboardIdParam },
-    );
-
-  useEffect(() => {
-    const total = dashboardData?.items?.length ?? 0;
-    const cols = window.matchMedia('(min-width: 1280px)').matches ? 4 : 2;
-    setSlidesPerView(cols);
-    setBarsNumber(Math.ceil(slotsToRender.length / cols));
-  }, [dashboardData, slotsToRender]);
-
-  useEffect(() => {
-    if (!dashboardData?.items) {
-      setSlotsToRender(Array.from({ length: MAX_INITIAL_SLOTS }, (_, i) => i));
-      return;
-    }
-
-    const reports = dashboardData.items;
-    const filledOrders = new Set(reports.map((r) => r.order));
-    let slots: number[] = [];
-
-    const maxOrder = Math.max(
-      ...Array.from(filledOrders),
-      MAX_INITIAL_SLOTS - 1,
-    );
-
-    for (let i = 0; i <= maxOrder; i++) slots.push(i);
-
-    if (slots.length < MAX_INITIAL_SLOTS) {
-      for (let i = slots.length; i < MAX_INITIAL_SLOTS; i++) {
-        slots.push(i);
-      }
-    }
-
-    if (reports.length >= MAX_INITIAL_SLOTS && slots.length < MAX_TOTAL_SLOTS) {
-      slots.push(slots.length);
-    }
-
-    setSlotsToRender(slots);
-  }, [dashboardData]);
-
+  const {
+    dashboardData,
+    setDashboardData,
+    isDashboardLoading,
+    slotsToRender,
+    setSlotsToRender,
+    dashboardIdParam,
+  } = useDashboardData(tokenLoaded);
   const {
     currIndex,
     activeRotate,
     setActiveRotate,
     handleRotation,
     scrollToIndex: handleScroll,
-  } = useAutoRotate({ barsNumber, onRotate: () => { } });
+  } = useAutoRotate({ barsNumber, onRotate: () => {} });
 
   const { showToast } = useCustomToast();
   const htmlPaddingRight = useHtmlPaddingRight();
-
-  const { mutateAsync } =
-    useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdCalculations();
-  const { mutate: removeReport } =
-    useDashboardsServiceDeleteDashboardsByDashboardIdItemsByDashboardItemId();
-
-  const handleSubmit = async (
-    dashboardItemId: number,
-    changedOptions: Record<string, OptionItem>,
-  ) => {
-    try {
-      const updatedReport = await mutateAsync({
-        dashboardId: dashboardData?.identifier ?? 1,
-        dashboardItemId,
-        requestBody: {
-          selectedFilters: Object.fromEntries(
-            Object.entries(changedOptions).map(([key, { id }]) => [
-              key,
-              String(id),
-            ]),
-          ),
-        },
-      });
-
-      setReportDataMap((prev) => ({
-        ...prev,
-        [dashboardItemId]: {
-          data: updatedReport.report.reportCalculation?.calculation as any,
-          filters: updatedReport.report.reportCalculation
-            ?.filters as FinancialReportFilterApiModel[],
-        },
-      }));
-
-      return true;
-    } catch (error) {
-      console.error('Error submitting report update', error);
-      return false;
-    }
-  };
-  const handleRemoveReport = () => {
-    removeReport(
-      {
-        dashboardId: Number(dashboardIdParam),
-        dashboardItemId: isRemoveReportOpen.dashboardItemID,
-      },
-      {
-        onSuccess: async () => {
-          setIsRemoveReportOpen({
-            open: false,
-            dashboardName: '',
-            dashboardItemID: 0,
-          });
-
-          setReportDataMap((prev) => {
-            const newMap = { ...prev };
-            delete newMap[isRemoveReportOpen.dashboardItemID];
-            return newMap;
-          });
-
-          if (dashboardData) {
-            const updatedItems = dashboardData.items?.filter(
-              (item) => item.identifier !== isRemoveReportOpen.dashboardItemID,
-            );
-
-            dashboardData.items = updatedItems ?? [];
-            setSlotsToRender((prev) => {
-              const removedOrder = dashboardData.items?.find(
-                (item) =>
-                  item.identifier === isRemoveReportOpen.dashboardItemID,
-              )?.order;
-              if (removedOrder === undefined) return prev;
-              return prev.filter((order) => order !== removedOrder);
-            });
-          }
-        },
-      },
-    );
-  };
+  const {
+    handleSubmit,
+    handleRemoveReport,
+    handleAddNewReport,
+    handleDragEnd: handleDragEndInternal,
+  } = useDashboardActions({
+    dashboardId: dashboardIdParam ? Number(dashboardIdParam) : null,
+    dashboardData,
+    setSlotsToRender,
+    setReportDataMap,
+    setIsRemoveReportOpen,
+    showToast,
+    setDashboardData,
+  });
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -324,67 +132,92 @@ export const SlidersBox: React.FC = () => {
       coordinateGetter: sortableKeyboardCoordinates,
     }),
   );
-  const { mutate: updateOrder } =
-    useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdReorder();
+  const ITEMS_PER_PAGE = 6;
+
+  const categoryInSearchParams = searchParams.get('category') || '';
+  const searchInSearchParams = searchParams.get('search') || '';
+  const pageInSearchParams = searchParams.get('page') || '1';
+
+  const queryParams: Record<string, any> = {};
+
+  if (searchParams.has('onlyFavorite')) {
+    queryParams.onlyFavorite = Boolean(searchParams.get('onlyFavorite'));
+  }
+  if (searchParams.has('onlyHavingVideo')) {
+    queryParams.onlyHavingVideo = Boolean(searchParams.get('onlyHavingVideo'));
+  }
+  if (searchParams.has('onlyNew')) {
+    queryParams.onlyNew = Boolean(searchParams.get('onlyNew'));
+  }
+
+  const { data: reportsList, refetch: fetchReportsList } =
+    useReportsServiceGetReports(queryParams, undefined, { enabled: false });
+  const { data: reportCategories, refetch: fetchReportsCategories } =
+    useReportsServiceGetReportsCategories();
+  const [reports, setReports] = useState<GetReportsResponse | null>();
+  const [categories, setCategories] =
+    useState<GetReportsCategoriesResponse | null>();
+
+  const filteredReports = useMemo(() => {
+    return reportsList?.filter((report) => {
+      const matchesCategory = categoryInSearchParams
+        ? report.category.title === categoryInSearchParams
+        : true;
+
+      const matchesSearch = searchInSearchParams
+        ? report.title
+            .toLowerCase()
+            .includes(searchInSearchParams.toLowerCase())
+        : true;
+
+      return matchesCategory && matchesSearch;
+    });
+  }, [reports, categoryInSearchParams, searchInSearchParams]);
+
+  const currentPage = parseInt(pageInSearchParams, 10) || 1;
+
+  const paginatedReports = useMemo(() => {
+    return filteredReports?.slice(
+      (currentPage - 1) * ITEMS_PER_PAGE,
+      currentPage * ITEMS_PER_PAGE,
+    );
+  }, [filteredReports, currentPage]);
+
+  const totalPages = filteredReports
+    ? Math.ceil(filteredReports.length / ITEMS_PER_PAGE)
+    : 0;
+  const handleReportSelectionPopupOpen = async () => {
+    const [reportsRes, categoriesRes] = await Promise.all([
+      fetchReportsList(),
+      fetchReportsCategories(),
+    ]);
+
+    if (reportsRes.data) setReports(reportsRes.data);
+    if (categoriesRes.data) setCategories(categoriesRes.data);
+
+    setIsReportSelectionPopupOpen(true);
+  };
+  const { data: reportsPreviewData, refetch: fetchReportPreview } =
+    useReportsServiceGetReportsByReportId({
+      reportId: selectedReportID ?? '6',
+    });
+  useEffect(() => {
+    const cols = window.matchMedia('(min-width: 1280px)').matches ? 4 : 2;
+    setSlidesPerView(cols);
+    setBarsNumber(Math.ceil(slotsToRender.length / cols));
+  }, [dashboardData, slotsToRender]);
+
   const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (!over || active.id === over.id) return;
-
-    const from = parseInt(active.id.toString().replace('slot-', ''), 10);
-    const to = parseInt(over.id.toString().replace('slot-', ''), 10);
-
-    const fromReport = dashboardData?.items?.find((r) => r.order === from);
-    const toReport = dashboardData?.items?.find((r) => r.order === to);
-
-    if (!fromReport) return;
-
-    // Update orders
-    const updatedItems = dashboardData?.items?.map((item) => {
-      if (item.identifier === fromReport.identifier) {
-        return { ...item, order: to };
-      }
-      if (toReport && item.identifier === toReport.identifier) {
-        return { ...item, order: from };
-      }
-      return item;
+    const result = handleDragEndInternal({
+      active: { id: String(event.active.id) },
+      over: event.over ? { id: String(event.over.id) } : null,
     });
 
-    if (!updatedItems) return;
+    if (!result) return;
 
-    // Get list of changed reports
-    const changedReports = updatedItems.filter((updated) => {
-      const original = dashboardData?.items?.find(
-        (originalItem) => originalItem.identifier === updated.identifier,
-      );
-      return original?.order !== updated.order;
-    });
-
-    changedReports.map((changedReport) => {
-      updateOrder({
-        dashboardId: Number(dashboardIdParam),
-        dashboardItemId: changedReport.identifier,
-        requestBody: {
-          order: changedReport.order,
-        },
-      });
-    });
-
-    // Update slot render order visually
-    setSlotsToRender((prev) => {
-      const fromIdx = prev.indexOf(from);
-      const toIdx = prev.indexOf(to);
-      return arrayMove(prev, fromIdx, toIdx);
-    });
+    setSlotsToRender((prev) => result.updatedSlotsToRender(prev));
   };
 
-  const generateTooltips = (totalSlides: number): string[] => {
-    const groups = Math.ceil(totalSlides / slidesPerView);
-    return Array.from({ length: groups }).map((_, i) => {
-      const start = i * slidesPerView + 1;
-      const end = Math.min((i + 1) * slidesPerView, totalSlides);
-      return start !== end ? `اسلاید ${end}-${start}` : `اسلاید ${end}`;
-    });
-  };
   {
     !tokenLoaded ||
       !dashboardIdParam ||
@@ -397,20 +230,21 @@ export const SlidersBox: React.FC = () => {
   }
   return (
     <div className="w-fit">
-      {
-        dashboardData ?
-          <div className="flex w-full justify-between">
-            <DashboardNumberAndName
-              number={dashboardData?.identifier}
-              title={dashboardData?.name}
-            />
-            <AutoRotateSwitch
-              onChange={handleRotation}
-              rotateOptions={[5, 10, 15]}
-              initialValue={activeRotate}
-            />
-          </div> : <ReportTitleSkeleton />
-      }
+      {dashboardData ? (
+        <div className="flex w-full justify-between">
+          <DashboardNumberAndName
+            number={dashboardData?.identifier}
+            title={dashboardData?.name}
+          />
+          <AutoRotateSwitch
+            onChange={handleRotation}
+            rotateOptions={[5, 10, 15]}
+            initialValue={activeRotate}
+          />
+        </div>
+      ) : (
+        <ReportTitleSkeleton />
+      )}
 
       <DndContext
         sensors={sensors}
@@ -428,53 +262,53 @@ export const SlidersBox: React.FC = () => {
             >
               {dashboardData
                 ? slotsToRender.map((order) => {
-                  const report = dashboardData?.items?.find(
-                    (r) => r.order === order,
-                  );
-                  const slotId = `slot-${order}`;
-                  if (report) {
+                    const report = dashboardData?.items?.find(
+                      (r) => r.order === order,
+                    );
+                    const slotId = `slot-${order}`;
+                    if (report) {
+                      return (
+                        <SortableReport
+                          key={slotId}
+                          slotId={slotId}
+                          identifier={String(report.report.identifier)}
+                          title={report.report.title}
+                          data={
+                            reportDataMap[report.identifier]?.data ??
+                            report.report.reportCalculation?.calculation
+                          }
+                          filters={
+                            reportDataMap[report.identifier]?.filters ??
+                            report.report.reportCalculation?.filters
+                          }
+                          onSubmit={(changedOptions) =>
+                            handleSubmit(report.identifier, changedOptions)
+                          }
+                          onRemoveReport={() =>
+                            setIsRemoveReportOpen({
+                              dashboardItemID: report.identifier,
+                              dashboardName: report.report.title,
+                              open: true,
+                            })
+                          }
+                        />
+                      );
+                    }
+
                     return (
-                      <SortableReport
+                      <SortableAddReportButton
                         key={slotId}
                         slotId={slotId}
-                        identifier={report.report.identifier}
-                        report={report.report}
-                        data={
-                          reportDataMap[report.identifier]?.data ??
-                          report.report.reportCalculation?.calculation
-                        }
-                        filters={
-                          reportDataMap[report.identifier]?.filters ??
-                          report.report.reportCalculation?.filters
-                        }
-                        onSubmit={(changedOptions) =>
-                          handleSubmit(report.identifier, changedOptions)
-                        }
-                        onRemoveReport={() =>
-                          setIsRemoveReportOpen({
-                            dashboardItemID: report.identifier,
-                            dashboardName: report.report.title,
-                            open: true,
-                          })
-                        }
+                        onClick={() => {
+                          handleReportSelectionPopupOpen();
+                          setActiveReportPlacementOrder(slotId);
+                        }}
                       />
                     );
-                  }
-
-                  return (
-                    <SortableAddReportButton
-                      key={slotId}
-                      slotId={slotId}
-                      onClick={() => setIsReportSelectionPopupOpen(true)}
-                    />
-                  );
-                })
+                  })
                 : Array.from(
-                  [1, 2, 3, 4].map((i) => (
-                    <ReportSectionSkeleton />
-                  )),
-                )
-              }
+                    [1, 2, 3, 4].map((i) => <ReportSectionSkeleton />),
+                  )}
             </div>
           </SortableContext>
         </section>
@@ -496,7 +330,7 @@ export const SlidersBox: React.FC = () => {
           externalIndex={currIndex}
           autoRotate={Boolean(activeRotate)}
           autoRotateDuration={activeRotate || undefined}
-          tooltips={generateTooltips(barsNumber * slidesPerView)}
+          tooltips={generateTooltips(barsNumber * slidesPerView, slidesPerView)}
           onAddReportClick={() => {
             const total = slotsToRender.length;
             if (total >= MAX_TOTAL_SLOTS) {
@@ -520,15 +354,59 @@ export const SlidersBox: React.FC = () => {
         )}
       </div>
 
-      {/* {isReportSelectionPopupOpen && (
+      {isReportSelectionPopupOpen && paginatedReports && (
         <ReportSelectionPopup
           isOpen={isReportSelectionPopupOpen}
           onClose={() => setIsReportSelectionPopupOpen(false)}
+          categories={reportCategories ?? []}
+          currentPage={currentPage}
+          pageCount={totalPages}
+          pageSize={ITEMS_PER_PAGE}
+          reports={paginatedReports ?? []}
+          totalItems={filteredReports?.length ?? 0}
+          onReportClick={(id) => {
+            setSelectedReportID(String(id));
+            fetchReportPreview();
+            setIsReportPreviewOpen(true);
+            setIsReportSelectionPopupOpen(false);
+          }}
         />
-      )} */}
+      )}
+      {isReportPreviewOpen && reportsPreviewData && (
+        <ReportPreviewPopup
+          isOpen={isReportPreviewOpen}
+          onClose={() => {
+            setIsReportPreviewOpen(false);
+            setSelectedReportID(null);
+          }}
+          onSubmit={(options) => {
+            handleAddNewReport(
+              String(selectedReportID),
+              activeReportPlacementOrder,
+              options,
+            );
+            setIsReportPreviewOpen(false);
+          }}
+          category={reportsPreviewData.category.title}
+          isNew={reportsPreviewData.isNew ?? false}
+          report={{
+            data: reportsPreviewData.reportCalculation,
+            identifier: reportsPreviewData.identifier,
+            title: reportsPreviewData.title,
+          }}
+          summary={reportsPreviewData.summary}
+          title={reportsPreviewData.title}
+          video={!!reportsPreviewData.video}
+        />
+      )}
       <ConfirmModal
         isOpen={isRemoveReportOpen.open}
-        onConfirm={() => handleRemoveReport()}
+        onConfirm={() =>
+          handleRemoveReport(
+            isRemoveReportOpen.dashboardItemID,
+            isRemoveReportOpen.dashboardName,
+          )
+        }
         title="تایید حذف گزارش"
         cancelBtnLabel="خیر"
         submitBtnLabel="بله"
