@@ -3,14 +3,12 @@ import * as path from 'path';
 
 // ----------------------------- Section 1: Tailwind Configuration Update -----------------------------
 
-// Directory paths for Tailwind config
 const inputDirPath = path.join(__dirname, 'inputs');
 const outputFilePath = path.join(
   __dirname,
   './../../shared/tailwind/tailwindColors.ts',
 );
 
-// Type for processing result
 interface ColorResult {
   colors: {
     coloropacity: { [key: string]: any };
@@ -18,15 +16,9 @@ interface ColorResult {
   };
 }
 
-// Helper to sanitize keys
-const sanitizeKey = (key: string): string => {
-  if (/\d/.test(key) && /[a-zA-Z]/.test(key)) {
-    return `"${key}"`; // Adds quotes around mixed alphanumeric keys
-  }
-  return key;
-};
+const sanitizeKey = (key: string): string =>
+  /\d/.test(key) && /[a-zA-Z]/.test(key) ? `"${key}"` : key;
 
-// Convert object to JavaScript format
 const objectToJavaScript = (obj: any, indent: string = ''): string => {
   let result = '';
   for (const key in obj) {
@@ -45,18 +37,15 @@ const objectToJavaScript = (obj: any, indent: string = ''): string => {
   return result.trim();
 };
 
-// Function to update the tailwind.config.js file with the new colors
 const updateTailwindConfig = (newColors: any): void => {
-  let fileContent = fs.readFileSync(outputFilePath, 'utf-8');
-
-  fileContent = '';
-  const jsContentWithExtend = `const colors={\n${objectToJavaScript(newColors, '        ')}\n    }\n export default colors;`;
-  fileContent = fileContent + '\n' + jsContentWithExtend;
-  fs.writeFileSync(outputFilePath, fileContent, 'utf-8');
-  console.log(`Updated 'extend' section in ${outputFilePath}`);
+  const jsContent = `const colors={\n${objectToJavaScript(
+    newColors,
+    '        ',
+  )}\n    }\n export default colors;`;
+  fs.writeFileSync(outputFilePath, jsContent, 'utf-8');
+  console.log(`✅ Tailwind colors updated at ${outputFilePath}`);
 };
 
-// Function to process all CSS files in the 'inputs' folder
 const processAllCSSFiles = (dirPath: string): ColorResult => {
   const result: ColorResult = { colors: { coloropacity: {} } };
   const files = fs.readdirSync(dirPath);
@@ -70,7 +59,6 @@ const processAllCSSFiles = (dirPath: string): ColorResult => {
   return result;
 };
 
-// Process CSS file
 const processCSSFile = (filePath: string): ColorResult => {
   const content = fs.readFileSync(filePath, 'utf-8');
   const colorRegex =
@@ -88,21 +76,15 @@ const processCSSFile = (filePath: string): ColorResult => {
     let currentLevel: any = result.colors;
 
     parts.forEach((part) => {
-      if (!currentLevel[part]) {
-        currentLevel[part] = {};
-      }
+      if (!currentLevel[part]) currentLevel[part] = {};
       currentLevel = currentLevel[part];
     });
 
-    if (!currentLevel[shade]) {
-      currentLevel[shade] = {};
-    }
-
+    if (!currentLevel[shade]) currentLevel[shade] = {};
+    const colorKey = `var(--color-${category}-${shade}${suffix})`;
     if (suffix) {
-      const colorKey = `var(--color-${category}-${shade}${suffix})`;
       currentLevel[shade][sanitizeKey(suffix.replace('-', ''))] = colorKey;
     } else {
-      const colorKey = `var(--color-${category}-${shade})`;
       currentLevel[shade] = colorKey;
     }
   }
@@ -115,21 +97,15 @@ const processCSSFile = (filePath: string): ColorResult => {
     const parts = category.split('-');
 
     parts.forEach((part) => {
-      if (!currentLevel[part]) {
-        currentLevel[part] = {};
-      }
+      if (!currentLevel[part]) currentLevel[part] = {};
       currentLevel = currentLevel[part];
     });
 
-    if (!currentLevel[shade]) {
-      currentLevel[shade] = {};
-    }
-
+    if (!currentLevel[shade]) currentLevel[shade] = {};
+    const opacityKey = `var(--coloropacity-${category}-${shade}${suffix})`;
     if (suffix) {
-      const opacityKey = `var(--coloropacity-${category}-${shade}${suffix})`;
       currentLevel[shade][sanitizeKey(suffix.replace('-', ''))] = opacityKey;
     } else {
-      const opacityKey = `var(--coloropacity-${category}-${shade})`;
       currentLevel[shade] = opacityKey;
     }
   }
@@ -137,50 +113,57 @@ const processCSSFile = (filePath: string): ColorResult => {
   return result;
 };
 
-// Process all CSS files in the 'inputs' folder and get the result
-const output = processAllCSSFiles(inputDirPath);
+// ------------------ Merge both themes and generate tailwind output ------------------
 
-// Update the tailwind.config.js with the new colors
-updateTailwindConfig(output.colors);
+const b2bOutput = processAllCSSFiles(path.join(inputDirPath, 'b2b'));
+const b2cOutput = processAllCSSFiles(path.join(inputDirPath, 'b2c'));
+const mergedOutput: ColorResult = {
+  colors: {
+    ...b2bOutput.colors,
+    ...b2cOutput.colors,
+  },
+};
+updateTailwindConfig(mergedOutput.colors);
 
 // ----------------------------- Section 2: CSS Variable Extraction -----------------------------
 
-// Folder path for CSS variable extraction
-
-const inputFolder = path.join(__dirname, 'inputs');
-const primitivesFolder = path.join(__dirname, 'inputs', 'primitives');
 const outputFile = path.join(
   __dirname,
   './../../libs/design-system/.storybook/tailwind-imports.css',
 );
 
-// Function to extract CSS variables
-const extractCssVariables = (cssContent: string): string[] => {
-  const regex = /--[\w-]+:\s*[^;]+;/g;
-  const variables = cssContent.match(regex);
-  return variables || [];
-};
+const extractCssVariables = (cssContent: string): string[] =>
+  cssContent.match(/--[\w-]+:\s*[^;]+;/g) || [];
 
-// Function to remove {{}} from CSS content
-const removeMustacheSyntax = (cssContent: string): string => {
-  return cssContent.replace(/\{\{[^}]*\}\}/g, '');
-};
+const removeMustacheSyntax = (cssContent: string): string =>
+  cssContent.replace(/\{\{[^}]*\}\}/g, '');
 
-// Function to clear content inside @layer base and add variables
 const clearAndAddVariablesToLayerBase = (
   cssContent: string,
-  variables: string[],
-  darkVariables: string[],
+  b2bLight: string[],
+  b2bDark: string[],
+  b2cLight: string[],
+  b2cDark: string[],
 ): string => {
-  const layerBaseRegex = /(@layer\s+base\s*{)[^]*}/g;
-  const updatedLayerBase = `@layer base {\n  :root {\n    ${variables.join('\n    ')}\n  }\n  :root.dark {\n    ${darkVariables.join('\n    ')}\n  }\n}`;
-  cssContent = cssContent.replace(layerBaseRegex, updatedLayerBase);
-
-  if (!cssContent.includes('@layer base {')) {
-    cssContent += `\n${updatedLayerBase}\n`;
+  const updatedLayerBase = `@layer base {
+  :root {
+    ${b2bLight.join('\n    ')}
   }
-
-  return cssContent;
+  :root.dark {
+    ${b2bDark.join('\n    ')}
+  }
+  :root.b2c {
+    ${b2cLight.join('\n    ')}
+  }
+  :root.b2c.dark {
+    ${b2cDark.join('\n    ')}
+  }
+}`;
+  const layerBaseRegex = /@layer\s+base\s*{[^]*?}/g;
+  if (cssContent.match(layerBaseRegex)) {
+    return cssContent.replace(layerBaseRegex, updatedLayerBase);
+  }
+  return `${cssContent.trim()}\n${updatedLayerBase}\n`;
 };
 
 const readFilesRecursive = (
@@ -191,7 +174,6 @@ const readFilesRecursive = (
   files.forEach((file) => {
     const fullPath = path.join(folderPath, file);
     const stat = fs.statSync(fullPath);
-
     if (stat.isDirectory()) {
       readFilesRecursive(fullPath, fileCallback);
     } else if (fullPath.endsWith('.css')) {
@@ -200,47 +182,29 @@ const readFilesRecursive = (
   });
 };
 
-// Process and apply changes to the files
-fs.readdir(inputFolder, (err, files) => {
-  if (err) {
-    console.error('Error reading folder:', err);
-    return;
-  }
-
-  const cssFiles: string[] = [];
-  const darkCssFiles: string[] = [];
-
-  readFilesRecursive(inputFolder, (filePath: string) => {
-    if (filePath.endsWith('.css') && !filePath.endsWith('--dark.css')) {
-      cssFiles.push(filePath);
-    } else if (filePath.endsWith('--dark.css')) {
-      darkCssFiles.push(filePath);
+const getVariablesFromFolder = (themeFolder: string) => {
+  const light: string[] = [];
+  const dark: string[] = [];
+  readFilesRecursive(themeFolder, (filePath: string) => {
+    const content = removeMustacheSyntax(fs.readFileSync(filePath, 'utf-8'));
+    if (filePath.includes('dark')) {
+      dark.push(...extractCssVariables(content));
+    } else {
+      light.push(...extractCssVariables(content));
     }
   });
+  return { light, dark };
+};
 
-  let outputContent = fs.readFileSync(outputFile, 'utf-8');
-  let allVariables: string[] = [];
-  let darkVariables: string[] = [];
-
-  cssFiles.forEach((filePath) => {
-    let cssContent = fs.readFileSync(filePath, 'utf-8');
-    cssContent = removeMustacheSyntax(cssContent);
-    const variables = extractCssVariables(cssContent);
-    allVariables = allVariables.concat(variables);
-  });
-
-  darkCssFiles.forEach((filePath) => {
-    let cssContent = fs.readFileSync(filePath, 'utf-8');
-    cssContent = removeMustacheSyntax(cssContent);
-    const variables = extractCssVariables(cssContent);
-    darkVariables = darkVariables.concat(variables);
-  });
-
-  outputContent = clearAndAddVariablesToLayerBase(
-    outputContent,
-    allVariables,
-    darkVariables,
-  );
-  fs.writeFileSync(outputFile, outputContent, 'utf-8');
-  console.log('All files have been successfully added to ' + outputFile + '.');
-});
+const b2bVars = getVariablesFromFolder(path.join(inputDirPath, 'b2b'));
+const b2cVars = getVariablesFromFolder(path.join(inputDirPath, 'b2c'));
+let outputContent = fs.readFileSync(outputFile, 'utf-8');
+outputContent = clearAndAddVariablesToLayerBase(
+  outputContent,
+  b2bVars.light,
+  b2bVars.dark,
+  b2cVars.light,
+  b2cVars.dark,
+);
+fs.writeFileSync(outputFile, outputContent, 'utf-8');
+console.log(`🎨 CSS variables injected into ${outputFile}`);

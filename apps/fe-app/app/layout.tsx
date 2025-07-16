@@ -1,3 +1,4 @@
+import { Button, Pagination } from 'design-system';
 import './global.css';
 import ReactQueryProvider from './providers/ReactQueryProvider';
 
@@ -14,8 +15,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-surface-neutral-background min-w-[768px]">
-        <ReactQueryProvider>{children}</ReactQueryProvider>
-      </body>
+      welcome to b2c app
+      <Button align="center" isLoading={false} mode="primary" theme="brand" size="md" iconLeft={{name: 'layout-grid', size: 'md'}} iconRight={{name: 'copy'}} >welcome to B2C app</Button>
+      <Pagination currentPage={1} pageCount={5} pageSize={10} totalItems={5} />      </body>
     </html>
   );
 }

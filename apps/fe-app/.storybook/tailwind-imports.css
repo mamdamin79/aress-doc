@@ -23,6 +23,7 @@ html {
 }
 @layer base {
   :root {
+    --color-test-color-b2c: #000000;
     --color-button-brand-surface-default: var(
       --color-surface-brand-600-primary
     );
@@ -1171,6 +1172,7 @@ html {
     --color-surface-accent-pink-1000: var(--color-pink-pink-1000-light);
   }
   :root.dark {
+    --color-test-color-b2c: #000000;
     --color-surface-neutral-background: var(--color-base-dark);
     --color-surface-neutral-primary: var(--color-gray-gray-50-dark);
     --color-surface-neutral-secondarycontrast: var(--color-gray-gray-200-dark);
