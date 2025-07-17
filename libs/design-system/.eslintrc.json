@@ -1,6 +1,12 @@
 {
   "extends": ["plugin:@nx/react", "../../.eslintrc.json"],
-  "ignorePatterns": ["!**/*", "storybook-static", "node_modules"],
+  "ignorePatterns": [
+    "!**/*",
+    "storybook-static",
+    "node_modules",
+    "**/vite.config.*.timestamp*",
+    "**/vitest.config.*.timestamp*"
+  ],
   "rules": {
     "@nx/enforce-module-boundaries": [
       "error",
