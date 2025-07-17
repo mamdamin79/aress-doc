@@ -4,10 +4,7 @@ import * as path from 'path';
 // ----------------------------- Section 1: Tailwind Configuration Update -----------------------------
 
 const inputDirPath = path.join(__dirname, 'inputs');
-const outputFilePath = path.join(
-  __dirname,
-  './../../shared/tailwind/tailwindColors.ts',
-);
+const outputFilePath = path.join(__dirname, './../../shared/tailwind/tailwindColors.ts');
 
 interface ColorResult {
   colors: {
@@ -113,23 +110,30 @@ const processCSSFile = (filePath: string): ColorResult => {
   return result;
 };
 
-// ------------------ Merge both themes and generate tailwind output ------------------
+// ------------------ Merge all themes and generate tailwind output ------------------
 
+const primitivsOutput = processAllCSSFiles(path.join(inputDirPath, 'primitivs'));
 const b2bOutput = processAllCSSFiles(path.join(inputDirPath, 'b2b'));
 const b2cOutput = processAllCSSFiles(path.join(inputDirPath, 'b2c'));
+
 const mergedOutput: ColorResult = {
   colors: {
+    ...primitivsOutput.colors,
     ...b2bOutput.colors,
     ...b2cOutput.colors,
   },
 };
 updateTailwindConfig(mergedOutput.colors);
 
-// ----------------------------- Section 2: CSS Variable Extraction -----------------------------
+// ----------------------------- Section 2: CSS Variable Injection -----------------------------
 
-const outputFile = path.join(
+const b2bOutputFile = path.join(
   __dirname,
   './../../libs/design-system/.storybook/tailwind-imports.css',
+);
+const b2cOutputFile = path.join(
+  __dirname,
+  './../../apps/b2c-app/.storybook/tailwind-imports.css',
 );
 
 const extractCssVariables = (cssContent: string): string[] =>
@@ -138,33 +142,32 @@ const extractCssVariables = (cssContent: string): string[] =>
 const removeMustacheSyntax = (cssContent: string): string =>
   cssContent.replace(/\{\{[^}]*\}\}/g, '');
 
-const clearAndAddVariablesToLayerBase = (
-  cssContent: string,
-  b2bLight: string[],
-  b2bDark: string[],
-  b2cLight: string[],
-  b2cDark: string[],
-): string => {
-  const updatedLayerBase = `@layer base {
-  :root {
-    ${b2bLight.join('\n    ')}
-  }
-  :root.dark {
-    ${b2bDark.join('\n    ')}
-  }
-  :root.b2c {
-    ${b2cLight.join('\n    ')}
-  }
-  :root.b2c.dark {
-    ${b2cDark.join('\n    ')}
-  }
-}`;
-  const layerBaseRegex = /@layer\s+base\s*{[^]*?}/g;
-  if (cssContent.match(layerBaseRegex)) {
-    return cssContent.replace(layerBaseRegex, updatedLayerBase);
-  }
-  return `${cssContent.trim()}\n${updatedLayerBase}\n`;
-};
+  const clearAndAddVariablesToLayerBase = (
+    cssContent: string,
+    lightVars: string[],
+    darkVars: string[],
+  ): string => {
+    // حذف کامل بلاک‌های :root و :root.dark (چندخطی)
+    cssContent = cssContent.replace(/^[ \t]*:root(\.dark)?\s*{[\s\S]*?}[\r\n]*/gm, '');
+  
+    // حذف @layer base قدیمی
+    const layerBaseRegex = /@layer\s+base\s*{[\s\S]*?}/g;
+    cssContent = cssContent.replace(layerBaseRegex, '');
+  
+    // اضافه کردن بلاک جدید
+    const updatedLayerBase = `@layer base {
+    :root {
+      ${lightVars.join('\n    ')}
+    }
+    :root.dark {
+      ${darkVars.join('\n    ')}
+    }
+  }`;
+  
+    return cssContent.trim() + '\n\n' + updatedLayerBase + '\n';
+  };
+  
+  
 
 const readFilesRecursive = (
   folderPath: string,
@@ -196,15 +199,26 @@ const getVariablesFromFolder = (themeFolder: string) => {
   return { light, dark };
 };
 
+const primitivsVars = getVariablesFromFolder(path.join(inputDirPath, 'primitivs'));
 const b2bVars = getVariablesFromFolder(path.join(inputDirPath, 'b2b'));
 const b2cVars = getVariablesFromFolder(path.join(inputDirPath, 'b2c'));
-let outputContent = fs.readFileSync(outputFile, 'utf-8');
-outputContent = clearAndAddVariablesToLayerBase(
-  outputContent,
-  b2bVars.light,
-  b2bVars.dark,
-  b2cVars.light,
-  b2cVars.dark,
+
+// 🟦 B2B output
+let b2bContent = fs.readFileSync(b2bOutputFile, 'utf-8');
+b2bContent = clearAndAddVariablesToLayerBase(
+  b2bContent,
+  [...primitivsVars.light, ...b2bVars.light],
+  [...primitivsVars.dark, ...b2bVars.dark],
 );
-fs.writeFileSync(outputFile, outputContent, 'utf-8');
-console.log(`🎨 CSS variables injected into ${outputFile}`);
+fs.writeFileSync(b2bOutputFile, b2bContent, 'utf-8');
+console.log(`🎨 B2B CSS variables injected into ${b2bOutputFile}`);
+
+// 🟩 B2C output
+let b2cContent = fs.readFileSync(b2cOutputFile, 'utf-8');
+b2cContent = clearAndAddVariablesToLayerBase(
+  b2cContent,
+  [...primitivsVars.light, ...b2cVars.light],
+  [...primitivsVars.dark, ...b2cVars.dark],
+);
+fs.writeFileSync(b2cOutputFile, b2cContent, 'utf-8');
+console.log(`🎨 B2C CSS variables injected into ${b2cOutputFile}`);
