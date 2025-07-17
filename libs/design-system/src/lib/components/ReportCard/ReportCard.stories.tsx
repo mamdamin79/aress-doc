@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { ReportCard } from './ReportCard';
 import chartPNG from '../../../assets/chart.png';
 import chartPNG2 from '../../../assets/chart2.png';

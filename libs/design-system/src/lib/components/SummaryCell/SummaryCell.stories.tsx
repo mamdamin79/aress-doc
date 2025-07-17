@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { SummaryCell } from './SummaryCell';
 
 // Meta configuration for the SummaryCell component in Storybook

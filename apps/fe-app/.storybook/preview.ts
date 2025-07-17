@@ -1,5 +1,5 @@
-import type { Preview } from '@storybook/react';
-import type { DecoratorFunction } from '@storybook/types';
+import type { Preview } from '@storybook/nextjs';
+import type { DecoratorFunction } from 'storybook/internal/types';
 import './tailwind-imports.css';
 
 export const globalTypes: Preview['globalTypes'] = {

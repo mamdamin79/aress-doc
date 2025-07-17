@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { Icon } from './Icon';
 import { CUSTOM_ICONS } from './CustomIcon/CustomIcon.constants';
 import dynamicIconImports from 'lucide-react/dynamicIconImports';
