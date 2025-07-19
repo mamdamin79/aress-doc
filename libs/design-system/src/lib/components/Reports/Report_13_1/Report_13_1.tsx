@@ -4,6 +4,7 @@ import 'highcharts/highcharts-more';
 import HighchartsReact from 'highcharts-react-official';
 import { ReportCardBase } from '../../ReportCardBase';
 import { baseOptions, xAxisLabels, yAxisLabels } from '../Report.config.shared';
+import { GeneralTable } from '../../GeneralTable/GeneralTable';
 
 const categories = [
   'ارزش معاملات',
@@ -31,6 +32,100 @@ const categoriesWithValues = categories.map((label, i) => {
 
 export const Report_13_1 = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [switchIndex, setSwitchIndex] = useState<number>(1); // 1 is initialIndex
+
+  // Table schema and data for the alternative view
+  const tableSchema = [
+    { key: 'name', header: '' },
+    {
+      key: 'last',
+      header: 'آخرین روز',
+      render: ({ value }: { value: string }) => (
+        <span className="custom-table-gap-cell text-base font-bold">
+          {value}
+        </span>
+      ),
+    },
+    {
+      key: 'max',
+      header: 'بیشترین',
+      render: ({ value }: { value: string }) => (
+        <span className="custom-table-gap-cell text-base font-bold">
+          {value}
+        </span>
+      ),
+    },
+    {
+      key: 'min',
+      header: 'کمترین',
+      render: ({ value }: { value: string }) => (
+        <span className="custom-table-gap-cell text-base font-bold">
+          {value}
+        </span>
+      ),
+    },
+    {
+      key: 'avg',
+      header: 'میانگین',
+      render: ({ value }: { value: string }) => (
+        <span className="custom-table-gap-cell text-base font-bold">
+          {value}
+        </span>
+      ),
+    },
+    {
+      key: 'median',
+      header: 'میانه',
+      render: ({ value }: { value: string }) => (
+        <span className="custom-table-gap-cell text-base font-bold">
+          {value}
+        </span>
+      ),
+    },
+  ];
+
+  const tableData = [
+    {
+      last: '۳۳.۴۵ B',
+      max: '۳۳.۴۵ B',
+      min: '۳۳.۴۵ B',
+      avg: '۳۳.۴۵ B',
+      median: '۳۳.۴۵ B',
+      name: 'ارزش کل معاملات',
+    },
+    {
+      last: '۳۳.۴۵ B',
+      max: '۳۳.۴۵ B',
+      min: '۳۳.۴۵ B',
+      avg: '۳۳.۴۵ B',
+      median: '۳۳.۴۵ B',
+      name: 'ارزش کل',
+    },
+    {
+      last: '۳۳.۴۵ B',
+      max: '۳۳.۴۵ B',
+      min: '۳۳.۴۵ B',
+      avg: '۳۳.۴۵ B',
+      median: '۳۳.۴۵ B',
+      name: 'ارزش کل خرید حقوقی',
+    },
+    {
+      last: '۳۳.۴۵ B',
+      max: '۳۳.۴۵ B',
+      min: '۳۳.۴۵ B',
+      avg: '۳۳.۴۵ B',
+      median: '۳۳.۴۵ B',
+      name: 'ارزش کل فروش حقیقی',
+    },
+    {
+      last: '۳۳.۴۵ B',
+      max: '۳۳.۴۵ B',
+      min: '۳۳.۴۵ B',
+      avg: '۳۳.۴۵ B',
+      median: '۳۳.۴۵ B',
+      name: 'ارزش کل فروش حقوقی',
+    },
+  ];
 
   const options: Highcharts.Options = {
     ...baseOptions,
@@ -126,14 +221,59 @@ export const Report_13_1 = () => {
   .category-label.active-label .value-unit {
     color: var(--color-text-accent-blue-contrast-700); 
   }
+  .custom-table-gap-cell {
+    border: 1px solid #B6E0FE;
+    border-radius: 8px;
+    font-size:12px;
+    font-weight:500;
+    padding: 8px 12px;
+    transition: background 0.2s;
+    display: inline-block;
+    min-width: 70px;
+    text-align: center;
+  }
+  .custom-table-gap-cell:hover {
+    background: #E3F2FD;
+  }
 `}</style>
 
       <ReportCardBase
         title="مقایسه معاملات امروز بازار بورس با توزیع تاریخی - شش ماه گذشته"
         popupInfoItems={[]}
         settingOptions={[]}
+        switchIcons={{
+          items: [
+            { icon: { name: 'grid-3x3' } },
+            { icon: { name: 'chart-scatter' } },
+          ],
+          onChange: (value: number) => {
+            setSwitchIndex(value);
+          },
+          size: 'sm',
+          bgWhite: false,
+          initialIndex: 1,
+        }}
       >
-        <HighchartsReact highcharts={Highcharts} options={options} />
+        {switchIndex === 1 ? (
+          <HighchartsReact highcharts={Highcharts} options={options} />
+        ) : (
+          <div
+            style={{
+              // direction: '',
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <GeneralTable
+              data={tableData}
+              schema={tableSchema}
+              tableDataStyleClasses="text-center px-2 py-1"
+              border={false}
+              striped={false}
+            />
+          </div>
+        )}
       </ReportCardBase>
     </>
   );
