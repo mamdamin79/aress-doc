@@ -5,6 +5,9 @@ import HighchartsReact from 'highcharts-react-official';
 import { ReportCardBase } from '../../ReportCardBase';
 import { baseOptions, xAxisLabels, yAxisLabels } from '../Report.config.shared';
 import { GeneralTable } from '../../GeneralTable/GeneralTable';
+import { renderCell, RenderCellProps, TableRow } from '../../GeneralTable';
+import { cn } from 'libs/design-system/src/utils';
+import { financialDefinitionsReport13_1 } from './Report_13_1.constants';
 
 const categories = [
   'ارزش معاملات',
@@ -34,95 +37,93 @@ export const Report_13_1 = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [switchIndex, setSwitchIndex] = useState<number>(1); // 1 is initialIndex
 
+  const STDDEV_ROW_INDEX = 10;
+  const AVERAGE_ROW_INDEX = 9;
+  const sharedStyle = '';
+  const HEADERS = ['آخرین روز معاملاتی', 'بیشترین مقدار', 'کمترین مقدار', 'میانگین', 'میانه'];
+
   // Table schema and data for the alternative view
   const tableSchema = [
-    { key: 'name', header: '' },
     {
-      key: 'last',
-      header: 'آخرین روز',
-      render: ({ value }: { value: string }) => (
-        <span className="custom-table-gap-cell text-base font-bold">
-          {value}
-        </span>
-      ),
+      key: 'name',
+      header: '',
+      rowHeaderClassName:"text-xs font-medium h-[22px] mx-2"
     },
-    {
-      key: 'max',
-      header: 'بیشترین',
-      render: ({ value }: { value: string }) => (
-        <span className="custom-table-gap-cell text-base font-bold">
-          {value}
-        </span>
-      ),
-    },
-    {
-      key: 'min',
-      header: 'کمترین',
-      render: ({ value }: { value: string }) => (
-        <span className="custom-table-gap-cell text-base font-bold">
-          {value}
-        </span>
-      ),
-    },
-    {
-      key: 'avg',
-      header: 'میانگین',
-      render: ({ value }: { value: string }) => (
-        <span className="custom-table-gap-cell text-base font-bold">
-          {value}
-        </span>
-      ),
-    },
-    {
-      key: 'median',
-      header: 'میانه',
-      render: ({ value }: { value: string }) => (
-        <span className="custom-table-gap-cell text-base font-bold">
-          {value}
-        </span>
-      ),
-    },
+    ...HEADERS.map((header) => ({
+      key: header,
+      header,
+      headerClassName: 'text-xs',
+      render: ({
+        colIndex,
+        hoveredCol,
+        hoveredRow,
+        rowIndex,
+        value,
+        format,
+      }: RenderCellProps<TableRow>) => {
+        return renderCell(
+          value,
+          rowIndex,
+          colIndex,
+          hoveredCol,
+          hoveredRow,
+          format,
+          undefined, // no formatOptions
+          cn(
+            sharedStyle,
+            'justify-center min-w-[86px] max-w-[96px] py-2  text-xs font-medium border border-border-accent-blue-300 rounded-xs bg-white hover:bg-surface-accent-blue-100 transition-colors duration-300',
+            rowIndex === STDDEV_ROW_INDEX
+              ? 'bg-surface-neutral-secondary'
+              : ((hoveredCol !== null && hoveredCol !== colIndex) ||
+                    (hoveredRow !== null && hoveredRow !== rowIndex)) &&
+                  rowIndex !== AVERAGE_ROW_INDEX
+                ? 'transparent'
+                : '',
+          ),
+        );
+      },
+    })),
   ];
 
   const tableData = [
     {
-      last: '۳۳.۴۵ B',
-      max: '۳۳.۴۵ B',
-      min: '۳۳.۴۵ B',
-      avg: '۳۳.۴۵ B',
-      median: '۳۳.۴۵ B',
+      'آخرین روز معاملاتی': '5',
+      'بیشترین مقدار': '33.45',
+      'کمترین مقدار': '33.45',
+      میانگین: '33.45',
+      میانه: '33.45',
       name: 'ارزش کل معاملات',
     },
     {
-      last: '۳۳.۴۵ B',
-      max: '۳۳.۴۵ B',
-      min: '۳۳.۴۵ B',
-      avg: '۳۳.۴۵ B',
-      median: '۳۳.۴۵ B',
+      'آخرین روز معاملاتی': '5',
+      'بیشترین مقدار': '33.45',
+      'کمترین مقدار': '33.45',
+      میانگین: '33.45',
+      میانه: '33.45',
       name: 'ارزش کل',
     },
     {
-      last: '۳۳.۴۵ B',
-      max: '۳۳.۴۵ B',
-      min: '۳۳.۴۵ B',
-      avg: '۳۳.۴۵ B',
-      median: '۳۳.۴۵ B',
+      'آخرین روز معاملاتی': '5',
+      'بیشترین مقدار': '33.45',
+      'کمترین مقدار': '33.45',
+      میانگین: '33.45',
+      میانه: '33.45',
       name: 'ارزش کل خرید حقوقی',
     },
     {
-      last: '۳۳.۴۵ B',
-      max: '۳۳.۴۵ B',
-      min: '۳۳.۴۵ B',
-      avg: '۳۳.۴۵ B',
-      median: '۳۳.۴۵ B',
+      'آخرین روز معاملاتی': '5',
+      'بیشترین مقدار': '33.45',
+      'کمترین مقدار': '33.45',
+      میانگین: '33.45',
+      میانه: '33.45',
       name: 'ارزش کل فروش حقیقی',
     },
     {
-      last: '۳۳.۴۵ B',
-      max: '۳۳.۴۵ B',
-      min: '۳۳.۴۵ B',
-      avg: '۳۳.۴۵ B',
-      median: '۳۳.۴۵ B',
+      'آخرین روز معاملاتی': '5',
+      'بیشترین مقدار': '33.45',
+      'کمترین مقدار': '33.45',
+      میانگین: '33.45',
+      میانه: '33.45',
       name: 'ارزش کل فروش حقوقی',
     },
   ];
@@ -201,80 +202,44 @@ export const Report_13_1 = () => {
   };
 
   return (
-    <>
-      <style>{`
-  .category-label {
-    color: var(--color-text-neutral-primary);
-    font-weight: 500;
-  }
-  .category-label .label-text,
-  .category-label .value-number {
-    color: inherit;
-  }
-  .category-label .value-unit {
-    color: var(--color-text-neutral-secondary); 
-    font-weight:400;
-  }
-  .category-label.active-label {
-    color: var(--color-text-accent-blue-contrast-700);
-  }
-  .category-label.active-label .value-unit {
-    color: var(--color-text-accent-blue-contrast-700); 
-  }
-  .custom-table-gap-cell {
-    border: 1px solid #B6E0FE;
-    border-radius: 8px;
-    font-size:12px;
-    font-weight:500;
-    padding: 8px 12px;
-    transition: background 0.2s;
-    display: inline-block;
-    min-width: 70px;
-    text-align: center;
-  }
-  .custom-table-gap-cell:hover {
-    background: #E3F2FD;
-  }
-`}</style>
-
-      <ReportCardBase
-        title="مقایسه معاملات امروز بازار بورس با توزیع تاریخی - شش ماه گذشته"
-        popupInfoItems={[]}
-        settingOptions={[]}
-        switchIcons={{
-          items: [
-            { icon: { name: 'grid-3x3' } },
-            { icon: { name: 'chart-scatter' } },
-          ],
-          onChange: (value: number) => {
-            setSwitchIndex(value);
-          },
-          size: 'sm',
-          bgWhite: false,
-          initialIndex: 1,
-        }}
-      >
-        {switchIndex === 1 ? (
-          <HighchartsReact highcharts={Highcharts} options={options} />
-        ) : (
-          <div
-            style={{
-              // direction: '',
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'center',
-            }}
-          >
-            <GeneralTable
-              data={tableData}
-              schema={tableSchema}
-              tableDataStyleClasses="text-center px-2 py-1"
-              border={false}
-              striped={false}
-            />
-          </div>
-        )}
-      </ReportCardBase>
-    </>
+    <ReportCardBase
+      title="مقایسه معاملات امروز بازار بورس با توزیع تاریخی - شش ماه گذشته"
+      popupInfoItems={financialDefinitionsReport13_1}
+      settingOptions={[]}
+      switchIcons={{
+        items: [
+          { icon: { name: 'grid-3x3' } },
+          { icon: { name: 'chart-scatter' } },
+        ],
+        onChange: (value: number) => {
+          setSwitchIndex(value);
+        },
+        size: 'sm',
+        bgWhite: false,
+        initialIndex: 1,
+      }}
+    >
+      {switchIndex === 1 ? (
+        <HighchartsReact highcharts={Highcharts} options={options} />
+      ) : (
+        <div
+          style={{
+            // direction: '',
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <GeneralTable
+            data={tableData}
+            theadClassName="h-[42px] after:h-2"
+            schema={tableSchema}
+            tableDataStyleClasses="text-center p-0.5 "
+            border={false}
+            striped={false}
+          />
+        </div>
+      )}
+    </ReportCardBase>
   );
 };

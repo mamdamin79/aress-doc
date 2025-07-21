@@ -11,6 +11,7 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
   tableDataStyleClasses,
   border = false,
   striped,
+  theadClassName
 }) => {
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const [hoveredCol, setHoveredCol] = useState<number | null>(null);
@@ -83,6 +84,7 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
                       isHoveredOrMatching
                         ? 'bg-surface-accent-blue-600 text-text-neutral-white'
                         : '',
+                        column.rowHeaderClassName,
                     )}
                   >
                     {column.render
@@ -138,7 +140,12 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
         role="grid"
         aria-label="Financial Records Table"
       >
-        <thead className="text-md h-16 bg-transparent font-medium after:block after:h-4 after:content-['']">
+        <thead
+          className={cn(
+            "text-md h-16 bg-transparent font-medium after:block after:h-4 after:content-['']",
+            theadClassName,
+          )}
+        >
           <tr>
             {schema.map((column, index) => (
               <th
@@ -148,12 +155,13 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
                 className={cn(
                   'bg-surface-neutral-secondary relative',
                   column.key === 'name' ? 'text-right' : '',
+                  column.headerClassName,
                 )}
               >
                 <div className="flex w-full items-center justify-center">
                   <div
                     className={cn(
-                      'h-[30px] w-fit rounded-sm pl-[6px] pr-[6px]',
+                      'h-[22px] w-fit rounded-sm pl-[6px] pr-[6px]',
                       matchingCol === index || hoveredCol === index
                         ? 'bg-surface-accent-blue-600 text-text-neutral-white'
                         : '',

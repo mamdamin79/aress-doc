@@ -29,6 +29,7 @@ export interface TableProps<T> {
   tableDataStyleClasses?: string;
   border?: boolean;
   striped?: boolean;
+  theadClassName?: string;
 }
 
 export interface TableRow {
