@@ -7,7 +7,7 @@ export function RowSkeleton() {
     const calcColumnCount = () => {
       const screenWidth = window.innerWidth;
 
-      const availableWidth = screenWidth - 200;
+      const availableWidth = screenWidth - 450;
       const count = Math.floor(availableWidth / 120);
 
       setColumnCount(count > 0 ? count : 1);
@@ -21,14 +21,15 @@ export function RowSkeleton() {
 
   return (
     <div className="flex h-12 items-center animate-pulse justify-start border-b mr-6 w-screen gap-2">
-      <div className="h-7 w-10 rounded-md bg-gray-200" />
-      <div className="h-7 w-16 rounded-md bg-gray-200" />
-      <div className="w-9 h-9 mr-4 rounded-full bg-gray-200" />
-      <div className="flex items-center gap-[40px]">
+      <div className="h-6 w-9 rounded-md bg-gray-200" />
+      <div className="h-6 w-[62px] rounded-md bg-gray-200" />
+      <div className="w-8 h-8 mr-4 rounded-full bg-gray-200" />
+      <div className="h-[26px] ml-36 mr-2 w-[74px] rounded-xl bg-gray-200" />
+      <div className="flex items-center gap-[70px]">
         {[...Array(columnCount)].map((_, index) => (
           <div
             key={index}
-            className="h-3 w-20 rounded-md bg-gray-200"
+            className="h-[26px] w-[74px] rounded-xl bg-gray-200"
           />
         ))}
       </div>

@@ -59,9 +59,9 @@ import {
 } from './utils/investmentFunds.utils';
 import { OpenAPI, useFundsServiceGetFundsTable } from '@openapi';
 import { fetchToken } from 'apps/fe-app/app/(auth)/auth.utils';
-import { TabsSkeleton } from './_components/TabsSkeleton';
-import { RowSkeleton } from './_components/RowSkeleton';
-import { HeaderTableSkeleton } from './_components/HeaderTableSkeleton';
+import { TabsSkeleton } from './_components/skeletons/TabsSkeleton';
+import { RowSkeleton } from './_components/skeletons/RowSkeleton';
+import { HeaderTableSkeleton } from './_components/skeletons/HeaderTableSkeleton';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
   const [activeIndexCategoryTab, setActiveIndexCategoryTab] = useState(1);
