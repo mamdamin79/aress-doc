@@ -32,7 +32,7 @@ export const ContextMenu: React.FC<Props> = ({
         }
 
         return (
-          <>
+          <div>
             <MenuButton className="text-icon-neutral-primary outline-none">
               {children ? (
                 <div
@@ -81,7 +81,7 @@ export const ContextMenu: React.FC<Props> = ({
                 </React.Fragment>
               ))}
             </MenuItems>
-          </>
+          </div>
         );
       }}
     </Menu>

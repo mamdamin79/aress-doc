@@ -729,6 +729,9 @@ export const $FinancialReportCalculationApiModel = {
                 },
                 {
                     '$ref': '#/components/schemas/Report15CalculationResult'
+                },
+                {
+                    '$ref': '#/components/schemas/Report39CalculationResult'
                 }
             ],
             title: 'Calculation'
@@ -778,7 +781,14 @@ export const $FinancialReportDetailsApiModel = {
             '$ref': '#/components/schemas/FinancialReportCategoryApiModel'
         },
         image: {
-            type: 'string',
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
             title: 'Image'
         },
         summary: {
@@ -911,7 +921,14 @@ export const $FinancialReportListItemApiModel = {
             '$ref': '#/components/schemas/FinancialReportCategoryApiModel'
         },
         image: {
-            type: 'string',
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
             title: 'Image'
         },
         summary: {
@@ -2143,10 +2160,14 @@ export const $Report15CalculationResultGraphPoint = {
         y: {
             type: 'number',
             title: 'Y'
+        },
+        tradeDateShamsi: {
+            type: 'string',
+            title: 'Tradedateshamsi'
         }
     },
     type: 'object',
-    required: ['x', 'y'],
+    required: ['x', 'y', 'tradeDateShamsi'],
     title: 'Report15CalculationResultGraphPoint'
 } as const;
 
@@ -2158,10 +2179,14 @@ export const $Report2CalculationResult = {
             },
             type: 'array',
             title: 'Data'
+        },
+        unit: {
+            type: 'string',
+            title: 'Unit'
         }
     },
     type: 'object',
-    required: ['data'],
+    required: ['data', 'unit'],
     title: 'Report2CalculationResult'
 } as const;
 
@@ -2172,13 +2197,63 @@ export const $Report2CalculationResultItem = {
             title: 'Sectortitle'
         },
         netFlow: {
-            type: 'integer',
+            type: 'number',
             title: 'Netflow'
         }
     },
     type: 'object',
     required: ['sectorTitle', 'netFlow'],
     title: 'Report2CalculationResultItem'
+} as const;
+
+export const $Report39CalculationResult = {
+    properties: {
+        data: {
+            items: {
+                '$ref': '#/components/schemas/Report39CalculationResultItem'
+            },
+            type: 'array',
+            title: 'Data'
+        }
+    },
+    type: 'object',
+    required: ['data'],
+    title: 'Report39CalculationResult'
+} as const;
+
+export const $Report39CalculationResultItem = {
+    properties: {
+        values: {
+            items: {
+                '$ref': '#/components/schemas/Report39InstrumentsResultItem'
+            },
+            type: 'array',
+            title: 'Values'
+        }
+    },
+    type: 'object',
+    required: ['values'],
+    title: 'Report39CalculationResultItem'
+} as const;
+
+export const $Report39InstrumentsResultItem = {
+    properties: {
+        instrument: {
+            type: 'string',
+            title: 'Instrument'
+        },
+        netFlow: {
+            type: 'number',
+            title: 'Netflow'
+        },
+        unit: {
+            type: 'string',
+            title: 'Unit'
+        }
+    },
+    type: 'object',
+    required: ['instrument', 'netFlow', 'unit'],
+    title: 'Report39InstrumentsResultItem'
 } as const;
 
 export const $Report6CalculationResult = {

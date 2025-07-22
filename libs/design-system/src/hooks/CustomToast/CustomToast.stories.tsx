@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { ToastDemo } from './ToastDemo';
 import { Toaster } from 'react-hot-toast';
 import { useCustomToast } from './CustomToast';

@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { ConfirmModal } from './ConfirmModal';
 import { ConfirmModalProps } from './ConfirmModal.types';
 import { useState } from 'react';

@@ -325,6 +325,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
                 type="button"
                 className={isDisabled}
                 onMouseDown={icon.onClick}
+                key={`textfield-button-${icon.name}`}
               >
                 <Icon size={icon.size} name={icon.name} />
               </button>

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { Report2 } from './index';
 
 // Meta configuration for the Report2 component in Storybook

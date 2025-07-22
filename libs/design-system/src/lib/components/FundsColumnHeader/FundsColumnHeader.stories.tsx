@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { FundsColumnHeader } from './FundsColumnHeader';
 
 // Meta configuration for the FundsColumnHeader component in Storybook

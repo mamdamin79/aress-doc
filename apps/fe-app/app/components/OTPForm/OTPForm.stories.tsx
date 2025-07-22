@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { OTPForm } from './OTPForm';
 const meta: Meta<typeof OTPForm> = {
   component: OTPForm,

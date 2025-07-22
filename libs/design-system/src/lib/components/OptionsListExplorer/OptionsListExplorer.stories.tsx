@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { OptionsListExplorer } from './OptionsListExplorer';
 
 // Meta configuration for the OptionsListExplorer component in Storybook

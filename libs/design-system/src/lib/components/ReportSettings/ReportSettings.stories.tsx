@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { ReportSettings } from './ReportSettings';
 import { useState } from 'react'; // Import useState
 
