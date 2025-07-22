@@ -1,6 +1,6 @@
 import nxPlugin from '@nx/eslint-plugin';
 import storybookPlugin from 'eslint-plugin-storybook';
-import baseConfig from '../../eslint.config.js';
+import baseConfig from '@root';
 
 export default [
   {
