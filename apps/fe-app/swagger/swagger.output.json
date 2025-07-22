@@ -2731,6 +2731,9 @@
               },
               {
                 "$ref": "#/components/schemas/Report15CalculationResult"
+              },
+              {
+                "$ref": "#/components/schemas/Report39CalculationResult"
               }
             ],
             "title": "Calculation"
@@ -2784,7 +2787,14 @@
             "$ref": "#/components/schemas/FinancialReportCategoryApiModel"
           },
           "image": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Image"
           },
           "summary": {
@@ -2934,7 +2944,14 @@
             "$ref": "#/components/schemas/FinancialReportCategoryApiModel"
           },
           "image": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Image"
           },
           "summary": {
@@ -4308,12 +4325,17 @@
           "y": {
             "type": "number",
             "title": "Y"
+          },
+          "tradeDateShamsi": {
+            "type": "string",
+            "title": "Tradedateshamsi"
           }
         },
         "type": "object",
         "required": [
           "x",
-          "y"
+          "y",
+          "tradeDateShamsi"
         ],
         "title": "Report15CalculationResultGraphPoint"
       },
@@ -4325,11 +4347,16 @@
             },
             "type": "array",
             "title": "Data"
+          },
+          "unit": {
+            "type": "string",
+            "title": "Unit"
           }
         },
         "type": "object",
         "required": [
-          "data"
+          "data",
+          "unit"
         ],
         "title": "Report2CalculationResult"
       },
@@ -4340,7 +4367,7 @@
             "title": "Sectortitle"
           },
           "netFlow": {
-            "type": "integer",
+            "type": "number",
             "title": "Netflow"
           }
         },
@@ -4350,6 +4377,61 @@
           "netFlow"
         ],
         "title": "Report2CalculationResultItem"
+      },
+      "Report39CalculationResult": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/Report39CalculationResultItem"
+            },
+            "type": "array",
+            "title": "Data"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "title": "Report39CalculationResult"
+      },
+      "Report39CalculationResultItem": {
+        "properties": {
+          "values": {
+            "items": {
+              "$ref": "#/components/schemas/Report39InstrumentsResultItem"
+            },
+            "type": "array",
+            "title": "Values"
+          }
+        },
+        "type": "object",
+        "required": [
+          "values"
+        ],
+        "title": "Report39CalculationResultItem"
+      },
+      "Report39InstrumentsResultItem": {
+        "properties": {
+          "instrument": {
+            "type": "string",
+            "title": "Instrument"
+          },
+          "netFlow": {
+            "type": "number",
+            "title": "Netflow"
+          },
+          "unit": {
+            "type": "string",
+            "title": "Unit"
+          }
+        },
+        "type": "object",
+        "required": [
+          "instrument",
+          "netFlow",
+          "unit"
+        ],
+        "title": "Report39InstrumentsResultItem"
       },
       "Report6CalculationResult": {
         "properties": {

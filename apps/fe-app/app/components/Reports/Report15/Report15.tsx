@@ -163,7 +163,7 @@ export const Report15: FC<Report15Props> = ({
       formatter: function (this: any) {
         return `
           <div dir="rtl" style="font-family: vazirmatn, sans-serif; margin-bottom: 0.25rem; border-radius: 10px; background-color: #171717; padding: 0.5rem 1rem; text-align: right; font-size: 0.875rem; font-weight: 500; line-height: 1.5rem; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); backdrop-filter: blur(6px); z-index: 1000;">
-            <div style="font-weight: 500;">20 اردیبهشت</div>
+            <div style="font-weight: 500;">${this.tradeDateShamsi}</div>
               <div style="margin-top: 0.25rem; display: flex; align-items: center; gap: 0.25rem;">
                 <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; width: 100%;">
                   <span style="font-size: 0.875rem; font-weight: 400;">بازدهی شاخص قیمت (وزنی-ارزشی)</span>
@@ -193,7 +193,7 @@ export const Report15: FC<Report15Props> = ({
       gridLineWidth: 1,
       gridLineColor: 'var(--color-border-neutral-secondary)',
       labels: { enabled: false },
-      title: { text: null },
+      title: { text: undefined },
       alignTicks: false,
       plotLines: [
         {
