@@ -8,23 +8,54 @@ import {
   validateUsername,
 } from './LoginForm.utils';
 import { LoginFormValues } from './LoginForm.types';
-import { useUsersServicePostUsersLogin } from '@openapi';
+import { useUsersServiceGetUsersLoginCaptcha } from '@openapi';
+import { useEffect } from 'react';
 export interface LoginFormProps {
   onSubmit: (values: LoginFormValues) => void;
+  setRefetchCaptcha?: (fn: () => void) => void;
 }
-export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
 
+export const LoginForm: React.FC<LoginFormProps> = ({
+  onSubmit,
+  setRefetchCaptcha,
+}) => {
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { isSubmitting },
   } = useForm<LoginFormValues>({
     defaultValues: {
       username: '',
       password: '',
       remember: false,
+      captcha: '',
+      captchaUid: undefined,
     },
   });
+
+  // Fetch captcha
+  const {
+    data: captchaData,
+    refetch: refetchCaptcha,
+    isFetching: isCaptchaLoading,
+  } = useUsersServiceGetUsersLoginCaptcha({ captchaType: 'image' });
+
+  // Expose refetchCaptcha to parent if needed
+  useEffect(() => {
+    if (setRefetchCaptcha) {
+      setRefetchCaptcha(refetchCaptcha);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refetchCaptcha]);
+
+  // Set captchaUid in form when captchaData changes
+  useEffect(() => {
+    if (captchaData?.uid !== undefined) {
+      setValue('captchaUid', captchaData.uid);
+      setValue('captcha', ''); // clear captcha input on new captcha
+    }
+  }, [captchaData, setValue]);
 
   return (
     <form
@@ -49,7 +80,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
                 if (!validateUsername(value)) {
                   return 'لطفاً کد ملی، شماره تماس یا نام کاربری معتبر وارد کنید.';
                 }
-
                 return true;
               },
             }}
@@ -93,6 +123,31 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
               />
             )}
           />
+
+          {/* Captcha Field */}
+          {captchaData?.required && (
+            <Controller
+              name="captcha"
+              control={control}
+              rules={{
+                required: 'کد کپچا الزامی است.',
+              }}
+              render={({ field, fieldState }) => (
+                <TextField
+                  mergeTitleAndPlaceholder={false}
+                  mode="outline"
+                  label="کد امنیتی"
+                  placeholder="کد را وارد کنید"
+                  isError={!!fieldState.error}
+                  supportText={fieldState.error?.message || ' '}
+                  captchaValue={captchaData.value}
+                  onRefreshCaptcha={refetchCaptcha}
+                  trailingIcons={[]}
+                  {...field}
+                />
+              )}
+            />
+          )}
         </div>
         <div className="flex flex-col justify-center gap-4">
           <div className="flex flex-row">
@@ -114,6 +169,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
             isLoading={isSubmitting}
             size="md"
             type="submit"
+            disabled={isCaptchaLoading}
           >
             ورود به ترمینال
           </Button>
