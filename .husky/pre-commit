@@ -8,3 +8,4 @@ if git diff --cached --name-only | grep '^apps/fe-app/'; then
 else
   echo "No changes in fe-app. Skipping lint."
 fi
+# test
