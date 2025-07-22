@@ -11,7 +11,6 @@ import {
 } from 'design-system';
 import React, { useEffect, useRef, useState } from 'react';
 import { DashboardNumberAndName } from './DashboardNumberAndName';
-import { ReportSelectionPopup } from '../../../../components';
 import { useSearchParams } from 'next/navigation';
 
 import {
@@ -32,11 +31,10 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useHtmlPaddingRight } from '../../../../../hooks';
-import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
+import { useCustomToast } from 'design-system';
 import {
   FinancialReportFilterApiModel,
   OpenAPI,
-  useDashboardsServiceDeleteDashboardsByDashboardId,
   useDashboardsServiceDeleteDashboardsByDashboardIdItemsByDashboardItemId,
   useDashboardsServiceGetDashboardsByDashboardId,
   useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdCalculations,
@@ -148,8 +146,8 @@ export const SlidersBox: React.FC = () => {
   const [slidesPerView, setSlidesPerView] = useState(2);
   const containerRef = useRef<HTMLDivElement>(null);
   const [tokenLoaded, setTokenLoaded] = useState(false);
-  const [isReportSelectionPopupOpen, setIsReportSelectionPopupOpen] =
-    useState(false);
+  // const [isReportSelectionPopupOpen, setIsReportSelectionPopupOpen] =
+  //   useState(false);
   const [isRemoveReportOpen, setIsRemoveReportOpen] = useState({
     open: false,
     dashboardName: '',
@@ -193,7 +191,6 @@ export const SlidersBox: React.FC = () => {
     );
 
   useEffect(() => {
-    const total = dashboardData?.items?.length ?? 0;
     const cols = window.matchMedia('(min-width: 1280px)').matches ? 4 : 2;
     setSlidesPerView(cols);
     setBarsNumber(Math.ceil(slotsToRender.length / cols));
@@ -466,7 +463,7 @@ export const SlidersBox: React.FC = () => {
                       <SortableAddReportButton
                         key={slotId}
                         slotId={slotId}
-                        onClick={() => setIsReportSelectionPopupOpen(true)}
+                        onClick={() => console.log('hi')}
                       />
                     );
                   })

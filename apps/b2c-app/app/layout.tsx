@@ -1,4 +1,3 @@
-import { Button, Pagination } from 'design-system';
 import './global.css';
 
 export const metadata = {
@@ -12,12 +11,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="bg-surface-neutral-background min-w-[768px]">
-        welcome to feapp
-        <Button align="center" isLoading={false} mode="primary" theme="brand" size="md" iconLeft={{ name: 'layout-grid', size: 'md' }} iconRight={{ name: 'copy' }} >welcome to B2C app</Button>
-        <Pagination currentPage={1} pageCount={5} pageSize={10} totalItems={5} />
-      </body>
+    <html lang="fa">
+      <body>{children}</body>
     </html>
   );
 }

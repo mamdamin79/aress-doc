@@ -1,6 +1,7 @@
 {
   "name": "aress-frontend",
   "version": "1.0.0",
+  "type": "module",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -21,6 +22,7 @@
     "@commitlint/config-conventional": "^19.8.1",
     "@iconify/react": "^6.0.0",
     "@newhighsco/storybook-addon-svgr": "^2.0.60",
+    "@next/eslint-plugin-next": "15.4.2",
     "@nx/devkit": "21.3.0",
     "@nx/eslint": "21.3.0",
     "@nx/eslint-plugin": "21.3.0",
@@ -128,7 +130,8 @@
     "react-paginate": "^8.3.0",
     "react-tooltip": "^5.29.1",
     "tailwind-merge": "^2.5.2",
-    "tslib": "^2.8.1"
+    "tslib": "^2.8.1",
+    "typescript-eslint": "^8.38.0"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [

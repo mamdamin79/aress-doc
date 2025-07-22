@@ -9,10 +9,10 @@ import {
   Report2CalculationResult,
   Report6CalculationResult,
 } from '@openapi';
-import { OptionItem } from 'libs/design-system/src/lib/components/OptionsListExplorer/OptionsListExplorer.types';
+import { OptionItem } from 'design-system';
 
 // Lazy load report components
-const reportComponents: Record<number, any> = {
+const reportComponents: Record<number, React.ComponentType<any>> = {
   6: dynamic(() =>
     import('../../../../components/Reports/Report6').then((mod) => mod.Report6),
   ),
