@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import {Header} from './Header'
 
 // Meta configuration for the Header component in Storybook

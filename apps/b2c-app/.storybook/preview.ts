@@ -1,4 +1,4 @@
-import type { Decorator, Preview } from '@storybook/react';
+import type { Decorator, Preview } from '@storybook/nextjs';
 import './tailwind-imports.css';
 
 export const globalTypes: Preview['globalTypes'] = {
