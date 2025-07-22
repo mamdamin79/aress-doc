@@ -33,6 +33,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { useHtmlPaddingRight } from '../../../../../hooks';
 import { useCustomToast } from 'design-system';
 import {
+  FinancialReportCalculationApiModel,
   FinancialReportFilterApiModel,
   OpenAPI,
   useDashboardsServiceDeleteDashboardsByDashboardIdItemsByDashboardItemId,
@@ -41,16 +42,13 @@ import {
   useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdReorder,
 } from '@openapi';
 import {
-  Report13Dot1CalculationResult,
-  Report13Dot2CalculationResult,
-  Report13Dot3CalculationResult,
   Report15CalculationResult,
   Report2CalculationResult,
   Report6CalculationResult,
 } from '@openapi';
 import { fetchToken } from '../../../../(auth)/auth.utils';
 import { DynamicReportRenderer } from './DynamicReportRenderer';
-import { OptionItem } from 'libs/design-system/src/lib/components/OptionsListExplorer/OptionsListExplorer.types';
+import { OptionItem } from 'design-system';
 import { useAutoRotate } from './useAutoRotate';
 import { ReportTitleSkeleton } from './skeletons/ReportTitleSkeleton';
 import { ReportSectionSkeleton } from './skeletons/ReportSectionSkeleton';
@@ -61,15 +59,15 @@ const MAX_TOTAL_SLOTS = 16;
 const SortableReport: React.FC<{
   slotId: string;
   identifier: number;
-  report: any;
-  data: any;
+  title: string;
+  data: FinancialReportCalculationApiModel['calculation'];
   filters: FinancialReportFilterApiModel[] | undefined;
   onSubmit: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
   onRemoveReport: () => void;
 }> = ({
   slotId,
   identifier,
-  report,
+  title,
   data,
   filters,
   onSubmit,
@@ -98,10 +96,15 @@ const SortableReport: React.FC<{
         {...listeners}
       />
       <DynamicReportRenderer
-        title={report.title}
-        identifier={identifier}
-        data={data}
-        filters={filters}
+        title={title}
+        identifier={identifier as 6 | 15 | 2}
+        data={
+          data as
+            | Report2CalculationResult
+            | Report6CalculationResult
+            | Report15CalculationResult
+        }
+        filters={filters ?? []}
         onSubmit={onSubmit}
         onRemove={onRemoveReport}
       />
@@ -158,13 +161,7 @@ export const SlidersBox: React.FC = () => {
     Record<
       number,
       {
-        data:
-          | Report2CalculationResult
-          | Report6CalculationResult
-          | Report13Dot1CalculationResult
-          | Report13Dot2CalculationResult
-          | Report13Dot3CalculationResult
-          | Report15CalculationResult;
+        data: FinancialReportCalculationApiModel['calculation'];
         filters: FinancialReportFilterApiModel[];
       }
     >
@@ -204,7 +201,7 @@ export const SlidersBox: React.FC = () => {
 
     const reports = dashboardData.items;
     const filledOrders = new Set(reports.map((r) => r.order));
-    let slots: number[] = [];
+    const slots: number[] = [];
 
     const maxOrder = Math.max(
       ...Array.from(filledOrders),
@@ -263,6 +260,7 @@ export const SlidersBox: React.FC = () => {
       setReportDataMap((prev) => ({
         ...prev,
         [dashboardItemId]: {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           data: updatedReport.report.reportCalculation?.calculation as any,
           filters: updatedReport.report.reportCalculation
             ?.filters as FinancialReportFilterApiModel[],
@@ -382,18 +380,10 @@ export const SlidersBox: React.FC = () => {
       return start !== end ? `اسلاید ${end}-${start}` : `اسلاید ${end}`;
     });
   };
-  {
-    !tokenLoaded ||
-      !dashboardIdParam ||
-      (isDashboardLoading &&
-        Array.from(
-          [1, 2, 3, 4].map((arr, index) => {
-            return <Skeleton key={`skeleton-${index}`} />;
-          }),
-        ));
-  }
   return (
     <div className="w-fit">
+      {(!tokenLoaded || !dashboardIdParam || isDashboardLoading) &&
+        [1, 2, 3, 4].map((_, index) => <Skeleton key={`skeleton-${index}`} />)}
       {dashboardData ? (
         <div className="flex w-full justify-between">
           <DashboardNumberAndName
@@ -436,7 +426,7 @@ export const SlidersBox: React.FC = () => {
                           key={slotId}
                           slotId={slotId}
                           identifier={report.report.identifier}
-                          report={report.report}
+                          title={report.report.title}
                           data={
                             reportDataMap[report.identifier]?.data ??
                             report.report.reportCalculation?.calculation

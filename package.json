@@ -136,6 +136,7 @@
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
       "eslint --fix",
+      "nx affected:lint --uncommitted",
       "prettier --write"
     ],
     "**/*.{css,scss}": [

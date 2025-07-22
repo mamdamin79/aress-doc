@@ -8,15 +8,15 @@ import {
   FinancialReportFilterApiModel,
   Report6CalculationResult,
 } from '@openapi';
-import { OptionItem } from 'libs/design-system/src/lib/components/OptionsListExplorer/OptionsListExplorer.types';
+import { OptionItem } from 'design-system';
 import { toBasicSetting, toDropdownSetting } from '../Report.utils';
 
-interface Report6Props {
+export interface Report6Props {
   title?: string;
   data: Report6CalculationResult;
   filters: FinancialReportFilterApiModel[];
   onSubmit?: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
-  onRemove?: ()=>void;
+  onRemove?: () => void;
 }
 
 export const Report6: FC<Report6Props> = ({
@@ -24,7 +24,7 @@ export const Report6: FC<Report6Props> = ({
   filters,
   onSubmit,
   title,
-  onRemove
+  onRemove,
 }) => {
   const [dataState, setDataState] = useState(data);
   const [filterState, setFilterState] = useState(filters);
