@@ -1,1 +1,10 @@
-npx lint-staged
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Check if any staged files belong to fe-app
+if git diff --cached --name-only | grep '^apps/fe-app/'; then
+  echo "Linting fe-app..."
+  npx nx run fe-app:lint
+else
+  echo "No changes in fe-app. Skipping lint."
+fi
