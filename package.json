@@ -134,11 +134,11 @@
     "typescript-eslint": "^8.38.0"
   },
   "lint-staged": {
-    "apps/fe-app/**/*.{js,jsx,ts,tsx}": [
+    "**/*.{js,jsx,ts,tsx}": [
       "eslint --fix",
       "prettier --write"
     ],
-    "apps/fe-app/**/*.{css,scss}": [
+    "**/*.{css,scss}": [
       "prettier --write"
     ]
   },
