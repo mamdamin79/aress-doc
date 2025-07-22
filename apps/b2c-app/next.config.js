@@ -11,8 +11,23 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
  **/
 const nextConfig = {
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: [
+          {
+            loader: '@svgr/webpack',
+            options: {
+              icon: true,
+            },
+          },
+        ],
+        as: '*.js',
+      },
+    },
+  },
   nx: {
-    svgr: true,
+    svgr: false,
   },
   images: {
     remotePatterns: [
