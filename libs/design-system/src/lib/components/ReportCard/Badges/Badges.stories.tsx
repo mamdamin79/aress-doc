@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { LikeBadge, NewBadge, VideoBadge } from './Badges';
 const meta: Meta<typeof LikeBadge> = {
   component: LikeBadge,

@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { SharePopUp } from './SharePopUp';
 const meta: Meta<typeof SharePopUp> = {
   component: SharePopUp,

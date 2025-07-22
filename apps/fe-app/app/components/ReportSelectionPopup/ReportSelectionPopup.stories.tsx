@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { ReportSelectionPopup } from './ReportSelectionPopup';
 import { useState } from 'react';
 const meta: Meta<typeof ReportSelectionPopup> = {

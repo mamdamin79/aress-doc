@@ -77,39 +77,39 @@ const SortableReport: React.FC<{
   onSubmit,
   onRemoveReport,
 }) => {
-    const {
-      attributes,
-      listeners,
-      setNodeRef,
-      transform,
-      transition,
-      isDragging,
-    } = useSortable({ id: slotId });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: slotId });
 
-    const style: React.CSSProperties = {
-      transition,
-      transform: CSS.Translate.toString(transform),
-      zIndex: isDragging ? 10 : 'auto',
-    };
-
-    return (
-      <div ref={setNodeRef} style={style} className="relative">
-        <div
-          className="absolute right-0 top-0 z-10 h-14 w-[550px] cursor-grab"
-          {...attributes}
-          {...listeners}
-        />
-        <DynamicReportRenderer
-          title={report.title}
-          identifier={identifier}
-          data={data}
-          filters={filters}
-          onSubmit={onSubmit}
-          onRemove={onRemoveReport}
-        />
-      </div>
-    );
+  const style: React.CSSProperties = {
+    transition,
+    transform: CSS.Translate.toString(transform),
+    zIndex: isDragging ? 10 : 'auto',
   };
+
+  return (
+    <div ref={setNodeRef} style={style} className="relative">
+      <div
+        className="absolute right-0 top-0 z-10 h-14 w-[550px] cursor-grab"
+        {...attributes}
+        {...listeners}
+      />
+      <DynamicReportRenderer
+        title={report.title}
+        identifier={identifier}
+        data={data}
+        filters={filters}
+        onSubmit={onSubmit}
+        onRemove={onRemoveReport}
+      />
+    </div>
+  );
+};
 
 const SortableAddReportButton: React.FC<{
   slotId: string;
@@ -161,12 +161,12 @@ export const SlidersBox: React.FC = () => {
       number,
       {
         data:
-        | Report2CalculationResult
-        | Report6CalculationResult
-        | Report13Dot1CalculationResult
-        | Report13Dot2CalculationResult
-        | Report13Dot3CalculationResult
-        | Report15CalculationResult;
+          | Report2CalculationResult
+          | Report6CalculationResult
+          | Report13Dot1CalculationResult
+          | Report13Dot2CalculationResult
+          | Report13Dot3CalculationResult
+          | Report15CalculationResult;
         filters: FinancialReportFilterApiModel[];
       }
     >
@@ -235,7 +235,7 @@ export const SlidersBox: React.FC = () => {
     setActiveRotate,
     handleRotation,
     scrollToIndex: handleScroll,
-  } = useAutoRotate({ barsNumber, onRotate: () => { } });
+  } = useAutoRotate({ barsNumber, onRotate: () => {} });
 
   const { showToast } = useCustomToast();
   const htmlPaddingRight = useHtmlPaddingRight();
@@ -390,27 +390,28 @@ export const SlidersBox: React.FC = () => {
       !dashboardIdParam ||
       (isDashboardLoading &&
         Array.from(
-          [1, 2, 3, 4].map((arr) => {
-            return <Skeleton />;
+          [1, 2, 3, 4].map((arr, index) => {
+            return <Skeleton key={`skeleton-${index}`} />;
           }),
         ));
   }
   return (
     <div className="w-fit">
-      {
-        dashboardData ?
-          <div className="flex w-full justify-between">
-            <DashboardNumberAndName
-              number={dashboardData?.identifier}
-              title={dashboardData?.name}
-            />
-            <AutoRotateSwitch
-              onChange={handleRotation}
-              rotateOptions={[5, 10, 15]}
-              initialValue={activeRotate}
-            />
-          </div> : <ReportTitleSkeleton />
-      }
+      {dashboardData ? (
+        <div className="flex w-full justify-between">
+          <DashboardNumberAndName
+            number={dashboardData?.identifier}
+            title={dashboardData?.name}
+          />
+          <AutoRotateSwitch
+            onChange={handleRotation}
+            rotateOptions={[5, 10, 15]}
+            initialValue={activeRotate}
+          />
+        </div>
+      ) : (
+        <ReportTitleSkeleton />
+      )}
 
       <DndContext
         sensors={sensors}
@@ -428,53 +429,52 @@ export const SlidersBox: React.FC = () => {
             >
               {dashboardData
                 ? slotsToRender.map((order) => {
-                  const report = dashboardData?.items?.find(
-                    (r) => r.order === order,
-                  );
-                  const slotId = `slot-${order}`;
-                  if (report) {
+                    const report = dashboardData?.items?.find(
+                      (r) => r.order === order,
+                    );
+                    const slotId = `slot-${order}`;
+                    if (report) {
+                      return (
+                        <SortableReport
+                          key={slotId}
+                          slotId={slotId}
+                          identifier={report.report.identifier}
+                          report={report.report}
+                          data={
+                            reportDataMap[report.identifier]?.data ??
+                            report.report.reportCalculation?.calculation
+                          }
+                          filters={
+                            reportDataMap[report.identifier]?.filters ??
+                            report.report.reportCalculation?.filters
+                          }
+                          onSubmit={(changedOptions) =>
+                            handleSubmit(report.identifier, changedOptions)
+                          }
+                          onRemoveReport={() =>
+                            setIsRemoveReportOpen({
+                              dashboardItemID: report.identifier,
+                              dashboardName: report.report.title,
+                              open: true,
+                            })
+                          }
+                        />
+                      );
+                    }
+
                     return (
-                      <SortableReport
+                      <SortableAddReportButton
                         key={slotId}
                         slotId={slotId}
-                        identifier={report.report.identifier}
-                        report={report.report}
-                        data={
-                          reportDataMap[report.identifier]?.data ??
-                          report.report.reportCalculation?.calculation
-                        }
-                        filters={
-                          reportDataMap[report.identifier]?.filters ??
-                          report.report.reportCalculation?.filters
-                        }
-                        onSubmit={(changedOptions) =>
-                          handleSubmit(report.identifier, changedOptions)
-                        }
-                        onRemoveReport={() =>
-                          setIsRemoveReportOpen({
-                            dashboardItemID: report.identifier,
-                            dashboardName: report.report.title,
-                            open: true,
-                          })
-                        }
+                        onClick={() => setIsReportSelectionPopupOpen(true)}
                       />
                     );
-                  }
-
-                  return (
-                    <SortableAddReportButton
-                      key={slotId}
-                      slotId={slotId}
-                      onClick={() => setIsReportSelectionPopupOpen(true)}
-                    />
-                  );
-                })
+                  })
                 : Array.from(
-                  [1, 2, 3, 4].map((i) => (
-                    <ReportSectionSkeleton />
-                  )),
-                )
-              }
+                    [1, 2, 3, 4].map((i) => (
+                      <ReportSectionSkeleton key={`skeleton-report-${i}`} />
+                    )),
+                  )}
             </div>
           </SortableContext>
         </section>

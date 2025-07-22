@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { ImageCropper } from './ImageCropper';
 import { useState } from 'react';
 const meta: Meta<typeof ImageCropper> = {
