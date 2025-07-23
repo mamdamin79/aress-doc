@@ -1,15 +1,13 @@
-'use client';
-
-import { Icon, SectionTitle } from 'design-system';
+import { Icon, ReportsCarousel, SectionTitle } from 'design-system';
 import { ReportOverview } from '../_components/ReportOverview';
 import { ReportWrapper } from '../_components/ReportWrapper';
 import { TabsWrapper } from '../_components/TabsWrapper';
-import { VideoPlayerWrapper } from '../_components/VideoPlayerWrapper';
 import { MarkdownRender } from '../_components/MarkdownRender';
 import { ReportsService } from '@openapi';
 
 import { ReactComponent as RightWaveSVG } from '@aress-assets/images/rightwaves.svg';
 import { ReactComponent as LeftWaveSVG } from '@aress-assets/images/leftwaves.svg';
+import { StaticImageData } from 'next/image';
 
 async function getData(id: number) {
   const report = await ReportsService.getReportsByReportId({
@@ -21,7 +19,7 @@ async function getData(id: number) {
 
 export default async function ReportContent({ id }: { id: number }) {
   const REPORT = await getData(id);
-
+  const baseURL = process.env.NEXT_PUBLIC_API_URL;
   return (
     <div className="text-text-neutral-primary mx-auto max-w-[1680px]">
       <section className="mb-16 flex w-full flex-col-reverse items-center gap-8 px-20 pt-6 xl:flex-row xl:items-start xl:justify-around">
@@ -57,7 +55,7 @@ export default async function ReportContent({ id }: { id: number }) {
       <section className="flex w-full flex-col items-center px-20" id="0">
         <SectionTitle align="center" level={3} title="ویدیو بررسی" />
         <div className="mt-10">
-          <VideoPlayerWrapper data={REPORT.video} />
+          {/*   <VideoPlayerWrapper data={REPORT.video} /> */}
         </div>
       </section>
 
@@ -79,14 +77,14 @@ export default async function ReportContent({ id }: { id: number }) {
 
       <section className="flex flex-col gap-12 pb-20 pt-[112px]" id="2">
         <SectionTitle align="center" level={2} title="گزارش‌های مرتبط" />
-        {/* {REPORT?.relatedReports && (
+        {REPORT?.relatedReports && (
           <ReportsCarousel
             cards={REPORT.relatedReports.map((rep) => ({
               title: rep.title,
               categoryType: rep.category.title,
               image:
                 baseURL && rep.image
-                  ? (${baseURL}${rep.image} as unknown as StaticImageData)
+                  ? (`${baseURL}${rep.image}` as unknown as StaticImageData)
                   : null,
               summary: rep.summary,
               fixedBrief: false,
@@ -95,7 +93,7 @@ export default async function ReportContent({ id }: { id: number }) {
               videoBadge: !!rep.hasVideo,
             }))}
           />
-        )} */}{' '}
+        )}
       </section>
     </div>
   );
