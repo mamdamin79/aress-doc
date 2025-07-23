@@ -1,12 +1,10 @@
-// E:/xampp/htdocs/aress-frontend/eslint.config.js
+// eslint.config.js
 import tseslint from 'typescript-eslint';
 import nxEslintPlugin from '@nx/eslint-plugin';
 
 export default tseslint.config(
   {
-    // THIS IS THE FIX: Ignore node_modules, build artifacts, AND all config files.
-
-    // Ignore all common build/cache/config directories across the entire monorepo
+    // Ignore build artifacts, cache dirs, and generated code — but not your actual source files!
     ignores: [
       '**/node_modules/',
       '**/dist/',
@@ -16,6 +14,7 @@ export default tseslint.config(
       '**/storybook-static/',
       '**/*.config.js',
       '**/*.config.ts',
+      '**/libs/openapi/**', // Ignore only the generated OpenAPI code
     ],
   },
 

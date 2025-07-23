@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import React from 'react';
 import { ProfileSidebarOption } from './ProfileSidebarOption';
-import UserSVG from '../../../assets/icons/profile-vector-large.svg';
-import { cn } from 'libs/design-system/src/utils';
+import UserSVG from '../../../assets/icons/profile-vector-large.svg?url';
+import { cn } from '../../../utils';
 export interface ProfileSidebarProps {
   image?: string | null;
   title?: string;

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import PRODUCT_LOGO from '@aress-assets/icons/fullLogo.svg?url';
 import { useWindowSize, useWindowScroll } from '@uidotdev/usehooks';
@@ -20,16 +20,12 @@ import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useThemeToggle } from '../../../hooks';
 import {
-  OpenAPI,
   useDashboardsServiceGetDashboards,
   useUsersServiceGetUsersMe,
 } from '@openapi';
-import { fetchToken } from '../../(auth)/auth.utils';
 import { buildDashboardUrl, useDashboardActions } from './header.utils';
 
 export const HeaderClient: React.FC = () => {
-  const [token, setToken] = useState<string | null>(null);
-
   const { isHeaderVisible } = useHeaderVisibility();
   const [{ y: scrollY }] = useWindowScroll();
   const currentScrollY = scrollY ?? 0;
@@ -39,31 +35,11 @@ export const HeaderClient: React.FC = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  useEffect(() => {
-    fetchToken()
-      .then((t) => {
-        if (!t) throw new Error('Failed to fetch token');
-        OpenAPI.HEADERS = { Authorization: `Bearer ${t}` };
-        setToken(t);
-      })
-      .catch(console.error);
-  }, []);
-
   const query = useDashboardsServiceGetDashboards(undefined, {
     enabled: false,
   });
 
-  const { data: user, refetch: refetchUser } = useUsersServiceGetUsersMe(
-    undefined,
-    { enabled: false },
-  );
-
-  useEffect(() => {
-    if (token) {
-      query.refetch();
-      refetchUser();
-    }
-  }, [token]);
+  const { data: user } = useUsersServiceGetUsersMe();
 
   useEffect(() => {
     if (!query.data || pathname !== '/') return;

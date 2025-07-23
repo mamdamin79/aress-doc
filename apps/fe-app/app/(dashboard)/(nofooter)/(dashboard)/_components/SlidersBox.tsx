@@ -32,7 +32,6 @@ import { useCustomToast } from 'design-system';
 import {
   FinancialReportCalculationApiModel,
   FinancialReportFilterApiModel,
-  OpenAPI,
   useDashboardsServiceDeleteDashboardsByDashboardIdItemsByDashboardItemId,
   useDashboardsServiceGetDashboardsByDashboardId,
   useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdCalculations,
@@ -43,7 +42,6 @@ import {
   Report2CalculationResult,
   Report6CalculationResult,
 } from '@openapi';
-import { fetchToken } from '../../../../(auth)/auth.utils';
 import { DynamicReportRenderer } from './DynamicReportRenderer';
 import { OptionItem } from 'design-system';
 import { useAutoRotate } from './useAutoRotate';
@@ -146,7 +144,6 @@ export const SlidersBox = () => {
   const [barsNumber, setBarsNumber] = useState(0);
   const [slidesPerView, setSlidesPerView] = useState(2);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [tokenLoaded, setTokenLoaded] = useState(false);
   const searchParams = useSearchParams();
   const dashboardIdParam = searchParams.get('dashboardId');
   // const [isReportSelectionPopupOpen, setIsReportSelectionPopupOpen] =
@@ -167,22 +164,12 @@ export const SlidersBox = () => {
     >
   >({});
 
-  useEffect(() => {
-    async function initToken() {
-      const token = await fetchToken();
-      if (!token) throw new Error('Failed to fetch access token');
-      OpenAPI.HEADERS = { Authorization: `Bearer ${token}` };
-      setTokenLoaded(true);
-    }
-
-    initToken();
-  }, []);
 
   const { data: dashboardData } =
     useDashboardsServiceGetDashboardsByDashboardId(
       { dashboardId: Number(dashboardIdParam) },
       undefined,
-      { enabled: tokenLoaded && !!dashboardIdParam },
+      { enabled: !!dashboardIdParam },
     );
 
   useEffect(() => {

@@ -1,6 +1,7 @@
 import nxPlugin from '@nx/eslint-plugin';
 import storybookPlugin from 'eslint-plugin-storybook';
-import baseConfig from '@root';
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import baseConfig from '../../eslint.config.js';
 
 export default [
   {

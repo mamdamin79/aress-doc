@@ -1,8 +1,8 @@
-import instagramIcon from '../../../assets/icons/instagram.svg';
-import whatsappIcon from '../../../assets/icons/whatsapp.svg';
-import telegramIcon from '../../../assets/icons/telegram.svg';
-import linkedinIcon from '../../../assets/icons/linkedin.svg';
-import emailIcon from '../../../assets/icons/email.svg';
+import instagramIcon from '../../../assets/icons/instagram.svg?url';
+import whatsappIcon from '../../../assets/icons/whatsapp.svg?url';
+import telegramIcon from '../../../assets/icons/telegram.svg?url';
+import linkedinIcon from '../../../assets/icons/linkedin.svg?url';
+import emailIcon from '../../../assets/icons/email.svg?url';
 export const platformMappings = (
   platformNames: string[],
   message: string,

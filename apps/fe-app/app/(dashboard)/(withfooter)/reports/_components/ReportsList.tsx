@@ -1,7 +1,6 @@
 'use client';
 import {
   GetReportsResponse,
-  OpenAPI,
   useReportsServiceDeleteReportsByReportIdFavorite,
   useReportsServicePostReportsByReportIdFavorite,
 } from '@openapi';
@@ -11,7 +10,6 @@ import emptyState from '@aress-assets/icons/Empty state.png';
 import Image, { StaticImageData } from 'next/image';
 import { FilterReport } from './FilterReport';
 import { SearchBar } from './SearchBar';
-import { fetchToken } from '../../../../(auth)/auth.utils';
 
 type Props = {
   reports: GetReportsResponse;
@@ -23,13 +21,6 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
     useReportsServiceDeleteReportsByReportIdFavorite();
 
   const handleLike = async (reportId: number, isFavorite: boolean) => {
-    const token = await fetchToken();
-    if (!token) {
-      throw new Error('Failed to fetch access token');
-    }
-    OpenAPI.HEADERS = {
-      Authorization: `Bearer ${token}`,
-    };
     if (isFavorite) {
       deleteFavoriteMutation.mutate({ reportId });
     } else {
@@ -56,7 +47,7 @@ export const ReportList: React.FC<Props> = ({ reports }) => {
               className="3xl:max-w-[512px] 3xl:min-w-[512px] 4xl:min-w-[500px] 4xl:max-w-[500px] sm:max-w-[380px] md:min-w-[512px] md:max-w-[512px] xl:min-w-[442px] xl:max-w-[442px]"
             >
               <ReportCard
-                link="/report/1"
+                link={`/report/${report.identifier}`}
                 categoryType={report.category.title}
                 reportSubscription="رایگان"
                 fixedBrief={true}

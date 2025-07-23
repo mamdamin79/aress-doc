@@ -4,12 +4,10 @@ import { Button, Icon, TextField } from 'design-system';
 import { Controller, useForm } from 'react-hook-form';
 import { OTPForm } from '../../OTPForm';
 import {
-  OpenAPI,
   useUsersServicePostUsersProfilePasswordValidate,
   useUsersServicePostUsersProfilePhoneChange,
   useUsersServicePostUsersProfilePhoneChangeOtp,
 } from '@openapi';
-import { fetchToken } from '../../../(auth)/auth.utils';
 import { queryClient } from '../../../lib/react-query';
 import { useCustomToast } from 'design-system';
 
@@ -21,12 +19,6 @@ const SectionHeader = ({ title }: { title: string }) => (
   </span>
 );
 
-// Helpers
-const setOpenApiAuthHeader = async () => {
-  const token = await fetchToken();
-  if (!token) throw new Error('Failed to fetch access token');
-  OpenAPI.HEADERS = { Authorization: `Bearer ${token}` };
-};
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const extractErrorMessage = (error: any) =>
   error?.body?.message || error?.message || genericErrorText;
@@ -56,7 +48,6 @@ export const InputPasswordForm = ({
     useUsersServicePostUsersProfilePasswordValidate();
 
   const onSaveData = async (data: InputPasswordFormValues) => {
-    await setOpenApiAuthHeader();
     mutate(
       { requestBody: { password: data.password } },
       {
@@ -136,7 +127,6 @@ const NewNumber = ({
   const { mutate, isPending } = useUsersServicePostUsersProfilePhoneChangeOtp();
 
   const onSaveData = async (data: NewNumberFormValues) => {
-    await setOpenApiAuthHeader();
     mutate(
       {
         requestBody: {
@@ -233,7 +223,6 @@ export const ChangeNumber = ({
   const { mutate, isPending } = useUsersServicePostUsersProfilePhoneChange();
 
   const verifyOtp = async (otp: string) => {
-    await setOpenApiAuthHeader();
     mutate(
       { requestBody: { otp } },
       {
@@ -252,7 +241,6 @@ export const ChangeNumber = ({
   const resendOTP = async () => {
     if (!newNumber || !passwordVerificationToken) return;
     const otpMutate = useUsersServicePostUsersProfilePhoneChangeOtp().mutate;
-    await setOpenApiAuthHeader();
     otpMutate(
       {
         requestBody: {

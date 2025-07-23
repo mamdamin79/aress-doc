@@ -2,11 +2,7 @@ import { Button, TextField } from 'design-system';
 import React, { useState } from 'react';
 import { InputPasswordForm } from '../ChangeNumber';
 import { Controller, useForm } from 'react-hook-form';
-import { fetchToken } from '../../../(auth)/auth.utils';
-import {
-  OpenAPI,
-  useUsersServicePostUsersProfileUsernameChange,
-} from '@openapi';
+import { useUsersServicePostUsersProfileUsernameChange } from '@openapi';
 import { queryClient } from '../../../lib/react-query';
 const SectionHeader = ({ title }: { title: string }) => (
   <span className="text-md text-text-neutral-primary text-center font-medium">
@@ -38,13 +34,6 @@ const NewUsernameForm = ({
   const { mutate, isPending } = useUsersServicePostUsersProfileUsernameChange();
 
   const onSaveData = async (data: NewUsernameFormValues) => {
-    const token = await fetchToken();
-    if (!token) {
-      throw new Error('Failed to fetch access token');
-    }
-    OpenAPI.HEADERS = {
-      Authorization: `Bearer ${token}`,
-    };
     mutate(
       {
         requestBody: {

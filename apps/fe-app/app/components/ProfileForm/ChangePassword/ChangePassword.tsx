@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { NewPasswordForm } from '../../NewPasswordForm';
 import { OTPForm } from '../../OTPForm';
-import { fetchToken } from '../../../(auth)/auth.utils';
 import {
-  OpenAPI,
   useUsersServiceGetUsersProfilePasswordChangeOtp,
   useUsersServicePostUsersProfilePasswordChange,
 } from '@openapi';
@@ -48,13 +46,6 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({
     );
   };
   const onSaveData = async (password: string, otpCode: string) => {
-    const token = await fetchToken();
-    if (!token) {
-      throw new Error('Failed to fetch access token');
-    }
-    OpenAPI.HEADERS = {
-      Authorization: `Bearer ${token}`,
-    };
     passwordMutate(password, otpCode);
   };
   return (

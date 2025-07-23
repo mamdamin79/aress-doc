@@ -1,7 +1,7 @@
 import { cn } from '../../../utils/classNames.utils';
 import Image from 'next/image';
 import React from 'react';
-import USER_SVG from '../../../assets/icons/profile vector-large.svg';
+import USER_SVG from '../../../assets/icons/profile vector-large.svg?url';
 interface HeadProfileProps {
   profileImage?: string | null;
 }

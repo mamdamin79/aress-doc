@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import { useVideo } from '../../../hooks/UseVideo';
 import React, { useEffect, useRef, useState } from 'react';
 import { Icon } from '../Icon';
@@ -7,7 +7,7 @@ import { PlayerActions } from './ControlPanel/PlayerActions';
 import { PlayerOptions } from './ControlPanel/PlayerOptions';
 import { cn } from '../../../utils/classNames.utils';
 import { PlayerProgressBar } from './ControlPanel/PlayerProgressBar';
-import videoLogo from '../../../assets/icons/logo.svg';
+import videoLogo from '../../../assets/icons/logo.svg?url';
 import Image from 'next/image';
 import { PlayList } from '../PlayList';
 import { Video, VideoQuality } from './VideoPlayer.types';

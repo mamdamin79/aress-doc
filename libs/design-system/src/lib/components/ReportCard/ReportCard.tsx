@@ -1,7 +1,7 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import { Icon } from '../Icon';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import { NewBadge, VideoBadge, LikeBadge } from './Badges/Badges';
 import { cn } from '../../../utils/classNames.utils';
 import { Button } from '../Button';
@@ -14,7 +14,7 @@ export interface ReportCardProps {
   categoryType?: string;
   newBadge?: boolean;
   videoBadge?: boolean;
-  image: string;
+  image: StaticImageData | null;
   fixedBrief?: boolean;
   userFavorite?: boolean;
   link?: string;
@@ -54,13 +54,15 @@ export const ReportCard: React.FC<ReportCardProps> = ({
             fixedBrief ? 'mx-auto h-[192px]' : 'h-[184px]',
           )}
         >
-          <Image
-            width={408}
-            height={192}
-            src={image}
-            alt={title}
-            className="h-full w-full object-contain"
-          />
+          {image && (
+            <Image
+              width={408}
+              height={192}
+              src={image}
+              alt={title}
+              className="h-full w-full object-contain"
+            />
+          )}
         </div>
       </div>
 

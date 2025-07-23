@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { Icon } from '../Icon';
 import { FileUploader } from 'react-drag-drop-files';
 import { FileUploadErrorType } from '../FileUpload/FileUpload.constants';
-import USER_SVG from '../../../assets/icons/profile vector-large.svg';
+import USER_SVG from '../../../assets/icons/profile vector-large.svg?url';
 import Image from 'next/image';
-import { cn } from 'libs/design-system/src/utils';
+import { cn } from '../../../utils';
 
 type FileUploadProps = {
   types: string[];

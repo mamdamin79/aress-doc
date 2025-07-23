@@ -1,5 +1,4 @@
 'use client';
-import { IconProps, SquaredButton } from 'design-system';
 
 export default function AuthLayout({
   children,

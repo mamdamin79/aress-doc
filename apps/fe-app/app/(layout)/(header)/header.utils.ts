@@ -1,6 +1,4 @@
-import { OpenAPI } from '@openapi';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-import { fetchToken } from '../../(auth)/auth.utils';
 
 export function sanitizeDashboardName(name: string) {
   return name.replace(/[\s\u200C]+/g, '-');
@@ -50,25 +48,10 @@ export function useDashboardActions() {
     enabled: true,
   });
 
-  const updateToken = useCallback(async () => {
-    try {
-      const t = await fetchToken();
-      if (!t) throw new Error('Token not found');
-      OpenAPI.HEADERS = { Authorization: `Bearer ${t}` };
-      return t;
-    } catch (error) {
-      console.error('Token fetch failed:', error);
-      return null;
-    }
-  }, []);
-
   const newDashboard = useCallback(
     async (data?: { input?: string; checked?: boolean }) => {
       const input = data?.input ?? '';
       const checked = data?.checked ?? false;
-
-      const t = await updateToken();
-      if (!t) return;
 
       const { createdDashboardId, dashboards } =
         await DashboardsService.putDashboards({
@@ -89,13 +72,10 @@ export function useDashboardActions() {
       );
       showToast({ message: 'داشبورد جدید ساخته شد.', type: 'success' });
     },
-    [router, searchParams, updateToken],
+    [router, searchParams],
   );
 
   const deleteDashboard = useCallback(async () => {
-    const t = await updateToken();
-    if (!t) return;
-
     const dashboardID = Number(searchParams.get('dashboardId'));
 
     await DashboardsService.deleteDashboardsByDashboardId({
@@ -123,13 +103,10 @@ export function useDashboardActions() {
       router,
     );
     showToast({ message: 'داشبورد حذف شد.', type: 'info' });
-  }, [searchParams, query.data, router, updateToken]);
+  }, [searchParams, query.data, router]);
 
   const changeDashboardName = useCallback(
     async (data?: { input?: string }) => {
-      const t = await updateToken();
-      if (!t) return;
-
       await DashboardsService.postDashboardsByDashboardId({
         dashboardId: Number(searchParams.get('dashboardId')),
         requestBody: { name: data?.input ?? '' },
@@ -141,7 +118,7 @@ export function useDashboardActions() {
 
       showToast({ message: 'نام داشبورد تغییر یافت.', type: 'info' });
     },
-    [searchParams, updateToken],
+    [searchParams],
   );
 
   const copyDashboard = useCallback(
