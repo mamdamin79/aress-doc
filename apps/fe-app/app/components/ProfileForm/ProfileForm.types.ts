@@ -1,5 +1,5 @@
 import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query';
-import { IconName } from '../../../../../libs/design-system/src/lib/components/Icon/Icon.types';
+import { IconName } from 'design-system';
 import { GetUsersMeResponse } from '@openapi';
 
 export interface ProfileFormProps {

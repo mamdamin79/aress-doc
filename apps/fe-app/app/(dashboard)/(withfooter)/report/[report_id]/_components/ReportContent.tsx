@@ -1,8 +1,4 @@
-import {
-  Icon,
-  SectionTitle,
-  ReportsCarousel,
-} from 'design-system';
+import { Icon, SectionTitle, ReportsCarousel } from 'design-system';
 import { ReportOverview } from '../_components/ReportOverview';
 import { ReportWrapper } from '../_components/ReportWrapper';
 import { TabsWrapper } from '../_components/TabsWrapper';
@@ -10,10 +6,10 @@ import { VideoPlayerWrapper } from '../_components/VideoPlayerWrapper';
 import { MarkdownRender } from '../_components/MarkdownRender';
 import { fetchToken } from '../../../../../(auth)/auth.utils';
 import { OpenAPI, ReportsService } from '@openapi';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 
-import rightWaveSVG from '@aress-assets/images/rightwaves.svg';
-import leftWaveSVG from '@aress-assets/images/leftwaves.svg';
+import rightWaveSVG from '@aress-assets/images/rightwaves.svg?url';
+import leftWaveSVG from '@aress-assets/images/leftwaves.svg?url';
 
 async function getData(id: number) {
   const token = await fetchToken();
@@ -82,10 +78,7 @@ export default async function ReportContent({ id }: { id: number }) {
         <div className="absolute -right-16 top-1/4 h-[760px] w-[288px]">
           <Image src={rightWaveSVG} alt="wave-right" fill />
         </div>
-        <div
-          className="absolute -left-16 top-10 h-[760px] w-[288px]"
-          dir="ltr"
-        >
+        <div className="absolute -left-16 top-10 h-[760px] w-[288px]" dir="ltr">
           <Image src={leftWaveSVG} alt="wave-left" fill />
         </div>
         <SectionTitle align="center" level={3} title="اطلاعات بیشتر" />
@@ -101,7 +94,7 @@ export default async function ReportContent({ id }: { id: number }) {
             cards={REPORT.relatedReports.map((rep) => ({
               title: rep.title,
               categoryType: rep.category.title,
-              image: `${baseURL}${rep.image}`,
+              image: `${baseURL}${rep.image}` as unknown as StaticImageData,
               summary: rep.summary,
               fixedBrief: false,
               newBadge: rep.isNew,

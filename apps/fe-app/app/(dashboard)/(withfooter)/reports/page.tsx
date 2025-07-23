@@ -27,27 +27,32 @@ async function getData(searchParams: GetReportsData) {
 export default async function ReportMenuPage({
   searchParams,
 }: {
-  searchParams: GetReportsData & {
-    page?: string;
-    category?: string;
-    search?: string;
-  };
+  searchParams: Promise<
+    GetReportsData & {
+      page?: string;
+      category?: string;
+      search?: string;
+    }
+  >;
 }) {
-  const { reports, categories } = await getData(searchParams);
+  const resolvedSearchParams = await searchParams;
+  const { reports, categories } = await getData(resolvedSearchParams);
   const filteredReports = reports.filter((report) => {
-    const matchesCategory = searchParams.category
-      ? report.category.title === searchParams.category
+    const matchesCategory = resolvedSearchParams.category
+      ? report.category.title === resolvedSearchParams.category
       : true;
 
-    const matchesSearch = searchParams.search
-      ? report.title.includes(searchParams.search)
+    const matchesSearch = resolvedSearchParams.search
+      ? report.title.includes(resolvedSearchParams.search)
       : true;
 
     return matchesCategory && matchesSearch;
   });
 
   // calculate current page based on searchParams
-  const currentPage = searchParams.page ? parseInt(searchParams.page, 10) : 1;
+  const currentPage = resolvedSearchParams.page
+    ? parseInt(resolvedSearchParams.page, 10)
+    : 1;
 
   // total pages
   const totalPages = Math.ceil(filteredReports.length / ITEMS_PER_PAGE);

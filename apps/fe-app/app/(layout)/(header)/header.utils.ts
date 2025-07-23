@@ -1,8 +1,6 @@
-import { GetDashboardsResponse, OpenAPI } from '@openapi';
+import { OpenAPI } from '@openapi';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { fetchToken } from '../../(auth)/auth.utils';
-import { UseQueryResult } from '@tanstack/react-query';
-import { ReadonlyURLSearchParams } from 'next/navigation';
 
 export function sanitizeDashboardName(name: string) {
   return name.replace(/[\s\u200C]+/g, '-');
@@ -40,7 +38,7 @@ import { DashboardsService } from '@openapi';
 import { queryClient } from '../../lib/react-query';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useDashboardsServiceGetDashboards } from '@openapi';
-import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
+import { useCustomToast } from 'design-system';
 
 export function useDashboardActions() {
   const { showToast } = useCustomToast();
@@ -100,7 +98,7 @@ export function useDashboardActions() {
 
     const dashboardID = Number(searchParams.get('dashboardId'));
 
-    const dashboards = await DashboardsService.deleteDashboardsByDashboardId({
+    await DashboardsService.deleteDashboardsByDashboardId({
       dashboardId: dashboardID,
     });
 

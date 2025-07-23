@@ -51,7 +51,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
           },
         },
         {
-          onSuccess: (response) => {
+          onSuccess: () => {
             queryClient.invalidateQueries({
               queryKey: ['UsersServiceGetUsersMe'],
             });

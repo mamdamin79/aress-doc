@@ -5,7 +5,7 @@ import {
 } from '@openapi';
 import { DynamicReportRenderer } from '../../../../(nofooter)/(dashboard)/_components/DynamicReportRenderer';
 import React, { useEffect, useState } from 'react';
-import { OptionItem } from 'libs/design-system/src/lib/components/OptionsListExplorer/OptionsListExplorer.types';
+import { OptionItem } from 'design-system';
 interface ReportWrapperProps {
   data: FinancialReportCalculationApiModel | null;
   identifier: number | string;

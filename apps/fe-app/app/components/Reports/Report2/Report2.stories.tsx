@@ -13,6 +13,7 @@ type Story = StoryObj<typeof Report2>;
 export const Default: Story = {
   args: {
     data: {
+      unit: 'میایون ریال',
       data: [
         {
           sectorTitle: 'بانکها و موسسات اعتباری',

@@ -2,11 +2,7 @@
 import { useForm, Controller } from 'react-hook-form';
 import { Button, Checkbox, TextField } from 'design-system';
 import Link from 'next/link';
-import {
-  validateNationalCode,
-  validatePhoneNumber,
-  validateUsername,
-} from './LoginForm.utils';
+import { validateUsername } from './LoginForm.utils';
 import { LoginFormValues } from './LoginForm.types';
 export interface LoginFormProps {
   onSubmit: (values: LoginFormValues) => void;

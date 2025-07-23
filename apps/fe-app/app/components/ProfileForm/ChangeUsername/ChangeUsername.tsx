@@ -53,13 +53,13 @@ const NewUsernameForm = ({
         },
       },
       {
-        onSuccess: (response) => {
+        onSuccess: () => {
           onSubmit?.();
           queryClient.invalidateQueries({
             queryKey: ['UsersServiceGetUsersMe'],
           });
         },
-        onError: (error) => {
+        onError: () => {
           setError('username', {
             type: 'manual',
             message:

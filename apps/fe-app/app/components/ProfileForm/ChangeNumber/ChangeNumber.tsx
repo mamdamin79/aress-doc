@@ -11,7 +11,7 @@ import {
 } from '@openapi';
 import { fetchToken } from '../../../(auth)/auth.utils';
 import { queryClient } from '../../../lib/react-query';
-import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
+import { useCustomToast } from 'design-system';
 
 const genericErrorText = 'خطایی رخ داد.';
 
@@ -27,7 +27,7 @@ const setOpenApiAuthHeader = async () => {
   if (!token) throw new Error('Failed to fetch access token');
   OpenAPI.HEADERS = { Authorization: `Bearer ${token}` };
 };
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const extractErrorMessage = (error: any) =>
   error?.body?.message || error?.message || genericErrorText;
 

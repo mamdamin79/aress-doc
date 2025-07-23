@@ -20,5 +20,5 @@ export default tseslint.config(
       // Your app-specific rules here
       '@next/next/no-html-link-for-pages': ['error', 'apps/b2c-app/pages'],
     },
-  }
+  },
 );

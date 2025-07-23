@@ -1,14 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { FooterSection } from './Footer.types';
-import PRODUCT_LOGO from '@aress-assets/icons/product_logo.svg';
+import PRODUCT_LOGO from '@aress-assets/icons/product_logo.svg?url';
 import Enamad from '@aress-assets/icons/enamad.png';
 import DigitalUnion from '@aress-assets/icons/digital-union.png';
-import TELEGRAM_ICON from '@aress-assets/icons/telegram.svg';
-import ANDROID_ICON from '@aress-assets/icons/android.svg';
-import BAZAR_ICON from '@aress-assets/icons/bazar.svg';
-import MAYKET_ICON from '@aress-assets/icons/mayket.svg';
-import PLAYSTORE_ICON from '@aress-assets/icons/playstore.svg';
+import TELEGRAM_ICON from '@aress-assets/icons/telegram.svg?url';
+import ANDROID_ICON from '@aress-assets/icons/android.svg?url';
+import BAZAR_ICON from '@aress-assets/icons/bazar.svg?url';
+import MAYKET_ICON from '@aress-assets/icons/mayket.svg?url';
+import PLAYSTORE_ICON from '@aress-assets/icons/playstore.svg?url';
 import { Tooltip } from 'design-system';
 import { Icon } from 'design-system';
 export function Footer() {

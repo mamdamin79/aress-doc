@@ -2,10 +2,10 @@
 import { IconDialog, ProgressBar } from 'design-system';
 
 import React, { useState } from 'react';
-import RESET_PASSWORD from '@aress-assets/icons/ResetPassword.svg';
+import RESET_PASSWORD from '@aress-assets/icons/ResetPassword.svg?url';
 import Image from 'next/image';
-import Logo from '@aress-assets/icons/fullLogo.svg';
-import LogoWithText from '@aress-assets/icons/LogoWithText.svg';
+import Logo from '@aress-assets/icons/fullLogo.svg?url';
+import LogoWithText from '@aress-assets/icons/LogoWithText.svg?url';
 import { Notice } from './_components/Notice';
 import { FormWrapper } from './_components';
 

@@ -1,11 +1,11 @@
 import { SectionTitle } from 'design-system';
 import React from 'react';
-import TERMINAL_LOGIN from '@aress-assets/icons/TerminalLogin.svg';
+import TERMINAL_LOGIN from '@aress-assets/icons/TerminalLogin.svg?url';
 import Image from 'next/image';
 import { FormWrapper } from './_components';
-import Logo from '@aress-assets/icons/fullLogo.svg';
+import Logo from '@aress-assets/icons/fullLogo.svg?url';
 
-import LogoWithText from '@aress-assets/icons/LogoWithText.svg';
+import LogoWithText from '@aress-assets/icons/LogoWithText.svg?url';
 import { SecurityNoticeBox } from './_components/SecurityNoticeBox';
 const LoginPage = () => {
   return (

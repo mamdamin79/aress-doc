@@ -1,6 +1,4 @@
 'use client';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
 import {
   AddReportButton,
   AutoRotateSwitch,
@@ -11,7 +9,6 @@ import {
 } from 'design-system';
 import React, { useEffect, useRef, useState } from 'react';
 import { DashboardNumberAndName } from './DashboardNumberAndName';
-import { useSearchParams } from 'next/navigation';
 
 import {
   DndContext,
@@ -52,6 +49,7 @@ import { OptionItem } from 'design-system';
 import { useAutoRotate } from './useAutoRotate';
 import { ReportTitleSkeleton } from './skeletons/ReportTitleSkeleton';
 import { ReportSectionSkeleton } from './skeletons/ReportSectionSkeleton';
+import { useSearchParams } from 'next/navigation';
 
 const MAX_INITIAL_SLOTS = 4;
 const MAX_TOTAL_SLOTS = 16;
@@ -143,12 +141,14 @@ const SortableAddReportButton: React.FC<{
   );
 };
 
-export const SlidersBox: React.FC = () => {
+export const SlidersBox = () => {
   const [slotsToRender, setSlotsToRender] = useState<number[]>([]);
   const [barsNumber, setBarsNumber] = useState(0);
   const [slidesPerView, setSlidesPerView] = useState(2);
   const containerRef = useRef<HTMLDivElement>(null);
   const [tokenLoaded, setTokenLoaded] = useState(false);
+  const searchParams = useSearchParams();
+  const dashboardIdParam = searchParams.get('dashboardId');
   // const [isReportSelectionPopupOpen, setIsReportSelectionPopupOpen] =
   //   useState(false);
   const [isRemoveReportOpen, setIsRemoveReportOpen] = useState({
@@ -178,9 +178,7 @@ export const SlidersBox: React.FC = () => {
     initToken();
   }, []);
 
-  const searchParams = useSearchParams();
-  const dashboardIdParam = searchParams.get('dashboardId');
-  const { data: dashboardData, isLoading: isDashboardLoading } =
+  const { data: dashboardData } =
     useDashboardsServiceGetDashboardsByDashboardId(
       { dashboardId: Number(dashboardIdParam) },
       undefined,
@@ -382,8 +380,6 @@ export const SlidersBox: React.FC = () => {
   };
   return (
     <div className="w-fit">
-      {(!tokenLoaded || !dashboardIdParam || isDashboardLoading) &&
-        [1, 2, 3, 4].map((_, index) => <Skeleton key={`skeleton-${index}`} />)}
       {dashboardData ? (
         <div className="flex w-full justify-between">
           <DashboardNumberAndName

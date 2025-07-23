@@ -28,7 +28,8 @@
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "../../libs/design-system/src/lib/components/MenuTiles/MenuModalsProvider.tsx",
-    "../../libs/design-system/src/lib/components/MenuTiles/MenuModals.tsx"
+    "../../libs/design-system/src/lib/components/MenuTiles/MenuModals.tsx",
+    "svg.d.ts"
   ],
   "exclude": [
     "node_modules",

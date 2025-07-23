@@ -2,8 +2,8 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import TableRow from './TableRow';
 import { VirtualItem } from '../types';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function TableBody({ rows, tableRef, activeIndexCategoryTab }: any) {
-
   const virtualizer = useVirtualizer({
     count: rows.length,
     getScrollElement: () => tableRef.current,
@@ -23,7 +23,7 @@ export function TableBody({ rows, tableRef, activeIndexCategoryTab }: any) {
 
         return (
           <TableRow
-            logo=''
+            logo=""
             key={row.id}
             row={row}
             isMainTab={isMainTab}
@@ -42,7 +42,9 @@ export function TableBody({ rows, tableRef, activeIndexCategoryTab }: any) {
         style={{
           height:
             virtualizer.getTotalSize() -
-            (virtualizer.getVirtualItems().at(-1)?.end ?? 0),
+            (virtualizer.getVirtualItems()[
+              virtualizer.getVirtualItems().length - 1
+            ]?.end ?? 0),
         }}
       >
         <td />
