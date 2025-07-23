@@ -1,3 +1,5 @@
+'use client';
+
 import { Icon, SectionTitle } from 'design-system';
 import { ReportOverview } from '../_components/ReportOverview';
 import { ReportWrapper } from '../_components/ReportWrapper';
@@ -5,10 +7,9 @@ import { TabsWrapper } from '../_components/TabsWrapper';
 import { VideoPlayerWrapper } from '../_components/VideoPlayerWrapper';
 import { MarkdownRender } from '../_components/MarkdownRender';
 import { ReportsService } from '@openapi';
-import Image from 'next/image';
 
-import rightWaveSVG from '@aress-assets/images/rightwaves.svg?url';
-import leftWaveSVG from '@aress-assets/images/leftwaves.svg?url';
+import { ReactComponent as RightWaveSVG } from '@aress-assets/images/rightwaves.svg';
+import { ReactComponent as LeftWaveSVG } from '@aress-assets/images/leftwaves.svg';
 
 async function getData(id: number) {
   const report = await ReportsService.getReportsByReportId({
@@ -20,7 +21,6 @@ async function getData(id: number) {
 
 export default async function ReportContent({ id }: { id: number }) {
   const REPORT = await getData(id);
-  // const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
   return (
     <div className="text-text-neutral-primary mx-auto max-w-[1680px]">
@@ -66,10 +66,10 @@ export default async function ReportContent({ id }: { id: number }) {
         id="1"
       >
         <div className="absolute -right-16 top-1/4 h-[760px] w-[288px]">
-          <Image src={rightWaveSVG} alt="wave-right" fill />
+          <RightWaveSVG className="h-full w-full" />
         </div>
         <div className="absolute -left-16 top-10 h-[760px] w-[288px]" dir="ltr">
-          <Image src={leftWaveSVG} alt="wave-left" fill />
+          <LeftWaveSVG className="h-full w-full" />
         </div>
         <SectionTitle align="center" level={3} title="اطلاعات بیشتر" />
         <div className="mt-2 flex flex-col text-right">
@@ -86,7 +86,7 @@ export default async function ReportContent({ id }: { id: number }) {
               categoryType: rep.category.title,
               image:
                 baseURL && rep.image
-                  ? (`${baseURL}${rep.image}` as unknown as StaticImageData)
+                  ? (${baseURL}${rep.image} as unknown as StaticImageData)
                   : null,
               summary: rep.summary,
               fixedBrief: false,
@@ -95,7 +95,7 @@ export default async function ReportContent({ id }: { id: number }) {
               videoBadge: !!rep.hasVideo,
             }))}
           />
-        )} */}
+        )} */}{' '}
       </section>
     </div>
   );

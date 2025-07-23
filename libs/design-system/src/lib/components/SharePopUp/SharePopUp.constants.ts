@@ -1,8 +1,9 @@
-import instagramIcon from '../../../assets/icons/instagram.svg?url';
-import whatsappIcon from '../../../assets/icons/whatsapp.svg?url';
-import telegramIcon from '../../../assets/icons/telegram.svg?url';
-import linkedinIcon from '../../../assets/icons/linkedin.svg?url';
-import emailIcon from '../../../assets/icons/email.svg?url';
+import { ReactComponent as InstagramIcon } from '../../../assets/icons/instagram.svg';
+import { ReactComponent as WhatsappIcon } from '../../../assets/icons/whatsapp.svg';
+import { ReactComponent as TelegramIcon } from '../../../assets/icons/telegram.svg';
+import { ReactComponent as LinkedinIcon } from '../../../assets/icons/linkedin.svg';
+import { ReactComponent as EmailIcon } from '../../../assets/icons/email.svg';
+
 export const platformMappings = (
   platformNames: string[],
   message: string,
@@ -11,37 +12,37 @@ export const platformMappings = (
   const allPlatforms = [
     {
       name: 'Instagram',
-      icon: instagramIcon,
+      icon: InstagramIcon,
       link: `https://www.instagram.com/direct/new/?text=${message}&url=${url}`,
     },
     {
       name: 'Telegram',
-      icon: telegramIcon,
+      icon: TelegramIcon,
       link: `https://t.me/share/url?url=${url}&text=${message}`,
     },
     {
       name: 'WhatsApp',
-      icon: whatsappIcon,
+      icon: WhatsappIcon,
       link: `https://wa.me/?text=${message} ${url}`,
     },
     {
       name: 'Linkedin',
-      icon: linkedinIcon,
+      icon: LinkedinIcon,
       link: `https://www.linkedin.com/sharing/share?url=${url}&title=${message}`,
     },
     {
       name: 'Email',
-      icon: emailIcon,
+      icon: EmailIcon,
       link: `mailto:?subject=${message}&body=${url}`,
     },
     {
       name: 'Sample 1',
-      icon: emailIcon,
+      icon: EmailIcon,
       link: `https://example.com/share?url=${url}&text=${message}`,
     },
     {
       name: 'Sample 2',
-      icon: emailIcon,
+      icon: EmailIcon,
       link: `https://example.com/share?url=${url}&text=${message}`,
     },
   ];
@@ -50,6 +51,7 @@ export const platformMappings = (
     platformNames.includes(platform.name),
   );
 };
+
 export type PlatformName =
   | 'Instagram'
   | 'Telegram'

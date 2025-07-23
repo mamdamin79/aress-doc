@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo } from 'react';
-import Image from 'next/image';
-import PRODUCT_LOGO from '@aress-assets/icons/fullLogo.svg?url';
+import { ReactComponent as PRODUCT_LOGO } from '@aress-assets/icons/fullLogo.svg';
 import { useWindowSize, useWindowScroll } from '@uidotdev/usehooks';
 import {
   cn,
@@ -140,13 +139,9 @@ export const HeaderClient: React.FC = () => {
         >
           <div className="flex flex-row items-center gap-6">
             <Link href="/">
-              <Image
-                src={PRODUCT_LOGO}
-                width={48}
-                height={48}
-                className="h-12 w-12 object-contain"
-                alt="product logo"
-              />
+              <div className="h-12 w-12 object-contain">
+                <PRODUCT_LOGO />
+              </div>
             </Link>
             <div className="pt-2">
               {width >= DESKTOP_BREAKPOINT ? (
