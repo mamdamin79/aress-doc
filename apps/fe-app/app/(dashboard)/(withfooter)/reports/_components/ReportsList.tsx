@@ -18,19 +18,11 @@ type Props = {
 };
 
 export const ReportList: React.FC<Props> = ({ reports }) => {
-  const addFavoriteMutation =
-    useReportsServicePostReportsByReportIdFavorite();
+  const addFavoriteMutation = useReportsServicePostReportsByReportIdFavorite();
   const deleteFavoriteMutation =
     useReportsServiceDeleteReportsByReportIdFavorite();
 
   const handleLike = async (reportId: number, isFavorite: boolean) => {
-    const token = await fetchToken();
-    if (!token) {
-      throw new Error('Failed to fetch access token');
-    }
-    OpenAPI.HEADERS = {
-      Authorization: `Bearer ${token}`,
-    };
     if (isFavorite) {
       deleteFavoriteMutation.mutate({ reportId });
     } else {
