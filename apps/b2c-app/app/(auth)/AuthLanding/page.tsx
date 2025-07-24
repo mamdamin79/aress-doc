@@ -9,6 +9,7 @@ import CryptocurrencyAppAnimation from './_lottie_data/CryptocurrencyApp.json';
 
 import { Button } from 'design-system';
 import { Indicator } from './_components/Indicator';
+import { ReactComponent as WavesSVG } from './Waves.svg';
 
 const page = () => {
   const slidesData = [
@@ -58,7 +59,8 @@ const page = () => {
   }, []);
 
   return (
-    <div className="text-text-neutral-primary flex w-full justify-center pb-5">
+    <div className="text-text-neutral-primary relative flex w-full justify-center pb-5">
+      <WavesSVG className="absolute top-[100px] h-fit w-full" />
       <div className="flex w-[470px] flex-col items-center">
         {/* Lottie Animation Container with fade transition */}
         <div className="relative h-[272px] w-[272px]">
