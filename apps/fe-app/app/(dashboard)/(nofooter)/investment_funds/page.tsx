@@ -1,5 +1,6 @@
 'use client';
 import React, {
+  RefObject,
   startTransition,
   useEffect,
   useMemo,
@@ -83,7 +84,7 @@ const Funds = () => {
   const [activeId, setActiveId] = useState<null | string>(null);
   const { handleScrollRight, handleScrollLeft } = useSmartTableScroll(
     headerRefs,
-    tableRef,
+    tableRef as RefObject<HTMLDivElement>,
   );
   const columns = React.useMemo<ColumnDef<Person>[]>(
     () => [
@@ -436,7 +437,7 @@ const Funds = () => {
   const { rows } = table.getRowModel();
 
   // Scroll lock handler factory
-  const freezeScroll = (el: HTMLDivElement) => (e: Event) => {
+  const freezeScroll = (el: HTMLDivElement) => () => {
     if (el.dataset.scrollTop) {
       el.scrollTop = parseInt(el.dataset.scrollTop);
     }

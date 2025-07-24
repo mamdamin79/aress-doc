@@ -1,6 +1,6 @@
 import { OpenAPI, ReportsService } from '@openapi';
 import { DynamicReportRenderer } from '../../../../(dashboard)/(nofooter)/(dashboard)/_components/DynamicReportRenderer';
-import { fetchToken } from 'apps/fe-app/app/(auth)/auth.utils';
+import { cookies } from 'next/headers';
 
 export default async function Page({
   params,
@@ -10,14 +10,9 @@ export default async function Page({
   searchParams: { [key: string]: string };
 }) {
   const { chart_id, chart_title } = params;
-  const token = await fetchToken();
-  if (!token) {
-    throw new Error('Failed to fetch access token');
-  }
+  const cookieStore = await cookies();
 
-  OpenAPI.HEADERS = {
-    Authorization: `Bearer ${token}`,
-  };
+  OpenAPI.TOKEN = cookieStore.get('access_token')?.value;
 
   const { calculation, filters } = await ReportsService.postReportsByReportId({
     reportId: chart_id,

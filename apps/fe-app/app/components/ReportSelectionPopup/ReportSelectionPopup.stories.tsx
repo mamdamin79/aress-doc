@@ -26,6 +26,5 @@ export const Default: Story = {
         />
       </div>
     );
-    ``;
   },
 };

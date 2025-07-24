@@ -1,10 +1,10 @@
-import { OptionItem } from 'libs/design-system/src/lib/components/OptionsListExplorer/OptionsListExplorer.types';
+import { OptionItem } from 'design-system';
 import { FinancialReportFilterApiModel } from '@openapi';
-import { IconName } from 'libs/design-system/src/lib/components/Icon/Icon.types';
+import { IconName } from 'design-system';
 
 export const toOptionListProps = (
   filter: FinancialReportFilterApiModel,
-  updateOption: (optionType: string, item: OptionItem) => void
+  updateOption: (optionType: string, item: OptionItem) => void,
 ) => ({
   onChange: (item: OptionItem) => updateOption(filter.optionType, item),
   selectedItemId: Number(filter.selectedOption.identifier),
@@ -22,7 +22,7 @@ export const icon = (name: IconName) => ({ name, size: 'sm' as const });
 
 export const toDropdownSetting = (
   filter: FinancialReportFilterApiModel,
-  updateOption: (optionType: string, item: OptionItem) => void
+  updateOption: (optionType: string, item: OptionItem) => void,
 ) => ({
   type: 'nestedDropdown' as const,
   props: {
@@ -41,7 +41,7 @@ export const toDropdownSetting = (
 
 export const toBasicSetting = (
   filter: FinancialReportFilterApiModel,
-  updateOption: (optionType: string, item: OptionItem) => void
+  updateOption: (optionType: string, item: OptionItem) => void,
 ) => ({
   type: 'basicSelection' as const,
   props: {

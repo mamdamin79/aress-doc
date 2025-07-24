@@ -1,6 +1,4 @@
 'use client';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
 import {
   AddReportButton,
   AutoRotateSwitch,
@@ -11,8 +9,6 @@ import {
 } from 'design-system';
 import React, { useEffect, useRef, useState } from 'react';
 import { DashboardNumberAndName } from './DashboardNumberAndName';
-import { ReportSelectionPopup } from '../../../../components';
-import { useSearchParams } from 'next/navigation';
 
 import {
   DndContext,
@@ -32,30 +28,26 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useHtmlPaddingRight } from '../../../../../hooks';
-import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
+import { useCustomToast } from 'design-system';
 import {
+  FinancialReportCalculationApiModel,
   FinancialReportFilterApiModel,
-  OpenAPI,
-  useDashboardsServiceDeleteDashboardsByDashboardId,
   useDashboardsServiceDeleteDashboardsByDashboardIdItemsByDashboardItemId,
   useDashboardsServiceGetDashboardsByDashboardId,
   useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdCalculations,
   useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdReorder,
 } from '@openapi';
 import {
-  Report13Dot1CalculationResult,
-  Report13Dot2CalculationResult,
-  Report13Dot3CalculationResult,
   Report15CalculationResult,
   Report2CalculationResult,
   Report6CalculationResult,
 } from '@openapi';
-import { fetchToken } from '../../../../(auth)/auth.utils';
 import { DynamicReportRenderer } from './DynamicReportRenderer';
-import { OptionItem } from 'libs/design-system/src/lib/components/OptionsListExplorer/OptionsListExplorer.types';
+import { OptionItem } from 'design-system';
 import { useAutoRotate } from './useAutoRotate';
 import { ReportTitleSkeleton } from './skeletons/ReportTitleSkeleton';
 import { ReportSectionSkeleton } from './skeletons/ReportSectionSkeleton';
+import { useSearchParams } from 'next/navigation';
 
 const MAX_INITIAL_SLOTS = 4;
 const MAX_TOTAL_SLOTS = 16;
@@ -63,15 +55,15 @@ const MAX_TOTAL_SLOTS = 16;
 const SortableReport: React.FC<{
   slotId: string;
   identifier: number;
-  report: any;
-  data: any;
+  title: string;
+  data: FinancialReportCalculationApiModel['calculation'];
   filters: FinancialReportFilterApiModel[] | undefined;
   onSubmit: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
   onRemoveReport: () => void;
 }> = ({
   slotId,
   identifier,
-  report,
+  title,
   data,
   filters,
   onSubmit,
@@ -100,10 +92,15 @@ const SortableReport: React.FC<{
         {...listeners}
       />
       <DynamicReportRenderer
-        title={report.title}
-        identifier={identifier}
-        data={data}
-        filters={filters}
+        title={title}
+        identifier={identifier as 6 | 15 | 2}
+        data={
+          data as
+            | Report2CalculationResult
+            | Report6CalculationResult
+            | Report15CalculationResult
+        }
+        filters={filters ?? []}
         onSubmit={onSubmit}
         onRemove={onRemoveReport}
       />
@@ -142,14 +139,15 @@ const SortableAddReportButton: React.FC<{
   );
 };
 
-export const SlidersBox: React.FC = () => {
+export const SlidersBox = () => {
   const [slotsToRender, setSlotsToRender] = useState<number[]>([]);
   const [barsNumber, setBarsNumber] = useState(0);
   const [slidesPerView, setSlidesPerView] = useState(2);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [tokenLoaded, setTokenLoaded] = useState(false);
-  const [isReportSelectionPopupOpen, setIsReportSelectionPopupOpen] =
-    useState(false);
+  const searchParams = useSearchParams();
+  const dashboardIdParam = searchParams.get('dashboardId');
+  // const [isReportSelectionPopupOpen, setIsReportSelectionPopupOpen] =
+  //   useState(false);
   const [isRemoveReportOpen, setIsRemoveReportOpen] = useState({
     open: false,
     dashboardName: '',
@@ -160,40 +158,21 @@ export const SlidersBox: React.FC = () => {
     Record<
       number,
       {
-        data:
-          | Report2CalculationResult
-          | Report6CalculationResult
-          | Report13Dot1CalculationResult
-          | Report13Dot2CalculationResult
-          | Report13Dot3CalculationResult
-          | Report15CalculationResult;
+        data: FinancialReportCalculationApiModel['calculation'];
         filters: FinancialReportFilterApiModel[];
       }
     >
   >({});
 
-  useEffect(() => {
-    async function initToken() {
-      const token = await fetchToken();
-      if (!token) throw new Error('Failed to fetch access token');
-      OpenAPI.HEADERS = { Authorization: `Bearer ${token}` };
-      setTokenLoaded(true);
-    }
 
-    initToken();
-  }, []);
-
-  const searchParams = useSearchParams();
-  const dashboardIdParam = searchParams.get('dashboardId');
-  const { data: dashboardData, isLoading: isDashboardLoading } =
+  const { data: dashboardData } =
     useDashboardsServiceGetDashboardsByDashboardId(
       { dashboardId: Number(dashboardIdParam) },
       undefined,
-      { enabled: tokenLoaded && !!dashboardIdParam },
+      { enabled: !!dashboardIdParam },
     );
 
   useEffect(() => {
-    const total = dashboardData?.items?.length ?? 0;
     const cols = window.matchMedia('(min-width: 1280px)').matches ? 4 : 2;
     setSlidesPerView(cols);
     setBarsNumber(Math.ceil(slotsToRender.length / cols));
@@ -207,7 +186,7 @@ export const SlidersBox: React.FC = () => {
 
     const reports = dashboardData.items;
     const filledOrders = new Set(reports.map((r) => r.order));
-    let slots: number[] = [];
+    const slots: number[] = [];
 
     const maxOrder = Math.max(
       ...Array.from(filledOrders),
@@ -266,6 +245,7 @@ export const SlidersBox: React.FC = () => {
       setReportDataMap((prev) => ({
         ...prev,
         [dashboardItemId]: {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           data: updatedReport.report.reportCalculation?.calculation as any,
           filters: updatedReport.report.reportCalculation
             ?.filters as FinancialReportFilterApiModel[],
@@ -385,16 +365,6 @@ export const SlidersBox: React.FC = () => {
       return start !== end ? `اسلاید ${end}-${start}` : `اسلاید ${end}`;
     });
   };
-  {
-    !tokenLoaded ||
-      !dashboardIdParam ||
-      (isDashboardLoading &&
-        Array.from(
-          [1, 2, 3, 4].map((arr, index) => {
-            return <Skeleton key={`skeleton-${index}`} />;
-          }),
-        ));
-  }
   return (
     <div className="w-fit">
       {dashboardData ? (
@@ -439,7 +409,7 @@ export const SlidersBox: React.FC = () => {
                           key={slotId}
                           slotId={slotId}
                           identifier={report.report.identifier}
-                          report={report.report}
+                          title={report.report.title}
                           data={
                             reportDataMap[report.identifier]?.data ??
                             report.report.reportCalculation?.calculation
@@ -466,7 +436,7 @@ export const SlidersBox: React.FC = () => {
                       <SortableAddReportButton
                         key={slotId}
                         slotId={slotId}
-                        onClick={() => setIsReportSelectionPopupOpen(true)}
+                        onClick={() => console.log('hi')}
                       />
                     );
                   })

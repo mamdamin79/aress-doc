@@ -45,6 +45,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
     e.preventDefault();
 
     setInternalValue('');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onChange?.({ target: { value: '' } } as any); // event simulation
   };
   const handleCharacterVisibility = (e: MouseEvent<HTMLButtonElement>) => {
@@ -312,7 +313,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
                 type="button"
                 className={isDisabled}
                 onMouseDown={(e) => {
-                  icon.onClick && icon.onClick();
+                  if (icon.onClick) icon.onClick();
                   handleClearInput(e);
                 }}
               >
@@ -325,7 +326,6 @@ export const TextField: React.FC<textFieldPropsType> = ({
                 type="button"
                 className={isDisabled}
                 onMouseDown={icon.onClick}
-                key={`textfield-button-${icon.name}`}
               >
                 <Icon size={icon.size} name={icon.name} />
               </button>
@@ -335,7 +335,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
       </div>
       {supportText && (
         <div
-          className={cn('h-[22px] pt-1 text-xs', {
+          className={cn('flex h-[22px] justify-between pt-1 text-xs', {
             'text-text-message-error-primary-600': isError,
             'text-text-neutral-secondary': !isError,
             'text-text-neutral-disable': disabled,
@@ -347,6 +347,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
           {captchaValue && (
             <button
               className="text-brand-500"
+              type="button"
               onClick={() => onRefreshCaptcha?.()}
             >
               <Icon size="lg" name="rotate-cw" />

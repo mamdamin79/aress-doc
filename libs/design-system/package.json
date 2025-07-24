@@ -1,6 +1,7 @@
 {
   "name": "design-system",
   "version": "0.0.1",
+  "type": "module",
   "main": "./index.js",
   "types": "./index.d.ts",
   "exports": {
@@ -9,10 +10,5 @@
       "require": "./index.js"
     }
   },
-  "devDependencies": {
-    "@testing-library/dom": "^10.4.0",
-    "@testing-library/react": "16.1.0",
-    "@types/react": "18.3.1",
-    "@types/react-dom": "18.3.0"
-  }
+  "devDependencies": {}
 }

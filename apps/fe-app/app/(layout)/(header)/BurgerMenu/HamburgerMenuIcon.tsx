@@ -12,7 +12,7 @@ export const HamburgerMenuIcon: React.FC<HamburgerMenuIconProps> = ({
         id="menu-toggle"
         className={`relative h-[24px] w-[24px] outline-none`}
       >
-        {['top', 'middle', 'bottom'].map((position, index) => (
+        {['top', 'middle', 'bottom'].map((position) => (
           <span
             key={position}
             className={`bg-icon-neutral-primary absolute right-0 top-1/2 -mt-px block h-0.5 w-full rounded transition-all duration-300 ease-in-out ${

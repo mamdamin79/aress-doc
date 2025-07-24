@@ -103,6 +103,6 @@ const cards = [
     fixedBrief: false,
   },
 ];
-export const ReportsCarouselWrapper: React.FC<ReportsCarouselWrapper> = () => {
+export const ReportsCarouselWrapper: React.FC = () => {
   return <ReportsCarousel cards={cards} />;
 };

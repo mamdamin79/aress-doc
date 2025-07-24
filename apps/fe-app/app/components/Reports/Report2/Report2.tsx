@@ -10,12 +10,12 @@ import {
   FinancialReportFilterApiModel,
   Report2CalculationResult,
 } from '@openapi';
-import { OptionItem } from 'libs/design-system/src/lib/components/OptionsListExplorer/OptionsListExplorer.types';
+import { OptionItem } from 'design-system';
 import { financialDefinitions } from './Report2.constants';
 import { toBasicSetting } from '../Report.utils';
 import { useEffect, useState, useMemo } from 'react';
 
-interface Report2Props {
+export interface Report2Props {
   title?: string;
   data: Report2CalculationResult;
   filters: FinancialReportFilterApiModel[];

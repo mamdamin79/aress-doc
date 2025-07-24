@@ -1,4 +1,3 @@
-import { Report6 } from '../Reports/Report6';
 import { ReportSelectionPopupProps } from './ReportSelectionPopup.types';
 import { Button, Dialog, Icon, NewBadge, VideoBadge } from 'design-system';
 
@@ -10,7 +9,6 @@ export const ReportSelectionPopup: React.FC<ReportSelectionPopupProps> = ({
   summary,
   title,
   video,
-  report,
   onSubmit,
 }) => {
   return (
@@ -50,7 +48,7 @@ export const ReportSelectionPopup: React.FC<ReportSelectionPopupProps> = ({
               <span className="text-sm font-normal">{summary}</span>
             </div>
             <div className="flex w-full justify-center py-4">
-              <Report6
+              {/* <Report6
                 indexData={[
                   { y: -2.5, unit: 'میلیون واحد' },
                   { y: 2.5, unit: 'میلیون واحد' },
@@ -92,8 +90,8 @@ export const ReportSelectionPopup: React.FC<ReportSelectionPopupProps> = ({
                   { y: -75, unit: 'میلیارد ریال' },
                   null,
                   null,
-                ]}
-              />
+                ]} */}
+              {/* /> */}
             </div>
           </div>
         </div>

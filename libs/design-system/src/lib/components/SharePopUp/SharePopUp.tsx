@@ -45,7 +45,7 @@ export const SharePopUp: React.FC<SharePopUpProps> = ({
 
   return (
     <>
-      <Tooltip offset={48} className="!z-30" title='اشتراک گذاری'>
+      <Tooltip offset={48} className="!z-30" title="اشتراک گذاری">
         <button
           onClick={openShareModal}
           className="flex items-center justify-center p-1 text-white transition-all duration-300"
@@ -61,11 +61,13 @@ export const SharePopUp: React.FC<SharePopUpProps> = ({
       <Dialog
         isOpen={openShare}
         onClose={close}
-        className="z-50 max-h-[310px] bg-surface-neutral-primary max-w-[440px]"
+        className="bg-surface-neutral-primary z-50 max-h-[310px] max-w-[440px]"
       >
         <div className="flex w-full flex-col">
-          <p className="mb-4 text-center text-xl font-medium text-text-neutral-secondary">اشتراک گذاری</p>
-          <p className="mb-3 text-right text-sm font-medium text-text-neutral-secondary">
+          <p className="text-text-neutral-secondary mb-4 text-center text-xl font-medium">
+            اشتراک گذاری
+          </p>
+          <p className="text-text-neutral-secondary mb-3 text-right text-sm font-medium">
             ارسال لینک به:
           </p>
           {currentIndex + visibleItems < platforms.length && (
@@ -93,15 +95,12 @@ export const SharePopUp: React.FC<SharePopUpProps> = ({
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <div>
-                      <img
-                        width={56}
-                        height={56}
-                        src={platform.icon}
-                        alt={platform.name}
-                      />
+                    <div className="h-14 w-14">
+                      <platform.icon />
                     </div>
-                    <span className="font-semibold text-text-neutral-primary">{platform.name}</span>
+                    <span className="text-text-neutral-primary font-semibold">
+                      {platform.name}
+                    </span>
                   </a>
                 ))}
             </div>
@@ -116,7 +115,7 @@ export const SharePopUp: React.FC<SharePopUpProps> = ({
           )}
         </div>
 
-        <div className="mt-4 flex h-fit w-full flex-row justify-between gap-2 rounded-xl border-[2px] border-border-neutral-primary p-2">
+        <div className="border-border-neutral-primary mt-4 flex h-fit w-full flex-row justify-between gap-2 rounded-xl border-[2px] p-2">
           <div className="w-28 text-nowrap">
             <Button
               onClick={() => navigator.clipboard.writeText(url)}
@@ -132,7 +131,7 @@ export const SharePopUp: React.FC<SharePopUpProps> = ({
             type="text"
             readOnly
             value={`...${url.slice(0, 37)}`}
-            className="ltr w-full text-left bg-transparent text-sm text-text-neutral-primary font-semibold outline-none"
+            className="ltr text-text-neutral-primary w-full bg-transparent text-left text-sm font-semibold outline-none"
           />
         </div>
       </Dialog>

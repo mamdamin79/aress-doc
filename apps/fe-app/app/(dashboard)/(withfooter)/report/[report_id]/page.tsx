@@ -1,13 +1,17 @@
 import { Breadcrumb } from 'design-system';
 import ReportContent from './_components/ReportContent';
 import { Suspense } from 'react';
+import { cookies } from 'next/headers';
+import { OpenAPI } from '@openapi';
+interface ReportPageParams {
+  params: Promise<{ report_id: string }>;
+}
+export default async function ReportPage({ params }: ReportPageParams) {
+  const { report_id } = await params;
+  const cookieStore = await cookies();
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string };
-}) {
-  const id = Number(searchParams.id);
+  OpenAPI.TOKEN = cookieStore.get('access_token')?.value;
+  const id = Number(report_id);
 
   if (!id || isNaN(id)) {
     return (

@@ -333,7 +333,8 @@ export interface FinancialReportCalculationApiModel {
     | Report13Dot1CalculationResult
     | Report13Dot2CalculationResult
     | Report13Dot3CalculationResult
-    | Report15CalculationResult;
+    | Report15CalculationResult
+    | Report39CalculationResult;
   /** Filters */
   filters: FinancialReportFilterApiModel[];
 }
@@ -360,7 +361,7 @@ export interface FinancialReportDetailsApiModel {
   title: string;
   category: FinancialReportCategoryApiModel;
   /** Image */
-  image: string;
+  image: string | null;
   /** Summary */
   summary: string;
   /** Markdowndescription */
@@ -415,7 +416,7 @@ export interface FinancialReportListItemApiModel {
   title: string;
   category: FinancialReportCategoryApiModel;
   /** Image */
-  image: string;
+  image: string | null;
   /** Summary */
   summary: string;
   /**
@@ -1044,12 +1045,16 @@ export interface Report15CalculationResultGraphPoint {
   x: number;
   /** Y */
   y: number;
+  /** Tradedateshamsi */
+  tradeDateShamsi: string;
 }
 
 /** Report2CalculationResult */
 export interface Report2CalculationResult {
   /** Data */
   data: Report2CalculationResultItem[];
+  /** Unit */
+  unit: string;
 }
 
 /** Report2CalculationResultItem */
@@ -1058,6 +1063,28 @@ export interface Report2CalculationResultItem {
   sectorTitle: string;
   /** Netflow */
   netFlow: number;
+}
+
+/** Report39CalculationResult */
+export interface Report39CalculationResult {
+  /** Data */
+  data: Report39CalculationResultItem[];
+}
+
+/** Report39CalculationResultItem */
+export interface Report39CalculationResultItem {
+  /** Values */
+  values: Report39InstrumentsResultItem[];
+}
+
+/** Report39InstrumentsResultItem */
+export interface Report39InstrumentsResultItem {
+  /** Instrument */
+  instrument: string;
+  /** Netflow */
+  netFlow: number;
+  /** Unit */
+  unit: string;
 }
 
 /** Report6CalculationResult */

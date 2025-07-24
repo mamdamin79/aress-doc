@@ -207,7 +207,7 @@ export type DuplicateDashboardForUserBody = {
 };
 
 export type FinancialReportCalculationApiModel = {
-    calculation: Report2CalculationResult | Report6CalculationResult | Report13Dot1CalculationResult | Report13Dot2CalculationResult | Report13Dot3CalculationResult | Report15CalculationResult;
+    calculation: Report2CalculationResult | Report6CalculationResult | Report13Dot1CalculationResult | Report13Dot2CalculationResult | Report13Dot3CalculationResult | Report15CalculationResult | Report39CalculationResult;
     filters: Array<FinancialReportFilterApiModel>;
 };
 
@@ -226,7 +226,7 @@ export type FinancialReportDetailsApiModel = {
     identifier: string;
     title: string;
     category: FinancialReportCategoryApiModel;
-    image: string;
+    image: string | null;
     summary: string;
     markdownDescription: string | null;
     video: VideoApiModel | null;
@@ -257,7 +257,7 @@ export type FinancialReportListItemApiModel = {
     identifier: string;
     title: string;
     category: FinancialReportCategoryApiModel;
-    image: string;
+    image: string | null;
     summary: string;
     hasVideo?: boolean;
     userFavorite?: boolean;
@@ -712,15 +712,31 @@ export type Report15CalculationResult = {
 export type Report15CalculationResultGraphPoint = {
     x: number;
     y: number;
+    tradeDateShamsi: string;
 };
 
 export type Report2CalculationResult = {
     data: Array<Report2CalculationResultItem>;
+    unit: string;
 };
 
 export type Report2CalculationResultItem = {
     sectorTitle: string;
     netFlow: number;
+};
+
+export type Report39CalculationResult = {
+    data: Array<Report39CalculationResultItem>;
+};
+
+export type Report39CalculationResultItem = {
+    values: Array<Report39InstrumentsResultItem>;
+};
+
+export type Report39InstrumentsResultItem = {
+    instrument: string;
+    netFlow: number;
+    unit: string;
 };
 
 export type Report6CalculationResult = {

@@ -7,5 +7,4 @@ export interface ReportSelectionPopupProps {
   isNew: boolean;
   video: boolean;
   summary: string;
-  report?: any;
 }

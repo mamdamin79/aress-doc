@@ -18,7 +18,8 @@
       "@aress-assets/*": ["libs/design-system/src/assets/*"],
       "@openapi": ["libs/openapi/src/index.ts"],
       "compositions": ["apps/fe-app/compositions/index.ts"],
-      "design-system": ["libs/design-system/src/index.ts"]
+      "design-system": ["libs/design-system/src/index.ts"],
+      "root": ["/"]
     }
   },
   "exclude": ["node_modules", "tmp"]

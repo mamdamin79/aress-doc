@@ -1,30 +1,15 @@
-import {
-  Icon,
-  SectionTitle,
-  ReportsCarousel,
-} from 'design-system';
+import { Icon, ReportsCarousel, SectionTitle } from 'design-system';
 import { ReportOverview } from '../_components/ReportOverview';
 import { ReportWrapper } from '../_components/ReportWrapper';
 import { TabsWrapper } from '../_components/TabsWrapper';
-import { VideoPlayerWrapper } from '../_components/VideoPlayerWrapper';
 import { MarkdownRender } from '../_components/MarkdownRender';
-import { fetchToken } from '../../../../../(auth)/auth.utils';
-import { OpenAPI, ReportsService } from '@openapi';
-import Image from 'next/image';
+import { ReportsService } from '@openapi';
 
-import rightWaveSVG from '@aress-assets/images/rightwaves.svg';
-import leftWaveSVG from '@aress-assets/images/leftwaves.svg';
+import { ReactComponent as RightWaveSVG } from '@aress-assets/images/rightwaves.svg';
+import { ReactComponent as LeftWaveSVG } from '@aress-assets/images/leftwaves.svg';
+import { StaticImageData } from 'next/image';
 
 async function getData(id: number) {
-  const token = await fetchToken();
-  if (!token) {
-    throw new Error('Failed to fetch access token');
-  }
-
-  OpenAPI.HEADERS = {
-    Authorization: `Bearer ${token}`,
-  };
-
   const report = await ReportsService.getReportsByReportId({
     reportId: String(id),
   });
@@ -35,7 +20,6 @@ async function getData(id: number) {
 export default async function ReportContent({ id }: { id: number }) {
   const REPORT = await getData(id);
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
-
   return (
     <div className="text-text-neutral-primary mx-auto max-w-[1680px]">
       <section className="mb-16 flex w-full flex-col-reverse items-center gap-8 px-20 pt-6 xl:flex-row xl:items-start xl:justify-around">
@@ -71,7 +55,7 @@ export default async function ReportContent({ id }: { id: number }) {
       <section className="flex w-full flex-col items-center px-20" id="0">
         <SectionTitle align="center" level={3} title="ویدیو بررسی" />
         <div className="mt-10">
-          <VideoPlayerWrapper data={REPORT.video} />
+          {/*   <VideoPlayerWrapper data={REPORT.video} /> */}
         </div>
       </section>
 
@@ -80,13 +64,10 @@ export default async function ReportContent({ id }: { id: number }) {
         id="1"
       >
         <div className="absolute -right-16 top-1/4 h-[760px] w-[288px]">
-          <Image src={rightWaveSVG} alt="wave-right" fill />
+          <RightWaveSVG className="h-full w-full" />
         </div>
-        <div
-          className="absolute -left-16 top-10 h-[760px] w-[288px]"
-          dir="ltr"
-        >
-          <Image src={leftWaveSVG} alt="wave-left" fill />
+        <div className="absolute -left-16 top-10 h-[760px] w-[288px]" dir="ltr">
+          <LeftWaveSVG className="h-full w-full" />
         </div>
         <SectionTitle align="center" level={3} title="اطلاعات بیشتر" />
         <div className="mt-2 flex flex-col text-right">
@@ -101,7 +82,10 @@ export default async function ReportContent({ id }: { id: number }) {
             cards={REPORT.relatedReports.map((rep) => ({
               title: rep.title,
               categoryType: rep.category.title,
-              image: `${baseURL}${rep.image}`,
+              image:
+                baseURL && rep.image
+                  ? (`${baseURL}${rep.image}` as unknown as StaticImageData)
+                  : null,
               summary: rep.summary,
               fixedBrief: false,
               newBadge: rep.isNew,
