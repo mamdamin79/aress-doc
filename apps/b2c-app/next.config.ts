@@ -1,6 +1,3 @@
-// @ts-check
-
- 
 const { composePlugins, withNx } = require('@nx/next');
 
 /**
