@@ -27,7 +27,7 @@ import {
   rectSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { useHtmlPaddingRight } from '../../../../../hooks';
+import { useHtmlPaddingRight } from '@shared-hooks';
 import { useCustomToast } from 'design-system';
 import {
   FinancialReportCalculationApiModel,
@@ -163,7 +163,6 @@ export const SlidersBox = () => {
       }
     >
   >({});
-
 
   const { data: dashboardData } =
     useDashboardsServiceGetDashboardsByDashboardId(

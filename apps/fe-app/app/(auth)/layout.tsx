@@ -1,5 +1,5 @@
 'use client';
-import { useThemeToggle } from '../../hooks';
+import { useThemeToggle } from '@shared-hooks';
 import { IconProps, SquaredButton } from 'design-system';
 
 export default function AuthLayout({
