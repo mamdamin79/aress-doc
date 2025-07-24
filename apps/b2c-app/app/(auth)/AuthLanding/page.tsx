@@ -7,49 +7,50 @@ import SuccessfulMarketerAnimation from './_lottie_data/Successful_Marketer.json
 import OnlineBankingAnimation from './_lottie_data/Online_Banking.json';
 import CryptocurrencyAppAnimation from './_lottie_data/CryptocurrencyApp.json';
 
-import { Button, DotIndicator } from 'design-system';
+import { Button } from 'design-system';
+import { Indicator } from './_components/Indicator';
 
 const page = () => {
   const slidesData = [
     {
-      title: 'مقایسه انواع صندوق سرمایه‌گذاری',
+      title: 'پردازش اطلاعات مالی آرسس',
       description:
-        'به راحتی در انواع صندوق‌های طلا، سهام و درآمد ثابت سرمایه‌گذاری کنید و آنها را مقایسه کنید',
-      lottieAnimation: websiteTrafficAnimation,
-    },
-    {
-      title: 'تحلیل و بررسی عملکرد',
-      description:
-        'عملکرد صندوق‌های خود را به صورت لحظه‌ای پیگیری کنید و تصمیمات بهتری بگیرید',
+        'با آرسس اینوستور، سرمایه‌گذاری آسان و آینده‌ای روشن در دسترس شماست!',
       lottieAnimation: SuccessfulMarketerAnimation,
     },
     {
-      title: 'مدیریت پرتفوی هوشمند',
+      title: 'زیر نظر سازمان بورس',
       description:
-        'با ابزارهای پیشرفته، پرتفوی سرمایه‌گذاری خود را به صورت حرفه‌ای مدیریت کنید',
+        'ما در آرسس اینوستور بستری امن برای سرمایه‌گذاری آسان شما فراهم کردیم.',
+      lottieAnimation: OnlineBankingAnimation,
+    },
+
+    {
+      title: 'ما به سجام متصل هستیم',
+      description:
+        'فقط با ارائه شماره ملی، پیامک تأیید به موبایل‌تان ارسال می‌شود و فرآیند ثبت‌نام به سادگی تکمیل می‌گردد!',
       lottieAnimation: CreditCardAnimation,
     },
     {
-      title: 'گزارش‌گیری جامع',
+      title: 'دسترسی به مدیران سرمایه گذاری',
       description:
-        'دسترسی به گزارش‌های تفصیلی و تحلیل‌های عمیق از سرمایه‌گذاری‌های خود داشته باشید',
-      lottieAnimation: OnlineBankingAnimation,
+        'به صندوق‌های سرمایه‌گذاری تحت مدیریت حرفه‌ای‌ترین مدیران دسترسی پیدا کنید.',
+      lottieAnimation: CryptocurrencyAppAnimation,
     },
     {
-      title: 'گزارش‌گیری جامع',
+      title: 'مقایسه انواع صندوق سرمایه گذاری',
       description:
-        'دسترسی به گزارش‌های تفصیلی و تحلیل‌های عمیق از سرمایه‌گذاری‌های خود داشته باشید',
-      lottieAnimation: CryptocurrencyAppAnimation,
+        'به راحتی در انواع صندوق‌های طلا، سهام و درآمد ثابت سرمایه‌گذاری کنید و آن‌ها را مقایسه کنید.',
+      lottieAnimation: websiteTrafficAnimation,
     },
   ];
 
-  const [currentIndex, setCurrentIndex] = useState(slidesData.length - 1);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Auto-advance slides every 4 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) =>
-        prev === 0 ? slidesData.length - 1 : prev - 1,
+        prev === slidesData.length - 1 ? 0 : prev + 1,
       );
     }, 4500);
 
@@ -57,7 +58,7 @@ const page = () => {
   }, []);
 
   return (
-    <div className="text-text-neutral-primary flex w-full justify-center">
+    <div className="text-text-neutral-primary flex w-full justify-center pb-5">
       <div className="flex w-[470px] flex-col items-center">
         {/* Lottie Animation Container with fade transition */}
         <div className="relative h-[272px] w-[272px]">
@@ -100,10 +101,10 @@ const page = () => {
 
         {/* Dot Indicator */}
         <div className="mt-5">
-          <DotIndicator
-            currentIndex={currentIndex}
-            setIndex={setCurrentIndex}
-            totalLength={slidesData.length}
+          <Indicator
+            barsNumber={slidesData.length}
+            onChangeIndex={(index) => setCurrentIndex(index)}
+            externalIndex={currentIndex}
           />
         </div>
         <div className="mt-10 flex flex-col items-center gap-4">
