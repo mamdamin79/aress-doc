@@ -2,6 +2,7 @@
 import { ReactComponent as LogoWithText } from '../../assets/images/logos/LogoWithText.svg';
 import { IconProps, SquaredButton } from 'design-system';
 import { useThemeToggle } from '@shared-hooks';
+import Link from 'next/link';
 export default function AuthLayout({
   children,
 }: {
@@ -16,7 +17,9 @@ export default function AuthLayout({
     <>
       <header className="flex h-[90px] justify-between px-8 pt-8">
         <div className="text-surface-brand-600-primary flex h-14 w-14 items-center justify-center">
-          <LogoWithText />
+          <Link href={'/'}>
+            <LogoWithText />
+          </Link>
         </div>
         <div className="flex h-14 w-14 items-start justify-end">
           <SquaredButton
