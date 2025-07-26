@@ -16,9 +16,14 @@ import { fetchToken } from '../../../../(auth)/auth.utils';
 type Props = {
   reports: GetReportsResponse;
   onReportClick?: (identifier: number | string) => void;
+  inModal?: boolean;
 };
 
-export const ReportList: React.FC<Props> = ({ reports, onReportClick }) => {
+export const ReportList: React.FC<Props> = ({
+  reports,
+  onReportClick,
+  inModal = false,
+}) => {
   const addFavoriteMutation = useReportsServicePostReportsByReportIdFavorite();
   const deleteFavoriteMutation =
     useReportsServiceDeleteReportsByReportIdFavorite();
@@ -45,17 +50,27 @@ export const ReportList: React.FC<Props> = ({ reports, onReportClick }) => {
         <div className="flex w-full items-start">
           <div className="flex flex-row items-center gap-2 py-6">
             <SearchBar />
-            <FilterReport />
+            {!inModal && <FilterReport />}
           </div>
         </div>
       </div>
       {reports.length > 0 ? (
-        <div className="4xl:grid-cols-3 4xl:max-w-[1591px] grid max-w-[1048px] grid-cols-1 items-center gap-6 xl:grid-cols-2">
+        <div
+          className={
+            inModal
+              ? ''
+              : '4xl:grid-cols-3 4xl:max-w-[1591px] grid max-w-[1048px] grid-cols-1 items-center gap-6 xl:grid-cols-2'
+          }
+        >
           {reports.map((report, idx) => (
             <div
               onClick={() => onReportClick?.(report.identifier)}
               key={report.identifier}
-              className="3xl:max-w-[512px] 3xl:min-w-[512px] 4xl:min-w-[500px] 4xl:max-w-[500px] sm:max-w-[380px] md:min-w-[512px] md:max-w-[512px] xl:min-w-[442px] xl:max-w-[442px]"
+              className={
+                inModal
+                  ? 'sm:max-w-[416px] sm:min-w-[304px]'
+                  : '3xl:max-w-[512px] 3xl:min-w-[512px] 4xl:min-w-[500px] 4xl:max-w-[500px] sm:max-w-[380px] md:min-w-[512px] md:max-w-[512px] xl:min-w-[442px] xl:max-w-[442px]'
+              }
             >
               <ReportCard
                 link="/report/1"
