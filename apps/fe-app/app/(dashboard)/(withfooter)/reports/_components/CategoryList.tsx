@@ -7,9 +7,10 @@ import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 type Props = {
   categories: GetReportsCategoriesResponse;
   reports: GetReportsResponse;
+  inModal?: boolean;
 };
 
-export const CategoryList: React.FC<Props> = ({ categories, reports }) => {
+export const CategoryList: React.FC<Props> = ({ categories, reports,inModal }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname(); // <-- get current path
@@ -26,7 +27,7 @@ export const CategoryList: React.FC<Props> = ({ categories, reports }) => {
     router.replace(`${pathname}?${params.toString()}`); // <-- use current path
   };
   return (
-    <ul>
+    <ul className={cn({ 'flex flex-wrap gap-x-4 gap-y-1': inModal })}>
       <li
         onClick={() => handleCategory('همه‌ی گزارش‌‌‌‌‌‌ها')}
         className={cn(

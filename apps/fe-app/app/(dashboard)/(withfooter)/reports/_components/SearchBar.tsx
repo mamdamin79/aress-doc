@@ -1,10 +1,14 @@
 'use client';
-import { TextField } from 'design-system';
+import { cn, TextField } from 'design-system';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import { useDebounce } from '@uidotdev/usehooks';
 
-export const SearchBar: React.FC = () => {
+type Props = {
+  inModal?: boolean;
+};
+
+export const SearchBar: React.FC<Props> = ({ inModal }) => {
   const router = useRouter();
   const pathname = usePathname(); // <-- get current path
   const queries = useSearchParams().toString();
@@ -38,13 +42,14 @@ export const SearchBar: React.FC = () => {
   return (
     <>
       <TextField
-        className="xl:w sm:w-[324px] md:w-[416px]"
+        className={cn('xl:w sm:w-[324px] md:w-[416px]', { ' sm:w-[472px]  md:w-[472px]': inModal })}
         mergeTitleAndPlaceholder={false}
         mode="outline"
         leadingIcon={{
           name: 'search',
           size: 'lg',
         }}
+        inputSize={inModal ? 'sm' : 'md'}
         trailingIcons={[
           { name: 'x', size: 'lg', onClick: () => handleClear() },
         ]}

@@ -258,7 +258,7 @@ export const SlidersBox: React.FC = () => {
         </section>
       </DndContext>
 
-      {/* <div
+      <div
         className={cn(
           'fixed right-4 top-1/2 z-10 flex -translate-y-1/2 flex-col items-center gap-2',
           activeRotate && 'pt-1',
@@ -296,7 +296,7 @@ export const SlidersBox: React.FC = () => {
         {activeRotate && (
           <AutoRotationOff onClick={() => setActiveRotate(null)} />
         )}
-      </div> */}
+      </div>
 
       {isReportSelectionPopupOpen && paginatedReports && (
         <ReportSelectionPopup

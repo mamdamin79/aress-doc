@@ -29,13 +29,18 @@ export const ReportSelectionPopup: React.FC<ReportSelectionPopupProps> = ({
     <Dialog
       onClose={onClose}
       isOpen={isOpen}
-      className="text-right sm:max-w-[576px] sm:min-w-[480px] "
+      className="text-right sm:min-w-[480px] sm:max-w-[576px] lg:max-w-[696px] lg:min-w-[480px]"
       // className="bg-baseBackground relative flex h-[90vh] max-h-[800px] min-h-[456px] w-full min-w-[670px] max-w-[696px] items-center justify-center p-0 pr-1 text-right"
     >
       <div className="mx-auto flex justify-center xl:block">
-        <div className="flex flex-row-reverse items-stretch justify-between gap-8 md:max-w-[772px] xl:max-w-full xl:justify-center">
+        <div className="flex flex-col items-stretch justify-between gap-8 md:max-w-[772px] xl:max-w-full xl:justify-center">
           <div>
-            <ReportList inModal={true} reports={reports} onReportClick={onReportClick} />
+            <ReportList
+              inModal={true}
+              reports={reports}
+              onReportClick={onReportClick}
+              categories={categories}
+            />
             <div className="mt-12">
               <Pagination
                 currentPage={currentPage}
@@ -45,9 +50,6 @@ export const ReportSelectionPopup: React.FC<ReportSelectionPopupProps> = ({
               />
             </div>
           </div>
-          {/* <div className={`relative pb-20`}>
-            <SideBar reports={reports} categories={categories} />
-          </div> */}
         </div>
       </div>
     </Dialog>
