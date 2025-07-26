@@ -307,7 +307,7 @@ export const SlidersBox: React.FC = () => {
           pageCount={totalPages}
           pageSize={ITEMS_PER_PAGE}
           reports={paginatedReports ?? []}
-          filteredReports={filteredReports}
+          filteredReports={filteredReports ?? []}
           totalItems={filteredReports?.length ?? 0}
           onReportClick={(id) => {
             setSelectedReportID(String(id));
