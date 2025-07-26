@@ -17,6 +17,7 @@ import { SideBar } from './SideBar';
 
 type Props = {
   reports: GetReportsResponse;
+  filteredReports?: GetReportsResponse;
   onReportClick?: (identifier: number | string) => void;
   inModal?: boolean;
   categories?: GetReportsCategoriesResponse;
@@ -27,6 +28,7 @@ export const ReportList: React.FC<Props> = ({
   onReportClick,
   inModal = false,
   categories,
+  filteredReports
 }) => {
   const addFavoriteMutation = useReportsServicePostReportsByReportIdFavorite();
   const deleteFavoriteMutation =
@@ -62,7 +64,7 @@ export const ReportList: React.FC<Props> = ({
             {inModal && (
               <SideBar
                 inModal={true}
-                reports={reports}
+                reports={filteredReports ?? []}
                 categories={categories ?? []}
               />
             )}

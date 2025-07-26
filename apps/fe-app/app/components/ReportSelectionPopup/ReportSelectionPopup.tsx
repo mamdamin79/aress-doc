@@ -5,6 +5,7 @@ import { AddReportButton, Dialog, Pagination } from 'design-system';
 import { GetReportsCategoriesResponse, GetReportsResponse } from '@openapi';
 interface ReportSelectionPopupProps {
   reports: GetReportsResponse;
+  filteredReports: GetReportsResponse;
   currentPage: number;
   pageCount: number;
   pageSize: number;
@@ -24,6 +25,7 @@ export const ReportSelectionPopup: React.FC<ReportSelectionPopupProps> = ({
   isOpen,
   onClose,
   onReportClick,
+  filteredReports,
 }) => {
   return (
     <Dialog
@@ -40,6 +42,7 @@ export const ReportSelectionPopup: React.FC<ReportSelectionPopupProps> = ({
               reports={reports}
               onReportClick={onReportClick}
               categories={categories}
+              filteredReports={filteredReports}
             />
             <div className="mt-12">
               <Pagination
