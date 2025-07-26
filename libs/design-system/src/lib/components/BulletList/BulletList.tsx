@@ -1,4 +1,4 @@
-import { cn } from 'libs/design-system/src/utils';
+import { cn } from '../../../utils';
 import { Icon } from '../Icon';
 
 interface Props {

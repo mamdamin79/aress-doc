@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { Checkbox } from './Checkbox';
-import { useArgs } from '@storybook/preview-api';
+import { useArgs } from 'storybook/preview-api';
 
 // Meta configuration for the Checkbox component in Storybook
 const meta: Meta<typeof Checkbox> = {

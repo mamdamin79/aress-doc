@@ -6,7 +6,7 @@ import {
   Transition,
   TransitionChild,
 } from '@headlessui/react';
-import { cn } from 'libs/design-system/src/utils';
+import { cn } from '../../../utils';
 import { Icon } from '../Icon';
 
 export interface DialogProps {

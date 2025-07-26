@@ -21,6 +21,7 @@ export interface OptionsListExplorerProps {
     categories?: CategoryItem[] | null;
     items: OptionItem[];
   };
+  onChange?: (item: OptionItem) => void;
 }
 
 export function OptionsListExplorer({
@@ -32,6 +33,7 @@ export function OptionsListExplorer({
   onSearch,
   selectedItemId,
   items,
+  onChange,
 }: OptionsListExplorerProps) {
   const [checkedItem, setCheckedItem] = useState(0);
   const [filteredItems, setFilteredItems] = useState<OptionItem[]>(items.items);
@@ -89,7 +91,11 @@ export function OptionsListExplorer({
   };
 
   return (
-    <div className={cn('bg-surface-neutral-primary h-full min-w-[350px]')}>
+    <div
+      className={cn(
+        'bg-surface-neutral-primary text-text-neutral-primary h-full min-w-[350px]',
+      )}
+    >
       <button
         aria-label="Go back"
         onClick={onBackButtonClick}
@@ -142,7 +148,10 @@ export function OptionsListExplorer({
         >
           {filteredItems.map((item: OptionItem) => (
             <div
-              onClick={() => setCheckedItem(+item.id)}
+              onClick={() => {
+                setCheckedItem(+item.id);
+                onChange?.(item);
+              }}
               className={cn(
                 'border-border-accent-gray-200 flex h-14 w-full cursor-pointer justify-between border-b px-4 py-3 last:border-b-0',
                 { 'bg-surface-brand-100': checkedItem === item.id },

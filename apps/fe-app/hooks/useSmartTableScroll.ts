@@ -6,7 +6,7 @@ type UseSmartTableScrollReturn = {
 };
 
 export const useSmartTableScroll = (
-  headerRefs: RefObject<(HTMLTableCellElement | null)[]>,
+  headerRefs: RefObject<(HTMLDivElement | null)[]>,
   tableRef: RefObject<HTMLDivElement>
 ): UseSmartTableScrollReturn => {
   // Calculates the left offset for each scrollable column.

@@ -3,6 +3,7 @@ export interface DropdownGroup {
   groupLabel?: string;
   counter?: boolean;
   children: MenuTilesProps[];
+  id?: string;
 }
 export type dropdownType = DropdownGroup[];
 

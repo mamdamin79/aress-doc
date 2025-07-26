@@ -35,7 +35,7 @@ export type ReportsServiceGetReportsByReportIdDefaultResponse = Awaited<ReturnTy
 export type ReportsServiceGetReportsByReportIdQueryResult<TData = ReportsServiceGetReportsByReportIdDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
 export const useReportsServiceGetReportsByReportIdKey = "ReportsServiceGetReportsByReportId";
 export const UseReportsServiceGetReportsByReportIdKeyFn = ({ reportId }: {
-  reportId: number;
+  reportId: string;
 }, queryKey?: Array<unknown>) => [useReportsServiceGetReportsByReportIdKey, ...(queryKey ?? [{ reportId }])];
 export type ReportsServiceGetReportsCategoriesDefaultResponse = Awaited<ReturnType<typeof ReportsService.getReportsCategories>>;
 export type ReportsServiceGetReportsCategoriesQueryResult<TData = ReportsServiceGetReportsCategoriesDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
@@ -51,12 +51,12 @@ export const useDashboardsServiceGetDashboardsByDashboardIdKey = "DashboardsServ
 export const UseDashboardsServiceGetDashboardsByDashboardIdKeyFn = ({ dashboardId }: {
   dashboardId: number;
 }, queryKey?: Array<unknown>) => [useDashboardsServiceGetDashboardsByDashboardIdKey, ...(queryKey ?? [{ dashboardId }])];
-export type DashboardsServiceGetDashboardsByDashboardIdItemsPreviewDefaultResponse = Awaited<ReturnType<typeof DashboardsService.getDashboardsByDashboardIdItemsPreview>>;
-export type DashboardsServiceGetDashboardsByDashboardIdItemsPreviewQueryResult<TData = DashboardsServiceGetDashboardsByDashboardIdItemsPreviewDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
-export const useDashboardsServiceGetDashboardsByDashboardIdItemsPreviewKey = "DashboardsServiceGetDashboardsByDashboardIdItemsPreview";
-export const UseDashboardsServiceGetDashboardsByDashboardIdItemsPreviewKeyFn = ({ dashboardId }: {
+export type DashboardsServiceGetDashboardsByDashboardIdPreviewDefaultResponse = Awaited<ReturnType<typeof DashboardsService.getDashboardsByDashboardIdPreview>>;
+export type DashboardsServiceGetDashboardsByDashboardIdPreviewQueryResult<TData = DashboardsServiceGetDashboardsByDashboardIdPreviewDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
+export const useDashboardsServiceGetDashboardsByDashboardIdPreviewKey = "DashboardsServiceGetDashboardsByDashboardIdPreview";
+export const UseDashboardsServiceGetDashboardsByDashboardIdPreviewKeyFn = ({ dashboardId }: {
   dashboardId: number;
-}, queryKey?: Array<unknown>) => [useDashboardsServiceGetDashboardsByDashboardIdItemsPreviewKey, ...(queryKey ?? [{ dashboardId }])];
+}, queryKey?: Array<unknown>) => [useDashboardsServiceGetDashboardsByDashboardIdPreviewKey, ...(queryKey ?? [{ dashboardId }])];
 export type FundsServiceGetFundsDefaultResponse = Awaited<ReturnType<typeof FundsService.getFunds>>;
 export type FundsServiceGetFundsQueryResult<TData = FundsServiceGetFundsDefaultResponse, TError = unknown> = UseQueryResult<TData, TError>;
 export const useFundsServiceGetFundsKey = "FundsServiceGetFunds";
@@ -87,12 +87,14 @@ export type UsersServicePostUsersProfilePictureChangeMutationResult = Awaited<Re
 export type ReportsServicePostReportsByReportIdMutationResult = Awaited<ReturnType<typeof ReportsService.postReportsByReportId>>;
 export type ReportsServicePostReportsByReportIdFavoriteMutationResult = Awaited<ReturnType<typeof ReportsService.postReportsByReportIdFavorite>>;
 export type DashboardsServicePostDashboardsByDashboardIdMutationResult = Awaited<ReturnType<typeof DashboardsService.postDashboardsByDashboardId>>;
-export type DashboardsServicePostDashboardsByDashboardIdItemsMutationResult = Awaited<ReturnType<typeof DashboardsService.postDashboardsByDashboardIdItems>>;
-export type DashboardsServicePostDashboardsByDashboardIdItemsReorderMutationResult = Awaited<ReturnType<typeof DashboardsService.postDashboardsByDashboardIdItemsReorder>>;
+export type DashboardsServicePostDashboardsByDashboardIdDuplicateMutationResult = Awaited<ReturnType<typeof DashboardsService.postDashboardsByDashboardIdDuplicate>>;
+export type DashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdReplaceMutationResult = Awaited<ReturnType<typeof DashboardsService.postDashboardsByDashboardIdItemsByDashboardItemIdReplace>>;
+export type DashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsMutationResult = Awaited<ReturnType<typeof DashboardsService.postDashboardsByDashboardIdItemsByDashboardItemIdCalculations>>;
+export type DashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdReorderMutationResult = Awaited<ReturnType<typeof DashboardsService.postDashboardsByDashboardIdItemsByDashboardItemIdReorder>>;
 export type FundsServicePostFundsTablePinMutationResult = Awaited<ReturnType<typeof FundsService.postFundsTablePin>>;
 export type FundsServicePostFundsTableUnpinMutationResult = Awaited<ReturnType<typeof FundsService.postFundsTableUnpin>>;
 export type DashboardsServicePutDashboardsMutationResult = Awaited<ReturnType<typeof DashboardsService.putDashboards>>;
-export type DashboardsServicePutDashboardsByDashboardIdItemsMutationResult = Awaited<ReturnType<typeof DashboardsService.putDashboardsByDashboardIdItems>>;
+export type DashboardsServicePutDashboardsByDashboardIdMutationResult = Awaited<ReturnType<typeof DashboardsService.putDashboardsByDashboardId>>;
 export type ReportsServiceDeleteReportsByReportIdFavoriteMutationResult = Awaited<ReturnType<typeof ReportsService.deleteReportsByReportIdFavorite>>;
 export type DashboardsServiceDeleteDashboardsByDashboardIdMutationResult = Awaited<ReturnType<typeof DashboardsService.deleteDashboardsByDashboardId>>;
-export type DashboardsServiceDeleteDashboardsByDashboardIdItemsMutationResult = Awaited<ReturnType<typeof DashboardsService.deleteDashboardsByDashboardIdItems>>;
+export type DashboardsServiceDeleteDashboardsByDashboardIdItemsByDashboardItemIdMutationResult = Awaited<ReturnType<typeof DashboardsService.deleteDashboardsByDashboardIdItemsByDashboardItemId>>;

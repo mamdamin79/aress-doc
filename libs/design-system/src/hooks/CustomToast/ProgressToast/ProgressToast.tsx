@@ -1,7 +1,8 @@
+'use client';
 import { useEffect, useState } from 'react';
 import { ProgressToastProps } from './ProgressToast.types';
-import { Icon } from 'libs/design-system/src/lib/components/Icon';
-import { Button } from 'libs/design-system/src/lib/components/Button';
+import { Icon } from '../../../lib/components';
+import { Button } from '../../../lib/components';
 
 export const ProgressToast = ({
   title,

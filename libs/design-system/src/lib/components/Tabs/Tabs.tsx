@@ -58,7 +58,7 @@ export const Tabs: React.FC<Props> = ({
             className={cn(
               'text-md relative outline-none',
               {
-                'border-surface-neutral-secondary bg-surface-neutral-secondary text-text-neutral-primary flex h-[34px] items-center gap-1 rounded-md border py-1 pl-2 pr-0.5 text-sm font-medium':
+                'border-surface-neutral-secondary bg-surface-neutral-secondary text-text-neutral-primary flex h-[34px] items-center gap-1 rounded-md border py-1 pl-2 pr-1 text-sm font-medium':
                   variant === 'shaped-color',
                 'pr-2': variant === 'shaped-color' && !props.tag,
                 'hover:border-border-accent-blue-200 hover:bg-surface-accent-blue-50 data-[selected]:border-border-accent-blue-300 data-[selected]:bg-surface-accent-blue-100 data-[selected]:text-blue-700':

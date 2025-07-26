@@ -1,7 +1,7 @@
-import { ColumnDef } from "@tanstack/react-table";
-import { Person } from "./_components/makeData";
+import { ColumnDef } from '@tanstack/react-table';
+import { Person } from './types';
 
-export const columnVisibility:  Record<string, boolean>  = {
+export const columnVisibility: Record<string, boolean> = {
   profitPerUnit: false,
   investmentPolicy: false,
   fundCategory: false,
@@ -66,7 +66,7 @@ export const filterList = [
   {
     title: 'شیوه‌ سرمایه‌گذاری',
     options: ['قابل معامله (ETF)', 'صدور و ابطال'],
-    singleSelect: true
+    singleSelect: true,
   },
   {
     singleSelect: false,
@@ -83,119 +83,244 @@ export const filterList = [
 ];
 
 export const columns: ColumnDef<Person>[] = [
+  { accessorKey: 'nameFund', header: 'نام صندوق', meta: { group: null } },
+
   {
-    header: 'نام صندوق',
-    accessorKey: 'nameFund',
+    accessorKey: 'unitCount',
+    header: 'تعداد واحد',
+    meta: { group: 'مشخصات صندوق' },
   },
   {
-    header: 'مشخصات صندوق',
-    columns: [
-      { accessorKey: 'unitCount', header: 'تعداد واحد' },
-      { accessorKey: 'startDate', header: 'تاریخ آغاز فعالیت' },
-      { accessorKey: 'profitPerUnit', header: 'سود هر واحد صندوق' },
-      { accessorKey: 'netAssetValue', header: 'کل ارزش خالص دارایی‌ها' },
-      { accessorKey: 'investmentPolicy', header: 'سیاست سرمایه‌گذاری' },
-      { accessorKey: 'fundCategory', header: 'دسته‌بندی صندوق' },
-    ],
+    accessorKey: 'startDate',
+    header: 'تاریخ آغاز فعالیت',
+    meta: { group: 'مشخصات صندوق' },
   },
   {
-    header: 'ارکان صندوق',
-    columns: [
-      { accessorKey: 'trustee', header: 'متولی' },
-      { accessorKey: 'fundManager', header: 'مدیر صندوق' },
-      { accessorKey: 'liquidityGuarantor', header: 'ضامن نقدشوندگی' },
-      { accessorKey: 'auditor', header: 'حسابرس' },
-    ],
+    accessorKey: 'profitPerUnit',
+    header: 'سود هر واحد صندوق',
+    meta: { group: 'مشخصات صندوق' },
   },
   {
-    header: 'سهم پرتفوی صندوق',
-    columns: [
-      { accessorKey: 'participationBonds', header: 'اوراق مشارکت' },
-      { accessorKey: 'bankDeposit', header: 'سپرده بانکی' },
-      { accessorKey: 'commodityDeposit', header: 'گواهی سپرده کالایی' },
-      { accessorKey: 'cash', header: 'وجه نقد' },
-      { accessorKey: 'otherStocks', header: 'سایر سهام' },
-      { accessorKey: 'otherAssets', header: 'سایر دارایی‌ها' },
-    ],
+    accessorKey: 'netAssetValue',
+    header: 'کل ارزش خالص دارایی‌ها',
+    meta: { group: 'مشخصات صندوق' },
   },
   {
-    header: 'قیمت',
-    columns: [
-      { accessorKey: 'statisticalPrice', header: 'آماری' },
-      { accessorKey: 'cancellationPrice', header: 'ابطال' },
-      { accessorKey: 'issuancePrice', header: 'صدور' },
-    ],
+    accessorKey: 'investmentPolicy',
+    header: 'سیاست سرمایه‌گذاری',
+    meta: { group: 'مشخصات صندوق' },
   },
   {
-    header: 'بازده',
-    columns: [
-      { accessorKey: 'dailyReturn', header: 'روزانه' },
-      { accessorKey: 'weeklyReturn', header: 'هفتگی' },
-      { accessorKey: 'monthlyReturn', header: 'ماهانه' },
-      { accessorKey: 'quarterlyReturn', header: 'سه ماهه' },
-      { accessorKey: 'yearlyReturn', header: 'یک ساله' },
-      { accessorKey: 'customRangeReturn', header: 'بازه دلخواه' },
-    ],
+    accessorKey: 'fundCategory',
+    header: 'دسته‌بندی صندوق',
+    meta: { group: 'مشخصات صندوق' },
+  },
+
+  { accessorKey: 'trustee', header: 'متولی', meta: { group: 'ارکان صندوق' } },
+  {
+    accessorKey: 'fundManager',
+    header: 'مدیر صندوق',
+    meta: { group: 'ارکان صندوق' },
   },
   {
-    header: 'آلفا',
-    columns: [
-      { accessorKey: 'dailyAlpha', header: 'روزانه' },
-      { accessorKey: 'weeklyAlpha', header: 'هفتگی' },
-      { accessorKey: 'monthlyAlpha', header: 'ماهانه' },
-      { accessorKey: 'quarterlyAlpha', header: 'سه ماهه' },
-      { accessorKey: 'yearlyAlpha', header: 'یک ساله' },
-      { accessorKey: 'customRangeAlpha', header: 'بازه دلخواه' },
-    ],
+    accessorKey: 'liquidityGuarantor',
+    header: 'ضامن نقدشوندگی',
+    meta: { group: 'ارکان صندوق' },
+  },
+  { accessorKey: 'auditor', header: 'حسابرس', meta: { group: 'ارکان صندوق' } },
+
+  {
+    accessorKey: 'participationBonds',
+    header: 'اوراق مشارکت',
+    meta: { group: 'سهم پرتفوی صندوق' },
   },
   {
-    header: 'انحراف معیار',
-    columns: [
-      { accessorKey: 'weeklyStdDev', header: 'هفتگی' },
-      { accessorKey: 'monthlyStdDev', header: 'ماهانه' },
-      { accessorKey: 'quarterlyStdDev', header: 'سه ماهه' },
-      { accessorKey: 'yearlyStdDev', header: 'یک ساله' },
-      { accessorKey: 'customRangeStdDev', header: 'بازه دلخواه' },
-    ],
+    accessorKey: 'bankDeposit',
+    header: 'سپرده بانکی',
+    meta: { group: 'سهم پرتفوی صندوق' },
   },
   {
-    header: 'بیشترین ریزش',
-    columns: [
-      { accessorKey: 'weeklyMaxDrawdown', header: 'هفتگی' },
-      { accessorKey: 'monthlyMaxDrawdown', header: 'ماهانه' },
-      { accessorKey: 'quarterlyMaxDrawdown', header: 'سه ماهه' },
-      { accessorKey: 'yearlyMaxDrawdown', header: 'یک ساله' },
-      { accessorKey: 'customRangeMaxDrawdown', header: 'بازه دلخواه' },
-    ],
+    accessorKey: 'commodityDeposit',
+    header: 'گواهی سپرده کالایی',
+    meta: { group: 'سهم پرتفوی صندوق' },
   },
   {
-    header: 'میانگین اهرم',
-    columns: [
-      { accessorKey: 'weeklyLeverage', header: 'هفتگی' },
-      { accessorKey: 'monthlyLeverage', header: 'ماهانه' },
-      { accessorKey: 'quarterlyLeverage', header: 'سه ماهه' },
-      { accessorKey: 'yearlyLeverage', header: 'یک ساله' },
-      { accessorKey: 'customRangeLeverage', header: 'بازه دلخواه' },
-    ],
+    accessorKey: 'cash',
+    header: 'وجه نقد',
+    meta: { group: 'سهم پرتفوی صندوق' },
   },
   {
-    header: 'نسبت شارپ',
-    columns: [
-      { accessorKey: 'weeklySharpeRatio', header: 'هفتگی' },
-      { accessorKey: 'monthlySharpeRatio', header: 'ماهانه' },
-      { accessorKey: 'quarterlySharpeRatio', header: 'سه ماهه' },
-      { accessorKey: 'yearlySharpeRatio', header: 'یک ساله' },
-      { accessorKey: 'customRangeSharpeRatio', header: 'بازه دلخواه' },
-    ],
+    accessorKey: 'otherStocks',
+    header: 'سایر سهام',
+    meta: { group: 'سهم پرتفوی صندوق' },
   },
   {
-    header: 'نسبت اطلاعاتی',
-    columns: [
-      { accessorKey: 'weeklyInfoRatio', header: 'هفتگی' },
-      { accessorKey: 'monthlyInfoRatio', header: 'ماهانه' },
-      { accessorKey: 'quarterlyInfoRatio', header: 'سه ماهه' },
-      { accessorKey: 'yearlyInfoRatio', header: 'یک ساله' },
-      { accessorKey: 'customRangeInfoRatio', header: 'بازه دلخواه' },
-    ],
+    accessorKey: 'otherAssets',
+    header: 'سایر دارایی‌ها',
+    meta: { group: 'سهم پرتفوی صندوق' },
+  },
+
+  { accessorKey: 'statisticalPrice', header: 'آماری', meta: { group: 'قیمت' } },
+  {
+    accessorKey: 'cancellationPrice',
+    header: 'ابطال',
+    meta: { group: 'قیمت' },
+  },
+  { accessorKey: 'issuancePrice', header: 'صدور', meta: { group: 'قیمت' } },
+
+  { accessorKey: 'dailyReturn', header: 'روزانه', meta: { group: 'بازده' } },
+  { accessorKey: 'weeklyReturn', header: 'هفتگی', meta: { group: 'بازده' } },
+  { accessorKey: 'monthlyReturn', header: 'ماهانه', meta: { group: 'بازده' } },
+  {
+    accessorKey: 'quarterlyReturn',
+    header: 'سه ماهه',
+    meta: { group: 'بازده' },
+  },
+  { accessorKey: 'yearlyReturn', header: 'یک ساله', meta: { group: 'بازده' } },
+  {
+    accessorKey: 'customRangeReturn',
+    header: 'بازه دلخواه',
+    meta: { group: 'بازده' },
+  },
+
+  { accessorKey: 'dailyAlpha', header: 'روزانه', meta: { group: 'آلفا' } },
+  { accessorKey: 'weeklyAlpha', header: 'هفتگی', meta: { group: 'آلفا' } },
+  { accessorKey: 'monthlyAlpha', header: 'ماهانه', meta: { group: 'آلفا' } },
+  { accessorKey: 'quarterlyAlpha', header: 'سه ماهه', meta: { group: 'آلفا' } },
+  { accessorKey: 'yearlyAlpha', header: 'یک ساله', meta: { group: 'آلفا' } },
+  {
+    accessorKey: 'customRangeAlpha',
+    header: 'بازه دلخواه',
+    meta: { group: 'آلفا' },
+  },
+
+  {
+    accessorKey: 'weeklyStdDev',
+    header: 'هفتگی',
+    meta: { group: 'انحراف معیار' },
+  },
+  {
+    accessorKey: 'monthlyStdDev',
+    header: 'ماهانه',
+    meta: { group: 'انحراف معیار' },
+  },
+  {
+    accessorKey: 'quarterlyStdDev',
+    header: 'سه ماهه',
+    meta: { group: 'انحراف معیار' },
+  },
+  {
+    accessorKey: 'yearlyStdDev',
+    header: 'یک ساله',
+    meta: { group: 'انحراف معیار' },
+  },
+  {
+    accessorKey: 'customRangeStdDev',
+    header: 'بازه دلخواه',
+    meta: { group: 'انحراف معیار' },
+  },
+
+  {
+    accessorKey: 'weeklyMaxDrawdown',
+    header: 'هفتگی',
+    meta: { group: 'بیشترین ریزش' },
+  },
+  {
+    accessorKey: 'monthlyMaxDrawdown',
+    header: 'ماهانه',
+    meta: { group: 'بیشترین ریزش' },
+  },
+  {
+    accessorKey: 'quarterlyMaxDrawdown',
+    header: 'سه ماهه',
+    meta: { group: 'بیشترین ریزش' },
+  },
+  {
+    accessorKey: 'yearlyMaxDrawdown',
+    header: 'یک ساله',
+    meta: { group: 'بیشترین ریزش' },
+  },
+  {
+    accessorKey: 'customRangeMaxDrawdown',
+    header: 'بازه دلخواه',
+    meta: { group: 'بیشترین ریزش' },
+  },
+
+  {
+    accessorKey: 'weeklyLeverage',
+    header: 'هفتگی',
+    meta: { group: 'میانگین اهرم' },
+  },
+  {
+    accessorKey: 'monthlyLeverage',
+    header: 'ماهانه',
+    meta: { group: 'میانگین اهرم' },
+  },
+  {
+    accessorKey: 'quarterlyLeverage',
+    header: 'سه ماهه',
+    meta: { group: 'میانگین اهرم' },
+  },
+  {
+    accessorKey: 'yearlyLeverage',
+    header: 'یک ساله',
+    meta: { group: 'میانگین اهرم' },
+  },
+  {
+    accessorKey: 'customRangeLeverage',
+    header: 'بازه دلخواه',
+    meta: { group: 'میانگین اهرم' },
+  },
+
+  {
+    accessorKey: 'weeklySharpeRatio',
+    header: 'هفتگی',
+    meta: { group: 'نسبت شارپ' },
+  },
+  {
+    accessorKey: 'monthlySharpeRatio',
+    header: 'ماهانه',
+    meta: { group: 'نسبت شارپ' },
+  },
+  {
+    accessorKey: 'quarterlySharpeRatio',
+    header: 'سه ماهه',
+    meta: { group: 'نسبت شارپ' },
+  },
+  {
+    accessorKey: 'yearlySharpeRatio',
+    header: 'یک ساله',
+    meta: { group: 'نسبت شارپ' },
+  },
+  {
+    accessorKey: 'customRangeSharpeRatio',
+    header: 'بازه دلخواه',
+    meta: { group: 'نسبت شارپ' },
+  },
+
+  {
+    accessorKey: 'weeklyInfoRatio',
+    header: 'هفتگی',
+    meta: { group: 'نسبت اطلاعاتی' },
+  },
+  {
+    accessorKey: 'monthlyInfoRatio',
+    header: 'ماهانه',
+    meta: { group: 'نسبت اطلاعاتی' },
+  },
+  {
+    accessorKey: 'quarterlyInfoRatio',
+    header: 'سه ماهه',
+    meta: { group: 'نسبت اطلاعاتی' },
+  },
+  {
+    accessorKey: 'yearlyInfoRatio',
+    header: 'یک ساله',
+    meta: { group: 'نسبت اطلاعاتی' },
+  },
+  {
+    accessorKey: 'customRangeInfoRatio',
+    header: 'بازه دلخواه',
+    meta: { group: 'نسبت اطلاعاتی' },
   },
 ];

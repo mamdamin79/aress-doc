@@ -10,7 +10,7 @@ export const LoadingBarPop: React.FC<LoadingBarPopProps> = ({
   duration = 4,
 }) => {
   return (
-    <div className="relative flex h-12 w-12 items-center justify-center">
+    <div className="text-text-neutral-primary relative flex h-12 w-12 items-center justify-center">
       <Transition
         show={status === 'loading'}
         enter="transition-transform transition-opacity duration-300"

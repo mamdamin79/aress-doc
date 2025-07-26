@@ -1,7 +1,7 @@
 'use client';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { TableRow, TableProps } from './GeneralTable.types';
-import { cn } from 'libs/design-system/src/utils';
+import { cn } from '../../../utils';
 import { getCellBackgroundColor } from './GeneralTable.utils';
 import { SeparatorLine } from './TableComponents';
 

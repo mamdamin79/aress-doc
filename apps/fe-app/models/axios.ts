@@ -1,5 +1,6 @@
 /* eslint-disable */
 /* tslint:disable */
+// @ts-nocheck
 /*
  * ---------------------------------------------------------------
  * ## THIS FILE WAS GENERATED VIA SWAGGER-TYPESCRIPT-API        ##
@@ -8,6 +9,22 @@
  * ## SOURCE: https://github.com/acacode/swagger-typescript-api ##
  * ---------------------------------------------------------------
  */
+
+/** CaptchaType */
+export enum CaptchaType {
+  Image = "image",
+  Audio = "audio",
+}
+
+/** AddReportToDashboardForUserBody */
+export interface AddReportToDashboardForUserBody {
+  /** Reportidentifier */
+  reportIdentifier: string;
+  /** Order */
+  order: number;
+  /** Selectedfilters */
+  selectedFilters?: Record<string, any> | null;
+}
 
 /** AnonymousApiUser */
 export type AnonymousApiUser = object;
@@ -44,6 +61,30 @@ export interface AressApiUser {
    * Whether this user is active or not, is always "true" for logged in user.
    */
   active: boolean;
+  /**
+   * Firstname
+   * First name of user.
+   */
+  firstName: string | null;
+  /**
+   * Lastname
+   * Last name the user.
+   */
+  lastName: string | null;
+  /**
+   * Profilepicture
+   * Profile picture url of the user.
+   */
+  profilePicture: string | null;
+}
+
+/** Body_change_profile_picture_users_profile_picture_change_post */
+export interface BodyChangeProfilePictureUsersProfilePictureChangePost {
+  /**
+   * File
+   * @format binary
+   */
+  file: File;
 }
 
 /** Body_login_for_access_token_users_login_post */
@@ -94,10 +135,208 @@ export interface CaptchaApiModel {
   required: boolean;
 }
 
-/** CaptchaType */
-export enum CaptchaType {
-  Image = 'image',
-  Audio = 'audio',
+/** ChangeDashboardReportItemSortOrderBody */
+export interface ChangeDashboardReportItemSortOrderBody {
+  /** Order */
+  order: number;
+}
+
+/** ChangePasswordByOtpApiModel */
+export interface ChangePasswordByOtpApiModel {
+  /** Success */
+  success: boolean;
+}
+
+/** ChangePasswordByOtpBody */
+export interface ChangePasswordByOtpBody {
+  /** Otp */
+  otp: string;
+  /** Newpassword */
+  newPassword: string;
+}
+
+/** ChangePhoneByOtpBody */
+export interface ChangePhoneByOtpBody {
+  /** Otp */
+  otp: string;
+}
+
+/** ChangePhoneByOtpResponseApiModel */
+export interface ChangePhoneByOtpResponseApiModel {
+  /** Success */
+  success: boolean;
+}
+
+/** ChangePhoneGetOtpBody */
+export interface ChangePhoneGetOtpBody {
+  /** Newphonenumber */
+  newPhoneNumber: string;
+  /** Passwordverificationtoken */
+  passwordVerificationToken: string;
+}
+
+/** ChangePhoneGetOtpResponseApiModel */
+export interface ChangePhoneGetOtpResponseApiModel {
+  /** Retryseconds */
+  retrySeconds: number;
+  /** Phonenumber */
+  phoneNumber: string;
+}
+
+/** ChangeProfilePictureResponseApiModel */
+export interface ChangeProfilePictureResponseApiModel {
+  /** Success */
+  success: boolean;
+}
+
+/** ChangeUsernameBody */
+export interface ChangeUsernameBody {
+  /** Newusername */
+  newUsername: string;
+  /** Passwordverificationtoken */
+  passwordVerificationToken: string;
+}
+
+/** ChangeUsernameResponseApiModel */
+export interface ChangeUsernameResponseApiModel {
+  /** Success */
+  success: boolean;
+}
+
+/** CreateDashboardForUserBody */
+export interface CreateDashboardForUserBody {
+  /** Name */
+  name: string;
+}
+
+/** CreateDashboardResponseApiModel */
+export interface CreateDashboardResponseApiModel {
+  /** Createddashboardid */
+  createdDashboardId: number;
+  /** Dashboards */
+  dashboards: DashboardListItemApiModel[];
+}
+
+/** DashboardDetailsApiModel */
+export interface DashboardDetailsApiModel {
+  /** Identifier */
+  identifier: number;
+  /** Name */
+  name: string;
+  /** Items */
+  items: DashboardItemApiModel[];
+  /** Fundsbycategory */
+  fundsByCategory: DashboardFundCategoryApiModel[];
+}
+
+/** DashboardFundApiModel */
+export interface DashboardFundApiModel {
+  /** Identifier */
+  identifier: number;
+  /** Registrationnumber */
+  registrationNumber: number;
+  /** Name */
+  name: string;
+  /** Abbreviatedname */
+  abbreviatedName: string;
+  /** Returnlastweekpercent */
+  returnLastWeekPercent: number | null;
+  /** Returnlastmonthpercent */
+  returnLastMonthPercent: number | null;
+  /** Returnlast3Monthspercent */
+  returnLast3MonthsPercent: number | null;
+  /** Returnlastyearpercent */
+  returnLastYearPercent: number | null;
+  /** Dailyredeemnavmonth */
+  dailyRedeemNavMonth: number[] | null;
+}
+
+/** DashboardFundCategoryApiModel */
+export interface DashboardFundCategoryApiModel {
+  /** Title */
+  title: string;
+  /**
+   * Identifier
+   * Unique identifier of report category
+   */
+  identifier: number;
+  /** Funds */
+  funds: DashboardFundApiModel[];
+}
+
+/** DashboardItemApiModel */
+export interface DashboardItemApiModel {
+  /** Identifier */
+  identifier: number;
+  /** Order */
+  order: number;
+  report: DashboardItemReportApiModel;
+  /** Selectedfilters */
+  selectedFilters: Record<string, any> | null;
+}
+
+/** DashboardItemPreviewApiModel */
+export interface DashboardItemPreviewApiModel {
+  /** Identifier */
+  identifier: number;
+  /** Order */
+  order: number;
+  reportPreview: DashboardReportPreviewApiModel;
+}
+
+/** DashboardItemReportApiModel */
+export interface DashboardItemReportApiModel {
+  /**
+   * Identifier
+   * Unique identifier of report
+   */
+  identifier: number;
+  /** Title */
+  title: string;
+  category: FinancialReportCategoryApiModel;
+  reportCalculation: FinancialReportCalculationApiModel | null;
+}
+
+/** DashboardListItemApiModel */
+export interface DashboardListItemApiModel {
+  /** Identifier */
+  identifier: number;
+  /** Name */
+  name: string;
+}
+
+/** DashboardReportPreviewApiModel */
+export interface DashboardReportPreviewApiModel {
+  /** Identifier */
+  identifier: number;
+  /** Title */
+  title: string;
+  /** Image */
+  image: string;
+}
+
+/** DeleteDashboardItemResponseApiModel */
+export type DeleteDashboardItemResponseApiModel = object;
+
+/** DuplicateDashboardForUserBody */
+export interface DuplicateDashboardForUserBody {
+  /** Name */
+  name: string;
+}
+
+/** FinancialReportCalculationApiModel */
+export interface FinancialReportCalculationApiModel {
+  /** Calculation */
+  calculation:
+    | Report2CalculationResult
+    | Report6CalculationResult
+    | Report13Dot1CalculationResult
+    | Report13Dot2CalculationResult
+    | Report13Dot3CalculationResult
+    | Report15CalculationResult
+    | Report39CalculationResult;
+  /** Filters */
+  filters: FinancialReportFilterApiModel[];
 }
 
 /** FinancialReportCategoryApiModel */
@@ -117,16 +356,16 @@ export interface FinancialReportDetailsApiModel {
    * Identifier
    * Unique identifier of report
    */
-  identifier: number;
+  identifier: string;
   /** Title */
   title: string;
   category: FinancialReportCategoryApiModel;
   /** Image */
-  image: string;
+  image: string | null;
   /** Summary */
   summary: string;
-  /** Htmldescription */
-  htmlDescription: string | null;
+  /** Markdowndescription */
+  markdownDescription: string | null;
   video: VideoApiModel | null;
   /**
    * Userfavorite
@@ -140,6 +379,30 @@ export interface FinancialReportDetailsApiModel {
   isNew?: boolean;
   /** Relatedreports */
   relatedReports: FinancialReportListItemApiModel[];
+  reportCalculation: FinancialReportCalculationApiModel | null;
+}
+
+/** FinancialReportFilterApiModel */
+export interface FinancialReportFilterApiModel {
+  /** Parenttitle */
+  parentTitle: string | null;
+  /** Title */
+  title: string;
+  /** Searchable */
+  searchable: boolean;
+  /** Options */
+  options: FinancialReportFilterOptionDto[];
+  selectedOption: FinancialReportFilterOptionDto;
+  /** Optiontype */
+  optionType: string;
+}
+
+/** FinancialReportFilterOptionDto */
+export interface FinancialReportFilterOptionDto {
+  /** Identifier */
+  identifier: string;
+  /** Title */
+  title: string;
 }
 
 /** FinancialReportListItemApiModel */
@@ -148,15 +411,19 @@ export interface FinancialReportListItemApiModel {
    * Identifier
    * Unique identifier of report
    */
-  identifier: number;
+  identifier: string;
   /** Title */
   title: string;
   category: FinancialReportCategoryApiModel;
   /** Image */
-  image: string;
+  image: string | null;
   /** Summary */
   summary: string;
-  video: VideoApiModel | null;
+  /**
+   * Hasvideo
+   * @default false
+   */
+  hasVideo?: boolean;
   /**
    * Userfavorite
    * @default false
@@ -169,10 +436,680 @@ export interface FinancialReportListItemApiModel {
   isNew?: boolean;
 }
 
+/** ForgotPasswordResetByOtpBody */
+export interface ForgotPasswordResetByOtpBody {
+  /** Otp */
+  otp: string;
+  /** Newpassword */
+  newPassword: string;
+  /** Userid */
+  userId: number;
+}
+
+/** FundListItemApiModel */
+export interface FundListItemApiModel {
+  /**
+   * Identifier
+   * شناسه صندوق
+   */
+  identifier: number;
+  /**
+   * Registrationnumber
+   * شماره ثبت نزد سازمان بورس
+   */
+  registrationNumber: number;
+  /**
+   * Name
+   * نام کامل صندوق
+   */
+  name: string;
+  /**
+   * Abbreviatedname
+   * نام صندوق
+   */
+  abbreviatedName: string;
+  /** نوع صندوق */
+  fundType: FundTypeApiModel;
+  /**
+   * Logomedium
+   * آدرس لوگوی صندوق - سایز متوسط
+   */
+  logoMedium: string | null;
+  /**
+   * Logothumbnail
+   * آدرس لوگوی صندوق - سایز کوچک
+   */
+  logoThumbnail: string | null;
+  /**
+   * Website
+   * وبسایت صندوق
+   */
+  website: string;
+  /**
+   * Statuteurl
+   * اساسنامه صندوق
+   */
+  statuteUrl: string;
+  /**
+   * Prospectusurl
+   * امیدنامه صندوق
+   */
+  prospectusUrl: string;
+  /**
+   * Isetf
+   * آیا صندوق etf است
+   */
+  isEtf: boolean;
+  /**
+   * Ischarity
+   * آیا صندوق نیکوکاری است
+   */
+  isCharity: boolean;
+  /**
+   * Hasvideo
+   * دارای ویدیو بررسی
+   */
+  hasVideo: boolean;
+  /**
+   * Manager
+   * مدیر صنودق
+   */
+  manager: string;
+  /**
+   * Custodian
+   * متولی صندوق
+   */
+  custodian: string;
+  /**
+   * Auditor
+   * حسابرس صندوق
+   */
+  auditor: string;
+  /**
+   * Liquidityguarantor
+   * ضامن نقد شوندگی صندوق
+   */
+  liquidityGuarantor: string;
+  /**
+   * Marketmaker
+   * بازارگردان
+   */
+  marketMaker: string;
+  /**
+   * Initiationdate
+   * تاریخ آغاز فعالیت میلادی
+   */
+  initiationDate: string;
+  /**
+   * Initiationjdate
+   * تاریخ آغاز فعالیت
+   */
+  initiationJdate: string;
+  /**
+   * Issuenavrials
+   * قیمت صدور
+   */
+  issueNavRials: number;
+  /**
+   * Redeemnavrials
+   * قیمت ابطال
+   */
+  redeemNavRials: number;
+  /**
+   * Statisticalnavrials
+   * قیمت آماری
+   */
+  statisticalNavRials: number;
+  /**
+   * Assetundermanagementrials
+   * دارایی تحت مدیریت
+   */
+  assetUnderManagementRials: number;
+  /**
+   * Numberofunits
+   * تعداد واحد
+   */
+  numberOfUnits: number;
+  /**
+   * Returnlastweekpercent
+   * بازدهی هفته اخیر
+   */
+  returnLastWeekPercent: number | null;
+  /**
+   * Returnlastmonthpercent
+   * بازدهی ماه اخیر
+   */
+  returnLastMonthPercent: number | null;
+  /**
+   * Returnlast3Monthspercent
+   * بازدهی سه ماه اخیر
+   */
+  returnLast3MonthsPercent: number | null;
+  /**
+   * Returnlastyearpercent
+   * بازدهی سال اخیر
+   */
+  returnLastYearPercent: number | null;
+  /**
+   * Returnlastweekvstedpixpercent
+   * بازدهی هفته اخیر به شاخص
+   */
+  returnLastWeekVsTedpixPercent: number | null;
+  /**
+   * Returnlastmonthvstedpixpercent
+   * بازدهی ماه اخیر به شاخص
+   */
+  returnLastMonthVsTedpixPercent: number | null;
+  /**
+   * Returnlast3Monthsvstedpixpercent
+   * بازدهی سه ماه اخیر به شاخص
+   */
+  returnLast3MonthsVsTedpixPercent: number | null;
+  /**
+   * Returnlastyearvstedpixpercent
+   * بازدهی سال اخیر به شاخص
+   */
+  returnLastYearVsTedpixPercent: number | null;
+  /**
+   * Assetallocationbondpercent
+   * سهم اوراق از پورتفوی
+   */
+  assetAllocationBondPercent: number;
+  /**
+   * Assetallocationbankdepositpercent
+   * سهم سپرده بانکی از پورتفوی
+   */
+  assetAllocationBankDepositPercent: number;
+  /**
+   * Assetallocationcommoditydepositcertificatepercent
+   * سهم گواهی سپرده کالایی از پورتفوی
+   */
+  assetAllocationCommodityDepositCertificatePercent: number;
+  /**
+   * Assetallocationcashpercent
+   * سهم وجه نقد از پورتفوی
+   */
+  assetAllocationCashPercent: number;
+  /**
+   * Assetallocationstocksincludingtop5Percent
+   * سهم سهام از پورتفوی
+   */
+  assetAllocationStocksIncludingTop5Percent: number;
+  /**
+   * Assetallocationfundunitspercent
+   * سهم واحد صندوق‌ها از پورتفوی
+   */
+  assetAllocationFundUnitsPercent: number;
+  /**
+   * Assetallocationotherpercent
+   * سهم سایر از پورتفوی
+   */
+  assetAllocationOtherPercent: number;
+  /**
+   * Assetallocationtop5Stockspercent
+   * سهم پنج سهم برتر از پورتفوی
+   */
+  assetAllocationTop5StocksPercent: number;
+  /**
+   * Averageleveragelastweek
+   * میانگین اهرم هفته اخیر
+   */
+  averageLeverageLastWeek: number | null;
+  /**
+   * Averageleveragelastmonth
+   * میانگین اهرم ماه اخیر
+   */
+  averageLeverageLastMonth: number | null;
+  /**
+   * Averageleveragelast3Months
+   * میانگین اهرم سه ماه اخیر
+   */
+  averageLeverageLast3Months: number | null;
+  /**
+   * Averageleveragelastyear
+   * میانگین اهرم سال اخیر
+   */
+  averageLeverageLastYear: number | null;
+  /**
+   * Standarddeviationlastweek
+   * انحراف از میانگین هفته اخیر
+   */
+  standardDeviationLastWeek: number | null;
+  /**
+   * Standarddeviationlastmonth
+   * انحراف از میانگین ماه اخیر
+   */
+  standardDeviationLastMonth: number | null;
+  /**
+   * Standarddeviationlast3Month
+   * انحراف از میانگین سه ماه اخیر
+   */
+  standardDeviationLast3Month: number | null;
+  /**
+   * Standarddeviationlastyear
+   * انحراف از میانگین سال اخیر
+   */
+  standardDeviationLastYear: number | null;
+  /**
+   * Sharperatiolastweek
+   * نسبت شارپی هفته اخیر
+   */
+  sharpeRatioLastWeek: number | null;
+  /**
+   * Sharperatiolastmonth
+   * نسبت شارپی ماه اخیر
+   */
+  sharpeRatioLastMonth: number | null;
+  /**
+   * Sharperatiolast3Months
+   * نسبت شارپی سه ماه اخیر
+   */
+  sharpeRatioLast3Months: number | null;
+  /**
+   * Sharperatiolastyear
+   * نسبت شارپی سال اخیر
+   */
+  sharpeRatioLastYear: number | null;
+  /**
+   * Informationratiolastweek
+   * نسبت اصلاعاتی هفته اخیر
+   */
+  informationRatioLastWeek: number | null;
+  /**
+   * Informationratiolastmonth
+   * نسبت اصلاعاتی ماه اخیر
+   */
+  informationRatioLastMonth: number | null;
+  /**
+   * Informationratiolast3Months
+   * نسبت اصلاعاتی سه ماه اخیر
+   */
+  informationRatioLast3Months: number | null;
+  /**
+   * Informationratiolastyear
+   * نسبت اصلاعاتی سال اخیر
+   */
+  informationRatioLastYear: number | null;
+  /**
+   * Alphalastday
+   * آلفا روز اخیر
+   */
+  alphaLastDay: number | null;
+  /**
+   * Alphalastweek
+   * آلفا هفته اخیر
+   */
+  alphaLastWeek: number | null;
+  /**
+   * Alphalastmonth
+   * آلفا ماه اخیر
+   */
+  alphaLastMonth: number | null;
+  /**
+   * Alphalast3Months
+   * آلفا سه ماه اخیر
+   */
+  alphaLast3Months: number | null;
+  /**
+   * Alphalastyear
+   * آلفا سال اخیر
+   */
+  alphaLastYear: number | null;
+  /**
+   * Betalastday
+   * بتا روز اخیر
+   */
+  betaLastDay: number | null;
+  /**
+   * Betalastweek
+   * بتا هفته اخیر
+   */
+  betaLastWeek: number | null;
+  /**
+   * Betalastmonth
+   * بتا ماه اخیر
+   */
+  betaLastMonth: number | null;
+  /**
+   * Betalast3Months
+   * بتا سه ماه اخیر
+   */
+  betaLast3Months: number | null;
+  /**
+   * Betalastyear
+   * بتا سال اخیر
+   */
+  betaLastYear: number | null;
+  /**
+   * Maxdrawdownweek
+   * ماکزیمم افت هفته اخیر
+   */
+  maxDrawdownWeek: number | null;
+  /**
+   * Maxdrawdownmonth
+   * ماکزیمم افت ماه اخیر
+   */
+  maxDrawdownMonth: number | null;
+  /**
+   * Maxdrawdown3Month
+   * ماکزیمم افت سه ماه اخیر
+   */
+  maxDrawdown3Month: number | null;
+  /**
+   * Maxdrawdownyear
+   * ماکزیمم افت سال اخیر
+   */
+  maxDrawdownYear: number | null;
+  /**
+   * Dailyredeemnavmonth
+   * قیمت ابطال روزانه ماه اخیر
+   */
+  dailyRedeemNavMonth: number[] | null;
+}
+
+/** FundTableResponseApiModel */
+export interface FundTableResponseApiModel {
+  /** Tabs */
+  tabs: FundTableTabApiModel[];
+  /** Selectedtabidentifier */
+  selectedTabIdentifier: number;
+  /** Selectedtabfunds */
+  selectedTabFunds: FundsTableItemApiModel[];
+}
+
+/** FundTableTabApiModel */
+export interface FundTableTabApiModel {
+  /** Identifier */
+  identifier: number;
+  /** Title */
+  title: string;
+  /** Color */
+  color: string | null;
+}
+
+/** FundTypeApiModel */
+export interface FundTypeApiModel {
+  /** Identifier */
+  identifier: number;
+  /** Title */
+  title: string;
+}
+
+/** FundsTableItemApiModel */
+export interface FundsTableItemApiModel {
+  fund: FundListItemApiModel;
+  /** Pinned */
+  pinned: boolean;
+}
+
+/** GetDashboardItemCalculationsBody */
+export interface GetDashboardItemCalculationsBody {
+  /** Selectedfilters */
+  selectedFilters?: Record<string, any> | null;
+}
+
+/** GetForgotPasswordOtpBody */
+export interface GetForgotPasswordOtpBody {
+  /** Nationalcode */
+  nationalCode: string;
+  /** Phonenumber */
+  phoneNumber: string;
+  /** Captchauid */
+  captchaUid: number;
+  /** Captchavalue */
+  captchaValue: string;
+}
+
+/** GetOtpForChangePasswordResponseApiModel */
+export interface GetOtpForChangePasswordResponseApiModel {
+  /** Retryseconds */
+  retrySeconds: number;
+  /** Phonenumber */
+  phoneNumber: string;
+  /** Userid */
+  userId: number;
+}
+
+/** GetOtpForForgotPasswordResponseApiModel */
+export interface GetOtpForForgotPasswordResponseApiModel {
+  /** Retryseconds */
+  retrySeconds: number;
+  /** Phonenumber */
+  phoneNumber: string;
+  /** Userid */
+  userId: number;
+}
+
+/** GetReportCalculationsBody */
+export interface GetReportCalculationsBody {
+  /** Selectedfilters */
+  selectedFilters: Record<string, any> | null;
+}
+
 /** HTTPValidationError */
 export interface HTTPValidationError {
   /** Detail */
   detail?: ValidationError[];
+}
+
+/** HealthApiModel */
+export interface HealthApiModel {
+  /** Status */
+  status: string;
+}
+
+/** PinFundInTableTabBody */
+export interface PinFundInTableTabBody {
+  /** Tab */
+  tab: number;
+  /** Fund */
+  fund: number;
+}
+
+/** PinFundInTableTabResponseApiModel */
+export interface PinFundInTableTabResponseApiModel {
+  /** Success */
+  success: boolean;
+}
+
+/** RenameDashboardForUserBody */
+export interface RenameDashboardForUserBody {
+  /** Name */
+  name: string;
+}
+
+/** ReplaceDashboardItemCalculationsBody */
+export interface ReplaceDashboardItemCalculationsBody {
+  /** Newreportidentifier */
+  newReportIdentifier: string;
+}
+
+/** Report13Dot1CalculationResult */
+export interface Report13Dot1CalculationResult {
+  lastDay: Report13Dot1CalculationResultColumn;
+  lastDayNormalized: Report13Dot1CalculationResultColumnNormalized;
+  maxValue: Report13Dot1CalculationResultColumn;
+  minValue: Report13Dot1CalculationResultColumn;
+  averageValue: Report13Dot1CalculationResultColumn;
+}
+
+/** Report13Dot1CalculationResultColumn */
+export interface Report13Dot1CalculationResultColumn {
+  /** Totaltrades */
+  totalTrades: number;
+  /** Totalbuyindividual */
+  totalBuyIndividual: number;
+  /** Totalbuycorporate */
+  totalBuyCorporate: number;
+  /** Totalsellindividual */
+  totalSellIndividual: number;
+  /** Totalsellcorporate */
+  totalSellCorporate: number;
+}
+
+/** Report13Dot1CalculationResultColumnNormalized */
+export interface Report13Dot1CalculationResultColumnNormalized {
+  /** Totaltradesnormalized */
+  totalTradesNormalized: number;
+  /** Totalbuyindividualnormalized */
+  totalBuyIndividualNormalized: number;
+  /** Totalbuycorporatenormalized */
+  totalBuyCorporateNormalized: number;
+  /** Totalsellindividualnormalized */
+  totalSellIndividualNormalized: number;
+  /** Totalsellcorporatenormalized */
+  totalSellCorporateNormalized: number;
+}
+
+/** Report13Dot2CalculationResult */
+export interface Report13Dot2CalculationResult {
+  data: Report13Dot2CalculationResultItem;
+}
+
+/** Report13Dot2CalculationResultItem */
+export interface Report13Dot2CalculationResultItem {
+  /** Mean */
+  mean: number;
+  /** Median */
+  median: number;
+  /** Lasttrade */
+  lastTrade: number;
+  /** Kdepoints */
+  kdePoints: Report13Dot2GraphKdeResultItem[];
+  /** Histpoints */
+  histPoints: Report13Dot2GraphHistResultItem[];
+}
+
+/** Report13Dot2GraphHistResultItem */
+export interface Report13Dot2GraphHistResultItem {
+  /** Xmin */
+  xMin: number;
+  /** Xmax */
+  xMax: number;
+  /** Y */
+  y: number;
+}
+
+/** Report13Dot2GraphKdeResultItem */
+export interface Report13Dot2GraphKdeResultItem {
+  /** X */
+  x: number;
+  /** Y */
+  y: number;
+}
+
+/** Report13Dot3CalculationResult */
+export interface Report13Dot3CalculationResult {
+  /** Data */
+  data: Report13Dot3CalculationResultItem[];
+}
+
+/** Report13Dot3CalculationResultItem */
+export interface Report13Dot3CalculationResultItem {
+  /** Points */
+  points: Report13Dot3CalculationResultPoints[];
+  /** Mean */
+  mean: number;
+}
+
+/** Report13Dot3CalculationResultPoints */
+export interface Report13Dot3CalculationResultPoints {
+  /**
+   * Date
+   * @format date
+   */
+  date: string;
+  /** Value */
+  value: number;
+}
+
+/** Report15CalculationResult */
+export interface Report15CalculationResult {
+  /** Beta */
+  beta: number;
+  /** Betaadjusted */
+  betaAdjusted: number;
+  /** Yintersect */
+  yIntersect: number;
+  /** Rsquared */
+  rSquared: number;
+  /** Pvalue */
+  pValue: number;
+  /** Graphdata */
+  graphData: Report15CalculationResultGraphPoint[];
+}
+
+/** Report15CalculationResultGraphPoint */
+export interface Report15CalculationResultGraphPoint {
+  /** X */
+  x: number;
+  /** Y */
+  y: number;
+  /** Tradedateshamsi */
+  tradeDateShamsi: string;
+}
+
+/** Report2CalculationResult */
+export interface Report2CalculationResult {
+  /** Data */
+  data: Report2CalculationResultItem[];
+  /** Unit */
+  unit: string;
+}
+
+/** Report2CalculationResultItem */
+export interface Report2CalculationResultItem {
+  /** Sectortitle */
+  sectorTitle: string;
+  /** Netflow */
+  netFlow: number;
+}
+
+/** Report39CalculationResult */
+export interface Report39CalculationResult {
+  /** Data */
+  data: Report39CalculationResultItem[];
+}
+
+/** Report39CalculationResultItem */
+export interface Report39CalculationResultItem {
+  /** Values */
+  values: Report39InstrumentsResultItem[];
+}
+
+/** Report39InstrumentsResultItem */
+export interface Report39InstrumentsResultItem {
+  /** Instrument */
+  instrument: string;
+  /** Netflow */
+  netFlow: number;
+  /** Unit */
+  unit: string;
+}
+
+/** Report6CalculationResult */
+export interface Report6CalculationResult {
+  /** Data */
+  data: Report6CalculationResultTimeSeriesItem[];
+}
+
+/** Report6CalculationResultTimeSeriesItem */
+export interface Report6CalculationResultTimeSeriesItem {
+  /**
+   * Dt
+   * @format date
+   */
+  dt: string;
+  /** Indexvalue */
+  indexValue: number;
+  /** Netflow */
+  netFlow: number;
+}
+
+/** ResetForgotPasswordByOtpResponseApiModel */
+export interface ResetForgotPasswordByOtpResponseApiModel {
+  /** Success */
+  success: boolean;
 }
 
 /** TokenApiModel */
@@ -183,6 +1120,20 @@ export interface TokenApiModel {
   token_type: string;
 }
 
+/** UnpinFundInTableTabBody */
+export interface UnpinFundInTableTabBody {
+  /** Tab */
+  tab: number;
+  /** Fund */
+  fund: number;
+}
+
+/** UnpinFundInTableTabResponseApiModel */
+export interface UnpinFundInTableTabResponseApiModel {
+  /** Success */
+  success: boolean;
+}
+
 /** UserReportFavoriteStatus */
 export interface UserReportFavoriteStatus {
   /** Userid */
@@ -191,6 +1142,20 @@ export interface UserReportFavoriteStatus {
   reportId: number;
   /** Isfavorite */
   isFavorite: boolean;
+}
+
+/** ValidatePasswordForUserBody */
+export interface ValidatePasswordForUserBody {
+  /** Password */
+  password: string;
+}
+
+/** ValidatePasswordForUserResponseApiModel */
+export interface ValidatePasswordForUserResponseApiModel {
+  /** Passwordverificationtoken */
+  passwordVerificationToken: string;
+  /** Success */
+  success: boolean;
 }
 
 /** ValidationError */
@@ -211,45 +1176,55 @@ export interface VideoApiModel {
    */
   identifier: number;
   /**
+   * Title
+   * Title of video
+   */
+  title: string;
+  /**
+   * Description
+   * Description of video
+   */
+  description: string | null;
+  /**
    * Mp4Video1080P
    * Url of mp4 video file in 1080p
    */
-  mp4Video1080P: string;
+  mp4Video1080P: string | null;
   /**
    * Mp4Video1080Psizebytes
    * Size of 1080p mp4 video file in bytes
    */
-  mp4Video1080PSizeBytes: number;
+  mp4Video1080PSizeBytes: number | null;
   /**
    * Mp4Video720P
    * Url of mp4 video file in 720p
    */
-  mp4Video720P: string;
+  mp4Video720P: string | null;
   /**
    * Mp4Video720Psizebytes
    * Size of 720p mp4 video file in bytes
    */
-  mp4Video720PSizeBytes: number;
+  mp4Video720PSizeBytes: number | null;
   /**
    * Mp4Video480P
    * Url of mp4 video file in 480p
    */
-  mp4Video480P: string;
+  mp4Video480P: string | null;
   /**
    * Mp4Video480Psizebytes
    * Size of 480p mp4 video file in bytes
    */
-  mp4Video480PSizeBytes: number;
+  mp4Video480PSizeBytes: number | null;
   /**
    * Mp4Video360P
    * Url of mp4 video file in 360p
    */
-  mp4Video360P: string;
+  mp4Video360P: string | null;
   /**
    * Mp4Video360Psizebytes
    * Size of 360p mp4 video file in bytes
    */
-  mp4Video360PSizeBytes: number;
+  mp4Video360PSizeBytes: number | null;
   /**
    * Mp4Video240P
    * Url of mp4 video file in 240p
@@ -266,41 +1241,60 @@ export interface VideoApiModel {
    */
   durationInSeconds: number;
   /**
-   * Poster1080P
-   * Poster (placeholder) image of video in medium size (1920x1080)
+   * Poster
+   * Poster (placeholder) image of video
    */
-  poster1080P: string;
+  poster: string;
   /**
-   * Poster720P
-   * Poster (placeholder) image of video in medium size (1280x720)
-   */
-  poster720P: string;
-  /**
-   * Poster480P
-   * Poster (placeholder) image of video in medium size (854x480)
-   */
-  poster480P: string;
-  /**
-   * Poster360P
-   * Poster (placeholder) image of video in medium size (640x360)
-   */
-  poster360P: string;
-  /**
-   * Poster240P
-   * Poster (placeholder) image of video in medium size (426x240)
-   */
-  poster240P: string;
-  /**
-   * Thumbnailimage
+   * Thumbnailimages
    * Thumbnail of video
    */
-  thumbnailImage: string;
+  thumbnailImages: VideoThumbnailApiModel[];
+}
+
+/** VideoThumbnailApiModel */
+export interface VideoThumbnailApiModel {
+  /**
+   * Starttimeseconds
+   * From which second we should use this video thumbnail
+   */
+  startTimeSeconds: number;
+  /**
+   * Durationseconds
+   * After start time, until how many seconds use this video thumbnail
+   */
+  durationSeconds: number;
+  /**
+   * Image
+   * Thumbnail file
+   */
+  image: string;
+  /**
+   * Intervalseconds
+   * Interval in seconds between images
+   */
+  intervalSeconds: number;
+  /**
+   * Widthpixels
+   * Width of each thumbnail in pixes
+   */
+  widthPixels: number;
+  /**
+   * Heightpixels
+   * Height of each thumbnail in pixes
+   */
+  heightPixels: number;
+  /**
+   * Columns
+   * Number of thumbnails per line
+   */
+  columns: number;
 }
 
 export type QueryParamsType = Record<string | number, any>;
-export type ResponseFormat = keyof Omit<Body, 'body' | 'bodyUsed'>;
+export type ResponseFormat = keyof Omit<Body, "body" | "bodyUsed">;
 
-export interface FullRequestParams extends Omit<RequestInit, 'body'> {
+export interface FullRequestParams extends Omit<RequestInit, "body"> {
   /** set parameter to `true` for call `securityWorker` for this request */
   secure?: boolean;
   /** request path */
@@ -319,16 +1313,22 @@ export interface FullRequestParams extends Omit<RequestInit, 'body'> {
   cancelToken?: CancelToken;
 }
 
-export type RequestParams = Omit<FullRequestParams, 'body' | 'method' | 'query' | 'path'>;
+export type RequestParams = Omit<
+  FullRequestParams,
+  "body" | "method" | "query" | "path"
+>;
 
 export interface ApiConfig<SecurityDataType = unknown> {
   baseUrl?: string;
-  baseApiParams?: Omit<RequestParams, 'baseUrl' | 'cancelToken' | 'signal'>;
-  securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams | void> | RequestParams | void;
+  baseApiParams?: Omit<RequestParams, "baseUrl" | "cancelToken" | "signal">;
+  securityWorker?: (
+    securityData: SecurityDataType | null,
+  ) => Promise<RequestParams | void> | RequestParams | void;
   customFetch?: typeof fetch;
 }
 
-export interface HttpResponse<D extends unknown, E extends unknown = unknown> extends Response {
+export interface HttpResponse<D extends unknown, E extends unknown = unknown>
+  extends Response {
   data: D;
   error: E;
 }
@@ -336,24 +1336,26 @@ export interface HttpResponse<D extends unknown, E extends unknown = unknown> ex
 type CancelToken = Symbol | string | number;
 
 export enum ContentType {
-  Json = 'application/json',
-  FormData = 'multipart/form-data',
-  UrlEncoded = 'application/x-www-form-urlencoded',
-  Text = 'text/plain',
+  Json = "application/json",
+  JsonApi = "application/vnd.api+json",
+  FormData = "multipart/form-data",
+  UrlEncoded = "application/x-www-form-urlencoded",
+  Text = "text/plain",
 }
 
 export class HttpClient<SecurityDataType = unknown> {
-  public baseUrl: string = '';
+  public baseUrl: string = "";
   private securityData: SecurityDataType | null = null;
-  private securityWorker?: ApiConfig<SecurityDataType>['securityWorker'];
+  private securityWorker?: ApiConfig<SecurityDataType>["securityWorker"];
   private abortControllers = new Map<CancelToken, AbortController>();
-  private customFetch = (...fetchParams: Parameters<typeof fetch>) => fetch(...fetchParams);
+  private customFetch = (...fetchParams: Parameters<typeof fetch>) =>
+    fetch(...fetchParams);
 
   private baseApiParams: RequestParams = {
-    credentials: 'same-origin',
+    credentials: "same-origin",
     headers: {},
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
+    redirect: "follow",
+    referrerPolicy: "no-referrer",
   };
 
   constructor(apiConfig: ApiConfig<SecurityDataType> = {}) {
@@ -366,7 +1368,7 @@ export class HttpClient<SecurityDataType = unknown> {
 
   protected encodeQueryParam(key: string, value: any) {
     const encodedKey = encodeURIComponent(key);
-    return `${encodedKey}=${encodeURIComponent(typeof value === 'number' ? value : `${value}`)}`;
+    return `${encodedKey}=${encodeURIComponent(typeof value === "number" ? value : `${value}`)}`;
   }
 
   protected addQueryParam(query: QueryParamsType, key: string) {
@@ -375,26 +1377,41 @@ export class HttpClient<SecurityDataType = unknown> {
 
   protected addArrayQueryParam(query: QueryParamsType, key: string) {
     const value = query[key];
-    return value.map((v: any) => this.encodeQueryParam(key, v)).join('&');
+    return value.map((v: any) => this.encodeQueryParam(key, v)).join("&");
   }
 
   protected toQueryString(rawQuery?: QueryParamsType): string {
     const query = rawQuery || {};
-    const keys = Object.keys(query).filter((key) => 'undefined' !== typeof query[key]);
+    const keys = Object.keys(query).filter(
+      (key) => "undefined" !== typeof query[key],
+    );
     return keys
-      .map((key) => (Array.isArray(query[key]) ? this.addArrayQueryParam(query, key) : this.addQueryParam(query, key)))
-      .join('&');
+      .map((key) =>
+        Array.isArray(query[key])
+          ? this.addArrayQueryParam(query, key)
+          : this.addQueryParam(query, key),
+      )
+      .join("&");
   }
 
   protected addQueryParams(rawQuery?: QueryParamsType): string {
     const queryString = this.toQueryString(rawQuery);
-    return queryString ? `?${queryString}` : '';
+    return queryString ? `?${queryString}` : "";
   }
 
   private contentFormatters: Record<ContentType, (input: any) => any> = {
     [ContentType.Json]: (input: any) =>
-      input !== null && (typeof input === 'object' || typeof input === 'string') ? JSON.stringify(input) : input,
-    [ContentType.Text]: (input: any) => (input !== null && typeof input !== 'string' ? JSON.stringify(input) : input),
+      input !== null && (typeof input === "object" || typeof input === "string")
+        ? JSON.stringify(input)
+        : input,
+    [ContentType.JsonApi]: (input: any) =>
+      input !== null && (typeof input === "object" || typeof input === "string")
+        ? JSON.stringify(input)
+        : input,
+    [ContentType.Text]: (input: any) =>
+      input !== null && typeof input !== "string"
+        ? JSON.stringify(input)
+        : input,
     [ContentType.FormData]: (input: any) =>
       Object.keys(input || {}).reduce((formData, key) => {
         const property = input[key];
@@ -402,7 +1419,7 @@ export class HttpClient<SecurityDataType = unknown> {
           key,
           property instanceof Blob
             ? property
-            : typeof property === 'object' && property !== null
+            : typeof property === "object" && property !== null
               ? JSON.stringify(property)
               : `${property}`,
         );
@@ -411,7 +1428,10 @@ export class HttpClient<SecurityDataType = unknown> {
     [ContentType.UrlEncoded]: (input: any) => this.toQueryString(input),
   };
 
-  protected mergeRequestParams(params1: RequestParams, params2?: RequestParams): RequestParams {
+  protected mergeRequestParams(
+    params1: RequestParams,
+    params2?: RequestParams,
+  ): RequestParams {
     return {
       ...this.baseApiParams,
       ...params1,
@@ -424,7 +1444,9 @@ export class HttpClient<SecurityDataType = unknown> {
     };
   }
 
-  protected createAbortSignal = (cancelToken: CancelToken): AbortSignal | undefined => {
+  protected createAbortSignal = (
+    cancelToken: CancelToken,
+  ): AbortSignal | undefined => {
     if (this.abortControllers.has(cancelToken)) {
       const abortController = this.abortControllers.get(cancelToken);
       if (abortController) {
@@ -459,7 +1481,7 @@ export class HttpClient<SecurityDataType = unknown> {
     ...params
   }: FullRequestParams): Promise<HttpResponse<T, E>> => {
     const secureParams =
-      ((typeof secure === 'boolean' ? secure : this.baseApiParams.secure) &&
+      ((typeof secure === "boolean" ? secure : this.baseApiParams.secure) &&
         this.securityWorker &&
         (await this.securityWorker(this.securityData))) ||
       {};
@@ -468,15 +1490,26 @@ export class HttpClient<SecurityDataType = unknown> {
     const payloadFormatter = this.contentFormatters[type || ContentType.Json];
     const responseFormat = format || requestParams.format;
 
-    return this.customFetch(`${baseUrl || this.baseUrl || ''}${path}${queryString ? `?${queryString}` : ''}`, {
-      ...requestParams,
-      headers: {
-        ...(requestParams.headers || {}),
-        ...(type && type !== ContentType.FormData ? { 'Content-Type': type } : {}),
+    return this.customFetch(
+      `${baseUrl || this.baseUrl || ""}${path}${queryString ? `?${queryString}` : ""}`,
+      {
+        ...requestParams,
+        headers: {
+          ...(requestParams.headers || {}),
+          ...(type && type !== ContentType.FormData
+            ? { "Content-Type": type }
+            : {}),
+        },
+        signal:
+          (cancelToken
+            ? this.createAbortSignal(cancelToken)
+            : requestParams.signal) || null,
+        body:
+          typeof body === "undefined" || body === null
+            ? null
+            : payloadFormatter(body),
       },
-      signal: (cancelToken ? this.createAbortSignal(cancelToken) : requestParams.signal) || null,
-      body: typeof body === 'undefined' || body === null ? null : payloadFormatter(body),
-    }).then(async (response) => {
+    ).then(async (response) => {
       const r = response.clone() as HttpResponse<T, E>;
       r.data = null as unknown as T;
       r.error = null as unknown as E;
@@ -518,15 +1551,34 @@ export class HttpClient<SecurityDataType = unknown> {
  * ## Users
  * Endpoints for captcha, login, signup, and user data are in this section
  */
-export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+export class Api<
+  SecurityDataType extends unknown,
+> extends HttpClient<SecurityDataType> {
+  health = {
+    /**
+     * @description Health check
+     *
+     * @tags Health
+     * @name HealthHealthGet
+     * @summary Health
+     * @request GET:/health
+     */
+    healthHealthGet: (params: RequestParams = {}) =>
+      this.request<HealthApiModel, any>({
+        path: `/health`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+  };
   users = {
     /**
-     * @description Get captcha for a user. Captcha can be an **image** or an **audio**, depending on the **captchaType** param. In case of an image, you can also pass **captchaWidth** and **captchaHeight** for customizing the size of generated image.
+     * @description Get captcha for a user. Captcha can be an **_image_** or an **_audio_**, depending on the **captchaType** param. In case of an image, you can also pass **captchaWidth** and **captchaHeight** for customizing the size of generated image.
      *
-     * @tags users
+     * @tags Users
      * @name CaptchaForLoginUsersLoginCaptchaGet
      * @summary Captcha For Login
-     * @request GET:/users/login_captcha
+     * @request GET:/users/login/captcha
      * @secure
      */
     captchaForLoginUsersLoginCaptchaGet: (
@@ -545,27 +1597,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
          * @default 90
          */
         captchaHeight?: number;
-        /**
-         * Captchatype
-         * @default "image"
-         */
+        /** @default "image" */
         captchaType?: CaptchaType;
       },
       params: RequestParams = {},
     ) =>
       this.request<CaptchaApiModel, HTTPValidationError>({
-        path: `/users/login_captcha`,
-        method: 'GET',
+        path: `/users/login/captcha`,
+        method: "GET",
         query: query,
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
     /**
      * @description Get access token using credentials for users. You must provide solved captcha value (_captcha_) and unique identifier of catpcha (_captchaUid_), along with user credentials (_username_ and _password_).**Important note**: _username_ can be either username, email, phone number or national code of user.
      *
-     * @tags users
+     * @tags Users
      * @name LoginForAccessTokenUsersLoginPost
      * @summary Login For Access Token
      * @request POST:/users/login
@@ -582,36 +1631,39 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<TokenApiModel, HTTPValidationError>({
         path: `/users/login`,
-        method: 'POST',
+        method: "POST",
         query: query,
         body: data,
         type: ContentType.UrlEncoded,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
     /**
-     * @description Get access token using credentials for test user. This method only works for **test** user. For login flow of real users, you must use **login_captcha** and **login** endpoints.
+     * @description Get access token using credentials for test user. This method only works for **test** user. For login flow of real users, you must use _**login_captcha**_ and _**login**_ endpoints.
      *
-     * @tags users
+     * @tags Users
      * @name TestUserAccessTokenUsersTokenPost
      * @summary Test User Access Token
      * @request POST:/users/token
      */
-    testUserAccessTokenUsersTokenPost: (data: BodyTestUserAccessTokenUsersTokenPost, params: RequestParams = {}) =>
+    testUserAccessTokenUsersTokenPost: (
+      data: BodyTestUserAccessTokenUsersTokenPost,
+      params: RequestParams = {},
+    ) =>
       this.request<TokenApiModel, HTTPValidationError>({
         path: `/users/token`,
-        method: 'POST',
+        method: "POST",
         body: data,
         type: ContentType.UrlEncoded,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
     /**
      * @description Get data of current logged in user.
      *
-     * @tags users
+     * @tags Users
      * @name GetCurrentUserUsersMeGet
      * @summary Get Current User
      * @request GET:/users/me
@@ -620,23 +1672,274 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     getCurrentUserUsersMeGet: (params: RequestParams = {}) =>
       this.request<AressApiUser | AnonymousApiUser, any>({
         path: `/users/me`,
-        method: 'GET',
+        method: "GET",
         secure: true,
-        format: 'json',
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Get captcha to reset password
+     *
+     * @tags Users
+     * @name ForgotPasswordCaptchaUsersPasswordForgotCaptchaPost
+     * @summary Forgot Password Captcha
+     * @request POST:/users/password/forgot/captcha
+     * @secure
+     */
+    forgotPasswordCaptchaUsersPasswordForgotCaptchaPost: (
+      query?: {
+        /**
+         * Captchawidth
+         * @min 50
+         * @max 1000
+         * @default 280
+         */
+        captchaWidth?: number;
+        /**
+         * Captchaheight
+         * @min 50
+         * @max 1000
+         * @default 90
+         */
+        captchaHeight?: number;
+        /** @default "image" */
+        captchaType?: CaptchaType;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<CaptchaApiModel, HTTPValidationError>({
+        path: `/users/password/forgot/captcha`,
+        method: "POST",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Get OTP to reset password
+     *
+     * @tags Users
+     * @name ForgotPasswordGetOtpUsersPasswordForgotOtpPost
+     * @summary Forgot Password Get Otp
+     * @request POST:/users/password/forgot/otp
+     */
+    forgotPasswordGetOtpUsersPasswordForgotOtpPost: (
+      data: GetForgotPasswordOtpBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        GetOtpForForgotPasswordResponseApiModel,
+        HTTPValidationError
+      >({
+        path: `/users/password/forgot/otp`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Recover password using otp and new password
+     *
+     * @tags Users
+     * @name ForgotPasswordResetByOtpUsersPasswordForgotResetPost
+     * @summary Forgot Password Reset By Otp
+     * @request POST:/users/password/forgot/reset
+     */
+    forgotPasswordResetByOtpUsersPasswordForgotResetPost: (
+      data: ForgotPasswordResetByOtpBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        ResetForgotPasswordByOtpResponseApiModel,
+        HTTPValidationError
+      >({
+        path: `/users/password/forgot/reset`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Get otp to change password in user profile, does not need captcha
+     *
+     * @tags Users
+     * @name ChangePasswordGetOtpUsersProfilePasswordChangeOtpGet
+     * @summary Change Password Get Otp
+     * @request GET:/users/profile/password/change/otp
+     * @secure
+     */
+    changePasswordGetOtpUsersProfilePasswordChangeOtpGet: (
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        GetOtpForChangePasswordResponseApiModel,
+        HTTPValidationError
+      >({
+        path: `/users/profile/password/change/otp`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Change password using otp and new password
+     *
+     * @tags Users
+     * @name ChangePasswordByOtpUsersProfilePasswordChangePost
+     * @summary Change Password By Otp
+     * @request POST:/users/profile/password/change
+     * @secure
+     */
+    changePasswordByOtpUsersProfilePasswordChangePost: (
+      data: ChangePasswordByOtpBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<ChangePasswordByOtpApiModel, HTTPValidationError>({
+        path: `/users/profile/password/change`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Validate password for user
+     *
+     * @tags Users
+     * @name ValidatePasswordForUserUsersProfilePasswordValidatePost
+     * @summary Validate Password For User
+     * @request POST:/users/profile/password/validate
+     * @secure
+     */
+    validatePasswordForUserUsersProfilePasswordValidatePost: (
+      data: ValidatePasswordForUserBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        ValidatePasswordForUserResponseApiModel,
+        HTTPValidationError
+      >({
+        path: `/users/profile/password/validate`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description get otp to change phone
+     *
+     * @tags Users
+     * @name ChangePhoneNumberGetOtpUsersProfilePhoneChangeOtpPost
+     * @summary Change Phone Number Get Otp
+     * @request POST:/users/profile/phone/change/otp
+     * @secure
+     */
+    changePhoneNumberGetOtpUsersProfilePhoneChangeOtpPost: (
+      data: ChangePhoneGetOtpBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<ChangePhoneGetOtpResponseApiModel, HTTPValidationError>({
+        path: `/users/profile/phone/change/otp`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Change phone number with otp
+     *
+     * @tags Users
+     * @name ChangePhoneNumberByOtpUsersProfilePhoneChangePost
+     * @summary Change Phone Number By Otp
+     * @request POST:/users/profile/phone/change
+     * @secure
+     */
+    changePhoneNumberByOtpUsersProfilePhoneChangePost: (
+      data: ChangePhoneByOtpBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<ChangePhoneByOtpResponseApiModel, HTTPValidationError>({
+        path: `/users/profile/phone/change`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Change username
+     *
+     * @tags Users
+     * @name ChangeUsernameUsersProfileUsernameChangePost
+     * @summary Change Username
+     * @request POST:/users/profile/username/change
+     * @secure
+     */
+    changeUsernameUsersProfileUsernameChangePost: (
+      data: ChangeUsernameBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<ChangeUsernameResponseApiModel, HTTPValidationError>({
+        path: `/users/profile/username/change`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Change profile picture
+     *
+     * @tags Users
+     * @name ChangeProfilePictureUsersProfilePictureChangePost
+     * @summary Change Profile Picture
+     * @request POST:/users/profile/picture/change
+     * @secure
+     */
+    changeProfilePictureUsersProfilePictureChangePost: (
+      data: BodyChangeProfilePictureUsersProfilePictureChangePost,
+      params: RequestParams = {},
+    ) =>
+      this.request<ChangeProfilePictureResponseApiModel, HTTPValidationError>({
+        path: `/users/profile/picture/change`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
+        format: "json",
         ...params,
       }),
   };
-  dashboard = {
+  reports = {
     /**
      * @description Get list of reports.
      *
-     * @tags dashboard
-     * @name ReportListDashboardReportsGet
+     * @tags Reports
+     * @name ReportListReportsGet
      * @summary Report List
-     * @request GET:/dashboard/reports
+     * @request GET:/reports
      * @secure
      */
-    reportListDashboardReportsGet: (
+    reportListReportsGet: (
       query?: {
         /** Onlyfavorite */
         onlyFavorite?: boolean | null;
@@ -648,81 +1951,500 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       params: RequestParams = {},
     ) =>
       this.request<FinancialReportListItemApiModel[], HTTPValidationError>({
-        path: `/dashboard/reports`,
-        method: 'GET',
+        path: `/reports`,
+        method: "GET",
         query: query,
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
     /**
-     * @description Get list of reports.
+     * @description Get details of a report.
      *
-     * @tags dashboard
-     * @name ReportDetailsDashboardReportsReportIdGet
+     * @tags Reports
+     * @name ReportDetailsReportsReportIdGet
      * @summary Report Details
-     * @request GET:/dashboard/reports/{report_id}
+     * @request GET:/reports/{report_id}
      * @secure
      */
-    reportDetailsDashboardReportsReportIdGet: (reportId: number, params: RequestParams = {}) =>
+    reportDetailsReportsReportIdGet: (
+      reportId: string,
+      params: RequestParams = {},
+    ) =>
       this.request<FinancialReportDetailsApiModel, HTTPValidationError>({
-        path: `/dashboard/reports/${reportId}`,
-        method: 'GET',
+        path: `/reports/${reportId}`,
+        method: "GET",
         secure: true,
-        format: 'json',
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Get report calculations.
+     *
+     * @tags Reports
+     * @name GetReportCalculationsReportsReportIdPost
+     * @summary Get Report Calculations
+     * @request POST:/reports/{report_id}
+     * @secure
+     */
+    getReportCalculationsReportsReportIdPost: (
+      reportId: string,
+      data: GetReportCalculationsBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<FinancialReportCalculationApiModel, HTTPValidationError>({
+        path: `/reports/${reportId}`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
     /**
      * @description Get list of report categories.
      *
-     * @tags dashboard
-     * @name ReportCategoriesDashboardReportsCategoriesGet
+     * @tags Reports
+     * @name ReportCategoriesReportsCategoriesGet
      * @summary Report Categories
-     * @request GET:/dashboard/reports/categories
+     * @request GET:/reports/categories
      */
-    reportCategoriesDashboardReportsCategoriesGet: (params: RequestParams = {}) =>
+    reportCategoriesReportsCategoriesGet: (params: RequestParams = {}) =>
       this.request<FinancialReportCategoryApiModel[], any>({
-        path: `/dashboard/reports/categories`,
-        method: 'GET',
-        format: 'json',
+        path: `/reports/categories`,
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
     /**
      * @description Add a report to favorites
      *
-     * @tags dashboard
-     * @name AddReportToFavoritesDashboardReportsReportIdFavoritePost
+     * @tags Reports
+     * @name AddReportToFavoritesReportsReportIdFavoritePost
      * @summary Add Report To Favorites
-     * @request POST:/dashboard/reports/{report_id}/favorite
+     * @request POST:/reports/{report_id}/favorite
      * @secure
      */
-    addReportToFavoritesDashboardReportsReportIdFavoritePost: (reportId: number, params: RequestParams = {}) =>
+    addReportToFavoritesReportsReportIdFavoritePost: (
+      reportId: string,
+      params: RequestParams = {},
+    ) =>
       this.request<UserReportFavoriteStatus, HTTPValidationError>({
-        path: `/dashboard/reports/${reportId}/favorite`,
-        method: 'POST',
+        path: `/reports/${reportId}/favorite`,
+        method: "POST",
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
     /**
      * @description Remove a report from favorites
      *
-     * @tags dashboard
-     * @name RemoveReportFromFavoritesDashboardReportsReportIdFavoriteDelete
+     * @tags Reports
+     * @name RemoveReportFromFavoritesReportsReportIdFavoriteDelete
      * @summary Remove Report From Favorites
-     * @request DELETE:/dashboard/reports/{report_id}/favorite
+     * @request DELETE:/reports/{report_id}/favorite
      * @secure
      */
-    removeReportFromFavoritesDashboardReportsReportIdFavoriteDelete: (reportId: number, params: RequestParams = {}) =>
+    removeReportFromFavoritesReportsReportIdFavoriteDelete: (
+      reportId: number,
+      params: RequestParams = {},
+    ) =>
       this.request<UserReportFavoriteStatus, HTTPValidationError>({
-        path: `/dashboard/reports/${reportId}/favorite`,
-        method: 'DELETE',
+        path: `/reports/${reportId}/favorite`,
+        method: "DELETE",
         secure: true,
-        format: 'json',
+        format: "json",
+        ...params,
+      }),
+  };
+  dashboards = {
+    /**
+     * @description Get user dashboards.
+     *
+     * @tags Dashboards
+     * @name UserDashboardsDashboardsGet
+     * @summary User Dashboards
+     * @request GET:/dashboards
+     * @secure
+     */
+    userDashboardsDashboardsGet: (params: RequestParams = {}) =>
+      this.request<DashboardListItemApiModel[], any>({
+        path: `/dashboards`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Add dashboard for user.
+     *
+     * @tags Dashboards
+     * @name CreateDashboardForUserDashboardsPut
+     * @summary Create Dashboard For User
+     * @request PUT:/dashboards
+     * @secure
+     */
+    createDashboardForUserDashboardsPut: (
+      data: CreateDashboardForUserBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<CreateDashboardResponseApiModel, HTTPValidationError>({
+        path: `/dashboards`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Get dashboard details.
+     *
+     * @tags Dashboards
+     * @name DashboardDetailsDashboardsDashboardIdGet
+     * @summary Dashboard Details
+     * @request GET:/dashboards/{dashboard_id}
+     * @secure
+     */
+    dashboardDetailsDashboardsDashboardIdGet: (
+      dashboardId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardDetailsApiModel, HTTPValidationError>({
+        path: `/dashboards/${dashboardId}`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Rename dashboard.
+     *
+     * @tags Dashboards
+     * @name RenameDashboardDashboardsDashboardIdPost
+     * @summary Rename Dashboard
+     * @request POST:/dashboards/{dashboard_id}
+     * @secure
+     */
+    renameDashboardDashboardsDashboardIdPost: (
+      dashboardId: number,
+      data: RenameDashboardForUserBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardListItemApiModel, HTTPValidationError>({
+        path: `/dashboards/${dashboardId}`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Delete dashboard.
+     *
+     * @tags Dashboards
+     * @name DeleteDashboardDashboardsDashboardIdDelete
+     * @summary Delete Dashboard
+     * @request DELETE:/dashboards/{dashboard_id}
+     * @secure
+     */
+    deleteDashboardDashboardsDashboardIdDelete: (
+      dashboardId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardListItemApiModel[], HTTPValidationError>({
+        path: `/dashboards/${dashboardId}`,
+        method: "DELETE",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Add report item to dashboard.
+     *
+     * @tags Dashboards
+     * @name AddReportToDashboardDashboardsDashboardIdPut
+     * @summary Add Report To Dashboard
+     * @request PUT:/dashboards/{dashboard_id}
+     * @secure
+     */
+    addReportToDashboardDashboardsDashboardIdPut: (
+      dashboardId: number,
+      data: AddReportToDashboardForUserBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardItemApiModel, HTTPValidationError>({
+        path: `/dashboards/${dashboardId}`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Duplicate dashboard
+     *
+     * @tags Dashboards
+     * @name DashboardDetailsDashboardsDashboardIdDuplicatePost
+     * @summary Dashboard Details
+     * @request POST:/dashboards/{dashboard_id}/duplicate
+     * @secure
+     */
+    dashboardDetailsDashboardsDashboardIdDuplicatePost: (
+      dashboardId: number,
+      data: DuplicateDashboardForUserBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardDetailsApiModel, HTTPValidationError>({
+        path: `/dashboards/${dashboardId}/duplicate`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Get dashboard items for preview in dashboard list.
+     *
+     * @tags Dashboards
+     * @name GetDashboardItemsForPreviewDashboardsDashboardIdPreviewGet
+     * @summary Get Dashboard Items For Preview
+     * @request GET:/dashboards/{dashboard_id}/preview
+     * @secure
+     */
+    getDashboardItemsForPreviewDashboardsDashboardIdPreviewGet: (
+      dashboardId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardItemPreviewApiModel[], HTTPValidationError>({
+        path: `/dashboards/${dashboardId}/preview`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Remove items from dashboard.
+     *
+     * @tags Dashboards
+     * @name RemoveItemFromDashboardDashboardsDashboardIdItemsDashboardItemIdDelete
+     * @summary Remove Item From Dashboard
+     * @request DELETE:/dashboards/{dashboard_id}/items/{dashboard_item_id}
+     * @secure
+     */
+    removeItemFromDashboardDashboardsDashboardIdItemsDashboardItemIdDelete: (
+      dashboardId: number,
+      dashboardItemId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<DeleteDashboardItemResponseApiModel, HTTPValidationError>({
+        path: `/dashboards/${dashboardId}/items/${dashboardItemId}`,
+        method: "DELETE",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Replace item in dashboard.
+     *
+     * @tags Dashboards
+     * @name ReplaceDashboardItemDashboardsDashboardIdItemsDashboardItemIdReplacePost
+     * @summary Replace Dashboard Item
+     * @request POST:/dashboards/{dashboard_id}/items/{dashboard_item_id}/replace
+     * @secure
+     */
+    replaceDashboardItemDashboardsDashboardIdItemsDashboardItemIdReplacePost: (
+      dashboardId: number,
+      dashboardItemId: number,
+      data: ReplaceDashboardItemCalculationsBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<DashboardItemApiModel, HTTPValidationError>({
+        path: `/dashboards/${dashboardId}/items/${dashboardItemId}/replace`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Get dashboard item calculations.
+     *
+     * @tags Dashboards
+     * @name GetDashboardItemCalculationsDashboardsDashboardIdItemsDashboardItemIdCalculationsPost
+     * @summary Get Dashboard Item Calculations
+     * @request POST:/dashboards/{dashboard_id}/items/{dashboard_item_id}/calculations
+     * @secure
+     */
+    getDashboardItemCalculationsDashboardsDashboardIdItemsDashboardItemIdCalculationsPost:
+      (
+        dashboardId: number,
+        dashboardItemId: number,
+        data: GetDashboardItemCalculationsBody,
+        params: RequestParams = {},
+      ) =>
+        this.request<DashboardItemApiModel, HTTPValidationError>({
+          path: `/dashboards/${dashboardId}/items/${dashboardItemId}/calculations`,
+          method: "POST",
+          body: data,
+          secure: true,
+          type: ContentType.Json,
+          format: "json",
+          ...params,
+        }),
+
+    /**
+     * @description Change dashboard item sort order.
+     *
+     * @tags Dashboards
+     * @name ChangeDashboardItemSortOrderDashboardsDashboardIdItemsDashboardItemIdReorderPost
+     * @summary Change Dashboard Item Sort Order
+     * @request POST:/dashboards/{dashboard_id}/items/{dashboard_item_id}/reorder
+     * @secure
+     */
+    changeDashboardItemSortOrderDashboardsDashboardIdItemsDashboardItemIdReorderPost:
+      (
+        dashboardId: number,
+        dashboardItemId: number,
+        data: ChangeDashboardReportItemSortOrderBody,
+        params: RequestParams = {},
+      ) =>
+        this.request<any, HTTPValidationError>({
+          path: `/dashboards/${dashboardId}/items/${dashboardItemId}/reorder`,
+          method: "POST",
+          body: data,
+          secure: true,
+          type: ContentType.Json,
+          format: "json",
+          ...params,
+        }),
+  };
+  funds = {
+    /**
+     * @description Get list of all funds
+     *
+     * @tags Funds
+     * @name AllFundsFundsGet
+     * @summary All Funds
+     * @request GET:/funds
+     */
+    allFundsFundsGet: (params: RequestParams = {}) =>
+      this.request<FundListItemApiModel[], any>({
+        path: `/funds`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Get list of funds of one type.
+     *
+     * @tags Funds
+     * @name FundsListFundsTypeFundTypeGet
+     * @summary Funds List
+     * @request GET:/funds/type/{fund_type}
+     */
+    fundsListFundsTypeFundTypeGet: (
+      fundType: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<FundListItemApiModel[], HTTPValidationError>({
+        path: `/funds/type/${fundType}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Get a fund type or watchlist tab of fund table for user
+     *
+     * @tags Funds
+     * @name FundTableTabFundsTableGet
+     * @summary Fund Table Tab
+     * @request GET:/funds/table
+     * @secure
+     */
+    fundTableTabFundsTableGet: (
+      query?: {
+        /**
+         * Tab
+         * @default 1
+         */
+        tab?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<FundTableResponseApiModel, HTTPValidationError>({
+        path: `/funds/table`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Pin fund in table tab
+     *
+     * @tags Funds
+     * @name PinFundInTableTabFundsTablePinPost
+     * @summary Pin Fund In Table Tab
+     * @request POST:/funds/table/pin
+     * @secure
+     */
+    pinFundInTableTabFundsTablePinPost: (
+      data: PinFundInTableTabBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<PinFundInTableTabResponseApiModel, HTTPValidationError>({
+        path: `/funds/table/pin`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Unpin fund in table tab
+     *
+     * @tags Funds
+     * @name UnpinFundInTableTabFundsTableUnpinPost
+     * @summary Unpin Fund In Table Tab
+     * @request POST:/funds/table/unpin
+     * @secure
+     */
+    unpinFundInTableTabFundsTableUnpinPost: (
+      data: UnpinFundInTableTabBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<UnpinFundInTableTabResponseApiModel, HTTPValidationError>({
+        path: `/funds/table/unpin`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
         ...params,
       }),
   };

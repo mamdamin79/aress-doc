@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { DatePicker } from './DatePicker';
-import { useArgs } from '@storybook/preview-api';
+import { useArgs } from 'storybook/preview-api';
 import { DateType } from './DatePicker.types';
 
 // Meta configuration for the DatePicker component in Storybook

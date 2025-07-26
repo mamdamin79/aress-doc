@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import { Icon } from '../Icon';
 import { cn } from './../../../utils/classNames.utils';
@@ -28,7 +29,7 @@ export function Bookmark({
           if (selectedColor) setIsOpen(true);
         }}
         className={cn(
-          'absolute top-[13px] z-10 h-fit w-fit cursor-pointer border-none fill-[#D1D3D7]',
+          'fill-surface-neutral-secondary absolute top-[13px] z-10 h-fit w-fit cursor-pointer border-none',
           {
             'fill-surface-accent-pink-600': selectedColor === 'pink',
             'fill-surface-accent-blue-600': selectedColor === 'blue',

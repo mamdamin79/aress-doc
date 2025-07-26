@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { Bookmark } from './Bookmark';
 
 // Meta configuration for the Bookmark component in Storybook

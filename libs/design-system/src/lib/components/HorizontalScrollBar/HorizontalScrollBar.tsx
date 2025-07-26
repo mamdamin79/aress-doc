@@ -1,6 +1,6 @@
 'use client';
-import { cn } from 'libs/design-system/src/utils';
-import React, { useEffect, useRef, useState } from 'react';
+import { cn } from '../../../utils';
+import React, { useEffect, useState } from 'react';
 import { Icon } from '../Icon';
 import { Tooltip } from '../Tooltip';
 

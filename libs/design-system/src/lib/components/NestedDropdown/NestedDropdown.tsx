@@ -5,7 +5,7 @@ import {
   NestedDropdownProps,
   NestedDropdownItemProps,
 } from './NestedDropdown.types';
-import { cn } from 'libs/design-system/src/utils';
+import { cn } from '../../../utils';
 
 export const NestedDropdown: React.FC<NestedDropdownProps> = ({
   title,
@@ -79,6 +79,7 @@ export const NestedDropdown: React.FC<NestedDropdownProps> = ({
               selectedOption={child.selectedOption}
               placeHolder={child.placeHolder}
               optionsListProps={child.optionsListProps}
+              disabled={child.disabled}
             />
           </div>
         ))}

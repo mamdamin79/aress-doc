@@ -108,7 +108,7 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
         modal={false}
         anchor={dropDownStyles.anchor}
         className={cn(
-          'border-border-neutral-primary bg-surface-neutral-primary z-50 mt-1 max-h-[265px] gap-1 overflow-y-scroll rounded-lg border outline-none',
+          'border-border-neutral-primary bg-surface-neutral-primary text-text-neutral-primary z-50 mt-1 max-h-[265px] gap-1 overflow-y-scroll rounded-lg border outline-none',
           dropDownStyles.shadow && 'shadow-7xl',
           dropDownStyles.scrollable && 'scrollbar-sm',
           dropDownStyles.scrollable || 'hidescrollbar',

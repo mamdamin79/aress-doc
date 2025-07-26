@@ -32,10 +32,28 @@ const ModalContext = createContext<ModalContextValue | undefined>(undefined);
 // Provider props
 interface ModalProviderProps {
   children: ReactNode;
+  onActions?: {
+    newDashboard?: (data: {
+      input?: string;
+      checked?: boolean;
+    }) => Promise<void>;
+    deleteDashboard?: (data: {
+      input?: string;
+      checked?: boolean;
+    }) => Promise<void>;
+    changeDashboardName?: (data: { input?: string }) => Promise<void>;
+    copyDashboard?: (data: {
+      input?: string;
+      checked?: boolean;
+    }) => Promise<void>;
+  };
 }
 
 // Provider component
-export const ModalProvider: FC<ModalProviderProps> = ({ children }) => {
+export const ModalProvider: FC<ModalProviderProps> = ({
+  children,
+  onActions,
+}) => {
   const queryClient = useQueryClient();
 
   // Read modal state from React Query cache
@@ -61,18 +79,38 @@ export const ModalProvider: FC<ModalProviderProps> = ({ children }) => {
       <ChangeDashboardNameModal
         isOpen={modalName === 'changeDashboardName'}
         onClose={closeModal}
+        onConfirm={async (data) => {
+        if (onActions?.changeDashboardName) {
+            await onActions.changeDashboardName(data);
+          }
+        }}
       />
       <CopyDashboardModal
         isOpen={modalName === 'copyDashboard'}
         onClose={closeModal}
+        onConfirm={async (data) => {
+          if (onActions?.copyDashboard) {
+            await onActions.copyDashboard(data);
+          }
+        }}
       />
       <NewDashboardModal
         isOpen={modalName === 'newDashboard'}
         onClose={closeModal}
+        onConfirm={async (data) => {
+          if (onActions?.newDashboard) {
+            await onActions.newDashboard(data);
+          }
+        }}
       />
       <DeleteDashboardModal
         isOpen={modalName === 'deleteDashboard'}
         onClose={closeModal}
+        onConfirm={async (data) => {
+          if (onActions?.deleteDashboard) {
+            await onActions.deleteDashboard(data);
+          }
+        }}
       />
     </ModalContext.Provider>
   );
