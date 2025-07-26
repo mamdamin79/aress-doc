@@ -20,14 +20,16 @@ export default function AuthLayout({
     <>
       <header className="flex h-[90px] justify-between px-8 pt-8">
         <div className="text-surface-brand-600-primary flex items-center justify-center">
-          <div className="flex h-14 w-14 items-center justify-center">
-            <LogoMinimal className="lg:hidden" />
+          <div className="flex h-14 w-14 items-center justify-center xl:hidden">
+            <LogoMinimal />
           </div>
-          <div className="hidden flex-row items-center gap-4 text-lg font-semibold lg:flex">
+          <div className="hidden flex-row items-center gap-4 text-lg font-semibold xl:flex">
             <Link href={'/'}>
               <LogoFull width={48} height={48} />
             </Link>
-            <div>پردازش اطلاعات مالی آرسس</div>
+            <div className="text-text-neutral-primary">
+              پردازش اطلاعات مالی آرسس
+            </div>
           </div>
         </div>
         <div className="flex h-14 w-14 items-start justify-end">
@@ -38,8 +40,8 @@ export default function AuthLayout({
           />
         </div>
       </header>
-      <main className="relative">
-        <div className="-z-1 absolute right-0 top-44 max-h-full w-full overflow-hidden">
+      <main>
+        <div className="absolute right-0 top-44 -z-50 max-h-full w-full overflow-hidden">
           <WavesSVG className="w-full rotate-6" height={421} />
         </div>
         {children}

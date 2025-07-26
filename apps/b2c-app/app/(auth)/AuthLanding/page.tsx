@@ -9,6 +9,7 @@ import CryptocurrencyAppAnimation from './_lottie_data/CryptocurrencyApp.json';
 
 import { Button } from 'design-system';
 import { Indicator } from './_components/Indicator';
+import Link from 'next/link';
 
 const page = () => {
   const slidesData = [
@@ -109,14 +110,17 @@ const page = () => {
         </div>
         <div className="mt-10 flex flex-col items-center gap-4">
           <div className="flex w-[313px] flex-col gap-3">
-            <Button
-              align="center"
-              mode="primary"
-              size="md"
-              className="w-full font-medium"
-            >
-              ورود
-            </Button>
+            <Link href={'/Signin'}>
+              <Button
+                align="center"
+                mode="primary"
+                size="md"
+                className="w-full font-medium"
+              >
+                ورود
+              </Button>
+            </Link>
+
             <Button
               align="center"
               mode="secondary"
