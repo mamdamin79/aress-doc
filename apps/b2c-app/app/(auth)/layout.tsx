@@ -1,6 +1,7 @@
 'use client';
 import { ReactComponent as LogoMinimal } from '../../assets/images/logos/LogoWithText.svg';
 import { ReactComponent as LogoFull } from '../../assets/images/logos/Logo.svg';
+import { ReactComponent as WavesSVG } from './Waves.svg';
 
 import { IconProps, SquaredButton } from 'design-system';
 import { useThemeToggle } from '@shared';
@@ -37,7 +38,12 @@ export default function AuthLayout({
           />
         </div>
       </header>
-      <main>{children}</main>
+      <main className="relative">
+        <div className="-z-1 absolute right-0 top-44 max-h-full w-full overflow-hidden">
+          <WavesSVG className="w-full rotate-6" height={421} />
+        </div>
+        {children}
+      </main>
     </>
   );
 }
