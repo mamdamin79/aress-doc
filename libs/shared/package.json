@@ -1,7 +1,7 @@
 {
-  "name": "@aress/shared-hooks",
+  "name": "@aress/shared",
   "version": "1.0.0",
-  "description": "Shared React hooks for all Aress applications",
+  "description": "Shared React utilities for all Aress applications",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "private": true,

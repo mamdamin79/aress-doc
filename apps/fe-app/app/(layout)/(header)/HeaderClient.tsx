@@ -14,7 +14,7 @@ import {
   useHeaderVisibility,
   useHtmlPaddingRight,
   useThemeToggle,
-} from '@shared-hooks';
+} from '@shared';
 import { DESKTOP_BREAKPOINT } from './Header.constants';
 import { BurgerMenu } from './BurgerMenu';
 import { DesktopMenu } from './DesktopMenu';

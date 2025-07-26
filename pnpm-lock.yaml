@@ -370,7 +370,7 @@ importers:
 
   libs/openapi: {}
 
-  libs/shared-hooks:
+  libs/shared:
     dependencies:
       react:
         specifier: ^18.0.0

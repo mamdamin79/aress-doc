@@ -27,7 +27,7 @@ import {
   rectSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { useHtmlPaddingRight } from '@shared-hooks';
+import { useHtmlPaddingRight } from '@shared';
 import { useCustomToast } from 'design-system';
 import {
   FinancialReportCalculationApiModel,

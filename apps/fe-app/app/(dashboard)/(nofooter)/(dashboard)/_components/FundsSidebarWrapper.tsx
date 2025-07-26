@@ -113,7 +113,7 @@ const data: FundsSidebarData[] = [
   },
 ];
 import React, { useEffect, useState } from 'react';
-import { useHeaderVisibility } from '@shared-hooks';
+import { useHeaderVisibility } from '@shared';
 import { SidebarSkeleton } from './skeletons/SideBarSkeleton';
 import { SidebarItemSkeleton } from './skeletons/SidebarItemSkeleton';
 export const FundsSidebarWrapper: React.FC = () => {

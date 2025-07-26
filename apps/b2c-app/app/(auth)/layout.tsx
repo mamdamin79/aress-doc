@@ -3,7 +3,7 @@ import { ReactComponent as LogoMinimal } from '../../assets/images/logos/LogoWit
 import { ReactComponent as LogoFull } from '../../assets/images/logos/Logo.svg';
 
 import { IconProps, SquaredButton } from 'design-system';
-import { useThemeToggle } from '@shared-hooks';
+import { useThemeToggle } from '@shared';
 import Link from 'next/link';
 export default function AuthLayout({
   children,
