@@ -2,12 +2,13 @@
 import { ProgressBar } from 'design-system';
 import React, { useState } from 'react';
 import { AuthForm } from '../_components/AuthForm';
+import { Result } from './_components/Result';
 
 const page = () => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const handleNextStep = () => {
-    if (currentStep < 1) {
+    if (currentStep < 2) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -23,17 +24,21 @@ const page = () => {
       <div className="absolute left-1/2 top-12 w-[680px] -translate-x-1/2">
         <ProgressBar
           activeIndex={currentStep}
-          progressBarItems={['کد ملی', 'رمز یک‌‌بار مصرف', 'ورود']}
+          progressBarItems={['کد ملی', 'رمز یک‌‌بار مصرف', 'ثبت‌نام نهایی']}
         />
       </div>
 
       <div className="flex min-h-screen items-start justify-center px-6 pt-40">
-        <AuthForm
-          currentStep={currentStep}
-          onNextStep={handleNextStep}
-          onPrevStep={handlePrevStep}
-          type="login"
-        />
+        {currentStep === 0 || currentStep === 1 ? (
+          <AuthForm
+            currentStep={currentStep}
+            onNextStep={handleNextStep}
+            onPrevStep={handlePrevStep}
+            type="signup"
+          />
+        ) : (
+          <Result type="success" />
+        )}
       </div>
     </>
   );

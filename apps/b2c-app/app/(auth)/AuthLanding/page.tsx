@@ -121,14 +121,16 @@ const page = () => {
               </Button>
             </Link>
 
-            <Button
-              align="center"
-              mode="secondary"
-              size="md"
-              className="w-full font-medium"
-            >
-              ثبت نام
-            </Button>
+            <Link href={'/Signup'}>
+              <Button
+                align="center"
+                mode="secondary"
+                size="md"
+                className="w-full font-medium"
+              >
+                ثبت نام
+              </Button>
+            </Link>
           </div>
           <div className="text-md flex items-center justify-center font-medium">
             <span className="whitespace-nowrap text-nowrap">

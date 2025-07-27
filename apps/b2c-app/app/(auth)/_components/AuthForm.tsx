@@ -1,15 +1,18 @@
 'use client';
 import React, { useState } from 'react';
-import { Button, TextField } from 'design-system';
+import { Button, Checkbox, TextField } from 'design-system';
 import { Controller, useForm } from 'react-hook-form';
 import { OTPForm } from './OTPForm';
 import { validateNationalCode } from '@shared';
 import Link from 'next/link';
 
-interface LoginFormsProps {
+type AuthType = 'login' | 'signup';
+
+interface AuthFormProps {
   currentStep: number;
   onNextStep: () => void;
   onPrevStep: () => void;
+  type: AuthType;
 }
 
 interface NationalIdFormValues {
@@ -22,11 +25,26 @@ const SectionHeader = ({ title }: { title: string }) => (
   </span>
 );
 
+const authConfig = {
+  login: {
+    title: 'ورود به آرسس اینوستور',
+    description:
+      'با ارائه شماره ملی، پیامک تایید از آرسس اینوستور به موبایل‌تان ارسال می‌شود.',
+  },
+  signup: {
+    title: 'ورود به آرسس اینوستور',
+    description:
+      'با ارائه شماره ملی، پیامک تایید از سجام به موبایل‌تان ارسال می‌شود.',
+  },
+};
+
 // National ID Form Component
 const NationalIdForm = ({
   onSubmit,
+  type,
 }: {
   onSubmit: (data: NationalIdFormValues) => void;
+  type: AuthType;
 }) => {
   const {
     control,
@@ -50,19 +68,20 @@ const NationalIdForm = ({
     }
   };
 
+  const config = authConfig[type];
+  const [confirmedRules, setConfirmedRules] = useState(false);
   return (
     <form
       dir="rtl"
       className="bg-surface-neutral-primary border-border-neutral-primary flex w-full flex-col gap-4 rounded-3xl border p-6"
       onSubmit={handleSubmit(onSaveData)}
     >
-      <SectionHeader title="ورود به آرسس اینوستور" />
+      <SectionHeader title={config.title} />
 
       <span className="text-text-neutral-secondary text-center text-sm">
-        با ارائه شماره ملی، پیامک تایید از آرسس اینوستور به موبایل‌تان ارسال
-        می‌شود.
+        {config.description}
       </span>
-      <div className="mt-12">
+      <div className="text-text-neutral-secondary mt-12">
         <Controller
           name="nationalCode"
           control={control}
@@ -94,7 +113,16 @@ const NationalIdForm = ({
           )}
         />
       </div>
-
+      <Checkbox
+        onChange={() => setConfirmedRules((prev) => !prev)}
+        checked={confirmedRules}
+        reactcontent={
+          <div className="flex flex-row gap-2 font-medium">
+            <span className="text-text-brand-primary-600">قوانین و مقررات</span>
+            <span>آرسس اینوستور را می‌پذیرم</span>
+          </div>
+        }
+      />
       <div className="flex flex-row justify-center gap-4">
         <Button
           align="center"
@@ -102,6 +130,7 @@ const NationalIdForm = ({
           isLoading={isSubmitting}
           size="md"
           type="submit"
+          disabled={!confirmedRules}
         >
           ادامه
         </Button>
@@ -123,11 +152,12 @@ const NationalIdForm = ({
   );
 };
 
-// Main LoginForms Component
-export const LoginForms: React.FC<LoginFormsProps> = ({
+// Main AuthForm Component
+export const AuthForm: React.FC<AuthFormProps> = ({
   currentStep,
   onNextStep,
   onPrevStep,
+  type,
 }) => {
   const [nationalId, setNationalId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -145,13 +175,14 @@ export const LoginForms: React.FC<LoginFormsProps> = ({
       // Simulate API call for OTP verification
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      // Handle successful login
-      console.log('Login successful with OTP:', code);
+      // Handle successful login/signup
+      console.log(`${type} successful with OTP:`, code);
       // Redirect to dashboard or handle success
     } catch (error) {
       console.error('OTP verification failed:', error);
     } finally {
       setIsLoading(false);
+      onNextStep();
     }
   };
 
@@ -169,7 +200,7 @@ export const LoginForms: React.FC<LoginFormsProps> = ({
   if (currentStep === 0) {
     return (
       <div className="mx-auto h-[355px] w-[528px]">
-        <NationalIdForm onSubmit={handleNationalIdSubmit} />
+        <NationalIdForm onSubmit={handleNationalIdSubmit} type={type} />
       </div>
     );
   }
