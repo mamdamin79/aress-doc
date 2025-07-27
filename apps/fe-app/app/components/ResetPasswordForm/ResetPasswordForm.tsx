@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { ResetPasswordFormValues } from './ResetPasswordForm.types';
 import { validateNationalCode } from './ResetPasswordForm.utils';
 import { validatePhoneNumber } from '../LoginForm/LoginForm.utils';
-import { useEffect, useState } from 'react';
-import { useUsersServicePostUsersPasswordForgotCaptcha } from '@openapi';
+import { useEffect } from 'react';
+import { useUsersServiceGetUsersPasswordForgotCaptcha } from '@openapi';
 export interface ResetPasswordFormProps {
   onSubmit: (values: ResetPasswordFormValues) => void;
 }
@@ -25,29 +25,22 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
     },
   });
 
-  // Use mutation for captcha
-  const {
-    mutate: getCaptcha,
-    data: captchaData,
-    isPending: isCaptchaLoading,
-  } = useUsersServicePostUsersPasswordForgotCaptcha();
-
-  // Request captcha on mount
-  useEffect(() => {
-    getCaptcha({});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // Use query for captcha
+  const { data: captchaData, refetch: refetchCaptcha } =
+    useUsersServiceGetUsersPasswordForgotCaptcha({});
 
   // Refresh captcha handler
   const handleRefreshCaptcha = () => {
-    getCaptcha({});
+    refetchCaptcha();
   };
 
   // Set captchaUid in form when captchaData changes
   useEffect(() => {
-    if (captchaData?.uid !== undefined) {
+    if (captchaData?.uid !== undefined && captchaData?.uid !== null) {
       setValue('captchaUid', captchaData.uid);
       setValue('captcha', ''); // clear captcha input on new captcha
+    } else {
+      setValue('captchaUid', undefined);
     }
   }, [captchaData, setValue]);
 
@@ -135,7 +128,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
                   placeholder="کد را وارد کنید"
                   isError={!!fieldState.error}
                   supportText={fieldState.error?.message || ' '}
-                  captchaValue={captchaData?.value}
+                  captchaValue={captchaData?.value ?? undefined}
                   onRefreshCaptcha={handleRefreshCaptcha}
                   trailingIcons={[]}
                   {...field}
