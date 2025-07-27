@@ -11,23 +11,29 @@ export const ensureUseUsersServiceGetUsersLoginCaptchaData = (queryClient: Query
   captchaWidth?: number;
 } = {}) => queryClient.ensureQueryData({ queryKey: Common.UseUsersServiceGetUsersLoginCaptchaKeyFn({ captchaHeight, captchaType, captchaWidth }), queryFn: () => UsersService.getUsersLoginCaptcha({ captchaHeight, captchaType, captchaWidth }) });
 export const ensureUseUsersServiceGetUsersMeData = (queryClient: QueryClient) => queryClient.ensureQueryData({ queryKey: Common.UseUsersServiceGetUsersMeKeyFn(), queryFn: () => UsersService.getUsersMe() });
+export const ensureUseUsersServiceGetUsersPasswordForgotCaptchaData = (queryClient: QueryClient, { captchaHeight, captchaType, captchaWidth }: {
+  captchaHeight?: number;
+  captchaType?: CaptchaType;
+  captchaWidth?: number;
+} = {}) => queryClient.ensureQueryData({ queryKey: Common.UseUsersServiceGetUsersPasswordForgotCaptchaKeyFn({ captchaHeight, captchaType, captchaWidth }), queryFn: () => UsersService.getUsersPasswordForgotCaptcha({ captchaHeight, captchaType, captchaWidth }) });
 export const ensureUseUsersServiceGetUsersProfilePasswordChangeOtpData = (queryClient: QueryClient) => queryClient.ensureQueryData({ queryKey: Common.UseUsersServiceGetUsersProfilePasswordChangeOtpKeyFn(), queryFn: () => UsersService.getUsersProfilePasswordChangeOtp() });
 export const ensureUseReportsServiceGetReportsData = (queryClient: QueryClient, { onlyFavorite, onlyHavingVideo, onlyNew }: {
   onlyFavorite?: boolean;
   onlyHavingVideo?: boolean;
   onlyNew?: boolean;
 } = {}) => queryClient.ensureQueryData({ queryKey: Common.UseReportsServiceGetReportsKeyFn({ onlyFavorite, onlyHavingVideo, onlyNew }), queryFn: () => ReportsService.getReports({ onlyFavorite, onlyHavingVideo, onlyNew }) });
-export const ensureUseReportsServiceGetReportsByReportIdData = (queryClient: QueryClient, { reportId }: {
-  reportId: number;
-}) => queryClient.ensureQueryData({ queryKey: Common.UseReportsServiceGetReportsByReportIdKeyFn({ reportId }), queryFn: () => ReportsService.getReportsByReportId({ reportId }) });
 export const ensureUseReportsServiceGetReportsCategoriesData = (queryClient: QueryClient) => queryClient.ensureQueryData({ queryKey: Common.UseReportsServiceGetReportsCategoriesKeyFn(), queryFn: () => ReportsService.getReportsCategories() });
+export const ensureUseReportsServiceGetReportsByReportIdData = (queryClient: QueryClient, { reportId, screenshotQueryId }: {
+  reportId: string;
+  screenshotQueryId?: string;
+}) => queryClient.ensureQueryData({ queryKey: Common.UseReportsServiceGetReportsByReportIdKeyFn({ reportId, screenshotQueryId }), queryFn: () => ReportsService.getReportsByReportId({ reportId, screenshotQueryId }) });
 export const ensureUseDashboardsServiceGetDashboardsData = (queryClient: QueryClient) => queryClient.ensureQueryData({ queryKey: Common.UseDashboardsServiceGetDashboardsKeyFn(), queryFn: () => DashboardsService.getDashboards() });
 export const ensureUseDashboardsServiceGetDashboardsByDashboardIdData = (queryClient: QueryClient, { dashboardId }: {
   dashboardId: number;
 }) => queryClient.ensureQueryData({ queryKey: Common.UseDashboardsServiceGetDashboardsByDashboardIdKeyFn({ dashboardId }), queryFn: () => DashboardsService.getDashboardsByDashboardId({ dashboardId }) });
-export const ensureUseDashboardsServiceGetDashboardsByDashboardIdItemsPreviewData = (queryClient: QueryClient, { dashboardId }: {
+export const ensureUseDashboardsServiceGetDashboardsByDashboardIdPreviewData = (queryClient: QueryClient, { dashboardId }: {
   dashboardId: number;
-}) => queryClient.ensureQueryData({ queryKey: Common.UseDashboardsServiceGetDashboardsByDashboardIdItemsPreviewKeyFn({ dashboardId }), queryFn: () => DashboardsService.getDashboardsByDashboardIdItemsPreview({ dashboardId }) });
+}) => queryClient.ensureQueryData({ queryKey: Common.UseDashboardsServiceGetDashboardsByDashboardIdPreviewKeyFn({ dashboardId }), queryFn: () => DashboardsService.getDashboardsByDashboardIdPreview({ dashboardId }) });
 export const ensureUseFundsServiceGetFundsData = (queryClient: QueryClient) => queryClient.ensureQueryData({ queryKey: Common.UseFundsServiceGetFundsKeyFn(), queryFn: () => FundsService.getFunds() });
 export const ensureUseFundsServiceGetFundsTypeByFundTypeData = (queryClient: QueryClient, { fundType }: {
   fundType: number;

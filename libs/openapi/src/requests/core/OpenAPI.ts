@@ -24,37 +24,33 @@ export class Interceptors<T> {
 }
 
 export type OpenAPIConfig = {
-  BASE: string;
-  CREDENTIALS: 'include' | 'omit' | 'same-origin';
-  ENCODE_PATH?: ((path: string) => string) | undefined;
-  HEADERS?: Headers | Resolver<Headers> | undefined;
-  PASSWORD?: string | Resolver<string> | undefined;
-  TOKEN?: string | Resolver<string> | undefined;
-  USERNAME?: string | Resolver<string> | undefined;
-  VERSION: string;
-  WITH_CREDENTIALS: boolean;
-  interceptors: {
-    request: Interceptors<RequestInit>;
-    response: Interceptors<Response>;
-  };
+	BASE: string;
+	CREDENTIALS: 'include' | 'omit' | 'same-origin';
+	ENCODE_PATH?: ((path: string) => string) | undefined;
+	HEADERS?: Headers | Resolver<Headers> | undefined;
+	PASSWORD?: string | Resolver<string> | undefined;
+	TOKEN?: string | Resolver<string> | undefined;
+	USERNAME?: string | Resolver<string> | undefined;
+	VERSION: string;
+	WITH_CREDENTIALS: boolean;
+	interceptors: {
+		request: Interceptors<RequestInit>;
+		response: Interceptors<Response>;
+	};
 };
 
 export const OpenAPI: OpenAPIConfig = {
-  BASE: process.env.NEXT_PUBLIC_API_URL,
-  CREDENTIALS: 'include',
-  ENCODE_PATH: undefined,
-  HEADERS: undefined,
-  PASSWORD: undefined,
-  // Always get token from localStorage for Authorization header
-  TOKEN: async () =>
-    typeof window !== 'undefined'
-      ? localStorage.getItem('access_token') || ''
-      : '',
-  USERNAME: undefined,
-  VERSION: '0.0.1',
-  WITH_CREDENTIALS: false,
-  interceptors: {
-    request: new Interceptors(),
-    response: new Interceptors(),
-  },
+	BASE: '',
+	CREDENTIALS: 'include',
+	ENCODE_PATH: undefined,
+	HEADERS: undefined,
+	PASSWORD: undefined,
+	TOKEN: undefined,
+	USERNAME: undefined,
+	VERSION: '0.0.1',
+	WITH_CREDENTIALS: false,
+	interceptors: {
+		request: new Interceptors(),
+		response: new Interceptors(),
+	},
 };

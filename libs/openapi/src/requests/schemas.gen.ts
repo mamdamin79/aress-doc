@@ -79,10 +79,46 @@ export const $AressApiUser = {
             type: 'boolean',
             title: 'Active',
             description: 'Whether this user is active or not, is always "true" for logged in user.'
+        },
+        firstName: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Firstname',
+            description: 'First name of user.'
+        },
+        lastName: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Lastname',
+            description: 'Last name the user.'
+        },
+        profilePicture: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Profilepicture',
+            description: 'Profile picture url of the user.'
         }
     },
     type: 'object',
-    required: ['identifier', 'username', 'email', 'phoneNumber', 'nationalCode', 'active'],
+    required: ['identifier', 'username', 'email', 'phoneNumber', 'nationalCode', 'active', 'firstName', 'lastName', 'profilePicture'],
     title: 'AressApiUser'
 } as const;
 
@@ -154,6 +190,54 @@ export const $Body_login_for_access_token_users_login_post = {
     title: 'Body_login_for_access_token_users_login_post'
 } as const;
 
+export const $Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post = {
+    properties: {
+        file: {
+            type: 'string',
+            format: 'binary',
+            title: 'File'
+        },
+        selected_filters: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Selected Filters'
+        }
+    },
+    type: 'object',
+    required: ['file', 'selected_filters'],
+    title: 'Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post'
+} as const;
+
+export const $Body_save_screenshot_reports__report_id__screenshot_post = {
+    properties: {
+        selected_filters: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Selected Filters'
+        },
+        file: {
+            type: 'string',
+            format: 'binary',
+            title: 'File'
+        }
+    },
+    type: 'object',
+    required: ['selected_filters', 'file'],
+    title: 'Body_save_screenshot_reports__report_id__screenshot_post'
+} as const;
+
 export const $Body_test_user_access_token_users_token_post = {
     properties: {
         grant_type: {
@@ -212,11 +296,25 @@ export const $Body_test_user_access_token_users_token_post = {
 export const $CaptchaApiModel = {
     properties: {
         value: {
-            type: 'string',
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
             title: 'Value'
         },
         uid: {
-            type: 'integer',
+            anyOf: [
+                {
+                    type: 'integer'
+                },
+                {
+                    type: 'null'
+                }
+            ],
             title: 'Uid'
         },
         required: {
@@ -237,18 +335,70 @@ export const $CaptchaType = {
 
 export const $ChangeDashboardReportItemSortOrderBody = {
     properties: {
-        dashboardItemId: {
-            type: 'integer',
-            title: 'Dashboarditemid'
-        },
         order: {
             type: 'integer',
             title: 'Order'
         }
     },
     type: 'object',
-    required: ['dashboardItemId', 'order'],
+    required: ['order'],
     title: 'ChangeDashboardReportItemSortOrderBody'
+} as const;
+
+export const $ChangeEmailByOtpBody = {
+    properties: {
+        otp: {
+            type: 'string',
+            title: 'Otp'
+        }
+    },
+    type: 'object',
+    required: ['otp'],
+    title: 'ChangeEmailByOtpBody'
+} as const;
+
+export const $ChangeEmailByOtpResponseApiModel = {
+    properties: {
+        success: {
+            type: 'boolean',
+            title: 'Success'
+        }
+    },
+    type: 'object',
+    required: ['success'],
+    title: 'ChangeEmailByOtpResponseApiModel'
+} as const;
+
+export const $ChangeEmailGetOtpBody = {
+    properties: {
+        newEmail: {
+            type: 'string',
+            title: 'Newemail'
+        },
+        passwordVerificationToken: {
+            type: 'string',
+            title: 'Passwordverificationtoken'
+        }
+    },
+    type: 'object',
+    required: ['newEmail', 'passwordVerificationToken'],
+    title: 'ChangeEmailGetOtpBody'
+} as const;
+
+export const $ChangeEmailGetOtpResponseApiModel = {
+    properties: {
+        retrySeconds: {
+            type: 'integer',
+            title: 'Retryseconds'
+        },
+        email: {
+            type: 'string',
+            title: 'Email'
+        }
+    },
+    type: 'object',
+    required: ['retrySeconds', 'email'],
+    title: 'ChangeEmailGetOtpResponseApiModel'
 } as const;
 
 export const $ChangePasswordByOtpApiModel = {
@@ -387,6 +537,25 @@ export const $CreateDashboardForUserBody = {
     title: 'CreateDashboardForUserBody'
 } as const;
 
+export const $CreateDashboardResponseApiModel = {
+    properties: {
+        createdDashboardId: {
+            type: 'integer',
+            title: 'Createddashboardid'
+        },
+        dashboards: {
+            items: {
+                '$ref': '#/components/schemas/DashboardListItemApiModel'
+            },
+            type: 'array',
+            title: 'Dashboards'
+        }
+    },
+    type: 'object',
+    required: ['createdDashboardId', 'dashboards'],
+    title: 'CreateDashboardResponseApiModel'
+} as const;
+
 export const $DashboardDetailsApiModel = {
     properties: {
         identifier: {
@@ -397,12 +566,12 @@ export const $DashboardDetailsApiModel = {
             type: 'string',
             title: 'Name'
         },
-        reports: {
+        items: {
             items: {
                 '$ref': '#/components/schemas/DashboardItemApiModel'
             },
             type: 'array',
-            title: 'Reports'
+            title: 'Items'
         },
         fundsByCategory: {
             items: {
@@ -413,7 +582,7 @@ export const $DashboardDetailsApiModel = {
         }
     },
     type: 'object',
-    required: ['identifier', 'name', 'reports', 'fundsByCategory'],
+    required: ['identifier', 'name', 'items', 'fundsByCategory'],
     title: 'DashboardDetailsApiModel'
 } as const;
 
@@ -478,10 +647,24 @@ export const $DashboardFundApiModel = {
                 }
             ],
             title: 'Returnlastyearpercent'
+        },
+        dailyRedeemNavMonth: {
+            anyOf: [
+                {
+                    items: {
+                        type: 'integer'
+                    },
+                    type: 'array'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Dailyredeemnavmonth'
         }
     },
     type: 'object',
-    required: ['identifier', 'registrationNumber', 'name', 'abbreviatedName', 'returnLastWeekPercent', 'returnLastMonthPercent', 'returnLast3MonthsPercent', 'returnLastYearPercent'],
+    required: ['identifier', 'registrationNumber', 'name', 'abbreviatedName', 'returnLastWeekPercent', 'returnLastMonthPercent', 'returnLast3MonthsPercent', 'returnLastYearPercent', 'dailyRedeemNavMonth'],
     title: 'DashboardFundApiModel'
 } as const;
 
@@ -589,6 +772,18 @@ export const $DashboardItemReportApiModel = {
     title: 'DashboardItemReportApiModel'
 } as const;
 
+export const $DashboardItemScreenshotResponseApiModel = {
+    properties: {
+        queryId: {
+            type: 'string',
+            title: 'Queryid'
+        }
+    },
+    type: 'object',
+    required: ['queryId'],
+    title: 'DashboardItemScreenshotResponseApiModel'
+} as const;
+
 export const $DashboardListItemApiModel = {
     properties: {
         identifier: {
@@ -625,16 +820,22 @@ export const $DashboardReportPreviewApiModel = {
     title: 'DashboardReportPreviewApiModel'
 } as const;
 
-export const $DeleteDashboardItemFromDashboardBody = {
+export const $DeleteDashboardItemResponseApiModel = {
+    properties: {},
+    type: 'object',
+    title: 'DeleteDashboardItemResponseApiModel'
+} as const;
+
+export const $DuplicateDashboardForUserBody = {
     properties: {
-        dashboardItemId: {
-            type: 'integer',
-            title: 'Dashboarditemid'
+        name: {
+            type: 'string',
+            title: 'Name'
         }
     },
     type: 'object',
-    required: ['dashboardItemId'],
-    title: 'DeleteDashboardItemFromDashboardBody'
+    required: ['name'],
+    title: 'DuplicateDashboardForUserBody'
 } as const;
 
 export const $FinancialReportCalculationApiModel = {
@@ -658,6 +859,9 @@ export const $FinancialReportCalculationApiModel = {
                 },
                 {
                     '$ref': '#/components/schemas/Report15CalculationResult'
+                },
+                {
+                    '$ref': '#/components/schemas/Report39CalculationResult'
                 }
             ],
             title: 'Calculation'
@@ -695,7 +899,7 @@ export const $FinancialReportCategoryApiModel = {
 export const $FinancialReportDetailsApiModel = {
     properties: {
         identifier: {
-            type: 'integer',
+            type: 'string',
             title: 'Identifier',
             description: 'Unique identifier of report'
         },
@@ -707,7 +911,14 @@ export const $FinancialReportDetailsApiModel = {
             '$ref': '#/components/schemas/FinancialReportCategoryApiModel'
         },
         image: {
-            type: 'string',
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
             title: 'Image'
         },
         summary: {
@@ -761,10 +972,21 @@ export const $FinancialReportDetailsApiModel = {
                     type: 'null'
                 }
             ]
+        },
+        screenshotUrl: {
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Screenshoturl'
         }
     },
     type: 'object',
-    required: ['identifier', 'title', 'category', 'image', 'summary', 'markdownDescription', 'video', 'relatedReports', 'reportCalculation'],
+    required: ['identifier', 'title', 'category', 'image', 'summary', 'markdownDescription', 'video', 'relatedReports', 'reportCalculation', 'screenshotUrl'],
     title: 'FinancialReportDetailsApiModel'
 } as const;
 
@@ -828,7 +1050,7 @@ export const $FinancialReportFilterOptionDto = {
 export const $FinancialReportListItemApiModel = {
     properties: {
         identifier: {
-            type: 'integer',
+            type: 'string',
             title: 'Identifier',
             description: 'Unique identifier of report'
         },
@@ -840,7 +1062,14 @@ export const $FinancialReportListItemApiModel = {
             '$ref': '#/components/schemas/FinancialReportCategoryApiModel'
         },
         image: {
-            type: 'string',
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
             title: 'Image'
         },
         summary: {
@@ -892,22 +1121,27 @@ export const $FundListItemApiModel = {
     properties: {
         identifier: {
             type: 'integer',
-            title: 'Identifier'
+            title: 'Identifier',
+            description: 'شناسه صندوق'
         },
         registrationNumber: {
             type: 'integer',
-            title: 'Registrationnumber'
+            title: 'Registrationnumber',
+            description: 'شماره ثبت نزد سازمان بورس'
         },
         name: {
             type: 'string',
-            title: 'Name'
+            title: 'Name',
+            description: 'نام کامل صندوق'
         },
         abbreviatedName: {
             type: 'string',
-            title: 'Abbreviatedname'
+            title: 'Abbreviatedname',
+            description: 'نام صندوق'
         },
         fundType: {
-            '$ref': '#/components/schemas/FundTypeApiModel'
+            '$ref': '#/components/schemas/FundTypeApiModel',
+            description: 'نوع صندوق'
         },
         logoMedium: {
             anyOf: [
@@ -918,7 +1152,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Logomedium'
+            title: 'Logomedium',
+            description: 'آدرس لوگوی صندوق - سایز متوسط'
         },
         logoThumbnail: {
             anyOf: [
@@ -929,73 +1164,105 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Logothumbnail'
+            title: 'Logothumbnail',
+            description: 'آدرس لوگوی صندوق - سایز کوچک'
         },
         website: {
-            type: 'string',
-            title: 'Website'
+            anyOf: [
+                {
+                    type: 'string'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Website',
+            description: 'وبسایت صندوق'
         },
         statuteUrl: {
             type: 'string',
-            title: 'Statuteurl'
+            title: 'Statuteurl',
+            description: 'اساسنامه صندوق'
         },
         prospectusUrl: {
             type: 'string',
-            title: 'Prospectusurl'
+            title: 'Prospectusurl',
+            description: 'امیدنامه صندوق'
         },
         isEtf: {
             type: 'boolean',
-            title: 'Isetf'
+            title: 'Isetf',
+            description: 'آیا صندوق etf است'
         },
         isCharity: {
             type: 'boolean',
-            title: 'Ischarity'
+            title: 'Ischarity',
+            description: 'آیا صندوق نیکوکاری است'
+        },
+        hasVideo: {
+            type: 'boolean',
+            title: 'Hasvideo',
+            description: 'دارای ویدیو بررسی'
         },
         manager: {
             type: 'string',
-            title: 'Manager'
+            title: 'Manager',
+            description: 'مدیر صنودق'
         },
         custodian: {
             type: 'string',
-            title: 'Custodian'
+            title: 'Custodian',
+            description: 'متولی صندوق'
         },
         auditor: {
             type: 'string',
-            title: 'Auditor'
+            title: 'Auditor',
+            description: 'حسابرس صندوق'
         },
         liquidityGuarantor: {
             type: 'string',
-            title: 'Liquidityguarantor'
+            title: 'Liquidityguarantor',
+            description: 'ضامن نقد شوندگی صندوق'
+        },
+        marketMaker: {
+            type: 'string',
+            title: 'Marketmaker',
+            description: 'بازارگردان'
         },
         initiationDate: {
             type: 'string',
             title: 'Initiationdate',
-            description: 'Gregorian date of fund initiation in YYYY-mm-dd format'
+            description: 'تاریخ آغاز فعالیت میلادی'
         },
         initiationJdate: {
             type: 'string',
             title: 'Initiationjdate',
-            description: 'Jalali date of fund initiation in YYYY-mm-dd format'
+            description: 'تاریخ آغاز فعالیت'
         },
         issueNavRials: {
             type: 'integer',
-            title: 'Issuenavrials'
+            title: 'Issuenavrials',
+            description: 'قیمت صدور'
         },
         redeemNavRials: {
             type: 'integer',
-            title: 'Redeemnavrials'
+            title: 'Redeemnavrials',
+            description: 'قیمت ابطال'
         },
         statisticalNavRials: {
             type: 'integer',
-            title: 'Statisticalnavrials'
+            title: 'Statisticalnavrials',
+            description: 'قیمت آماری'
         },
         assetUnderManagementRials: {
             type: 'integer',
-            title: 'Assetundermanagementrials'
+            title: 'Assetundermanagementrials',
+            description: 'دارایی تحت مدیریت'
         },
         numberOfUnits: {
             type: 'integer',
-            title: 'Numberofunits'
+            title: 'Numberofunits',
+            description: 'تعداد واحد'
         },
         returnLastWeekPercent: {
             anyOf: [
@@ -1006,7 +1273,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Returnlastweekpercent'
+            title: 'Returnlastweekpercent',
+            description: 'بازدهی هفته اخیر'
         },
         returnLastMonthPercent: {
             anyOf: [
@@ -1017,7 +1285,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Returnlastmonthpercent'
+            title: 'Returnlastmonthpercent',
+            description: 'بازدهی ماه اخیر'
         },
         returnLast3MonthsPercent: {
             anyOf: [
@@ -1028,7 +1297,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Returnlast3Monthspercent'
+            title: 'Returnlast3Monthspercent',
+            description: 'بازدهی سه ماه اخیر'
         },
         returnLastYearPercent: {
             anyOf: [
@@ -1039,7 +1309,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Returnlastyearpercent'
+            title: 'Returnlastyearpercent',
+            description: 'بازدهی سال اخیر'
         },
         returnLastWeekVsTedpixPercent: {
             anyOf: [
@@ -1050,7 +1321,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Returnlastweekvstedpixpercent'
+            title: 'Returnlastweekvstedpixpercent',
+            description: 'بازدهی هفته اخیر به شاخص'
         },
         returnLastMonthVsTedpixPercent: {
             anyOf: [
@@ -1061,7 +1333,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Returnlastmonthvstedpixpercent'
+            title: 'Returnlastmonthvstedpixpercent',
+            description: 'بازدهی ماه اخیر به شاخص'
         },
         returnLast3MonthsVsTedpixPercent: {
             anyOf: [
@@ -1072,7 +1345,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Returnlast3Monthsvstedpixpercent'
+            title: 'Returnlast3Monthsvstedpixpercent',
+            description: 'بازدهی سه ماه اخیر به شاخص'
         },
         returnLastYearVsTedpixPercent: {
             anyOf: [
@@ -1083,39 +1357,48 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Returnlastyearvstedpixpercent'
+            title: 'Returnlastyearvstedpixpercent',
+            description: 'بازدهی سال اخیر به شاخص'
         },
         assetAllocationBondPercent: {
             type: 'number',
-            title: 'Assetallocationbondpercent'
+            title: 'Assetallocationbondpercent',
+            description: 'سهم اوراق از پورتفوی'
         },
         assetAllocationBankDepositPercent: {
             type: 'number',
-            title: 'Assetallocationbankdepositpercent'
+            title: 'Assetallocationbankdepositpercent',
+            description: 'سهم سپرده بانکی از پورتفوی'
         },
         assetAllocationCommodityDepositCertificatePercent: {
             type: 'number',
-            title: 'Assetallocationcommoditydepositcertificatepercent'
+            title: 'Assetallocationcommoditydepositcertificatepercent',
+            description: 'سهم گواهی سپرده کالایی از پورتفوی'
         },
         assetAllocationCashPercent: {
             type: 'number',
-            title: 'Assetallocationcashpercent'
+            title: 'Assetallocationcashpercent',
+            description: 'سهم وجه نقد از پورتفوی'
         },
         assetAllocationStocksIncludingTop5Percent: {
             type: 'number',
-            title: 'Assetallocationstocksincludingtop5Percent'
+            title: 'Assetallocationstocksincludingtop5Percent',
+            description: 'سهم سهام از پورتفوی'
         },
         assetAllocationFundUnitsPercent: {
             type: 'number',
-            title: 'Assetallocationfundunitspercent'
+            title: 'Assetallocationfundunitspercent',
+            description: 'سهم واحد صندوق‌ها از پورتفوی'
         },
         assetAllocationOtherPercent: {
             type: 'number',
-            title: 'Assetallocationotherpercent'
+            title: 'Assetallocationotherpercent',
+            description: 'سهم سایر از پورتفوی'
         },
         assetAllocationTop5StocksPercent: {
             type: 'number',
-            title: 'Assetallocationtop5Stockspercent'
+            title: 'Assetallocationtop5Stockspercent',
+            description: 'سهم پنج سهم برتر از پورتفوی'
         },
         averageLeverageLastWeek: {
             anyOf: [
@@ -1126,7 +1409,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Averageleveragelastweek'
+            title: 'Averageleveragelastweek',
+            description: 'میانگین اهرم هفته اخیر'
         },
         averageLeverageLastMonth: {
             anyOf: [
@@ -1137,7 +1421,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Averageleveragelastmonth'
+            title: 'Averageleveragelastmonth',
+            description: 'میانگین اهرم ماه اخیر'
         },
         averageLeverageLast3Months: {
             anyOf: [
@@ -1148,7 +1433,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Averageleveragelast3Months'
+            title: 'Averageleveragelast3Months',
+            description: 'میانگین اهرم سه ماه اخیر'
         },
         averageLeverageLastYear: {
             anyOf: [
@@ -1159,7 +1445,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Averageleveragelastyear'
+            title: 'Averageleveragelastyear',
+            description: 'میانگین اهرم سال اخیر'
         },
         standardDeviationLastWeek: {
             anyOf: [
@@ -1170,7 +1457,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Standarddeviationlastweek'
+            title: 'Standarddeviationlastweek',
+            description: 'انحراف از میانگین هفته اخیر'
         },
         standardDeviationLastMonth: {
             anyOf: [
@@ -1181,7 +1469,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Standarddeviationlastmonth'
+            title: 'Standarddeviationlastmonth',
+            description: 'انحراف از میانگین ماه اخیر'
         },
         standardDeviationLast3Month: {
             anyOf: [
@@ -1192,7 +1481,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Standarddeviationlast3Month'
+            title: 'Standarddeviationlast3Month',
+            description: 'انحراف از میانگین سه ماه اخیر'
         },
         standardDeviationLastYear: {
             anyOf: [
@@ -1203,7 +1493,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Standarddeviationlastyear'
+            title: 'Standarddeviationlastyear',
+            description: 'انحراف از میانگین سال اخیر'
         },
         sharpeRatioLastWeek: {
             anyOf: [
@@ -1214,7 +1505,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Sharperatiolastweek'
+            title: 'Sharperatiolastweek',
+            description: 'نسبت شارپی هفته اخیر'
         },
         sharpeRatioLastMonth: {
             anyOf: [
@@ -1225,7 +1517,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Sharperatiolastmonth'
+            title: 'Sharperatiolastmonth',
+            description: 'نسبت شارپی ماه اخیر'
         },
         sharpeRatioLast3Months: {
             anyOf: [
@@ -1236,7 +1529,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Sharperatiolast3Months'
+            title: 'Sharperatiolast3Months',
+            description: 'نسبت شارپی سه ماه اخیر'
         },
         sharpeRatioLastYear: {
             anyOf: [
@@ -1247,7 +1541,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Sharperatiolastyear'
+            title: 'Sharperatiolastyear',
+            description: 'نسبت شارپی سال اخیر'
         },
         informationRatioLastWeek: {
             anyOf: [
@@ -1258,7 +1553,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Informationratiolastweek'
+            title: 'Informationratiolastweek',
+            description: 'نسبت اصلاعاتی هفته اخیر'
         },
         informationRatioLastMonth: {
             anyOf: [
@@ -1269,7 +1565,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Informationratiolastmonth'
+            title: 'Informationratiolastmonth',
+            description: 'نسبت اصلاعاتی ماه اخیر'
         },
         informationRatioLast3Months: {
             anyOf: [
@@ -1280,7 +1577,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Informationratiolast3Months'
+            title: 'Informationratiolast3Months',
+            description: 'نسبت اصلاعاتی سه ماه اخیر'
         },
         informationRatioLastYear: {
             anyOf: [
@@ -1291,7 +1589,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Informationratiolastyear'
+            title: 'Informationratiolastyear',
+            description: 'نسبت اصلاعاتی سال اخیر'
         },
         alphaLastDay: {
             anyOf: [
@@ -1302,7 +1601,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Alphalastday'
+            title: 'Alphalastday',
+            description: 'آلفا روز اخیر'
         },
         alphaLastWeek: {
             anyOf: [
@@ -1313,7 +1613,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Alphalastweek'
+            title: 'Alphalastweek',
+            description: 'آلفا هفته اخیر'
         },
         alphaLastMonth: {
             anyOf: [
@@ -1324,7 +1625,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Alphalastmonth'
+            title: 'Alphalastmonth',
+            description: 'آلفا ماه اخیر'
         },
         alphaLast3Months: {
             anyOf: [
@@ -1335,7 +1637,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Alphalast3Months'
+            title: 'Alphalast3Months',
+            description: 'آلفا سه ماه اخیر'
         },
         alphaLastYear: {
             anyOf: [
@@ -1346,7 +1649,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Alphalastyear'
+            title: 'Alphalastyear',
+            description: 'آلفا سال اخیر'
         },
         betaLastDay: {
             anyOf: [
@@ -1357,7 +1661,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Betalastday'
+            title: 'Betalastday',
+            description: 'بتا روز اخیر'
         },
         betaLastWeek: {
             anyOf: [
@@ -1368,7 +1673,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Betalastweek'
+            title: 'Betalastweek',
+            description: 'بتا هفته اخیر'
         },
         betaLastMonth: {
             anyOf: [
@@ -1379,7 +1685,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Betalastmonth'
+            title: 'Betalastmonth',
+            description: 'بتا ماه اخیر'
         },
         betaLast3Months: {
             anyOf: [
@@ -1390,7 +1697,8 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Betalast3Months'
+            title: 'Betalast3Months',
+            description: 'بتا سه ماه اخیر'
         },
         betaLastYear: {
             anyOf: [
@@ -1401,9 +1709,10 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Betalastyear'
+            title: 'Betalastyear',
+            description: 'بتا سال اخیر'
         },
-        maxDrawDawnWeek: {
+        maxDrawdownWeek: {
             anyOf: [
                 {
                     type: 'number'
@@ -1412,9 +1721,10 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Maxdrawdawnweek'
+            title: 'Maxdrawdownweek',
+            description: 'ماکزیمم افت هفته اخیر'
         },
-        maxDrawDawnMonth: {
+        maxDrawdownMonth: {
             anyOf: [
                 {
                     type: 'number'
@@ -1423,9 +1733,10 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Maxdrawdawnmonth'
+            title: 'Maxdrawdownmonth',
+            description: 'ماکزیمم افت ماه اخیر'
         },
-        maxDrawDawn3Month: {
+        maxDrawdown3Month: {
             anyOf: [
                 {
                     type: 'number'
@@ -1434,9 +1745,10 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Maxdrawdawn3Month'
+            title: 'Maxdrawdown3Month',
+            description: 'ماکزیمم افت سه ماه اخیر'
         },
-        maxDrawDawnYear: {
+        maxDrawdownYear: {
             anyOf: [
                 {
                     type: 'number'
@@ -1445,11 +1757,27 @@ export const $FundListItemApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Maxdrawdawnyear'
+            title: 'Maxdrawdownyear',
+            description: 'ماکزیمم افت سال اخیر'
+        },
+        dailyRedeemNavMonth: {
+            anyOf: [
+                {
+                    items: {
+                        type: 'integer'
+                    },
+                    type: 'array'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Dailyredeemnavmonth',
+            description: 'قیمت ابطال روزانه ماه اخیر'
         }
     },
     type: 'object',
-    required: ['identifier', 'registrationNumber', 'name', 'abbreviatedName', 'fundType', 'logoMedium', 'logoThumbnail', 'website', 'statuteUrl', 'prospectusUrl', 'isEtf', 'isCharity', 'manager', 'custodian', 'auditor', 'liquidityGuarantor', 'initiationDate', 'initiationJdate', 'issueNavRials', 'redeemNavRials', 'statisticalNavRials', 'assetUnderManagementRials', 'numberOfUnits', 'returnLastWeekPercent', 'returnLastMonthPercent', 'returnLast3MonthsPercent', 'returnLastYearPercent', 'returnLastWeekVsTedpixPercent', 'returnLastMonthVsTedpixPercent', 'returnLast3MonthsVsTedpixPercent', 'returnLastYearVsTedpixPercent', 'assetAllocationBondPercent', 'assetAllocationBankDepositPercent', 'assetAllocationCommodityDepositCertificatePercent', 'assetAllocationCashPercent', 'assetAllocationStocksIncludingTop5Percent', 'assetAllocationFundUnitsPercent', 'assetAllocationOtherPercent', 'assetAllocationTop5StocksPercent', 'averageLeverageLastWeek', 'averageLeverageLastMonth', 'averageLeverageLast3Months', 'averageLeverageLastYear', 'standardDeviationLastWeek', 'standardDeviationLastMonth', 'standardDeviationLast3Month', 'standardDeviationLastYear', 'sharpeRatioLastWeek', 'sharpeRatioLastMonth', 'sharpeRatioLast3Months', 'sharpeRatioLastYear', 'informationRatioLastWeek', 'informationRatioLastMonth', 'informationRatioLast3Months', 'informationRatioLastYear', 'alphaLastDay', 'alphaLastWeek', 'alphaLastMonth', 'alphaLast3Months', 'alphaLastYear', 'betaLastDay', 'betaLastWeek', 'betaLastMonth', 'betaLast3Months', 'betaLastYear', 'maxDrawDawnWeek', 'maxDrawDawnMonth', 'maxDrawDawn3Month', 'maxDrawDawnYear'],
+    required: ['identifier', 'registrationNumber', 'name', 'abbreviatedName', 'fundType', 'logoMedium', 'logoThumbnail', 'website', 'statuteUrl', 'prospectusUrl', 'isEtf', 'isCharity', 'hasVideo', 'manager', 'custodian', 'auditor', 'liquidityGuarantor', 'marketMaker', 'initiationDate', 'initiationJdate', 'issueNavRials', 'redeemNavRials', 'statisticalNavRials', 'assetUnderManagementRials', 'numberOfUnits', 'returnLastWeekPercent', 'returnLastMonthPercent', 'returnLast3MonthsPercent', 'returnLastYearPercent', 'returnLastWeekVsTedpixPercent', 'returnLastMonthVsTedpixPercent', 'returnLast3MonthsVsTedpixPercent', 'returnLastYearVsTedpixPercent', 'assetAllocationBondPercent', 'assetAllocationBankDepositPercent', 'assetAllocationCommodityDepositCertificatePercent', 'assetAllocationCashPercent', 'assetAllocationStocksIncludingTop5Percent', 'assetAllocationFundUnitsPercent', 'assetAllocationOtherPercent', 'assetAllocationTop5StocksPercent', 'averageLeverageLastWeek', 'averageLeverageLastMonth', 'averageLeverageLast3Months', 'averageLeverageLastYear', 'standardDeviationLastWeek', 'standardDeviationLastMonth', 'standardDeviationLast3Month', 'standardDeviationLastYear', 'sharpeRatioLastWeek', 'sharpeRatioLastMonth', 'sharpeRatioLast3Months', 'sharpeRatioLastYear', 'informationRatioLastWeek', 'informationRatioLastMonth', 'informationRatioLast3Months', 'informationRatioLastYear', 'alphaLastDay', 'alphaLastWeek', 'alphaLastMonth', 'alphaLast3Months', 'alphaLastYear', 'betaLastDay', 'betaLastWeek', 'betaLastMonth', 'betaLast3Months', 'betaLastYear', 'maxDrawdownWeek', 'maxDrawdownMonth', 'maxDrawdown3Month', 'maxDrawdownYear', 'dailyRedeemNavMonth'],
     title: 'FundListItemApiModel'
 } as const;
 
@@ -1489,7 +1817,7 @@ export const $FundTableTabApiModel = {
             type: 'string',
             title: 'Title'
         },
-        colorHexRgb: {
+        color: {
             anyOf: [
                 {
                     type: 'string'
@@ -1498,11 +1826,11 @@ export const $FundTableTabApiModel = {
                     type: 'null'
                 }
             ],
-            title: 'Colorhexrgb'
+            title: 'Color'
         }
     },
     type: 'object',
-    required: ['identifier', 'title', 'colorHexRgb'],
+    required: ['identifier', 'title', 'color'],
     title: 'FundTableTabApiModel'
 } as const;
 
@@ -1539,10 +1867,6 @@ export const $FundsTableItemApiModel = {
 
 export const $GetDashboardItemCalculationsBody = {
     properties: {
-        dashboardItemId: {
-            type: 'integer',
-            title: 'Dashboarditemid'
-        },
         selectedFilters: {
             anyOf: [
                 {
@@ -1557,7 +1881,6 @@ export const $GetDashboardItemCalculationsBody = {
         }
     },
     type: 'object',
-    required: ['dashboardItemId'],
     title: 'GetDashboardItemCalculationsBody'
 } as const;
 
@@ -1709,6 +2032,18 @@ export const $RenameDashboardForUserBody = {
     type: 'object',
     required: ['name'],
     title: 'RenameDashboardForUserBody'
+} as const;
+
+export const $ReplaceDashboardItemCalculationsBody = {
+    properties: {
+        newReportIdentifier: {
+            type: 'string',
+            title: 'Newreportidentifier'
+        }
+    },
+    type: 'object',
+    required: ['newReportIdentifier'],
+    title: 'ReplaceDashboardItemCalculationsBody'
 } as const;
 
 export const $Report13Dot1CalculationResult = {
@@ -1873,21 +2208,6 @@ export const $Report13Dot2GraphKdeResultItem = {
 
 export const $Report13Dot3CalculationResult = {
     properties: {
-        data: {
-            items: {
-                '$ref': '#/components/schemas/Report13Dot3CalculationResultItem'
-            },
-            type: 'array',
-            title: 'Data'
-        }
-    },
-    type: 'object',
-    required: ['data'],
-    title: 'Report13Dot3CalculationResult'
-} as const;
-
-export const $Report13Dot3CalculationResultItem = {
-    properties: {
         points: {
             items: {
                 '$ref': '#/components/schemas/Report13Dot3CalculationResultPoints'
@@ -1909,7 +2229,7 @@ export const $Report13Dot3CalculationResultItem = {
     },
     type: 'object',
     required: ['points', 'mean'],
-    title: 'Report13Dot3CalculationResultItem'
+    title: 'Report13Dot3CalculationResult'
 } as const;
 
 export const $Report13Dot3CalculationResultPoints = {
@@ -1973,10 +2293,14 @@ export const $Report15CalculationResultGraphPoint = {
         y: {
             type: 'number',
             title: 'Y'
+        },
+        tradeDateShamsi: {
+            type: 'string',
+            title: 'Tradedateshamsi'
         }
     },
     type: 'object',
-    required: ['x', 'y'],
+    required: ['x', 'y', 'tradeDateShamsi'],
     title: 'Report15CalculationResultGraphPoint'
 } as const;
 
@@ -1988,10 +2312,14 @@ export const $Report2CalculationResult = {
             },
             type: 'array',
             title: 'Data'
+        },
+        unit: {
+            type: 'string',
+            title: 'Unit'
         }
     },
     type: 'object',
-    required: ['data'],
+    required: ['data', 'unit'],
     title: 'Report2CalculationResult'
 } as const;
 
@@ -2002,13 +2330,63 @@ export const $Report2CalculationResultItem = {
             title: 'Sectortitle'
         },
         netFlow: {
-            type: 'integer',
+            type: 'number',
             title: 'Netflow'
         }
     },
     type: 'object',
     required: ['sectorTitle', 'netFlow'],
     title: 'Report2CalculationResultItem'
+} as const;
+
+export const $Report39CalculationResult = {
+    properties: {
+        data: {
+            items: {
+                '$ref': '#/components/schemas/Report39CalculationResultItem'
+            },
+            type: 'array',
+            title: 'Data'
+        }
+    },
+    type: 'object',
+    required: ['data'],
+    title: 'Report39CalculationResult'
+} as const;
+
+export const $Report39CalculationResultItem = {
+    properties: {
+        values: {
+            items: {
+                '$ref': '#/components/schemas/Report39InstrumentsResultItem'
+            },
+            type: 'array',
+            title: 'Values'
+        }
+    },
+    type: 'object',
+    required: ['values'],
+    title: 'Report39CalculationResultItem'
+} as const;
+
+export const $Report39InstrumentsResultItem = {
+    properties: {
+        instrument: {
+            type: 'string',
+            title: 'Instrument'
+        },
+        netFlow: {
+            type: 'number',
+            title: 'Netflow'
+        },
+        unit: {
+            type: 'string',
+            title: 'Unit'
+        }
+    },
+    type: 'object',
+    required: ['instrument', 'netFlow', 'unit'],
+    title: 'Report39InstrumentsResultItem'
 } as const;
 
 export const $Report6CalculationResult = {
@@ -2030,7 +2408,6 @@ export const $Report6CalculationResultTimeSeriesItem = {
     properties: {
         dt: {
             type: 'string',
-            format: 'date',
             title: 'Dt'
         },
         indexValue: {
@@ -2045,6 +2422,18 @@ export const $Report6CalculationResultTimeSeriesItem = {
     type: 'object',
     required: ['dt', 'indexValue', 'netFlow'],
     title: 'Report6CalculationResultTimeSeriesItem'
+} as const;
+
+export const $ReportScreenshotResponseApiModel = {
+    properties: {
+        queryId: {
+            type: 'string',
+            title: 'Queryid'
+        }
+    },
+    type: 'object',
+    required: ['queryId'],
+    title: 'ReportScreenshotResponseApiModel'
 } as const;
 
 export const $ResetForgotPasswordByOtpResponseApiModel = {

@@ -11,23 +11,29 @@ export const prefetchUseUsersServiceGetUsersLoginCaptcha = (queryClient: QueryCl
   captchaWidth?: number;
 } = {}) => queryClient.prefetchQuery({ queryKey: Common.UseUsersServiceGetUsersLoginCaptchaKeyFn({ captchaHeight, captchaType, captchaWidth }), queryFn: () => UsersService.getUsersLoginCaptcha({ captchaHeight, captchaType, captchaWidth }) });
 export const prefetchUseUsersServiceGetUsersMe = (queryClient: QueryClient) => queryClient.prefetchQuery({ queryKey: Common.UseUsersServiceGetUsersMeKeyFn(), queryFn: () => UsersService.getUsersMe() });
+export const prefetchUseUsersServiceGetUsersPasswordForgotCaptcha = (queryClient: QueryClient, { captchaHeight, captchaType, captchaWidth }: {
+  captchaHeight?: number;
+  captchaType?: CaptchaType;
+  captchaWidth?: number;
+} = {}) => queryClient.prefetchQuery({ queryKey: Common.UseUsersServiceGetUsersPasswordForgotCaptchaKeyFn({ captchaHeight, captchaType, captchaWidth }), queryFn: () => UsersService.getUsersPasswordForgotCaptcha({ captchaHeight, captchaType, captchaWidth }) });
 export const prefetchUseUsersServiceGetUsersProfilePasswordChangeOtp = (queryClient: QueryClient) => queryClient.prefetchQuery({ queryKey: Common.UseUsersServiceGetUsersProfilePasswordChangeOtpKeyFn(), queryFn: () => UsersService.getUsersProfilePasswordChangeOtp() });
 export const prefetchUseReportsServiceGetReports = (queryClient: QueryClient, { onlyFavorite, onlyHavingVideo, onlyNew }: {
   onlyFavorite?: boolean;
   onlyHavingVideo?: boolean;
   onlyNew?: boolean;
 } = {}) => queryClient.prefetchQuery({ queryKey: Common.UseReportsServiceGetReportsKeyFn({ onlyFavorite, onlyHavingVideo, onlyNew }), queryFn: () => ReportsService.getReports({ onlyFavorite, onlyHavingVideo, onlyNew }) });
-export const prefetchUseReportsServiceGetReportsByReportId = (queryClient: QueryClient, { reportId }: {
-  reportId: number;
-}) => queryClient.prefetchQuery({ queryKey: Common.UseReportsServiceGetReportsByReportIdKeyFn({ reportId }), queryFn: () => ReportsService.getReportsByReportId({ reportId }) });
 export const prefetchUseReportsServiceGetReportsCategories = (queryClient: QueryClient) => queryClient.prefetchQuery({ queryKey: Common.UseReportsServiceGetReportsCategoriesKeyFn(), queryFn: () => ReportsService.getReportsCategories() });
+export const prefetchUseReportsServiceGetReportsByReportId = (queryClient: QueryClient, { reportId, screenshotQueryId }: {
+  reportId: string;
+  screenshotQueryId?: string;
+}) => queryClient.prefetchQuery({ queryKey: Common.UseReportsServiceGetReportsByReportIdKeyFn({ reportId, screenshotQueryId }), queryFn: () => ReportsService.getReportsByReportId({ reportId, screenshotQueryId }) });
 export const prefetchUseDashboardsServiceGetDashboards = (queryClient: QueryClient) => queryClient.prefetchQuery({ queryKey: Common.UseDashboardsServiceGetDashboardsKeyFn(), queryFn: () => DashboardsService.getDashboards() });
 export const prefetchUseDashboardsServiceGetDashboardsByDashboardId = (queryClient: QueryClient, { dashboardId }: {
   dashboardId: number;
 }) => queryClient.prefetchQuery({ queryKey: Common.UseDashboardsServiceGetDashboardsByDashboardIdKeyFn({ dashboardId }), queryFn: () => DashboardsService.getDashboardsByDashboardId({ dashboardId }) });
-export const prefetchUseDashboardsServiceGetDashboardsByDashboardIdItemsPreview = (queryClient: QueryClient, { dashboardId }: {
+export const prefetchUseDashboardsServiceGetDashboardsByDashboardIdPreview = (queryClient: QueryClient, { dashboardId }: {
   dashboardId: number;
-}) => queryClient.prefetchQuery({ queryKey: Common.UseDashboardsServiceGetDashboardsByDashboardIdItemsPreviewKeyFn({ dashboardId }), queryFn: () => DashboardsService.getDashboardsByDashboardIdItemsPreview({ dashboardId }) });
+}) => queryClient.prefetchQuery({ queryKey: Common.UseDashboardsServiceGetDashboardsByDashboardIdPreviewKeyFn({ dashboardId }), queryFn: () => DashboardsService.getDashboardsByDashboardIdPreview({ dashboardId }) });
 export const prefetchUseFundsServiceGetFunds = (queryClient: QueryClient) => queryClient.prefetchQuery({ queryKey: Common.UseFundsServiceGetFundsKeyFn(), queryFn: () => FundsService.getFunds() });
 export const prefetchUseFundsServiceGetFundsTypeByFundType = (queryClient: QueryClient, { fundType }: {
   fundType: number;
