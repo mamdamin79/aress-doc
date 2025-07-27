@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { ResetPasswordFormValues } from './ResetPasswordForm.types';
 import { validateNationalCode } from './ResetPasswordForm.utils';
 import { validatePhoneNumber } from '../LoginForm/LoginForm.utils';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useUsersServicePostUsersPasswordForgotCaptcha } from '@openapi';
 export interface ResetPasswordFormProps {
   onSubmit: (values: ResetPasswordFormValues) => void;
 }
@@ -15,6 +16,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { isSubmitting },
   } = useForm<ResetPasswordFormValues>({
     defaultValues: {
@@ -22,6 +24,33 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
       phoneNumber: '',
     },
   });
+
+  // Use mutation for captcha
+  const {
+    mutate: getCaptcha,
+    data: captchaData,
+    isPending: isCaptchaLoading,
+  } = useUsersServicePostUsersPasswordForgotCaptcha();
+
+  // Request captcha on mount
+  useEffect(() => {
+    getCaptcha({});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Refresh captcha handler
+  const handleRefreshCaptcha = () => {
+    getCaptcha({});
+  };
+
+  // Set captchaUid in form when captchaData changes
+  useEffect(() => {
+    if (captchaData?.uid !== undefined) {
+      setValue('captchaUid', captchaData.uid);
+      setValue('captcha', ''); // clear captcha input on new captcha
+    }
+  }, [captchaData, setValue]);
+
   return (
     <form
       dir="rtl"
@@ -90,6 +119,30 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
               />
             )}
           />
+
+          {captchaData?.required && (
+            <Controller
+              name="captcha"
+              control={control}
+              rules={{
+                required: 'کد کپچا الزامی است.',
+              }}
+              render={({ field, fieldState }) => (
+                <TextField
+                  mergeTitleAndPlaceholder={false}
+                  mode="outline"
+                  label="کد امنیتی"
+                  placeholder="کد را وارد کنید"
+                  isError={!!fieldState.error}
+                  supportText={fieldState.error?.message || ' '}
+                  captchaValue={captchaData?.value}
+                  onRefreshCaptcha={handleRefreshCaptcha}
+                  trailingIcons={[]}
+                  {...field}
+                />
+              )}
+            />
+          )}
         </div>
         <div className="flex flex-col justify-center gap-4">
           <Button

@@ -34,8 +34,8 @@ const ForgotPasswordPage = () => {
                 activeIndex={activeIndex}
                 progressBarItems={[
                   'کد ملی و شماره همراه',
-                  'رمز یک‌بار مصرف',
                   'رمز عبور جدید',
+                  'رمز یک‌بار مصرف',
                 ]}
               />
             </div>

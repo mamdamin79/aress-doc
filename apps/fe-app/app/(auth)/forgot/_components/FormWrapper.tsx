@@ -34,14 +34,14 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
         <ResetPasswordForm
           onSubmit={() => {
             setActiveIndex(1);
-            showToast({
-              message: 'کد تایید برای شما ارسال شد.',
-              type: 'success',
-            });
+            
           }}
         />
       )}
       {activeIndex === 1 && (
+        <NewPasswordForm onSubmit={() => setIsIconDialogOpen(true)} />
+      )}
+      {activeIndex === 2 && (
         <div className="bg-surface-neutral-primary border-border-neutral-primary rounded-2xl border p-6">
           <OTPForm
             onSubmit={handleOtpSubmit}
@@ -51,9 +51,6 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
             description="جهت تغییر رمز عبور، ابتدا کد تایید ارسال شده به شماره 09339133225 را وارد کنید."
           />
         </div>
-      )}
-      {activeIndex === 2 && (
-        <NewPasswordForm onSubmit={() => setIsIconDialogOpen(true)} />
       )}
       <Toaster position="top-center" />
     </div>
