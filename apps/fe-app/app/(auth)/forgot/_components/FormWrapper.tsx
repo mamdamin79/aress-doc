@@ -6,7 +6,10 @@ import {
 } from '../../../components';
 import { Toaster } from 'react-hot-toast';
 import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
-import { useUsersServicePostUsersPasswordForgotOtp } from '@openapi';
+import {
+  useUsersServicePostUsersPasswordForgotOtp,
+  useUsersServicePostUsersPasswordForgotReset,
+} from '@openapi';
 import { ResetPasswordFormValues } from 'apps/fe-app/app/components/ResetPasswordForm/ResetPasswordForm.types';
 
 interface FormWrapperProps {
@@ -23,25 +26,36 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
   const { showToast } = useCustomToast();
   const refetchCaptchaRef = React.useRef<() => void>();
   const { mutate: sendForgotOtp, isPending } =
-    useUsersServicePostUsersPasswordForgotOtp({
+    useUsersServicePostUsersPasswordForgotOtp({});
 
-    });
+  const { mutate: sendForgotReset } =
+    useUsersServicePostUsersPasswordForgotReset({});
+
+  const [enteredPhoneNumber, setEnteredPhoneNumber] =
+    React.useState<string>('');
+
+    const [newPassword, setNewPassword] =
+    React.useState<string>('');
+
+    const [userId, setUserId] =
+    React.useState<number>(0);
 
   // Handle submit for ResetPasswordForm
-  const handleForgotPassword = (values:ResetPasswordFormValues) => {
+  const handleForgotPassword = (values: ResetPasswordFormValues) => {
+    setEnteredPhoneNumber(values.phoneNumber);
     sendForgotOtp(
       {
         requestBody: {
           nationalCode: values.nationalCode,
           phoneNumber: values.phoneNumber,
-          captchaValue: values.captcha,
-          captchaUid: values.captchaUid,
+          captchaValue: values.captcha ?? '',
+          captchaUid: values.captchaUid ?? 0,
         },
       },
       {
         onSuccess: (data) => {
-          // You may want to check data for success
           setActiveIndex(1);
+          setUserId(data.userId);
         },
         onError: (error) => {
           console.error('Error sending forgot password OTP:', error);
@@ -61,13 +75,28 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
 
   // OTP step handler (unchanged)
   const handleOtpSubmit = (code: string) => {
-    if (code === '111111') setActiveIndex(2);
-    else
-      showToast({
-        message:
-          'کد وارد شده اشتباه است. پس از پایان زمان‌بندی، می‌توانید مجددا درخواست کد کنید.',
-        type: 'error',
-      });
+    sendForgotReset(
+      {
+        requestBody:{
+          newPassword,
+          otp:code,
+          userId
+        }
+      },
+      {
+        onSuccess: () => {
+          setIsIconDialogOpen(true);
+        },
+        onError: (error) => {
+          console.error('Error submitting OTP:', error);
+          showToast({
+            message:
+              error?.message || 'کد تایید نامعتبر است. لطفاً دوباره تلاش کنید.',
+            type: 'error',
+          });
+        },
+      },
+    );
   };
 
   return (
@@ -81,7 +110,11 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
         />
       )}
       {activeIndex === 1 && (
-        <NewPasswordForm onSubmit={() => setIsIconDialogOpen(true)} />
+        <NewPasswordForm onSubmit={(data) => {
+          console.log('New Password Data:', data);
+          setNewPassword(data.password);
+          setActiveIndex(2);
+        }} />
       )}
       {activeIndex === 2 && (
         <div className="bg-surface-neutral-primary border-border-neutral-primary rounded-2xl border p-6">
@@ -90,7 +123,7 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
             backBtnLabel="ویرایش شماره"
             title="بازنشانی رمز عبور"
             onBackBtn={() => setActiveIndex(0)}
-            description="جهت تغییر رمز عبور، ابتدا کد تایید ارسال شده به شماره 09339133225 را وارد کنید."
+            description={`جهت تغییر رمز عبور، ابتدا کد تایید ارسال شده به شماره ${enteredPhoneNumber} را وارد کنید.`}
           />
         </div>
       )}
