@@ -9,9 +9,11 @@ import { useEffect } from 'react';
 import { useUsersServiceGetUsersPasswordForgotCaptcha } from '@openapi';
 export interface ResetPasswordFormProps {
   onSubmit: (values: ResetPasswordFormValues) => void;
+  setRefetchCaptcha?: (fn: () => void) => void;
 }
 export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
   onSubmit,
+  setRefetchCaptcha,
 }) => {
   const {
     control,
@@ -33,6 +35,15 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
   const handleRefreshCaptcha = () => {
     refetchCaptcha();
   };
+
+
+   // Expose refetchCaptcha to parent if needed
+  useEffect(() => {
+    if (setRefetchCaptcha) {
+      setRefetchCaptcha(refetchCaptcha);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refetchCaptcha]);
 
   // Set captchaUid in form when captchaData changes
   useEffect(() => {
@@ -79,6 +90,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
                 placeholder=""
                 isError={!!fieldState.error}
                 supportText={fieldState.error?.message || ' '}
+                onRefreshCaptcha={refetchCaptcha}
                 {...field}
               />
             )}

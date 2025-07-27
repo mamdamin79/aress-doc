@@ -6,6 +6,8 @@ import {
 } from '../../../components';
 import { Toaster } from 'react-hot-toast';
 import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
+import { useUsersServicePostUsersPasswordForgotOtp } from '@openapi';
+import { ResetPasswordFormValues } from 'apps/fe-app/app/components/ResetPasswordForm/ResetPasswordForm.types';
 
 interface FormWrapperProps {
   activeIndex: number;
@@ -19,6 +21,45 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
   setIsIconDialogOpen,
 }) => {
   const { showToast } = useCustomToast();
+  const refetchCaptchaRef = React.useRef<() => void>();
+  const { mutate: sendForgotOtp, isPending } =
+    useUsersServicePostUsersPasswordForgotOtp({
+
+    });
+
+  // Handle submit for ResetPasswordForm
+  const handleForgotPassword = (values:ResetPasswordFormValues) => {
+    sendForgotOtp(
+      {
+        requestBody: {
+          nationalCode: values.nationalCode,
+          phoneNumber: values.phoneNumber,
+          captchaValue: values.captcha,
+          captchaUid: values.captchaUid,
+        },
+      },
+      {
+        onSuccess: (data) => {
+          // You may want to check data for success
+          setActiveIndex(1);
+        },
+        onError: (error) => {
+          console.error('Error sending forgot password OTP:', error);
+          showToast({
+            message:
+              error?.message || 'درخواست ناموفق بود. لطفاً دوباره تلاش کنید.',
+            type: 'error',
+          });
+          // Refetch captcha on error
+          if (refetchCaptchaRef.current) {
+            refetchCaptchaRef.current();
+          }
+        },
+      },
+    );
+  };
+
+  // OTP step handler (unchanged)
   const handleOtpSubmit = (code: string) => {
     if (code === '111111') setActiveIndex(2);
     else
@@ -28,13 +69,14 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
         type: 'error',
       });
   };
+
   return (
     <div className="flex w-[448px] flex-col gap-4 pt-8 xl:w-[528px]">
       {activeIndex === 0 && (
         <ResetPasswordForm
-          onSubmit={() => {
-            setActiveIndex(1);
-            
+          onSubmit={handleForgotPassword}
+          setRefetchCaptcha={(fn) => {
+            refetchCaptchaRef.current = fn;
           }}
         />
       )}
