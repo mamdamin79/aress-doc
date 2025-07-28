@@ -162,7 +162,7 @@ export const Report_13_1: React.FC<Report13_1Props> = ({
                   rowIndex !== AVERAGE_ROW_INDEX
                 ? 'transparent'
                 : '',
-            'justify-center min-w-[86px] max-w-[96px] py-2  text-xs font-medium border border-blue-200 rounded-xs hover:bg-surface-accent-blue-100 transition-colors duration-300',
+            'justify-center min-w-[86px] max-w-[96px] py-2  text-xs font-medium border border-border-accent-blue-300 rounded-xs hover:bg-surface-accent-blue-100 transition-colors duration-300',
           ),
         );
       },
@@ -331,7 +331,7 @@ export const Report_13_1: React.FC<Report13_1Props> = ({
             theadClassName="h-[34px] after:h-0"
             showHeadBodySpacer={true}
             schema={tableSchema}
-            tableDataStyleClasses="text-center p-1 "
+            tableDataStyleClasses="text-center py-[3px] px-0.5 "
             border={false}
             striped={false}
           />
