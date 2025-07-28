@@ -21,6 +21,11 @@ const reportComponents: Record<number, React.ComponentType<any>> = {
     import('../../../../components/Reports/Report2').then((mod) => mod.Report2),
   ),
   // Add others as needed
+  13_1: dynamic(() =>
+    import('../../../../components/Reports/Report_13_1').then(
+      (mod) => mod.Report_13_1,
+    ),
+  ),
 };
 
 interface DynamicReportRendererProps {

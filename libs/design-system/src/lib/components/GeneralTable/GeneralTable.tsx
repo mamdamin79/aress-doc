@@ -93,7 +93,7 @@ export const GeneralTable: React.FC<GeneralTableProps<TableRow>> = ({
                       isHoveredOrMatching
                         ? 'bg-surface-accent-blue-600 text-text-neutral-white'
                         : '',
-                        column.rowHeaderClassName,
+                      column.rowHeaderClassName,
                     )}
                   >
                     {column.render
@@ -205,6 +205,7 @@ export const GeneralTable: React.FC<GeneralTableProps<TableRow>> = ({
           )}
           {renderRows()}
         </tbody>
+        ~{' '}
       </table>
     </div>
   );

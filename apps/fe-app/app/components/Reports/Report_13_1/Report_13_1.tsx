@@ -2,22 +2,22 @@ import React, { useEffect, useState } from 'react';
 import Highcharts from 'highcharts';
 import 'highcharts/highcharts-more';
 import HighchartsReact from 'highcharts-react-official';
-import { ReportCardBase } from '../../../../../../libs/design-system/src/lib/components/ReportCardBase';
-import { baseOptions, xAxisLabels, yAxisLabels } from '../Report.config.shared';
-import { GeneralTable } from '../../../../../../libs/design-system/src/lib/components/GeneralTable/GeneralTable';
 import {
+  ReportCardBase,
+  GeneralTable,
   renderCell,
   RenderCellProps,
   TableRow,
-} from '../../../../../../libs/design-system/src/lib/components/GeneralTable';
-import { cn } from 'libs/design-system/src/utils';
-import { financialDefinitionsReport13_1 } from './Report_13_1.constants';
-import { OptionItem } from 'design-system';
+  cn,
+  OptionItem,
+} from 'design-system';
+import { baseOptions, xAxisLabels, yAxisLabels } from '../Report.config.shared';
 import {
   FinancialReportFilterApiModel,
   Report13Dot1CalculationResult,
 } from '@openapi';
-import { toBasicSetting, toDropdownSetting } from '../Report.utils';
+import { toBasicSetting } from '../Report.utils';
+import { financialDefinitionsReport13_1 } from './Report_13_1.constants';
 
 const categories = [
   'ارزش معاملات',
@@ -26,7 +26,6 @@ const categories = [
   'خرید حقوقی',
   'فروش حقوقی',
 ];
-
 
 export interface Report13_1Props {
   title?: string;
@@ -46,7 +45,7 @@ export const Report_13_1: React.FC<Report13_1Props> = ({
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [switchIndex, setSwitchIndex] = useState<number>(1); // 1 is initialIndex
 
-  const [dataState, setDataState] = useState(data);
+  const [, setDataState] = useState(data);
   const [filterState, setFilterState] = useState(filters);
 
   useEffect(() => {
@@ -54,9 +53,7 @@ export const Report_13_1: React.FC<Report13_1Props> = ({
     setFilterState(filters);
   }, [data, filters]);
 
-
-
-const chartData = [
+  const chartData = [
     data.lastDay.totalTrades,
     data.lastDay.totalBuyIndividual,
     data.lastDay.totalSellIndividual,
@@ -66,7 +63,10 @@ const chartData = [
 
   // Build categoriesWithValues using dynamic chartData
   const categoriesWithValues = categories.map((label, i) => {
-    const value = chartData[i] !== undefined && chartData[i] !== null ? Number(chartData[i]).toLocaleString('fa-IR') : '۰';
+    const value =
+      chartData[i] !== undefined && chartData[i] !== null
+        ? Number(chartData[i]).toLocaleString('fa-IR')
+        : '۰';
     return `
       <div class="category-label" style="text-align:center; font-weight:500; direction:rtl;">
         <div class="label-text" style="white-space:nowrap;">${label}</div>
@@ -77,7 +77,6 @@ const chartData = [
       </div>
     `;
   });
-
 
   const updateOption = (optionType: string, item: OptionItem) => {
     setFilterState((prev) =>
@@ -144,7 +143,6 @@ const chartData = [
         hoveredRow,
         rowIndex,
         value,
-        format,
       }: RenderCellProps<TableRow>) => {
         return renderCell(
           value,
@@ -157,7 +155,7 @@ const chartData = [
           undefined,
           cn(
             sharedStyle,
-            'justify-center min-w-[86px] max-w-[96px] py-2  text-xs font-medium border border-border-accent-blue-300 rounded-xs hover:bg-surface-accent-blue-100 transition-colors duration-300',
+            'justify-center min-w-[86px] max-w-[96px] py-2  text-xs font-medium border border-border-surface-accent-blue-300 rounded-xs hover:bg-surface-accent-blue-100 transition-colors duration-300',
             rowIndex === STDDEV_ROW_INDEX
               ? 'bg-surface-neutral-secondary'
               : ((hoveredCol !== null && hoveredCol !== colIndex) ||
@@ -172,6 +170,7 @@ const chartData = [
   ];
 
   // Helper to safely convert to میلیارد ریال
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const toBillion = (val: any) => {
     if (val === null || val === undefined || isNaN(Number(val))) return val;
     return Number(val) / 1_000_000_000;
