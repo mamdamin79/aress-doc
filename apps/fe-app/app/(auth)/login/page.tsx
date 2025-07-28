@@ -14,13 +14,13 @@ const LoginPage = () => {
       <div className="max-w-screen-3xl flex w-full flex-col items-start justify-center gap-10 pt-[46px]">
         <div className="flex w-full items-center justify-center">
           <div className="absolute right-0 top-[34px] mr-8">
-            <div className="hidden items-center gap-4 py-3 xl:flex w-[38px] h-[38px]">
+            <div className="hidden h-[38px] w-[38px] items-center gap-4 py-3 xl:flex">
               <Logo />
               <h1 className="text-text-neutral-primary text-lg font-semibold">
                 پردازش اطلاعات مالی آرسس
               </h1>
             </div>
-            <div className="flex xl:hidden w-[56px] h-[56px]">
+            <div className="flex h-[56px] w-[56px] xl:hidden">
               <LogoWithText />
             </div>
           </div>
@@ -34,7 +34,7 @@ const LoginPage = () => {
           </div>
           <div className="hidden w-[448px] flex-col gap-4 lg:flex xl:w-[528px]">
             <div className="h-[360px] w-full max-w-[468px] px-8">
-              <TERMINAL_LOGIN/>
+              <TERMINAL_LOGIN />
             </div>
             <SecurityNoticeBox />
           </div>

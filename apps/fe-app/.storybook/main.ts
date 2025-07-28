@@ -1,14 +1,17 @@
-import { createRequire } from "node:module";
-import { dirname, join } from "node:path";
+import { createRequire } from 'node:module';
+import { dirname, join } from 'node:path';
 import type { StorybookConfig } from '@storybook/react-vite';
 
 const require = createRequire(import.meta.url);
 
 const config: StorybookConfig = {
   stories: ['../app/components/**/*.@(mdx|stories.@(js|jsx|ts|tsx))'],
-  addons: [getAbsolutePath("@newhighsco/storybook-addon-svgr"), getAbsolutePath("@storybook/addon-docs")],
+  addons: [
+    getAbsolutePath('@newhighsco/storybook-addon-svgr'),
+    getAbsolutePath('@storybook/addon-docs'),
+  ],
   framework: {
-    name: getAbsolutePath("@storybook/nextjs"),
+    name: getAbsolutePath('@storybook/nextjs'),
     options: {
       builder: {
         viteConfigPath: 'vite.config.ts',
@@ -24,5 +27,5 @@ export default config;
 // and https://nx.dev/recipes/storybook/custom-builder-configs
 
 function getAbsolutePath(value: string) {
-  return dirname(require.resolve(join(value, "package.json")));
+  return dirname(require.resolve(join(value, 'package.json')));
 }

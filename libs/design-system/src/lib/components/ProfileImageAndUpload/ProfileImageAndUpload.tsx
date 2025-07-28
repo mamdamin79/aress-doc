@@ -66,7 +66,7 @@ export const ProfileImageAndUpload: React.FC<FileUploadProps> = ({
                   className={cn('object-cover', image && `h-[120px] w-[120px]`)}
                 />
               ) : (
-                <USER_SVG width={120} height={120}/>
+                <USER_SVG width={120} height={120} />
               )}
             </div>
           </div>

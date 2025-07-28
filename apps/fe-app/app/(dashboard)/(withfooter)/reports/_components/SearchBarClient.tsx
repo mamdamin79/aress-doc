@@ -1,13 +1,17 @@
 'use client';
-
-import { TextField } from 'design-system';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { cn, TextField } from 'design-system';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import { useDebounce } from '@uidotdev/usehooks';
 
-export const SearchBarClient: React.FC = () => {
+type Props = {
+  inModal?: boolean;
+};
+
+export const SearchBarClient: React.FC<Props> = ({ inModal }) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const queries = useSearchParams().toString();
   const [searchInput, setSearchInput] = useState('');
   const debouncedSearch = useDebounce(searchInput, 300);
 
@@ -19,30 +23,42 @@ export const SearchBarClient: React.FC = () => {
     }
   }, [debouncedSearch]);
 
-  const handleSearch = (value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('search', value);
+  const handleSearch = (
+    value: string | number | readonly string[] | undefined,
+  ) => {
+    const params = new URLSearchParams(queries);
+    params.set('search', value as string);
     params.set('page', '1');
-    router.replace(`/reports?${params.toString()}`);
+    router.replace(`${pathname}?${params.toString()}`);
   };
 
   const handleClear = () => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(queries);
     params.delete('search');
     params.set('page', '1');
-    router.replace(`/reports?${params.toString()}`);
+    router.replace(`${pathname}?${params.toString()}`);
   };
 
   return (
-    <TextField
-      className="xl:w sm:w-[324px] md:w-[416px]"
-      mergeTitleAndPlaceholder={false}
-      mode="outline"
-      leadingIcon={{ name: 'search', size: 'lg' }}
-      trailingIcons={[{ name: 'x', size: 'lg', onClick: handleClear }]}
-      placeholder="جستجو گزارش..."
-      value={searchInput}
-      onChange={(e) => setSearchInput(e.target.value)}
-    />
+    <>
+      <TextField
+        className={cn('xl:w sm:w-[324px] md:w-[416px]', {
+          'sm:w-[472px] md:w-[472px]': inModal,
+        })}
+        mergeTitleAndPlaceholder={false}
+        mode="outline"
+        leadingIcon={{
+          name: 'search',
+          size: 'lg',
+        }}
+        inputSize={inModal ? 'sm' : 'md'}
+        trailingIcons={[
+          { name: 'x', size: 'lg', onClick: () => handleClear() },
+        ]}
+        placeholder="جستجو گزارش..."
+        value={searchInput}
+        onChange={(e) => setSearchInput(e.target.value)}
+      />
+    </>
   );
 };

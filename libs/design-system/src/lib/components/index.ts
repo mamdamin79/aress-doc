@@ -49,4 +49,4 @@ export * from './SparkLine';
 export * from './SummaryCell';
 export * from './TextField';
 export * from './DatePicker';
-export * from './Bookmark'
+export * from './Bookmark';

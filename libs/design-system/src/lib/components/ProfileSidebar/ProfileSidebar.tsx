@@ -35,7 +35,7 @@ export const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
                   className={cn('object-cover', image && `h-[120px] w-[120px]`)}
                 />
               ) : (
-                <UserSVG width={48} height={48}/>
+                <UserSVG width={48} height={48} />
               )}
             </div>
           </div>

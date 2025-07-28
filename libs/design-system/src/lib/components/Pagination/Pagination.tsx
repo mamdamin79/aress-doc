@@ -19,6 +19,8 @@ export const Pagination: React.FC<PaginationProps> = ({
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  if (totalItems === 0) return null;
+
   const startPost = (currentPage - 1) * pageSize + 1;
   const endPost = Math.min(currentPage * pageSize, totalItems);
 
