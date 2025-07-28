@@ -19,5 +19,5 @@
     ".storybook/*.ts",
     "components/**/*.ts",
     "components/**/*.tsx"
-  ]
+, ".storybook/preview.tsx"  ]
 }

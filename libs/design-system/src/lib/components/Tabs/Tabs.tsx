@@ -138,26 +138,22 @@ export const Tabs: React.FC<Props> = ({
                 {variant === 'lined' && selected && (
                   <div className="bg-surface-brand-600-primary absolute bottom-0 left-0 right-0 h-[5px] rounded-t-md" />
                 )}
-                {variant === 'shaped' ? (
-                  <div className="flex items-center gap-2">
-                    {props.tag && <FundsTag color={props.tag} />}
-                    {props.icons?.length && (
-                      <Icon {...props.icons[0]} size="lg" />
-                    )}
-                    {props.title}
-                    {props.icons?.length && props.title && (
-                      <Icon {...props.icons[1]} size="lg" />
-                    )}
-                  </div>
-                ) : (
-                  <span>{props.title}</span>
-                )}
+                <div className="flex items-center gap-2">
+                  {props.tag && <FundsTag color={props.tag} />}
+                  {props.icons?.length && (
+                    <Icon {...props.icons[1]} size="lg" />
+                  )}
+                  {props.title}
+                  {props.icons?.length && props.title && (
+                    <Icon {...props.icons[0]} size="lg" />
+                  )}
+                </div>
               </>
             )}
           </Tab>
         ))}
       </TabList>
-      <TabPanels className="mt-3">
+      <TabPanels className="mt-12">
         {tabs.map(({ content }, index) => (
           <TabPanel key={index}>{content}</TabPanel>
         ))}
