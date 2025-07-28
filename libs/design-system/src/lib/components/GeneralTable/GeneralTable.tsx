@@ -5,13 +5,22 @@ import { cn } from '../../../utils';
 import { getCellBackgroundColor } from './GeneralTable.utils';
 import { SeparatorLine } from './TableComponents';
 
-export const GeneralTable: React.FC<TableProps<TableRow>> = ({
+export interface GeneralTableProps<T extends TableRow> extends TableProps<T> {
+  showHeadBodySpacer?: boolean;
+  headBodySpacerHeight?: string | number;
+  headBodySpacerClassName?: string;
+}
+
+export const GeneralTable: React.FC<GeneralTableProps<TableRow>> = ({
   data,
   schema,
   tableDataStyleClasses,
   border = false,
   striped,
-  theadClassName
+  theadClassName,
+  showHeadBodySpacer = false,
+  headBodySpacerHeight = '8px',
+  headBodySpacerClassName = 'transparent',
 }) => {
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const [hoveredCol, setHoveredCol] = useState<number | null>(null);
@@ -184,7 +193,18 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
             ))}
           </tr>
         </thead>
-        <tbody>{renderRows()}</tbody>
+        <tbody>
+          {showHeadBodySpacer && (
+            <tr>
+              <td
+                colSpan={schema.length}
+                className={headBodySpacerClassName}
+                style={{ height: headBodySpacerHeight, padding: 0 }}
+              ></td>
+            </tr>
+          )}
+          {renderRows()}
+        </tbody>
       </table>
     </div>
   );

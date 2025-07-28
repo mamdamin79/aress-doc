@@ -136,7 +136,7 @@ const chartData = [
     },
     ...HEADERS.map((header) => ({
       key: header,
-      header,
+      header: header,
       headerClassName: 'text-xs',
       render: ({
         colIndex,
@@ -152,11 +152,12 @@ const chartData = [
           colIndex,
           hoveredCol,
           hoveredRow,
-          format,
-          undefined, // no formatOptions
+          // Always use decimal format with 2 precision, no sign
+          { type: 'decimal', precision: 0, signed: false },
+          undefined,
           cn(
             sharedStyle,
-            'justify-center min-w-[86px] max-w-[96px] py-2  text-xs font-medium border border-border-accent-blue-300 rounded-xs bg-white hover:bg-surface-accent-blue-100 transition-colors duration-300',
+            'justify-center min-w-[86px] max-w-[96px] py-2  text-xs font-medium border border-border-accent-blue-300 rounded-xs hover:bg-surface-accent-blue-100 transition-colors duration-300',
             rowIndex === STDDEV_ROW_INDEX
               ? 'bg-surface-neutral-secondary'
               : ((hoveredCol !== null && hoveredCol !== colIndex) ||
@@ -170,45 +171,51 @@ const chartData = [
     })),
   ];
 
+  // Helper to safely convert to میلیارد ریال
+  const toBillion = (val: any) => {
+    if (val === null || val === undefined || isNaN(Number(val))) return val;
+    return Number(val) / 1_000_000_000;
+  };
+
   const tableData = [
     {
-      'آخرین روز معاملاتی': data.lastDay.totalTrades,
-      'بیشترین مقدار': data.maxValue.totalTrades,
-      'کمترین مقدار': data.minValue.totalTrades,
-      میانگین: data.averageValue.totalTrades,
-      میانه: data.lastDayNormalized.totalTradesNormalized,
+      'آخرین روز معاملاتی': toBillion(data.lastDay.totalTrades),
+      'بیشترین مقدار': toBillion(data.maxValue.totalTrades),
+      'کمترین مقدار': toBillion(data.minValue.totalTrades),
+      میانگین: toBillion(data.averageValue.totalTrades),
+      میانه: toBillion(data.lastDayNormalized.totalTradesNormalized),
       name: 'ارزش کل معاملات',
     },
     {
-      'آخرین روز معاملاتی': data.lastDay.totalBuyIndividual,
-      'بیشترین مقدار': data.maxValue.totalBuyIndividual,
-      'کمترین مقدار': data.minValue.totalBuyIndividual,
-      میانگین: data.averageValue.totalBuyIndividual,
-      میانه: data.lastDayNormalized.totalBuyIndividualNormalized,
+      'آخرین روز معاملاتی': toBillion(data.lastDay.totalBuyIndividual),
+      'بیشترین مقدار': toBillion(data.maxValue.totalBuyIndividual),
+      'کمترین مقدار': toBillion(data.minValue.totalBuyIndividual),
+      میانگین: toBillion(data.averageValue.totalBuyIndividual),
+      میانه: toBillion(data.lastDayNormalized.totalBuyIndividualNormalized),
       name: 'ارزش کل خرید حقیقی',
     },
     {
-      'آخرین روز معاملاتی': data.lastDay.totalBuyCorporate,
-      'بیشترین مقدار': data.maxValue.totalBuyCorporate,
-      'کمترین مقدار': data.minValue.totalBuyCorporate,
-      میانگین: data.averageValue.totalBuyCorporate,
-      میانه: data.lastDayNormalized.totalBuyCorporateNormalized,
+      'آخرین روز معاملاتی': toBillion(data.lastDay.totalBuyCorporate),
+      'بیشترین مقدار': toBillion(data.maxValue.totalBuyCorporate),
+      'کمترین مقدار': toBillion(data.minValue.totalBuyCorporate),
+      میانگین: toBillion(data.averageValue.totalBuyCorporate),
+      میانه: toBillion(data.lastDayNormalized.totalBuyCorporateNormalized),
       name: 'ارزش کل خرید حقوقی',
     },
     {
-      'آخرین روز معاملاتی': data.lastDay.totalSellIndividual,
-      'بیشترین مقدار': data.maxValue.totalSellIndividual,
-      'کمترین مقدار': data.minValue.totalSellIndividual,
-      میانگین: data.averageValue.totalSellIndividual,
-      میانه: data.lastDayNormalized.totalSellIndividualNormalized,
+      'آخرین روز معاملاتی': toBillion(data.lastDay.totalSellIndividual),
+      'بیشترین مقدار': toBillion(data.maxValue.totalSellIndividual),
+      'کمترین مقدار': toBillion(data.minValue.totalSellIndividual),
+      میانگین: toBillion(data.averageValue.totalSellIndividual),
+      میانه: toBillion(data.lastDayNormalized.totalSellIndividualNormalized),
       name: 'ارزش کل فروش حقیقی',
     },
     {
-      'آخرین روز معاملاتی': data.lastDay.totalSellCorporate,
-      'بیشترین مقدار': data.maxValue.totalSellCorporate,
-      'کمترین مقدار': data.minValue.totalSellCorporate,
-      میانگین: data.averageValue.totalSellCorporate,
-      میانه: data.lastDayNormalized.totalSellCorporateNormalized,
+      'آخرین روز معاملاتی': toBillion(data.lastDay.totalSellCorporate),
+      'بیشترین مقدار': toBillion(data.maxValue.totalSellCorporate),
+      'کمترین مقدار': toBillion(data.minValue.totalSellCorporate),
+      میانگین: toBillion(data.averageValue.totalSellCorporate),
+      میانه: toBillion(data.lastDayNormalized.totalSellCorporateNormalized),
       name: 'ارزش کل فروش حقوقی',
     },
   ];
@@ -322,9 +329,10 @@ const chartData = [
         >
           <GeneralTable
             data={tableData}
-            theadClassName="h-[42px] after:h-2"
+            theadClassName="h-[34px] after:h-0"
+            showHeadBodySpacer={true}
             schema={tableSchema}
-            tableDataStyleClasses="text-center p-0.5 "
+            tableDataStyleClasses="text-center p-1 "
             border={false}
             striped={false}
           />

@@ -10,43 +10,44 @@ type Story = StoryObj<typeof Report_13_1>;
 
 export const Default: Story = {
   args: {
-    data: {
-      lastDay: {
-        totalTrades: 33442937749254,
-        totalBuyIndividual: 6078251748115,
-        totalBuyCorporate: 2830944958495,
-        totalSellIndividual: 5130008594324,
-        totalSellCorporate: 3779188112286,
-      },
-      lastDayNormalized: {
-        totalTradesNormalized: 0.1147836532948024,
-        totalBuyIndividualNormalized: 0.08338554327018738,
-        totalBuyCorporateNormalized: 0,
-        totalSellIndividualNormalized: 0,
-        totalSellCorporateNormalized: 0.012761034806418953,
-      },
-      maxValue: {
-        totalTrades: 291356275822320,
-        totalBuyIndividual: 29044829508446,
-        totalBuyCorporate: 213059155749514,
-        totalSellIndividual: 119946541442356,
-        totalSellCorporate: 122157443815604,
-      },
-      minValue: {
-        totalTrades: 0,
-        totalBuyIndividual: 3988953952797,
-        totalBuyCorporate: 2830944958495,
-        totalSellIndividual: 5130008594324,
-        totalSellCorporate: 2249032704515,
-      },
-      averageValue: {
-        totalTrades: 58250524591859.62,
-        totalBuyIndividual: 13386222065752.867,
-        totalBuyCorporate: 57661777728622.4,
-        totalSellIndividual: 33452947457511.867,
-        totalSellCorporate: 37595052336863.4,
-      },
-    },
+   data : {
+  lastDay: {
+    totalTrades: 49138070581247,
+    totalBuyIndividual: 15852582021815,
+    totalBuyCorporate: 33285972463432,
+    totalSellIndividual: 28242177089143,
+    totalSellCorporate: 20896377396104
+  },
+  lastDayNormalized: {
+    totalTradesNormalized: 0.1403125747333915,
+    totalBuyIndividualNormalized: 0.4734868690846156,
+    totalBuyCorporateNormalized: 0.1448665114465125,
+    totalSellIndividualNormalized: 0.20129651994813003,
+    totalSellCorporateNormalized: 0.1555132331318542
+  },
+  maxValue: {
+    totalTrades: 291356275822320,
+    totalBuyIndividual: 29044829508446,
+    totalBuyCorporate: 213059155749514,
+    totalSellIndividual: 119946541442356,
+    totalSellCorporate: 122157443815604
+  },
+  minValue: {
+    totalTrades: 9604794851250,
+    totalBuyIndividual: 3988953952797,
+    totalBuyCorporate: 2830944958495,
+    totalSellIndividual: 5130008594324,
+    totalSellCorporate: 2249032704515
+  },
+  averageValue: {
+    totalTrades: 74306661184635.58,
+    totalBuyIndividual: 14445879540391.445,
+    totalBuyCorporate: 55236261029643.664,
+    totalSellIndividual: 32793795426285.277,
+    totalSellCorporate: 36888345143749.836
+  }
+}
+,
     filters: [
       {
         parentTitle: null,
