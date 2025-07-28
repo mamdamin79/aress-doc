@@ -77,7 +77,7 @@ export function useDashboardActions() {
 
   const deleteDashboard = useCallback(async () => {
     const dashboardID = Number(searchParams.get('dashboardId'));
-
+    console.log(dashboardID);
     await DashboardsService.deleteDashboardsByDashboardId({
       dashboardId: dashboardID,
     });

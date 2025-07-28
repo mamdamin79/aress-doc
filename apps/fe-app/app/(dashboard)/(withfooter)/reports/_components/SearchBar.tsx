@@ -1,12 +1,18 @@
-'use client';
-
-import { Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { SearchBarClient } from './SearchBarClient';
 
-export const SearchBar = () => {
+type Props = {
+  inModal?: boolean;
+};
+
+const SearchBarFallback = () => (
+  <div className="xl:w skeleton-shimmer h-10 rounded-md sm:w-[324px] md:w-[416px]" />
+);
+
+export const SearchBar: React.FC<Props> = ({ inModal }) => {
   return (
-    <Suspense fallback={<div className="h-12 w-[324px] md:w-[416px]" />}>
-      <SearchBarClient />
+    <Suspense fallback={<SearchBarFallback />}>
+      <SearchBarClient inModal={inModal} />
     </Suspense>
   );
 };

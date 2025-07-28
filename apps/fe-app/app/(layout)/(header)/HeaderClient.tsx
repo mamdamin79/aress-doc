@@ -101,6 +101,10 @@ export const HeaderClient: React.FC = () => {
           isActive,
         };
       });
+      updatedMenuData[0].link = buildDashboardUrl(
+        query.data[0].identifier,
+        query.data[0].name,
+      );
     }
 
     return updatedMenuData;

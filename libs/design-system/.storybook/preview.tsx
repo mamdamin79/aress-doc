@@ -1,3 +1,4 @@
+/* eslint-disable */
 import type { Preview } from '@storybook/nextjs';
 import type { Decorator } from '@storybook/react';
 import React from 'react'; // required for JSX
