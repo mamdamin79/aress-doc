@@ -30,7 +30,7 @@ const reportComponents: Record<number, React.ComponentType<any>> = {
 
 interface DynamicReportRendererProps {
   title?: string;
-  identifier: number;
+  identifier: number | string;
   data?: FinancialReportCalculationApiModel['calculation'];
   filters?: FinancialReportFilterApiModel[];
   onSubmit?: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
@@ -45,7 +45,7 @@ export const DynamicReportRenderer: React.FC<DynamicReportRendererProps> = ({
   title,
   onRemove,
 }) => {
-  const ReportComponent = reportComponents[identifier];
+  const ReportComponent = reportComponents[identifier as number];
 
   if (!ReportComponent) {
     return null;

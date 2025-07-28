@@ -1,10 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as fs from 'fs';
 import * as path from 'path';
 
 // ----------------------------- Section 1: Tailwind Configuration Update -----------------------------
 
 const inputDirPath = path.join(__dirname, 'inputs');
-const outputFilePath = path.join(__dirname, './../../shared/tailwind/tailwindColors.ts');
+const outputFilePath = path.join(
+  __dirname,
+  './../../shared/tailwind/tailwindColors.ts',
+);
 
 interface ColorResult {
   colors: {
@@ -112,7 +116,9 @@ const processCSSFile = (filePath: string): ColorResult => {
 
 // ------------------ Merge all themes and generate tailwind output ------------------
 
-const primitivsOutput = processAllCSSFiles(path.join(inputDirPath, 'primitivs'));
+const primitivsOutput = processAllCSSFiles(
+  path.join(inputDirPath, 'primitivs'),
+);
 const b2bOutput = processAllCSSFiles(path.join(inputDirPath, 'b2b'));
 const b2cOutput = processAllCSSFiles(path.join(inputDirPath, 'b2c'));
 
@@ -142,20 +148,23 @@ const extractCssVariables = (cssContent: string): string[] =>
 const removeMustacheSyntax = (cssContent: string): string =>
   cssContent.replace(/\{\{[^}]*\}\}/g, '');
 
-  const clearAndAddVariablesToLayerBase = (
-    cssContent: string,
-    lightVars: string[],
-    darkVars: string[],
-  ): string => {
-    // حذف کامل بلاک‌های :root و :root.dark (چندخطی)
-    cssContent = cssContent.replace(/^[ \t]*:root(\.dark)?\s*{[\s\S]*?}[\r\n]*/gm, '');
-  
-    // حذف @layer base قدیمی
-    const layerBaseRegex = /@layer\s+base\s*{[\s\S]*?}/g;
-    cssContent = cssContent.replace(layerBaseRegex, '');
-  
-    // اضافه کردن بلاک جدید
-    const updatedLayerBase = `@layer base {
+const clearAndAddVariablesToLayerBase = (
+  cssContent: string,
+  lightVars: string[],
+  darkVars: string[],
+): string => {
+  // حذف کامل بلاک‌های :root و :root.dark (چندخطی)
+  cssContent = cssContent.replace(
+    /^[ \t]*:root(\.dark)?\s*{[\s\S]*?}[\r\n]*/gm,
+    '',
+  );
+
+  // حذف @layer base قدیمی
+  const layerBaseRegex = /@layer\s+base\s*{[\s\S]*?}/g;
+  cssContent = cssContent.replace(layerBaseRegex, '');
+
+  // اضافه کردن بلاک جدید
+  const updatedLayerBase = `@layer base {
     :root {
       ${lightVars.join('\n    ')}
     }
@@ -163,11 +172,9 @@ const removeMustacheSyntax = (cssContent: string): string =>
       ${darkVars.join('\n    ')}
     }
   }`;
-  
-    return cssContent.trim() + '\n\n' + updatedLayerBase + '\n';
-  };
-  
-  
+
+  return cssContent.trim() + '\n\n' + updatedLayerBase + '\n';
+};
 
 const readFilesRecursive = (
   folderPath: string,
@@ -199,7 +206,9 @@ const getVariablesFromFolder = (themeFolder: string) => {
   return { light, dark };
 };
 
-const primitivsVars = getVariablesFromFolder(path.join(inputDirPath, 'primitivs'));
+const primitivsVars = getVariablesFromFolder(
+  path.join(inputDirPath, 'primitivs'),
+);
 const b2bVars = getVariablesFromFolder(path.join(inputDirPath, 'b2b'));
 const b2cVars = getVariablesFromFolder(path.join(inputDirPath, 'b2c'));
 

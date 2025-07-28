@@ -3,8 +3,8 @@ import { IconDialog, ProgressBar } from 'design-system';
 
 import React, { useState } from 'react';
 import { ReactComponent as RESET_PASSWORD } from '@aress-assets/icons/ResetPassword.svg';
-import {ReactComponent as Logo} from '@aress-assets/icons/fullLogo.svg';
-import {ReactComponent as LogoWithText} from '@aress-assets/icons/LogoWithText.svg';
+import { ReactComponent as Logo } from '@aress-assets/icons/fullLogo.svg';
+import { ReactComponent as LogoWithText } from '@aress-assets/icons/LogoWithText.svg';
 import { Notice } from './_components/Notice';
 import { FormWrapper } from './_components';
 
@@ -17,14 +17,14 @@ const ForgotPasswordPage = () => {
       <div className="max-w-screen-3xl flex w-full flex-col items-start justify-center gap-6 pt-[46px]">
         <div className="flex w-full items-center justify-center">
           <div className="absolute left-1/2 top-[34px] flex -translate-x-1/2 justify-center md:left-auto md:right-0 md:mr-8 md:translate-x-0">
-            <div className="hidden items-center gap-4 py-3 xl:flex w-[38px] h-[38px]">
-              <Logo/>
+            <div className="hidden h-[38px] w-[38px] items-center gap-4 py-3 xl:flex">
+              <Logo />
               <h1 className="text-text-neutral-primary text-lg font-semibold">
                 پردازش اطلاعات مالی آرسس
               </h1>
             </div>
-            <div className="flex xl:hidden w-14 h-14">
-              <LogoWithText/>
+            <div className="flex h-14 w-14 xl:hidden">
+              <LogoWithText />
             </div>
           </div>
           <div>

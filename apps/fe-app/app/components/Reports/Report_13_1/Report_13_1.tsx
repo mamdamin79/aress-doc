@@ -155,7 +155,6 @@ export const Report_13_1: React.FC<Report13_1Props> = ({
           undefined,
           cn(
             sharedStyle,
-            'justify-center min-w-[86px] max-w-[96px] py-2  text-xs font-medium border border-border-surface-accent-blue-300 rounded-xs hover:bg-surface-accent-blue-100 transition-colors duration-300',
             rowIndex === STDDEV_ROW_INDEX
               ? 'bg-surface-neutral-secondary'
               : ((hoveredCol !== null && hoveredCol !== colIndex) ||
@@ -163,6 +162,7 @@ export const Report_13_1: React.FC<Report13_1Props> = ({
                   rowIndex !== AVERAGE_ROW_INDEX
                 ? 'transparent'
                 : '',
+            'justify-center min-w-[86px] max-w-[96px] py-2  text-xs font-medium border border-blue-200 rounded-xs hover:bg-surface-accent-blue-100 transition-colors duration-300',
           ),
         );
       },

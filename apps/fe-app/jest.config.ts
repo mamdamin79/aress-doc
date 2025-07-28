@@ -1,4 +1,3 @@
- 
 export default {
   displayName: 'fe-app',
   preset: '../../jest.preset.js',
