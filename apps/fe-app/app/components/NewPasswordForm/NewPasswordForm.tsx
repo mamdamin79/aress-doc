@@ -49,7 +49,9 @@ export const NewPasswordForm: React.FC<NewPasswordFormProps> = ({
       )}
       onSubmit={handleSubmit(onSubmit)}
     >
-      <h3 className="text-center text-xl font-medium text-text-neutral-primary">بازنشانی رمز عبور</h3>
+      <h3 className="text-text-neutral-primary text-center text-xl font-medium">
+        بازنشانی رمز عبور
+      </h3>
       <div className="flex flex-col gap-7">
         <div className="flex flex-col gap-4 text-right">
           <div>
@@ -88,6 +90,7 @@ export const NewPasswordForm: React.FC<NewPasswordFormProps> = ({
                   ]}
                   label="رمز عبور"
                   placeholder=""
+                  dir="ltr"
                   isError={!!fieldState.error}
                   {...field}
                 />

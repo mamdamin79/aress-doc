@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { Bookmark } from './Bookmark';
 
 // Meta configuration for the Bookmark component in Storybook
@@ -14,5 +14,7 @@ type Story = StoryObj<typeof Bookmark>;
 
 // A default story for the Bookmark component
 export const Default: Story = {
-  render: () => <Bookmark selectedColor='pink' onColorChange={(e) => console.log(e)} />, // Rendering the Bookmark component
+  render: () => (
+    <Bookmark selectedColor="pink" onColorChange={(e) => console.log(e)} />
+  ), // Rendering the Bookmark component
 };

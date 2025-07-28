@@ -2,17 +2,15 @@
 import {
   GetReportsCategoriesResponse,
   GetReportsResponse,
-  OpenAPI,
   useReportsServiceDeleteReportsByReportIdFavorite,
   useReportsServicePostReportsByReportIdFavorite,
 } from '@openapi';
 import { cn, ReportCard } from 'design-system';
 import React from 'react';
 import emptyState from '@aress-assets/icons/Empty state.png';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import { FilterReport } from './FilterReport';
 import { SearchBar } from './SearchBar';
-import { fetchToken } from '../../../../(auth)/auth.utils';
 import { SideBar } from './SideBar';
 
 type Props = {
@@ -28,27 +26,20 @@ export const ReportList: React.FC<Props> = ({
   onReportClick,
   inModal = false,
   categories,
-  filteredReports
+  filteredReports,
 }) => {
   const addFavoriteMutation = useReportsServicePostReportsByReportIdFavorite();
   const deleteFavoriteMutation =
     useReportsServiceDeleteReportsByReportIdFavorite();
 
   const handleLike = async (reportId: number, isFavorite: boolean) => {
-    const token = await fetchToken();
-    if (!token) {
-      throw new Error('Failed to fetch access token');
-    }
-    OpenAPI.HEADERS = {
-      Authorization: `Bearer ${token}`,
-    };
     if (isFavorite) {
       deleteFavoriteMutation.mutate({ reportId });
     } else {
       addFavoriteMutation.mutate({ reportId: String(reportId) });
     }
   };
-  const baseURL = process.env.NEXT_PUBLIC_API_URL;
+  const baseURL = process.env.NEXT_PUBLIC_API_URL ?? '';
 
   return (
     <>
@@ -75,11 +66,11 @@ export const ReportList: React.FC<Props> = ({
         <div
           className={
             inModal
-              ? 'flex w-full flex-wrap items-center lg:grid lg:grid-cols-2 justify-center gap-6'
+              ? 'flex w-full flex-wrap items-center justify-center gap-6 lg:grid lg:grid-cols-2'
               : '4xl:grid-cols-3 4xl:max-w-[1591px] grid max-w-[1048px] grid-cols-1 items-center gap-6 xl:grid-cols-2'
           }
         >
-          {reports.map((report, idx) => (
+          {reports.map((report) => (
             <div
               onClick={() => onReportClick?.(report.identifier)}
               key={report.identifier}
@@ -90,7 +81,7 @@ export const ReportList: React.FC<Props> = ({
               }
             >
               <ReportCard
-                link="/report/1"
+                link={`/report/${report.identifier}`}
                 categoryType={report.category.title}
                 reportSubscription="رایگان"
                 fixedBrief={inModal ? false : true}
@@ -103,7 +94,12 @@ export const ReportList: React.FC<Props> = ({
                 }
                 userFavorite={report.userFavorite}
                 videoBadge={report.hasVideo}
-                image={baseURL + report.image}
+                {...report}
+                image={
+                  report.image
+                    ? ((baseURL + report.image) as unknown as StaticImageData)
+                    : null
+                }
                 shadowOnHover
                 summary={report.summary}
                 title={report.title}

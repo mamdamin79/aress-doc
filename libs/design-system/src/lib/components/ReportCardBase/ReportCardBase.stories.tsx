@@ -1,6 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { ReportCardBase } from './ReportCardBase';
-import { useState } from 'react';
 
 // Meta configuration for the ReportCardBase component in Storybook
 const meta: Meta<typeof ReportCardBase> = {

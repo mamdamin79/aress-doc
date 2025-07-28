@@ -3,7 +3,7 @@ import { useSearchParams } from 'next/navigation';
 import { useDashboardsServiceGetDashboardsByDashboardId } from '@openapi';
 import { calculateSlotsToRender } from '../utils';
 
-export const useDashboardData = (tokenLoaded: boolean) => {
+export const useDashboardData = () => {
   const searchParams = useSearchParams();
   const dashboardIdParam = searchParams.get('dashboardId');
 
@@ -11,7 +11,7 @@ export const useDashboardData = (tokenLoaded: boolean) => {
     useDashboardsServiceGetDashboardsByDashboardId(
       { dashboardId: Number(dashboardIdParam) },
       undefined,
-      { enabled: tokenLoaded && !!dashboardIdParam },
+      { enabled: !!dashboardIdParam },
     );
 
   const [dashboardData, setDashboardData] = useState(dashboardDataFromApi);

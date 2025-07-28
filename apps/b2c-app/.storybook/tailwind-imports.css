@@ -1,0 +1,2277 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('../assets/fonts/vazirmant.css');
+
+html {
+  direction: rtl;
+}
+
+.drop-down::-webkit-scrollbar {
+  width: 4px;
+  background-color: #d8dbe1;
+  border-radius: 8px;
+  margin: 5px 0;
+}
+
+.drop-down::-webkit-scrollbar-thumb {
+  background-color: #8c9096;
+  position: sticky;
+  border-radius: 8px;
+}
+
+.dir-rtl {
+  direction: rtl;
+}
+
+.dir-ltr {
+  direction: ltr;
+}
+
+html {
+  direction: rtl;
+}
+
+.table-scroll {
+  writing-mode: sideways-rl;
+}
+
+table {
+  writing-mode: horizontal-tb;
+}
+
+input[type='password']::-ms-reveal,
+input[type='password']::-ms-clear,
+input[type='password']::-webkit-password-eye {
+  display: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  background-color: #d8dbe1;
+  border-radius: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #8c9096;
+  position: sticky;
+  border-radius: 8px;
+}
+
+.scrollbar-sm::-webkit-scrollbar,
+.scrollbar-sm-hidden::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+  border-radius: 8px;
+}
+
+.scrollbar-md::-webkit-scrollbar,
+.scrollbar-md-hidden::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  border-radius: 8px;
+}
+
+.scrollbar-lg::-webkit-scrollbar,
+.scrollbar-lg-hidden::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  border-radius: 8px;
+}
+
+.scrollbar-sm::-webkit-scrollbar-thumb,
+.scrollbar-md::-webkit-scrollbar-thumb,
+.scrollbar-lg::-webkit-scrollbar-thumb {
+  background-color: #8c9096;
+  position: sticky;
+  border-radius: 8px;
+}
+
+.scrollbar-sm::-webkit-scrollbar-track,
+.scrollbar-md::-webkit-scrollbar-track,
+.scrollbar-lg::-webkit-scrollbar-track {
+  background-color: #d8dbe1;
+  border-radius: 8px;
+}
+
+.hiddenscrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-sm-hidden::-webkit-scrollbar-thumb,
+.scrollbar-md-hidden::-webkit-scrollbar-thumb,
+.scrollbar-lg-hidden::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  position: sticky;
+  border-radius: 8px;
+}
+
+.scrollbar-sm-hidden::-webkit-scrollbar-track,
+.scrollbar-md-hidden::-webkit-scrollbar-track,
+.scrollbar-lg-hidden::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 8px;
+}
+
+.scrollbar-sm-hidden:hover::-webkit-scrollbar-thumb,
+.scrollbar-md-hidden:hover::-webkit-scrollbar-thumb,
+.scrollbar-lg-hidden:hover::-webkit-scrollbar-thumb {
+  background-color: #8c9096;
+  position: sticky;
+  border-radius: 8px;
+}
+
+.scrollbar-sm-hidden:hover::-webkit-scrollbar-track,
+.scrollbar-md-hidden:hover::-webkit-scrollbar-track,
+.scrollbar-lg-hidden:hover::-webkit-scrollbar-track {
+  background-color: #d8dbe1;
+  border-radius: 8px;
+}
+
+@layer base {
+  :root {
+    --color-tiffany-tiffany-50-light: #f4fbfb;
+    --color-tiffany-tiffany-100-light: #e3f8f8;
+    --color-tiffany-tiffany-200-light: #bcebeb;
+    --color-tiffany-tiffany-300-light: #afe4e4;
+    --color-tiffany-tiffany-400-light: #5bc2c2;
+    --color-tiffany-tiffany-500-light: #36a1a1;
+    --color-tiffany-tiffany-600-light: #0c9292;
+    --color-tiffany-tiffany-700-light: #0f7575;
+    --color-tiffany-tiffany-800-light: #055c5c;
+    --color-tiffany-tiffany-900-light: #044343;
+    --color-tiffany-tiffany-1000-light: #032626;
+    --color-tiffany-tiffany-50-dark: #001f1f;
+    --color-tiffany-tiffany-100-dark: #082b2a;
+    --color-tiffany-tiffany-200-dark: #003838;
+    --color-tiffany-tiffany-300-dark: #024545;
+    --color-tiffany-tiffany-400-dark: #006160;
+    --color-tiffany-tiffany-500-dark: #047675;
+    --color-tiffany-tiffany-600-dark: #008a89;
+    --color-tiffany-tiffany-700-dark: #00a3a2;
+    --color-tiffany-tiffany-800-dark: #23bebc;
+    --color-gray-gray-50-light: #f9fafb;
+    --color-tiffany-tiffany-900-dark: #7bdbd9;
+    --color-tiffany-tiffany-1000-dark: #d9fdfd;
+    --color-gray-gray-100-light: #f3f4f6;
+    --color-blue-blue-50-light: #f5f9fe;
+    --color-blue-blue-100-light: #ebf4ff;
+    --color-blue-blue-200-light: #cee5fd;
+    --color-blue-blue-300-light: #b2d7ff;
+    --color-blue-blue-400-light: #75b8ff;
+    --color-blue-blue-500-light: #3e93ef;
+    --color-green-green-50-light: #f3fcf6;
+    --color-blue-blue-600-light: #1876dc;
+    --color-blue-blue-700-light: #0f67c7;
+    --color-blue-blue-800-light: #0450a4;
+    --color-blue-blue-900-light: #003a7a;
+    --color-blue-blue-1000-light: #002145;
+    --color-blue-blue-50-dark: #0a1624;
+    --color-blue-blue-100-dark: #082749;
+    --color-blue-blue-200-dark: #0a315c;
+    --color-blue-blue-300-dark: #063c79;
+    --color-blue-blue-400-dark: #1255a1;
+    --color-blue-blue-500-dark: #1069cb;
+    --color-blue-blue-600-dark: #1876dc;
+    --color-blue-blue-700-dark: #3394ff;
+    --color-blue-blue-800-dark: #66afff;
+    --color-blue-blue-900-dark: #a7cffb;
+    --color-blue-blue-1000-dark: #ebf5ff;
+    --color-green-green-100-light: #e7f9ed;
+    --color-vividgreen-vividgreen-50-light: #ecfdf3;
+    --color-vividgreen-vividgreen-100-light: #d2fee4;
+    --color-vividgreen-vividgreen-200-light: #acf1c7;
+    --color-vividgreen-vividgreen-300-light: #88e7ae;
+    --color-vividgreen-vividgreen-400-light: #54d98a;
+    --color-vividgreen-vividgreen-500-light: #19d264;
+    --color-vividgreen-vividgreen-600-light: #00bd4c;
+    --color-vividgreen-vividgreen-700-light: #0a9e46;
+    --color-vividgreen-vividgreen-800-light: #058f3c;
+    --color-vividgreen-vividgreen-900-light: #04672c;
+    --color-vividgreen-vividgreen-1000-light: #002e12;
+    --color-vividgreen-vividgreen-50-dark: #021d0c;
+    --color-vividgreen-vividgreen-100-dark: #023115;
+    --color-vividgreen-vividgreen-200-dark: #00421a;
+    --color-vividgreen-vividgreen-300-dark: #005221;
+    --color-vividgreen-vividgreen-400-dark: #097133;
+    --color-vividgreen-vividgreen-500-dark: #008f39;
+    --color-vividgreen-vividgreen-600-dark: #05a345;
+    --color-vividgreen-vividgreen-700-dark: #1bc55f;
+    --color-red-red-50-light: #fef8f8;
+    --color-vividgreen-vividgreen-800-dark: #09ce57;
+    --color-red-red-100-light: #fef0f0;
+    --color-vividgreen-vividgreen-900-dark: #48ef8c;
+    --color-vividgreen-vividgreen-1000-dark: #ccffe1;
+    --color-yellow-yellow-50-light: #fff9eb;
+    --color-yellow-yellow-100-light: #fff4db;
+    --color-yellow-yellow-200-light: #fce09c;
+    --color-yellow-yellow-300-light: #fad680;
+    --color-yellow-yellow-400-light: #f9ce66;
+    --color-yellow-yellow-500-light: #fbc341;
+    --color-yellow-yellow-600-light: #f3af12;
+    --color-yellow-yellow-700-light: #d89803;
+    --color-yellow-yellow-800-light: #b07e07;
+    --color-yellow-yellow-900-light: #805a00;
+    --color-yellow-yellow-1000-light: #332400;
+    --color-yellow-yellow-50-dark: #221902;
+    --color-yellow-yellow-100-dark: #362702;
+    --color-yellow-yellow-200-dark: #412d02;
+    --color-yellow-yellow-300-dark: #5c4100;
+    --color-yellow-yellow-400-dark: #815c03;
+    --color-yellow-yellow-500-dark: #9c7516;
+    --color-yellow-yellow-600-dark: #bd8400;
+    --color-yellow-yellow-700-dark: #e5a100;
+    --color-yellow-yellow-800-dark: #eba500;
+    --color-yellow-yellow-900-dark: #efc86c;
+    --color-yellow-yellow-1000-dark: #fff4d6;
+    --color-red-red-200-light: #fcd9d9;
+    --color-red-red-300-light: #fbc5c5;
+    --color-red-red-400-light: #fc9797;
+    --color-red-red-500-light: #f26363;
+    --color-red-red-600-light: #dd3636;
+    --color-red-red-700-light: #d01616;
+    --color-red-red-800-light: #a41313;
+    --color-red-red-900-light: #7d0808;
+    --color-red-red-1000-light: #4d0000;
+    --color-red-red-50-dark: #2a0909;
+    --color-red-red-100-dark: #4b1616;
+    --color-red-red-200-dark: #640c0c;
+    --color-red-red-300-dark: #7d0c0c;
+    --color-red-red-400-dark: #a72020;
+    --color-red-red-500-dark: #cf2626;
+    --color-red-red-600-dark: #e33b3b;
+    --color-red-red-700-dark: #ff5c5c;
+    --color-red-red-800-dark: #ff8585;
+    --color-red-red-900-dark: #fcbbbb;
+    --color-red-red-1000-dark: #fff0f0;
+    --color-green-green-200-light: #baeecb;
+    --color-green-green-300-light: #a3e0b8;
+    --color-green-green-400-light: #66c787;
+    --color-green-green-500-light: #36a65b;
+    --color-green-green-600-light: #16883c;
+    --color-green-green-700-light: #0b7930;
+    --color-green-green-800-light: #075f24;
+    --color-green-green-900-light: #014618;
+    --color-green-green-1000-light: #01280e;
+    --color-green-green-50-dark: #031c0c;
+    --color-green-green-100-dark: #0b2d17;
+    --color-green-green-200-dark: #053916;
+    --color-green-green-300-dark: #05481c;
+    --color-green-green-400-dark: #086327;
+    --color-green-green-500-dark: #0e7b34;
+    --color-green-green-600-dark: #218d46;
+    --color-green-green-700-dark: #2da958;
+    --color-green-green-800-dark: #38c268;
+    --color-green-green-900-dark: #75e19a;
+    --color-green-green-1000-dark: #ddfde9;
+    --color-gray-gray-200-light: #e1e2e5;
+    --color-gray-gray-300-light: #d1d3d7;
+    --color-gray-gray-400-light: #b3b6bd;
+    --color-gray-gray-500-light: #8f9299;
+    --color-gray-gray-600-light: #74777c;
+    --color-gray-gray-700-light: #565960;
+    --color-gray-gray-800-light: #4f5259;
+    --color-gray-gray-900-light: #3a3c41;
+    --color-gray-gray-1000-light: #06080f;
+    --color-gray-gray-50-dark: #191a1c;
+    --color-gray-gray-100-dark: #242528;
+    --color-gray-gray-200-dark: #303236;
+    --color-gray-gray-300-dark: #3d3f43;
+    --color-gray-gray-400-dark: #52555b;
+    --color-gray-gray-500-dark: #686c73;
+    --color-gray-gray-600-dark: #898d94;
+    --color-gray-gray-700-dark: #a9acb1;
+    --color-gray-gray-800-dark: #a9acb1;
+    --color-gray-gray-900-dark: #c8ccd5;
+    --color-gray-gray-1000-dark: #f7f9fd;
+    --color-pink-pink-50-light: #fff5fa;
+    --color-pink-pink-100-light: #fff0f7;
+    --color-pink-pink-200-light: #ffd7eb;
+    --color-pink-pink-300-light: #ffc2e0;
+    --color-pink-pink-400-light: #f297c4;
+    --color-pink-pink-500-light: #ed5ea6;
+    --color-pink-pink-600-light: #d53484;
+    --color-pink-pink-700-light: #c32272;
+    --color-pink-pink-800-light: #9d1559;
+    --color-pink-pink-900-light: #741142;
+    --color-pink-pink-1000-light: #440826;
+    --color-pink-pink-50-dark: #2e101f;
+    --color-pink-pink-100-dark: #4b1630;
+    --color-pink-pink-200-dark: #561a39;
+    --color-pink-pink-300-dark: #761e49;
+    --color-pink-pink-400-dark: #9e2963;
+    --color-pink-pink-500-dark: #ba3678;
+    --color-pink-pink-600-dark: #d7428c;
+    --color-pink-pink-700-dark: #f65aa8;
+    --color-pink-pink-800-dark: #fe80bf;
+    --color-pink-pink-900-dark: #ffb8db;
+    --color-pink-pink-1000-dark: #fff0f7;
+    --color-purple-purple-50-light: #faf8ff;
+    --color-purple-purple-100-light: #f4f0ff;
+    --color-purple-purple-200-light: #e5def7;
+    --color-purple-purple-300-light: #d9cdf9;
+    --color-purple-purple-400-light: #bca7f6;
+    --color-purple-purple-500-light: #9e80ef;
+    --color-purple-purple-600-light: #815ceb;
+    --color-purple-purple-700-light: #7253ca;
+    --color-purple-purple-800-light: #5938b8;
+    --color-purple-purple-900-light: #422b82;
+    --color-purple-purple-1000-light: #251650;
+    --color-purple-purple-50-dark: #191033;
+    --color-purple-purple-100-dark: #2b1c54;
+    --color-purple-purple-200-dark: #35226d;
+    --color-purple-purple-300-dark: #432c87;
+    --color-purple-purple-400-dark: #5d3db8;
+    --color-purple-purple-500-dark: #7453d0;
+    --color-purple-purple-600-dark: #8564e8;
+    --color-purple-purple-700-dark: #9f83ec;
+    --color-purple-purple-800-dark: #b39ef0;
+    --color-purple-purple-900-dark: #d1c2ff;
+    --color-purple-purple-1000-dark: #f2f0ff;
+    --color-base-white: #ffffff;
+    --color-base-black: #000000;
+    --color-base-dark: #0a0d0d;
+    --coloropacity-gray-gray-50-light-0per: #f9fafb00;
+    --coloropacity-gray-gray-50-dark-0per: #191a1c00;
+    --coloropacity-gray-gray-300-light-50per: #d1d3d77f;
+    --coloropacity-gray-gray-300-dark-50per: #3d3f437f;
+    --coloropacity-gray-gray-400-light-55per: #b3b6bd8c;
+    --coloropacity-gray-gray-400-dark-55per: #52555b8c;
+    --coloropacity-gray-gray-600-light-0per: #74777c00;
+    --coloropacity-gray-gray-600-dark-0per: #898d9400;
+    --coloropacity-gray-gray-600-light-10per: #74777c19;
+    --coloropacity-gray-gray-600-dark-10per: #898d9419;
+    --coloropacity-gray-gray-600-light-20per: #74777c33;
+    --coloropacity-gray-gray-600-dark-20per: #898d9433;
+    --coloropacity-gray-gray-600-light-30per: #74777c4c;
+    --coloropacity-gray-gray-600-dark-30per: #898d944c;
+    --coloropacity-gray-gray-600-light-40per: #74777c66;
+    --coloropacity-gray-gray-600-dark-40per: #898d9466;
+    --coloropacity-gray-gray-600-light-50per: #74777c7f;
+    --coloropacity-gray-gray-600-dark-50per: #898d947f;
+    --coloropacity-gray-gray-600-light-60per: #74777c99;
+    --coloropacity-gray-gray-600-dark-60per: #898d9499;
+    --coloropacity-gray-gray-600-light-70per: #74777cb2;
+    --coloropacity-gray-gray-600-dark-70per: #898d94b2;
+    --coloropacity-gray-gray-600-light-80per: #74777ccc;
+    --coloropacity-gray-gray-600-dark-80per: #898d94cc;
+    --coloropacity-gray-gray-600-light-90per: #74777ce5;
+    --coloropacity-gray-gray-600-dark-90per: #898d94e5;
+    --coloropacity-gray-gray-900-light-90per: #3a3c41e5;
+    --coloropacity-gray-gray-1000-light-85per: #06080fd8;
+    --coloropacity-blue-blue-600-light-0per: #1876dc00;
+    --coloropacity-blue-blue-600-dark-0per: #1876dc00;
+    --coloropacity-blue-blue-600-light-10per: #1876dc19;
+    --coloropacity-blue-blue-600-dark-10per: #1876dc19;
+    --coloropacity-blue-blue-600-light-20per: #1876dc33;
+    --coloropacity-blue-blue-600-dark-20per: #1876dc33;
+    --coloropacity-blue-blue-600-light-30per: #1876dc4c;
+    --coloropacity-blue-blue-600-dark-30per: #1876dc4c;
+    --coloropacity-blue-blue-600-light-40per: #1876dc66;
+    --coloropacity-blue-blue-600-dark-40per: #1876dc66;
+    --coloropacity-blue-blue-600-light-50per: #1876dc7f;
+    --coloropacity-blue-blue-600-dark-50per: #1876dc7f;
+    --coloropacity-blue-blue-600-light-60per: #1876dc99;
+    --coloropacity-blue-blue-600-dark-60per: #1876dc99;
+    --coloropacity-blue-blue-600-light-70per: #1876dcb2;
+    --coloropacity-blue-blue-600-dark-70per: #1876dcb2;
+    --coloropacity-blue-blue-600-light-80per: #1876dccc;
+    --coloropacity-blue-blue-600-dark-80per: #1876dccc;
+    --coloropacity-blue-blue-600-light-90per: #1876dce5;
+    --coloropacity-blue-blue-600-dark-90per: #1876dce5;
+    --coloropacity-blue-blue-1000-light-30per: #0021454c;
+    --coloropacity-blue-blue-1000-dark-30per: #ebf5ff4c;
+    --coloropacity-gray-gray-1000-dark-85per: #f7f9fdd8;
+    --coloropacity-red-red-600-light-0per: #dd363600;
+    --coloropacity-red-red-600-dark-0per: #e33b3b00;
+    --coloropacity-red-red-600-light-10per: #dd363619;
+    --coloropacity-red-red-600-dark-10per: #e33b3b19;
+    --coloropacity-red-red-600-light-20per: #dd363633;
+    --coloropacity-red-red-600-dark-20per: #e33b3b33;
+    --coloropacity-green-green-600-light-0per: #16883c00;
+    --coloropacity-red-red-600-light-30per: #dd36364c;
+    --coloropacity-red-red-600-dark-30per: #e33b3b4c;
+    --coloropacity-red-red-600-light-40per: #dd363666;
+    --coloropacity-red-red-600-dark-40per: #e33b3b66;
+    --coloropacity-red-red-600-light-50per: #dd36367f;
+    --coloropacity-red-red-600-dark-50per: #e33b3b7f;
+    --coloropacity-red-red-600-light-60per: #dd363699;
+    --coloropacity-red-red-600-dark-60per: #e33b3b99;
+    --coloropacity-green-green-600-dark-0per: #218d4600;
+    --coloropacity-red-red-600-light-70per: #dd3636b2;
+    --coloropacity-green-green-600-light-10per: #16883c19;
+    --coloropacity-red-red-600-dark-70per: #e33b3bb2;
+    --coloropacity-green-green-600-dark-10per: #218d4619;
+    --coloropacity-red-red-600-light-80per: #dd3636cc;
+    --coloropacity-red-red-600-dark-80per: #e33b3bcc;
+    --coloropacity-red-red-600-light-90per: #dd3636e5;
+    --coloropacity-red-red-600-dark-90per: #e33b3be5;
+    --coloropacity-green-green-600-light-20per: #16883c33;
+    --coloropacity-green-green-600-dark-20per: #218d4633;
+    --coloropacity-green-green-600-light-30per: #16883c4c;
+    --coloropacity-green-green-600-dark-30per: #218d464c;
+    --coloropacity-green-green-600-light-40per: #16883c66;
+    --coloropacity-green-green-600-dark-40per: #218d4666;
+    --coloropacity-green-green-600-light-50per: #16883c7f;
+    --coloropacity-green-green-600-dark-50per: #218d467f;
+    --coloropacity-green-green-600-light-60per: #16883c99;
+    --coloropacity-green-green-600-dark-60per: #218d4699;
+    --coloropacity-green-green-600-light-70per: #16883cb2;
+    --coloropacity-green-green-600-dark-70per: #218d46b2;
+    --coloropacity-green-green-600-light-80per: #16883ccc;
+    --coloropacity-green-green-600-dark-80per: #218d46cc;
+    --coloropacity-green-green-600-light-90per: #16883ce5;
+    --coloropacity-green-green-600-dark-90per: #218d46e5;
+    --coloropacity-yellow-yellow-600-light-0per: #f3af1200;
+    --coloropacity-yellow-yellow-600-dark-0per: #bd840000;
+    --coloropacity-yellow-yellow-600-light-10per: #f3af1219;
+    --coloropacity-yellow-yellow-600-dark-10per: #bd840019;
+    --coloropacity-yellow-yellow-600-light-20per: #f3af1233;
+    --coloropacity-yellow-yellow-600-dark-20per: #bd840033;
+    --coloropacity-yellow-yellow-600-light-30per: #f3af124c;
+    --coloropacity-yellow-yellow-600-dark-30per: #bd84004c;
+    --coloropacity-yellow-yellow-600-light-40per: #f3af1266;
+    --coloropacity-yellow-yellow-600-dark-40per: #bd840066;
+    --coloropacity-yellow-yellow-600-light-50per: #f3af127f;
+    --coloropacity-yellow-yellow-600-dark-50per: #bd84007f;
+    --coloropacity-yellow-yellow-600-light-60per: #f3af1299;
+    --coloropacity-yellow-yellow-600-dark-60per: #bd840099;
+    --coloropacity-yellow-yellow-600-light-70per: #f3af12b2;
+    --coloropacity-yellow-yellow-600-dark-70per: #bd8400b2;
+    --coloropacity-yellow-yellow-600-light-80per: #f3af12cc;
+    --coloropacity-yellow-yellow-600-dark-80per: #bd8400cc;
+    --coloropacity-yellow-yellow-600-light-90per: #f3af12e5;
+    --coloropacity-yellow-yellow-600-dark-90per: #bd8400e5;
+    --coloropacity-purple-purple-600-light-0per: #815ceb00;
+    --coloropacity-purple-purple-600-dark-0per: #8564e800;
+    --coloropacity-purple-purple-600-light-10per: #815ceb19;
+    --coloropacity-purple-purple-600-dark-10per: #8564e819;
+    --coloropacity-purple-purple-600-light-20per: #815ceb33;
+    --coloropacity-purple-purple-600-dark-20per: #8564e833;
+    --coloropacity-purple-purple-600-light-30per: #815ceb4c;
+    --coloropacity-purple-purple-600-dark-30per: #8564e84c;
+    --coloropacity-purple-purple-600-light-40per: #815ceb66;
+    --coloropacity-purple-purple-600-dark-40per: #8564e866;
+    --coloropacity-purple-purple-600-light-50per: #815ceb7f;
+    --coloropacity-base-white-0per: #ffffff00;
+    --coloropacity-base-white-20per: #ffffff33;
+    --coloropacity-base-white-55per: #ffffff8c;
+    --coloropacity-base-white-80per: #ffffffcc;
+    --coloropacity-base-white-85per: #ffffffd8;
+    --coloropacity-base-black-0per: #00000000;
+    --coloropacity-base-black-15per: #00000026;
+    --coloropacity-base-black-20per: #00000033;
+    --coloropacity-base-black-30per: #0000004c;
+    --coloropacity-base-black-56per: #0000008e;
+    --coloropacity-base-black-75per: #000000bf;
+    --coloropacity-base-black-80per: #000000cc;
+    --coloropacity-base-dark-0per: #0a0d0d00;
+    --coloropacity-purple-purple-600-dark-50per: #8564e87f;
+    --coloropacity-purple-purple-600-light-60per: #815ceb99;
+    --coloropacity-purple-purple-600-dark-60per: #8564e899;
+    --coloropacity-purple-purple-600-light-70per: #815cebb2;
+    --coloropacity-purple-purple-600-dark-70per: #8564e8b2;
+    --coloropacity-purple-purple-600-light-80per: #815cebcc;
+    --coloropacity-purple-purple-600-dark-80per: #8564e8cc;
+    --coloropacity-purple-purple-600-light-90per: #815cebe5;
+    --coloropacity-purple-purple-600-dark-90per: #8564e8e5;
+    --coloropacity-shadow-4per-light: #000b170a;
+    --coloropacity-shadow-4per-dark: #000b170a;
+    --coloropacity-shadow-4_5per-light: #000b170b;
+    --coloropacity-shadow-4_5per-dark: #000b170b;
+    --coloropacity-shadow-6per-light: #000b170f;
+    --coloropacity-shadow-6per-dark: #000b170f;
+    --coloropacity-shadow-8per-light: #000b1714;
+    --coloropacity-shadow-8per-dark: #000b1714;
+    --coloropacity-shadow-9per-light: #000b1716;
+    --coloropacity-shadow-9per-dark: #000b1716;
+    --coloropacity-shadow-12per-light: #000b171e;
+    --coloropacity-shadow-12per-dark: #000b171e;
+    --coloropacity-shadow-16per-light: #000b1728;
+    --coloropacity-shadow-16per-dark: #000b1728;
+    --coloropacity-shadow-20per-light: #000b1733;
+    --coloropacity-shadow-20per-dark: #000b1733;
+    --coloropacity-shadow-24per-light: #000b173d;
+    --coloropacity-shadow-24per-dark: #000b173d;
+    --coloropacity-shadow-34per-light: #000b1756;
+    --coloropacity-shadow-34per-dark: #000b1756;
+    --color-button-brand-surface-default: var(
+      --color-surface-brand-600-primary
+    );
+    --color-button-brand-border-default: var(--color-border-brand-primary-600);
+    --color-button-brand-border-hover: var(--color-border-brand-contrast-700);
+    --color-button-brand-border-pressed: var(
+      --color-border-brand-highcontrast-800
+    );
+    --color-button-brand-border-disable: var(--color-border-brand-disable-300);
+    --color-button-brand-border-loading: var(--color-border-brand-primary-600);
+    --color-button-brand-surface-hover: var(--color-surface-brand-700-contrast);
+    --color-button-brand-surface-pressed: var(
+      --color-surface-brand-800-highcontrast
+    );
+    --color-button-brand-surface-disable: var(
+      --color-surface-brand-300-disable
+    );
+    --color-button-brand-surface-loading: var(
+      --color-surface-brand-600-primary
+    );
+    --color-button-brand-label-onsurface: var(--color-text-neutral-white);
+    --color-button-brand-label-ondisablesurface: var(
+      --color-text-neutral-oncoloreddisable
+    );
+    --color-button-brand-label-plain-default: var(
+      --color-text-brand-primary-600
+    );
+    --color-button-brand-label-plain-hover: var(
+      --color-text-brand-contrast-700
+    );
+    --color-button-brand-label-plain-pressed: var(
+      --color-text-brand-highcontrast-800
+    );
+    --color-button-brand-label-plain-disable: var(
+      --color-text-brand-disable-300
+    );
+    --color-button-brand-label-plain-loading: var(
+      --color-text-brand-primary-600
+    );
+    --color-button-error-surface-default: var(
+      --color-surface-message-error-600-primary
+    );
+    --color-button-error-border-default: var(
+      --color-border-message-error-primary-600
+    );
+    --color-button-error-border-hover: var(
+      --color-border-message-error-contrast-700
+    );
+    --color-button-error-border-pressed: var(
+      --color-border-message-error-highcontrast-800
+    );
+    --color-button-error-border-disable: var(
+      --color-border-message-error-disable-300
+    );
+    --color-button-error-border-loading: var(
+      --color-border-message-error-primary-600
+    );
+    --color-button-error-surface-hover: var(
+      --color-surface-message-error-700-contrast
+    );
+    --color-button-error-surface-pressed: var(
+      --color-surface-message-error-800-highcontrast
+    );
+    --color-button-error-surface-disable: var(
+      --color-surface-message-error-300-disable
+    );
+    --color-button-error-surface-loading: var(
+      --color-surface-message-error-600-primary
+    );
+    --color-button-error-label-onsurface: var(--color-text-neutral-white);
+    --color-button-error-label-ondisablesurface: var(
+      --color-text-neutral-oncoloreddisable
+    );
+    --color-button-error-label-plain-default: var(
+      --color-text-message-error-primary-600
+    );
+    --color-button-error-label-plain-hover: var(
+      --color-text-message-error-contrast-700
+    );
+    --color-button-error-label-plain-pressed: var(
+      --color-text-message-error-highcontrast-800
+    );
+    --color-button-error-label-plain-disable: var(
+      --color-text-message-error-disable-300
+    );
+    --color-button-error-label-plain-loading: var(
+      --color-text-message-error-primary-600
+    );
+    --color-button-success-surface-default: var(
+      --color-surface-message-success-600-primary
+    );
+    --color-button-success-border-default: var(
+      --color-border-message-success-primary-600
+    );
+    --color-button-success-border-hover: var(
+      --color-border-message-success-contrast-700
+    );
+    --color-button-success-border-pressed: var(
+      --color-border-message-success-highcontrast-800
+    );
+    --color-button-success-border-disable: var(
+      --color-border-message-success-disable-300
+    );
+    --color-button-success-surface-hover: var(
+      --color-surface-message-success-700-contrast
+    );
+    --color-button-success-border-loading: var(
+      --color-border-message-success-primary-600
+    );
+    --color-button-success-surface-pressed: var(
+      --color-surface-message-success-800-highcontrast
+    );
+    --color-button-success-surface-disable: var(
+      --color-surface-message-success-300-disable
+    );
+    --color-button-success-label-onsurface: var(--color-text-neutral-white);
+    --color-button-success-label-ondisablesurface: var(
+      --color-text-neutral-oncoloreddisable
+    );
+    --color-button-success-label-plain-default: var(
+      --color-text-message-success-primary-600
+    );
+    --color-button-success-label-plain-hover: var(
+      --color-text-message-success-contrast-700
+    );
+    --color-button-success-label-plain-pressed: var(
+      --color-text-message-success-highcontrast-800
+    );
+    --color-button-success-label-plain-disable: var(
+      --color-text-message-success-disable-300
+    );
+    --color-button-success-label-plain-loading: var(
+      --color-text-message-success-primary-600
+    );
+    --color-button-success-surface-loading: var(
+      --color-surface-message-success-600-primary
+    );
+    --color-videoplayer-progressbar-base: var(
+      --coloropacity-gray-gray-300-light-50per
+    );
+    --color-videoplayer-fullscreen-videoselection-surface: var(
+      --coloropacity-gray-gray-900-light-90per
+    );
+    --color-videoplayer-fullscreen-videoselection-border: var(
+      --coloropacity-base-white-20per
+    );
+    --color-videoplayer-settingspopup-surface: var(
+      --coloropacity-gray-gray-900-light-90per
+    );
+    --color-videoplayer-settingspopup-divider: var(--color-gray-gray-700-light);
+    --color-videoplayer-settingspopup-border: var(
+      --coloropacity-base-black-20per
+    );
+    --color-button-neutral-surface-default: var(
+      --color-surface-accent-gray-600
+    );
+    --color-button-neutral-border-default: var(--color-border-accent-gray-600);
+    --color-button-neutral-border-hover: var(--color-border-accent-gray-700);
+    --color-button-neutral-border-pressed: var(--color-border-accent-gray-800);
+    --color-button-neutral-border-disable: var(--color-border-accent-gray-300);
+    --color-button-neutral-surface-hover: var(--color-surface-accent-gray-700);
+    --color-button-neutral-border-loading: var(--color-border-accent-gray-600);
+    --color-button-neutral-surface-pressed: var(
+      --color-surface-accent-gray-800
+    );
+    --color-button-neutral-surface-disable: var(
+      --color-surface-accent-gray-300
+    );
+    --color-button-neutral-label-onsurface: var(--color-text-neutral-white);
+    --color-button-neutral-label-ondisablesurface: var(
+      --color-text-neutral-oncoloreddisable
+    );
+    --color-button-neutral-label-plain-default: var(
+      --color-text-neutral-primary
+    );
+    --color-button-neutral-label-plain-hover: var(--color-text-neutral-primary);
+    --color-button-neutral-label-plain-pressed: var(
+      --color-text-neutral-primary
+    );
+    --color-button-neutral-label-plain-disable: var(
+      --color-text-neutral-disable
+    );
+    --color-button-neutral-label-plain-loading: var(
+      --color-text-neutral-primary
+    );
+    --color-button-neutral-surface-loading: var(
+      --color-surface-accent-gray-600
+    );
+    --color-surface-neutral-background: var(--color-base-white);
+    --color-surface-neutral-primary: var(--color-base-white);
+    --color-surface-neutral-secondarycontrast: var(--color-gray-gray-200-light);
+    --color-surface-neutral-secondary: var(--color-gray-gray-100-light);
+    --color-surface-neutral-tertiary: var(--color-gray-gray-50-light);
+    --color-surface-neutral-disable: var(--color-gray-gray-50-light);
+    --color-surface-brand-50: var(--color-blue-blue-50-light);
+    --color-surface-brand-100: var(--color-blue-blue-100-light);
+    --color-surface-brand-200: var(--color-blue-blue-200-light);
+    --color-surface-brand-300-disable: var(--color-blue-blue-300-light);
+    --color-surface-brand-400: var(--color-blue-blue-400-light);
+    --color-surface-brand-500: var(--color-blue-blue-500-light);
+    --color-surface-brand-600-primary: var(--color-blue-blue-600-light);
+    --color-surface-neutral-inverse: var(
+      --coloropacity-gray-gray-1000-light-85per
+    );
+    --color-surface-neutral-popupbackground: var(
+      --coloropacity-base-black-15per
+    );
+    --color-surface-message-info-100-soft: var(--color-blue-blue-100-light);
+    --color-surface-brand-700-contrast: var(--color-blue-blue-700-light);
+    --color-surface-message-info-300-disable: var(--color-blue-blue-300-light);
+    --color-surface-brand-800-highcontrast: var(--color-blue-blue-800-light);
+    --color-surface-message-info-600-primary: var(--color-blue-blue-600-light);
+    --color-surface-message-info-700-contrast: var(--color-blue-blue-700-light);
+    --color-surface-message-info-800-highcontrast: var(
+      --color-blue-blue-800-light
+    );
+    --color-surface-message-error-100-soft: var(--color-red-red-100-light);
+    --color-surface-message-error-300-disable: var(--color-red-red-300-light);
+    --color-surface-message-error-600-primary: var(--color-red-red-600-light);
+    --color-surface-message-success-100-soft: var(
+      --color-green-green-100-light
+    );
+    --color-surface-message-error-700-contrast: var(--color-red-red-700-light);
+    --color-surface-message-error-800-highcontrast: var(
+      --color-red-red-800-light
+    );
+    --color-surface-message-success-300-disable: var(
+      --color-green-green-300-light
+    );
+    --color-surface-message-success-600-primary: var(
+      --color-green-green-600-light
+    );
+    --color-surface-message-success-700-contrast: var(
+      --color-green-green-700-light
+    );
+    --color-surface-message-success-800-highcontrast: var(
+      --color-green-green-800-light
+    );
+    --color-surface-message-warning-100-soft: var(
+      --color-yellow-yellow-100-light
+    );
+    --color-surface-message-warning-300-disable: var(
+      --color-yellow-yellow-300-light
+    );
+    --color-surface-message-warning-600-primary: var(
+      --color-yellow-yellow-600-light
+    );
+    --color-surface-message-warning-700-contrast: var(
+      --color-yellow-yellow-700-light
+    );
+    --color-surface-message-warning-800-highcontrast: var(
+      --color-yellow-yellow-800-light
+    );
+    --color-text-neutral-primary: var(--color-gray-gray-1000-light);
+    --color-text-neutral-secondarycontrast: var(--color-gray-gray-700-light);
+    --color-text-neutral-secondary: var(--color-gray-gray-600-light);
+    --color-text-neutral-tertiary: var(--color-gray-gray-500-light);
+    --color-text-neutral-disable: var(--color-gray-gray-400-light);
+    --color-text-brand-disable-300: var(--color-blue-blue-300-light);
+    --color-text-brand-primary-600: var(--color-blue-blue-600-light);
+    --color-text-brand-contrast-700: var(--color-blue-blue-700-light);
+    --color-text-brand-highcontrast-800: var(--color-blue-blue-800-light);
+    --color-text-neutral-white: var(--color-base-white);
+    --color-text-neutral-oninverse: var(--color-base-white);
+    --color-text-message-info-primary-600: var(--color-blue-blue-600-light);
+    --color-text-message-info-contrast-700: var(--color-blue-blue-700-light);
+    --color-text-message-info-highcontrast-800: var(
+      --color-blue-blue-800-light
+    );
+    --color-text-message-info-disable-300: var(--color-blue-blue-300-light);
+    --color-text-message-info-oninverse: var(--color-blue-blue-400-light);
+    --color-text-message-error-primary-600: var(--color-red-red-600-light);
+    --color-text-neutral-oncoloreddisable: var(--color-base-white);
+    --color-text-message-error-contrast-700: var(--color-red-red-700-light);
+    --color-text-message-error-highcontrast-800: var(--color-red-red-800-light);
+    --color-text-message-error-disable-300: var(--color-red-red-300-light);
+    --color-text-message-error-oninverse: var(--color-red-red-400-light);
+    --color-text-message-success-primary-600: var(
+      --color-green-green-600-light
+    );
+    --color-text-message-success-contrast-700: var(
+      --color-green-green-700-light
+    );
+    --color-text-message-success-highcontrast-800: var(
+      --color-green-green-800-light
+    );
+    --color-text-message-success-disable-300: var(
+      --color-green-green-300-light
+    );
+    --color-text-message-success-oninverse: var(--color-green-green-400-light);
+    --color-icon-neutral-primary: var(--color-gray-gray-1000-light);
+    --color-icon-neutral-secondarycontrast: var(--color-gray-gray-700-light);
+    --color-icon-neutral-secondary: var(--color-gray-gray-600-light);
+    --color-icon-neutral-tertiary: var(--color-gray-gray-500-light);
+    --color-icon-neutral-disable: var(--color-gray-gray-400-light);
+    --color-icon-brand-disable-300: var(--color-blue-blue-300-light);
+    --color-icon-brand-primary-600: var(--color-blue-blue-600-light);
+    --color-icon-brand-contrast-700: var(--color-blue-blue-700-light);
+    --color-icon-brand-highcontrast-800: var(--color-blue-blue-800-light);
+    --color-icon-message-info-primary-600: var(--color-blue-blue-600-light);
+    --color-icon-message-info-contrast-700: var(--color-blue-blue-700-light);
+    --color-icon-message-info-highcontrast-800: var(
+      --color-blue-blue-800-light
+    );
+    --color-icon-message-info-disable-300: var(--color-blue-blue-300-light);
+    --color-icon-message-info-oninverse: var(--color-blue-blue-400-light);
+    --color-icon-message-error-primary-600: var(--color-red-red-600-light);
+    --color-icon-message-error-contrast-700: var(--color-red-red-700-light);
+    --color-icon-message-error-highcontrast-800: var(--color-red-red-800-light);
+    --color-icon-message-error-disable-300: var(--color-red-red-300-light);
+    --color-icon-message-error-oninverse: var(--color-red-red-400-light);
+    --color-icon-message-success-primary-600: var(
+      --color-green-green-600-light
+    );
+    --color-icon-message-success-contrast-700: var(
+      --color-green-green-700-light
+    );
+    --color-icon-message-success-highcontrast-800: var(
+      --color-green-green-800-light
+    );
+    --color-icon-message-success-disable-300: var(
+      --color-green-green-300-light
+    );
+    --color-icon-message-success-oninverse: var(--color-green-green-400-light);
+    --color-icon-message-warning-primary-600: var(
+      --color-yellow-yellow-600-light
+    );
+    --color-icon-message-warning-contrast-700: var(
+      --color-yellow-yellow-700-light
+    );
+    --color-icon-message-warning-highcontrast-800: var(
+      --color-yellow-yellow-800-light
+    );
+    --color-icon-message-warning-disable-300: var(
+      --color-yellow-yellow-300-light
+    );
+    --color-icon-message-warning-oninverse: var(
+      --color-yellow-yellow-400-light
+    );
+    --color-icon-neutral-white: var(--color-base-white);
+    --color-icon-neutral-oninverse: var(--color-base-white);
+    --color-icon-neutral-oncoloreddisable: var(--color-base-white);
+    --color-border-neutral-primary: var(--color-gray-gray-300-light);
+    --color-border-brand-soft-200: var(--color-blue-blue-200-light);
+    --color-border-brand-disable-300: var(--color-blue-blue-300-light);
+    --color-border-message-info-disable-300: var(--color-blue-blue-300-light);
+    --color-border-message-info-soft-400: var(--color-blue-blue-400-light);
+    --color-border-message-info-primary-600: var(--color-blue-blue-600-light);
+    --color-border-message-info-contrast-700: var(--color-blue-blue-700-light);
+    --color-border-message-info-highcontrast-800: var(
+      --color-blue-blue-800-light
+    );
+    --color-border-message-error-disable-300: var(--color-red-red-300-light);
+    --color-border-message-error-soft-400: var(--color-red-red-400-light);
+    --color-border-message-error-primary-600: var(--color-red-red-600-light);
+    --color-border-message-error-contrast-700: var(--color-red-red-700-light);
+    --color-border-message-error-highcontrast-800: var(
+      --color-red-red-800-light
+    );
+    --color-border-message-success-disable-300: var(
+      --color-green-green-300-light
+    );
+    --color-border-message-success-soft-400: var(--color-green-green-400-light);
+    --color-border-message-success-primary-600: var(
+      --color-green-green-600-light
+    );
+    --color-border-message-success-contrast-700: var(
+      --color-green-green-700-light
+    );
+    --color-border-message-success-highcontrast-800: var(
+      --color-green-green-800-light
+    );
+    --color-border-message-warning-disable-300: var(
+      --color-yellow-yellow-300-light
+    );
+    --color-border-message-warning-soft-400: var(
+      --color-yellow-yellow-400-light
+    );
+    --color-border-message-warning-primary-600: var(
+      --color-yellow-yellow-600-light
+    );
+    --color-border-message-warning-contrast-700: var(
+      --color-yellow-yellow-700-light
+    );
+    --color-border-message-warning-highcontrast-800: var(
+      --color-yellow-yellow-800-light
+    );
+    --color-border-brand-primary-600: var(--color-blue-blue-600-light);
+    --color-border-brand-contrast-700: var(--color-blue-blue-700-light);
+    --color-border-brand-highcontrast-800: var(--color-blue-blue-800-light);
+    --color-border-neutral-secondary: var(--color-gray-gray-200-light);
+    --color-border-neutral-tertiary: var(--color-gray-gray-100-light);
+    --color-border-neutral-contrast: var(--color-gray-gray-400-light);
+    --color-border-neutral-highcontrast: var(--color-gray-gray-500-light);
+    --color-border-neutral-maximumcontrast: var(--color-gray-gray-1000-light);
+    --color-border-neutral-disable: var(--color-gray-gray-200-light);
+    --color-border-neutral-white: var(--color-base-white);
+    --color-border-neutral-oninverse: var(--color-base-white);
+    --color-border-accent-blue-50: var(--color-blue-blue-50-light);
+    --color-border-accent-blue-100: var(--color-blue-blue-100-light);
+    --color-border-accent-blue-200: var(--color-blue-blue-200-light);
+    --color-border-accent-blue-300: var(--color-blue-blue-300-light);
+    --color-border-accent-blue-400: var(--color-blue-blue-400-light);
+    --color-border-accent-blue-500: var(--color-blue-blue-500-light);
+    --color-border-accent-blue-600: var(--color-blue-blue-600-light);
+    --color-border-accent-blue-700: var(--color-blue-blue-700-light);
+    --color-border-accent-blue-800: var(--color-blue-blue-800-light);
+    --color-border-accent-blue-900: var(--color-blue-blue-900-light);
+    --color-border-accent-blue-1000: var(--color-blue-blue-1000-light);
+    --color-border-accent-red-50: var(--color-red-red-50-light);
+    --color-border-accent-red-100: var(--color-red-red-100-light);
+    --color-border-accent-red-200: var(--color-red-red-200-light);
+    --color-border-accent-red-300: var(--color-red-red-300-light);
+    --color-border-accent-red-400: var(--color-red-red-400-light);
+    --color-border-accent-red-500: var(--color-red-red-500-light);
+    --color-border-accent-red-600: var(--color-red-red-600-light);
+    --color-border-accent-red-700: var(--color-red-red-700-light);
+    --color-border-accent-red-800: var(--color-red-red-800-light);
+    --color-border-accent-red-900: var(--color-red-red-900-light);
+    --color-border-accent-red-1000: var(--color-red-red-1000-light);
+    --color-border-accent-green-50: var(--color-green-green-50-light);
+    --color-border-accent-green-100: var(--color-green-green-100-light);
+    --color-border-accent-green-200: var(--color-green-green-200-light);
+    --color-border-accent-green-300: var(--color-green-green-300-light);
+    --color-border-accent-green-400: var(--color-green-green-400-light);
+    --color-border-accent-green-500: var(--color-green-green-500-light);
+    --color-border-accent-green-600: var(--color-green-green-600-light);
+    --color-border-accent-green-700: var(--color-green-green-700-light);
+    --color-border-accent-green-800: var(--color-green-green-800-light);
+    --color-border-accent-green-900: var(--color-green-green-900-light);
+    --color-border-accent-green-1000: var(--color-green-green-1000-light);
+    --color-border-accent-vividgreen-50: var(
+      --color-vividgreen-vividgreen-50-light
+    );
+    --color-border-accent-vividgreen-100: var(
+      --color-vividgreen-vividgreen-100-light
+    );
+    --color-border-accent-vividgreen-200: var(
+      --color-vividgreen-vividgreen-200-light
+    );
+    --color-border-accent-vividgreen-300: var(
+      --color-vividgreen-vividgreen-300-light
+    );
+    --color-border-accent-vividgreen-400: var(
+      --color-vividgreen-vividgreen-400-light
+    );
+    --color-border-accent-vividgreen-500: var(
+      --color-vividgreen-vividgreen-500-light
+    );
+    --color-border-accent-vividgreen-600: var(
+      --color-vividgreen-vividgreen-600-light
+    );
+    --color-border-accent-vividgreen-700: var(
+      --color-vividgreen-vividgreen-700-light
+    );
+    --color-border-accent-vividgreen-800: var(
+      --color-vividgreen-vividgreen-800-light
+    );
+    --color-border-accent-vividgreen-900: var(
+      --color-vividgreen-vividgreen-900-light
+    );
+    --color-border-accent-vividgreen-1000: var(
+      --color-vividgreen-vividgreen-1000-light
+    );
+    --color-border-accent-yellow-50: var(--color-yellow-yellow-50-light);
+    --color-border-accent-yellow-100: var(--color-yellow-yellow-100-light);
+    --color-border-accent-yellow-200: var(--color-yellow-yellow-200-light);
+    --color-border-accent-yellow-300: var(--color-yellow-yellow-300-light);
+    --color-border-accent-yellow-400: var(--color-yellow-yellow-400-light);
+    --color-border-accent-yellow-500: var(--color-yellow-yellow-500-light);
+    --color-border-accent-yellow-600: var(--color-yellow-yellow-600-light);
+    --color-border-accent-yellow-700: var(--color-yellow-yellow-700-light);
+    --color-border-accent-yellow-800: var(--color-yellow-yellow-800-light);
+    --color-border-accent-yellow-900: var(--color-yellow-yellow-900-light);
+    --color-border-accent-yellow-1000: var(--color-yellow-yellow-1000-light);
+    --color-icon-brand-aress-logo: var(--color-blue-blue-600-light);
+    --coloropacity-surface-neutral-background-0per: var(
+      --coloropacity-base-white-0per
+    );
+    --coloropacity-border-accent-blue-600-20per: var(
+      --coloropacity-blue-blue-600-light-20per
+    );
+    --coloropacity-border-accent-red-600-20per: var(
+      --coloropacity-red-red-600-light-20per
+    );
+    --coloropacity-border-accent-yellow-600-20per: var(
+      --coloropacity-yellow-yellow-600-light-20per
+    );
+    --coloropacity-border-accent-green-600-20per: var(
+      --coloropacity-green-green-600-light-20per
+    );
+    --coloropacity-border-accent-purple-600-20per: var(
+      --coloropacity-purple-purple-600-light-20per
+    );
+    --coloropacity-surface-neutral-primary-0per: var(
+      --coloropacity-base-white-0per
+    );
+    --coloropacity-surface-neutral-white-55per: var(
+      --coloropacity-base-white-55per
+    );
+    --coloropacity-surface-neutral-white-80per: var(
+      --coloropacity-base-white-80per
+    );
+    --coloropacity-surface-neutral-white-85per: var(
+      --coloropacity-base-white-85per
+    );
+    --coloropacity-surface-neutral-black-0per: var(
+      --coloropacity-base-black-0per
+    );
+    --coloropacity-surface-accent-blue-600-0per: var(
+      --coloropacity-blue-blue-600-light-0per
+    );
+    --coloropacity-surface-accent-blue-600-10per: var(
+      --coloropacity-blue-blue-600-light-10per
+    );
+    --coloropacity-surface-accent-blue-600-20per: var(
+      --coloropacity-blue-blue-600-light-20per
+    );
+    --coloropacity-surface-accent-blue-600-30per: var(
+      --coloropacity-blue-blue-600-light-30per
+    );
+    --coloropacity-surface-accent-blue-600-40per: var(
+      --coloropacity-blue-blue-600-light-40per
+    );
+    --coloropacity-surface-accent-blue-600-50per: var(
+      --coloropacity-blue-blue-600-light-50per
+    );
+    --coloropacity-surface-accent-blue-600-60per: var(
+      --coloropacity-blue-blue-600-light-60per
+    );
+    --coloropacity-surface-accent-blue-600-70per: var(
+      --coloropacity-blue-blue-600-light-70per
+    );
+    --coloropacity-surface-accent-blue-600-80per: var(
+      --coloropacity-blue-blue-600-light-80per
+    );
+    --coloropacity-surface-accent-blue-600-90per: var(
+      --coloropacity-blue-blue-600-light-90per
+    );
+    --coloropacity-surface-accent-red-600-0per: var(
+      --coloropacity-red-red-600-light-0per
+    );
+    --coloropacity-surface-accent-red-600-10per: var(
+      --coloropacity-red-red-600-light-10per
+    );
+    --coloropacity-surface-accent-red-600-20per: var(
+      --coloropacity-red-red-600-light-20per
+    );
+    --coloropacity-surface-accent-red-600-30per: var(
+      --coloropacity-red-red-600-light-30per
+    );
+    --coloropacity-surface-accent-red-600-40per: var(
+      --coloropacity-red-red-600-light-40per
+    );
+    --coloropacity-surface-accent-red-600-50per: var(
+      --coloropacity-red-red-600-light-50per
+    );
+    --coloropacity-surface-accent-red-600-60per: var(
+      --coloropacity-red-red-600-light-60per
+    );
+    --coloropacity-surface-accent-red-600-70per: var(
+      --coloropacity-red-red-600-light-70per
+    );
+    --coloropacity-surface-accent-red-600-80per: var(
+      --coloropacity-red-red-600-light-80per
+    );
+    --coloropacity-surface-accent-red-600-90per: var(
+      --coloropacity-red-red-600-light-90per
+    );
+    --coloropacity-surface-accent-green-600-0per: var(
+      --coloropacity-green-green-600-light-0per
+    );
+    --coloropacity-surface-accent-green-600-10per: var(
+      --coloropacity-green-green-600-light-10per
+    );
+    --coloropacity-surface-accent-green-600-20per: var(
+      --coloropacity-green-green-600-light-20per
+    );
+    --coloropacity-surface-accent-green-600-30per: var(
+      --coloropacity-green-green-600-light-30per
+    );
+    --coloropacity-surface-accent-green-600-40per: var(
+      --coloropacity-green-green-600-light-40per
+    );
+    --coloropacity-surface-accent-green-600-50per: var(
+      --coloropacity-green-green-600-light-50per
+    );
+    --coloropacity-surface-accent-green-600-60per: var(
+      --coloropacity-green-green-600-light-60per
+    );
+    --coloropacity-surface-accent-green-600-70per: var(
+      --coloropacity-green-green-600-light-70per
+    );
+    --coloropacity-surface-accent-green-600-80per: var(
+      --coloropacity-green-green-600-light-80per
+    );
+    --coloropacity-surface-accent-green-600-90per: var(
+      --coloropacity-green-green-600-light-90per
+    );
+    --coloropacity-surface-accent-yellow-600-0per: var(
+      --coloropacity-yellow-yellow-600-light-0per
+    );
+    --coloropacity-surface-accent-yellow-600-10per: var(
+      --coloropacity-yellow-yellow-600-light-10per
+    );
+    --coloropacity-surface-accent-yellow-600-20per: var(
+      --coloropacity-yellow-yellow-600-light-20per
+    );
+    --coloropacity-surface-accent-yellow-600-30per: var(
+      --coloropacity-yellow-yellow-600-light-30per
+    );
+    --coloropacity-surface-accent-yellow-600-40per: var(
+      --coloropacity-yellow-yellow-600-light-40per
+    );
+    --coloropacity-surface-accent-yellow-600-50per: var(
+      --coloropacity-yellow-yellow-600-light-50per
+    );
+    --coloropacity-surface-accent-yellow-600-60per: var(
+      --coloropacity-yellow-yellow-600-light-60per
+    );
+    --coloropacity-surface-accent-yellow-600-70per: var(
+      --coloropacity-yellow-yellow-600-light-70per
+    );
+    --coloropacity-surface-accent-yellow-600-80per: var(
+      --coloropacity-yellow-yellow-600-light-80per
+    );
+    --coloropacity-surface-accent-yellow-600-90per: var(
+      --coloropacity-yellow-yellow-600-light-90per
+    );
+    --coloropacity-surface-accent-purple-600-0per: var(
+      --coloropacity-purple-purple-600-light-0per
+    );
+    --coloropacity-surface-accent-purple-600-10per: var(
+      --coloropacity-purple-purple-600-light-10per
+    );
+    --coloropacity-surface-accent-purple-600-20per: var(
+      --coloropacity-purple-purple-600-light-20per
+    );
+    --coloropacity-surface-accent-purple-600-30per: var(
+      --coloropacity-purple-purple-600-light-30per
+    );
+    --coloropacity-surface-accent-purple-600-40per: var(
+      --coloropacity-purple-purple-600-light-40per
+    );
+    --coloropacity-surface-accent-purple-600-50per: var(
+      --coloropacity-purple-purple-600-light-50per
+    );
+    --coloropacity-surface-accent-purple-600-60per: var(
+      --coloropacity-purple-purple-600-light-60per
+    );
+    --coloropacity-surface-accent-purple-600-70per: var(
+      --coloropacity-purple-purple-600-light-70per
+    );
+    --coloropacity-surface-accent-purple-600-80per: var(
+      --coloropacity-purple-purple-600-light-80per
+    );
+    --coloropacity-surface-accent-purple-600-90per: var(
+      --coloropacity-purple-purple-600-light-90per
+    );
+    --coloropacity-surface-accent-gray-300-50per: var(
+      --coloropacity-gray-gray-300-light-50per
+    );
+    --coloropacity-surface-accent-gray-400-55per: var(
+      --coloropacity-gray-gray-400-light-55per
+    );
+    --coloropacity-surface-accent-gray-600-0per: var(
+      --coloropacity-gray-gray-600-light-0per
+    );
+    --coloropacity-surface-accent-gray-600-10per: var(
+      --coloropacity-gray-gray-600-light-10per
+    );
+    --coloropacity-surface-accent-gray-600-20per: var(
+      --coloropacity-gray-gray-600-light-20per
+    );
+    --coloropacity-surface-accent-gray-600-30per: var(
+      --coloropacity-gray-gray-600-light-30per
+    );
+    --coloropacity-surface-accent-gray-600-40per: var(
+      --coloropacity-gray-gray-600-light-40per
+    );
+    --coloropacity-surface-accent-gray-600-50per: var(
+      --coloropacity-gray-gray-600-light-50per
+    );
+    --coloropacity-surface-accent-gray-600-60per: var(
+      --coloropacity-gray-gray-600-light-60per
+    );
+    --coloropacity-surface-accent-gray-600-70per: var(
+      --coloropacity-gray-gray-600-light-70per
+    );
+    --coloropacity-surface-accent-gray-600-80per: var(
+      --coloropacity-gray-gray-600-light-80per
+    );
+    --coloropacity-surface-accent-gray-600-90per: var(
+      --coloropacity-gray-gray-600-light-90per
+    );
+    --coloropacity-shadow-4per: var(--coloropacity-shadow-4per-light);
+    --coloropacity-shadow-4_5per: var(--coloropacity-shadow-4_5per-light);
+    --coloropacity-shadow-6per: var(--coloropacity-shadow-6per-light);
+    --coloropacity-shadow-8per: var(--coloropacity-shadow-8per-light);
+    --coloropacity-shadow-9per: var(--coloropacity-shadow-9per-light);
+    --coloropacity-shadow-12per: var(--coloropacity-shadow-12per-light);
+    --coloropacity-shadow-16per: var(--coloropacity-shadow-16per-light);
+    --coloropacity-shadow-20per: var(--coloropacity-shadow-20per-light);
+    --coloropacity-shadow-24per: var(--coloropacity-shadow-24per-light);
+    --coloropacity-shadow-34per: var(--coloropacity-shadow-34per-light);
+    --color-text-message-warning-primary-600: var(
+      --color-yellow-yellow-600-light
+    );
+    --color-text-message-warning-contrast-700: var(
+      --color-yellow-yellow-700-light
+    );
+    --color-text-message-warning-highcontrast-800: var(
+      --color-yellow-yellow-800-light
+    );
+    --color-text-message-warning-disable-300: var(
+      --color-yellow-yellow-300-light
+    );
+    --color-text-message-warning-oninverse: var(
+      --color-yellow-yellow-400-light
+    );
+    --color-surface-accent-blue-50: var(--color-blue-blue-50-light);
+    --color-surface-accent-blue-100: var(--color-blue-blue-100-light);
+    --color-surface-accent-blue-200: var(--color-blue-blue-200-light);
+    --color-surface-accent-blue-300: var(--color-blue-blue-300-light);
+    --color-surface-accent-blue-400: var(--color-blue-blue-400-light);
+    --color-surface-accent-blue-500: var(--color-blue-blue-500-light);
+    --color-surface-accent-red-50: var(--color-red-red-50-light);
+    --color-surface-accent-blue-600: var(--color-blue-blue-600-light);
+    --color-surface-accent-red-100: var(--color-red-red-100-light);
+    --color-surface-accent-red-200: var(--color-red-red-200-light);
+    --color-surface-accent-red-300: var(--color-red-red-300-light);
+    --color-surface-accent-blue-700: var(--color-blue-blue-700-light);
+    --color-surface-accent-blue-800: var(--color-blue-blue-800-light);
+    --color-surface-accent-blue-900: var(--color-blue-blue-900-light);
+    --color-surface-accent-blue-1000: var(--color-blue-blue-1000-light);
+    --color-surface-accent-red-400: var(--color-red-red-400-light);
+    --color-surface-accent-green-50: var(--color-green-green-50-light);
+    --color-surface-accent-red-500: var(--color-red-red-500-light);
+    --color-surface-accent-green-100: var(--color-green-green-100-light);
+    --color-surface-accent-green-200: var(--color-green-green-200-light);
+    --color-surface-accent-red-600: var(--color-red-red-600-light);
+    --color-surface-accent-green-300: var(--color-green-green-300-light);
+    --color-surface-accent-red-700: var(--color-red-red-700-light);
+    --color-surface-accent-red-800: var(--color-red-red-800-light);
+    --color-surface-accent-red-900: var(--color-red-red-900-light);
+    --color-surface-accent-red-1000: var(--color-red-red-1000-light);
+    --color-surface-accent-green-400: var(--color-green-green-400-light);
+    --color-surface-accent-yellow-50: var(--color-yellow-yellow-50-light);
+    --color-surface-accent-vividgreen-50: var(
+      --color-vividgreen-vividgreen-50-light
+    );
+    --color-surface-accent-vividgreen-100: var(
+      --color-vividgreen-vividgreen-100-light
+    );
+    --color-surface-accent-vividgreen-200: var(
+      --color-vividgreen-vividgreen-200-light
+    );
+    --color-surface-accent-vividgreen-300: var(
+      --color-vividgreen-vividgreen-300-light
+    );
+    --color-surface-accent-vividgreen-400: var(
+      --color-vividgreen-vividgreen-400-light
+    );
+    --color-surface-accent-vividgreen-500: var(
+      --color-vividgreen-vividgreen-500-light
+    );
+    --color-surface-accent-vividgreen-600: var(
+      --color-vividgreen-vividgreen-600-light
+    );
+    --color-surface-accent-vividgreen-700: var(
+      --color-vividgreen-vividgreen-700-light
+    );
+    --color-surface-accent-vividgreen-800: var(
+      --color-vividgreen-vividgreen-800-light
+    );
+    --color-surface-accent-vividgreen-900: var(
+      --color-vividgreen-vividgreen-900-light
+    );
+    --color-surface-accent-vividgreen-1000: var(
+      --color-vividgreen-vividgreen-1000-light
+    );
+    --color-surface-accent-green-500: var(--color-green-green-500-light);
+    --color-surface-accent-yellow-100: var(--color-yellow-yellow-100-light);
+    --color-surface-accent-yellow-200: var(--color-yellow-yellow-200-light);
+    --color-surface-accent-yellow-300: var(--color-yellow-yellow-300-light);
+    --color-surface-accent-green-600: var(--color-green-green-600-light);
+    --color-surface-accent-green-700: var(--color-green-green-700-light);
+    --color-surface-accent-green-800: var(--color-green-green-800-light);
+    --color-surface-accent-green-900: var(--color-green-green-900-light);
+    --color-surface-accent-green-1000: var(--color-green-green-1000-light);
+    --color-surface-accent-yellow-400: var(--color-yellow-yellow-400-light);
+    --color-surface-accent-yellow-500: var(--color-yellow-yellow-500-light);
+    --color-surface-accent-yellow-600: var(--color-yellow-yellow-600-light);
+    --color-surface-accent-yellow-700: var(--color-yellow-yellow-700-light);
+    --color-surface-accent-yellow-800: var(--color-yellow-yellow-800-light);
+    --color-surface-accent-yellow-900: var(--color-yellow-yellow-900-light);
+    --color-surface-accent-yellow-1000: var(--color-yellow-yellow-1000-light);
+    --color-text-accent-blue-primary-600: var(--color-blue-blue-600-light);
+    --color-text-accent-blue-contrast-700: var(--color-blue-blue-700-light);
+    --color-text-accent-red-primary-600: var(--color-red-red-600-light);
+    --color-text-onbrand-neutral-primary-on600: var(--color-base-white);
+    --color-text-onbrand-neutral-primary-onbelow600: var(
+      --color-gray-gray-1000-light
+    );
+    --color-text-onbrand-neutral-primary-onabove600: var(--color-base-white);
+    --color-text-onmessage-neutral-primary-on600: var(--color-base-white);
+    --color-text-onbrand-neutral-secondary-on100_50: var(
+      --color-gray-gray-600-light
+    );
+    --color-text-onmessage-neutral-primary-onbelow600: var(
+      --color-gray-gray-1000-light
+    );
+    --color-text-onbrand-colored-primary-on200_100_50: var(
+      --color-blue-blue-800-light
+    );
+    --color-text-onbrand-colored-secondary-on100_50: var(
+      --color-blue-blue-700-light
+    );
+    --color-text-onmessage-neutral-primary-onabove600: var(--color-base-white);
+    --color-text-onmessage-neutral-secondary-on100: var(
+      --color-gray-gray-600-light
+    );
+    --color-text-onmessage-colored-oninfo-on100: var(
+      --color-blue-blue-800-light
+    );
+    --color-text-onaccent-neutral-primary-on600: var(--color-base-white);
+    --color-text-onmessage-colored-onerror-on100: var(
+      --color-red-red-800-light
+    );
+    --color-text-onmessage-colored-onsuccess-on100: var(
+      --color-green-green-800-light
+    );
+    --color-text-onaccent-neutral-primary-onbelow600: var(
+      --color-gray-gray-1000-light
+    );
+    --color-text-onmessage-colored-onwarning-on100: var(
+      --color-yellow-yellow-800-light
+    );
+    --color-text-onaccent-neutral-primary-onabove600: var(--color-base-white);
+    --color-text-onaccent-neutral-secondary-on100_50: var(
+      --color-gray-gray-600-light
+    );
+    --color-text-onaccent-colored-onblue-on200_100_50: var(
+      --color-blue-blue-800-light
+    );
+    --color-text-onaccent-colored-onpurple-on200_100_50: var(
+      --color-purple-purple-800-light
+    );
+    --color-text-onaccent-colored-onred-on200_100_50: var(
+      --color-red-red-800-light
+    );
+    --color-text-onaccent-colored-ongreen-on200_100_50: var(
+      --color-green-green-800-light
+    );
+    --color-text-onaccent-colored-onvividgreen-on200_100_50: var(
+      --color-vividgreen-vividgreen-800-light
+    );
+    --color-text-onaccent-colored-onyellow-on200_100_50: var(
+      --color-yellow-yellow-800-light
+    );
+    --color-text-accent-red-contrast-700: var(--color-red-red-700-light);
+    --color-text-accent-green-primary-600: var(--color-green-green-600-light);
+    --color-text-accent-green-contrast-700: var(--color-green-green-700-light);
+    --color-text-accent-yellow-primary-700: var(
+      --color-yellow-yellow-700-light
+    );
+    --color-text-accent-yellow-contrast-800: var(
+      --color-yellow-yellow-800-light
+    );
+    --color-text-accent-purple-primary-600: var(
+      --color-purple-purple-600-light
+    );
+    --color-text-accent-purple-contrast-700: var(
+      --color-purple-purple-700-light
+    );
+    --color-surface-accent-purple-50: var(--color-purple-purple-50-light);
+    --color-surface-accent-purple-100: var(--color-purple-purple-100-light);
+    --color-surface-accent-purple-200: var(--color-purple-purple-200-light);
+    --color-surface-accent-purple-300: var(--color-purple-purple-300-light);
+    --color-surface-accent-purple-400: var(--color-purple-purple-400-light);
+    --color-surface-accent-purple-500: var(--color-purple-purple-500-light);
+    --color-surface-accent-purple-600: var(--color-purple-purple-600-light);
+    --color-surface-accent-purple-700: var(--color-purple-purple-700-light);
+    --color-surface-accent-purple-800: var(--color-purple-purple-800-light);
+    --color-surface-accent-purple-900: var(--color-purple-purple-900-light);
+    --color-surface-accent-purple-1000: var(--color-purple-purple-1000-light);
+    --color-icon-accent-blue-primary-600: var(--color-blue-blue-600-light);
+    --color-icon-accent-blue-contrast-700: var(--color-blue-blue-700-light);
+    --color-icon-accent-red-primary-600: var(--color-red-red-600-light);
+    --color-icon-accent-green-primary-600: var(--color-green-green-600-light);
+    --color-icon-accent-green-contrast-700: var(--color-green-green-700-light);
+    --color-icon-accent-red-contrast-700: var(--color-red-red-700-light);
+    --color-icon-accent-vividgreen-primary-600: var(
+      --color-vividgreen-vividgreen-600-light
+    );
+    --color-icon-accent-yellow-primary-600: var(
+      --color-yellow-yellow-600-light
+    );
+    --color-icon-accent-yellow-contrast-700: var(
+      --color-yellow-yellow-700-light
+    );
+    --color-icon-accent-pink-primary-600: var(--color-pink-pink-600-light);
+    --color-icon-accent-pink-contrast-700: var(--color-pink-pink-700-light);
+    --color-icon-accent-vividgreen-contrast-700: var(
+      --color-vividgreen-vividgreen-700-light
+    );
+    --color-icon-onbrand-neutral-on600: var(--color-base-white);
+    --color-icon-onbrand-neutral-onbelow600: var(--color-gray-gray-1000-light);
+    --color-icon-onmessage-neutral-on600: var(--color-base-white);
+    --color-icon-onmessage-neutral-onbelow600: var(
+      --color-gray-gray-1000-light
+    );
+    --color-icon-onmessage-neutral-onabove600: var(--color-base-white);
+    --color-icon-onmessage-colored-oninfo-on100: var(
+      --color-blue-blue-800-light
+    );
+    --color-icon-onmessage-colored-onerror-on100: var(
+      --color-red-red-800-light
+    );
+    --color-icon-onmessage-colored-onsuccess-on100: var(
+      --color-green-green-800-light
+    );
+    --color-icon-onaccent-neutral-on600: var(--color-base-white);
+    --color-icon-onmessage-colored-onwarning-on100: var(
+      --color-yellow-yellow-800-light
+    );
+    --color-icon-onaccent-neutral-onbelow600: var(--color-gray-gray-1000-light);
+    --color-icon-onaccent-neutral-onabove600: var(--color-base-white);
+    --color-icon-onaccent-colored-onblue-on200_100_50: var(
+      --color-blue-blue-800-light
+    );
+    --color-icon-onaccent-colored-onpurple-on200_100_50: var(
+      --color-purple-purple-800-light
+    );
+    --color-icon-onaccent-colored-onred-on200_100_50: var(
+      --color-red-red-800-light
+    );
+    --color-icon-onaccent-colored-ongreen-on200_100_50: var(
+      --color-green-green-800-light
+    );
+    --color-icon-onaccent-colored-onvividgreen-on200_100_50: var(
+      --color-vividgreen-vividgreen-800-light
+    );
+    --color-icon-onaccent-colored-onyellow-on200_100_50: var(
+      --color-yellow-yellow-800-light
+    );
+    --color-icon-onbrand-neutral-onabove600: var(--color-base-white);
+    --color-icon-onbrand-colored-primary-on200_100_50: var(
+      --color-blue-blue-800-light
+    );
+    --color-icon-onbrand-colored-secondary-on100_50: var(
+      --color-blue-blue-700-light
+    );
+    --color-border-accent-purple-50: var(--color-purple-purple-50-light);
+    --color-border-accent-purple-100: var(--color-purple-purple-100-light);
+    --color-border-accent-purple-200: var(--color-purple-purple-200-light);
+    --color-border-accent-purple-300: var(--color-purple-purple-300-light);
+    --color-border-accent-purple-400: var(--color-purple-purple-400-light);
+    --color-border-accent-purple-500: var(--color-purple-purple-500-light);
+    --color-border-accent-purple-600: var(--color-purple-purple-600-light);
+    --color-border-accent-purple-700: var(--color-purple-purple-700-light);
+    --color-border-accent-purple-800: var(--color-purple-purple-800-light);
+    --color-border-accent-purple-900: var(--color-purple-purple-900-light);
+    --color-border-accent-purple-1000: var(--color-purple-purple-1000-light);
+    --color-border-accent-gray-50: var(--color-gray-gray-50-light);
+    --color-border-accent-gray-100: var(--color-gray-gray-100-light);
+    --color-border-accent-gray-200: var(--color-gray-gray-200-light);
+    --color-border-accent-gray-300: var(--color-gray-gray-300-light);
+    --color-border-accent-gray-400: var(--color-gray-gray-400-light);
+    --color-border-accent-gray-500: var(--color-gray-gray-500-light);
+    --color-border-accent-gray-600: var(--color-gray-gray-600-light);
+    --color-border-accent-gray-700: var(--color-gray-gray-700-light);
+    --color-border-accent-gray-800: var(--color-gray-gray-800-light);
+    --color-border-accent-gray-900: var(--color-gray-gray-900-light);
+    --color-border-accent-gray-1000: var(--color-gray-gray-1000-light);
+    --color-surface-accent-gray-50: var(--color-gray-gray-50-light);
+    --color-surface-accent-gray-100: var(--color-gray-gray-100-light);
+    --color-surface-accent-gray-200: var(--color-gray-gray-200-light);
+    --color-surface-accent-gray-300: var(--color-gray-gray-300-light);
+    --color-surface-accent-gray-400: var(--color-gray-gray-400-light);
+    --color-surface-accent-gray-500: var(--color-gray-gray-500-light);
+    --color-surface-accent-gray-600: var(--color-gray-gray-600-light);
+    --color-surface-accent-gray-700: var(--color-gray-gray-700-light);
+    --color-surface-accent-gray-800: var(--color-gray-gray-800-light);
+    --color-surface-accent-gray-900: var(--color-gray-gray-900-light);
+    --color-surface-accent-gray-1000: var(--color-gray-gray-1000-light);
+    --color-surface-accent-pink-50: var(--color-pink-pink-50-light);
+    --color-surface-accent-pink-100: var(--color-pink-pink-100-light);
+    --color-surface-accent-pink-200: var(--color-pink-pink-200-light);
+    --color-surface-accent-pink-300: var(--color-pink-pink-300-light);
+    --color-surface-accent-pink-400: var(--color-pink-pink-400-light);
+    --color-surface-accent-pink-500: var(--color-pink-pink-500-light);
+    --color-surface-accent-pink-600: var(--color-pink-pink-600-light);
+    --color-surface-accent-pink-700: var(--color-pink-pink-700-light);
+    --color-surface-accent-pink-800: var(--color-pink-pink-800-light);
+    --color-surface-accent-pink-900: var(--color-pink-pink-900-light);
+    --color-surface-accent-pink-1000: var(--color-pink-pink-1000-light);
+  }
+  :root.dark {
+    --color-surface-neutral-background: var(--color-base-dark);
+    --color-surface-neutral-primary: var(--color-gray-gray-50-dark);
+    --color-surface-neutral-secondarycontrast: var(--color-gray-gray-200-dark);
+    --color-surface-neutral-secondary: var(--color-gray-gray-100-dark);
+    --color-surface-neutral-tertiary: var(--color-gray-gray-50-dark);
+    --color-surface-neutral-disable: var(--color-gray-gray-50-dark);
+    --color-surface-brand-50: var(--color-blue-blue-50-dark);
+    --color-surface-brand-100: var(--color-blue-blue-100-dark);
+    --color-surface-brand-200: var(--color-blue-blue-200-dark);
+    --color-surface-brand-300-disable: var(--color-blue-blue-300-dark);
+    --color-surface-brand-400: var(--color-blue-blue-400-dark);
+    --color-surface-brand-500: var(--color-blue-blue-500-dark);
+    --color-surface-brand-600-primary: var(--color-blue-blue-600-dark);
+    --color-surface-neutral-inverse: var(
+      --coloropacity-gray-gray-1000-dark-85per
+    );
+    --color-surface-neutral-popupbackground: var(
+      --coloropacity-base-black-56per
+    );
+    --color-surface-message-info-100-soft: var(--color-blue-blue-100-dark);
+    --color-surface-brand-700-contrast: var(--color-blue-blue-700-dark);
+    --color-surface-message-info-300-disable: var(--color-blue-blue-300-dark);
+    --color-surface-brand-800-highcontrast: var(--color-blue-blue-800-dark);
+    --color-surface-message-info-600-primary: var(--color-blue-blue-600-dark);
+    --color-surface-message-info-700-contrast: var(--color-blue-blue-700-dark);
+    --color-surface-message-info-800-highcontrast: var(
+      --color-blue-blue-800-dark
+    );
+    --color-surface-message-error-100-soft: var(--color-red-red-100-dark);
+    --color-surface-message-error-300-disable: var(--color-red-red-300-dark);
+    --color-surface-message-error-600-primary: var(--color-red-red-600-dark);
+    --color-surface-message-success-100-soft: var(--color-green-green-100-dark);
+    --color-surface-message-error-700-contrast: var(--color-red-red-700-dark);
+    --color-surface-message-error-800-highcontrast: var(
+      --color-red-red-800-dark
+    );
+    --color-surface-message-success-300-disable: var(
+      --color-green-green-300-dark
+    );
+    --color-surface-message-success-600-primary: var(
+      --color-green-green-600-dark
+    );
+    --color-surface-message-success-700-contrast: var(
+      --color-green-green-700-dark
+    );
+    --color-surface-message-success-800-highcontrast: var(
+      --color-green-green-800-dark
+    );
+    --color-surface-message-warning-100-soft: var(
+      --color-yellow-yellow-100-dark
+    );
+    --color-surface-message-warning-300-disable: var(
+      --color-yellow-yellow-300-dark
+    );
+    --color-surface-message-warning-600-primary: var(
+      --color-yellow-yellow-600-dark
+    );
+    --color-surface-message-warning-700-contrast: var(
+      --color-yellow-yellow-700-dark
+    );
+    --color-surface-message-warning-800-highcontrast: var(
+      --color-yellow-yellow-800-dark
+    );
+    --color-text-neutral-primary: var(--color-gray-gray-1000-dark);
+    --color-text-neutral-secondarycontrast: var(--color-gray-gray-700-dark);
+    --color-text-neutral-secondary: var(--color-gray-gray-600-dark);
+    --color-text-neutral-tertiary: var(--color-gray-gray-500-dark);
+    --color-text-neutral-disable: var(--color-gray-gray-400-dark);
+    --color-text-brand-disable-300: var(--color-blue-blue-300-dark);
+    --color-text-brand-primary-600: var(--color-blue-blue-600-dark);
+    --color-text-brand-contrast-700: var(--color-blue-blue-700-dark);
+    --color-text-brand-highcontrast-800: var(--color-blue-blue-800-dark);
+    --color-text-neutral-white: var(--color-base-white);
+    --color-text-neutral-oninverse: var(--color-gray-gray-50-dark);
+    --color-text-message-info-primary-600: var(--color-blue-blue-600-dark);
+    --color-text-message-info-contrast-700: var(--color-blue-blue-700-dark);
+    --color-text-message-info-highcontrast-800: var(--color-blue-blue-800-dark);
+    --color-text-message-info-disable-300: var(--color-blue-blue-300-dark);
+    --color-text-message-info-oninverse: var(--color-blue-blue-400-dark);
+    --color-text-message-error-primary-600: var(--color-red-red-600-dark);
+    --color-text-neutral-oncoloreddisable: var(--color-gray-gray-600-dark);
+    --color-text-message-error-contrast-700: var(--color-red-red-700-dark);
+    --color-text-message-error-highcontrast-800: var(--color-red-red-800-dark);
+    --color-text-message-error-disable-300: var(--color-red-red-300-dark);
+    --color-text-message-error-oninverse: var(--color-red-red-400-dark);
+    --color-text-message-success-primary-600: var(--color-green-green-600-dark);
+    --color-text-message-success-contrast-700: var(
+      --color-green-green-700-dark
+    );
+    --color-text-message-success-highcontrast-800: var(
+      --color-green-green-800-dark
+    );
+    --color-text-message-success-disable-300: var(--color-green-green-300-dark);
+    --color-text-message-success-oninverse: var(--color-green-green-400-dark);
+    --color-icon-neutral-primary: var(--color-gray-gray-1000-dark);
+    --color-icon-neutral-secondarycontrast: var(--color-gray-gray-700-dark);
+    --color-icon-neutral-secondary: var(--color-gray-gray-600-dark);
+    --color-icon-neutral-tertiary: var(--color-gray-gray-500-dark);
+    --color-icon-neutral-disable: var(--color-gray-gray-400-dark);
+    --color-icon-brand-disable-300: var(--color-blue-blue-300-dark);
+    --color-icon-brand-primary-600: var(--color-blue-blue-600-dark);
+    --color-icon-brand-contrast-700: var(--color-blue-blue-700-dark);
+    --color-icon-brand-highcontrast-800: var(--color-blue-blue-800-dark);
+    --color-icon-message-info-primary-600: var(--color-blue-blue-600-dark);
+    --color-icon-message-info-contrast-700: var(--color-blue-blue-700-dark);
+    --color-icon-message-info-highcontrast-800: var(--color-blue-blue-800-dark);
+    --color-icon-message-info-disable-300: var(--color-blue-blue-300-dark);
+    --color-icon-message-info-oninverse: var(--color-blue-blue-400-dark);
+    --color-icon-message-error-primary-600: var(--color-red-red-600-dark);
+    --color-icon-message-error-contrast-700: var(--color-red-red-700-dark);
+    --color-icon-message-error-highcontrast-800: var(--color-red-red-800-dark);
+    --color-icon-message-error-disable-300: var(--color-red-red-300-dark);
+    --color-icon-message-error-oninverse: var(--color-red-red-400-dark);
+    --color-icon-message-success-primary-600: var(--color-green-green-600-dark);
+    --color-icon-message-success-contrast-700: var(
+      --color-green-green-700-dark
+    );
+    --color-icon-message-success-highcontrast-800: var(
+      --color-green-green-800-dark
+    );
+    --color-icon-message-success-disable-300: var(--color-green-green-300-dark);
+    --color-icon-message-success-oninverse: var(--color-green-green-400-dark);
+    --color-icon-message-warning-primary-600: var(
+      --color-yellow-yellow-600-dark
+    );
+    --color-icon-message-warning-contrast-700: var(
+      --color-yellow-yellow-700-dark
+    );
+    --color-icon-message-warning-highcontrast-800: var(
+      --color-yellow-yellow-800-dark
+    );
+    --color-icon-message-warning-disable-300: var(
+      --color-yellow-yellow-300-dark
+    );
+    --color-icon-message-warning-oninverse: var(--color-yellow-yellow-400-dark);
+    --color-icon-neutral-white: var(--color-base-white);
+    --color-icon-neutral-oninverse: var(--color-gray-gray-50-dark);
+    --color-icon-neutral-oncoloreddisable: var(--color-gray-gray-600-dark);
+    --color-border-neutral-primary: var(--color-gray-gray-300-dark);
+    --color-border-brand-soft-200: var(--color-blue-blue-200-dark);
+    --color-border-brand-disable-300: var(--color-blue-blue-300-dark);
+    --color-border-message-info-disable-300: var(--color-blue-blue-300-dark);
+    --color-border-message-info-soft-400: var(--color-blue-blue-400-dark);
+    --color-border-message-info-primary-600: var(--color-blue-blue-600-dark);
+    --color-border-message-info-contrast-700: var(--color-blue-blue-700-dark);
+    --color-border-message-info-highcontrast-800: var(
+      --color-blue-blue-800-dark
+    );
+    --color-border-message-error-disable-300: var(--color-red-red-300-dark);
+    --color-border-message-error-soft-400: var(--color-red-red-400-dark);
+    --color-border-message-error-primary-600: var(--color-red-red-600-dark);
+    --color-border-message-error-contrast-700: var(--color-red-red-700-dark);
+    --color-border-message-error-highcontrast-800: var(
+      --color-red-red-800-dark
+    );
+    --color-border-message-success-disable-300: var(
+      --color-green-green-300-dark
+    );
+    --color-border-message-success-soft-400: var(--color-green-green-400-dark);
+    --color-border-message-success-primary-600: var(
+      --color-green-green-600-dark
+    );
+    --color-border-message-success-contrast-700: var(
+      --color-green-green-700-dark
+    );
+    --color-border-message-success-highcontrast-800: var(
+      --color-green-green-800-dark
+    );
+    --color-border-message-warning-disable-300: var(
+      --color-yellow-yellow-300-dark
+    );
+    --color-border-message-warning-soft-400: var(
+      --color-yellow-yellow-400-dark
+    );
+    --color-border-message-warning-primary-600: var(
+      --color-yellow-yellow-600-dark
+    );
+    --color-border-message-warning-contrast-700: var(
+      --color-yellow-yellow-700-dark
+    );
+    --color-border-message-warning-highcontrast-800: var(
+      --color-yellow-yellow-800-dark
+    );
+    --color-border-brand-primary-600: var(--color-blue-blue-600-dark);
+    --color-border-brand-contrast-700: var(--color-blue-blue-700-dark);
+    --color-border-brand-highcontrast-800: var(--color-blue-blue-800-dark);
+    --color-border-neutral-secondary: var(--color-gray-gray-200-dark);
+    --color-border-neutral-tertiary: var(--color-gray-gray-100-dark);
+    --color-border-neutral-contrast: var(--color-gray-gray-400-dark);
+    --color-border-neutral-highcontrast: var(--color-gray-gray-500-dark);
+    --color-border-neutral-maximumcontrast: var(--color-gray-gray-1000-dark);
+    --color-border-neutral-disable: var(--color-gray-gray-200-dark);
+    --color-border-neutral-white: var(--color-base-white);
+    --color-border-neutral-oninverse: var(--color-gray-gray-50-dark);
+    --color-border-accent-blue-50: var(--color-blue-blue-50-dark);
+    --color-border-accent-blue-100: var(--color-blue-blue-100-dark);
+    --color-border-accent-blue-200: var(--color-blue-blue-200-dark);
+    --color-border-accent-blue-300: var(--color-blue-blue-300-dark);
+    --color-border-accent-blue-400: var(--color-blue-blue-400-dark);
+    --color-border-accent-blue-500: var(--color-blue-blue-500-dark);
+    --color-border-accent-blue-600: var(--color-blue-blue-600-dark);
+    --color-border-accent-blue-700: var(--color-blue-blue-700-dark);
+    --color-border-accent-blue-800: var(--color-blue-blue-800-dark);
+    --color-border-accent-blue-900: var(--color-blue-blue-900-dark);
+    --color-border-accent-blue-1000: var(--color-blue-blue-1000-dark);
+    --color-border-accent-red-50: var(--color-red-red-50-dark);
+    --color-border-accent-red-100: var(--color-red-red-100-dark);
+    --color-border-accent-red-200: var(--color-red-red-200-dark);
+    --color-border-accent-red-300: var(--color-red-red-300-dark);
+    --color-border-accent-red-400: var(--color-red-red-400-dark);
+    --color-border-accent-red-500: var(--color-red-red-500-dark);
+    --color-border-accent-red-600: var(--color-red-red-600-dark);
+    --color-border-accent-red-700: var(--color-red-red-700-dark);
+    --color-border-accent-red-800: var(--color-red-red-800-dark);
+    --color-border-accent-red-900: var(--color-red-red-900-dark);
+    --color-border-accent-red-1000: var(--color-red-red-1000-dark);
+    --color-border-accent-green-50: var(--color-green-green-50-dark);
+    --color-border-accent-green-100: var(--color-green-green-100-dark);
+    --color-border-accent-green-200: var(--color-green-green-200-dark);
+    --color-border-accent-green-300: var(--color-green-green-300-dark);
+    --color-border-accent-green-400: var(--color-green-green-400-dark);
+    --color-border-accent-green-500: var(--color-green-green-500-dark);
+    --color-border-accent-green-600: var(--color-green-green-600-dark);
+    --color-border-accent-green-700: var(--color-green-green-700-dark);
+    --color-border-accent-green-800: var(--color-green-green-800-dark);
+    --color-border-accent-green-900: var(--color-green-green-900-dark);
+    --color-border-accent-green-1000: var(--color-green-green-1000-dark);
+    --color-border-accent-vividgreen-50: var(
+      --color-vividgreen-vividgreen-50-dark
+    );
+    --color-border-accent-vividgreen-100: var(
+      --color-vividgreen-vividgreen-100-dark
+    );
+    --color-border-accent-vividgreen-200: var(
+      --color-vividgreen-vividgreen-200-dark
+    );
+    --color-border-accent-vividgreen-300: var(
+      --color-vividgreen-vividgreen-300-dark
+    );
+    --color-border-accent-vividgreen-400: var(
+      --color-vividgreen-vividgreen-400-dark
+    );
+    --color-border-accent-vividgreen-500: var(
+      --color-vividgreen-vividgreen-500-dark
+    );
+    --color-border-accent-vividgreen-600: var(
+      --color-vividgreen-vividgreen-600-dark
+    );
+    --color-border-accent-vividgreen-700: var(
+      --color-vividgreen-vividgreen-700-dark
+    );
+    --color-border-accent-vividgreen-800: var(
+      --color-vividgreen-vividgreen-800-dark
+    );
+    --color-border-accent-vividgreen-900: var(
+      --color-vividgreen-vividgreen-900-dark
+    );
+    --color-border-accent-vividgreen-1000: var(
+      --color-vividgreen-vividgreen-1000-dark
+    );
+    --color-border-accent-yellow-50: var(--color-yellow-yellow-50-dark);
+    --color-border-accent-yellow-100: var(--color-yellow-yellow-100-dark);
+    --color-border-accent-yellow-200: var(--color-yellow-yellow-200-dark);
+    --color-border-accent-yellow-300: var(--color-yellow-yellow-300-dark);
+    --color-border-accent-yellow-400: var(--color-yellow-yellow-400-dark);
+    --color-border-accent-yellow-500: var(--color-yellow-yellow-500-dark);
+    --color-border-accent-yellow-600: var(--color-yellow-yellow-600-dark);
+    --color-border-accent-yellow-700: var(--color-yellow-yellow-700-dark);
+    --color-border-accent-yellow-800: var(--color-yellow-yellow-800-dark);
+    --color-border-accent-yellow-900: var(--color-yellow-yellow-900-dark);
+    --color-border-accent-yellow-1000: var(--color-yellow-yellow-1000-dark);
+    --color-icon-brand-aress-logo: var(--color-blue-blue-600-dark);
+    --coloropacity-surface-neutral-background-0per: var(
+      --coloropacity-base-dark-0per
+    );
+    --coloropacity-border-accent-blue-600-20per: var(
+      --coloropacity-blue-blue-600-dark-20per
+    );
+    --coloropacity-border-accent-red-600-20per: var(
+      --coloropacity-red-red-600-dark-20per
+    );
+    --coloropacity-border-accent-yellow-600-20per: var(
+      --coloropacity-yellow-yellow-600-dark-20per
+    );
+    --coloropacity-border-accent-green-600-20per: var(
+      --coloropacity-green-green-600-dark-20per
+    );
+    --coloropacity-border-accent-purple-600-20per: var(
+      --coloropacity-purple-purple-600-dark-20per
+    );
+    --coloropacity-surface-neutral-primary-0per: var(
+      --coloropacity-gray-gray-50-dark-0per
+    );
+    --coloropacity-surface-neutral-white-55per: var(
+      --coloropacity-base-white-55per
+    );
+    --coloropacity-surface-neutral-white-80per: var(
+      --coloropacity-base-white-80per
+    );
+    --coloropacity-surface-neutral-white-85per: var(
+      --coloropacity-base-white-85per
+    );
+    --coloropacity-surface-neutral-black-0per: var(
+      --coloropacity-base-black-0per
+    );
+    --coloropacity-surface-accent-blue-600-0per: var(
+      --coloropacity-blue-blue-600-dark-0per
+    );
+    --coloropacity-surface-accent-blue-600-10per: var(
+      --coloropacity-blue-blue-600-dark-10per
+    );
+    --coloropacity-surface-accent-blue-600-20per: var(
+      --coloropacity-blue-blue-600-dark-20per
+    );
+    --coloropacity-surface-accent-blue-600-30per: var(
+      --coloropacity-blue-blue-600-dark-30per
+    );
+    --coloropacity-surface-accent-blue-600-40per: var(
+      --coloropacity-blue-blue-600-dark-40per
+    );
+    --coloropacity-surface-accent-blue-600-50per: var(
+      --coloropacity-blue-blue-600-dark-50per
+    );
+    --coloropacity-surface-accent-blue-600-60per: var(
+      --coloropacity-blue-blue-600-dark-60per
+    );
+    --coloropacity-surface-accent-blue-600-70per: var(
+      --coloropacity-blue-blue-600-dark-70per
+    );
+    --coloropacity-surface-accent-blue-600-80per: var(
+      --coloropacity-blue-blue-600-dark-80per
+    );
+    --coloropacity-surface-accent-blue-600-90per: var(
+      --coloropacity-blue-blue-600-dark-90per
+    );
+    --coloropacity-surface-accent-red-600-0per: var(
+      --coloropacity-red-red-600-dark-0per
+    );
+    --coloropacity-surface-accent-red-600-10per: var(
+      --coloropacity-red-red-600-dark-10per
+    );
+    --coloropacity-surface-accent-red-600-20per: var(
+      --coloropacity-red-red-600-dark-20per
+    );
+    --coloropacity-surface-accent-red-600-30per: var(
+      --coloropacity-red-red-600-dark-30per
+    );
+    --coloropacity-surface-accent-red-600-40per: var(
+      --coloropacity-red-red-600-dark-40per
+    );
+    --coloropacity-surface-accent-red-600-50per: var(
+      --coloropacity-red-red-600-dark-50per
+    );
+    --coloropacity-surface-accent-red-600-60per: var(
+      --coloropacity-red-red-600-dark-60per
+    );
+    --coloropacity-surface-accent-red-600-70per: var(
+      --coloropacity-red-red-600-dark-70per
+    );
+    --coloropacity-surface-accent-red-600-80per: var(
+      --coloropacity-red-red-600-dark-80per
+    );
+    --coloropacity-surface-accent-red-600-90per: var(
+      --coloropacity-red-red-600-dark-90per
+    );
+    --coloropacity-surface-accent-green-600-0per: var(
+      --coloropacity-green-green-600-dark-0per
+    );
+    --coloropacity-surface-accent-green-600-10per: var(
+      --coloropacity-green-green-600-dark-10per
+    );
+    --coloropacity-surface-accent-green-600-20per: var(
+      --coloropacity-green-green-600-dark-20per
+    );
+    --coloropacity-surface-accent-green-600-30per: var(
+      --coloropacity-green-green-600-dark-30per
+    );
+    --coloropacity-surface-accent-green-600-40per: var(
+      --coloropacity-green-green-600-dark-40per
+    );
+    --coloropacity-surface-accent-green-600-50per: var(
+      --coloropacity-green-green-600-dark-50per
+    );
+    --coloropacity-surface-accent-green-600-60per: var(
+      --coloropacity-green-green-600-dark-60per
+    );
+    --coloropacity-surface-accent-green-600-70per: var(
+      --coloropacity-green-green-600-dark-70per
+    );
+    --coloropacity-surface-accent-green-600-80per: var(
+      --coloropacity-green-green-600-dark-80per
+    );
+    --coloropacity-surface-accent-green-600-90per: var(
+      --coloropacity-green-green-600-dark-90per
+    );
+    --coloropacity-surface-accent-yellow-600-0per: var(
+      --coloropacity-yellow-yellow-600-dark-0per
+    );
+    --coloropacity-surface-accent-yellow-600-10per: var(
+      --coloropacity-yellow-yellow-600-dark-10per
+    );
+    --coloropacity-surface-accent-yellow-600-20per: var(
+      --coloropacity-yellow-yellow-600-dark-20per
+    );
+    --coloropacity-surface-accent-yellow-600-30per: var(
+      --coloropacity-yellow-yellow-600-dark-30per
+    );
+    --coloropacity-surface-accent-yellow-600-40per: var(
+      --coloropacity-yellow-yellow-600-dark-40per
+    );
+    --coloropacity-surface-accent-yellow-600-50per: var(
+      --coloropacity-yellow-yellow-600-dark-50per
+    );
+    --coloropacity-surface-accent-yellow-600-60per: var(
+      --coloropacity-yellow-yellow-600-dark-60per
+    );
+    --coloropacity-surface-accent-yellow-600-70per: var(
+      --coloropacity-yellow-yellow-600-dark-70per
+    );
+    --coloropacity-surface-accent-yellow-600-80per: var(
+      --coloropacity-yellow-yellow-600-dark-80per
+    );
+    --coloropacity-surface-accent-yellow-600-90per: var(
+      --coloropacity-yellow-yellow-600-dark-90per
+    );
+    --coloropacity-surface-accent-purple-600-0per: var(
+      --coloropacity-purple-purple-600-dark-0per
+    );
+    --coloropacity-surface-accent-purple-600-10per: var(
+      --coloropacity-purple-purple-600-dark-10per
+    );
+    --coloropacity-surface-accent-purple-600-20per: var(
+      --coloropacity-purple-purple-600-dark-20per
+    );
+    --coloropacity-surface-accent-purple-600-30per: var(
+      --coloropacity-purple-purple-600-dark-30per
+    );
+    --coloropacity-surface-accent-purple-600-40per: var(
+      --coloropacity-purple-purple-600-dark-40per
+    );
+    --coloropacity-surface-accent-purple-600-50per: var(
+      --coloropacity-purple-purple-600-dark-50per
+    );
+    --coloropacity-surface-accent-purple-600-60per: var(
+      --coloropacity-purple-purple-600-dark-60per
+    );
+    --coloropacity-surface-accent-purple-600-70per: var(
+      --coloropacity-purple-purple-600-dark-70per
+    );
+    --coloropacity-surface-accent-purple-600-80per: var(
+      --coloropacity-purple-purple-600-dark-80per
+    );
+    --coloropacity-surface-accent-purple-600-90per: var(
+      --coloropacity-purple-purple-600-dark-90per
+    );
+    --coloropacity-surface-accent-gray-300-50per: var(
+      --coloropacity-gray-gray-300-dark-50per
+    );
+    --coloropacity-surface-accent-gray-400-55per: var(
+      --coloropacity-gray-gray-400-dark-55per
+    );
+    --coloropacity-surface-accent-gray-600-0per: var(
+      --coloropacity-gray-gray-600-dark-0per
+    );
+    --coloropacity-surface-accent-gray-600-10per: var(
+      --coloropacity-gray-gray-600-dark-10per
+    );
+    --coloropacity-surface-accent-gray-600-20per: var(
+      --coloropacity-gray-gray-600-dark-20per
+    );
+    --coloropacity-surface-accent-gray-600-30per: var(
+      --coloropacity-gray-gray-600-dark-30per
+    );
+    --coloropacity-surface-accent-gray-600-40per: var(
+      --coloropacity-gray-gray-600-dark-40per
+    );
+    --coloropacity-surface-accent-gray-600-50per: var(
+      --coloropacity-gray-gray-600-dark-50per
+    );
+    --coloropacity-surface-accent-gray-600-60per: var(
+      --coloropacity-gray-gray-600-dark-60per
+    );
+    --coloropacity-surface-accent-gray-600-70per: var(
+      --coloropacity-gray-gray-600-dark-70per
+    );
+    --coloropacity-surface-accent-gray-600-80per: var(
+      --coloropacity-gray-gray-600-dark-80per
+    );
+    --coloropacity-surface-accent-gray-600-90per: var(
+      --coloropacity-gray-gray-600-dark-90per
+    );
+    --coloropacity-shadow-4per: var(--coloropacity-shadow-4per-dark);
+    --coloropacity-shadow-4_5per: var(--coloropacity-shadow-4_5per-dark);
+    --coloropacity-shadow-6per: var(--coloropacity-shadow-6per-dark);
+    --coloropacity-shadow-8per: var(--coloropacity-shadow-8per-dark);
+    --coloropacity-shadow-9per: var(--coloropacity-shadow-9per-dark);
+    --coloropacity-shadow-12per: var(--coloropacity-shadow-12per-dark);
+    --coloropacity-shadow-16per: var(--coloropacity-shadow-16per-dark);
+    --coloropacity-shadow-20per: var(--coloropacity-shadow-20per-dark);
+    --coloropacity-shadow-24per: var(--coloropacity-shadow-24per-dark);
+    --coloropacity-shadow-34per: var(--coloropacity-shadow-34per-dark);
+    --color-text-message-warning-primary-600: var(
+      --color-yellow-yellow-600-dark
+    );
+    --color-text-message-warning-contrast-700: var(
+      --color-yellow-yellow-700-dark
+    );
+    --color-text-message-warning-highcontrast-800: var(
+      --color-yellow-yellow-800-dark
+    );
+    --color-text-message-warning-disable-300: var(
+      --color-yellow-yellow-300-dark
+    );
+    --color-text-message-warning-oninverse: var(--color-yellow-yellow-400-dark);
+    --color-surface-accent-blue-50: var(--color-blue-blue-50-dark);
+    --color-surface-accent-blue-100: var(--color-blue-blue-100-dark);
+    --color-surface-accent-blue-200: var(--color-blue-blue-200-dark);
+    --color-surface-accent-blue-300: var(--color-blue-blue-300-dark);
+    --color-surface-accent-blue-400: var(--color-blue-blue-400-dark);
+    --color-surface-accent-blue-500: var(--color-blue-blue-500-dark);
+    --color-surface-accent-red-50: var(--color-red-red-50-dark);
+    --color-surface-accent-blue-600: var(--color-blue-blue-600-dark);
+    --color-surface-accent-red-100: var(--color-red-red-100-dark);
+    --color-surface-accent-red-200: var(--color-red-red-200-dark);
+    --color-surface-accent-red-300: var(--color-red-red-300-dark);
+    --color-surface-accent-blue-700: var(--color-blue-blue-700-dark);
+    --color-surface-accent-blue-800: var(--color-blue-blue-800-dark);
+    --color-surface-accent-blue-900: var(--color-blue-blue-900-dark);
+    --color-surface-accent-blue-1000: var(--color-blue-blue-1000-dark);
+    --color-surface-accent-red-400: var(--color-red-red-400-dark);
+    --color-surface-accent-green-50: var(--color-green-green-50-dark);
+    --color-surface-accent-red-500: var(--color-red-red-500-dark);
+    --color-surface-accent-green-100: var(--color-green-green-100-dark);
+    --color-surface-accent-green-200: var(--color-green-green-200-dark);
+    --color-surface-accent-red-600: var(--color-red-red-600-dark);
+    --color-surface-accent-green-300: var(--color-green-green-300-dark);
+    --color-surface-accent-red-700: var(--color-red-red-700-dark);
+    --color-surface-accent-red-800: var(--color-red-red-800-dark);
+    --color-surface-accent-red-900: var(--color-red-red-900-dark);
+    --color-surface-accent-red-1000: var(--color-red-red-1000-dark);
+    --color-surface-accent-green-400: var(--color-green-green-400-dark);
+    --color-surface-accent-yellow-50: var(--color-yellow-yellow-50-dark);
+    --color-surface-accent-vividgreen-50: var(
+      --color-vividgreen-vividgreen-50-dark
+    );
+    --color-surface-accent-vividgreen-100: var(
+      --color-vividgreen-vividgreen-100-dark
+    );
+    --color-surface-accent-vividgreen-200: var(
+      --color-vividgreen-vividgreen-200-dark
+    );
+    --color-surface-accent-vividgreen-300: var(
+      --color-vividgreen-vividgreen-300-dark
+    );
+    --color-surface-accent-vividgreen-400: var(
+      --color-vividgreen-vividgreen-400-dark
+    );
+    --color-surface-accent-vividgreen-500: var(
+      --color-vividgreen-vividgreen-500-dark
+    );
+    --color-surface-accent-vividgreen-600: var(
+      --color-vividgreen-vividgreen-600-dark
+    );
+    --color-surface-accent-vividgreen-700: var(
+      --color-vividgreen-vividgreen-700-dark
+    );
+    --color-surface-accent-vividgreen-800: var(
+      --color-vividgreen-vividgreen-800-dark
+    );
+    --color-surface-accent-vividgreen-900: var(
+      --color-vividgreen-vividgreen-900-dark
+    );
+    --color-surface-accent-vividgreen-1000: var(
+      --color-vividgreen-vividgreen-1000-dark
+    );
+    --color-surface-accent-green-500: var(--color-green-green-500-dark);
+    --color-surface-accent-yellow-100: var(--color-yellow-yellow-100-dark);
+    --color-surface-accent-yellow-200: var(--color-yellow-yellow-200-dark);
+    --color-surface-accent-yellow-300: var(--color-yellow-yellow-300-dark);
+    --color-surface-accent-green-600: var(--color-green-green-600-dark);
+    --color-surface-accent-green-700: var(--color-green-green-700-dark);
+    --color-surface-accent-green-800: var(--color-green-green-800-dark);
+    --color-surface-accent-green-900: var(--color-green-green-900-dark);
+    --color-surface-accent-green-1000: var(--color-green-green-1000-dark);
+    --color-surface-accent-yellow-400: var(--color-yellow-yellow-400-dark);
+    --color-surface-accent-yellow-500: var(--color-yellow-yellow-500-dark);
+    --color-surface-accent-yellow-600: var(--color-yellow-yellow-600-dark);
+    --color-surface-accent-yellow-700: var(--color-yellow-yellow-700-dark);
+    --color-surface-accent-yellow-800: var(--color-yellow-yellow-800-dark);
+    --color-surface-accent-yellow-900: var(--color-yellow-yellow-900-dark);
+    --color-surface-accent-yellow-1000: var(--color-yellow-yellow-1000-dark);
+    --color-text-accent-blue-primary-600: var(--color-blue-blue-600-dark);
+    --color-text-accent-blue-contrast-700: var(--color-blue-blue-700-dark);
+    --color-text-accent-red-primary-600: var(--color-red-red-600-dark);
+    --color-text-onbrand-neutral-primary-on600: var(--color-base-white);
+    --color-text-onbrand-neutral-primary-onbelow600: var(--color-base-white);
+    --color-text-onbrand-neutral-primary-onabove600: var(
+      --color-gray-gray-50-dark
+    );
+    --color-text-onmessage-neutral-primary-on600: var(--color-base-white);
+    --color-text-onbrand-neutral-secondary-on100_50: var(
+      --color-gray-gray-600-dark
+    );
+    --color-text-onmessage-neutral-primary-onbelow600: var(--color-base-white);
+    --color-text-onbrand-colored-primary-on200_100_50: var(
+      --color-blue-blue-800-dark
+    );
+    --color-text-onbrand-colored-secondary-on100_50: var(
+      --color-blue-blue-700-dark
+    );
+    --color-text-onmessage-neutral-primary-onabove600: var(
+      --color-gray-gray-50-dark
+    );
+    --color-text-onmessage-neutral-secondary-on100: var(
+      --color-gray-gray-600-dark
+    );
+    --color-text-onmessage-colored-oninfo-on100: var(
+      --color-blue-blue-800-dark
+    );
+    --color-text-onaccent-neutral-primary-on600: var(--color-base-white);
+    --color-text-onmessage-colored-onerror-on100: var(--color-red-red-800-dark);
+    --color-text-onmessage-colored-onsuccess-on100: var(
+      --color-green-green-800-dark
+    );
+    --color-text-onaccent-neutral-primary-onbelow600: var(--color-base-white);
+    --color-text-onmessage-colored-onwarning-on100: var(
+      --color-yellow-yellow-800-dark
+    );
+    --color-text-onaccent-neutral-primary-onabove600: var(
+      --color-gray-gray-50-dark
+    );
+    --color-text-onaccent-neutral-secondary-on100_50: var(
+      --color-gray-gray-600-dark
+    );
+    --color-text-onaccent-colored-onblue-on200_100_50: var(
+      --color-blue-blue-800-dark
+    );
+    --color-text-onaccent-colored-onpurple-on200_100_50: var(
+      --color-purple-purple-800-dark
+    );
+    --color-text-onaccent-colored-onred-on200_100_50: var(
+      --color-red-red-800-dark
+    );
+    --color-text-onaccent-colored-ongreen-on200_100_50: var(
+      --color-green-green-800-dark
+    );
+    --color-text-onaccent-colored-onvividgreen-on200_100_50: var(
+      --color-vividgreen-vividgreen-800-dark
+    );
+    --color-text-onaccent-colored-onyellow-on200_100_50: var(
+      --color-yellow-yellow-800-dark
+    );
+    --color-text-accent-red-contrast-700: var(--color-red-red-700-dark);
+    --color-text-accent-green-primary-600: var(--color-green-green-600-dark);
+    --color-text-accent-green-contrast-700: var(--color-green-green-700-dark);
+    --color-text-accent-yellow-primary-700: var(--color-yellow-yellow-700-dark);
+    --color-text-accent-yellow-contrast-800: var(
+      --color-yellow-yellow-800-dark
+    );
+    --color-text-accent-purple-primary-600: var(--color-purple-purple-600-dark);
+    --color-text-accent-purple-contrast-700: var(
+      --color-purple-purple-700-dark
+    );
+    --color-surface-accent-purple-50: var(--color-purple-purple-50-dark);
+    --color-surface-accent-purple-100: var(--color-purple-purple-100-dark);
+    --color-surface-accent-purple-200: var(--color-purple-purple-200-dark);
+    --color-surface-accent-purple-300: var(--color-purple-purple-300-dark);
+    --color-surface-accent-purple-400: var(--color-purple-purple-400-dark);
+    --color-surface-accent-purple-500: var(--color-purple-purple-500-dark);
+    --color-surface-accent-purple-600: var(--color-purple-purple-600-dark);
+    --color-surface-accent-purple-700: var(--color-purple-purple-700-dark);
+    --color-surface-accent-purple-800: var(--color-purple-purple-800-dark);
+    --color-surface-accent-purple-900: var(--color-purple-purple-900-dark);
+    --color-surface-accent-purple-1000: var(--color-purple-purple-1000-dark);
+    --color-icon-accent-blue-primary-600: var(--color-blue-blue-600-dark);
+    --color-icon-accent-blue-contrast-700: var(--color-blue-blue-700-dark);
+    --color-icon-accent-red-primary-600: var(--color-red-red-600-dark);
+    --color-icon-accent-green-primary-600: var(--color-green-green-600-dark);
+    --color-icon-accent-green-contrast-700: var(--color-green-green-700-dark);
+    --color-icon-accent-red-contrast-700: var(--color-red-red-700-dark);
+    --color-icon-accent-vividgreen-primary-600: var(
+      --color-vividgreen-vividgreen-600-light
+    );
+    --color-icon-accent-yellow-primary-600: var(--color-yellow-yellow-600-dark);
+    --color-icon-accent-yellow-contrast-700: var(
+      --color-yellow-yellow-700-dark
+    );
+    --color-icon-accent-pink-primary-600: var(--color-pink-pink-600-dark);
+    --color-icon-accent-pink-contrast-700: var(--color-pink-pink-700-dark);
+    --color-icon-accent-vividgreen-contrast-700: var(
+      --color-vividgreen-vividgreen-700-light
+    );
+    --color-icon-onbrand-neutral-on600: var(--color-base-white);
+    --color-icon-onbrand-neutral-onbelow600: var(--color-base-white);
+    --color-icon-onmessage-neutral-on600: var(--color-base-white);
+    --color-icon-onmessage-neutral-onbelow600: var(--color-base-white);
+    --color-icon-onmessage-neutral-onabove600: var(--color-gray-gray-50-dark);
+    --color-icon-onmessage-colored-oninfo-on100: var(
+      --color-blue-blue-800-dark
+    );
+    --color-icon-onmessage-colored-onerror-on100: var(--color-red-red-800-dark);
+    --color-icon-onmessage-colored-onsuccess-on100: var(
+      --color-green-green-800-dark
+    );
+    --color-icon-onaccent-neutral-on600: var(--color-base-white);
+    --color-icon-onmessage-colored-onwarning-on100: var(
+      --color-yellow-yellow-800-dark
+    );
+    --color-icon-onaccent-neutral-onbelow600: var(--color-base-white);
+    --color-icon-onaccent-neutral-onabove600: var(--color-gray-gray-50-dark);
+    --color-icon-onaccent-colored-onblue-on200_100_50: var(
+      --color-blue-blue-800-dark
+    );
+    --color-icon-onaccent-colored-onpurple-on200_100_50: var(
+      --color-purple-purple-800-dark
+    );
+    --color-icon-onaccent-colored-onred-on200_100_50: var(
+      --color-red-red-800-dark
+    );
+    --color-icon-onaccent-colored-ongreen-on200_100_50: var(
+      --color-green-green-800-dark
+    );
+    --color-icon-onaccent-colored-onvividgreen-on200_100_50: var(
+      --color-vividgreen-vividgreen-800-dark
+    );
+    --color-icon-onaccent-colored-onyellow-on200_100_50: var(
+      --color-yellow-yellow-800-dark
+    );
+    --color-icon-onbrand-neutral-onabove600: var(--color-gray-gray-50-dark);
+    --color-icon-onbrand-colored-primary-on200_100_50: var(
+      --color-blue-blue-800-dark
+    );
+    --color-icon-onbrand-colored-secondary-on100_50: var(
+      --color-blue-blue-700-dark
+    );
+    --color-border-accent-purple-50: var(--color-purple-purple-50-dark);
+    --color-border-accent-purple-100: var(--color-purple-purple-100-dark);
+    --color-border-accent-purple-200: var(--color-purple-purple-200-dark);
+    --color-border-accent-purple-300: var(--color-purple-purple-300-dark);
+    --color-border-accent-purple-400: var(--color-purple-purple-400-dark);
+    --color-border-accent-purple-500: var(--color-purple-purple-500-dark);
+    --color-border-accent-purple-600: var(--color-purple-purple-600-dark);
+    --color-border-accent-purple-700: var(--color-purple-purple-700-dark);
+    --color-border-accent-purple-800: var(--color-purple-purple-800-dark);
+    --color-border-accent-purple-900: var(--color-purple-purple-900-dark);
+    --color-border-accent-purple-1000: var(--color-purple-purple-1000-dark);
+    --color-border-accent-gray-50: var(--color-gray-gray-50-dark);
+    --color-border-accent-gray-100: var(--color-gray-gray-100-dark);
+    --color-border-accent-gray-200: var(--color-gray-gray-200-dark);
+    --color-border-accent-gray-300: var(--color-gray-gray-300-dark);
+    --color-border-accent-gray-400: var(--color-gray-gray-400-dark);
+    --color-border-accent-gray-500: var(--color-gray-gray-500-dark);
+    --color-border-accent-gray-600: var(--color-gray-gray-600-dark);
+    --color-border-accent-gray-700: var(--color-gray-gray-700-dark);
+    --color-border-accent-gray-800: var(--color-gray-gray-800-dark);
+    --color-border-accent-gray-900: var(--color-gray-gray-900-dark);
+    --color-border-accent-gray-1000: var(--color-gray-gray-1000-dark);
+    --color-surface-accent-gray-50: var(--color-gray-gray-50-dark);
+    --color-surface-accent-gray-100: var(--color-gray-gray-100-dark);
+    --color-surface-accent-gray-200: var(--color-gray-gray-200-dark);
+    --color-surface-accent-gray-300: var(--color-gray-gray-300-dark);
+    --color-surface-accent-gray-400: var(--color-gray-gray-400-dark);
+    --color-surface-accent-gray-500: var(--color-gray-gray-500-dark);
+    --color-surface-accent-gray-600: var(--color-gray-gray-600-dark);
+    --color-surface-accent-gray-700: var(--color-gray-gray-700-dark);
+    --color-surface-accent-gray-800: var(--color-gray-gray-800-dark);
+    --color-surface-accent-gray-900: var(--color-gray-gray-900-dark);
+    --color-surface-accent-gray-1000: var(--color-gray-gray-1000-dark);
+    --color-surface-accent-pink-50: var(--color-pink-pink-50-dark);
+    --color-surface-accent-pink-100: var(--color-pink-pink-100-dark);
+    --color-surface-accent-pink-200: var(--color-pink-pink-200-dark);
+    --color-surface-accent-pink-300: var(--color-pink-pink-300-dark);
+    --color-surface-accent-pink-400: var(--color-pink-pink-400-dark);
+    --color-surface-accent-pink-500: var(--color-pink-pink-500-dark);
+    --color-surface-accent-pink-600: var(--color-pink-pink-600-dark);
+    --color-surface-accent-pink-700: var(--color-pink-pink-700-dark);
+    --color-surface-accent-pink-800: var(--color-pink-pink-800-dark);
+    --color-surface-accent-pink-900: var(--color-pink-pink-900-dark);
+    --color-surface-accent-pink-1000: var(--color-pink-pink-1000-dark);
+  }
+}

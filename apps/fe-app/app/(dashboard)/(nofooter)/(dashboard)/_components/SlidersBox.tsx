@@ -1,6 +1,4 @@
 'use client';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
 import {
   AutoRotateSwitch,
   AutoRotationOff,
@@ -8,9 +6,8 @@ import {
   ConfirmModal,
   HorizontalScrollBar,
 } from 'design-system';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { DashboardNumberAndName } from './DashboardNumberAndName';
-import { useSearchParams } from 'next/navigation';
 
 import {
   DndContext,
@@ -27,17 +24,8 @@ import {
   rectSortingStrategy,
 } from '@dnd-kit/sortable';
 import { useHtmlPaddingRight } from '../../../../../hooks';
-import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
-import {
-  FinancialReportCalculationApiModel,
-  GetReportsCategoriesResponse,
-  GetReportsResponse,
-  OpenAPI,
-  useReportsServiceGetReports,
-  useReportsServiceGetReportsByReportId,
-  useReportsServiceGetReportsCategories,
-} from '@openapi';
-import { fetchToken } from '../../../../(auth)/auth.utils';
+import { useCustomToast } from 'design-system';
+import { FinancialReportCalculationApiModel } from '@openapi';
 import { useAutoRotate } from './hooks/useAutoRotate';
 import { ReportTitleSkeleton } from './skeletons/ReportTitleSkeleton';
 import { ReportSectionSkeleton } from './skeletons/ReportSectionSkeleton';
@@ -47,7 +35,7 @@ import {
 } from '../../../../components';
 import { SortableReport } from './SortableReport';
 import { SortableAddReportButton } from './SortableAddReportButton';
-import { calculateSlotsToRender, generateTooltips } from './utils';
+import { generateTooltips } from './utils';
 import { useDashboardData } from './hooks/useDashboardData';
 import { useDashboardActions } from './hooks/useDashboardActions';
 import { useReportSelection } from './hooks/useReportSelection';
@@ -58,7 +46,6 @@ export const SlidersBox: React.FC = () => {
   const [barsNumber, setBarsNumber] = useState(0);
   const [slidesPerView, setSlidesPerView] = useState(2);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [tokenLoaded, setTokenLoaded] = useState(false);
   const [isReportSelectionPopupOpen, setIsReportSelectionPopupOpen] =
     useState(false);
   const [isReportPreviewOpen, setIsReportPreviewOpen] = useState(false);
@@ -81,27 +68,13 @@ export const SlidersBox: React.FC = () => {
       }
     >
   >({});
-
-  useEffect(() => {
-    async function initToken() {
-      const token = await fetchToken();
-      if (!token) throw new Error('Failed to fetch access token');
-      OpenAPI.HEADERS = { Authorization: `Bearer ${token}` };
-      setTokenLoaded(true);
-    }
-
-    initToken();
-  }, []);
-
-  const searchParams = useSearchParams();
   const {
     dashboardData,
     setDashboardData,
-    isDashboardLoading,
     slotsToRender,
     setSlotsToRender,
     dashboardIdParam,
-  } = useDashboardData(tokenLoaded);
+  } = useDashboardData();
   const {
     currIndex,
     activeRotate,
@@ -161,16 +134,6 @@ export const SlidersBox: React.FC = () => {
     setSlotsToRender((prev) => result.updatedSlotsToRender(prev));
   };
 
-  {
-    !tokenLoaded ||
-      !dashboardIdParam ||
-      (isDashboardLoading &&
-        Array.from(
-          [1, 2, 3, 4].map((arr) => {
-            return <Skeleton />;
-          }),
-        ));
-  }
   return (
     <div className="w-fit">
       {dashboardData ? (
@@ -251,7 +214,9 @@ export const SlidersBox: React.FC = () => {
                     );
                   })
                 : Array.from(
-                    [1, 2, 3, 4].map((i) => <ReportSectionSkeleton />),
+                    [1, 2, 3, 4].map((i) => (
+                      <ReportSectionSkeleton key={`skeleton-${i}`} />
+                    )),
                   )}
             </div>
           </SortableContext>
@@ -346,12 +311,7 @@ export const SlidersBox: React.FC = () => {
       )}
       <ConfirmModal
         isOpen={isRemoveReportOpen.open}
-        onConfirm={() =>
-          handleRemoveReport(
-            isRemoveReportOpen.dashboardItemID,
-            isRemoveReportOpen.dashboardName,
-          )
-        }
+        onConfirm={() => handleRemoveReport(isRemoveReportOpen.dashboardItemID)}
         title="تایید حذف گزارش"
         cancelBtnLabel="خیر"
         submitBtnLabel="بله"

@@ -114,7 +114,7 @@ const data: FundsSidebarData[] = [
 ];
 import React, { useEffect, useState } from 'react';
 import { useHeaderVisibility } from '../../../../../hooks';
-import { SidebarSkeleton } from './skeletons/SidebarSkeleton';
+import { SidebarSkeleton } from './skeletons/SideBarSkeleton';
 import { SidebarItemSkeleton } from './skeletons/SidebarItemSkeleton';
 export const FundsSidebarWrapper: React.FC = () => {
   const { isHeaderVisible } = useHeaderVisibility();
@@ -137,16 +137,15 @@ export const FundsSidebarWrapper: React.FC = () => {
         top: isHeaderVisible ? `104px` : `24px`,
       }}
     >
-      {
-        isLoading ? (
-          <SidebarSkeleton>
-            {Array.from({ length: 12 }).map((_, idx) => (
-              <SidebarItemSkeleton key={idx} />
-            ))}
-          </SidebarSkeleton>
-        ) : (
-          <FundsSidebar data={data} />
-        )
-      }    </div>
+      {isLoading ? (
+        <SidebarSkeleton>
+          {Array.from({ length: 12 }).map((_, idx) => (
+            <SidebarItemSkeleton key={idx} />
+          ))}
+        </SidebarSkeleton>
+      ) : (
+        <FundsSidebar data={data} />
+      )}{' '}
+    </div>
   );
 };

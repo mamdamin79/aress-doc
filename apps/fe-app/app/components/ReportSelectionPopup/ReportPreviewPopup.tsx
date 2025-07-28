@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import { DynamicReportRenderer } from '../../(dashboard)/(nofooter)/(dashboard)/_components/DynamicReportRenderer';
-import { Report6 } from '../Reports/Report6';
 import { ReportSelectionPopupProps } from './ReportPreviewPopup.types';
 import { Button, Dialog, Icon, NewBadge, VideoBadge } from 'design-system';
 import {
   FinancialReportCalculationApiModel,
   useReportsServicePostReportsByReportId,
 } from '@openapi';
-import { OptionItem } from 'libs/design-system/src/lib/components/OptionsListExplorer/OptionsListExplorer.types';
+import { OptionItem } from 'design-system';
 
 export const ReportPreviewPopup: React.FC<ReportSelectionPopupProps> = ({
   isOpen,

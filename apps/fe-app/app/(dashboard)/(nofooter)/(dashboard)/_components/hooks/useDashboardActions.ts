@@ -6,7 +6,6 @@ import {
   useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdReorder,
   useDashboardsServicePutDashboardsByDashboardId,
 } from '@openapi';
-import { OptionItem } from 'libs/design-system/src/lib/components/OptionsListExplorer/OptionsListExplorer.types';
 
 const MAX_INITIAL_SLOTS = 4;
 
@@ -87,7 +86,8 @@ export function useDashboardActions({
       setReportDataMap((prev) => ({
         ...prev,
         [dashboardItemId]: {
-          data: updatedReport.report.reportCalculation?.calculation as any,
+          data: updatedReport.report.reportCalculation
+            ?.calculation as FinancialReportCalculationApiModel['calculation'],
           filters: updatedReport.report.reportCalculation?.filters ?? [],
         },
       }));
@@ -100,10 +100,7 @@ export function useDashboardActions({
   };
 
   // Remove a report from dashboard
-  const handleRemoveReport = (
-    dashboardItemID: number,
-    dashboardName: string,
-  ) => {
+  const handleRemoveReport = (dashboardItemID: number) => {
     if (!dashboardId) return;
 
     removeReportMutation(
@@ -126,11 +123,6 @@ export function useDashboardActions({
           });
 
           if (dashboardData) {
-            const updatedItems =
-              dashboardData.items?.filter(
-                (item) => item.identifier !== dashboardItemID,
-              ) ?? [];
-
             // It's better if dashboardData.items is managed outside and passed in as state
             // Here, just update slotsToRender accordingly
 
@@ -151,7 +143,7 @@ export function useDashboardActions({
   const handleAddNewReport = async (
     identifier: string,
     activeReportPlacementOrder: string | null,
-    options:Record<string, { id: number | string }>,
+    options: Record<string, { id: number | string }>,
   ) => {
     if (!dashboardId) return;
 
@@ -164,10 +156,7 @@ export function useDashboardActions({
           ),
           reportIdentifier: identifier,
           selectedFilters: Object.fromEntries(
-            Object.entries(options).map(([key, { id }]) => [
-              key,
-              String(id),
-            ]),
+            Object.entries(options).map(([key, { id }]) => [key, String(id)]),
           ),
         },
       });
@@ -177,7 +166,8 @@ export function useDashboardActions({
       setReportDataMap((prev) => ({
         ...prev,
         [newlyAddedItem.identifier]: {
-          data: newlyAddedItem.report?.reportCalculation?.calculation as any,
+          data: newlyAddedItem.report?.reportCalculation
+            ?.calculation as FinancialReportCalculationApiModel['calculation'],
           filters: newlyAddedItem.report.reportCalculation?.filters ?? [],
         },
       }));

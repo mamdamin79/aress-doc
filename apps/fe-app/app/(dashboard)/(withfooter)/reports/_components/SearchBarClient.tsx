@@ -1,0 +1,64 @@
+'use client';
+import { cn, TextField } from 'design-system';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
+import { useDebounce } from '@uidotdev/usehooks';
+
+type Props = {
+  inModal?: boolean;
+};
+
+export const SearchBarClient: React.FC<Props> = ({ inModal }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const queries = useSearchParams().toString();
+  const [searchInput, setSearchInput] = useState('');
+  const debouncedSearch = useDebounce(searchInput, 300);
+
+  useEffect(() => {
+    if (debouncedSearch === '') {
+      handleClear();
+    } else {
+      handleSearch(debouncedSearch);
+    }
+  }, [debouncedSearch]);
+
+  const handleSearch = (
+    value: string | number | readonly string[] | undefined,
+  ) => {
+    const params = new URLSearchParams(queries);
+    params.set('search', value as string);
+    params.set('page', '1');
+    router.replace(`${pathname}?${params.toString()}`);
+  };
+
+  const handleClear = () => {
+    const params = new URLSearchParams(queries);
+    params.delete('search');
+    params.set('page', '1');
+    router.replace(`${pathname}?${params.toString()}`);
+  };
+
+  return (
+    <>
+      <TextField
+        className={cn('xl:w sm:w-[324px] md:w-[416px]', {
+          'sm:w-[472px] md:w-[472px]': inModal,
+        })}
+        mergeTitleAndPlaceholder={false}
+        mode="outline"
+        leadingIcon={{
+          name: 'search',
+          size: 'lg',
+        }}
+        inputSize={inModal ? 'sm' : 'md'}
+        trailingIcons={[
+          { name: 'x', size: 'lg', onClick: () => handleClear() },
+        ]}
+        placeholder="جستجو گزارش..."
+        value={searchInput}
+        onChange={(e) => setSearchInput(e.target.value)}
+      />
+    </>
+  );
+};

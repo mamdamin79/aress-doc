@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { OptionsDropdownTrigger } from './OptionsDropdownTrigger';
 const meta: Meta<typeof OptionsDropdownTrigger> = {
   component: OptionsDropdownTrigger,

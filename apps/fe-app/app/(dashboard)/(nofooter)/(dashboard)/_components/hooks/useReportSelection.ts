@@ -3,7 +3,6 @@ import { useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import {
   GetReportsCategoriesResponse,
-  GetReportsResponse,
   useReportsServiceGetReports,
   useReportsServiceGetReportsByReportId,
   useReportsServiceGetReportsCategories,
@@ -17,7 +16,7 @@ export function useReportSelection(selectedReportID: string | null) {
   const search = searchParams.get('search') || '';
   const page = parseInt(searchParams.get('page') || '1', 10);
 
-  const queryParams: Record<string, any> = {};
+  const queryParams: Record<string, boolean> = {};
   if (searchParams.has('onlyFavorite'))
     queryParams.onlyFavorite = Boolean(searchParams.get('onlyFavorite'));
   if (searchParams.has('onlyHavingVideo'))
@@ -25,14 +24,12 @@ export function useReportSelection(selectedReportID: string | null) {
   if (searchParams.has('onlyNew'))
     queryParams.onlyNew = Boolean(searchParams.get('onlyNew'));
 
-  const [reports, setReports] = useState<GetReportsResponse | null>();
   const [categories, setCategories] =
     useState<GetReportsCategoriesResponse | null>();
 
-  const { data: reportsList, refetch: fetchReportsList } =
-    useReportsServiceGetReports(queryParams, undefined, { enabled: false });
+  const { data: reportsList } = useReportsServiceGetReports(queryParams);
 
-  const { data: reportCategories, refetch: fetchReportsCategories } =
+  const { refetch: fetchReportsCategories } =
     useReportsServiceGetReportsCategories();
 
   const filteredReports = useMemo(() => {
@@ -64,12 +61,8 @@ export function useReportSelection(selectedReportID: string | null) {
     });
 
   const openPopup = async () => {
-    const [reportRes, categoryRes] = await Promise.all([
-      fetchReportsList(),
-      fetchReportsCategories(),
-    ]);
+    const categoryRes = await fetchReportsCategories();
 
-    if (reportRes.data) setReports(reportRes.data);
     if (categoryRes.data) setCategories(categoryRes.data);
   };
 

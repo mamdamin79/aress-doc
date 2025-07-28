@@ -1,10 +1,14 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
-import { FinancialReportCalculationApiModel } from '@openapi';
-import { OptionItem } from 'libs/design-system/src/lib/components/OptionsListExplorer/OptionsListExplorer.types';
+import {
+  FinancialReportCalculationApiModel,
+  FinancialReportFilterApiModel,
+} from '@openapi';
+import { OptionItem } from 'design-system';
 
 // Lazy load report components
-const reportComponents: Record<string, any> = {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const reportComponents: Record<number, React.ComponentType<any>> = {
   6: dynamic(() =>
     import('../../../../components/Reports/Report6').then((mod) => mod.Report6),
   ),
@@ -21,9 +25,9 @@ const reportComponents: Record<string, any> = {
 
 interface DynamicReportRendererProps {
   title?: string;
-  identifier: string;
+  identifier: number | string;
   data?: FinancialReportCalculationApiModel['calculation'];
-  filters?: FinancialReportCalculationApiModel['filters'];
+  filters?: FinancialReportFilterApiModel[];
   onSubmit?: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
   onRemove?: () => void;
 }
@@ -36,7 +40,7 @@ export const DynamicReportRenderer: React.FC<DynamicReportRendererProps> = ({
   title,
   onRemove,
 }) => {
-  const ReportComponent = reportComponents[identifier];
+  const ReportComponent = reportComponents[identifier as number];
 
   if (!ReportComponent) {
     return null;

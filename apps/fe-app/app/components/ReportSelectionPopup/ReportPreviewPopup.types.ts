@@ -1,5 +1,5 @@
-import { FinancialReportCalculationApiModel } from "@openapi";
-import { OptionItem } from "libs/design-system/src/lib/components/OptionsListExplorer/OptionsListExplorer.types";
+import { FinancialReportCalculationApiModel } from '@openapi';
+import { OptionItem } from 'design-system';
 
 export interface ReportSelectionPopupProps {
   isOpen: boolean;

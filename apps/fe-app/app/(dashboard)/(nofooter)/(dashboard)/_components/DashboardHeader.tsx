@@ -1,13 +1,14 @@
 import React from 'react';
 import { AutoRotateSwitch } from 'design-system';
 import { DashboardNumberAndName } from './DashboardNumberAndName';
+import { DashboardDetailsApiModel } from '@openapi';
 
 export const DashboardHeader = ({
   dashboardData,
   activeRotate,
   onRotateChange,
 }: {
-  dashboardData: any;
+  dashboardData: DashboardDetailsApiModel;
   activeRotate: number | null;
   onRotateChange: (value: number | null) => void;
 }) => (

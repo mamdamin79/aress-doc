@@ -1,7 +1,7 @@
 import React from 'react';
 import { NestedDropdown } from '../NestedDropdown';
 import { Button } from '../Button';
-import { cn } from 'libs/design-system/src/utils';
+import { cn } from '../../../utils';
 import {
   NestedDropdownItemProps,
   NestedDropdownProps,

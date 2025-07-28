@@ -7,7 +7,8 @@ export const SectionTitle: React.FC<sectionTitleProps> = ({
   align,
   level,
 }) => {
-  const Heading = `h${level}` as keyof JSX.IntrinsicElements;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const Heading = `h${level}` as any;
   return (
     <Heading
       className={`${alignClasses[align]} text-text-neutral-primary text-2xl font-medium`}

@@ -9,8 +9,9 @@ type SortableReportProps = {
   slotId: string;
   identifier: string;
   title: string;
-  data: FinancialReportCalculationApiModel["calculation"];
-  filters: FinancialReportCalculationApiModel["filters"];
+  data: FinancialReportCalculationApiModel['calculation'];
+  filters: FinancialReportCalculationApiModel['filters'];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSubmit: (changedOptions: Record<string, any>) => Promise<boolean>;
   onRemoveReport: () => void;
 };

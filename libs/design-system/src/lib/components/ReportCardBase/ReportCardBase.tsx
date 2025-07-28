@@ -1,12 +1,12 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Icon } from '../Icon';
 import { DualSwitch } from '../DualSwitch';
 import { ReportSettings } from '../ReportSettings';
 import { ContextMenu } from '../ContextMenu';
 import { SlideFromLeft } from './SlideFromLeft';
 import { OptionsListExplorer } from '../OptionsListExplorer';
-import { cn } from 'libs/design-system/src/utils';
+import { cn } from '../../../utils';
 import { LoadingBarPop } from '../LoadingBarPop';
 import { Button } from '../Button';
 import { ReportCardBaseProps } from './ReportCardBase.types';
@@ -78,7 +78,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
           onBackButtonClick={() => setOptionsListItems(null)}
           onSearch={(value) => console.log(value)}
           onChange={(item) => {
-            optionsListItems && optionsListItems.onChange?.(item);
+            if (optionsListItems) optionsListItems.onChange?.(item);
             setOptionsListItems(null);
           }}
         />

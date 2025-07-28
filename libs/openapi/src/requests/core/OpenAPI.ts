@@ -45,7 +45,11 @@ export const OpenAPI: OpenAPIConfig = {
   ENCODE_PATH: undefined,
   HEADERS: undefined,
   PASSWORD: undefined,
-  TOKEN: undefined,
+  // Always get token from localStorage for Authorization header
+  TOKEN: async () =>
+    typeof window !== 'undefined'
+      ? localStorage.getItem('access_token') || ''
+      : '',
   USERNAME: undefined,
   VERSION: '0.0.1',
   WITH_CREDENTIALS: false,

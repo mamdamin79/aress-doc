@@ -1,7 +1,5 @@
-import { useState } from 'react';
 import { ReportList } from '../../(dashboard)/(withfooter)/reports/_components/ReportsList';
-import { SideBar } from '../../(dashboard)/(withfooter)/reports/_components/SideBar';
-import { AddReportButton, Dialog, Pagination } from 'design-system';
+import { Dialog, Pagination } from 'design-system';
 import { GetReportsCategoriesResponse, GetReportsResponse } from '@openapi';
 interface ReportSelectionPopupProps {
   reports: GetReportsResponse;
@@ -31,7 +29,7 @@ export const ReportSelectionPopup: React.FC<ReportSelectionPopupProps> = ({
     <Dialog
       onClose={onClose}
       isOpen={isOpen}
-      className="text-right sm:min-w-[480px] sm:max-w-[576px] lg:max-w-[696px] lg:min-w-[480px]"
+      className="text-right sm:min-w-[480px] sm:max-w-[576px] lg:min-w-[480px] lg:max-w-[696px]"
       // className="bg-baseBackground relative flex h-[90vh] max-h-[800px] min-h-[456px] w-full min-w-[670px] max-w-[696px] items-center justify-center p-0 pr-1 text-right"
     >
       <div className="mx-auto flex justify-center xl:block">

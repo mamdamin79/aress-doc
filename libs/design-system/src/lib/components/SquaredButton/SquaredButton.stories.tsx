@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { SquaredButton } from './SquaredButton';
 const meta: Meta<typeof SquaredButton> = {
   component: SquaredButton,

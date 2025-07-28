@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { DateInput } from './DateInput';
-import { useArgs } from '@storybook/preview-api';
+import { useArgs } from 'storybook/preview-api';
 
 // Meta configuration for the DateInput component in Storybook
 const meta: Meta<typeof DateInput> = {
@@ -22,11 +22,10 @@ export const ControlledDateInput: Story = {
     defaultValue: '',
   },
   render: function Success(args) {
-    const [{ value }, updateArgs] = useArgs();
     const [{ error }, updateError] = useArgs();
     // change boolean state for show dialog
     function onChange(e: Date | string) {
-      updateArgs({ value: e });
+      console.log(e);
     }
     function setError(e: { minError: boolean; maxError: boolean }) {
       updateError({ error: e });

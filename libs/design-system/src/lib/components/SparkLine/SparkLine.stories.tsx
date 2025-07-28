@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { SparkLine } from './SparkLine';
 const meta: Meta<typeof SparkLine> = {
   component: SparkLine,

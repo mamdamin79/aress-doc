@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import type { Row } from '@tanstack/react-table';
-import { Bookmark } from 'libs/design-system/src/lib/components/Bookmark';
-import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
+import { Bookmark } from 'design-system';
+import { useCustomToast } from 'design-system';
 import { Icon, OptionsDropdown, Tooltip, cn } from 'design-system';
 
 interface FundRow {
@@ -55,7 +55,6 @@ function FundsInfoCell({
   selected,
   isScrolled,
   className,
-  isRowHovered,
 }: FundsInfoCellProps) {
   const { showProgressToast, showToast } = useCustomToast();
   const [isShowDropDown, setIsShowDropDown] = useState(false);
@@ -282,7 +281,6 @@ function TableRowInner<T extends FundRow>({
   watchList,
   isScrollAtStart,
 }: TableRowProps<T>) {
-  const [isHovered, setIsHovered] = useState(false);
   const handleToggleWatchList = useCallback(
     () => toggleWatchList({ id: row.id }),
     [row.id, toggleWatchList],
@@ -306,8 +304,6 @@ function TableRowInner<T extends FundRow>({
 
   return (
     <tr
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       key={row.id}
       className="border-border-neutral-secondary group h-[46px] border-b"
     >
