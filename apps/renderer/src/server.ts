@@ -1,6 +1,4 @@
 import express from 'express';
-import { fileURLToPath } from 'url';
-import path from 'path';
 import fetch from 'node-fetch';
 import FormData from 'form-data';
 import { setTimeout as delay } from 'node:timers/promises';
@@ -9,11 +7,10 @@ import { config } from './config';
 import { log, logError } from './utils/logger';
 import { z } from 'zod';
 import { URL, URLSearchParams } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import cors from 'cors';
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 // graceful shutdown
@@ -43,12 +40,10 @@ app.post('/render', async (req, res) => {
 
   const parseResult = renderSchema.safeParse(req.body);
   if (!parseResult.success) {
-    return res
-      .status(400)
-      .json({
-        error: 'Invalid request body',
-        issues: parseResult.error.issues,
-      });
+    return res.status(400).json({
+      error: 'Invalid request body',
+      issues: parseResult.error.issues,
+    });
   }
 
   const { id, title = 'گزارش', selectedFilters = {} } = parseResult.data;
@@ -88,6 +83,8 @@ app.post('/render', async (req, res) => {
       contentType: 'image/png',
     });
 
+    formData.append('selected_filters', JSON.stringify(selectedFilters));
+
     const uploadRes = await fetch(
       `${config.UPLOAD_URL}/reports/${id}/screenshot`,
       {
@@ -113,12 +110,10 @@ app.post('/render', async (req, res) => {
     res.json({ uploadResult });
   } catch (err) {
     logError('Render failed:', err);
-    res
-      .status(500)
-      .json({
-        error: 'Render failed',
-        details: err instanceof Error ? err.message : String(err),
-      });
+    res.status(500).json({
+      error: 'Render failed',
+      details: err instanceof Error ? err.message : String(err),
+    });
   }
 });
 

@@ -90,6 +90,7 @@ export const SlidersBox: React.FC = () => {
     handleRemoveReport,
     handleAddNewReport,
     handleDragEnd: handleDragEndInternal,
+    callRenderEndpoint,
   } = useDashboardActions({
     dashboardId: dashboardIdParam ? Number(dashboardIdParam) : null,
     dashboardData,
@@ -132,6 +133,24 @@ export const SlidersBox: React.FC = () => {
     if (!result) return;
 
     setSlotsToRender((prev) => result.updatedSlotsToRender(prev));
+  };
+  const shareReport = async (
+    id: string,
+    title: string,
+    selectedFilters?: { [key: string]: unknown } | null,
+  ) => {
+    const selectedFiltersParsed: Record<string, string> | undefined =
+      selectedFilters
+        ? Object.fromEntries(
+            Object.entries(selectedFilters).map(([k, v]) => [k, String(v)]),
+          )
+        : undefined;
+    const data = await callRenderEndpoint({
+      id: id,
+      selectedFilters: selectedFiltersParsed,
+      title: title,
+    });
+    console.log(data);
   };
 
   return (
@@ -196,6 +215,13 @@ export const SlidersBox: React.FC = () => {
                               dashboardName: report.report.title,
                               open: true,
                             })
+                          }
+                          onShare={() =>
+                            shareReport(
+                              String(report.report.identifier),
+                              report.report.title,
+                              report.selectedFilters,
+                            )
                           }
                         />
                       );

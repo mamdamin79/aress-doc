@@ -201,6 +201,56 @@ export const $Body_login_for_access_token_users_login_post = {
   title: 'Body_login_for_access_token_users_login_post',
 } as const;
 
+export const $Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post =
+  {
+    properties: {
+      file: {
+        type: 'string',
+        format: 'binary',
+        title: 'File',
+      },
+      selected_filters: {
+        anyOf: [
+          {
+            type: 'string',
+          },
+          {
+            type: 'null',
+          },
+        ],
+        title: 'Selected Filters',
+      },
+    },
+    type: 'object',
+    required: ['file', 'selected_filters'],
+    title:
+      'Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post',
+  } as const;
+
+export const $Body_save_screenshot_reports__report_id__screenshot_post = {
+  properties: {
+    selected_filters: {
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Selected Filters',
+    },
+    file: {
+      type: 'string',
+      format: 'binary',
+      title: 'File',
+    },
+  },
+  type: 'object',
+  required: ['selected_filters', 'file'],
+  title: 'Body_save_screenshot_reports__report_id__screenshot_post',
+} as const;
+
 export const $Body_test_user_access_token_users_token_post = {
   properties: {
     grant_type: {
@@ -259,11 +309,25 @@ export const $Body_test_user_access_token_users_token_post = {
 export const $CaptchaApiModel = {
   properties: {
     value: {
-      type: 'string',
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
       title: 'Value',
     },
     uid: {
-      type: 'integer',
+      anyOf: [
+        {
+          type: 'integer',
+        },
+        {
+          type: 'null',
+        },
+      ],
       title: 'Uid',
     },
     required: {
@@ -292,6 +356,62 @@ export const $ChangeDashboardReportItemSortOrderBody = {
   type: 'object',
   required: ['order'],
   title: 'ChangeDashboardReportItemSortOrderBody',
+} as const;
+
+export const $ChangeEmailByOtpBody = {
+  properties: {
+    otp: {
+      type: 'string',
+      title: 'Otp',
+    },
+  },
+  type: 'object',
+  required: ['otp'],
+  title: 'ChangeEmailByOtpBody',
+} as const;
+
+export const $ChangeEmailByOtpResponseApiModel = {
+  properties: {
+    success: {
+      type: 'boolean',
+      title: 'Success',
+    },
+  },
+  type: 'object',
+  required: ['success'],
+  title: 'ChangeEmailByOtpResponseApiModel',
+} as const;
+
+export const $ChangeEmailGetOtpBody = {
+  properties: {
+    newEmail: {
+      type: 'string',
+      title: 'Newemail',
+    },
+    passwordVerificationToken: {
+      type: 'string',
+      title: 'Passwordverificationtoken',
+    },
+  },
+  type: 'object',
+  required: ['newEmail', 'passwordVerificationToken'],
+  title: 'ChangeEmailGetOtpBody',
+} as const;
+
+export const $ChangeEmailGetOtpResponseApiModel = {
+  properties: {
+    retrySeconds: {
+      type: 'integer',
+      title: 'Retryseconds',
+    },
+    email: {
+      type: 'string',
+      title: 'Email',
+    },
+  },
+  type: 'object',
+  required: ['retrySeconds', 'email'],
+  title: 'ChangeEmailGetOtpResponseApiModel',
 } as const;
 
 export const $ChangePasswordByOtpApiModel = {
@@ -675,6 +795,18 @@ export const $DashboardItemReportApiModel = {
   title: 'DashboardItemReportApiModel',
 } as const;
 
+export const $DashboardItemScreenshotResponseApiModel = {
+  properties: {
+    queryId: {
+      type: 'string',
+      title: 'Queryid',
+    },
+  },
+  type: 'object',
+  required: ['queryId'],
+  title: 'DashboardItemScreenshotResponseApiModel',
+} as const;
+
 export const $DashboardListItemApiModel = {
   properties: {
     identifier: {
@@ -864,6 +996,17 @@ export const $FinancialReportDetailsApiModel = {
         },
       ],
     },
+    screenshotUrl: {
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Screenshoturl',
+    },
   },
   type: 'object',
   required: [
@@ -876,6 +1019,7 @@ export const $FinancialReportDetailsApiModel = {
     'video',
     'relatedReports',
     'reportCalculation',
+    'screenshotUrl',
   ],
   title: 'FinancialReportDetailsApiModel',
 } as const;
@@ -1065,7 +1209,14 @@ export const $FundListItemApiModel = {
       description: 'آدرس لوگوی صندوق - سایز کوچک',
     },
     website: {
-      type: 'string',
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
       title: 'Website',
       description: 'وبسایت صندوق',
     },
@@ -2212,14 +2363,7 @@ export const $Report13Dot3CalculationResultItem = {
       title: 'Points',
     },
     mean: {
-      anyOf: [
-        {
-          type: 'number',
-        },
-        {
-          type: 'integer',
-        },
-      ],
+      type: 'number',
       title: 'Mean',
     },
   },
@@ -2232,11 +2376,10 @@ export const $Report13Dot3CalculationResultPoints = {
   properties: {
     date: {
       type: 'string',
-      format: 'date',
       title: 'Date',
     },
     value: {
-      type: 'integer',
+      type: 'number',
       title: 'Value',
     },
   },
@@ -2411,7 +2554,6 @@ export const $Report6CalculationResultTimeSeriesItem = {
   properties: {
     dt: {
       type: 'string',
-      format: 'date',
       title: 'Dt',
     },
     indexValue: {
@@ -2426,6 +2568,18 @@ export const $Report6CalculationResultTimeSeriesItem = {
   type: 'object',
   required: ['dt', 'indexValue', 'netFlow'],
   title: 'Report6CalculationResultTimeSeriesItem',
+} as const;
+
+export const $ReportScreenshotResponseApiModel = {
+  properties: {
+    queryId: {
+      type: 'string',
+      title: 'Queryid',
+    },
+  },
+  type: 'object',
+  required: ['queryId'],
+  title: 'ReportScreenshotResponseApiModel',
 } as const;
 
 export const $ResetForgotPasswordByOtpResponseApiModel = {

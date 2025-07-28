@@ -203,6 +203,41 @@ export function useDashboardActions({
     }
   };
 
+  //share a report
+  type RenderPayload = {
+    id: string;
+    title?: string;
+    selectedFilters?: Record<string, string>;
+  };
+
+  async function callRenderEndpoint({
+    id,
+    title = 'گزارش',
+    selectedFilters = {},
+  }: RenderPayload) {
+    console.log(selectedFilters);
+    const bearerToken = localStorage.getItem('access_token');
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_RENDERER_APP_URL}/render`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${bearerToken}`,
+        },
+        body: JSON.stringify({ id, title, selectedFilters }),
+      },
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data?.error || 'Request failed');
+    }
+
+    return data;
+  }
+
   // Handle drag and reorder reports
   const handleDragEnd = (event: {
     active: { id: string };
@@ -271,5 +306,6 @@ export function useDashboardActions({
     handleRemoveReport,
     handleAddNewReport,
     handleDragEnd,
+    callRenderEndpoint,
   };
 }
