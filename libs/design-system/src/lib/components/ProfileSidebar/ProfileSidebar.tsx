@@ -3,22 +3,23 @@ import React from 'react';
 import { ProfileSidebarOption } from './ProfileSidebarOption';
 import { ReactComponent as UserSVG } from '../../../assets/icons/profile-vector-large.svg';
 import { cn } from '../../../utils';
+import { ProfileSidebarItem } from './ProfileSidebar.types';
 export interface ProfileSidebarProps {
   image?: string | null;
   title?: string;
   subTitle?: string;
   onNavigation?: (section: string) => void;
-  onLogoutBtn?: () => void;
   activeSection?: string;
+  items: ProfileSidebarItem[];
 }
 
 export const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
   image,
   subTitle,
   title,
-  onLogoutBtn,
   onNavigation,
   activeSection,
+  items = [],
 }) => {
   return (
     <div className="border-border-neutral-secondary bg-surface-neutral-primary flex h-fit w-full flex-col gap-4 rounded-3xl border-2 p-4">
@@ -49,17 +50,18 @@ export const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
       </div>
       <div className="border-border-neutral-secondary w-full border-t"></div>
       <div className="flex w-full flex-col gap-2">
-        <ProfileSidebarOption
-          text="حساب کاربری"
-          icon={{ name: 'user' }}
-          isActive={activeSection == 'profile'}
-          onClick={() => onNavigation?.('profile')}
-        />
-        <ProfileSidebarOption
-          onClick={onLogoutBtn}
-          text="خروج از حساب کاربری"
-          icon={{ name: 'power' }}
-        />
+        {items.map((item) => (
+          <ProfileSidebarOption
+            key={item.key}
+            text={item.text}
+            icon={item.icon}
+            isActive={activeSection === item.key}
+            onClick={() => {
+              item.onClick?.();
+              onNavigation?.(item.key);
+            }}
+          />
+        ))}
       </div>
     </div>
   );

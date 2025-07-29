@@ -33,11 +33,30 @@ const ProfilePage = () => {
           <div className="flex w-full justify-center lg:w-[264px]">
             {data ? (
               <ProfileSidebar
+                items={[
+                  {
+                    key: 'profile',
+                    text: 'حساب کاربری',
+                    icon: { name: 'user' },
+                  },
+                  {
+                    key: 'dashboard',
+                    text: 'داشبورد',
+                    icon: { name: 'layout-dashboard' },
+                  },
+                  {
+                    key: 'logout',
+                    text: 'خروج',
+                    icon: { name: 'power' },
+                    onClick: () => setIsLogoutModalOpen(true),
+                  },
+                ]}
                 image={profilePicture}
                 title={fullName}
                 subTitle={user?.phoneNumber ?? ''}
-                onLogoutBtn={() => setIsLogoutModalOpen(true)}
-                onNavigation={(section) => setActiveSection(section)}
+                onNavigation={(section) => {
+                  setActiveSection(section);
+                }}
                 activeSection={isDesktop ? 'profile' : activeSection}
               />
             ) : (
