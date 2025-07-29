@@ -10,17 +10,14 @@ import { useUsersServiceGetUsersPasswordForgotCaptcha } from '@openapi';
 export interface ResetPasswordFormProps {
   onSubmit: (values: ResetPasswordFormValues) => void;
   setRefetchCaptcha?: (fn: () => void) => void;
+  isLoading?: boolean;
 }
 export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
   onSubmit,
   setRefetchCaptcha,
+  isLoading = false,
 }) => {
-  const {
-    control,
-    handleSubmit,
-    setValue,
-    formState: { isSubmitting },
-  } = useForm<ResetPasswordFormValues>({
+  const { control, handleSubmit, setValue } = useForm<ResetPasswordFormValues>({
     defaultValues: {
       nationalCode: '',
       phoneNumber: '',
@@ -36,8 +33,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
     refetchCaptcha();
   };
 
-
-   // Expose refetchCaptcha to parent if needed
+  // Expose refetchCaptcha to parent if needed
   useEffect(() => {
     if (setRefetchCaptcha) {
       setRefetchCaptcha(refetchCaptcha);
@@ -153,7 +149,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
           <Button
             align="center"
             mode="primary"
-            isLoading={isSubmitting}
+            isLoading={isLoading}
             size="md"
             type="submit"
           >

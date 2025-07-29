@@ -26,10 +26,10 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
 }) => {
   const { showToast } = useCustomToast();
   const refetchCaptchaRef = React.useRef<() => void>(() => {});
-  const { mutate: sendForgotOtp, isPending } =
+  const { mutate: sendForgotOtp, isPending: isPendingSendForgotOtp } =
     useUsersServicePostUsersPasswordForgotOtp({});
 
-  const { mutate: sendForgotReset } =
+  const { mutate: sendForgotReset, isPending: isPendingSendForgotReset } =
     useUsersServicePostUsersPasswordForgotReset({});
 
   const [enteredPhoneNumber, setEnteredPhoneNumber] =
@@ -40,7 +40,7 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
   const [userId, setUserId] = React.useState<number>(0);
 
   // Handle submit for ResetPasswordForm
-  const handleForgotPassword = (values: ResetPasswordFormValues) => {
+  const handleForgotPassword = async(values: ResetPasswordFormValues) => {
     setEnteredPhoneNumber(values.phoneNumber);
     sendForgotOtp(
       {
@@ -113,6 +113,7 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
     <div className="flex w-[448px] flex-col gap-4 pt-8 xl:w-[528px]">
       {activeIndex === 0 && (
         <ResetPasswordForm
+          isLoading={isPendingSendForgotOtp}
           onSubmit={handleForgotPassword}
           setRefetchCaptcha={(fn) => {
             refetchCaptchaRef.current = fn;
@@ -122,7 +123,6 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
       {activeIndex === 1 && (
         <NewPasswordForm
           onSubmit={(data) => {
-            console.log('New Password Data:', data);
             setNewPassword(data.password);
             setActiveIndex(2);
           }}
@@ -135,6 +135,7 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
             backBtnLabel="ویرایش شماره"
             title="بازنشانی رمز عبور"
             onBackBtn={() => setActiveIndex(0)}
+            isLoading={isPendingSendForgotReset}
             description={`جهت تغییر رمز عبور، ابتدا کد تایید ارسال شده به شماره ${enteredPhoneNumber} را وارد کنید.`}
           />
         </div>
