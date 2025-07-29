@@ -6,19 +6,29 @@ import { faqs } from './faqs.constanst';
 
 const tabList = [
   {
-    id: 'yourQues',
-    title: 'سؤالات شما',
-    icons: [{ name: 'circle-question-mark' }],
+    id: 'registrationAndActivation',
+    title: 'ثبت‌نام و فعال‌سازی',
+    icons: [{ name: 'user-check' }],
+  },
+  {
+    id: 'investment',
+    title: 'سرمایه‌گذاری',
+    icons: [{ name: 'chart-no-axes-combined' }],
   },
   {
     id: 'finansialSecurity',
     title: 'امنیت مالی',
     icons: [{ name: 'shield-check' }],
   },
+  {
+    id: 'yourQues',
+    title: 'سؤالات شما',
+    icons: [{ name: 'circle-question-mark' }],
+  },
 ];
 
 const page = () => {
-  const [activeTab, setActiveTab] = useState(1);
+  const [activeTab, setActiveTab] = useState(0);
 
   return (
     <div className="mt-8">
@@ -37,12 +47,22 @@ const page = () => {
         />
       </div>
       <div className="mx-auto mt-8 w-[700px] md:w-[704px] lg:w-[1000px]">
-        {Object.values(faqs)[activeTab]?.map((item, idx) => (
-          <Accordion
-            key={idx}
-            items={[{ ...item, accordionState: 'activity' }]}
-          />
+        {Object.values(faqs)?.map((_, index) => (
+          <>
+            {index === activeTab && (
+              <div>
+                <div className="my-3">
+                  <Accordion
+                    className="border-border-neutral-secondary border-t"
+                    singleOpen={true}
+                    items={Object.values(faqs)[activeTab]}
+                  />
+                </div>
+              </div>
+            )}
+          </>
         ))}
+        <div className="bg-border-neutral-secondary h-[1px] w-full" />
       </div>
     </div>
   );

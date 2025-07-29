@@ -31,12 +31,28 @@ export const Tabs: React.FC<Props> = ({
   const [sliderStyle, setSliderStyle] = useState({ left: 0, width: 0 });
 
   useEffect(() => {
-    if (variant === 'sliding' && tabRefs.current[activeTab]) {
-      const activeEl = tabRefs.current[activeTab]!;
-      const { offsetLeft, offsetWidth } = activeEl;
-      setSliderStyle({ left: offsetLeft, width: offsetWidth });
-    }
+    if (variant !== 'sliding') return;
+
+    const updateSlider = () => {
+      const el = tabRefs.current[activeTab];
+      if (el) {
+        const { offsetLeft, offsetWidth } = el;
+        setSliderStyle({ left: offsetLeft, width: offsetWidth });
+      }
+    };
+
+    const raf = requestAnimationFrame(updateSlider);
+
+    const observer = new ResizeObserver(updateSlider);
+    const el = tabRefs.current[activeTab];
+    if (el) observer.observe(el);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      if (el) observer.unobserve(el);
+    };
   }, [activeTab, variant]);
+
   return (
     <TabGroup
       selectedIndex={activeTab}
@@ -49,7 +65,7 @@ export const Tabs: React.FC<Props> = ({
         className={cn(
           'relative flex gap-2',
           {
-            'border-border-neutral-primary w-max gap-[50px] border-b-2':
+            'border-border-neutral-primary w-max gap-[50px] border-b-2 text-center':
               variant === 'lined',
           },
           {
@@ -138,7 +154,7 @@ export const Tabs: React.FC<Props> = ({
                 {variant === 'lined' && selected && (
                   <div className="bg-surface-brand-600-primary absolute bottom-0 left-0 right-0 h-[5px] rounded-t-md" />
                 )}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-center gap-2">
                   {props.tag && <FundsTag color={props.tag} />}
                   {props.icons?.length && (
                     <Icon {...props.icons[1]} size="lg" />

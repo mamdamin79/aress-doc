@@ -12,7 +12,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fa">
-      <body>{children}</body>
+      <body className="bg-surface-neutral-background">{children}</body>
     </html>
   );
 }
