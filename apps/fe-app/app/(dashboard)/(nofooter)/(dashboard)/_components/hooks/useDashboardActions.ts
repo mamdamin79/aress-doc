@@ -6,6 +6,7 @@ import {
   useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdReorder,
   useDashboardsServicePutDashboardsByDashboardId,
 } from '@openapi';
+import { SuccessShareResponse } from '../types/types';
 
 const MAX_INITIAL_SLOTS = 4;
 
@@ -210,6 +211,9 @@ export function useDashboardActions({
     selectedFilters?: Record<string, string>;
   };
 
+  type ErrorResponse = {
+    error: string;
+  };
   async function callRenderEndpoint({
     id,
     title = 'گزارش',
@@ -228,14 +232,16 @@ export function useDashboardActions({
         body: JSON.stringify({ id, title, selectedFilters }),
       },
     );
-
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data?.error || 'Request failed');
+      const errorMessage =
+        (data as Partial<ErrorResponse>)?.error ||
+        `Request failed with status ${response.status}`;
+      throw new Error(errorMessage);
     }
 
-    return data;
+    return data as SuccessShareResponse;
   }
 
   // Handle drag and reorder reports
