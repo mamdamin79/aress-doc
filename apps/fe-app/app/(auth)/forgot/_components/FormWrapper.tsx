@@ -7,6 +7,7 @@ import {
 import { Toaster } from 'react-hot-toast';
 import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
 import {
+  ApiError,
   useUsersServicePostUsersPasswordForgotOtp,
   useUsersServicePostUsersPasswordForgotReset,
 } from '@openapi';
@@ -24,7 +25,7 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
   setIsIconDialogOpen,
 }) => {
   const { showToast } = useCustomToast();
-  const refetchCaptchaRef = React.useRef<() => void>();
+  const refetchCaptchaRef = React.useRef<() => void>(() => {});
   const { mutate: sendForgotOtp, isPending } =
     useUsersServicePostUsersPasswordForgotOtp({});
 
@@ -34,11 +35,9 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
   const [enteredPhoneNumber, setEnteredPhoneNumber] =
     React.useState<string>('');
 
-    const [newPassword, setNewPassword] =
-    React.useState<string>('');
+  const [newPassword, setNewPassword] = React.useState<string>('');
 
-    const [userId, setUserId] =
-    React.useState<number>(0);
+  const [userId, setUserId] = React.useState<number>(0);
 
   // Handle submit for ResetPasswordForm
   const handleForgotPassword = (values: ResetPasswordFormValues) => {
@@ -57,14 +56,18 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
           setActiveIndex(1);
           setUserId(data.userId);
         },
+
         onError: (error) => {
-          console.error('Error sending forgot password OTP:', error);
+          const apiError = error as ApiError;
+
+          const body = apiError.body as { message?: string };
+
           showToast({
             message:
-              error?.message || 'درخواست ناموفق بود. لطفاً دوباره تلاش کنید.',
+              body?.message || 'درخواست ناموفق بود. لطفاً دوباره تلاش کنید.',
             type: 'error',
           });
-          // Refetch captcha on error
+
           if (refetchCaptchaRef.current) {
             refetchCaptchaRef.current();
           }
@@ -77,23 +80,30 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
   const handleOtpSubmit = (code: string) => {
     sendForgotReset(
       {
-        requestBody:{
+        requestBody: {
           newPassword,
-          otp:code,
-          userId
-        }
+          otp: code,
+          userId,
+        },
       },
       {
         onSuccess: () => {
           setIsIconDialogOpen(true);
         },
         onError: (error) => {
-          console.error('Error submitting OTP:', error);
+          const apiError = error as ApiError;
+
+          const body = apiError.body as { message?: string };
+
           showToast({
             message:
-              error?.message || 'کد تایید نامعتبر است. لطفاً دوباره تلاش کنید.',
+              body?.message || 'درخواست ناموفق بود. لطفاً دوباره تلاش کنید.',
             type: 'error',
           });
+
+          if (refetchCaptchaRef.current) {
+            refetchCaptchaRef.current();
+          }
         },
       },
     );
@@ -110,11 +120,13 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
         />
       )}
       {activeIndex === 1 && (
-        <NewPasswordForm onSubmit={(data) => {
-          console.log('New Password Data:', data);
-          setNewPassword(data.password);
-          setActiveIndex(2);
-        }} />
+        <NewPasswordForm
+          onSubmit={(data) => {
+            console.log('New Password Data:', data);
+            setNewPassword(data.password);
+            setActiveIndex(2);
+          }}
+        />
       )}
       {activeIndex === 2 && (
         <div className="bg-surface-neutral-primary border-border-neutral-primary rounded-2xl border p-6">
