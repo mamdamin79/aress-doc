@@ -1,7 +1,8 @@
 'use client';
-import { LogoutModal, ProfileSidebar } from 'design-system';
+import { cn, LogoutModal, ProfileSidebar } from 'design-system';
 import { useState } from 'react';
 import { Toaster } from 'react-hot-toast';
+import { AddressForm } from './components/AddressForm/AddressForm';
 export default function Profile() {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   return (
@@ -46,35 +47,34 @@ export default function Profile() {
             // activeSection={isDesktop ? 'profile' : activeSection}
           />
         </div>
-        {/* <div
+        <div
           className={cn(
             'hidden flex-grow lg:block',
-            activeSection === 'profile' && 'block',
+            // activeSection === 'profile' && 'block',
           )}
         >
           <div>
-            {!isDesktop && activeSection && (
+            {/* {(
               <button
-                onClick={() => setActiveSection(undefined)}
+                // onClick={() => setActiveSection(undefined)}
                 className="flex cursor-pointer items-center gap-1 text-right text-lg font-medium"
               >
                 <Icon name="chevron-right" size="lg" />
                 حساب کاربری
               </button>
-            )}
-            <ProfileForm
-              image={profilePicture}
-              email={user?.email ?? ''}
-              fnameAndLname={fullName}
-              nationalID={
-                user?.nationalCode ? Number(user.nationalCode) : undefined
-              }
-              phoneNumber={user?.phoneNumber ?? ''}
-              username={user?.username}
-              refetch={refetch}
-            />
+            )} */}
+            {/* <ProfileForm
+              image={"https://placehold.co/600x600"}
+              email={"mohammadaminsaheb@gmail.com"}
+              fnameAndLname={"محمدامین صاحب"}
+              nationalID={"1234567890"}
+              phoneNumber={"09392892633"}
+              username={"test"}
+              // refetch={refetch}
+            /> */}
+            <AddressForm />
           </div>
-        </div> */}
+        </div>
       </div>
       <LogoutModal
         titleAlign="right"
