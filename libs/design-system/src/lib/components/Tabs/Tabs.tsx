@@ -4,17 +4,17 @@ import { Tab as TabItem } from './Tabs.types';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 import { Icon } from '../Icon';
 import { FundsTag } from '../FundsTag';
+import { useEffect, useRef, useState } from 'react';
 
 interface Props {
   tabs: TabItem[];
   variant:
     | 'shaped'
-    | 'divided'
     | 'lined'
     | 'rounded'
     | 'rounded-full'
-    | 'shaped-color';
-  colorMode: 'neutral' | 'inverse';
+    | 'shaped-color'
+    | 'sliding';
   activeTab: number;
   onClickTab: (idTab: number) => void;
   className?: string;
@@ -24,10 +24,19 @@ export const Tabs: React.FC<Props> = ({
   variant,
   tabs,
   onClickTab,
-  colorMode,
   activeTab,
   className,
 }) => {
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const [sliderStyle, setSliderStyle] = useState({ left: 0, width: 0 });
+
+  useEffect(() => {
+    if (variant === 'sliding' && tabRefs.current[activeTab]) {
+      const activeEl = tabRefs.current[activeTab]!;
+      const { offsetLeft, offsetWidth } = activeEl;
+      setSliderStyle({ left: offsetLeft, width: offsetWidth });
+    }
+  }, [activeTab, variant]);
   return (
     <TabGroup
       selectedIndex={activeTab}
@@ -38,16 +47,32 @@ export const Tabs: React.FC<Props> = ({
     >
       <TabList
         className={cn(
-          'flex',
+          'relative flex gap-2',
           {
-            'border-border-neutral-primary w-max gap-10 border-b-2':
+            'border-border-neutral-primary w-max gap-[50px] border-b-2':
               variant === 'lined',
           },
-          { 'gap-2': variant !== 'lined' && variant !== 'divided' },
+          {
+            'border-border-neutral-secondary rounded-4xl bg-surface-neutral-tertiary w-fit gap-[7px] border p-1.5':
+              variant === 'sliding',
+          },
         )}
       >
+        {variant === 'sliding' && (
+          <div
+            className="bg-surface-brand-600-primary absolute z-0 h-9 rounded-[18px] transition-all duration-300"
+            style={{
+              left: sliderStyle.left,
+              width: sliderStyle.width,
+            }}
+          />
+        )}
+
         {tabs.map((props, index) => (
           <Tab
+            ref={(el) => {
+              tabRefs.current[index] = el as HTMLButtonElement | null;
+            }}
             onKeyDown={(e) => {
               if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
                 e.preventDefault();
@@ -77,18 +102,8 @@ export const Tabs: React.FC<Props> = ({
                   variant === 'shaped-color' && !props.tag,
               },
               {
-                'data-[selected]:bg-surface-brand-600-primary text-text-neutral-secondary hover:text-text-neutral-secondarycontrast data-[selected]:text-text-onbrand-neutral-primary-on600 hover:bg-surface-neutral-secondary relative min-w-40 rounded-t-xl py-2 text-center data-[selected]:font-medium':
+                'text-text-neutral-secondary hover:text-text-brand-primary-600 data-[selected]:text-text-brand-primary-600 relative min-w-40 rounded-t-xl py-2 text-center data-[selected]:font-medium':
                   variant === 'lined',
-              },
-              {
-                'data-[selected]:bg-surface-brand-600-primary data-[selected]:border-border-brand-primary-600 hover:border-border-brand-primary-600 text-text-neutral-secondarycontrast data-[selected]:text-text-onbrand-neutral-primary-on600 border-2 px-4 py-2 first:rounded-r-md first:border-r-2 last:rounded-l-md data-[selected]:font-medium':
-                  variant === 'divided',
-              },
-              {
-                'bg-surface-neutral-secondary':
-                  colorMode === 'neutral' &&
-                  variant !== 'lined' &&
-                  variant !== 'rounded',
               },
               {
                 'data-[selected]:bg-surface-brand-200 data-[selected]:text-text-onbrand-colored-primary-on200_100_50 text-text-neutral-secondary hover:bg-surface-neutral-secondary hover:text-text-neutral-secondarycontrast h-[26px] rounded-sm px-3 text-sm font-medium':
@@ -97,24 +112,7 @@ export const Tabs: React.FC<Props> = ({
               {
                 'border-surface-neutral-secondary h-[34px] border-2':
                   variant === 'shaped',
-                'bg-surface-neutral-primary':
-                  variant === 'shaped' && colorMode === 'inverse',
-                // 'border-red-200 bg-gray-100':
-                //   variant === 'shaped' && colorMode === 'neutral',
-              },
-              {
-                'border-surface-neutral-primary bg-surface-neutral-primary':
-                  variant === 'divided' && colorMode === 'inverse',
-                'border-surface-neutral-secondary bg-surface-neutral-secondary':
-                  variant === 'divided' && colorMode === 'neutral',
-              },
-              {
-                'hover:bg-surface-neutral-primary relative':
-                  variant === 'lined' && colorMode === 'inverse',
-              },
-              {
-                'hover:bg-surface-neutral-secondary relative':
-                  variant === 'lined' && colorMode === 'neutral',
+                'border-red-200 bg-gray-100': variant === 'shaped',
               },
               {
                 'data-[selected]:border-border-brand-primary-600 data-[selected]:bg-surface-brand-600-primary hover:border-border-brand-primary-600 border-border-neutral-tertiary text-text-neutral-primary data-[selected]:text-text-neutral-white rounded-md border-2 px-2 text-sm font-medium':
@@ -125,41 +123,21 @@ export const Tabs: React.FC<Props> = ({
                   variant === 'rounded-full',
               },
               {
-                'bg-surface-neutral-secondary':
-                  variant === 'rounded-full' && colorMode === 'neutral',
+                'bg-surface-neutral-secondary': variant === 'rounded-full',
               },
               {
-                'bg-surface-neutral-primary':
-                  variant === 'rounded-full' && colorMode === 'inverse',
+                'rounded-5xl hover:text-text-brand-primary-600 text-text-neutral-primary data-[selected]:text-text-onbrand-neutral-primary-on600 px-3 py-1 text-sm font-medium duration-300':
+                  variant === 'sliding',
               },
             )}
           >
-            {({ hover, selected }) => (
+            {({ selected }) => (
               <>
-                {variant === 'lined' && (
-                  <div
-                    className={cn(
-                      {
-                        'left-[100%] top-0 z-30 hidden h-full w-4 rounded-bl-3xl':
-                          variant === 'lined',
-                      },
-                      {
-                        'hover:bg-surface-neutral-primary':
-                          variant === 'lined' && colorMode === 'inverse',
-                      },
-                      {
-                        'hover:bg-surface-neutral-secondary':
-                          variant === 'lined' && colorMode === 'neutral',
-                      },
-                      { 'absolute block': selected && index },
-                      {
-                        'absolute block': !selected && hover && index,
-                      },
-                    )}
-                  ></div>
-                )}
                 {(variant === 'rounded-full' || variant === 'shaped-color') &&
                   props.tag && <FundsTag color={props.tag} />}
+                {variant === 'lined' && selected && (
+                  <div className="bg-surface-brand-600-primary absolute bottom-0 left-0 right-0 h-[5px] rounded-t-md" />
+                )}
                 {variant === 'shaped' ? (
                   <div className="flex items-center gap-2">
                     {props.tag && <FundsTag color={props.tag} />}
