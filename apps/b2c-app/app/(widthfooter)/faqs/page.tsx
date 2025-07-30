@@ -1,7 +1,6 @@
 'use client';
-import { Tabs } from 'design-system';
+import { Tabs, Accordion } from 'design-system';
 import React, { useState } from 'react';
-import { Accordion } from './../../../components';
 import { faqs } from './faqs.constanst';
 
 const tabList = [
@@ -53,6 +52,7 @@ const page = () => {
               <div>
                 <div className="my-3">
                   <Accordion
+                    mode="b2c"
                     className="border-border-neutral-secondary border-t"
                     singleOpen={true}
                     items={Object.values(faqs)[activeTab]}
@@ -62,7 +62,7 @@ const page = () => {
             )}
           </>
         ))}
-        <div className="bg-border-neutral-secondary h-[1px] w-full" />
+        <div className="bg-border-neutral-secondary mb-20 h-[1px] w-full" />
       </div>
     </div>
   );
