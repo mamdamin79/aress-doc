@@ -1,7 +1,9 @@
 'use client';
-import { ProfileSidebar } from 'design-system';
+import { LogoutModal, ProfileSidebar } from 'design-system';
+import { useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 export default function Profile() {
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   return (
     <div className="text-text-neutral-primary mx-auto flex w-full max-w-[1680px] justify-center">
       <div className="flex w-full flex-row gap-14 px-8 pb-28 pt-12 lg:px-20">
@@ -32,7 +34,7 @@ export default function Profile() {
                 key: 'logout',
                 text: 'خروج از حساب کاربری',
                 icon: { name: 'power' },
-                onClick: () => alert('خروج انجام شد!'),
+                onClick: () => setIsLogoutModalOpen(true),
               },
             ]}
             image={''}
@@ -74,10 +76,14 @@ export default function Profile() {
           </div>
         </div> */}
       </div>
-      {/* <LogoutModal
+      <LogoutModal
+        titleAlign="right"
+        onLogout={() => alert('عملیات خروج انجام شد !')}
+        title="خروج از حساب کاربری"
         isOpen={isLogoutModalOpen}
+        subtitle="آیا مطمئن هستید که می‌خواهید از حساب کاربری خود خارج شوید؟"
         onClose={() => setIsLogoutModalOpen(false)}
-      /> */}
+      />
       <Toaster position="top-left" />
     </div>
   );
