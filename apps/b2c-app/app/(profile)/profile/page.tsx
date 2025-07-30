@@ -3,6 +3,7 @@ import { cn, LogoutModal, ProfileSidebar } from 'design-system';
 import { useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { AddressForm } from './components/AddressForm/AddressForm';
+import { BankAccountInformation } from './components/BankAccountInformation/BankAccountInformation';
 export default function Profile() {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   return (
@@ -53,7 +54,7 @@ export default function Profile() {
             // activeSection === 'profile' && 'block',
           )}
         >
-          <div>
+          <div className="flex flex-col gap-6">
             {/* {(
               <button
                 // onClick={() => setActiveSection(undefined)}
@@ -73,6 +74,7 @@ export default function Profile() {
               // refetch={refetch}
             /> */}
             <AddressForm />
+            <BankAccountInformation />
           </div>
         </div>
       </div>
