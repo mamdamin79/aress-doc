@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { ProfileForm } from '../../../components';
 import { cn, Icon, ProfileSidebar } from 'design-system';
-import { LogoutModal } from './_components/LogoutModal';
+import { LogoutModal } from 'design-system';
 import { useThrottle, useWindowSize } from '@uidotdev/usehooks';
 import { AressApiUser, useUsersServiceGetUsersMe } from '@openapi';
 import { Toaster } from 'react-hot-toast';
@@ -100,6 +100,9 @@ const ProfilePage = () => {
         </div>
       </div>
       <LogoutModal
+        onLogout={() => alert('عملیات خروج در حال ساخت !')}
+        title="خروج از حساب کاربری"
+        titleAlign="center"
         isOpen={isLogoutModalOpen}
         onClose={() => setIsLogoutModalOpen(false)}
       />
