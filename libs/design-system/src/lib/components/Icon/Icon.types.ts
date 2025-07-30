@@ -22,6 +22,7 @@ export type CustomIconName =
   | 'CustomPinFill'
   | 'CustomBookmark'
   | 'CustomArrow'
+  | 'CustomTelegram'
   | 'CustomGold';
 
 // this is a type of all valid icon names from lucide
