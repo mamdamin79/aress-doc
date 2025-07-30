@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { AddressForm } from './components/AddressForm/AddressForm';
 import { BankAccountInformation } from './components/BankAccountInformation/BankAccountInformation';
+import { ProfileForm } from './components/ProfileForm/ProfileForm';
 export default function Profile() {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   return (
@@ -64,15 +65,15 @@ export default function Profile() {
                 حساب کاربری
               </button>
             )} */}
-            {/* <ProfileForm
-              image={"https://placehold.co/600x600"}
-              email={"mohammadaminsaheb@gmail.com"}
-              fnameAndLname={"محمدامین صاحب"}
-              nationalID={"1234567890"}
-              phoneNumber={"09392892633"}
-              username={"test"}
-              // refetch={refetch}
-            /> */}
+            <ProfileForm
+            // image={'https://placehold.co/600x600'}
+            // email={'mohammadaminsaheb@gmail.com'}
+            // fnameAndLname={'محمدامین صاحب'}
+            // nationalID={'1234567890'}
+            // phoneNumber={'09392892633'}
+            // username={'test'}
+            // refetch={refetch}
+            />
             <AddressForm />
             <BankAccountInformation />
           </div>
