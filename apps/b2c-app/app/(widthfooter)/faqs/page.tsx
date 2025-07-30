@@ -1,7 +1,7 @@
 'use client';
 import { Tabs } from 'design-system';
 import React, { useState } from 'react';
-import { Accordion } from './../../components';
+import { Accordion } from './../../../components';
 import { faqs } from './faqs.constanst';
 
 const tabList = [
@@ -46,7 +46,7 @@ const page = () => {
           onClickTab={(id) => setActiveTab(id)}
         />
       </div>
-      <div className="mx-auto mt-8 w-[700px] md:w-[704px] lg:w-[1000px]">
+      <div className="mx-auto w-[700px] md:w-[704px] lg:w-[1000px]">
         {Object.values(faqs)?.map((_, index) => (
           <>
             {index === activeTab && (

@@ -68,7 +68,7 @@ export function FooterLite() {
         </div>
       </div>
 
-      <div className="absolute top-20 w-full lg:-top-14 xl:-top-20">
+      <div className="absolute top-20 w-full rotate-6 lg:-top-14 xl:-top-20">
         <Image
           src={Abstract}
           width={0}
