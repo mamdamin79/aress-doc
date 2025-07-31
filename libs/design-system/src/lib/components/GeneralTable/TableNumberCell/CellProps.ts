@@ -1,4 +1,4 @@
-export type TableCellFormat = 'quarterSymbol'
+export type TableCellFormat = undefined | 'quarterSymbol'
   | { type: 'decimal'; precision: number; signed: boolean }
   | { type: 'percent'; precision: number; signed: boolean };
 

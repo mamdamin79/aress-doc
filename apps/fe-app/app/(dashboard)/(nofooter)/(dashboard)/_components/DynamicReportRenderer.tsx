@@ -25,12 +25,32 @@ const reportComponents: Record<string, React.ComponentType<any>> = {
       (mod) => mod.Report13_3,
     ),
   ),
+  '133': dynamic(() =>
+    import('../../../../components/Reports/Report13_3').then(
+      (mod) => mod.Report13_3,
+    ),
+  ),
   '13_2': dynamic(() =>
     import('../../../../components/Reports/Report13_2').then(
       (mod) => mod.Report13_2,
     ),
   ),
+  '132': dynamic(() =>
+    import('../../../../components/Reports/Report13_2').then(
+      (mod) => mod.Report13_2,
+    ),
+  ),
   // Add others as needed
+  '13_1': dynamic(() =>
+    import('../../../../components/Reports/Report_13_1').then(
+      (mod) => mod.Report_13_1,
+    ),
+  ),
+  '131': dynamic(() =>
+    import('../../../../components/Reports/Report_13_1').then(
+      (mod) => mod.Report_13_1,
+    ),
+  ),
 };
 
 interface DynamicReportRendererProps {
