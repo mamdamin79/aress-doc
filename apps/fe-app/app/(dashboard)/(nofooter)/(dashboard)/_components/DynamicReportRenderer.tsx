@@ -8,24 +8,24 @@ import { OptionItem } from 'design-system';
 
 // Lazy load report components
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const reportComponents: Record<number, React.ComponentType<any>> = {
-  6: dynamic(() =>
+const reportComponents: Record<string, React.ComponentType<any>> = {
+  '6': dynamic(() =>
     import('../../../../components/Reports/Report6').then((mod) => mod.Report6),
   ),
-  15: dynamic(() =>
+  '15': dynamic(() =>
     import('../../../../components/Reports/Report15').then(
       (mod) => mod.Report15,
     ),
   ),
-  2: dynamic(() =>
+  '2': dynamic(() =>
     import('../../../../components/Reports/Report2').then((mod) => mod.Report2),
   ),
-  13_3: dynamic(() =>
+  '13_3': dynamic(() =>
     import('../../../../components/Reports/Report13_3').then(
       (mod) => mod.Report13_3,
     ),
   ),
-  13_2: dynamic(() =>
+  '13_2': dynamic(() =>
     import('../../../../components/Reports/Report13_2').then(
       (mod) => mod.Report13_2,
     ),
@@ -50,9 +50,12 @@ export const DynamicReportRenderer: React.FC<DynamicReportRendererProps> = ({
   title,
   onRemove,
 }) => {
-  const ReportComponent = reportComponents[identifier as number];
+  // Convert identifier to string to ensure proper lookup with underscore values
+  const identifierKey = String(identifier);
+  const ReportComponent = reportComponents[identifierKey];
 
   if (!ReportComponent) {
+    console.warn(`No report component found for identifier: ${identifierKey}`);
     return null;
   }
 

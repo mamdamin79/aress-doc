@@ -44,9 +44,9 @@ export const ReportWrapper: React.FC<ReportWrapperProps> = ({
     }
   };
   return (
-    data && (
+    reportData && (
       <DynamicReportRenderer
-        identifier={Number(identifier)}
+        identifier={identifier}
         data={reportData?.calculation}
         filters={reportData?.filters}
         onSubmit={(changed) => handleSubmit(changed)}
