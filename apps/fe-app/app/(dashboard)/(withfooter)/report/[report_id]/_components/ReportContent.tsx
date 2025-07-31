@@ -9,7 +9,7 @@ import { ReactComponent as RightWaveSVG } from '@aress-assets/images/rightwaves.
 import { ReactComponent as LeftWaveSVG } from '@aress-assets/images/leftwaves.svg';
 import { StaticImageData } from 'next/image';
 
-async function getData(id: number) {
+async function getData(id: string) {
   const report = await ReportsService.getReportsByReportId({
     reportId: String(id),
   });
@@ -17,7 +17,7 @@ async function getData(id: number) {
   return report;
 }
 
-export default async function ReportContent({ id }: { id: number }) {
+export default async function ReportContent({ id }: { id: string }) {
   const REPORT = await getData(id);
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
   return (

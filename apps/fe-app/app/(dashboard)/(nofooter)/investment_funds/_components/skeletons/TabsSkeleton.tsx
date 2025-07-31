@@ -1,0 +1,11 @@
+export function TabsSkeleton () {
+    return (
+        <div className="flex h-12 items-center animate-pulse justify-center gap-2">
+            <div className="h-[34px] w-[68px] rounded-md bg-gray-200" />
+            <div className="h-[34px] w-[68px] rounded-md bg-gray-200" />
+            <div className="h-[34px] w-[68px] rounded-md bg-gray-200" />
+            <div className="h-[34px] w-[68px] rounded-md bg-gray-200" />
+            <div className="h-[34px] w-[68px] rounded-md bg-gray-200" />
+        </div>
+    )
+}

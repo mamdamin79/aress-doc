@@ -5,7 +5,7 @@ import { IconName, IconSize } from '../Icon/Icon.types';
 type TrailingIconType = {
   name: 'x' | 'eye' | IconName;
   size?: IconSize;
-  color?: 'primary' | 'secondary'; 
+  color?: 'primary' | 'secondary';
   onClick?: () => void;
 };
 
@@ -29,8 +29,8 @@ export type textFieldPropsType = InputHTMLAttributes<HTMLInputElement> & {
   trailingIcons: TrailingIcons;
   longText?: boolean;
   inputSize?: TextFieldInputSize;
-  captchaValue?:string;
-  onRefreshCaptcha?:()=>void
+  captchaValue?: string;
+  onRefreshCaptcha?: () => void;
 };
 
 export type TextFieldInputSize = 'default' | 'md' | 'sm';

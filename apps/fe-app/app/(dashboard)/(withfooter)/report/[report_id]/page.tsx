@@ -11,9 +11,9 @@ export default async function ReportPage({ params }: ReportPageParams) {
   const cookieStore = await cookies();
 
   OpenAPI.TOKEN = cookieStore.get('access_token')?.value;
-  const id = Number(report_id);
+  const id = String(report_id);
 
-  if (!id || isNaN(id)) {
+  if (!id) {
     return (
       <div className="text-text-accent-red-primary-600 mt-20 text-center font-semibold">
         آی‌دی گزارش نامعتبر است.

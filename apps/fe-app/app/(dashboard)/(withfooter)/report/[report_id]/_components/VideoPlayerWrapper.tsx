@@ -9,7 +9,9 @@ interface VideoPlayerWrapperProps {
   data: VideoApiModel | null;
 }
 
-const getVideoQualities = (data: VideoApiModel | null): { src: string; label: string }[] => {
+const getVideoQualities = (
+  data: VideoApiModel | null,
+): { src: string; label: string }[] => {
   if (!data) return [];
 
   const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? '';
@@ -37,7 +39,9 @@ const getFallbackVideo = (): Video => ({
   date: '',
 });
 
-export const VideoPlayerWrapper: React.FC<VideoPlayerWrapperProps> = ({ data }) => {
+export const VideoPlayerWrapper: React.FC<VideoPlayerWrapperProps> = ({
+  data,
+}) => {
   const qualities = getVideoQualities(data);
 
   const video: Video = data
