@@ -11,6 +11,28 @@ export interface GeneralTableProps<T extends TableRow> extends TableProps<T> {
   headBodySpacerClassName?: string;
 }
 
+/**
+ * GeneralTable component renders a customizable table with optional styles, headers, and formatting.
+ *
+ * @template T - Type of each row of data.
+ *
+ * @param data - The data to render in the table.
+ * @param schema - Defines the structure and rendering logic for each column.
+ * @param tableDataStyleClasses - Optional class names to style individual table data cells.
+ * @param border - Whether to render table borders.
+ * @param striped - Whether to render striped rows for better readability.
+ * @param theadClassName - Class name applied to the `<thead>` element for styling the table header section.
+ * @param showHeadBodySpacer - If `true`, inserts a spacer row between `<thead>` and `<tbody>`.
+ *                              Useful for visual separation.
+ * @param headBodySpacerHeight - The height of the spacer row between `<thead>` and `<tbody>`.
+ *                               Default is `'8px'`.
+ * @param headBodySpacerClassName - CSS class applied to the spacer row for custom styling.
+ *                                   Default is `'transparent'`.
+ * @param rowHeaderClassName - Class name applied to the **first cell of each row** (usually the row header),
+ *                              useful for distinguishing or styling it differently.
+ * @param headerClassName - Class name applied to individual **header cells** (`<th>`), allowing per-column customization.
+ */
+
 export const GeneralTable: React.FC<GeneralTableProps<TableRow>> = ({
   data,
   schema,
@@ -205,7 +227,6 @@ export const GeneralTable: React.FC<GeneralTableProps<TableRow>> = ({
           )}
           {renderRows()}
         </tbody>
-        ~{' '}
       </table>
     </div>
   );

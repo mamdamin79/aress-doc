@@ -116,7 +116,6 @@ export const Report_13_1: React.FC<Report13_1Props> = ({
   };
 
   const STDDEV_ROW_INDEX = 10;
-  const AVERAGE_ROW_INDEX = 9;
   const sharedStyle = '';
   const HEADERS = [
     'آخرین روز معاملاتی',
@@ -144,25 +143,25 @@ export const Report_13_1: React.FC<Report13_1Props> = ({
         rowIndex,
         value,
       }: RenderCellProps<TableRow>) => {
+        const isHighlighted =
+          hoveredCol === colIndex || hoveredRow === rowIndex;
+
         return renderCell(
           value,
           rowIndex,
           colIndex,
           hoveredCol,
           hoveredRow,
-          // Always use decimal format with 2 precision, no sign
           { type: 'decimal', precision: 0, signed: false },
           undefined,
           cn(
             sharedStyle,
             rowIndex === STDDEV_ROW_INDEX
               ? 'bg-surface-neutral-secondary'
-              : ((hoveredCol !== null && hoveredCol !== colIndex) ||
-                    (hoveredRow !== null && hoveredRow !== rowIndex)) &&
-                  rowIndex !== AVERAGE_ROW_INDEX
-                ? 'transparent'
-                : '',
-            'justify-center min-w-[86px] max-w-[96px] py-2  text-xs font-medium border border-blue-200 rounded-xs hover:bg-surface-accent-blue-100 transition-colors duration-300',
+              : isHighlighted
+                ? 'bg-surface-accent-blue-100'
+                : 'transparent',
+            'justify-center min-w-[86px] max-w-[102px] py-2 text-xs font-medium border border-border-accent-blue-300 rounded-xs transition-colors duration-300',
           ),
         );
       },
@@ -331,7 +330,7 @@ export const Report_13_1: React.FC<Report13_1Props> = ({
             theadClassName="h-[34px] after:h-0"
             showHeadBodySpacer={true}
             schema={tableSchema}
-            tableDataStyleClasses="text-center p-1 "
+            tableDataStyleClasses="text-center py-[3px] px-0.5 "
             border={false}
             striped={false}
           />
