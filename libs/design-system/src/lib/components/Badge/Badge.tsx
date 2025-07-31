@@ -1,13 +1,13 @@
-import { cn } from './../../../utils';
-import { Icon } from '../Icon';
+import { cn } from '../../../utils';
+import { Icon, IconProps } from '../Icon';
 
 interface Props {
-  haveIcon: boolean;
   theme: 'disabled' | 'green' | 'blue' | 'pruple' | 'yellow' | 'red';
+  icon: IconProps;
   title: string;
 }
 
-export function TradableBadge({ title, theme, haveIcon }: Props) {
+export function Badge({ title, theme, icon }: Props) {
   return (
     <div
       className={cn(
@@ -29,7 +29,7 @@ export function TradableBadge({ title, theme, haveIcon }: Props) {
       )}
     >
       {title}
-      {haveIcon && <Icon name="check" size="sm" />}
+      <Icon {...icon} />
     </div>
   );
 }
