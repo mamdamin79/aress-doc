@@ -27,6 +27,7 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
             className="md:min-w-[360px] lg:min-w-[296px] xl:min-w-[364px]"
             mergeTitleAndPlaceholder={false}
             mode="filled"
+            disabled={true}
             type="text"
             inputSize="default"
             trailingIcons={[]}

@@ -7,6 +7,7 @@ import { BankAccountInformation } from './components/BankAccountInformation/Bank
 import { ProfileForm } from './components/ProfileForm/ProfileForm';
 export default function Profile() {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [activeSection] = useState<string>('profile');
   return (
     <div className="text-text-neutral-primary mx-auto flex w-full max-w-[1680px] justify-center">
       <div className="flex w-full flex-row px-8 pb-28 pt-12 md:gap-8 md:px-8 xl:gap-14 xl:px-20">
@@ -52,7 +53,7 @@ export default function Profile() {
         <div
           className={cn(
             'hidden max-w-[1032px] flex-grow md:block',
-            // activeSection === 'profile' && 'block',
+            activeSection === 'profile' && 'block',
           )}
         >
           <div className="flex flex-col gap-6">
