@@ -70,7 +70,7 @@ export default function Profile() {
         subtitle="آیا مطمئن هستید که می‌خواهید از حساب کاربری خود خارج شوید؟"
         onClose={() => setIsLogoutModalOpen(false)}
       />
-      <Toaster position="top-left" />
+      <Toaster position="top-center" />
     </div>
   );
 }

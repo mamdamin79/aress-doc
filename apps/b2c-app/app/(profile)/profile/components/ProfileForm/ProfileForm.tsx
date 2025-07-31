@@ -1,9 +1,17 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Button, ImageCropper, ProfileImageAndUpload } from 'design-system';
+import {
+  Button,
+  Dialog,
+  ImageCropper,
+  ProfileImageAndUpload,
+  useCustomToast,
+} from 'design-system';
 import { FormWrapper } from '../FormWrapper/FormWrapper';
 import { formSchema } from './ProflieForm.constants';
+import { OTPForm } from '../OtpForm/OtpForm';
+import { ChangeNationalCode } from '../ChangeNationalCode/ChangeNationalCode';
 
 export const ProfileForm: React.FC = (
   {
@@ -18,7 +26,11 @@ export const ProfileForm: React.FC = (
   },
 ) => {
   const [selectedImage, setSelectedImage] = useState<string | null>();
+  const [otpFormOpen, setOtpFormOpen] = useState(false);
+  const [changeNationalCodeOpen, setChangeNationalCodeOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [profileImage] = useState('');
+  const { showToast } = useCustomToast();
 
   return (
     <div className="flex w-full flex-col items-center gap-12">
@@ -49,9 +61,56 @@ export const ProfileForm: React.FC = (
             isLoading={false}
             align="center"
             mode="secondary"
+            onClick={() => setOtpFormOpen(true)}
           >
             بروز رسانی از سجام
           </Button>
+          <Dialog
+            className="max-w-[476px]"
+            onClose={() => setOtpFormOpen(false)}
+            showCloseBtn
+            isOpen={otpFormOpen}
+          >
+            <OTPForm
+              isLoading={isLoading}
+              onSubmit={async (otpCode) => {
+                setIsLoading(true);
+
+                await new Promise((r) => setTimeout(r, 2000));
+
+                if (otpCode === '111111') {
+                  showToast({
+                    message: 'بروزرسانی با موفقیت انجام شد.',
+                    type: 'success',
+                  });
+                  setOtpFormOpen(false);
+                } else {
+                  showToast({
+                    message: 'کد وارد شده اشتباه است.',
+                    type: 'error',
+                  });
+                }
+
+                setIsLoading(false);
+              }}
+              title="کد تایید را وارد نمایید"
+              description="۰۹۱*******۸۹ کد تایید برای شماره ارسال شد."
+              backBtnLabel="تغییر کد ملی"
+              onBackBtn={() => {
+                setOtpFormOpen(false);
+                setChangeNationalCodeOpen(true);
+              }}
+            />
+          </Dialog>
+
+          <Dialog
+            className="min-w-[472px] max-w-[472px]"
+            onClose={() => setChangeNationalCodeOpen(false)}
+            showCloseBtn
+            isOpen={changeNationalCodeOpen}
+          >
+            <ChangeNationalCode />
+          </Dialog>
         </div>
 
         {/* <form className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
