@@ -9,5 +9,15 @@ export default meta;
 type Story = StoryObj<typeof BarStickyBtn>;
 
 export const Default: Story = {
-  args: {},
+  render: (args) => {
+    return (
+      <div className="p-32">
+        <BarStickyBtn {...args} />
+      </div>
+    );
+  },
+  args: {
+    title: 'مشترک افق روشن کارگزاری بانک خاورمیانه',
+    sellAble: true,
+  },
 };
