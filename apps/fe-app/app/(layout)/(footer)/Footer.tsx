@@ -1,16 +1,18 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { FooterSection } from './Footer.types';
-import PRODUCT_LOGO from '@aress-assets/icons/product_logo.svg';
 import Enamad from '@aress-assets/icons/enamad.png';
 import DigitalUnion from '@aress-assets/icons/digital-union.png';
-import TELEGRAM_ICON from '@aress-assets/icons/telegram.svg';
-import ANDROID_ICON from '@aress-assets/icons/android.svg';
-import BAZAR_ICON from '@aress-assets/icons/bazar.svg';
-import MAYKET_ICON from '@aress-assets/icons/mayket.svg';
-import PLAYSTORE_ICON from '@aress-assets/icons/playstore.svg';
 import { Tooltip } from 'design-system';
 import { Icon } from 'design-system';
+
+// ⬇ Replace `?url` imports with ReactComponent SVGs
+import { ReactComponent as ProductLogo } from '@aress-assets/icons/product_logo.svg';
+import { ReactComponent as TelegramIcon } from '@aress-assets/icons/telegram.svg';
+import { ReactComponent as AndroidIcon } from '@aress-assets/icons/android.svg';
+import { ReactComponent as BazarIcon } from '@aress-assets/icons/bazar.svg';
+import { ReactComponent as MayketIcon } from '@aress-assets/icons/mayket.svg';
+import { ReactComponent as PlaystoreIcon } from '@aress-assets/icons/playstore.svg';
+
 export function Footer() {
   const linksFooter: FooterSection[] = [
     {
@@ -46,7 +48,6 @@ export function Footer() {
             'آدرس پستی: تهران. یوسف آباد. بین خیابان ۶۳ و ۶۵. پلاک ۴۸۵. واحد ۹۲',
         },
         {
-          // Icons for social media and contact methods
           icons: [
             { icon: <Icon size="lg" name="send" />, link: '/' },
             { icon: <Icon size="lg" name="linkedin" />, link: '/' },
@@ -58,24 +59,18 @@ export function Footer() {
   ];
 
   const applications = [
-    {
-      title: 'دانلود مستقیم نسخه اندروید',
-      icon: ANDROID_ICON,
-      link: '/',
-    },
-    {
-      title: 'دانلود از پلی استور',
-      icon: PLAYSTORE_ICON,
-      link: '/',
-    },
-    { title: 'دانلود از مایکت', icon: MAYKET_ICON, link: '/' },
-    { title: 'دانلود از بازار', icon: BAZAR_ICON, link: '/' },
+    { title: 'دانلود مستقیم نسخه اندروید', icon: <AndroidIcon />, link: '/' },
+    { title: 'دانلود از پلی استور', icon: <PlaystoreIcon />, link: '/' },
+    { title: 'دانلود از مایکت', icon: <MayketIcon />, link: '/' },
+    { title: 'دانلود از بازار', icon: <BazarIcon />, link: '/' },
   ];
 
   return (
     <div className="px-5 md:px-20">
       <div className="flex justify-center md:justify-start">
-        <Image width={104} height={104} src={PRODUCT_LOGO} alt="Logo image" />
+        <div className="h-[104px] w-[104px]">
+          <ProductLogo className="h-full w-full" />
+        </div>
       </div>
 
       <div className="mx-auto mt-10 grid grid-cols-1 grid-rows-4 items-center text-center sm:grid-cols-2 sm:grid-rows-2 md:text-start lg:grid-cols-4 lg:grid-rows-1">
@@ -132,13 +127,8 @@ export function Footer() {
                     className="!rounded-xs !px-2 !py-0 !text-sm"
                     title={item.title}
                   >
-                    <div className="rounded-lg bg-gray-100 px-4 py-2.5">
-                      <Image
-                        src={item.icon}
-                        width={24}
-                        height={24}
-                        alt="Android"
-                      />
+                    <div className="flex h-[40px] w-[40px] items-center justify-center rounded-lg bg-gray-100 px-4 py-2.5">
+                      {item.icon}
                     </div>
                   </Tooltip>
                 </Link>
@@ -150,33 +140,30 @@ export function Footer() {
               ربات هوشمند تلگرام
             </span>
             <div className="mt-6 flex w-fit cursor-pointer items-center gap-2 rounded-lg bg-gray-100 px-4 py-2.5">
-              <Image
-                src={TELEGRAM_ICON}
-                width={24}
-                height={24}
-                alt="Telegram"
-              />
+              <div className="h-6 w-6">
+                <TelegramIcon className="h-full w-full" />
+              </div>
               <span className="text-xs font-medium">ورود به ربات</span>
             </div>
           </div>
         </div>
         <div className="mt-6 flex items-center gap-8 lg:mt-0">
           <Link href="/" className="rounded-2xl bg-gray-100 p-4">
-            <Image
-              width={0}
-              height={0}
+            <img
               className="h-16 w-16"
-              src={Enamad}
+              src={Enamad.src}
               alt="enamad"
+              width={64}
+              height={64}
             />
           </Link>
           <Link href="/" className="cursor-pointer rounded-2xl bg-gray-100 p-4">
-            <Image
-              width={0}
-              height={0}
+            <img
               className="h-16 w-16"
-              src={DigitalUnion}
+              src={DigitalUnion.src}
               alt="digitalUnion"
+              width={64}
+              height={64}
             />
           </Link>
         </div>

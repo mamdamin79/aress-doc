@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { Report2 } from './index';
 
 // Meta configuration for the Report2 component in Storybook
@@ -13,6 +13,7 @@ type Story = StoryObj<typeof Report2>;
 export const Default: Story = {
   args: {
     data: {
+      unit: 'میایون ریال',
       data: [
         {
           sectorTitle: 'بانکها و موسسات اعتباری',

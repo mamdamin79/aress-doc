@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { ReportsCarousel } from './ReportsCarousel';
 import { DotIndicator } from './DotIndicator';
 import chartPNG from '../../../assets/chart.png';

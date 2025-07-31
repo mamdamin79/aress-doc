@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react/*';
 import { IconDialog } from './IconDialog';
-import { useArgs } from '@storybook/preview-api';
+import { useArgs } from 'storybook/preview-api';
 
 // Meta configuration for the IconDialog component in Storybook
 const meta: Meta<typeof IconDialog> = {

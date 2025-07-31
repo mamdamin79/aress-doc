@@ -44,7 +44,7 @@ export const DesktopMenu: React.FC<MenuProps> = ({ menuItems, activeTab }) => {
     }
   }, [throttledWidth, menuItems]);
 
-  const renderDropdownMenu = (item: MenuItem, index: number) => (
+  const renderDropdownMenu = (item: MenuItem) => (
     <div className="bg-surface-neutral-primary shadow-offset-y-10 shadow-8xl border-border-neutral-primary absolute flex hidden flex-row rounded-xl border-2 group-hover:block">
       <div className="flex h-fit w-fit max-w-[272px] flex-col gap-2 py-4 text-right">
         {item.dropdown?.map((dropdownItem, dropdownItemIndex) => (
@@ -124,7 +124,7 @@ export const DesktopMenu: React.FC<MenuProps> = ({ menuItems, activeTab }) => {
         )}
       </PopoverButton>
 
-      {item.dropdown && renderDropdownMenu(item, index)}
+      {item.dropdown && renderDropdownMenu(item)}
     </Popover>
   );
 
@@ -134,13 +134,13 @@ export const DesktopMenu: React.FC<MenuProps> = ({ menuItems, activeTab }) => {
         {menus.main.map((item, index) => {
           if (menus.main.length > 2 && index == 2)
             return (
-              <>
+              <React.Fragment key={`desktop-menu-item-${index}`}>
                 <div
                   className="bg-border-neutral-contrast -mt-2 h-5 w-0.5 rounded-[100px]"
                   key={index}
                 ></div>
                 {renderMenuItem(item, index)}
-              </>
+              </React.Fragment>
             );
           return renderMenuItem(item, index);
         })}

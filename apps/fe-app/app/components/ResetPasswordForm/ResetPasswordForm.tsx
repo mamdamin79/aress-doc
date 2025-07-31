@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { ResetPasswordFormValues } from './ResetPasswordForm.types';
 import { validateNationalCode } from './ResetPasswordForm.utils';
 import { validatePhoneNumber } from '../LoginForm/LoginForm.utils';
-import { useState } from 'react';
 export interface ResetPasswordFormProps {
   onSubmit: (values: ResetPasswordFormValues) => void;
 }

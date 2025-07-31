@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { SummaryCell } from './SummaryCell';
 
 // Meta configuration for the SummaryCell component in Storybook
@@ -14,7 +14,7 @@ type Story = StoryObj<typeof SummaryCell>;
 
 export const BasicCell: Story = {
   args: {
-    label: { title: 'ارزش خالص دارایی', icon: 'database' },
+    label: { title: 'ارزش خالص ', icon: 'database' },
     value: '3.8 میلیارد تومن',
   },
 };
@@ -23,6 +23,5 @@ export const SubTitleCell: Story = {
   args: {
     label: { title: 'ارزش خالص دارایی', icon: 'database' },
     value: '3.8 میلیارد تومن',
-    subTitle: 'از ابتدای فعالیت',
   },
 };

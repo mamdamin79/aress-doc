@@ -1,5 +1,5 @@
 'use client';
-import React, { ReactNode, useEffect, useRef } from 'react';
+import React, { ReactNode, useRef } from 'react';
 import { ContextMenuItem } from './ContextMenu.types';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { Icon } from '../Icon';
@@ -32,7 +32,7 @@ export const ContextMenu: React.FC<Props> = ({
         }
 
         return (
-          <>
+          <div>
             <MenuButton className="text-icon-neutral-primary outline-none">
               {children ? (
                 <div
@@ -81,7 +81,7 @@ export const ContextMenu: React.FC<Props> = ({
                 </React.Fragment>
               ))}
             </MenuItems>
-          </>
+          </div>
         );
       }}
     </Menu>

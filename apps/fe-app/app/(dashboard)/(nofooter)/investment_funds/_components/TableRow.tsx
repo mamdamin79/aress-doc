@@ -1,13 +1,20 @@
 import React, { useCallback, useState } from 'react';
 import type { Row } from '@tanstack/react-table';
-import { Bookmark } from 'libs/design-system/src/lib/components/Bookmark';
-import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
-import { Icon, OptionsDropdown, Tooltip, cn } from 'design-system';
+import { Bookmark } from 'design-system';
+import { useCustomToast } from 'design-system';
+import {
+  Icon,
+  OptionsDropdown,
+  Tooltip,
+  cn,
+  formatNumber,
+} from 'design-system';
 
-interface FundRow {
+export interface FundRow {
   nameFund: string;
-  investmentMethod: 'T' | 'I&C';
-  logo: string;
+  isEtf: boolean;
+  logo?: string;
+  isTradable: boolean;
 }
 
 interface TableRowProps<T extends FundRow> {
@@ -26,12 +33,12 @@ interface TableRowProps<T extends FundRow> {
 
 interface FundsInfoCellProps {
   name: string;
-  logo: string;
+  logo?: string;
   pined: boolean;
   selected: boolean;
   isScrolled: boolean;
   className?: string;
-  investmentMethod: 'T' | 'I&C';
+  isEtf: boolean;
   pinedFunction: () => void;
   category: 'stocks' | 'watchlist';
   unPinedFunction: () => void;
@@ -39,11 +46,12 @@ interface FundsInfoCellProps {
   canPin: boolean;
   tag: boolean;
   isRowHovered: boolean;
+  isTradable: boolean;
 }
 
 function FundsInfoCell({
   name,
-  investmentMethod,
+  isEtf,
   tag,
   toggleWatchList,
   unPinedFunction,
@@ -55,7 +63,7 @@ function FundsInfoCell({
   selected,
   isScrolled,
   className,
-  isRowHovered,
+  isTradable,
 }: FundsInfoCellProps) {
   const { showProgressToast, showToast } = useCustomToast();
   const [isShowDropDown, setIsShowDropDown] = useState(false);
@@ -66,7 +74,7 @@ function FundsInfoCell({
         'bg-surface-neutral-primary text-text-neutral-primary sticky right-0 top-0 m-0 flex h-[46px] w-[384px] items-center justify-between p-0 py-0',
         className,
         {
-          'dark:shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]': isScrolled,
+          'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]': isScrolled,
           'bg-surface-accent-blue-50 group-hover:surface-accent-blue-100':
             pined,
           'bg-blue-200': selected,
@@ -79,8 +87,7 @@ function FundsInfoCell({
           className={cn(
             'border-border-accent-vividgreen-200 text-text-onaccent-colored-onvividgreen-on200_100_50 bg-surface-accent-vividgreen-100 h-[25px] w-fit select-none rounded-sm border px-2 pt-0.5 text-xs font-medium',
             {
-              'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]':
-                investmentMethod === 'T',
+              'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]': !isEtf,
             },
           )}
         >
@@ -90,8 +97,7 @@ function FundsInfoCell({
           className={cn(
             'border-border-accent-vividgreen-200 text-text-onaccent-colored-onvividgreen-on200_100_50 bg-surface-accent-vividgreen-100 h-[25px] w-fit select-none whitespace-nowrap rounded-sm border px-2 text-xs font-medium',
             {
-              'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]':
-                investmentMethod === 'T',
+              'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]': !isTradable,
             },
           )}
         >
@@ -282,7 +288,6 @@ function TableRowInner<T extends FundRow>({
   watchList,
   isScrollAtStart,
 }: TableRowProps<T>) {
-  const [isHovered, setIsHovered] = useState(false);
   const handleToggleWatchList = useCallback(
     () => toggleWatchList({ id: row.id }),
     [row.id, toggleWatchList],
@@ -306,8 +311,6 @@ function TableRowInner<T extends FundRow>({
 
   return (
     <tr
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       key={row.id}
       className="border-border-neutral-secondary group h-[46px] border-b"
     >
@@ -334,21 +337,34 @@ function TableRowInner<T extends FundRow>({
             pinedFunction={handlePin}
             unPinedFunction={handleUnPin}
             isScrolled={isScrollAtStart}
-            investmentMethod={row.original.investmentMethod}
-            name={row.original.nameFund}
+            isEtf={!!row.original?.isEtf}
+            isTradable={row.original.isTradable}
+            name={row.original?.nameFund}
             pined={false}
             selected={false}
-            logo={row.original.logo}
+            logo={row.original?.logo}
           />
         </div>
       </td>
       <td></td>
-      {row.getVisibleCells().map((item) => (
+      {row?.getVisibleCells().map((item) => (
         <td
-          className="bg-surface-neutral-primary text-text-neutral-primary group-hover:bg-surface-accent-blue-50"
+          dir="ltr"
+          className={cn(
+            'bg-surface-neutral-primary text-text-neutral-primary group-hover:bg-surface-accent-blue-50',
+            {
+              'text-text-accent-red-contrast-700':
+                (item.getValue() as number) < 0,
+            },
+          )}
           key={item.id}
         >
-          {item.getValue() as string}
+          {typeof item.getValue() !== 'undefined'
+            ? formatNumber(item.getValue() as string, {
+                decimals: 2,
+                commaSeparated: false,
+              })
+            : '-'}
         </td>
       ))}
     </tr>

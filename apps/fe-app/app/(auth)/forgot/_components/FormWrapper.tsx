@@ -5,7 +5,7 @@ import {
   ResetPasswordForm,
 } from '../../../components';
 import { Toaster } from 'react-hot-toast';
-import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
+import { useCustomToast } from 'design-system';
 
 interface FormWrapperProps {
   activeIndex: number;

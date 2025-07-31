@@ -3,7 +3,7 @@ import { Icon } from '../../../Icon';
 import { Button } from '../../../Button';
 import { Tooltip } from '../../../Tooltip';
 import Draggable from 'react-draggable';
-import { cn } from 'libs/design-system/src/utils';
+import { cn } from '../../../../../utils';
 
 type Props = {
   isPlaying: boolean;
@@ -24,6 +24,7 @@ export const PlayerActions: React.FC<Props> = React.memo(
       setIsDragging(true);
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleDrag = (_: any, data: any) => {
       if (volumeBarRef.current) {
         const volumeBarWidth = volumeBarRef.current.offsetWidth;
@@ -35,6 +36,7 @@ export const PlayerActions: React.FC<Props> = React.memo(
       }
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleDragStop = (_: any, data: any) => {
       setIsDragging(false);
       if (volumeBarRef.current) {
@@ -122,7 +124,7 @@ export const PlayerActions: React.FC<Props> = React.memo(
             </span>
           </button>
         </Tooltip>
-        <div className="group relative mx-1 flex items-center  space-x-2 px-1">
+        <div className="group relative mx-1 flex items-center space-x-2 px-1">
           {muted ? (
             <Tooltip offset={48} title="(m) فعال کردن صدا" className="!z-30">
               <button

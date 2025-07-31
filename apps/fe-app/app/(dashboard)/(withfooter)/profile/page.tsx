@@ -1,18 +1,16 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ProfileForm } from '../../../components';
 import { cn, Icon, ProfileSidebar } from 'design-system';
 import { LogoutModal } from './_components/LogoutModal';
 import { useThrottle, useWindowSize } from '@uidotdev/usehooks';
-import { AressApiUser, OpenAPI, useUsersServiceGetUsersMe } from '@openapi';
-import { fetchToken } from '../../../(auth)/auth.utils';
+import { AressApiUser, useUsersServiceGetUsersMe } from '@openapi';
 import { Toaster } from 'react-hot-toast';
 import { ProfileSidebarSkeleton } from './_components/skeletons/ProfileSidebarSkeleton';
 import { ProfileFormSkeleton } from './_components/skeletons/ProfileFormSkeleton';
 
 const ProfilePage = () => {
-  const [isApiReady, setIsApiReady] = useState(false);
   const [activeSection, setActiveSection] = useState<undefined | string>(
     undefined,
   );
@@ -21,27 +19,7 @@ const ProfilePage = () => {
   const throttledWidth = useThrottle(width, 200) ?? 0;
   const isDesktop = throttledWidth > 1024;
 
-  // Fetch token and set OpenAPI header once
-  useEffect(() => {
-    const setupApi = async () => {
-      try {
-        const token = await fetchToken();
-        if (!token) throw new Error('Failed to fetch access token');
-        OpenAPI.HEADERS = {
-          Authorization: `Bearer ${token}`,
-        };
-        setIsApiReady(true);
-      } catch (err) {
-        console.error('API setup failed:', err);
-      }
-    };
-
-    setupApi();
-  }, []);
-
-  const { data, refetch } = useUsersServiceGetUsersMe(undefined, {
-    enabled: isApiReady,
-  });
+  const { data, refetch } = useUsersServiceGetUsersMe();
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
   const user = data as AressApiUser | undefined;
   const profilePicture = user?.profilePicture
@@ -53,18 +31,18 @@ const ProfilePage = () => {
       <div className="flex w-full flex-row gap-14 px-8 pb-28 pt-12 lg:px-20">
         {!(activeSection && !isDesktop) && (
           <div className="flex w-full justify-center lg:w-[264px]">
-            {
-              data ?
-                <ProfileSidebar
-                  image={profilePicture}
-                  title={fullName}
-                  subTitle={user?.phoneNumber ?? ''}
-                  onLogoutBtn={() => setIsLogoutModalOpen(true)}
-                  onNavigation={(section) => setActiveSection(section)}
-                  activeSection={isDesktop ? 'profile' : activeSection}
-                />
-                : <ProfileSidebarSkeleton />
-            }
+            {data ? (
+              <ProfileSidebar
+                image={profilePicture}
+                title={fullName}
+                subTitle={user?.phoneNumber ?? ''}
+                onLogoutBtn={() => setIsLogoutModalOpen(true)}
+                onNavigation={(section) => setActiveSection(section)}
+                activeSection={isDesktop ? 'profile' : activeSection}
+              />
+            ) : (
+              <ProfileSidebarSkeleton />
+            )}
           </div>
         )}
 
@@ -84,20 +62,21 @@ const ProfilePage = () => {
                 حساب کاربری
               </button>
             )}
-            {
-              data ?
-                <ProfileForm
-                  image={profilePicture}
-                  email={user?.email ?? ''}
-                  fnameAndLname={fullName}
-                  nationalID={
-                    user?.nationalCode ? Number(user.nationalCode) : undefined
-                  }
-                  phoneNumber={user?.phoneNumber ?? ''}
-                  username={user?.username}
-                  refetch={refetch}
-                /> : <ProfileFormSkeleton />
-            }
+            {data ? (
+              <ProfileForm
+                image={profilePicture}
+                email={user?.email ?? ''}
+                fnameAndLname={fullName}
+                nationalID={
+                  user?.nationalCode ? Number(user.nationalCode) : undefined
+                }
+                phoneNumber={user?.phoneNumber ?? ''}
+                username={user?.username}
+                refetch={refetch}
+              />
+            ) : (
+              <ProfileFormSkeleton />
+            )}
           </div>
         </div>
       </div>

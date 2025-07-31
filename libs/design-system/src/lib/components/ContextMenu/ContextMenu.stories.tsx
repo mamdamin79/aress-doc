@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { ContextMenu } from './ContextMenu';
 import { Icon } from '../Icon';
 const meta: Meta<typeof ContextMenu> = {

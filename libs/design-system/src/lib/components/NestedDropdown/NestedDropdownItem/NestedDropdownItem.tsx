@@ -1,10 +1,11 @@
 import React, { JSXElementConstructor, ReactElement } from 'react';
-import { Icon, IconProps } from '../../Icon';
-import { cn } from 'libs/design-system/src/utils';
+import { Icon } from '../../Icon';
+import { cn } from '../../../../utils';
 import { Tooltip } from '../../Tooltip';
 import { NestedDropdownItemProps } from '../NestedDropdown.types';
 
 interface WrapperProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   children: ReactElement<any, string | JSXElementConstructor<any>>;
   hasTooltip?: boolean;
   selectedOption?: string;

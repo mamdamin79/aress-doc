@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { ResetPasswordForm } from './ResetPasswordForm';
 
 // Meta configuration for the ResetPasswordForm component in Storybook
