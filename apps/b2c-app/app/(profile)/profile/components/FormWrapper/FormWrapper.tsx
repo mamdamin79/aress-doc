@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import { TextField } from 'design-system';
-import clsx from 'clsx';
+import { cn, TextField } from 'design-system';
 import { FormSchemaType } from './FormWrapper.types';
 
 interface FormWrapperProps {
@@ -16,19 +15,20 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
 }) => {
   return (
     <div
-      className={clsx(
+      className={cn(
         'border-border-neutral-primary bg-surface-neutral-primary flex w-full flex-col gap-6 rounded-3xl border p-6',
         className,
       )}
     >
-      <form className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+      <form className="grid w-full md:grid-cols-1 md:gap-6 lg:grid-cols-2">
         {formSchema.map(({ name, label, value, icon }) => (
           <TextField
             key={name}
-            className="w-[444px]"
+            className="md:min-w-[360px] lg:min-w-[296px] xl:min-w-[364px]"
             mergeTitleAndPlaceholder={false}
             mode="filled"
             type="text"
+            inputSize="default"
             trailingIcons={[]}
             leadingIcon={
               icon

@@ -21,7 +21,7 @@ export const ProfileForm: React.FC = (
   const [profileImage] = useState('');
 
   return (
-    <div className="flex w-full max-w-[1032px] flex-col items-center gap-12">
+    <div className="flex w-full flex-col items-center gap-12">
       <ProfileImageAndUpload
         loadingInitial={false}
         maxSize={2e13}

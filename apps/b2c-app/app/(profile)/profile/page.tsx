@@ -9,8 +9,8 @@ export default function Profile() {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   return (
     <div className="text-text-neutral-primary mx-auto flex w-full max-w-[1680px] justify-center">
-      <div className="flex w-full flex-row gap-14 px-8 pb-28 pt-12 lg:px-20">
-        <div className="flex w-full justify-center lg:w-[264px]">
+      <div className="flex w-full flex-row px-8 pb-28 pt-12 md:gap-8 md:px-8 xl:gap-14 xl:px-20">
+        <div className="flex w-[264px] justify-center">
           <ProfileSidebar
             items={[
               {
@@ -51,29 +51,12 @@ export default function Profile() {
         </div>
         <div
           className={cn(
-            'hidden flex-grow lg:block',
+            'hidden max-w-[1032px] flex-grow md:block',
             // activeSection === 'profile' && 'block',
           )}
         >
           <div className="flex flex-col gap-6">
-            {/* {(
-              <button
-                // onClick={() => setActiveSection(undefined)}
-                className="flex cursor-pointer items-center gap-1 text-right text-lg font-medium"
-              >
-                <Icon name="chevron-right" size="lg" />
-                حساب کاربری
-              </button>
-            )} */}
-            <ProfileForm
-            // image={'https://placehold.co/600x600'}
-            // email={'mohammadaminsaheb@gmail.com'}
-            // fnameAndLname={'محمدامین صاحب'}
-            // nationalID={'1234567890'}
-            // phoneNumber={'09392892633'}
-            // username={'test'}
-            // refetch={refetch}
-            />
+            <ProfileForm />
             <AddressForm />
             <BankAccountInformation />
           </div>
