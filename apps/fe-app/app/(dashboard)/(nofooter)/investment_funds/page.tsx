@@ -890,7 +890,8 @@ const Funds = () => {
               <TableBody
                 tableRef={tableRef as RefObject<HTMLDivElement>}
                 isScrollAtStart={isScrollAtStart}
-                rows={rows}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                rows={rows as any}
                 activeIndexCategoryTab={activeIndexCategoryTab}
               />
             ) : (
