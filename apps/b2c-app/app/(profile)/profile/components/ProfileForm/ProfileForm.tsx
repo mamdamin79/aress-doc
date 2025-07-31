@@ -1,13 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import {
-  Button,
-  ImageCropper,
-  ProfileImageAndUpload,
-  TextField,
-} from 'design-system';
-import { FormSchemaType } from '../AddressForm/AddressForm';
+import { Button, ImageCropper, ProfileImageAndUpload } from 'design-system';
+import { FormWrapper } from '../FormWrapper/FormWrapper';
+import { formSchema } from './ProflieForm.constants';
 
 export const ProfileForm: React.FC = (
   {
@@ -23,32 +19,6 @@ export const ProfileForm: React.FC = (
 ) => {
   const [selectedImage, setSelectedImage] = useState<string | null>();
   const [profileImage] = useState('');
-  const formSchema: FormSchemaType[] = [
-    {
-      name: 'fnameAndLname',
-      label: 'نام و نام خانوادگی',
-      value: 'محمد امین صاحب',
-      icon: 'user',
-    },
-    {
-      name: 'phoneNumber',
-      label: 'شماره همراه',
-      value: '09392892633',
-      icon: 'phone',
-    },
-    {
-      name: 'nationalID',
-      label: 'کد ملی',
-      value: '1234567890',
-      icon: 'id-card',
-    },
-    {
-      name: 'email',
-      label: 'ایمیل',
-      value: 'mohammadaminsaheb@gmail.com',
-      icon: 'mail',
-    },
-  ];
 
   return (
     <div className="flex w-full max-w-[1032px] flex-col items-center gap-12">
@@ -84,8 +54,7 @@ export const ProfileForm: React.FC = (
           </Button>
         </div>
 
-        <div className="bg-surface-neutral-primary border-border-neutral-primary flex w-full flex-col gap-6 rounded-3xl border p-6">
-          <form className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+        {/* <form className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
             {formSchema.map(({ name, label, value, icon }) => (
               <TextField
                 key={name}
@@ -106,8 +75,8 @@ export const ProfileForm: React.FC = (
                 value={value}
               />
             ))}
-          </form>
-        </div>
+          </form> */}
+        <FormWrapper formSchema={formSchema} />
       </div>
     </div>
   );
