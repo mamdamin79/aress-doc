@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { ProfileSidebar } from './ProfileSidebar';
 const meta: Meta<typeof ProfileSidebar> = {
   component: ProfileSidebar,

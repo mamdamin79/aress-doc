@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { ToastDemo } from './ToastDemo';
 import { Toaster } from 'react-hot-toast';
 import { useCustomToast } from './CustomToast';
@@ -12,7 +12,8 @@ const meta: Meta<typeof ToastDemo> = {
   parameters: {
     docs: {
       description: {
-        component: 'Toast component for displaying notifications with different styles and actions.',
+        component:
+          'Toast component for displaying notifications with different styles and actions.',
       },
     },
   },
@@ -23,7 +24,10 @@ const meta: Meta<typeof ToastDemo> = {
     },
     type: {
       description: 'The type of toast which determines its styling',
-      control: { type: 'select', options: ['info', 'success', 'error', 'warning'] },
+      control: {
+        type: 'select',
+        options: ['info', 'success', 'error', 'warning'],
+      },
     },
   },
 };
@@ -63,7 +67,7 @@ export const Warning: Story = {
 };
 
 export const trailing: Story = {
-  render: (args) => {
+  render: () => {
     const { showProgressToast } = useCustomToast();
     return (
       <>
@@ -94,7 +98,7 @@ export const trailing: Story = {
   },
 };
 export const leading: Story = {
-  render: (args) => {
+  render: () => {
     const { showProgressToast } = useCustomToast();
     return (
       <>

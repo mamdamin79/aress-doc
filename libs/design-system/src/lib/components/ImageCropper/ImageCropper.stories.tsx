@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { ImageCropper } from './ImageCropper';
 import { useState } from 'react';
 const meta: Meta<typeof ImageCropper> = {
@@ -44,7 +44,7 @@ export const Default: Story = {
           isOpen={isOpen}
           image="https://picsum.photos/600/400"
           onClose={() => setIsOpen(false)}
-          onChange={(image) => downloadBlob(image as any, 'test')}
+          onChange={(image) => downloadBlob(image, 'test')}
         />
       </>
     );

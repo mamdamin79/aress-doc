@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { PercentageLabel } from './PercentageLabel';
 
 // Meta configuration for the PercentageLabel component in Storybook

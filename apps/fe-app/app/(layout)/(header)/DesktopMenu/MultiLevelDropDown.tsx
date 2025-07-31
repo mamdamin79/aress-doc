@@ -1,6 +1,6 @@
 import React from 'react';
 import { dropdownType, MenuItem } from './DesktopMenu.types';
-import { cn } from 'libs/design-system/src/utils';
+import { cn } from 'design-system';
 import { Icon, MenuTiles } from 'design-system';
 
 export interface MultiLevelDropdownProps {

@@ -1,66 +1,70 @@
 'use client';
+
 import { VideoPlayer } from 'design-system';
 import React, { useState } from 'react';
-const videoURL = [
-  '/videos/The Breathtaking Beauty of Nature1080p.mp4',
-  '/videos/The Breathtaking Beauty of Nature720p.mp4',
-  '/videos/The Breathtaking Beauty of Nature360p.mp4',
-  '/videos/Cinematic Forest-1080.mp4',
-  '/videos/Cinematic Forest-720.mp4',
-  '/videos/Cinematic Forest-360.mp4',
-];
 import { type Video } from 'design-system';
-export const VideoPlayerWrapper: React.FC = () => {
-  const videos: Video[] = [
-    {
-      qualities: [
-        {
-          src: videoURL[0],
-          label: '1080',
-        },
-        {
-          src: videoURL[1],
-          label: '720',
-        },
-        {
-          src: videoURL[2],
-          label: '360',
-        },
-      ],
-      title: 'چالش های روزمره در مدیریت یک صندوق سرمایه گذاری',
-      src: videoURL[1],
-      date: '1403/09/22',
-    },
-    {
-      qualities: [
-        {
-          src: videoURL[0],
-          label: '1080',
-        },
-        {
-          src: videoURL[1],
-          label: '720',
-        },
-        {
-          src: videoURL[2],
-          label: '360',
-        },
-      ],
-      title: 'چالش های روزمره در مدیریت یک صندوق سرمایه گذاری',
-      src: videoURL[0],
-      date: '1403/11/22',
-    },
-  ];
-  const [selectedVideo, setSelectedVideo] = useState<Video>(videos[0]);
+import { VideoApiModel } from '@openapi';
+
+interface VideoPlayerWrapperProps {
+  data: VideoApiModel | null;
+}
+
+const getVideoQualities = (
+  data: VideoApiModel | null,
+): { src: string; label: string }[] => {
+  if (!data) return [];
+
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? '';
+
+  const qualityMap = [
+    { label: '1080', key: 'mp4Video1080P' },
+    { label: '720', key: 'mp4Video720P' },
+    { label: '480', key: 'mp4Video480P' },
+    { label: '360', key: 'mp4Video360P' },
+    { label: '240', key: 'mp4Video240P' },
+  ] as const;
+
+  return qualityMap
+    .map(({ label, key }) => {
+      const src = data[key as keyof VideoApiModel] as string | null;
+      return src ? { src: `${baseUrl}${src}`, label } : null;
+    })
+    .filter(Boolean) as { src: string; label: string }[];
+};
+
+const getFallbackVideo = (): Video => ({
+  qualities: [],
+  title: 'ویدیو موجود نیست',
+  src: '',
+  date: '',
+});
+
+export const VideoPlayerWrapper: React.FC<VideoPlayerWrapperProps> = ({
+  data,
+}) => {
+  const qualities = getVideoQualities(data);
+
+  const video: Video = data
+    ? {
+        qualities,
+        title: data.title,
+        src: qualities[0]?.src || '',
+        date: '1403/09/22',
+      }
+    : getFallbackVideo();
+
+  const [selectedVideo, setSelectedVideo] = useState<Video>(video);
+
+  const videos: Video[] = [video];
 
   return (
     <div className="flex w-[424px] items-center justify-center gap-4 lg:w-[816px]">
       <VideoPlayer
         videos={videos}
         setSelectedVideo={setSelectedVideo}
+        selectedVideo={selectedVideo}
         {...selectedVideo}
         className="w-full"
-        selectedVideo={selectedVideo}
       />
     </div>
   );

@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { AddReportButton } from './AddReportButton';
 const meta: Meta<typeof AddReportButton> = {
   component: AddReportButton,

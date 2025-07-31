@@ -20,6 +20,8 @@ import { ChangeNumber } from './ChangeNumber';
 import { ChangeUsername } from './ChangeUsername';
 import { ChangeMail } from './ChangeMail';
 import { ChangePassword } from './ChangePassword';
+import { useUsersServicePostUsersProfilePictureChange } from '@openapi';
+import { queryClient } from '../../lib/react-query';
 
 export const ProfileForm: React.FC<ProfileFormProps> = ({
   email,
@@ -29,31 +31,44 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
   username,
   image,
   onImageChange,
+  refetch,
 }) => {
   const [editDialog, setEditDialog] = useState<editDialogStatus>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>();
   const [profileImage, setProfileImage] = useState(image);
-
+  const { mutate, isPending } = useUsersServicePostUsersProfilePictureChange();
   const handleImageUpload = useCallback(async (croppedImage: string) => {
     if (!croppedImage) return console.error('Cropped image is null');
     setSelectedImage(null);
-    setIsLoading(true);
     try {
       const blob = await (await fetch(croppedImage)).blob();
       setProfileImage(URL.createObjectURL(blob));
       onImageChange?.(URL.createObjectURL(blob));
+      mutate(
+        {
+          formData: {
+            file: blob,
+          },
+        },
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries({
+              queryKey: ['UsersServiceGetUsersMe'],
+            });
+          },
+          onError: (error) => {
+            console.log(error);
+          },
+        },
+      );
     } catch (error) {
       console.error('Failed to convert Blob URL to Blob:', error);
-    } finally {
-      setTimeout(() => setIsLoading(false), 1000);
     }
   }, []);
 
   const [iconDialogText, setIconDialogText] = useState<editDialogVerbs>(
     editDialogVerbs.phoneNumber,
   );
-
 
   const formSchema: FormSchemaType[] = [
     {
@@ -85,11 +100,13 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
       icon: 'at-sign',
     },
   ];
-
+  useEffect(() => {
+    setProfileImage(image);
+  }, [image]);
   return (
     <div className="flex w-full max-w-[1032px] flex-col items-center gap-12">
       <ProfileImageAndUpload
-        loadingInitial={isLoading}
+        loadingInitial={isPending}
         maxSize={2e13}
         types={['jpg', 'png']}
         image={profileImage}
@@ -127,7 +144,11 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             )}
             {editDialog === 'username' && (
               <ChangeUsername
-                onClose={(success) => setEditDialog(success ? 'success' : null)}
+                onClose={(success) => {
+                  setEditDialog(success ? 'success' : null);
+                  refetch();
+                }}
+                username={username}
               />
             )}
             {editDialog === 'email' && (

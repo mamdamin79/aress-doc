@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, IconProps } from '../Icon';
-import { cn } from 'libs/design-system/src/utils';
+import { cn } from '../../../utils';
 interface ProfileSidebarOptionProps {
   text: string;
   icon: IconProps;

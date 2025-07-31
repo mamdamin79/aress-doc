@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { cn, Tabs } from 'design-system';
 import { useGetCurrentSection } from '../../../../../../hooks';
 
@@ -11,10 +11,8 @@ const TABS = [
 ];
 
 export const TabsWrapper: React.FC = () => {
-  const [activeTab, setActiveTab] = useState(0);
   const currentSection = useGetCurrentSection();
   const scrollToSection = (id: number) => {
-    setActiveTab(id);
     const section = document.getElementById(String(id));
     if (section) {
       section.scrollIntoView({ behavior: 'smooth', block: 'start' });

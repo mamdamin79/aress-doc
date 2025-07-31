@@ -20,6 +20,9 @@ export const TextField: React.FC<textFieldPropsType> = ({
   className,
   inputSize = 'default',
   longText = false,
+  captchaValue,
+  onRefreshCaptcha,
+  maxLength,
   ...rest
 }) => {
   const [internalValue, setInternalValue] = useState('');
@@ -42,6 +45,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
     e.preventDefault();
 
     setInternalValue('');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onChange?.({ target: { value: '' } } as any); // event simulation
   };
   const handleCharacterVisibility = (e: MouseEvent<HTMLButtonElement>) => {
@@ -201,8 +205,9 @@ export const TextField: React.FC<textFieldPropsType> = ({
               'placeholder:text-text-neutral-disable border-inherit bg-transparent opacity-100':
                 disabled,
               'placeholder:text-text-neutral-tertiary': !disabled,
-              'pl-20': trailingIcons.length === 2,
-              'pl-10': trailingIcons.length === 1,
+              'pl-[112px]': captchaValue, // extra padding for captcha image
+              'pl-20': !captchaValue && trailingIcons.length === 2,
+              'pl-10': !captchaValue && trailingIcons.length === 1,
               'bg-surface-neutral-secondary': mode === 'filled' && !disabled,
               'hover:bg-surface-neutral-secondarycontrast':
                 mode === 'filled' && !disabled && !isFocused,
@@ -216,7 +221,39 @@ export const TextField: React.FC<textFieldPropsType> = ({
             },
           )}
           placeholder={mergeTitleAndPlaceholder ? '' : placeholder}
+          maxLength={maxLength ?? 300}
         />
+      )}
+
+      {/* Captcha image, if provided */}
+      {captchaValue && (
+        <div
+          className={cn(
+            'absolute left-0.5 z-20 flex items-center justify-center',
+            {
+              'top-[32px]':
+                label &&
+                (inputSize === 'default' ||
+                  inputSize === 'md' ||
+                  inputSize === 'sm'),
+              'top-[2px]':
+                !label && (inputSize === 'default' || inputSize === 'md'),
+              'top-[8px]': !label && inputSize === 'sm',
+            },
+          )}
+        >
+          <img
+            src={`data:image/png;base64,${captchaValue}`}
+            alt="captcha"
+            className={cn('rounded-bl-xl rounded-tl-xl object-fill', {
+              'h-[52px] w-[120px]': inputSize === 'default',
+              'h-[44px] w-[110px]': inputSize === 'md',
+              'h-[36px] w-[100px]': label && inputSize === 'sm',
+              'top-[8px]': !label && inputSize === 'sm',
+            })}
+            draggable={false}
+          />
+        </div>
       )}
 
       <div
@@ -241,6 +278,15 @@ export const TextField: React.FC<textFieldPropsType> = ({
               label,
           },
         )}
+        style={{
+          left: captchaValue
+            ? inputSize === 'sm'
+              ? '100px'
+              : inputSize === 'md'
+                ? '110px'
+                : '120px'
+            : '16px', // shift trailing icons if captcha present
+        }}
       >
         {trailingIcons.map((icon) => {
           const isDisabled = cn({
@@ -267,7 +313,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
                 type="button"
                 className={isDisabled}
                 onMouseDown={(e) => {
-                  icon.onClick && icon.onClick();
+                  if (icon.onClick) icon.onClick();
                   handleClearInput(e);
                 }}
               >
@@ -289,14 +335,24 @@ export const TextField: React.FC<textFieldPropsType> = ({
       </div>
       {supportText && (
         <div
-          className={cn('h-[22px] pt-1 text-xs', {
+          className={cn('flex h-[22px] justify-between pt-1 text-xs', {
             'text-text-message-error-primary-600': isError,
             'text-text-neutral-secondary': !isError,
             'text-text-neutral-disable': disabled,
             '-mt-2': longText,
           })}
         >
-          {supportText}
+          <span>{supportText}</span>
+
+          {captchaValue && (
+            <button
+              className="text-brand-500"
+              type="button"
+              onClick={() => onRefreshCaptcha?.()}
+            >
+              <Icon size="lg" name="rotate-cw" />
+            </button>
+          )}
         </div>
       )}
     </div>

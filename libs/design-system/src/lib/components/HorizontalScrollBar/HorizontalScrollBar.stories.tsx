@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { HorizontalScrollBar } from './HorizontalScrollBar';
 const meta: Meta<typeof HorizontalScrollBar> = {
   component: HorizontalScrollBar,

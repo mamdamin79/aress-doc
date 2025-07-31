@@ -1,9 +1,22 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
-import TableRow from './TableRow';
+import TableRow, { FundRow } from './TableRow';
 import { VirtualItem } from '../types';
+import { Row } from '@tanstack/react-table';
+import { RefObject } from 'react';
 
-export function TableBody({ rows, tableRef, activeIndexCategoryTab, isScrollAtStart }: any) {
+export interface TableBodyProps<T> {
+  rows: Row<T>[];
+  tableRef: RefObject<HTMLDivElement>;
+  activeIndexCategoryTab: number;
+  isScrollAtStart: boolean;
+}
 
+export const TableBody: React.FC<TableBodyProps<FundRow>> = ({
+  rows,
+  tableRef,
+  activeIndexCategoryTab,
+  isScrollAtStart,
+}) => {
   const virtualizer = useVirtualizer({
     count: rows?.length,
     getScrollElement: () => tableRef.current,
@@ -19,15 +32,14 @@ export function TableBody({ rows, tableRef, activeIndexCategoryTab, isScrollAtSt
 
       {virtualizer.getVirtualItems().map((virtualRow: VirtualItem, index) => {
         const row = rows[virtualRow.index];
-        const isMainTab = activeIndexCategoryTab === 0;
+        const isMainTab = activeIndexCategoryTab === 1;
 
         console.log(index);
-
 
         return (
           <>
             <TableRow
-              logo=''
+              logo=""
               key={row.id}
               row={row}
               isMainTab={isMainTab}
@@ -40,11 +52,11 @@ export function TableBody({ rows, tableRef, activeIndexCategoryTab, isScrollAtSt
               watchList={[]}
               isScrollAtStart={isScrollAtStart}
             />
-            {
-              virtualizer.getVirtualItems().length === index + 1 &&
-              <tr className='text-center text-text-neutral-secondary my-5 text-nowrap flex justify-center mx-auto w-screen absolute'>پایان لیست صندوق‌ها.
+            {virtualizer.getVirtualItems().length === index + 1 && (
+              <tr className="text-text-neutral-secondary absolute mx-auto my-5 flex w-screen justify-center text-nowrap text-center">
+                پایان لیست صندوق‌ها.
               </tr>
-            }
+            )}
           </>
         );
       })}
@@ -52,11 +64,13 @@ export function TableBody({ rows, tableRef, activeIndexCategoryTab, isScrollAtSt
         style={{
           height:
             virtualizer.getTotalSize() -
-            (virtualizer.getVirtualItems().at(-1)?.end ?? 0),
+            (virtualizer.getVirtualItems()[
+              virtualizer.getVirtualItems().length - 1
+            ]?.end ?? 0),
         }}
       >
         <td />
       </tr>
     </tbody>
   );
-}
+};

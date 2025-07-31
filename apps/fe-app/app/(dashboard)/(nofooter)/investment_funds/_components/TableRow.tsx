@@ -1,13 +1,19 @@
 import React, { useCallback, useState } from 'react';
 import type { Row } from '@tanstack/react-table';
-import { Bookmark } from 'libs/design-system/src/lib/components/Bookmark';
-import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
-import { Icon, OptionsDropdown, Tooltip, cn, formatNumber } from 'design-system';
+import { Bookmark } from 'design-system';
+import { useCustomToast } from 'design-system';
+import {
+  Icon,
+  OptionsDropdown,
+  Tooltip,
+  cn,
+  formatNumber,
+} from 'design-system';
 
-interface FundRow {
+export interface FundRow {
   nameFund: string;
   isEtf: boolean;
-  logo: string;
+  logo?: string;
   isTradable: boolean;
 }
 
@@ -27,7 +33,7 @@ interface TableRowProps<T extends FundRow> {
 
 interface FundsInfoCellProps {
   name: string;
-  logo: string;
+  logo?: string;
   pined: boolean;
   selected: boolean;
   isScrolled: boolean;
@@ -58,7 +64,6 @@ function FundsInfoCell({
   isScrolled,
   className,
   isTradable,
-  isRowHovered,
 }: FundsInfoCellProps) {
   const { showProgressToast, showToast } = useCustomToast();
   const [isShowDropDown, setIsShowDropDown] = useState(false);
@@ -82,8 +87,7 @@ function FundsInfoCell({
           className={cn(
             'border-border-accent-vividgreen-200 text-text-onaccent-colored-onvividgreen-on200_100_50 bg-surface-accent-vividgreen-100 h-[25px] w-fit select-none rounded-sm border px-2 pt-0.5 text-xs font-medium',
             {
-              'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]':
-                !isEtf,
+              'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]': !isEtf,
             },
           )}
         >
@@ -93,8 +97,7 @@ function FundsInfoCell({
           className={cn(
             'border-border-accent-vividgreen-200 text-text-onaccent-colored-onvividgreen-on200_100_50 bg-surface-accent-vividgreen-100 h-[25px] w-fit select-none whitespace-nowrap rounded-sm border px-2 text-xs font-medium',
             {
-              'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]':
-              !isTradable,
+              'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]': !isTradable,
             },
           )}
         >
@@ -285,7 +288,6 @@ function TableRowInner<T extends FundRow>({
   watchList,
   isScrollAtStart,
 }: TableRowProps<T>) {
-  const [isHovered, setIsHovered] = useState(false);
   const handleToggleWatchList = useCallback(
     () => toggleWatchList({ id: row.id }),
     [row.id, toggleWatchList],
@@ -309,8 +311,6 @@ function TableRowInner<T extends FundRow>({
 
   return (
     <tr
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       key={row.id}
       className="border-border-neutral-secondary group h-[46px] border-b"
     >
@@ -349,13 +349,22 @@ function TableRowInner<T extends FundRow>({
       <td></td>
       {row?.getVisibleCells().map((item) => (
         <td
-          dir='ltr'
-          className={cn("bg-surface-neutral-primary text-text-neutral-primary group-hover:bg-surface-accent-blue-50", {
-            'text-text-accent-red-contrast-700': item.getValue() as number < 0
-          })}
+          dir="ltr"
+          className={cn(
+            'bg-surface-neutral-primary text-text-neutral-primary group-hover:bg-surface-accent-blue-50',
+            {
+              'text-text-accent-red-contrast-700':
+                (item.getValue() as number) < 0,
+            },
+          )}
           key={item.id}
         >
-          {typeof item.getValue() !== 'undefined'  ? formatNumber(item.getValue() as string, { decimals: 2, commaSeparated: false }) : '-'}
+          {typeof item.getValue() !== 'undefined'
+            ? formatNumber(item.getValue() as string, {
+                decimals: 2,
+                commaSeparated: false,
+              })
+            : '-'}
         </td>
       ))}
     </tr>

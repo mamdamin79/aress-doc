@@ -21,17 +21,17 @@ export const Accordion: React.FC<Props> = ({ items, singleOpen }) => {
       as="div"
       key={item.title}
       onClick={() => setOpenIndex((prev) => (prev === index ? null : index))}
-      className="mb-2 w-full rounded-3xl border border-border-neutral-primary p-6"
+      className="border-border-neutral-primary mb-2 w-full rounded-2xl border p-6"
     >
       {({ open }) => (
         <>
           {singleOpen && open ? (
             <button className="flex w-full items-center justify-between">
-              <span className="text-text-neutral-primary text-md font-medium">
+              <span className="text-text-neutral-primary text-md font-semibold">
                 {item.title}
               </span>
               <span
-                className={`bg-button-brand-surface-default flex h-10 w-10 items-center justify-center rounded-full text-button-brand-label-onsurface transition-transform duration-300 ${
+                className={`bg-button-brand-surface-default text-button-brand-label-onsurface flex h-8 w-8 items-center justify-center rounded-full transition-transform duration-300 ${
                   open && openIndex === index ? 'rotate-180' : 'rotate-0'
                 }`}
               >
@@ -40,9 +40,11 @@ export const Accordion: React.FC<Props> = ({ items, singleOpen }) => {
             </button>
           ) : (
             <DisclosureButton className="flex w-full items-center justify-between">
-              <span className="text-text-neutral-primary text-md">{item.title}</span>
+              <span className="text-text-neutral-primary text-md font-semibold">
+                {item.title}
+              </span>
               <span
-                className={`bg-button-brand-surface-default flex h-10 w-10 items-center justify-center rounded-full text-button-brand-label-onsurface transition-transform duration-300 ${
+                className={`bg-button-brand-surface-default text-button-brand-label-onsurface flex h-8 w-8 items-center justify-center rounded-full transition-transform duration-300 ${
                   open ? 'rotate-180' : 'rotate-0'
                 }`}
               >
@@ -54,7 +56,7 @@ export const Accordion: React.FC<Props> = ({ items, singleOpen }) => {
             openIndex === index && (
               <DisclosurePanel
                 transition
-                className="mt-4 border-t border-border-neutral-primary pt-4 text-sm text-text-neutral-secondary duration-300 data-[closed]:-translate-y-6 data-[closed]:opacity-0"
+                className="border-border-neutral-primary text-text-neutral-secondary mt-4 border-t pt-4 text-sm duration-300 data-[closed]:-translate-y-6 data-[closed]:opacity-0"
               >
                 {item.content}
               </DisclosurePanel>
@@ -62,7 +64,7 @@ export const Accordion: React.FC<Props> = ({ items, singleOpen }) => {
           ) : (
             <DisclosurePanel
               transition
-              className="mt-4 border-t border-border-neutral-primary pt-4 text-sm text-text-neutral-secondary duration-300 data-[closed]:-translate-y-6 data-[closed]:opacity-0"
+              className="border-border-neutral-primary text-text-neutral-secondary mt-4 border-t pt-4 text-sm duration-300 data-[closed]:-translate-y-6 data-[closed]:opacity-0"
             >
               {item.content}
             </DisclosurePanel>

@@ -1,0 +1,997 @@
+[12:29:49.311] [INFO] Storybook Upgrade - v9.0.17
+[12:29:49.373] [INFO] detect-projects-spinner-start: Detecting projects...
+[12:29:49.375] [DEBUG] Finding Storybook projects...
+[12:29:49.814] [DEBUG] Found 2 Storybook projects
+[12:29:49.814] [INFO] detect-projects-spinner: Detecting projects: 1 projects
+[12:29:49.815] [DEBUG] Getting Storybook data...
+[12:29:49.815] [DEBUG] Getting Storybook info...
+[12:29:49.816] [DEBUG] Loading main config...
+[12:29:49.820] [INFO] detect-projects-spinner: Detecting projects: 2 projects
+[12:29:49.820] [DEBUG] Getting Storybook data...
+[12:29:49.820] [DEBUG] Getting Storybook info...
+[12:29:49.821] [DEBUG] Loading main config...
+[12:29:49.887] [DEBUG] Getting stories paths...
+[12:29:49.901] [DEBUG] Getting stories paths...
+[12:29:49.910] [DEBUG] Getting package manager...
+[12:29:50.295] [DEBUG] Getting Storybook version...
+[12:29:50.296] [DEBUG] E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook - Validating before version... 8.3.2
+[12:29:50.296] [DEBUG] E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook - Validating upgrade compatibility...
+[12:29:50.296] [DEBUG] E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook - Fetching NPM version information...
+[12:29:50.296] [DEBUG] Getting CLI versions from NPM for storybook...
+[12:29:50.303] [DEBUG] Getting CLI versions from NPM for storybook@next...
+[12:29:50.314] [DEBUG] Getting package manager...
+[12:29:50.707] [DEBUG] Getting Storybook version...
+[12:29:50.708] [DEBUG] E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook - Validating before version... 8.3.2
+[12:29:50.708] [DEBUG] E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook - Validating upgrade compatibility...
+[12:29:50.708] [DEBUG] E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook - Fetching NPM version information...
+[12:29:50.708] [DEBUG] Getting CLI versions from NPM for storybook...
+[12:29:50.710] [DEBUG] Getting CLI versions from NPM for storybook@next...
+[12:29:51.855] [DEBUG] E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook - Evaluating blockers...
+[12:29:51.859] [DEBUG] Getting installed version for @storybook/experimental-addon-test...
+[12:29:52.268] [DEBUG] E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook - Evaluating blockers...
+[12:29:52.270] [DEBUG] Getting installed version for @storybook/experimental-addon-test...
+[12:29:52.803] [INFO] detect-projects-spinner-stop: 2 projects detected
+[12:29:52.804] [DEBUG] Found 2 valid projects and 0 error projects
+[12:29:52.805] [INFO] Multiple Storybook projects found. Storybook can only upgrade all projects at once:
+✔ E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook
+✔ E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook
+[12:29:54.286] [PROMPT] Continue with the upgrade? {"choice":true}
+[12:29:54.287] [INFO] Upgrading the following projects:
+          E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook: 8.3.2 -> 9.0.17
+E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook: 8.3.2 -> 9.0.17
+[12:29:54.342] [INFO] upgrade-dependencies-task-start: Fetching versions to update package.json files..
+[12:29:54.342] [DEBUG] Updating dependencies in E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook...
+[12:29:54.378] [INFO] upgrade-dependencies-task: \apps\fe-app\package.json
+\package.json
+[12:29:54.379] [DEBUG] {
+  "upgradedDependencies": []
+}
+[12:29:54.379] [DEBUG] {
+  "upgradedDevDependencies": []
+}
+[12:29:54.379] [DEBUG] {
+  "upgradedPeerDependencies": []
+}
+[12:29:54.380] [DEBUG] Getting CLI versions from NPM for @storybook/test-runner...
+[12:29:56.128] [DEBUG] {
+  "upgradedDependencies": [
+    "@storybook/react@^9.0.17"
+  ]
+}
+[12:29:56.129] [DEBUG] {
+  "upgradedDevDependencies": [
+    "@storybook/nextjs@9.0.17",
+    "@storybook/react@9.0.17",
+    "@storybook/react-vite@9.0.17",
+    "storybook@9.0.17",
+    "@storybook/test-runner@0.23.0"
+  ]
+}
+[12:29:56.129] [DEBUG] {
+  "upgradedPeerDependencies": []
+}
+[12:29:56.129] [DEBUG] Getting CLI versions from NPM for @storybook/react...
+[12:29:57.691] [DEBUG] Getting CLI versions from NPM for @storybook/nextjs...
+[12:29:59.214] [DEBUG] Using cached version for @storybook/react...
+[12:29:59.214] [DEBUG] Getting CLI versions from NPM for @storybook/react-vite...
+[12:30:00.759] [DEBUG] Using cached version for storybook...
+[12:30:00.759] [DEBUG] Using cached version for @storybook/test-runner...
+[12:30:00.761] [DEBUG] Updating dependencies in E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook...
+[12:30:00.796] [INFO] upgrade-dependencies-task: \libs\design-system\package.json
+[12:30:00.796] [DEBUG] {
+  "upgradedDependencies": []
+}
+[12:30:00.796] [DEBUG] {
+  "upgradedDevDependencies": []
+}
+[12:30:00.796] [DEBUG] {
+  "upgradedPeerDependencies": []
+}
+[12:30:00.798] [DEBUG] Using cached version for @storybook/test-runner...
+[12:30:00.798] [DEBUG] {
+  "upgradedDependencies": [
+    "@storybook/react@^9.0.17"
+  ]
+}
+[12:30:00.798] [DEBUG] {
+  "upgradedDevDependencies": [
+    "@storybook/nextjs@9.0.17",
+    "@storybook/react@9.0.17",
+    "@storybook/react-vite@9.0.17",
+    "storybook@9.0.17",
+    "@storybook/test-runner@0.23.0"
+  ]
+}
+[12:30:00.798] [DEBUG] {
+  "upgradedPeerDependencies": []
+}
+[12:30:00.798] [DEBUG] Using cached version for @storybook/react...
+[12:30:00.798] [DEBUG] Using cached version for @storybook/nextjs...
+[12:30:00.798] [DEBUG] Using cached version for @storybook/react...
+[12:30:00.798] [DEBUG] Using cached version for @storybook/react-vite...
+[12:30:00.798] [DEBUG] Using cached version for storybook...
+[12:30:00.798] [DEBUG] Using cached version for @storybook/test-runner...
+[12:30:00.799] [INFO] upgrade-dependencies-task-success: Updated package versions in package.json files
+[12:30:00.800] [INFO] detect-automigrations-task-start: Detecting automigrations for 2 projects...
+[12:30:00.800] [DEBUG] Starting automigration collection across 2 projects and 15 fixes...
+[12:30:00.842] [INFO] detect-automigrations-task: Checking automigrations for
+E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook...
+[12:30:00.843] [DEBUG] Processing project: E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook
+[12:30:00.843] [DEBUG] Checking fix eslintPlugin for project E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook...
+[12:30:00.855] [DEBUG] Checking fix addon-mdx-gfm-remove for project E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook...
+[12:30:00.856] [DEBUG] Checking fix addon-storysource-code-panel for project E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook...
+[12:30:00.856] [DEBUG] Checking fix upgrade-storybook-related-dependencies for project E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook...
+[12:30:00.856] [DEBUG] Checking for incompatible storybook packages...
+[12:30:00.861] [DEBUG] Getting installed version for @storybook/types...
+[12:30:00.867] [DEBUG] Getting installed version for @storybook/preview-api...
+[12:30:00.882] [DEBUG] Getting installed version for @newhighsco/storybook-addon-svgr...
+[12:30:00.900] [DEBUG] Getting installed version for @nx/storybook...
+[12:30:00.912] [DEBUG] Getting installed version for @storybook/core-server...
+[12:30:00.922] [DEBUG] Getting installed version for @storybook/jest...
+[12:30:00.931] [DEBUG] Getting installed version for @storybook/testing-library...
+[12:30:00.940] [DEBUG] Getting installed version for @storybook/test-runner...
+[12:30:01.842] [DEBUG] Getting CLI versions from NPM for @storybook/types...
+[12:30:01.886] [DEBUG] Getting CLI versions from NPM for @newhighsco/storybook-addon-svgr...
+[12:30:01.897] [DEBUG] Getting CLI versions from NPM for @storybook/core-server...
+[12:30:01.916] [DEBUG] Getting CLI versions from NPM for @storybook/preview-api...
+[12:30:01.931] [DEBUG] Getting CLI versions from NPM for @nx/storybook...
+[12:30:01.953] [DEBUG] Getting CLI versions from NPM for @storybook/jest...
+[12:30:01.985] [DEBUG] Getting CLI versions from NPM for @storybook/testing-library...
+[12:30:02.038] [DEBUG] Using cached version for @storybook/test-runner...
+[12:30:05.165] [DEBUG] Checking fix initial-globals for project E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook...
+[12:30:05.184] [DEBUG] Checking fix addon-a11y-addon-test for project E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook...
+[12:30:05.184] [DEBUG] Checking fix consolidated-imports for project E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook...
+[12:30:05.185] [DEBUG] Checking fix addon-experimental-test for project E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook...
+[12:30:05.185] [DEBUG] Using cached installed version for @storybook/experimental-addon-test...
+[12:30:05.185] [DEBUG] Checking fix rnstorybook-config for project E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook...
+[12:30:05.185] [DEBUG] Checking fix remove-addon-interactions for project E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook...
+[12:30:05.185] [DEBUG] Checking fix renderer-to-framework for project E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook...
+[12:30:05.186] [DEBUG] Checking fix remove-essential-addons for project E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook...
+[12:30:05.186] [DEBUG] Checking fix addon-a11y-parameters for project E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook...
+[12:30:05.186] [DEBUG] Checking fix remove-docs-autodocs for project E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook...
+[12:30:05.189] [DEBUG] Checking fix wrap-require for project E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook...
+[12:30:05.239] [INFO] detect-automigrations-task: Checking automigrations for
+E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook...
+[12:30:05.240] [DEBUG] Processing project: E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook
+[12:30:05.240] [DEBUG] Checking fix eslintPlugin for project E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook...
+[12:30:05.247] [DEBUG] Checking fix addon-mdx-gfm-remove for project E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook...
+[12:30:05.247] [DEBUG] Checking fix addon-storysource-code-panel for project E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook...
+[12:30:05.247] [DEBUG] Checking fix upgrade-storybook-related-dependencies for project E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook...
+[12:30:05.247] [DEBUG] Checking for incompatible storybook packages...
+[12:30:05.249] [DEBUG] Using cached installed version for @storybook/preview-api...
+[12:30:05.249] [DEBUG] Using cached installed version for @newhighsco/storybook-addon-svgr...
+[12:30:05.249] [DEBUG] Using cached installed version for @nx/storybook...
+[12:30:05.249] [DEBUG] Using cached installed version for @storybook/core-server...
+[12:30:05.249] [DEBUG] Using cached installed version for @storybook/jest...
+[12:30:05.249] [DEBUG] Using cached installed version for @storybook/testing-library...
+[12:30:05.249] [DEBUG] Using cached installed version for @storybook/test-runner...
+[12:30:05.249] [DEBUG] Using cached version for @storybook/preview-api...
+[12:30:05.249] [DEBUG] Using cached version for @newhighsco/storybook-addon-svgr...
+[12:30:05.249] [DEBUG] Using cached version for @nx/storybook...
+[12:30:05.249] [DEBUG] Using cached version for @storybook/core-server...
+[12:30:05.249] [DEBUG] Using cached version for @storybook/jest...
+[12:30:05.249] [DEBUG] Using cached version for @storybook/testing-library...
+[12:30:05.249] [DEBUG] Using cached version for @storybook/test-runner...
+[12:30:05.249] [DEBUG] Checking fix initial-globals for project E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook...
+[12:30:05.255] [DEBUG] Checking fix addon-a11y-addon-test for project E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook...
+[12:30:05.255] [DEBUG] Checking fix consolidated-imports for project E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook...
+[12:30:05.256] [DEBUG] Checking fix addon-experimental-test for project E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook...
+[12:30:05.256] [DEBUG] Using cached installed version for @storybook/experimental-addon-test...
+[12:30:05.256] [DEBUG] Checking fix rnstorybook-config for project E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook...
+[12:30:05.256] [DEBUG] Checking fix remove-addon-interactions for project E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook...
+[12:30:05.256] [DEBUG] Checking fix renderer-to-framework for project E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook...
+[12:30:05.257] [DEBUG] Checking fix remove-essential-addons for project E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook...
+[12:30:05.257] [DEBUG] Checking fix addon-a11y-parameters for project E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook...
+[12:30:05.257] [DEBUG] Checking fix remove-docs-autodocs for project E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook...
+[12:30:05.259] [DEBUG] Checking fix wrap-require for project E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook...
+[12:30:05.312] [INFO] detect-automigrations-task: 
+Automigrations detected:
+[12:30:05.366] [INFO] detect-automigrations-task: ✔ eslintPlugin
+[12:30:05.419] [INFO] detect-automigrations-task: ✔ consolidated-imports
+[12:30:05.463] [INFO] detect-automigrations-task: ✔ remove-addon-interactions
+[12:30:05.519] [INFO] detect-automigrations-task: ✔ renderer-to-framework
+[12:30:05.569] [INFO] detect-automigrations-task: ✔ remove-essential-addons
+[12:30:05.614] [INFO] detect-automigrations-task: ✔ wrap-require
+[12:30:05.614] [INFO] detect-automigrations-task-success: 6 automigration(s) detected
+[12:31:33.008] [PROMPT] Select automigrations to run {"choice":["eslintPlugin","consolidated-imports","remove-addon-interactions","renderer-to-framework","remove-essential-addons","wrap-require"]}
+[12:31:33.010] [INFO] automigrate-E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook-task-start: (1/2) Running automigrations for E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook
+[12:31:33.010] [DEBUG] Adding dependencies: eslint-plugin-storybook@9.0.17
+[12:31:33.011] [DEBUG] Getting CLI versions from NPM for eslint-plugin-storybook...
+[12:31:34.472] [DEBUG] Detected JSON config at E:\xampp\htdocs\aress-frontend\apps\fe-app\.eslintrc.json
+[12:31:34.512] [INFO] automigrate-E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook-task: ✔ eslintPlugin
+[12:31:34.558] [INFO] automigrate-E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook-task: ✔ consolidated-imports
+[12:31:34.562] [DEBUG] Uninstalling @storybook/addon-interactions
+[12:31:34.563] [DEBUG] Removing '@storybook/addon-interactions' from main.js addons field.
+[12:31:34.699] [INFO] automigrate-E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook-task: ✔ remove-addon-interactions
+[12:31:34.700] [DEBUG] 
+Migrating @storybook/react to @storybook/nextjs
+[12:31:34.705] [DEBUG] Updating package.json files...
+[12:31:34.707] [DEBUG] 
+Migrating @storybook/react to @storybook/react-vite
+[12:31:34.709] [DEBUG] Updating package.json files...
+[12:31:34.803] [INFO] automigrate-E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook-task: ✔ renderer-to-framework
+[12:31:34.805] [DEBUG] Uninstalling @storybook/addon-essentials
+[12:31:34.806] [DEBUG] Removing '@storybook/addon-essentials' from main.js addons field.
+[12:31:34.810] [DEBUG] Getting Storybook info...
+[12:31:34.811] [DEBUG] Loading main config...
+[12:31:34.824] [DEBUG] Getting stories paths...
+[12:31:34.825] [DEBUG] Getting package manager...
+[12:31:34.861] [DEBUG] Getting Storybook version...
+[12:31:34.949] [INFO] automigrate-E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook-task: Verifying @storybook/addon-docs
+[12:31:35.022] [INFO] automigrate-E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook-task: Installing @storybook/addon-docs@9.0.17
+[12:31:35.023] [DEBUG] Getting CLI versions from NPM for @storybook/addon-docs...
+[12:31:36.730] [INFO] automigrate-E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook-task: Adding '@storybook/addon-docs' to the "addons" field in
+E:\xampp\htdocs\aress-frontend\apps\fe-app\.storybook\main.ts
+[12:31:36.803] [INFO] automigrate-E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook-task: ✔ remove-essential-addons
+[12:31:36.905] [INFO] automigrate-E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook-task: ✔ wrap-require
+[12:31:36.905] [INFO] automigrate-E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook-task-success: (1/2) Completed automigrations for E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook
+[12:31:36.907] [INFO] automigrate-E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook-task-start: (2/2) Running automigrations for E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook
+[12:31:36.907] [DEBUG] Adding dependencies: eslint-plugin-storybook@9.0.17
+[12:31:36.907] [DEBUG] Using cached version for eslint-plugin-storybook...
+[12:31:36.907] [DEBUG] Detected JSON config at E:\xampp\htdocs\aress-frontend\libs\design-system\.eslintrc.json
+[12:31:36.981] [INFO] automigrate-E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook-task: ✔ eslintPlugin
+[12:31:37.050] [INFO] automigrate-E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook-task: ✔ consolidated-imports
+[12:31:37.052] [DEBUG] Uninstalling @storybook/addon-interactions
+[12:31:37.053] [DEBUG] Removing '@storybook/addon-interactions' from main.js addons field.
+[12:31:37.103] [INFO] automigrate-E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook-task: ✔ remove-addon-interactions
+[12:31:37.104] [DEBUG] 
+Migrating @storybook/react to @storybook/nextjs
+[12:31:37.113] [DEBUG] Updating package.json files...
+[12:31:37.113] [DEBUG] 
+Migrating @storybook/react to @storybook/react-vite
+[12:31:37.117] [DEBUG] Updating package.json files...
+[12:31:37.176] [INFO] automigrate-E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook-task: ✔ renderer-to-framework
+[12:31:37.179] [DEBUG] Uninstalling @storybook/addon-essentials
+[12:31:37.179] [DEBUG] Removing '@storybook/addon-essentials' from main.js addons field.
+[12:31:37.186] [DEBUG] Getting Storybook info...
+[12:31:37.187] [DEBUG] Loading main config...
+[12:31:37.192] [DEBUG] Getting stories paths...
+[12:31:37.192] [DEBUG] Getting package manager...
+[12:31:37.210] [DEBUG] Getting Storybook version...
+[12:31:37.256] [INFO] automigrate-E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook-task: Verifying @storybook/addon-docs
+[12:31:37.294] [INFO] automigrate-E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook-task: Installing @storybook/addon-docs@9.0.17
+[12:31:37.294] [DEBUG] Using cached version for @storybook/addon-docs...
+[12:31:37.346] [INFO] automigrate-E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook-task: Adding '@storybook/addon-docs' to the "addons" field in
+E:\xampp\htdocs\aress-frontend\libs\design-system\.storybook\main.ts
+[12:31:37.428] [INFO] automigrate-E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook-task: ✔ remove-essential-addons
+[12:31:37.496] [INFO] automigrate-E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook-task: ✔ wrap-require
+[12:31:37.497] [INFO] automigrate-E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook-task-success: (2/2) Completed automigrations for E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook
+[12:31:38.045] [INFO] Installing dependencies...
+[12:31:38.046] [INFO] install-dependencies-task-start: Installing dependencies...
+[12:31:38.675] [INFO] WARN  `node_modules` is present. Lockfile only installation will make it out-of-date
+[12:31:38.715] [INFO] install-dependencies-task: WARN  `node_modules` is present. Lockfile only installation will make it
+out-of-date
+[12:31:38.720] [INFO] Progress: resolved 1, reused 0, downloaded 0, added 0
+[12:31:38.759] [INFO] install-dependencies-task: Progress: resolved 1, reused 0, downloaded 0, added 0
+[12:31:38.783] [INFO] WARN  deprecated @storybook/jest@0.2.3: In Storybook 8, this package functionality has been integrated to a new package called @storybook/test, which uses Vitest APIs for an improved experience. When upgrading to Storybook 8 with 'npx storybook@latest upgrade', you will get prompted and will get an automigration for the new package. Please migrate when you can.
+[12:31:38.844] [INFO] install-dependencies-task: WARN  deprecated @storybook/jest@0.2.3: In Storybook 8, this package
+functionality has been integrated to a new package called @storybook/test, which
+uses Vitest APIs for an improved experience. When upgrading to Storybook 8 with
+'npx storybook@latest upgrade', you will get prompted and will get an
+automigration for the new package. Please migrate when you can.
+[12:31:38.845] [INFO] WARN  deprecated @storybook/testing-library@0.2.2: In Storybook 8, this package functionality has been integrated to a new package called @storybook/test, which uses Vitest APIs for an improved experience. When upgrading to Storybook 8 with 'npx storybook@latest upgrade', you will get prompted and will get an automigration for the new package. Please migrate when you can.
+[12:31:38.904] [INFO] install-dependencies-task: WARN  deprecated @storybook/testing-library@0.2.2: In Storybook 8, this package
+functionality has been integrated to a new package called @storybook/test, which
+uses Vitest APIs for an improved experience. When upgrading to Storybook 8 with
+'npx storybook@latest upgrade', you will get prompted and will get an
+automigration for the new package. Please migrate when you can.
+[12:31:38.905] [INFO] WARN  deprecated eslint-config-prettier@10.0.0: wrong version missing main field
+[12:31:38.967] [INFO] install-dependencies-task: WARN  deprecated eslint-config-prettier@10.0.0: wrong version missing main field
+[12:31:38.967] [INFO] WARN  deprecated eslint@8.57.0: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+[12:31:39.019] [INFO] install-dependencies-task: WARN  deprecated eslint@8.57.0: This version is no longer supported. Please see
+https://eslint.org/version-support for other options.
+[12:31:39.074] [INFO] WARN  deprecated @faker-js/faker@9.4.0: Please update to a newer version
+[12:31:39.123] [INFO] install-dependencies-task: WARN  deprecated @faker-js/faker@9.4.0: Please update to a newer version
+[12:31:39.724] [INFO] Progress: resolved 164, reused 0, downloaded 0, added 0
+[12:31:39.795] [INFO] install-dependencies-task: Progress: resolved 164, reused 0, downloaded 0, added 0
+[12:31:40.740] [INFO] Progress: resolved 199, reused 0, downloaded 0, added 0
+[12:31:40.831] [INFO] install-dependencies-task: Progress: resolved 199, reused 0, downloaded 0, added 0
+[12:31:41.748] [INFO] Progress: resolved 212, reused 0, downloaded 0, added 0
+[12:31:41.825] [INFO] install-dependencies-task: Progress: resolved 212, reused 0, downloaded 0, added 0
+[12:31:42.756] [INFO] Progress: resolved 230, reused 0, downloaded 0, added 0
+[12:31:42.824] [INFO] install-dependencies-task: Progress: resolved 230, reused 0, downloaded 0, added 0
+[12:31:43.757] [INFO] Progress: resolved 233, reused 0, downloaded 0, added 0
+[12:31:43.827] [INFO] install-dependencies-task: Progress: resolved 233, reused 0, downloaded 0, added 0
+[12:31:44.763] [INFO] Progress: resolved 462, reused 0, downloaded 0, added 0
+[12:31:44.825] [INFO] install-dependencies-task: Progress: resolved 462, reused 0, downloaded 0, added 0
+[12:31:45.765] [INFO] Progress: resolved 527, reused 0, downloaded 0, added 0
+[12:31:45.806] [INFO] install-dependencies-task: Progress: resolved 527, reused 0, downloaded 0, added 0
+[12:31:46.775] [INFO] Progress: resolved 829, reused 0, downloaded 0, added 0
+[12:31:46.852] [INFO] install-dependencies-task: Progress: resolved 829, reused 0, downloaded 0, added 0
+[12:31:47.775] [INFO] Progress: resolved 859, reused 0, downloaded 0, added 0
+[12:31:47.843] [INFO] install-dependencies-task: Progress: resolved 859, reused 0, downloaded 0, added 0
+[12:31:48.776] [INFO] Progress: resolved 1214, reused 0, downloaded 0, added 0
+[12:31:48.816] [INFO] install-dependencies-task: Progress: resolved 1214, reused 0, downloaded 0, added 0
+[12:31:49.775] [INFO] Progress: resolved 1574, reused 0, downloaded 0, added 0
+[12:31:49.820] [INFO] install-dependencies-task: Progress: resolved 1574, reused 0, downloaded 0, added 0
+[12:31:50.775] [INFO] Progress: resolved 1993, reused 0, downloaded 0, added 0
+[12:31:50.818] [INFO] install-dependencies-task: Progress: resolved 1993, reused 0, downloaded 0, added 0
+[12:31:51.779] [INFO] Progress: resolved 2096, reused 0, downloaded 0, added 0
+[12:31:51.834] [INFO] install-dependencies-task: Progress: resolved 2096, reused 0, downloaded 0, added 0
+[12:31:52.795] [INFO] Progress: resolved 2100, reused 0, downloaded 0, added 0
+[12:31:52.851] [INFO] install-dependencies-task: Progress: resolved 2100, reused 0, downloaded 0, added 0
+[12:31:53.798] [INFO] Progress: resolved 2115, reused 0, downloaded 0, added 0
+[12:31:53.870] [INFO] install-dependencies-task: Progress: resolved 2115, reused 0, downloaded 0, added 0
+[12:31:54.810] [INFO] Progress: resolved 2119, reused 0, downloaded 0, added 0
+[12:31:54.873] [INFO] install-dependencies-task: Progress: resolved 2119, reused 0, downloaded 0, added 0
+[12:31:55.820] [INFO] Progress: resolved 2121, reused 0, downloaded 0, added 0
+[12:31:55.896] [INFO] install-dependencies-task: Progress: resolved 2121, reused 0, downloaded 0, added 0
+[12:31:56.820] [INFO] Progress: resolved 2126, reused 0, downloaded 0, added 0
+[12:31:56.864] [INFO] install-dependencies-task: Progress: resolved 2126, reused 0, downloaded 0, added 0
+[12:31:57.823] [INFO] Progress: resolved 2134, reused 0, downloaded 0, added 0
+[12:31:57.882] [INFO] install-dependencies-task: Progress: resolved 2134, reused 0, downloaded 0, added 0
+[12:31:58.824] [INFO] Progress: resolved 2151, reused 0, downloaded 0, added 0
+[12:31:58.896] [INFO] install-dependencies-task: Progress: resolved 2151, reused 0, downloaded 0, added 0
+[12:31:59.824] [INFO] Progress: resolved 2168, reused 0, downloaded 0, added 0
+[12:31:59.861] [INFO] install-dependencies-task: Progress: resolved 2168, reused 0, downloaded 0, added 0
+[12:32:00.834] [INFO] Progress: resolved 2172, reused 0, downloaded 0, added 0
+[12:32:00.901] [INFO] install-dependencies-task: Progress: resolved 2172, reused 0, downloaded 0, added 0
+[12:32:01.837] [INFO] Progress: resolved 2188, reused 0, downloaded 0, added 0
+[12:32:01.898] [INFO] install-dependencies-task: Progress: resolved 2188, reused 0, downloaded 0, added 0
+[12:32:02.837] [INFO] Progress: resolved 2203, reused 0, downloaded 0, added 0
+[12:32:02.896] [INFO] install-dependencies-task: Progress: resolved 2203, reused 0, downloaded 0, added 0
+[12:32:03.842] [INFO] Progress: resolved 2208, reused 0, downloaded 0, added 0
+[12:32:03.909] [INFO] install-dependencies-task: Progress: resolved 2208, reused 0, downloaded 0, added 0
+[12:32:04.849] [INFO] Progress: resolved 2232, reused 0, downloaded 0, added 0
+[12:32:04.899] [INFO] install-dependencies-task: Progress: resolved 2232, reused 0, downloaded 0, added 0
+[12:32:05.848] [INFO] Progress: resolved 2261, reused 0, downloaded 0, added 0
+[12:32:05.901] [INFO] install-dependencies-task: Progress: resolved 2261, reused 0, downloaded 0, added 0
+[12:32:06.852] [INFO] Progress: resolved 2293, reused 0, downloaded 0, added 0
+[12:32:06.919] [INFO] install-dependencies-task: Progress: resolved 2293, reused 0, downloaded 0, added 0
+[12:32:07.858] [INFO] Progress: resolved 2305, reused 0, downloaded 0, added 0
+[12:32:07.922] [INFO] install-dependencies-task: Progress: resolved 2305, reused 0, downloaded 0, added 0
+[12:32:08.858] [INFO] Progress: resolved 2311, reused 0, downloaded 0, added 0
+[12:32:08.918] [INFO] install-dependencies-task: Progress: resolved 2311, reused 0, downloaded 0, added 0
+[12:32:09.865] [INFO] Progress: resolved 2312, reused 0, downloaded 0, added 0
+[12:32:09.917] [INFO] install-dependencies-task: Progress: resolved 2312, reused 0, downloaded 0, added 0
+[12:32:15.894] [INFO] Progress: resolved 2313, reused 0, downloaded 0, added 0
+[12:32:15.961] [INFO] install-dependencies-task: Progress: resolved 2313, reused 0, downloaded 0, added 0
+[12:32:16.899] [INFO] Progress: resolved 2323, reused 0, downloaded 0, added 0
+[12:32:16.952] [INFO] install-dependencies-task: Progress: resolved 2323, reused 0, downloaded 0, added 0
+[12:32:17.900] [INFO] Progress: resolved 2324, reused 0, downloaded 0, added 0
+[12:32:17.971] [INFO] install-dependencies-task: Progress: resolved 2324, reused 0, downloaded 0, added 0
+[12:32:18.188] [INFO] WARN  8 deprecated subdependencies found: @humanwhocodes/config-array@0.11.14, @humanwhocodes/object-schema@2.0.3, @storybook/expect@28.1.3-5, abab@2.0.6, domexception@4.0.0, glob@7.2.3, inflight@1.0.6, rimraf@3.0.2
+[12:32:18.236] [INFO] install-dependencies-task: WARN  8 deprecated subdependencies found: @humanwhocodes/config-array@0.11.14,
+@humanwhocodes/object-schema@2.0.3, @storybook/expect@28.1.3-5, abab@2.0.6,
+domexception@4.0.0, glob@7.2.3, inflight@1.0.6, rimraf@3.0.2
+[12:32:18.345] [INFO] Progress: resolved 2324, reused 0, downloaded 0, added 0, done
+[12:32:18.395] [INFO] install-dependencies-task: Progress: resolved 2324, reused 0, downloaded 0, added 0, done
+[12:32:18.396] [INFO] WARN  Issues with peer dependencies found
+.
+├─┬ next 15.4.1
+│ └── ✕ unmet peer @playwright/test@^1.51.1: found 1.47.0
+├─┬ @storybook/react-webpack5 8.3.6
+│ ├── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+│ ├─┬ @storybook/preset-react-webpack 8.3.6
+│ │ ├── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+│ │ ├─┬ @storybook/core-webpack 8.3.6
+│ │ │ └── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+│ │ └─┬ @storybook/react 8.3.6
+│ │   ├── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+│ │   ├─┬ @storybook/react-dom-shim 8.3.6
+│ │   │ └── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+│ │   ├─┬ @storybook/preview-api 8.6.12
+│ │   │ └── ✕ unmet peer storybook@"^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0": found 9.0.17
+│ │   ├─┬ @storybook/manager-api 8.6.12
+│ │   │ └── ✕ unmet peer storybook@"^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0": found 9.0.17
+│ │   ├─┬ @storybook/components 8.6.12
+│ │   │ └── ✕ unmet peer storybook@"^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0": found 9.0.17
+│ │   ├─┬ @storybook/theming 8.6.12
+│ │   │ └── ✕ unmet peer storybook@"^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0": found 9.0.17
+│ │   └─┬ react-element-to-jsx-string 15.0.0
+│ │     ├── ✕ unmet peer react@"^0.14.8 || ^15.0.1 || ^16.0.0 || ^17.0.1 || ^18.0.0": found 19.1.0
+│ │     └── ✕ unmet peer react-dom@"^0.14.8 || ^15.0.1 || ^16.0.0 || ^17.0.1 || ^18.0.0": found 19.1.0
+│ └─┬ @storybook/builder-webpack5 8.3.6
+│   └── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+├─┬ @newhighsco/storybook-addon-svgr 2.0.31
+│ └── ✕ unmet peer storybook@8.3.6: found 9.0.17
+├─┬ react-drag-drop-files 2.4.0
+│ ├── ✕ unmet peer react@^18.0.0: found 19.1.0
+│ └── ✕ unmet peer react-dom@^18.0.0: found 19.1.0
+├─┬ react-paginate 8.2.0
+│ └── ✕ unmet peer react@"^16 || ^17 || ^18": found 19.1.0
+└─┬ @vitejs/plugin-react 4.3.1
+  └── ✕ unmet peer vite@"^4.2.0 || ^5.0.0": found 6.0.0
+
+libs/design-system
+└─┬ @testing-library/react 15.0.6
+  ├── ✕ unmet peer react@^18.0.0: found 19.1.0
+  └── ✕ unmet peer react-dom@^18.0.0: found 19.1.0
+[12:32:18.470] [INFO] install-dependencies-task: WARN  Issues with peer dependencies found
+.
+├─┬ next 15.4.1
+│ └── ✕ unmet peer @playwright/test@^1.51.1: found 1.47.0
+├─┬ @storybook/react-webpack5 8.3.6
+│ ├── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+│ ├─┬ @storybook/preset-react-webpack 8.3.6
+│ │ ├── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+│ │ ├─┬ @storybook/core-webpack 8.3.6
+│ │ │ └── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+│ │ └─┬ @storybook/react 8.3.6
+│ │   ├── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+│ │   ├─┬ @storybook/react-dom-shim 8.3.6
+│ │   │ └── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+│ │   ├─┬ @storybook/preview-api 8.6.12
+│ │   │ └── ✕ unmet peer storybook@"^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0
+|| ^8.6.0-0": found 9.0.17
+│ │   ├─┬ @storybook/manager-api 8.6.12
+│ │   │ └── ✕ unmet peer storybook@"^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0
+|| ^8.6.0-0": found 9.0.17
+│ │   ├─┬ @storybook/components 8.6.12
+│ │   │ └── ✕ unmet peer storybook@"^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0
+|| ^8.6.0-0": found 9.0.17
+│ │   ├─┬ @storybook/theming 8.6.12
+│ │   │ └── ✕ unmet peer storybook@"^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0
+|| ^8.6.0-0": found 9.0.17
+│ │   └─┬ react-element-to-jsx-string 15.0.0
+│ │     ├── ✕ unmet peer react@"^0.14.8 || ^15.0.1 || ^16.0.0 || ^17.0.1 ||
+^18.0.0": found 19.1.0
+│ │     └── ✕ unmet peer react-dom@"^0.14.8 || ^15.0.1 || ^16.0.0 || ^17.0.1 ||
+^18.0.0": found 19.1.0
+│ └─┬ @storybook/builder-webpack5 8.3.6
+│   └── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+├─┬ @newhighsco/storybook-addon-svgr 2.0.31
+│ └── ✕ unmet peer storybook@8.3.6: found 9.0.17
+├─┬ react-drag-drop-files 2.4.0
+│ ├── ✕ unmet peer react@^18.0.0: found 19.1.0
+│ └── ✕ unmet peer react-dom@^18.0.0: found 19.1.0
+├─┬ react-paginate 8.2.0
+│ └── ✕ unmet peer react@"^16 || ^17 || ^18": found 19.1.0
+└─┬ @vitejs/plugin-react 4.3.1
+└── ✕ unmet peer vite@"^4.2.0 || ^5.0.0": found 6.0.0
+
+libs/design-system
+└─┬ @testing-library/react 15.0.6
+├── ✕ unmet peer react@^18.0.0: found 19.1.0
+└── ✕ unmet peer react-dom@^18.0.0: found 19.1.0
+[12:32:18.681] [INFO] Packages: +111 -77
++++++++++++++++++++++++++++++++++++++++++++++++---------------------------------
+[12:32:18.750] [INFO] install-dependencies-task: Packages: +111 -77
++++++++++++++++++++++++++++++++++++++++++++++++---------------------------------
+[12:32:20.442] [INFO] . prepare$ husky
+[12:32:20.498] [INFO] install-dependencies-task: . prepare$ husky
+[12:32:20.591] [INFO] . prepare: Done
+[12:32:20.643] [INFO] install-dependencies-task: . prepare: Done
+[12:32:20.643] [INFO] Done in 42.4s
+[12:32:20.701] [INFO] install-dependencies-task: Done in 42.4s
+[12:32:20.702] [INFO] Dependencies installed
+[12:32:20.702] [INFO] install-dependencies-task-success: Dependencies installed
+[12:32:20.702] [WARN] Since you are in a monorepo, we advise you to deduplicate your dependencies. We can do this for you but it might take some time.
+[12:32:23.474] [PROMPT] Execute pnpm run dedupe? {"choice":true}
+[12:32:23.474] [INFO] Deduplicating dependencies...
+[12:32:23.475] [INFO] dedupe-dependencies-task-start: Deduplicating dependencies...
+[12:32:24.209] [INFO] Progress: resolved 1, reused 0, downloaded 0, added 0
+[12:32:24.256] [INFO] dedupe-dependencies-task: Progress: resolved 1, reused 0, downloaded 0, added 0
+[12:32:25.219] [INFO] Progress: resolved 17, reused 17, downloaded 0, added 0
+[12:32:25.296] [INFO] dedupe-dependencies-task: Progress: resolved 17, reused 17, downloaded 0, added 0
+[12:32:25.296] [INFO] WARN  deprecated @storybook/jest@0.2.3: In Storybook 8, this package functionality has been integrated to a new package called @storybook/test, which uses Vitest APIs for an improved experience. When upgrading to Storybook 8 with 'npx storybook@latest upgrade', you will get prompted and will get an automigration for the new package. Please migrate when you can.
+[12:32:25.359] [INFO] dedupe-dependencies-task: WARN  deprecated @storybook/jest@0.2.3: In Storybook 8, this package
+functionality has been integrated to a new package called @storybook/test, which
+uses Vitest APIs for an improved experience. When upgrading to Storybook 8 with
+'npx storybook@latest upgrade', you will get prompted and will get an
+automigration for the new package. Please migrate when you can.
+[12:32:25.667] [INFO] WARN  deprecated eslint-config-prettier@10.0.0: wrong version missing main field
+[12:32:25.727] [INFO] dedupe-dependencies-task: WARN  deprecated eslint-config-prettier@10.0.0: wrong version missing main field
+[12:32:26.230] [INFO] Progress: resolved 37, reused 37, downloaded 0, added 0
+[12:32:26.318] [INFO] dedupe-dependencies-task: Progress: resolved 37, reused 37, downloaded 0, added 0
+[12:32:27.165] [INFO] WARN  deprecated @storybook/testing-library@0.2.2: In Storybook 8, this package functionality has been integrated to a new package called @storybook/test, which uses Vitest APIs for an improved experience. When upgrading to Storybook 8 with 'npx storybook@latest upgrade', you will get prompted and will get an automigration for the new package. Please migrate when you can.
+[12:32:27.235] [INFO] dedupe-dependencies-task: WARN  deprecated @storybook/testing-library@0.2.2: In Storybook 8, this package
+functionality has been integrated to a new package called @storybook/test, which
+uses Vitest APIs for an improved experience. When upgrading to Storybook 8 with
+'npx storybook@latest upgrade', you will get prompted and will get an
+automigration for the new package. Please migrate when you can.
+[12:32:27.236] [INFO] Progress: resolved 41, reused 41, downloaded 0, added 0
+[12:32:27.293] [INFO] dedupe-dependencies-task: Progress: resolved 41, reused 41, downloaded 0, added 0
+[12:32:28.249] [INFO] Progress: resolved 57, reused 57, downloaded 0, added 0
+[12:32:28.291] [INFO] dedupe-dependencies-task: Progress: resolved 57, reused 57, downloaded 0, added 0
+[12:32:29.252] [INFO] Progress: resolved 62, reused 61, downloaded 0, added 0
+[12:32:29.343] [INFO] dedupe-dependencies-task: Progress: resolved 62, reused 61, downloaded 0, added 0
+[12:32:29.369] [INFO] WARN  deprecated eslint@8.57.0: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+[12:32:29.433] [INFO] dedupe-dependencies-task: WARN  deprecated eslint@8.57.0: This version is no longer supported. Please see
+https://eslint.org/version-support for other options.
+[12:32:29.504] [INFO] WARN  deprecated @faker-js/faker@9.4.0: Please update to a newer version
+[12:32:29.559] [INFO] dedupe-dependencies-task: WARN  deprecated @faker-js/faker@9.4.0: Please update to a newer version
+[12:32:30.254] [INFO] Progress: resolved 71, reused 71, downloaded 0, added 0
+[12:32:30.334] [INFO] dedupe-dependencies-task: Progress: resolved 71, reused 71, downloaded 0, added 0
+[12:32:31.256] [INFO] Progress: resolved 75, reused 75, downloaded 0, added 0
+[12:32:31.348] [INFO] dedupe-dependencies-task: Progress: resolved 75, reused 75, downloaded 0, added 0
+[12:32:32.262] [INFO] Progress: resolved 83, reused 83, downloaded 0, added 0
+[12:32:32.327] [INFO] dedupe-dependencies-task: Progress: resolved 83, reused 83, downloaded 0, added 0
+[12:32:33.264] [INFO] Progress: resolved 91, reused 91, downloaded 0, added 0
+[12:32:33.343] [INFO] dedupe-dependencies-task: Progress: resolved 91, reused 91, downloaded 0, added 0
+[12:32:34.266] [INFO] Progress: resolved 94, reused 92, downloaded 0, added 0
+[12:32:34.357] [INFO] dedupe-dependencies-task: Progress: resolved 94, reused 92, downloaded 0, added 0
+[12:32:35.269] [INFO] Progress: resolved 103, reused 103, downloaded 0, added 0
+[12:32:35.318] [INFO] dedupe-dependencies-task: Progress: resolved 103, reused 103, downloaded 0, added 0
+[12:32:36.269] [INFO] Progress: resolved 105, reused 105, downloaded 0, added 0
+[12:32:36.337] [INFO] dedupe-dependencies-task: Progress: resolved 105, reused 105, downloaded 0, added 0
+[12:32:37.891] [INFO] Progress: resolved 106, reused 105, downloaded 0, added 0
+[12:32:37.943] [INFO] dedupe-dependencies-task: Progress: resolved 106, reused 105, downloaded 0, added 0
+[12:32:38.902] [INFO] Progress: resolved 106, reused 106, downloaded 0, added 0
+[12:32:38.953] [INFO] dedupe-dependencies-task: Progress: resolved 106, reused 106, downloaded 0, added 0
+[12:32:40.277] [INFO] Progress: resolved 107, reused 106, downloaded 0, added 0
+[12:32:40.341] [INFO] dedupe-dependencies-task: Progress: resolved 107, reused 106, downloaded 0, added 0
+[12:32:41.285] [INFO] Progress: resolved 107, reused 107, downloaded 0, added 0
+[12:32:41.341] [INFO] dedupe-dependencies-task: Progress: resolved 107, reused 107, downloaded 0, added 0
+[12:32:42.287] [INFO] Progress: resolved 109, reused 109, downloaded 0, added 0
+[12:32:42.348] [INFO] dedupe-dependencies-task: Progress: resolved 109, reused 109, downloaded 0, added 0
+[12:32:49.258] [INFO] Progress: resolved 110, reused 109, downloaded 0, added 0
+[12:32:49.304] [INFO] dedupe-dependencies-task: Progress: resolved 110, reused 109, downloaded 0, added 0
+[12:32:50.257] [INFO] Progress: resolved 115, reused 115, downloaded 0, added 0
+[12:32:50.334] [INFO] dedupe-dependencies-task: Progress: resolved 115, reused 115, downloaded 0, added 0
+[12:32:51.260] [INFO] Progress: resolved 119, reused 119, downloaded 0, added 0
+[12:32:51.339] [INFO] dedupe-dependencies-task: Progress: resolved 119, reused 119, downloaded 0, added 0
+[12:32:52.263] [INFO] Progress: resolved 136, reused 136, downloaded 0, added 0
+[12:32:52.338] [INFO] dedupe-dependencies-task: Progress: resolved 136, reused 136, downloaded 0, added 0
+[12:32:53.263] [INFO] Progress: resolved 155, reused 155, downloaded 0, added 0
+[12:32:53.331] [INFO] dedupe-dependencies-task: Progress: resolved 155, reused 155, downloaded 0, added 0
+[12:32:54.269] [INFO] Progress: resolved 163, reused 163, downloaded 0, added 0
+[12:32:54.329] [INFO] dedupe-dependencies-task: Progress: resolved 163, reused 163, downloaded 0, added 0
+[12:32:55.268] [INFO] Progress: resolved 178, reused 178, downloaded 0, added 0
+[12:32:55.311] [INFO] dedupe-dependencies-task: Progress: resolved 178, reused 178, downloaded 0, added 0
+[12:32:56.274] [INFO] Progress: resolved 186, reused 186, downloaded 0, added 0
+[12:32:56.332] [INFO] dedupe-dependencies-task: Progress: resolved 186, reused 186, downloaded 0, added 0
+[12:32:57.281] [INFO] Progress: resolved 200, reused 200, downloaded 0, added 0
+[12:32:57.334] [INFO] dedupe-dependencies-task: Progress: resolved 200, reused 200, downloaded 0, added 0
+[12:32:58.289] [INFO] Progress: resolved 211, reused 211, downloaded 0, added 0
+[12:32:58.339] [INFO] dedupe-dependencies-task: Progress: resolved 211, reused 211, downloaded 0, added 0
+[12:32:59.300] [INFO] Progress: resolved 221, reused 221, downloaded 0, added 0
+[12:32:59.343] [INFO] dedupe-dependencies-task: Progress: resolved 221, reused 221, downloaded 0, added 0
+[12:33:00.309] [INFO] Progress: resolved 224, reused 224, downloaded 0, added 0
+[12:33:00.370] [INFO] dedupe-dependencies-task: Progress: resolved 224, reused 224, downloaded 0, added 0
+[12:33:01.316] [INFO] Progress: resolved 247, reused 238, downloaded 0, added 0
+[12:33:01.415] [INFO] dedupe-dependencies-task: Progress: resolved 247, reused 238, downloaded 0, added 0
+[12:33:02.328] [INFO] Progress: resolved 260, reused 251, downloaded 0, added 0
+[12:33:02.386] [INFO] dedupe-dependencies-task: Progress: resolved 260, reused 251, downloaded 0, added 0
+[12:33:03.328] [INFO] Progress: resolved 267, reused 258, downloaded 0, added 0
+[12:33:03.371] [INFO] dedupe-dependencies-task: Progress: resolved 267, reused 258, downloaded 0, added 0
+[12:33:04.331] [INFO] Progress: resolved 269, reused 260, downloaded 0, added 0
+[12:33:04.377] [INFO] dedupe-dependencies-task: Progress: resolved 269, reused 260, downloaded 0, added 0
+[12:33:05.339] [INFO] Progress: resolved 283, reused 274, downloaded 0, added 0
+[12:33:05.389] [INFO] dedupe-dependencies-task: Progress: resolved 283, reused 274, downloaded 0, added 0
+[12:33:06.341] [INFO] Progress: resolved 286, reused 277, downloaded 0, added 0
+[12:33:06.392] [INFO] dedupe-dependencies-task: Progress: resolved 286, reused 277, downloaded 0, added 0
+[12:33:07.353] [INFO] Progress: resolved 301, reused 292, downloaded 0, added 0
+[12:33:07.400] [INFO] dedupe-dependencies-task: Progress: resolved 301, reused 292, downloaded 0, added 0
+[12:33:08.356] [INFO] Progress: resolved 308, reused 299, downloaded 0, added 0
+[12:33:08.415] [INFO] dedupe-dependencies-task: Progress: resolved 308, reused 299, downloaded 0, added 0
+[12:33:09.357] [INFO] Progress: resolved 316, reused 307, downloaded 0, added 0
+[12:33:09.447] [INFO] dedupe-dependencies-task: Progress: resolved 316, reused 307, downloaded 0, added 0
+[12:33:10.366] [INFO] Progress: resolved 319, reused 310, downloaded 0, added 0
+[12:33:10.429] [INFO] dedupe-dependencies-task: Progress: resolved 319, reused 310, downloaded 0, added 0
+[12:33:11.366] [INFO] Progress: resolved 333, reused 324, downloaded 0, added 0
+[12:33:11.428] [INFO] dedupe-dependencies-task: Progress: resolved 333, reused 324, downloaded 0, added 0
+[12:33:12.368] [INFO] Progress: resolved 362, reused 352, downloaded 0, added 0
+[12:33:12.446] [INFO] dedupe-dependencies-task: Progress: resolved 362, reused 352, downloaded 0, added 0
+[12:33:13.369] [INFO] Progress: resolved 387, reused 378, downloaded 0, added 0
+[12:33:13.433] [INFO] dedupe-dependencies-task: Progress: resolved 387, reused 378, downloaded 0, added 0
+[12:33:14.370] [INFO] Progress: resolved 395, reused 386, downloaded 0, added 0
+[12:33:14.438] [INFO] dedupe-dependencies-task: Progress: resolved 395, reused 386, downloaded 0, added 0
+[12:33:15.373] [INFO] Progress: resolved 431, reused 413, downloaded 0, added 0
+[12:33:15.452] [INFO] dedupe-dependencies-task: Progress: resolved 431, reused 413, downloaded 0, added 0
+[12:33:16.379] [INFO] Progress: resolved 456, reused 438, downloaded 0, added 0
+[12:33:16.442] [INFO] dedupe-dependencies-task: Progress: resolved 456, reused 438, downloaded 0, added 0
+[12:33:17.382] [INFO] Progress: resolved 483, reused 465, downloaded 0, added 0
+[12:33:17.458] [INFO] dedupe-dependencies-task: Progress: resolved 483, reused 465, downloaded 0, added 0
+[12:33:18.388] [INFO] Progress: resolved 508, reused 488, downloaded 0, added 0
+[12:33:18.480] [INFO] dedupe-dependencies-task: Progress: resolved 508, reused 488, downloaded 0, added 0
+[12:33:19.401] [INFO] Progress: resolved 514, reused 495, downloaded 0, added 0
+[12:33:19.491] [INFO] dedupe-dependencies-task: Progress: resolved 514, reused 495, downloaded 0, added 0
+[12:33:20.405] [INFO] Progress: resolved 515, reused 496, downloaded 0, added 0
+[12:33:20.476] [INFO] dedupe-dependencies-task: Progress: resolved 515, reused 496, downloaded 0, added 0
+[12:33:21.411] [INFO] Progress: resolved 542, reused 516, downloaded 0, added 0
+[12:33:21.453] [INFO] dedupe-dependencies-task: Progress: resolved 542, reused 516, downloaded 0, added 0
+[12:33:22.413] [INFO] Progress: resolved 551, reused 525, downloaded 0, added 0
+[12:33:22.476] [INFO] dedupe-dependencies-task: Progress: resolved 551, reused 525, downloaded 0, added 0
+[12:33:23.413] [INFO] Progress: resolved 558, reused 532, downloaded 0, added 0
+[12:33:23.481] [INFO] dedupe-dependencies-task: Progress: resolved 558, reused 532, downloaded 0, added 0
+[12:33:24.413] [INFO] Progress: resolved 568, reused 542, downloaded 0, added 0
+[12:33:24.494] [INFO] dedupe-dependencies-task: Progress: resolved 568, reused 542, downloaded 0, added 0
+[12:33:25.423] [INFO] Progress: resolved 581, reused 555, downloaded 0, added 0
+[12:33:25.498] [INFO] dedupe-dependencies-task: Progress: resolved 581, reused 555, downloaded 0, added 0
+[12:33:26.425] [INFO] Progress: resolved 600, reused 572, downloaded 0, added 0
+[12:33:26.501] [INFO] dedupe-dependencies-task: Progress: resolved 600, reused 572, downloaded 0, added 0
+[12:33:27.425] [INFO] Progress: resolved 613, reused 586, downloaded 0, added 0
+[12:33:27.497] [INFO] dedupe-dependencies-task: Progress: resolved 613, reused 586, downloaded 0, added 0
+[12:33:28.428] [INFO] Progress: resolved 618, reused 591, downloaded 0, added 0
+[12:33:28.523] [INFO] dedupe-dependencies-task: Progress: resolved 618, reused 591, downloaded 0, added 0
+[12:33:29.430] [INFO] Progress: resolved 641, reused 614, downloaded 0, added 0
+[12:33:29.504] [INFO] dedupe-dependencies-task: Progress: resolved 641, reused 614, downloaded 0, added 0
+[12:33:30.429] [INFO] Progress: resolved 655, reused 628, downloaded 0, added 0
+[12:33:30.496] [INFO] dedupe-dependencies-task: Progress: resolved 655, reused 628, downloaded 0, added 0
+[12:33:31.430] [INFO] Progress: resolved 666, reused 639, downloaded 0, added 0
+[12:33:31.492] [INFO] dedupe-dependencies-task: Progress: resolved 666, reused 639, downloaded 0, added 0
+[12:33:32.430] [INFO] Progress: resolved 673, reused 646, downloaded 0, added 0
+[12:33:32.508] [INFO] dedupe-dependencies-task: Progress: resolved 673, reused 646, downloaded 0, added 0
+[12:33:33.434] [INFO] Progress: resolved 680, reused 652, downloaded 0, added 0
+[12:33:33.538] [INFO] dedupe-dependencies-task: Progress: resolved 680, reused 652, downloaded 0, added 0
+[12:33:34.488] [INFO] Progress: resolved 691, reused 663, downloaded 0, added 0
+[12:33:34.611] [INFO] dedupe-dependencies-task: Progress: resolved 691, reused 663, downloaded 0, added 0
+[12:33:35.496] [INFO] Progress: resolved 708, reused 681, downloaded 0, added 0
+[12:33:35.576] [INFO] dedupe-dependencies-task: Progress: resolved 708, reused 681, downloaded 0, added 0
+[12:33:36.501] [INFO] Progress: resolved 744, reused 716, downloaded 0, added 0
+[12:33:36.565] [INFO] dedupe-dependencies-task: Progress: resolved 744, reused 716, downloaded 0, added 0
+[12:33:37.526] [INFO] Progress: resolved 763, reused 735, downloaded 0, added 0
+[12:33:37.594] [INFO] dedupe-dependencies-task: Progress: resolved 763, reused 735, downloaded 0, added 0
+[12:33:38.528] [INFO] Progress: resolved 783, reused 755, downloaded 0, added 0
+[12:33:38.610] [INFO] dedupe-dependencies-task: Progress: resolved 783, reused 755, downloaded 0, added 0
+[12:33:39.543] [INFO] Progress: resolved 800, reused 772, downloaded 0, added 0
+[12:33:39.631] [INFO] dedupe-dependencies-task: Progress: resolved 800, reused 772, downloaded 0, added 0
+[12:33:40.554] [INFO] Progress: resolved 833, reused 805, downloaded 0, added 0
+[12:33:40.621] [INFO] dedupe-dependencies-task: Progress: resolved 833, reused 805, downloaded 0, added 0
+[12:33:41.558] [INFO] Progress: resolved 852, reused 825, downloaded 0, added 0
+[12:33:41.621] [INFO] dedupe-dependencies-task: Progress: resolved 852, reused 825, downloaded 0, added 0
+[12:33:42.561] [INFO] Progress: resolved 882, reused 855, downloaded 0, added 0
+[12:33:42.637] [INFO] dedupe-dependencies-task: Progress: resolved 882, reused 855, downloaded 0, added 0
+[12:33:43.570] [INFO] Progress: resolved 892, reused 865, downloaded 0, added 0
+[12:33:43.644] [INFO] dedupe-dependencies-task: Progress: resolved 892, reused 865, downloaded 0, added 0
+[12:33:44.577] [INFO] Progress: resolved 906, reused 879, downloaded 0, added 0
+[12:33:44.651] [INFO] dedupe-dependencies-task: Progress: resolved 906, reused 879, downloaded 0, added 0
+[12:33:45.640] [INFO] Progress: resolved 931, reused 904, downloaded 0, added 0
+[12:33:45.700] [INFO] dedupe-dependencies-task: Progress: resolved 931, reused 904, downloaded 0, added 0
+[12:33:46.642] [INFO] Progress: resolved 977, reused 948, downloaded 0, added 0
+[12:33:46.748] [INFO] dedupe-dependencies-task: Progress: resolved 977, reused 948, downloaded 0, added 0
+[12:33:47.644] [INFO] Progress: resolved 1021, reused 993, downloaded 0, added 0
+[12:33:47.733] [INFO] dedupe-dependencies-task: Progress: resolved 1021, reused 993, downloaded 0, added 0
+[12:33:48.644] [INFO] Progress: resolved 1066, reused 1037, downloaded 0, added 0
+[12:33:48.721] [INFO] dedupe-dependencies-task: Progress: resolved 1066, reused 1037, downloaded 0, added 0
+[12:33:49.656] [INFO] Progress: resolved 1162, reused 1067, downloaded 0, added 0
+[12:33:49.724] [INFO] dedupe-dependencies-task: Progress: resolved 1162, reused 1067, downloaded 0, added 0
+[12:33:50.658] [INFO] Progress: resolved 1208, reused 1093, downloaded 0, added 0
+[12:33:50.739] [INFO] dedupe-dependencies-task: Progress: resolved 1208, reused 1093, downloaded 0, added 0
+[12:33:51.662] [INFO] Progress: resolved 1252, reused 1137, downloaded 0, added 0
+[12:33:51.753] [INFO] dedupe-dependencies-task: Progress: resolved 1252, reused 1137, downloaded 0, added 0
+[12:33:52.668] [INFO] Progress: resolved 1259, reused 1144, downloaded 0, added 0
+[12:33:52.750] [INFO] dedupe-dependencies-task: Progress: resolved 1259, reused 1144, downloaded 0, added 0
+[12:33:53.669] [INFO] Progress: resolved 1283, reused 1168, downloaded 0, added 0
+[12:33:53.728] [INFO] dedupe-dependencies-task: Progress: resolved 1283, reused 1168, downloaded 0, added 0
+[12:33:54.669] [INFO] Progress: resolved 1330, reused 1215, downloaded 0, added 0
+[12:33:54.751] [INFO] dedupe-dependencies-task: Progress: resolved 1330, reused 1215, downloaded 0, added 0
+[12:33:55.670] [INFO] Progress: resolved 1378, reused 1263, downloaded 0, added 0
+[12:33:55.744] [INFO] dedupe-dependencies-task: Progress: resolved 1378, reused 1263, downloaded 0, added 0
+[12:33:56.671] [INFO] Progress: resolved 1421, reused 1290, downloaded 0, added 0
+[12:33:56.743] [INFO] dedupe-dependencies-task: Progress: resolved 1421, reused 1290, downloaded 0, added 0
+[12:33:57.671] [INFO] Progress: resolved 1444, reused 1314, downloaded 0, added 0
+[12:33:57.784] [INFO] dedupe-dependencies-task: Progress: resolved 1444, reused 1314, downloaded 0, added 0
+[12:33:58.673] [INFO] Progress: resolved 1501, reused 1369, downloaded 0, added 0
+[12:33:58.755] [INFO] dedupe-dependencies-task: Progress: resolved 1501, reused 1369, downloaded 0, added 0
+[12:33:59.678] [INFO] Progress: resolved 1558, reused 1427, downloaded 0, added 0
+[12:33:59.757] [INFO] dedupe-dependencies-task: Progress: resolved 1558, reused 1427, downloaded 0, added 0
+[12:34:00.683] [INFO] Progress: resolved 1629, reused 1499, downloaded 0, added 0
+[12:34:00.775] [INFO] dedupe-dependencies-task: Progress: resolved 1629, reused 1499, downloaded 0, added 0
+[12:34:01.690] [INFO] Progress: resolved 1718, reused 1557, downloaded 0, added 0
+[12:34:01.792] [INFO] dedupe-dependencies-task: Progress: resolved 1718, reused 1557, downloaded 0, added 0
+[12:34:02.693] [INFO] Progress: resolved 1801, reused 1628, downloaded 0, added 0
+[12:34:02.787] [INFO] dedupe-dependencies-task: Progress: resolved 1801, reused 1628, downloaded 0, added 0
+[12:34:03.695] [INFO] Progress: resolved 1864, reused 1691, downloaded 0, added 0
+[12:34:03.768] [INFO] dedupe-dependencies-task: Progress: resolved 1864, reused 1691, downloaded 0, added 0
+[12:34:04.696] [INFO] Progress: resolved 1914, reused 1741, downloaded 0, added 0
+[12:34:04.772] [INFO] dedupe-dependencies-task: Progress: resolved 1914, reused 1741, downloaded 0, added 0
+[12:34:05.701] [INFO] Progress: resolved 1965, reused 1790, downloaded 0, added 0
+[12:34:05.809] [INFO] dedupe-dependencies-task: Progress: resolved 1965, reused 1790, downloaded 0, added 0
+[12:34:06.702] [INFO] Progress: resolved 1989, reused 1816, downloaded 0, added 0
+[12:34:06.788] [INFO] dedupe-dependencies-task: Progress: resolved 1989, reused 1816, downloaded 0, added 0
+[12:34:07.708] [INFO] Progress: resolved 2036, reused 1863, downloaded 0, added 0
+[12:34:07.825] [INFO] dedupe-dependencies-task: Progress: resolved 2036, reused 1863, downloaded 0, added 0
+[12:34:08.716] [INFO] Progress: resolved 2129, reused 1930, downloaded 0, added 0
+[12:34:08.807] [INFO] dedupe-dependencies-task: Progress: resolved 2129, reused 1930, downloaded 0, added 0
+[12:34:09.720] [INFO] Progress: resolved 2157, reused 1963, downloaded 0, added 0
+[12:34:09.851] [INFO] dedupe-dependencies-task: Progress: resolved 2157, reused 1963, downloaded 0, added 0
+[12:34:11.974] [INFO] Progress: resolved 2158, reused 1963, downloaded 0, added 0
+[12:34:12.046] [INFO] dedupe-dependencies-task: Progress: resolved 2158, reused 1963, downloaded 0, added 0
+[12:34:12.975] [INFO] Progress: resolved 2171, reused 1977, downloaded 0, added 0
+[12:34:13.055] [INFO] dedupe-dependencies-task: Progress: resolved 2171, reused 1977, downloaded 0, added 0
+[12:34:13.984] [INFO] Progress: resolved 2172, reused 1978, downloaded 0, added 0
+[12:34:14.047] [INFO] dedupe-dependencies-task: Progress: resolved 2172, reused 1978, downloaded 0, added 0
+[12:34:14.987] [INFO] Progress: resolved 2173, reused 1979, downloaded 0, added 0
+[12:34:15.073] [INFO] dedupe-dependencies-task: Progress: resolved 2173, reused 1979, downloaded 0, added 0
+[12:34:15.991] [INFO] Progress: resolved 2175, reused 1981, downloaded 0, added 0
+[12:34:16.125] [INFO] dedupe-dependencies-task: Progress: resolved 2175, reused 1981, downloaded 0, added 0
+[12:34:17.093] [INFO] Progress: resolved 2176, reused 1981, downloaded 0, added 0
+[12:34:17.178] [INFO] dedupe-dependencies-task: Progress: resolved 2176, reused 1981, downloaded 0, added 0
+[12:34:18.700] [INFO] WARN  8 deprecated subdependencies found: @humanwhocodes/config-array@0.11.14, @humanwhocodes/object-schema@2.0.3, @storybook/expect@28.1.3-5, abab@2.0.6, domexception@4.0.0, glob@7.2.3, inflight@1.0.6, rimraf@3.0.2
+[12:34:18.785] [INFO] dedupe-dependencies-task: WARN  8 deprecated subdependencies found: @humanwhocodes/config-array@0.11.14,
+@humanwhocodes/object-schema@2.0.3, @storybook/expect@28.1.3-5, abab@2.0.6,
+domexception@4.0.0, glob@7.2.3, inflight@1.0.6, rimraf@3.0.2
+[12:34:18.814] [INFO] Progress: resolved 2187, reused 1993, downloaded 0, added 0
+[12:34:18.892] [INFO] dedupe-dependencies-task: Progress: resolved 2187, reused 1993, downloaded 0, added 0
+[12:34:18.979] [INFO] Packages: -114
+--------------------------------------------------------------------------------
+[12:34:19.066] [INFO] dedupe-dependencies-task: Packages: -114
+--------------------------------------------------------------------------------
+[12:34:19.822] [INFO] Progress: resolved 2187, reused 1993, downloaded 0, added 5
+[12:34:19.935] [INFO] dedupe-dependencies-task: Progress: resolved 2187, reused 1993, downloaded 0, added 5
+[12:34:20.832] [INFO] Progress: resolved 2187, reused 1993, downloaded 0, added 11
+[12:34:20.899] [INFO] dedupe-dependencies-task: Progress: resolved 2187, reused 1993, downloaded 0, added 11
+[12:34:23.328] [INFO] Progress: resolved 2187, reused 1993, downloaded 0, added 11, done
+[12:34:23.411] [INFO] dedupe-dependencies-task: Progress: resolved 2187, reused 1993, downloaded 0, added 11, done
+[12:34:24.520] [INFO] .../node_modules/nx postinstall$ node ./bin/post-install
+[12:34:24.599] [INFO] dedupe-dependencies-task: .../node_modules/nx postinstall$ node ./bin/post-install
+[12:34:27.368] [INFO] .../node_modules/nx postinstall: ▲ [WARNING] Duplicate key "extends" in object literal [duplicate-object-key]
+[12:34:27.445] [INFO] dedupe-dependencies-task: .../node_modules/nx postinstall: ▲ [WARNING] Duplicate key "extends" in object
+literal [duplicate-object-key]
+[12:34:27.451] [INFO] .../node_modules/nx postinstall:     libs/design-system/tsconfig.json:23:2:
+.../node_modules/nx postinstall:       23 │   "extends": "../../tsconfig.base.json",
+.../node_modules/nx postinstall:          ╵   ~~~~~~~~~
+.../node_modules/nx postinstall:   The original key "extends" is here:
+.../node_modules/nx postinstall:     libs/design-system/tsconfig.json:2:2:
+.../node_modules/nx postinstall:       2 │   "extends": "../../tsconfig.base.json",
+.../node_modules/nx postinstall:         ╵   ~~~~~~~~~
+[12:34:27.562] [INFO] dedupe-dependencies-task: .../node_modules/nx postinstall:     libs/design-system/tsconfig.json:23:2:
+.../node_modules/nx postinstall:       23 │   "extends":
+"../../tsconfig.base.json",
+.../node_modules/nx postinstall:          ╵   ~~~~~~~~~
+.../node_modules/nx postinstall:   The original key "extends" is here:
+.../node_modules/nx postinstall:     libs/design-system/tsconfig.json:2:2:
+.../node_modules/nx postinstall:       2 │   "extends":
+"../../tsconfig.base.json",
+.../node_modules/nx postinstall:         ╵   ~~~~~~~~~
+[12:34:28.305] [INFO] .../node_modules/nx postinstall: (node:15976) [DEP0180] DeprecationWarning: fs.Stats constructor is deprecated.
+[12:34:28.385] [INFO] dedupe-dependencies-task: .../node_modules/nx postinstall: (node:15976) [DEP0180] DeprecationWarning:
+fs.Stats constructor is deprecated.
+[12:34:28.385] [INFO] .../node_modules/nx postinstall: (Use `node --trace-deprecation ...` to show where the warning was created)
+[12:34:28.468] [INFO] dedupe-dependencies-task: .../node_modules/nx postinstall: (Use `node --trace-deprecation ...` to show
+where the warning was created)
+[12:34:29.495] [INFO] .../node_modules/nx postinstall: Done
+[12:34:29.569] [INFO] dedupe-dependencies-task: .../node_modules/nx postinstall: Done
+[12:34:32.417] [INFO] . prepare$ husky
+[12:34:32.474] [INFO] dedupe-dependencies-task: . prepare$ husky
+[12:34:32.640] [INFO] . prepare: Done
+[12:34:32.739] [INFO] dedupe-dependencies-task: . prepare: Done
+[12:34:32.740] [INFO] dependencies:
++ @dnd-kit/core 6.3.1
++ @dnd-kit/modifiers 9.0.0
++ @dnd-kit/sortable 10.0.0
++ @dnd-kit/utilities 3.2.2
++ @headlessui/react 2.2.3 (2.2.4 is available)
++ @tanstack/react-query 5.81.5 (5.83.0 is available)
++ @tanstack/react-query-devtools 5.81.5 (5.83.0 is available)
++ @tanstack/react-table 8.20.6 (8.21.3 is available)
++ @tanstack/react-virtual 3.13.9 (3.13.12 is available)
+- @testing-library/user-event 14.6.0
++ @testing-library/user-event 14.6.1
++ @uidotdev/usehooks 2.4.1
++ highcharts-react-official 3.2.2
++ lucide-react 0.445.0 (0.525.0 is available)
++ react 19.1.0
++ react-dom 19.1.0
++ react-drag-drop-files 2.4.0 (3.0.1 is available)
++ react-draggable 4.4.6 (4.5.0 is available)
++ react-easy-crop 5.4.0 (5.5.0 is available)
++ react-hook-form 7.54.2 (7.60.0 is available)
++ react-hot-toast 2.4.1 (2.5.2 is available)
++ react-hotkeys-hook 5.1.0
++ react-loading-skeleton 3.5.0
++ react-markdown 9.0.3 (10.1.0 is available)
++ react-otp-input 3.1.1
++ react-paginate 8.2.0 (8.3.0 is available)
++ react-tooltip 5.20.0 (5.29.1 is available)
+- tslib 2.7.0
++ tslib 2.8.1
+
+devDependencies:
+- @babel/core 7.25.2
++ @babel/core 7.26.10 (7.28.0 is available)
++ @commitlint/cli 19.5.0 (19.8.1 is available)
++ @iconify/react 5.0.2 (6.0.0 is available)
++ @storybook/addon-docs 9.0.17
++ @storybook/react-vite 9.0.17
++ @svgr/webpack 8.1.0
+- @swc/helpers 0.5.13
++ @swc/helpers 0.5.17
++ @testing-library/react 16.1.0 (16.3.0 is available)
++ @typescript-eslint/eslint-plugin 7.18.0 (8.37.0 is available)
++ @typescript-eslint/parser 7.18.0 (8.37.0 is available)
++ @vitejs/plugin-react 4.3.1 (4.6.0 is available)
++ @vitest/coverage-v8 1.6.0 (3.2.4 is available)
++ @vitest/ui 1.6.0 (3.2.4 is available)
++ autoprefixer 10.4.13 (10.4.21 is available)
++ eslint 8.57.0 (9.31.0 is available) deprecated
++ eslint-config-next 15.4.1
++ eslint-config-prettier 10.0.0 (10.1.5 is available) deprecated
++ eslint-plugin-import 2.31.0 (2.32.0 is available)
++ eslint-plugin-jsx-a11y 6.10.1 (6.10.2 is available)
++ eslint-plugin-playwright 0.15.3 (2.2.0 is available)
++ eslint-plugin-react 7.32.2 (7.37.5 is available)
++ eslint-plugin-react-hooks 5.0.0 (5.2.0 is available)
++ eslint-plugin-storybook 9.0.17
++ jiti 2.4.2
++ storybook 9.0.17
++ typescript 5.8.3
++ vite 6.0.0 (7.0.5 is available)
++ vite-plugin-dts 4.5.4
++ vitest 1.6.0 (3.2.4 is available)
+
+ WARN  Issues with peer dependencies found
+.
+├─┬ next 15.4.1
+│ └── ✕ unmet peer @playwright/test@^1.51.1: found 1.47.0
+├─┬ @storybook/react-webpack5 8.3.6
+│ ├── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+│ ├─┬ @storybook/preset-react-webpack 8.3.6
+│ │ ├── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+│ │ ├─┬ @storybook/core-webpack 8.3.6
+│ │ │ └── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+│ │ └─┬ @storybook/react 8.3.6
+│ │   ├── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+│ │   ├─┬ @storybook/react-dom-shim 8.3.6
+│ │   │ └── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+│ │   ├─┬ @storybook/manager-api 8.6.12
+│ │   │ └── ✕ unmet peer storybook@"^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0": found 9.0.17
+│ │   ├─┬ @storybook/preview-api 8.6.12
+│ │   │ └── ✕ unmet peer storybook@"^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0": found 9.0.17
+│ │   ├─┬ @storybook/components 8.6.12
+│ │   │ └── ✕ unmet peer storybook@"^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0": found 9.0.17
+│ │   ├─┬ @storybook/theming 8.6.12
+│ │   │ └── ✕ unmet peer storybook@"^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0": found 9.0.17
+│ │   └─┬ react-element-to-jsx-string 15.0.0
+│ │     ├── ✕ unmet peer react@"^0.14.8 || ^15.0.1 || ^16.0.0 || ^17.0.1 || ^18.0.0": found 19.1.0
+│ │     └── ✕ unmet peer react-dom@"^0.14.8 || ^15.0.1 || ^16.0.0 || ^17.0.1 || ^18.0.0": found 19.1.0
+│ └─┬ @storybook/builder-webpack5 8.3.6
+│   └── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+├─┬ @newhighsco/storybook-addon-svgr 2.0.31
+│ └── ✕ unmet peer storybook@8.3.6: found 9.0.17
+├─┬ react-drag-drop-files 2.4.0
+│ ├── ✕ unmet peer react@^18.0.0: found 19.1.0
+│ └── ✕ unmet peer react-dom@^18.0.0: found 19.1.0
+├─┬ react-paginate 8.2.0
+│ └── ✕ unmet peer react@"^16 || ^17 || ^18": found 19.1.0
+└─┬ @vitejs/plugin-react 4.3.1
+  └── ✕ unmet peer vite@"^4.2.0 || ^5.0.0": found 6.0.0
+
+libs/design-system
+└─┬ @testing-library/react 15.0.6
+  ├── ✕ unmet peer react@^18.0.0: found 19.1.0
+  └── ✕ unmet peer react-dom@^18.0.0: found 19.1.0
+[12:34:32.811] [INFO] dedupe-dependencies-task: dependencies:
++ @dnd-kit/core 6.3.1
++ @dnd-kit/modifiers 9.0.0
++ @dnd-kit/sortable 10.0.0
++ @dnd-kit/utilities 3.2.2
++ @headlessui/react 2.2.3 (2.2.4 is available)
++ @tanstack/react-query 5.81.5 (5.83.0 is available)
++ @tanstack/react-query-devtools 5.81.5 (5.83.0 is available)
++ @tanstack/react-table 8.20.6 (8.21.3 is available)
++ @tanstack/react-virtual 3.13.9 (3.13.12 is available)
+- @testing-library/user-event 14.6.0
++ @testing-library/user-event 14.6.1
++ @uidotdev/usehooks 2.4.1
++ highcharts-react-official 3.2.2
++ lucide-react 0.445.0 (0.525.0 is available)
++ react 19.1.0
++ react-dom 19.1.0
++ react-drag-drop-files 2.4.0 (3.0.1 is available)
++ react-draggable 4.4.6 (4.5.0 is available)
++ react-easy-crop 5.4.0 (5.5.0 is available)
++ react-hook-form 7.54.2 (7.60.0 is available)
++ react-hot-toast 2.4.1 (2.5.2 is available)
++ react-hotkeys-hook 5.1.0
++ react-loading-skeleton 3.5.0
++ react-markdown 9.0.3 (10.1.0 is available)
++ react-otp-input 3.1.1
++ react-paginate 8.2.0 (8.3.0 is available)
++ react-tooltip 5.20.0 (5.29.1 is available)
+- tslib 2.7.0
++ tslib 2.8.1
+
+devDependencies:
+- @babel/core 7.25.2
++ @babel/core 7.26.10 (7.28.0 is available)
++ @commitlint/cli 19.5.0 (19.8.1 is available)
++ @iconify/react 5.0.2 (6.0.0 is available)
++ @storybook/addon-docs 9.0.17
++ @storybook/react-vite 9.0.17
++ @svgr/webpack 8.1.0
+- @swc/helpers 0.5.13
++ @swc/helpers 0.5.17
++ @testing-library/react 16.1.0 (16.3.0 is available)
++ @typescript-eslint/eslint-plugin 7.18.0 (8.37.0 is available)
++ @typescript-eslint/parser 7.18.0 (8.37.0 is available)
++ @vitejs/plugin-react 4.3.1 (4.6.0 is available)
++ @vitest/coverage-v8 1.6.0 (3.2.4 is available)
++ @vitest/ui 1.6.0 (3.2.4 is available)
++ autoprefixer 10.4.13 (10.4.21 is available)
++ eslint 8.57.0 (9.31.0 is available) deprecated
++ eslint-config-next 15.4.1
++ eslint-config-prettier 10.0.0 (10.1.5 is available) deprecated
++ eslint-plugin-import 2.31.0 (2.32.0 is available)
++ eslint-plugin-jsx-a11y 6.10.1 (6.10.2 is available)
++ eslint-plugin-playwright 0.15.3 (2.2.0 is available)
++ eslint-plugin-react 7.32.2 (7.37.5 is available)
++ eslint-plugin-react-hooks 5.0.0 (5.2.0 is available)
++ eslint-plugin-storybook 9.0.17
++ jiti 2.4.2
++ storybook 9.0.17
++ typescript 5.8.3
++ vite 6.0.0 (7.0.5 is available)
++ vite-plugin-dts 4.5.4
++ vitest 1.6.0 (3.2.4 is available)
+
+WARN  Issues with peer dependencies found
+.
+├─┬ next 15.4.1
+│ └── ✕ unmet peer @playwright/test@^1.51.1: found 1.47.0
+├─┬ @storybook/react-webpack5 8.3.6
+│ ├── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+│ ├─┬ @storybook/preset-react-webpack 8.3.6
+│ │ ├── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+│ │ ├─┬ @storybook/core-webpack 8.3.6
+│ │ │ └── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+│ │ └─┬ @storybook/react 8.3.6
+│ │   ├── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+│ │   ├─┬ @storybook/react-dom-shim 8.3.6
+│ │   │ └── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+│ │   ├─┬ @storybook/manager-api 8.6.12
+│ │   │ └── ✕ unmet peer storybook@"^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0
+|| ^8.6.0-0": found 9.0.17
+│ │   ├─┬ @storybook/preview-api 8.6.12
+│ │   │ └── ✕ unmet peer storybook@"^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0
+|| ^8.6.0-0": found 9.0.17
+│ │   ├─┬ @storybook/components 8.6.12
+│ │   │ └── ✕ unmet peer storybook@"^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0
+|| ^8.6.0-0": found 9.0.17
+│ │   ├─┬ @storybook/theming 8.6.12
+│ │   │ └── ✕ unmet peer storybook@"^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0
+|| ^8.6.0-0": found 9.0.17
+│ │   └─┬ react-element-to-jsx-string 15.0.0
+│ │     ├── ✕ unmet peer react@"^0.14.8 || ^15.0.1 || ^16.0.0 || ^17.0.1 ||
+^18.0.0": found 19.1.0
+│ │     └── ✕ unmet peer react-dom@"^0.14.8 || ^15.0.1 || ^16.0.0 || ^17.0.1 ||
+^18.0.0": found 19.1.0
+│ └─┬ @storybook/builder-webpack5 8.3.6
+│   └── ✕ unmet peer storybook@^8.3.6: found 9.0.17
+├─┬ @newhighsco/storybook-addon-svgr 2.0.31
+│ └── ✕ unmet peer storybook@8.3.6: found 9.0.17
+├─┬ react-drag-drop-files 2.4.0
+│ ├── ✕ unmet peer react@^18.0.0: found 19.1.0
+│ └── ✕ unmet peer react-dom@^18.0.0: found 19.1.0
+├─┬ react-paginate 8.2.0
+│ └── ✕ unmet peer react@"^16 || ^17 || ^18": found 19.1.0
+└─┬ @vitejs/plugin-react 4.3.1
+└── ✕ unmet peer vite@"^4.2.0 || ^5.0.0": found 6.0.0
+
+libs/design-system
+└─┬ @testing-library/react 15.0.6
+├── ✕ unmet peer react@^18.0.0: found 19.1.0
+└── ✕ unmet peer react-dom@^18.0.0: found 19.1.0
+[12:34:32.878] [INFO] Dependencies deduplicated
+[12:34:32.878] [INFO] dedupe-dependencies-task-success: Dependencies deduplicated
+[12:34:32.881] [INFO] Checking the health of your project(s)..
+[12:34:34.165] [WARN] Found 1 issue across 2 projects
+[12:34:34.234] [INFO] You are currently using Storybook 9.0.17 but you have packages which are incompatible with it:
+
+- @newhighsco/storybook-addon-svgr@2.0.31 which depends on 8.3.6
+ Repo: https://github.com/newhighsco/storybook/tree/main/packages/storybook-addon-svgr
+
+Please consider updating your packages or contacting the maintainers for compatibility details.
+
+For more on Storybook 9 compatibility, see the linked GitHub issue:
+https://github.com/storybookjs/storybook/issues/30944
+
+Affected projects: E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook, E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook
+[12:34:34.234] [INFO] Incompatible Packages
+[12:34:34.317] [INFO] You are currently using Storybook 9.0.17 but you have packages which are incompatible with it:
+
+- @newhighsco/storybook-addon-svgr@2.0.31 which depends on 8.3.6
+ Repo: https://github.com/newhighsco/storybook/tree/main/packages/storybook-addon-svgr
+
+Please consider updating your packages or contacting the maintainers for compatibility details.
+
+For more on Storybook 9 compatibility, see the linked GitHub issue:
+https://github.com/storybookjs/storybook/issues/30944
+
+Affected projects: E:/xampp/htdocs/aress-frontend/apps/fe-app/.storybook, E:/xampp/htdocs/aress-frontend/libs/design-system/.storybook
+[12:34:34.385] [INFO] Storybook doctor is complete!
+[12:34:34.463] [INFO] You can always recheck the health of your project(s) by running:
+npx storybook doctor
+[12:34:34.526] [INFO] The upgrade is complete!
+[12:34:34.604] [INFO] Your project(s) have been upgraded successfully, but some issues were found which need your attention, please check Storybook doctor logs above.
+[12:34:35.175] [INFO] If you want to learn more about the automigrations that executed in your project(s), please check the following links:
+
+• eslintPlugin
+• consolidated-imports
+• remove-addon-interactions
+• renderer-to-framework
+• remove-essential-addons
+• wrap-require
+[12:34:35.240] [INFO] For a full list of changes, please check our migration guide: https://storybook.js.org/docs/migration-guide
