@@ -31,7 +31,11 @@ export const Tabs: React.FC<Props> = ({
   const [sliderStyle, setSliderStyle] = useState({ left: 0, width: 0 });
 
   useEffect(() => {
-    if (variant === 'sliding' && tabRefs.current[activeTab]) {
+    if (
+      variant === 'sliding' &&
+      typeof activeTab === 'number' &&
+      tabRefs.current[activeTab]
+    ) {
       const activeEl = tabRefs.current[activeTab]!;
       const { offsetLeft, offsetWidth } = activeEl;
       setSliderStyle({ left: offsetLeft, width: offsetWidth });
@@ -79,7 +83,7 @@ export const Tabs: React.FC<Props> = ({
                 e.stopPropagation();
               }
             }}
-            key={index}
+            key={props.id ?? props.title ?? index}
             className={cn(
               'text-md relative outline-none',
               {
@@ -141,11 +145,9 @@ export const Tabs: React.FC<Props> = ({
                 {variant === 'shaped' ? (
                   <div className="flex items-center gap-2">
                     {props.tag && <FundsTag color={props.tag} />}
-                    {props.icons?.length && (
-                      <Icon {...props.icons[0]} size="lg" />
-                    )}
+                    {props.icons?.[0] && <Icon {...props.icons[0]} size="lg" />}
                     {props.title}
-                    {props.icons?.length && props.title && (
+                    {props.icons?.[1] && props.title && (
                       <Icon {...props.icons[1]} size="lg" />
                     )}
                   </div>
@@ -158,8 +160,8 @@ export const Tabs: React.FC<Props> = ({
         ))}
       </TabList>
       <TabPanels className="mt-3">
-        {tabs.map(({ content }, index) => (
-          <TabPanel key={index}>{content}</TabPanel>
+        {tabs.map(({ content, id, title }, index) => (
+          <TabPanel key={id ?? title ?? index}>{content}</TabPanel>
         ))}
       </TabPanels>
     </TabGroup>
