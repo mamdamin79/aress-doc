@@ -17,7 +17,8 @@ export function useAutoRotate({
     const bounded = Math.min(Math.max(index, 0), barsNumber - 1);
     setCurrIndex(bounded);
     setIsProgramScroll(true);
-    const scrollAmount = bounded === 0 ? 160 : bounded * CARD_HEIGHT * 2.15 + 160;
+    const scrollAmount =
+      bounded === 0 ? 160 : bounded * CARD_HEIGHT * 2.15 + 160;
     window.scrollTo({ top: scrollAmount, behavior: 'smooth' });
   };
 

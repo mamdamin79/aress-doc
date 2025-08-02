@@ -12,8 +12,8 @@
 
 /** CaptchaType */
 export enum CaptchaType {
-  Image = "image",
-  Audio = "audio",
+  Image = 'image',
+  Audio = 'audio',
 }
 
 /** AddReportToDashboardForUserBody */
@@ -106,6 +106,28 @@ export interface BodyLoginForAccessTokenUsersLoginPost {
   client_secret?: string | null;
 }
 
+/** Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post */
+export interface BodySaveDashboardItemScreenshotDashboardsDashboardIdItemsDashboardItemIdScreenshotPost {
+  /**
+   * File
+   * @format binary
+   */
+  file: File;
+  /** Selected Filters */
+  selected_filters: string | null;
+}
+
+/** Body_save_screenshot_reports__report_id__screenshot_post */
+export interface BodySaveScreenshotReportsReportIdScreenshotPost {
+  /** Selected Filters */
+  selected_filters: string | null;
+  /**
+   * File
+   * @format binary
+   */
+  file: File;
+}
+
 /** Body_test_user_access_token_users_token_post */
 export interface BodyTestUserAccessTokenUsersTokenPost {
   /** Grant Type */
@@ -128,9 +150,9 @@ export interface BodyTestUserAccessTokenUsersTokenPost {
 /** CaptchaApiModel */
 export interface CaptchaApiModel {
   /** Value */
-  value: string;
+  value: string | null;
   /** Uid */
-  uid: number;
+  uid: number | null;
   /** Required */
   required: boolean;
 }
@@ -139,6 +161,34 @@ export interface CaptchaApiModel {
 export interface ChangeDashboardReportItemSortOrderBody {
   /** Order */
   order: number;
+}
+
+/** ChangeEmailByOtpBody */
+export interface ChangeEmailByOtpBody {
+  /** Otp */
+  otp: string;
+}
+
+/** ChangeEmailByOtpResponseApiModel */
+export interface ChangeEmailByOtpResponseApiModel {
+  /** Success */
+  success: boolean;
+}
+
+/** ChangeEmailGetOtpBody */
+export interface ChangeEmailGetOtpBody {
+  /** Newemail */
+  newEmail: string;
+  /** Passwordverificationtoken */
+  passwordVerificationToken: string;
+}
+
+/** ChangeEmailGetOtpResponseApiModel */
+export interface ChangeEmailGetOtpResponseApiModel {
+  /** Retryseconds */
+  retrySeconds: number;
+  /** Email */
+  email: string;
 }
 
 /** ChangePasswordByOtpApiModel */
@@ -297,6 +347,12 @@ export interface DashboardItemReportApiModel {
   reportCalculation: FinancialReportCalculationApiModel | null;
 }
 
+/** DashboardItemScreenshotResponseApiModel */
+export interface DashboardItemScreenshotResponseApiModel {
+  /** Queryid */
+  queryId: string;
+}
+
 /** DashboardListItemApiModel */
 export interface DashboardListItemApiModel {
   /** Identifier */
@@ -380,6 +436,8 @@ export interface FinancialReportDetailsApiModel {
   /** Relatedreports */
   relatedReports: FinancialReportListItemApiModel[];
   reportCalculation: FinancialReportCalculationApiModel | null;
+  /** Screenshoturl */
+  screenshotUrl: string | null;
 }
 
 /** FinancialReportFilterApiModel */
@@ -484,7 +542,7 @@ export interface FundListItemApiModel {
    * Website
    * وبسایت صندوق
    */
-  website: string;
+  website: string | null;
   /**
    * Statuteurl
    * اساسنامه صندوق
@@ -1014,10 +1072,7 @@ export interface Report13Dot3CalculationResultItem {
 
 /** Report13Dot3CalculationResultPoints */
 export interface Report13Dot3CalculationResultPoints {
-  /**
-   * Date
-   * @format date
-   */
+  /** Date */
   date: string;
   /** Value */
   value: number;
@@ -1095,15 +1150,18 @@ export interface Report6CalculationResult {
 
 /** Report6CalculationResultTimeSeriesItem */
 export interface Report6CalculationResultTimeSeriesItem {
-  /**
-   * Dt
-   * @format date
-   */
+  /** Dt */
   dt: string;
   /** Indexvalue */
   indexValue: number;
   /** Netflow */
   netFlow: number;
+}
+
+/** ReportScreenshotResponseApiModel */
+export interface ReportScreenshotResponseApiModel {
+  /** Queryid */
+  queryId: string;
 }
 
 /** ResetForgotPasswordByOtpResponseApiModel */
@@ -1292,9 +1350,9 @@ export interface VideoThumbnailApiModel {
 }
 
 export type QueryParamsType = Record<string | number, any>;
-export type ResponseFormat = keyof Omit<Body, "body" | "bodyUsed">;
+export type ResponseFormat = keyof Omit<Body, 'body' | 'bodyUsed'>;
 
-export interface FullRequestParams extends Omit<RequestInit, "body"> {
+export interface FullRequestParams extends Omit<RequestInit, 'body'> {
   /** set parameter to `true` for call `securityWorker` for this request */
   secure?: boolean;
   /** request path */
@@ -1315,12 +1373,12 @@ export interface FullRequestParams extends Omit<RequestInit, "body"> {
 
 export type RequestParams = Omit<
   FullRequestParams,
-  "body" | "method" | "query" | "path"
+  'body' | 'method' | 'query' | 'path'
 >;
 
 export interface ApiConfig<SecurityDataType = unknown> {
   baseUrl?: string;
-  baseApiParams?: Omit<RequestParams, "baseUrl" | "cancelToken" | "signal">;
+  baseApiParams?: Omit<RequestParams, 'baseUrl' | 'cancelToken' | 'signal'>;
   securityWorker?: (
     securityData: SecurityDataType | null,
   ) => Promise<RequestParams | void> | RequestParams | void;
@@ -1336,26 +1394,26 @@ export interface HttpResponse<D extends unknown, E extends unknown = unknown>
 type CancelToken = Symbol | string | number;
 
 export enum ContentType {
-  Json = "application/json",
-  JsonApi = "application/vnd.api+json",
-  FormData = "multipart/form-data",
-  UrlEncoded = "application/x-www-form-urlencoded",
-  Text = "text/plain",
+  Json = 'application/json',
+  JsonApi = 'application/vnd.api+json',
+  FormData = 'multipart/form-data',
+  UrlEncoded = 'application/x-www-form-urlencoded',
+  Text = 'text/plain',
 }
 
 export class HttpClient<SecurityDataType = unknown> {
-  public baseUrl: string = "";
+  public baseUrl: string = '';
   private securityData: SecurityDataType | null = null;
-  private securityWorker?: ApiConfig<SecurityDataType>["securityWorker"];
+  private securityWorker?: ApiConfig<SecurityDataType>['securityWorker'];
   private abortControllers = new Map<CancelToken, AbortController>();
   private customFetch = (...fetchParams: Parameters<typeof fetch>) =>
     fetch(...fetchParams);
 
   private baseApiParams: RequestParams = {
-    credentials: "same-origin",
+    credentials: 'same-origin',
     headers: {},
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
   };
 
   constructor(apiConfig: ApiConfig<SecurityDataType> = {}) {
@@ -1368,7 +1426,7 @@ export class HttpClient<SecurityDataType = unknown> {
 
   protected encodeQueryParam(key: string, value: any) {
     const encodedKey = encodeURIComponent(key);
-    return `${encodedKey}=${encodeURIComponent(typeof value === "number" ? value : `${value}`)}`;
+    return `${encodedKey}=${encodeURIComponent(typeof value === 'number' ? value : `${value}`)}`;
   }
 
   protected addQueryParam(query: QueryParamsType, key: string) {
@@ -1377,13 +1435,13 @@ export class HttpClient<SecurityDataType = unknown> {
 
   protected addArrayQueryParam(query: QueryParamsType, key: string) {
     const value = query[key];
-    return value.map((v: any) => this.encodeQueryParam(key, v)).join("&");
+    return value.map((v: any) => this.encodeQueryParam(key, v)).join('&');
   }
 
   protected toQueryString(rawQuery?: QueryParamsType): string {
     const query = rawQuery || {};
     const keys = Object.keys(query).filter(
-      (key) => "undefined" !== typeof query[key],
+      (key) => 'undefined' !== typeof query[key],
     );
     return keys
       .map((key) =>
@@ -1391,25 +1449,25 @@ export class HttpClient<SecurityDataType = unknown> {
           ? this.addArrayQueryParam(query, key)
           : this.addQueryParam(query, key),
       )
-      .join("&");
+      .join('&');
   }
 
   protected addQueryParams(rawQuery?: QueryParamsType): string {
     const queryString = this.toQueryString(rawQuery);
-    return queryString ? `?${queryString}` : "";
+    return queryString ? `?${queryString}` : '';
   }
 
   private contentFormatters: Record<ContentType, (input: any) => any> = {
     [ContentType.Json]: (input: any) =>
-      input !== null && (typeof input === "object" || typeof input === "string")
+      input !== null && (typeof input === 'object' || typeof input === 'string')
         ? JSON.stringify(input)
         : input,
     [ContentType.JsonApi]: (input: any) =>
-      input !== null && (typeof input === "object" || typeof input === "string")
+      input !== null && (typeof input === 'object' || typeof input === 'string')
         ? JSON.stringify(input)
         : input,
     [ContentType.Text]: (input: any) =>
-      input !== null && typeof input !== "string"
+      input !== null && typeof input !== 'string'
         ? JSON.stringify(input)
         : input,
     [ContentType.FormData]: (input: any) =>
@@ -1419,7 +1477,7 @@ export class HttpClient<SecurityDataType = unknown> {
           key,
           property instanceof Blob
             ? property
-            : typeof property === "object" && property !== null
+            : typeof property === 'object' && property !== null
               ? JSON.stringify(property)
               : `${property}`,
         );
@@ -1481,7 +1539,7 @@ export class HttpClient<SecurityDataType = unknown> {
     ...params
   }: FullRequestParams): Promise<HttpResponse<T, E>> => {
     const secureParams =
-      ((typeof secure === "boolean" ? secure : this.baseApiParams.secure) &&
+      ((typeof secure === 'boolean' ? secure : this.baseApiParams.secure) &&
         this.securityWorker &&
         (await this.securityWorker(this.securityData))) ||
       {};
@@ -1491,13 +1549,13 @@ export class HttpClient<SecurityDataType = unknown> {
     const responseFormat = format || requestParams.format;
 
     return this.customFetch(
-      `${baseUrl || this.baseUrl || ""}${path}${queryString ? `?${queryString}` : ""}`,
+      `${baseUrl || this.baseUrl || ''}${path}${queryString ? `?${queryString}` : ''}`,
       {
         ...requestParams,
         headers: {
           ...(requestParams.headers || {}),
           ...(type && type !== ContentType.FormData
-            ? { "Content-Type": type }
+            ? { 'Content-Type': type }
             : {}),
         },
         signal:
@@ -1505,7 +1563,7 @@ export class HttpClient<SecurityDataType = unknown> {
             ? this.createAbortSignal(cancelToken)
             : requestParams.signal) || null,
         body:
-          typeof body === "undefined" || body === null
+          typeof body === 'undefined' || body === null
             ? null
             : payloadFormatter(body),
       },
@@ -1566,8 +1624,8 @@ export class Api<
     healthHealthGet: (params: RequestParams = {}) =>
       this.request<HealthApiModel, any>({
         path: `/health`,
-        method: "GET",
-        format: "json",
+        method: 'GET',
+        format: 'json',
         ...params,
       }),
   };
@@ -1604,10 +1662,10 @@ export class Api<
     ) =>
       this.request<CaptchaApiModel, HTTPValidationError>({
         path: `/users/login/captcha`,
-        method: "GET",
+        method: 'GET',
         query: query,
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -1631,11 +1689,11 @@ export class Api<
     ) =>
       this.request<TokenApiModel, HTTPValidationError>({
         path: `/users/login`,
-        method: "POST",
+        method: 'POST',
         query: query,
         body: data,
         type: ContentType.UrlEncoded,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -1653,10 +1711,10 @@ export class Api<
     ) =>
       this.request<TokenApiModel, HTTPValidationError>({
         path: `/users/token`,
-        method: "POST",
+        method: 'POST',
         body: data,
         type: ContentType.UrlEncoded,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -1672,9 +1730,9 @@ export class Api<
     getCurrentUserUsersMeGet: (params: RequestParams = {}) =>
       this.request<AressApiUser | AnonymousApiUser, any>({
         path: `/users/me`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -1682,12 +1740,12 @@ export class Api<
      * @description Get captcha to reset password
      *
      * @tags Users
-     * @name ForgotPasswordCaptchaUsersPasswordForgotCaptchaPost
+     * @name ForgotPasswordCaptchaUsersPasswordForgotCaptchaGet
      * @summary Forgot Password Captcha
-     * @request POST:/users/password/forgot/captcha
+     * @request GET:/users/password/forgot/captcha
      * @secure
      */
-    forgotPasswordCaptchaUsersPasswordForgotCaptchaPost: (
+    forgotPasswordCaptchaUsersPasswordForgotCaptchaGet: (
       query?: {
         /**
          * Captchawidth
@@ -1710,10 +1768,10 @@ export class Api<
     ) =>
       this.request<CaptchaApiModel, HTTPValidationError>({
         path: `/users/password/forgot/captcha`,
-        method: "POST",
+        method: 'GET',
         query: query,
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -1734,10 +1792,10 @@ export class Api<
         HTTPValidationError
       >({
         path: `/users/password/forgot/otp`,
-        method: "POST",
+        method: 'POST',
         body: data,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -1758,10 +1816,10 @@ export class Api<
         HTTPValidationError
       >({
         path: `/users/password/forgot/reset`,
-        method: "POST",
+        method: 'POST',
         body: data,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -1782,9 +1840,9 @@ export class Api<
         HTTPValidationError
       >({
         path: `/users/profile/password/change/otp`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -1803,11 +1861,11 @@ export class Api<
     ) =>
       this.request<ChangePasswordByOtpApiModel, HTTPValidationError>({
         path: `/users/profile/password/change`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -1829,11 +1887,11 @@ export class Api<
         HTTPValidationError
       >({
         path: `/users/profile/password/validate`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -1852,11 +1910,11 @@ export class Api<
     ) =>
       this.request<ChangePhoneGetOtpResponseApiModel, HTTPValidationError>({
         path: `/users/profile/phone/change/otp`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -1875,11 +1933,57 @@ export class Api<
     ) =>
       this.request<ChangePhoneByOtpResponseApiModel, HTTPValidationError>({
         path: `/users/profile/phone/change`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description get otp to change email
+     *
+     * @tags Users
+     * @name ChangeEmailGetOtpUsersProfileEmailChangeOtpPost
+     * @summary Change Email Get Otp
+     * @request POST:/users/profile/email/change/otp
+     * @secure
+     */
+    changeEmailGetOtpUsersProfileEmailChangeOtpPost: (
+      data: ChangeEmailGetOtpBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<ChangeEmailGetOtpResponseApiModel, HTTPValidationError>({
+        path: `/users/profile/email/change/otp`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Change email with otp
+     *
+     * @tags Users
+     * @name ChangeEmailByOtpUsersProfileEmailChangePost
+     * @summary Change Email By Otp
+     * @request POST:/users/profile/email/change
+     * @secure
+     */
+    changeEmailByOtpUsersProfileEmailChangePost: (
+      data: ChangeEmailByOtpBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<ChangeEmailByOtpResponseApiModel, HTTPValidationError>({
+        path: `/users/profile/email/change`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
         ...params,
       }),
 
@@ -1898,11 +2002,11 @@ export class Api<
     ) =>
       this.request<ChangeUsernameResponseApiModel, HTTPValidationError>({
         path: `/users/profile/username/change`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -1921,11 +2025,11 @@ export class Api<
     ) =>
       this.request<ChangeProfilePictureResponseApiModel, HTTPValidationError>({
         path: `/users/profile/picture/change`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.FormData,
-        format: "json",
+        format: 'json',
         ...params,
       }),
   };
@@ -1952,10 +2056,26 @@ export class Api<
     ) =>
       this.request<FinancialReportListItemApiModel[], HTTPValidationError>({
         path: `/reports`,
-        method: "GET",
+        method: 'GET',
         query: query,
         secure: true,
-        format: "json",
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Get list of report categories.
+     *
+     * @tags Reports
+     * @name ReportCategoriesReportsCategoriesGet
+     * @summary Report Categories
+     * @request GET:/reports/categories
+     */
+    reportCategoriesReportsCategoriesGet: (params: RequestParams = {}) =>
+      this.request<FinancialReportCategoryApiModel[], any>({
+        path: `/reports/categories`,
+        method: 'GET',
+        format: 'json',
         ...params,
       }),
 
@@ -1970,13 +2090,18 @@ export class Api<
      */
     reportDetailsReportsReportIdGet: (
       reportId: string,
+      query?: {
+        /** Screenshotqueryid */
+        screenshotQueryId?: string | null;
+      },
       params: RequestParams = {},
     ) =>
       this.request<FinancialReportDetailsApiModel, HTTPValidationError>({
         path: `/reports/${reportId}`,
-        method: "GET",
+        method: 'GET',
+        query: query,
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -1996,27 +2121,11 @@ export class Api<
     ) =>
       this.request<FinancialReportCalculationApiModel, HTTPValidationError>({
         path: `/reports/${reportId}`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Get list of report categories.
-     *
-     * @tags Reports
-     * @name ReportCategoriesReportsCategoriesGet
-     * @summary Report Categories
-     * @request GET:/reports/categories
-     */
-    reportCategoriesReportsCategoriesGet: (params: RequestParams = {}) =>
-      this.request<FinancialReportCategoryApiModel[], any>({
-        path: `/reports/categories`,
-        method: "GET",
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2035,9 +2144,9 @@ export class Api<
     ) =>
       this.request<UserReportFavoriteStatus, HTTPValidationError>({
         path: `/reports/${reportId}/favorite`,
-        method: "POST",
+        method: 'POST',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2051,14 +2160,38 @@ export class Api<
      * @secure
      */
     removeReportFromFavoritesReportsReportIdFavoriteDelete: (
-      reportId: number,
+      reportId: string,
       params: RequestParams = {},
     ) =>
       this.request<UserReportFavoriteStatus, HTTPValidationError>({
         path: `/reports/${reportId}/favorite`,
-        method: "DELETE",
+        method: 'DELETE',
         secure: true,
-        format: "json",
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Save report screenshot
+     *
+     * @tags Reports
+     * @name SaveScreenshotReportsReportIdScreenshotPost
+     * @summary Save Screenshot
+     * @request POST:/reports/{report_id}/screenshot
+     * @secure
+     */
+    saveScreenshotReportsReportIdScreenshotPost: (
+      reportId: string,
+      data: BodySaveScreenshotReportsReportIdScreenshotPost,
+      params: RequestParams = {},
+    ) =>
+      this.request<ReportScreenshotResponseApiModel, HTTPValidationError>({
+        path: `/reports/${reportId}/screenshot`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
+        format: 'json',
         ...params,
       }),
   };
@@ -2075,9 +2208,9 @@ export class Api<
     userDashboardsDashboardsGet: (params: RequestParams = {}) =>
       this.request<DashboardListItemApiModel[], any>({
         path: `/dashboards`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2096,11 +2229,11 @@ export class Api<
     ) =>
       this.request<CreateDashboardResponseApiModel, HTTPValidationError>({
         path: `/dashboards`,
-        method: "PUT",
+        method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2119,9 +2252,9 @@ export class Api<
     ) =>
       this.request<DashboardDetailsApiModel, HTTPValidationError>({
         path: `/dashboards/${dashboardId}`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2141,11 +2274,11 @@ export class Api<
     ) =>
       this.request<DashboardListItemApiModel, HTTPValidationError>({
         path: `/dashboards/${dashboardId}`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2164,9 +2297,9 @@ export class Api<
     ) =>
       this.request<DashboardListItemApiModel[], HTTPValidationError>({
         path: `/dashboards/${dashboardId}`,
-        method: "DELETE",
+        method: 'DELETE',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2186,11 +2319,11 @@ export class Api<
     ) =>
       this.request<DashboardItemApiModel, HTTPValidationError>({
         path: `/dashboards/${dashboardId}`,
-        method: "PUT",
+        method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2210,11 +2343,11 @@ export class Api<
     ) =>
       this.request<DashboardDetailsApiModel, HTTPValidationError>({
         path: `/dashboards/${dashboardId}/duplicate`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2233,9 +2366,9 @@ export class Api<
     ) =>
       this.request<DashboardItemPreviewApiModel[], HTTPValidationError>({
         path: `/dashboards/${dashboardId}/preview`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2255,9 +2388,9 @@ export class Api<
     ) =>
       this.request<DeleteDashboardItemResponseApiModel, HTTPValidationError>({
         path: `/dashboards/${dashboardId}/items/${dashboardItemId}`,
-        method: "DELETE",
+        method: 'DELETE',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2278,13 +2411,42 @@ export class Api<
     ) =>
       this.request<DashboardItemApiModel, HTTPValidationError>({
         path: `/dashboards/${dashboardId}/items/${dashboardItemId}/replace`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
+
+    /**
+     * @description Replace item in dashboard.
+     *
+     * @tags Dashboards
+     * @name SaveDashboardItemScreenshotDashboardsDashboardIdItemsDashboardItemIdScreenshotPost
+     * @summary Save Dashboard Item Screenshot
+     * @request POST:/dashboards/{dashboard_id}/items/{dashboard_item_id}/screenshot
+     * @secure
+     */
+    saveDashboardItemScreenshotDashboardsDashboardIdItemsDashboardItemIdScreenshotPost:
+      (
+        dashboardId: number,
+        dashboardItemId: number,
+        data: BodySaveDashboardItemScreenshotDashboardsDashboardIdItemsDashboardItemIdScreenshotPost,
+        params: RequestParams = {},
+      ) =>
+        this.request<
+          DashboardItemScreenshotResponseApiModel,
+          HTTPValidationError
+        >({
+          path: `/dashboards/${dashboardId}/items/${dashboardItemId}/screenshot`,
+          method: 'POST',
+          body: data,
+          secure: true,
+          type: ContentType.FormData,
+          format: 'json',
+          ...params,
+        }),
 
     /**
      * @description Get dashboard item calculations.
@@ -2304,11 +2466,11 @@ export class Api<
       ) =>
         this.request<DashboardItemApiModel, HTTPValidationError>({
           path: `/dashboards/${dashboardId}/items/${dashboardItemId}/calculations`,
-          method: "POST",
+          method: 'POST',
           body: data,
           secure: true,
           type: ContentType.Json,
-          format: "json",
+          format: 'json',
           ...params,
         }),
 
@@ -2330,11 +2492,11 @@ export class Api<
       ) =>
         this.request<any, HTTPValidationError>({
           path: `/dashboards/${dashboardId}/items/${dashboardItemId}/reorder`,
-          method: "POST",
+          method: 'POST',
           body: data,
           secure: true,
           type: ContentType.Json,
-          format: "json",
+          format: 'json',
           ...params,
         }),
   };
@@ -2350,8 +2512,8 @@ export class Api<
     allFundsFundsGet: (params: RequestParams = {}) =>
       this.request<FundListItemApiModel[], any>({
         path: `/funds`,
-        method: "GET",
-        format: "json",
+        method: 'GET',
+        format: 'json',
         ...params,
       }),
 
@@ -2369,8 +2531,8 @@ export class Api<
     ) =>
       this.request<FundListItemApiModel[], HTTPValidationError>({
         path: `/funds/type/${fundType}`,
-        method: "GET",
-        format: "json",
+        method: 'GET',
+        format: 'json',
         ...params,
       }),
 
@@ -2395,10 +2557,10 @@ export class Api<
     ) =>
       this.request<FundTableResponseApiModel, HTTPValidationError>({
         path: `/funds/table`,
-        method: "GET",
+        method: 'GET',
         query: query,
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2417,11 +2579,11 @@ export class Api<
     ) =>
       this.request<PinFundInTableTabResponseApiModel, HTTPValidationError>({
         path: `/funds/table/pin`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2440,11 +2602,11 @@ export class Api<
     ) =>
       this.request<UnpinFundInTableTabResponseApiModel, HTTPValidationError>({
         path: `/funds/table/unpin`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
   };

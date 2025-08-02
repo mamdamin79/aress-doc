@@ -1,2 +1,2 @@
 export { OptionsListExplorer } from './OptionsListExplorer';
-export * from './OptionsListExplorer.types'
+export * from './OptionsListExplorer.types';

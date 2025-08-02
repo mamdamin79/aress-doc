@@ -23,18 +23,11 @@ export const Default: Story = {
   argTypes: {
     min: {
       control: { type: 'text' },
-    }
+    },
   },
-  render: function Success(args) {
-    const [{ isOpen }, updateArgs] = useArgs();
+  render: function Success() {
     const [{ dateRange }, updateArgsDateRange] = useArgs();
 
-    function onCloseDatePicer() {
-      updateArgs({ isOpen: false });
-    }
-
-    
-    
     function setDateRange(start: DateType, end: DateType) {
       updateArgsDateRange({ dateRange: { start, end } });
     }
@@ -45,12 +38,7 @@ export const Default: Story = {
         setDateRange={(start, end) => setDateRange(start, end)}
         max="1400-12-25"
         min="1300-01-25"
-        isOpen={isOpen}
-        onClose={onCloseDatePicer}
       />
     );
   },
-};
-Default.args = {
-  isOpen: true,
 };
