@@ -138,11 +138,11 @@ export const Tabs: React.FC<Props> = ({
                 'bg-surface-neutral-secondary': variant === 'rounded-full',
               },
               {
-                'rounded-5xl hover:text-text-brand-primary-600 text-text-neutral-primary data-[selected]:text-text-onbrand-neutral-primary-on600 px-3 py-1 text-sm font-medium duration-300':
+                'rounded-5xl hover:text-text-brand-primary-600 text-text-neutral-primary data-[selected]:text-text-onbrand-neutral-primary-on600 h-[36px] px-3 text-sm font-medium duration-300':
                   variant === 'sliding',
               },
               {
-                'px-1.5 py-0.5 text-xs font-medium':
+                'h-[26px] px-1.5 py-0.5 text-xs font-medium':
                   variant === 'sliding' && size === 'small',
               },
             )}
