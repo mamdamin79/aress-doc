@@ -13,7 +13,6 @@ export default meta;
 
 type Story = StoryObj<typeof ProgressBar>;
 
-// A default story for the ProgressBar component
 export const Default: Story = {
   args: {
     progressBarItems: [
@@ -24,6 +23,19 @@ export const Default: Story = {
       { text: 'رمز عبور جدید', status: 'success' },
       { text: 'رمز عبور جدید', status: 'success' },
     ],
+    orientation: 'horizental',
+    activeIndex: 0,
+  },
+};
+
+export const vertical: Story = {
+  args: {
+    progressBarItems: [
+      { text: 'رمز عبور جدید', status: 'success' },
+      { text: 'رمز عبور جدید', status: 'error' },
+      { text: 'رمز عبور جدید', status: 'success' },
+    ],
+    orientation: 'vertical',
     activeIndex: 0,
   },
 };
