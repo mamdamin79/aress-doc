@@ -1,39 +1,34 @@
 import { DatePickerState } from '../DatePickerState';
-import { DateText } from '../DatePickerText';
+import { DatePickerText } from '../DatePickerText';
+import { dateType } from './DatePicker.types';
 
 interface DatePickerTriggerProps {
   title: string[];
-  date?: {
-    day: number;
-    month: number;
-    year: number;
-  };
+  startDate?: dateType;
+  endDate?: dateType;
   mode: 'single' | 'range';
   onClick?: () => void;
 }
 
 export function DatePickerTrigger({
   title,
-  date,
+  endDate,
+  startDate,
   onClick,
   mode,
 }: DatePickerTriggerProps) {
   return (
-    <div className="flex gap-[72px]">
+    <div className="flex items-end gap-16">
       {mode === 'range' ? (
         <div className="flex gap-8">
-          <DateText title={title[0]} date={date} />
-          <DateText title={title[1]} date={date} />
+          <DatePickerText title={title[0]} date={startDate} />
+          <DatePickerText title={title[1]} date={endDate} />
         </div>
       ) : (
-        <DateText title={title[0]} date={date} />
+        <DatePickerText title={title[0]} date={startDate} />
       )}
       <div onClick={onClick}>
-        <DatePickerState
-          active={date ? true : false}
-          size="larg"
-          theme="default"
-        />
+        <DatePickerState active={!!startDate} size="large" theme="default" />
       </div>
     </div>
   );

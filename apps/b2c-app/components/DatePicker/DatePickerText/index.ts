@@ -1,1 +1,1 @@
-export * from './DateText';
+export * from './DatePickerText';

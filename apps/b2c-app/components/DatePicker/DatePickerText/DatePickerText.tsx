@@ -1,15 +1,12 @@
 import { cn } from 'design-system';
+import { dateType } from '../DatePickerTrigger/DatePicker.types';
 
 interface DateTextProps {
   title: string;
-  date?: {
-    day: number;
-    month: number;
-    year: number;
-  };
+  date?: dateType;
 }
 
-export function DateText({ title, date }: DateTextProps) {
+export function DatePickerText({ title, date }: DateTextProps) {
   return (
     <div className="flex flex-col gap-3">
       <span className="text-text-neutral-primary text-sm">{title}</span>

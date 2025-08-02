@@ -1,22 +1,22 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { DatePckerState } from './DatePickerState';
+import { DatePickerState } from './DatePickerState';
 
 // Meta configuration for the DatePckerState component in Storybook
-const meta: Meta<typeof DatePckerState> = {
-  title: 'Components/DatePckerState', // Defines the title in Storybook's UI
-  component: DatePckerState, // Links to the actual component
+const meta: Meta<typeof DatePickerState> = {
+  title: 'Components/DatePickerState', // Defines the title in Storybook's UI
+  component: DatePickerState, // Links to the actual component
   tags: ['autodocs'], // Optional: Add any additional tags for better categorization
 };
 
 export default meta;
 
-type Story = StoryObj<typeof DatePckerState>;
+type Story = StoryObj<typeof DatePickerState>;
 
 // A default story for the DatePckerState component
 export const Default: Story = {
   args: {
     active: false,
-    size: 'larg',
+    size: 'large',
     theme: 'default',
   },
 };
@@ -24,7 +24,7 @@ export const Default: Story = {
 export const Active: Story = {
   args: {
     active: true,
-    size: 'larg',
+    size: 'large',
     theme: 'default',
   },
 };

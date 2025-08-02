@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { DateText } from './DateText';
+import { DateText } from './DatePickerText';
 
 // Meta configuration for the DateText component in Storybook
 const meta: Meta<typeof DateText> = {
