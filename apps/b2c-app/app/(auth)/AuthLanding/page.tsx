@@ -11,7 +11,7 @@ import { Button } from 'design-system';
 import { Indicator } from './_components/Indicator';
 import Link from 'next/link';
 
-const page = () => {
+const Page = () => {
   const slidesData = [
     {
       title: 'پردازش اطلاعات مالی آرسس',
@@ -146,4 +146,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

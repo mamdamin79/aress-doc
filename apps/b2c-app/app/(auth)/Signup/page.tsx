@@ -3,8 +3,9 @@ import { ProgressBar } from 'design-system';
 import React, { useState } from 'react';
 import { AuthForm } from '../_components/AuthForm';
 import { Result } from './_components/Result';
+const PROGRESS_BAR_ITEMS = ['کد ملی', 'رمز یک‌‌بار مصرف', 'ثبت‌نام نهایی'];
 
-const page = () => {
+const Page = () => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const handleNextStep = () => {
@@ -24,7 +25,7 @@ const page = () => {
       <div className="absolute left-1/2 top-12 w-[680px] -translate-x-1/2">
         <ProgressBar
           activeIndex={currentStep}
-          progressBarItems={['کد ملی', 'رمز یک‌‌بار مصرف', 'ثبت‌نام نهایی']}
+          progressBarItems={PROGRESS_BAR_ITEMS}
         />
       </div>
 
@@ -44,4 +45,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
