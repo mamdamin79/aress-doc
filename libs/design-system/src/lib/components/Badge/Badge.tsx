@@ -3,7 +3,7 @@ import { Icon, IconProps } from '../Icon';
 
 interface BadgeProps {
   theme: 'disabled' | 'green' | 'blue' | 'pruple' | 'yellow' | 'red';
-  icon: IconProps;
+  icon?: IconProps;
   title: string;
 }
 
@@ -29,7 +29,7 @@ export function Badge({ title, theme, icon }: BadgeProps) {
       )}
     >
       {title}
-      <Icon {...icon} />
+      {icon && <Icon {...icon} />}
     </div>
   );
 }
