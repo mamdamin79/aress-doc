@@ -1,7 +1,7 @@
 import { cn, Icon } from 'design-system';
-import { DateText } from '../DatePicerText';
+import { DateText } from '../index';
 
-interface Porps {
+interface DatePickerTriggerProps {
   title: string[];
   date?: {
     day: number;
@@ -12,7 +12,12 @@ interface Porps {
   onClick?: () => void;
 }
 
-export function DatePickerTrigger({ title, date, onClick, mode }: Porps) {
+export function DatePickerTrigger({
+  title,
+  date,
+  onClick,
+  mode,
+}: DatePickerTriggerProps) {
   return (
     <div className="flex gap-[72px]">
       {mode === 'range' ? (

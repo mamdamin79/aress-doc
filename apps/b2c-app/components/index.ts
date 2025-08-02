@@ -1,3 +1,3 @@
 export * from './Header';
-export * from './DatePicerText';
-export * from './DatePickerTrigger';
+export * from './DatePicker/DatePickerText';
+export * from './DatePicker/DatePickerTrigger';
