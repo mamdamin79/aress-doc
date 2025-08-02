@@ -17,12 +17,12 @@ type Story = StoryObj<typeof ProgressBar>;
 export const Default: Story = {
   args: {
     progressBarItems: [
-      'کد ملی و شماره همراه',
-      'رمز یک‌بار مصرف',
-      'رمز عبور جدید',
-      'رمز عبور جدید',
-      'رمز عبور جدید',
-      'رمز عبور جدید',
+      { text: 'رمز عبور جدید', status: 'success' },
+      { text: 'رمز عبور جدید', status: 'error' },
+      { text: 'رمز عبور جدید', status: 'success' },
+      { text: 'رمز عبور جدید', status: 'success' },
+      { text: 'رمز عبور جدید', status: 'success' },
+      { text: 'رمز عبور جدید', status: 'success' },
     ],
     activeIndex: 0,
   },

@@ -1,9 +1,16 @@
-import { cn } from '../../../utils';
+import { cn } from './../../../utils';
+import { Icon } from '../Icon';
 import { ProgressCircle } from './ProgressCircle';
 
+interface ProgressBarItemType {
+  text: string;
+  status: 'error' | 'success';
+}
+
 interface Props {
-  progressBarItems: string[];
+  progressBarItems: ProgressBarItemType[];
   activeIndex: number;
+  orientation?: 'vertical' | 'horizental';
 }
 
 export function ProgressBar({ progressBarItems, activeIndex }: Props) {
@@ -15,11 +22,14 @@ export function ProgressBar({ progressBarItems, activeIndex }: Props) {
             {/* Connecting Line */}
             {index + 1 < progressBarItems.length && (
               <div className="relative col-span-12 -mt-2 flex items-center justify-center">
-                <div className="absolute mr-[90%] h-1 w-full bg-border-neutral-primary" />
+                <div className="bg-border-neutral-primary absolute mr-[90%] h-1 w-full" />
                 <div
                   className={cn(
-                    'bg-surface-brand-500 absolute mr-[90%] h-1 transition-all duration-300',
+                    'absolute mr-[90%] h-1 transition-all duration-300',
                     activeIndex > index ? 'w-full' : 'w-0',
+                    item.status === 'success'
+                      ? 'bg-surface-brand-500'
+                      : 'bg-surface-message-error-300-disable',
                   )}
                 />
               </div>
@@ -28,19 +38,27 @@ export function ProgressBar({ progressBarItems, activeIndex }: Props) {
             {/* Circle and Text */}
             <div className="relative col-span-12 col-start-1 flex w-full flex-col items-center justify-center">
               {activeIndex === index ? (
-                <ProgressCircle mode="active" />
+                activeIndex &&
+                progressBarItems.length > activeIndex &&
+                progressBarItems[activeIndex - 1].status === 'error' ? (
+                  <ProgressCircle mode="passed" />
+                ) : (
+                  <ProgressCircle mode="active" />
+                )
               ) : activeIndex > index ? (
-                <ProgressCircle mode="inactive" />
+                <ProgressCircle status={item.status} mode="inactive">
+                  <Icon name={item.status === 'error' ? 'x' : 'check'} />
+                </ProgressCircle>
               ) : (
                 <ProgressCircle mode="passed" />
               )}
               <div
                 className={cn(
-                  'text-md mt-3 w-full text-center font-medium text-text-neutral-primary',
-                  activeIndex < index && 'text-sm text-text-neutral-secondary',
+                  'text-md text-text-neutral-primary mt-3 w-full text-center font-medium',
+                  activeIndex < index && 'text-text-neutral-secondary text-sm',
                 )}
               >
-                {item}
+                {item.text}
               </div>
             </div>
           </div>
