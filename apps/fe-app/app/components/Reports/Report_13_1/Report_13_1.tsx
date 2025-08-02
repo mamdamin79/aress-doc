@@ -12,12 +12,10 @@ import {
   OptionItem,
 } from 'design-system';
 import { baseOptions, xAxisLabels, yAxisLabels } from '../Report.config.shared';
-import {
-  FinancialReportFilterApiModel,
-  Report13Dot1CalculationResult,
-} from '@openapi';
+import { Report13Dot1CalculationResult } from '@openapi';
 import { toBasicSetting } from '../Report.utils';
 import { financialDefinitionsReport13_1 } from './Report_13_1.constants';
+import { ReportProps } from '../Report.types';
 
 const categories = [
   'ارزش معاملات',
@@ -27,21 +25,9 @@ const categories = [
   'فروش حقوقی',
 ];
 
-export interface Report13_1Props {
-  title?: string;
-  data: Report13Dot1CalculationResult;
-  filters: FinancialReportFilterApiModel[];
-  onSubmit?: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
-  onRemove?: () => void;
-}
-
-export const Report_13_1: React.FC<Report13_1Props> = ({
-  data,
-  filters,
-  onSubmit,
-  title,
-  onRemove,
-}) => {
+export const Report_13_1: React.FC<
+  ReportProps<Report13Dot1CalculationResult>
+> = ({ data, filters, onSubmit, title, onRemove, onShare }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [switchIndex, setSwitchIndex] = useState<number>(1); // 1 is initialIndex
 
@@ -301,6 +287,7 @@ export const Report_13_1: React.FC<Report13_1Props> = ({
         toBasicSetting(filterState[0], updateOption),
         toBasicSetting(filterState[1], updateOption),
       ]}
+      onShare={onShare}
       switchIcons={{
         items: [
           { icon: { name: 'grid-3x3' } },

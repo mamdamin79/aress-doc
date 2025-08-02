@@ -8,6 +8,7 @@ const protectedRoutes = [
   '/report', // covers /report/:id
   '/profile',
   '/investment_funds',
+  '/render',
 ];
 
 // Define routes that should be hidden from logged-in users (e.g., login/register)

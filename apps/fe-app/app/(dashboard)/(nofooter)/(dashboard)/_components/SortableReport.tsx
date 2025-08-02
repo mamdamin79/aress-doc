@@ -14,6 +14,7 @@ type SortableReportProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSubmit: (changedOptions: Record<string, any>) => Promise<boolean>;
   onRemoveReport: () => void;
+  onShare?: () => void;
 };
 
 export const SortableReport: React.FC<SortableReportProps> = ({
@@ -24,6 +25,7 @@ export const SortableReport: React.FC<SortableReportProps> = ({
   filters,
   onSubmit,
   onRemoveReport,
+  onShare,
 }) => {
   const {
     attributes,
@@ -54,6 +56,7 @@ export const SortableReport: React.FC<SortableReportProps> = ({
         filters={filters}
         onSubmit={onSubmit}
         onRemove={onRemoveReport}
+        onShare={onShare}
       />
     </div>
   );

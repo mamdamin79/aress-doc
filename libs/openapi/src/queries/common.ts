@@ -57,6 +57,30 @@ export const UseUsersServiceGetUsersMeKeyFn = (queryKey?: Array<unknown>) => [
   useUsersServiceGetUsersMeKey,
   ...(queryKey ?? []),
 ];
+export type UsersServiceGetUsersPasswordForgotCaptchaDefaultResponse = Awaited<
+  ReturnType<typeof UsersService.getUsersPasswordForgotCaptcha>
+>;
+export type UsersServiceGetUsersPasswordForgotCaptchaQueryResult<
+  TData = UsersServiceGetUsersPasswordForgotCaptchaDefaultResponse,
+  TError = unknown,
+> = UseQueryResult<TData, TError>;
+export const useUsersServiceGetUsersPasswordForgotCaptchaKey =
+  'UsersServiceGetUsersPasswordForgotCaptcha';
+export const UseUsersServiceGetUsersPasswordForgotCaptchaKeyFn = (
+  {
+    captchaHeight,
+    captchaType,
+    captchaWidth,
+  }: {
+    captchaHeight?: number;
+    captchaType?: CaptchaType;
+    captchaWidth?: number;
+  } = {},
+  queryKey?: Array<unknown>,
+) => [
+  useUsersServiceGetUsersPasswordForgotCaptchaKey,
+  ...(queryKey ?? [{ captchaHeight, captchaType, captchaWidth }]),
+];
 export type UsersServiceGetUsersProfilePasswordChangeOtpDefaultResponse =
   Awaited<ReturnType<typeof UsersService.getUsersProfilePasswordChangeOtp>>;
 export type UsersServiceGetUsersProfilePasswordChangeOtpQueryResult<
@@ -91,26 +115,6 @@ export const UseReportsServiceGetReportsKeyFn = (
   useReportsServiceGetReportsKey,
   ...(queryKey ?? [{ onlyFavorite, onlyHavingVideo, onlyNew }]),
 ];
-export type ReportsServiceGetReportsByReportIdDefaultResponse = Awaited<
-  ReturnType<typeof ReportsService.getReportsByReportId>
->;
-export type ReportsServiceGetReportsByReportIdQueryResult<
-  TData = ReportsServiceGetReportsByReportIdDefaultResponse,
-  TError = unknown,
-> = UseQueryResult<TData, TError>;
-export const useReportsServiceGetReportsByReportIdKey =
-  'ReportsServiceGetReportsByReportId';
-export const UseReportsServiceGetReportsByReportIdKeyFn = (
-  {
-    reportId,
-  }: {
-    reportId: string;
-  },
-  queryKey?: Array<unknown>,
-) => [
-  useReportsServiceGetReportsByReportIdKey,
-  ...(queryKey ?? [{ reportId }]),
-];
 export type ReportsServiceGetReportsCategoriesDefaultResponse = Awaited<
   ReturnType<typeof ReportsService.getReportsCategories>
 >;
@@ -123,6 +127,28 @@ export const useReportsServiceGetReportsCategoriesKey =
 export const UseReportsServiceGetReportsCategoriesKeyFn = (
   queryKey?: Array<unknown>,
 ) => [useReportsServiceGetReportsCategoriesKey, ...(queryKey ?? [])];
+export type ReportsServiceGetReportsByReportIdDefaultResponse = Awaited<
+  ReturnType<typeof ReportsService.getReportsByReportId>
+>;
+export type ReportsServiceGetReportsByReportIdQueryResult<
+  TData = ReportsServiceGetReportsByReportIdDefaultResponse,
+  TError = unknown,
+> = UseQueryResult<TData, TError>;
+export const useReportsServiceGetReportsByReportIdKey =
+  'ReportsServiceGetReportsByReportId';
+export const UseReportsServiceGetReportsByReportIdKeyFn = (
+  {
+    reportId,
+    screenshotQueryId,
+  }: {
+    reportId: string;
+    screenshotQueryId?: string;
+  },
+  queryKey?: Array<unknown>,
+) => [
+  useReportsServiceGetReportsByReportIdKey,
+  ...(queryKey ?? [{ reportId, screenshotQueryId }]),
+];
 export type DashboardsServiceGetDashboardsDefaultResponse = Awaited<
   ReturnType<typeof DashboardsService.getDashboards>
 >;
@@ -229,9 +255,6 @@ export type UsersServicePostUsersLoginMutationResult = Awaited<
 export type UsersServicePostUsersTokenMutationResult = Awaited<
   ReturnType<typeof UsersService.postUsersToken>
 >;
-export type UsersServicePostUsersPasswordForgotCaptchaMutationResult = Awaited<
-  ReturnType<typeof UsersService.postUsersPasswordForgotCaptcha>
->;
 export type UsersServicePostUsersPasswordForgotOtpMutationResult = Awaited<
   ReturnType<typeof UsersService.postUsersPasswordForgotOtp>
 >;
@@ -249,6 +272,12 @@ export type UsersServicePostUsersProfilePhoneChangeOtpMutationResult = Awaited<
 export type UsersServicePostUsersProfilePhoneChangeMutationResult = Awaited<
   ReturnType<typeof UsersService.postUsersProfilePhoneChange>
 >;
+export type UsersServicePostUsersProfileEmailChangeOtpMutationResult = Awaited<
+  ReturnType<typeof UsersService.postUsersProfileEmailChangeOtp>
+>;
+export type UsersServicePostUsersProfileEmailChangeMutationResult = Awaited<
+  ReturnType<typeof UsersService.postUsersProfileEmailChange>
+>;
 export type UsersServicePostUsersProfileUsernameChangeMutationResult = Awaited<
   ReturnType<typeof UsersService.postUsersProfileUsernameChange>
 >;
@@ -261,6 +290,8 @@ export type ReportsServicePostReportsByReportIdMutationResult = Awaited<
 export type ReportsServicePostReportsByReportIdFavoriteMutationResult = Awaited<
   ReturnType<typeof ReportsService.postReportsByReportIdFavorite>
 >;
+export type ReportsServicePostReportsByReportIdScreenshotMutationResult =
+  Awaited<ReturnType<typeof ReportsService.postReportsByReportIdScreenshot>>;
 export type DashboardsServicePostDashboardsByDashboardIdMutationResult =
   Awaited<ReturnType<typeof DashboardsService.postDashboardsByDashboardId>>;
 export type DashboardsServicePostDashboardsByDashboardIdDuplicateMutationResult =
@@ -271,6 +302,12 @@ export type DashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdRe
   Awaited<
     ReturnType<
       typeof DashboardsService.postDashboardsByDashboardIdItemsByDashboardItemIdReplace
+    >
+  >;
+export type DashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotMutationResult =
+  Awaited<
+    ReturnType<
+      typeof DashboardsService.postDashboardsByDashboardIdItemsByDashboardItemIdScreenshot
     >
   >;
 export type DashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsMutationResult =
