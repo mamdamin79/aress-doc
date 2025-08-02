@@ -10,7 +10,8 @@
     "generate:sdk": "npx swagger-typescript-api generate -p ./apps/fe-app/swagger/swagger.output.json -o ./apps/fe-app/models -n axios.ts",
     "output:swagger": "npm run merge:swagger && npm run generate:sdk",
     "generate:query": "rm -rf ./libs/openapi/src/queries ./libs/openapi/src/requests && npx --package @7nohe/openapi-react-query-codegen openapi-rq -i ./apps/fe-app/swagger/swagger.output.json -o ./libs/openapi/src -c fetch",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "lint:strict": "eslint apps libs --ext .ts,.tsx,.js,.jsx --max-warnings 0 && tsc --noEmit --skipLibCheck && prettier --check \"**/*.{ts,tsx,js,jsx,css,scss,json,md}\""
   },
   "keywords": [],
   "author": "",
