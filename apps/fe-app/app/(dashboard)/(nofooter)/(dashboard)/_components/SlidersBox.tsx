@@ -23,7 +23,7 @@ import {
   sortableKeyboardCoordinates,
   rectSortingStrategy,
 } from '@dnd-kit/sortable';
-import { useHtmlPaddingRight } from '../../../../../hooks';
+import { useHtmlPaddingRight } from '@shared';
 import { useCustomToast } from 'design-system';
 import { FinancialReportCalculationApiModel } from '@openapi';
 import { useAutoRotate } from './hooks/useAutoRotate';

@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { useHeaderVisibility } from '../../../../hooks/useHeaderVisiblity';
+import { useHeaderVisibility } from '@shared';
 // needed for table body level scope DnD setup
 import {
   DndContext,
@@ -51,7 +51,7 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import { useSortable } from '@dnd-kit/sortable';
 import { columnVisibility, filterList } from './FundsTable.constants';
 import { ExportExel } from './_components/ExportExel';
-import { useSmartTableScroll } from './../../../../hooks/useSmartTableScroll';
+import { useSmartTableScroll } from '@shared';
 import { TableBody } from './_components/TableBody';
 import { Person } from './types';
 import {
