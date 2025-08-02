@@ -1,16 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
-import { DateText } from './DatePickerText';
+import { DatePickerText } from './DatePickerText';
 
 // Meta configuration for the DateText component in Storybook
-const meta: Meta<typeof DateText> = {
+const meta: Meta<typeof DatePickerText> = {
   title: 'Components/DateText', // Defines the title in Storybook's UI
-  component: DateText, // Links to the actual component
+  component: DatePickerText, // Links to the actual component
   tags: ['autodocs'], // Optional: Add any additional tags for better categorization
 };
 
 export default meta;
 
-type Story = StoryObj<typeof DateText>;
+type Story = StoryObj<typeof DatePickerText>;
 
 // A default story for the DateText component
 export const Default: Story = {

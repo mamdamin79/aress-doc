@@ -3,13 +3,9 @@
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "composite": true,
-    "noEmit": false,
     "declaration": true
   },
-  "exclude": [
-    "components/**/*.spec.ts",
-    "components/**/*.test.ts"
-  ],
+  "exclude": ["components/**/*.spec.ts", "components/**/*.test.ts"],
   "include": [
     "components/**/*.stories.ts",
     "components/**/*.stories.js",
