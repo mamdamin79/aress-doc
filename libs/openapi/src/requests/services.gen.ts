@@ -12,8 +12,8 @@ import type {
   PostUsersTokenData,
   PostUsersTokenResponse,
   GetUsersMeResponse,
-  PostUsersPasswordForgotCaptchaData,
-  PostUsersPasswordForgotCaptchaResponse,
+  GetUsersPasswordForgotCaptchaData,
+  GetUsersPasswordForgotCaptchaResponse,
   PostUsersPasswordForgotOtpData,
   PostUsersPasswordForgotOtpResponse,
   PostUsersPasswordForgotResetData,
@@ -27,21 +27,27 @@ import type {
   PostUsersProfilePhoneChangeOtpResponse,
   PostUsersProfilePhoneChangeData,
   PostUsersProfilePhoneChangeResponse,
+  PostUsersProfileEmailChangeOtpData,
+  PostUsersProfileEmailChangeOtpResponse,
+  PostUsersProfileEmailChangeData,
+  PostUsersProfileEmailChangeResponse,
   PostUsersProfileUsernameChangeData,
   PostUsersProfileUsernameChangeResponse,
   PostUsersProfilePictureChangeData,
   PostUsersProfilePictureChangeResponse,
   GetReportsData,
   GetReportsResponse,
+  GetReportsCategoriesResponse,
   GetReportsByReportIdData,
   GetReportsByReportIdResponse,
   PostReportsByReportIdData,
   PostReportsByReportIdResponse,
-  GetReportsCategoriesResponse,
   PostReportsByReportIdFavoriteData,
   PostReportsByReportIdFavoriteResponse,
   DeleteReportsByReportIdFavoriteData,
   DeleteReportsByReportIdFavoriteResponse,
+  PostReportsByReportIdScreenshotData,
+  PostReportsByReportIdScreenshotResponse,
   GetDashboardsResponse,
   PutDashboardsData,
   PutDashboardsResponse,
@@ -61,6 +67,8 @@ import type {
   DeleteDashboardsByDashboardIdItemsByDashboardItemIdResponse,
   PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceData,
   PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceResponse,
+  PostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotData,
+  PostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotResponse,
   PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsData,
   PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsResponse,
   PostDashboardsByDashboardIdItemsByDashboardItemIdReorderData,
@@ -192,11 +200,11 @@ export class UsersService {
    * @returns CaptchaApiModel Successful Response
    * @throws ApiError
    */
-  public static postUsersPasswordForgotCaptcha(
-    data: PostUsersPasswordForgotCaptchaData = {},
-  ): CancelablePromise<PostUsersPasswordForgotCaptchaResponse> {
+  public static getUsersPasswordForgotCaptcha(
+    data: GetUsersPasswordForgotCaptchaData = {},
+  ): CancelablePromise<GetUsersPasswordForgotCaptchaResponse> {
     return __request(OpenAPI, {
-      method: 'POST',
+      method: 'GET',
       url: '/users/password/forgot/captcha',
       query: {
         captchaWidth: data.captchaWidth,
@@ -358,6 +366,50 @@ export class UsersService {
   }
 
   /**
+   * Change Email Get Otp
+   * get otp to change email
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ChangeEmailGetOtpResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersProfileEmailChangeOtp(
+    data: PostUsersProfileEmailChangeOtpData,
+  ): CancelablePromise<PostUsersProfileEmailChangeOtpResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/profile/email/change/otp',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Change Email By Otp
+   * Change email with otp
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ChangeEmailByOtpResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersProfileEmailChange(
+    data: PostUsersProfileEmailChangeData,
+  ): CancelablePromise<PostUsersProfileEmailChangeResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/profile/email/change',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
    * Change Username
    * Change username
    * @param data The data for the request.
@@ -431,10 +483,24 @@ export class ReportsService {
   }
 
   /**
+   * Report Categories
+   * Get list of report categories.
+   * @returns FinancialReportCategoryApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getReportsCategories(): CancelablePromise<GetReportsCategoriesResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/reports/categories',
+    });
+  }
+
+  /**
    * Report Details
    * Get details of a report.
    * @param data The data for the request.
    * @param data.reportId
+   * @param data.screenshotQueryId
    * @returns FinancialReportDetailsApiModel Successful Response
    * @throws ApiError
    */
@@ -446,6 +512,9 @@ export class ReportsService {
       url: '/reports/{report_id}',
       path: {
         report_id: data.reportId,
+      },
+      query: {
+        screenshotQueryId: data.screenshotQueryId,
       },
       errors: {
         422: 'Validation Error',
@@ -476,19 +545,6 @@ export class ReportsService {
       errors: {
         422: 'Validation Error',
       },
-    });
-  }
-
-  /**
-   * Report Categories
-   * Get list of report categories.
-   * @returns FinancialReportCategoryApiModel Successful Response
-   * @throws ApiError
-   */
-  public static getReportsCategories(): CancelablePromise<GetReportsCategoriesResponse> {
-    return __request(OpenAPI, {
-      method: 'GET',
-      url: '/reports/categories',
     });
   }
 
@@ -532,6 +588,32 @@ export class ReportsService {
       path: {
         report_id: data.reportId,
       },
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Save Screenshot
+   * Save report screenshot
+   * @param data The data for the request.
+   * @param data.reportId
+   * @param data.formData
+   * @returns ReportScreenshotResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postReportsByReportIdScreenshot(
+    data: PostReportsByReportIdScreenshotData,
+  ): CancelablePromise<PostReportsByReportIdScreenshotResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/reports/{report_id}/screenshot',
+      path: {
+        report_id: data.reportId,
+      },
+      formData: data.formData,
+      mediaType: 'multipart/form-data',
       errors: {
         422: 'Validation Error',
       },
@@ -769,6 +851,34 @@ export class DashboardsService {
       },
       body: data.requestBody,
       mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Save Dashboard Item Screenshot
+   * Replace item in dashboard.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @param data.dashboardItemId
+   * @param data.formData
+   * @returns DashboardItemScreenshotResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postDashboardsByDashboardIdItemsByDashboardItemIdScreenshot(
+    data: PostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotData,
+  ): CancelablePromise<PostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/dashboards/{dashboard_id}/items/{dashboard_item_id}/screenshot',
+      path: {
+        dashboard_id: data.dashboardId,
+        dashboard_item_id: data.dashboardItemId,
+      },
+      formData: data.formData,
+      mediaType: 'multipart/form-data',
       errors: {
         422: 'Validation Error',
       },

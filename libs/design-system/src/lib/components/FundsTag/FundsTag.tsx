@@ -5,7 +5,7 @@ export interface FundsTagProps {
 }
 export const FundsTag: React.FC<FundsTagProps> = ({ color }) => {
   return (
-    <div className='w-3 rounded-full h-3 bg-surface-neutral-secondary flex items-center justify-center'>
+    <div className="bg-surface-neutral-secondary flex h-3 w-3 items-center justify-center rounded-full">
       <div
         className={cn(
           'h-2.5 w-2.5 rounded-full',

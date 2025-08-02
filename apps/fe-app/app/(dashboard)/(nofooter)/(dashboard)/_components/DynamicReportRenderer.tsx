@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import dynamic from 'next/dynamic';
 import {
@@ -25,12 +26,32 @@ const reportComponents: Record<string, React.ComponentType<any>> = {
       (mod) => mod.Report13_3,
     ),
   ),
+  '133': dynamic(() =>
+    import('../../../../components/Reports/Report13_3').then(
+      (mod) => mod.Report13_3,
+    ),
+  ),
   '13_2': dynamic(() =>
     import('../../../../components/Reports/Report13_2').then(
       (mod) => mod.Report13_2,
     ),
   ),
+  '132': dynamic(() =>
+    import('../../../../components/Reports/Report13_2').then(
+      (mod) => mod.Report13_2,
+    ),
+  ),
   // Add others as needed
+  '13_1': dynamic(() =>
+    import('../../../../components/Reports/Report_13_1').then(
+      (mod) => mod.Report_13_1,
+    ),
+  ),
+  '131': dynamic(() =>
+    import('../../../../components/Reports/Report_13_1').then(
+      (mod) => mod.Report_13_1,
+    ),
+  ),
 };
 
 interface DynamicReportRendererProps {
@@ -40,6 +61,7 @@ interface DynamicReportRendererProps {
   filters?: FinancialReportFilterApiModel[];
   onSubmit?: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
   onRemove?: () => void;
+  onShare?: () => void;
 }
 
 export const DynamicReportRenderer: React.FC<DynamicReportRendererProps> = ({
@@ -49,6 +71,7 @@ export const DynamicReportRenderer: React.FC<DynamicReportRendererProps> = ({
   onSubmit,
   title,
   onRemove,
+  onShare,
 }) => {
   // Convert identifier to string to ensure proper lookup with underscore values
   const identifierKey = String(identifier);
@@ -66,6 +89,7 @@ export const DynamicReportRenderer: React.FC<DynamicReportRendererProps> = ({
       onSubmit={onSubmit}
       title={title}
       onRemove={onRemove}
+      onShare={onShare}
     />
   );
 };

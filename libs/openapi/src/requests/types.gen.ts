@@ -64,6 +64,17 @@ export type Body_login_for_access_token_users_login_post = {
   client_secret?: string | null;
 };
 
+export type Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post =
+  {
+    file: Blob | File;
+    selected_filters: string | null;
+  };
+
+export type Body_save_screenshot_reports__report_id__screenshot_post = {
+  selected_filters: string | null;
+  file: Blob | File;
+};
+
 export type Body_test_user_access_token_users_token_post = {
   grant_type?: string | null;
   username: string;
@@ -74,8 +85,8 @@ export type Body_test_user_access_token_users_token_post = {
 };
 
 export type CaptchaApiModel = {
-  value: string;
-  uid: number;
+  value: string | null;
+  uid: number | null;
   required: boolean;
 };
 
@@ -83,6 +94,24 @@ export type CaptchaType = 'image' | 'audio';
 
 export type ChangeDashboardReportItemSortOrderBody = {
   order: number;
+};
+
+export type ChangeEmailByOtpBody = {
+  otp: string;
+};
+
+export type ChangeEmailByOtpResponseApiModel = {
+  success: boolean;
+};
+
+export type ChangeEmailGetOtpBody = {
+  newEmail: string;
+  passwordVerificationToken: string;
+};
+
+export type ChangeEmailGetOtpResponseApiModel = {
+  retrySeconds: number;
+  email: string;
 };
 
 export type ChangePasswordByOtpApiModel = {
@@ -187,6 +216,10 @@ export type DashboardItemReportApiModel = {
   reportCalculation: FinancialReportCalculationApiModel | null;
 };
 
+export type DashboardItemScreenshotResponseApiModel = {
+  queryId: string;
+};
+
 export type DashboardListItemApiModel = {
   identifier: number;
   name: string;
@@ -241,6 +274,7 @@ export type FinancialReportDetailsApiModel = {
   isNew?: boolean;
   relatedReports: Array<FinancialReportListItemApiModel>;
   reportCalculation: FinancialReportCalculationApiModel | null;
+  screenshotUrl: string | null;
 };
 
 export type FinancialReportFilterApiModel = {
@@ -309,7 +343,7 @@ export type FundListItemApiModel = {
   /**
    * وبسایت صندوق
    */
-  website: string;
+  website: string | null;
   /**
    * اساسنامه صندوق
    */
@@ -756,6 +790,10 @@ export type Report6CalculationResultTimeSeriesItem = {
   netFlow: number;
 };
 
+export type ReportScreenshotResponseApiModel = {
+  queryId: string;
+};
+
 export type ResetForgotPasswordByOtpResponseApiModel = {
   success: boolean;
 };
@@ -919,13 +957,13 @@ export type PostUsersTokenResponse = TokenApiModel;
 
 export type GetUsersMeResponse = AressApiUser | AnonymousApiUser;
 
-export type PostUsersPasswordForgotCaptchaData = {
+export type GetUsersPasswordForgotCaptchaData = {
   captchaHeight?: number;
   captchaType?: CaptchaType;
   captchaWidth?: number;
 };
 
-export type PostUsersPasswordForgotCaptchaResponse = CaptchaApiModel;
+export type GetUsersPasswordForgotCaptchaResponse = CaptchaApiModel;
 
 export type PostUsersPasswordForgotOtpData = {
   requestBody: GetForgotPasswordOtpBody;
@@ -972,6 +1010,20 @@ export type PostUsersProfilePhoneChangeData = {
 export type PostUsersProfilePhoneChangeResponse =
   ChangePhoneByOtpResponseApiModel;
 
+export type PostUsersProfileEmailChangeOtpData = {
+  requestBody: ChangeEmailGetOtpBody;
+};
+
+export type PostUsersProfileEmailChangeOtpResponse =
+  ChangeEmailGetOtpResponseApiModel;
+
+export type PostUsersProfileEmailChangeData = {
+  requestBody: ChangeEmailByOtpBody;
+};
+
+export type PostUsersProfileEmailChangeResponse =
+  ChangeEmailByOtpResponseApiModel;
+
 export type PostUsersProfileUsernameChangeData = {
   requestBody: ChangeUsernameBody;
 };
@@ -994,8 +1046,12 @@ export type GetReportsData = {
 
 export type GetReportsResponse = Array<FinancialReportListItemApiModel>;
 
+export type GetReportsCategoriesResponse =
+  Array<FinancialReportCategoryApiModel>;
+
 export type GetReportsByReportIdData = {
   reportId: string;
+  screenshotQueryId?: string | null;
 };
 
 export type GetReportsByReportIdResponse = FinancialReportDetailsApiModel;
@@ -1007,9 +1063,6 @@ export type PostReportsByReportIdData = {
 
 export type PostReportsByReportIdResponse = FinancialReportCalculationApiModel;
 
-export type GetReportsCategoriesResponse =
-  Array<FinancialReportCategoryApiModel>;
-
 export type PostReportsByReportIdFavoriteData = {
   reportId: string;
 };
@@ -1017,10 +1070,18 @@ export type PostReportsByReportIdFavoriteData = {
 export type PostReportsByReportIdFavoriteResponse = UserReportFavoriteStatus;
 
 export type DeleteReportsByReportIdFavoriteData = {
-  reportId: number;
+  reportId: string;
 };
 
 export type DeleteReportsByReportIdFavoriteResponse = UserReportFavoriteStatus;
+
+export type PostReportsByReportIdScreenshotData = {
+  formData: Body_save_screenshot_reports__report_id__screenshot_post;
+  reportId: string;
+};
+
+export type PostReportsByReportIdScreenshotResponse =
+  ReportScreenshotResponseApiModel;
 
 export type GetDashboardsResponse = Array<DashboardListItemApiModel>;
 
@@ -1088,6 +1149,15 @@ export type PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceData = {
 
 export type PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceResponse =
   DashboardItemApiModel;
+
+export type PostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotData = {
+  dashboardId: number;
+  dashboardItemId: number;
+  formData: Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post;
+};
+
+export type PostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotResponse =
+  DashboardItemScreenshotResponseApiModel;
 
 export type PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsData =
   {
@@ -1201,8 +1271,8 @@ export type $OpenApiTs = {
     };
   };
   '/users/password/forgot/captcha': {
-    post: {
-      req: PostUsersPasswordForgotCaptchaData;
+    get: {
+      req: GetUsersPasswordForgotCaptchaData;
       res: {
         /**
          * Successful Response
@@ -1319,6 +1389,36 @@ export type $OpenApiTs = {
       };
     };
   };
+  '/users/profile/email/change/otp': {
+    post: {
+      req: PostUsersProfileEmailChangeOtpData;
+      res: {
+        /**
+         * Successful Response
+         */
+        200: ChangeEmailGetOtpResponseApiModel;
+        /**
+         * Validation Error
+         */
+        422: HTTPValidationError;
+      };
+    };
+  };
+  '/users/profile/email/change': {
+    post: {
+      req: PostUsersProfileEmailChangeData;
+      res: {
+        /**
+         * Successful Response
+         */
+        200: ChangeEmailByOtpResponseApiModel;
+        /**
+         * Validation Error
+         */
+        422: HTTPValidationError;
+      };
+    };
+  };
   '/users/profile/username/change': {
     post: {
       req: PostUsersProfileUsernameChangeData;
@@ -1364,6 +1464,16 @@ export type $OpenApiTs = {
       };
     };
   };
+  '/reports/categories': {
+    get: {
+      res: {
+        /**
+         * Successful Response
+         */
+        200: Array<FinancialReportCategoryApiModel>;
+      };
+    };
+  };
   '/reports/{report_id}': {
     get: {
       req: GetReportsByReportIdData;
@@ -1392,16 +1502,6 @@ export type $OpenApiTs = {
       };
     };
   };
-  '/reports/categories': {
-    get: {
-      res: {
-        /**
-         * Successful Response
-         */
-        200: Array<FinancialReportCategoryApiModel>;
-      };
-    };
-  };
   '/reports/{report_id}/favorite': {
     post: {
       req: PostReportsByReportIdFavoriteData;
@@ -1423,6 +1523,21 @@ export type $OpenApiTs = {
          * Successful Response
          */
         200: UserReportFavoriteStatus;
+        /**
+         * Validation Error
+         */
+        422: HTTPValidationError;
+      };
+    };
+  };
+  '/reports/{report_id}/screenshot': {
+    post: {
+      req: PostReportsByReportIdScreenshotData;
+      res: {
+        /**
+         * Successful Response
+         */
+        200: ReportScreenshotResponseApiModel;
         /**
          * Validation Error
          */
@@ -1560,6 +1675,21 @@ export type $OpenApiTs = {
          * Successful Response
          */
         200: DashboardItemApiModel;
+        /**
+         * Validation Error
+         */
+        422: HTTPValidationError;
+      };
+    };
+  };
+  '/dashboards/{dashboard_id}/items/{dashboard_item_id}/screenshot': {
+    post: {
+      req: PostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotData;
+      res: {
+        /**
+         * Successful Response
+         */
+        200: DashboardItemScreenshotResponseApiModel;
         /**
          * Validation Error
          */
