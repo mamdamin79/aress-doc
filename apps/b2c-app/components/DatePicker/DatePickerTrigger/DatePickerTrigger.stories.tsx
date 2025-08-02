@@ -24,10 +24,15 @@ export const Active: Story = {
   args: {
     title: ['تاریخ واریز', 'تاریخ برداشت'],
     mode: 'range',
-    date: {
+    startDate: {
       day: 1,
       month: 1,
       year: 2023,
+    },
+    endDate: {
+      day: 1,
+      month: 1,
+      year: 2024,
     },
   },
 };
