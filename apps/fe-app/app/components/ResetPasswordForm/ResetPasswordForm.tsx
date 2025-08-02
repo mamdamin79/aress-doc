@@ -3,7 +3,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { Button, TextField } from 'design-system';
 import Link from 'next/link';
 import { ResetPasswordFormValues } from './ResetPasswordForm.types';
-import { validateNationalCode } from './ResetPasswordForm.utils';
+import { validateNationalCode } from '@shared';
 import { validatePhoneNumber } from '../LoginForm/LoginForm.utils';
 export interface ResetPasswordFormProps {
   onSubmit: (values: ResetPasswordFormValues) => void;

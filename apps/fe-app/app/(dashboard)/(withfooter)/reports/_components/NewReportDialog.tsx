@@ -12,7 +12,7 @@ import {
   Tooltip,
   IconDialog,
 } from 'design-system';
-import { useHtmlPaddingRight } from '../../../../../hooks';
+import { useHtmlPaddingRight } from '@shared';
 
 export const NewReportDialog = () => {
   const [isOpen, setIsOpen] = useState(false);

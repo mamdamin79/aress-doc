@@ -47,7 +47,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   // Set captchaUid in form when captchaData changes
   useEffect(() => {
     if (captchaData?.uid !== undefined) {
-      setValue('captchaUid', captchaData.uid);
+      setValue('captchaUid', captchaData.uid ?? 0);
       setValue('captcha', ''); // clear captcha input on new captcha
     }
   }, [captchaData, setValue]);
@@ -135,7 +135,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
                   placeholder="کد را وارد کنید"
                   isError={!!fieldState.error}
                   supportText={fieldState.error?.message || ' '}
-                  captchaValue={captchaData.value}
+                  captchaValue={captchaData.value ?? undefined}
                   onRefreshCaptcha={refetchCaptcha}
                   trailingIcons={[]}
                   {...field}

@@ -32,7 +32,7 @@ export const ReportList: React.FC<Props> = ({
   const deleteFavoriteMutation =
     useReportsServiceDeleteReportsByReportIdFavorite();
 
-  const handleLike = async (reportId: number, isFavorite: boolean) => {
+  const handleLike = async (reportId: string, isFavorite: boolean) => {
     if (isFavorite) {
       deleteFavoriteMutation.mutate({ reportId });
     } else {
@@ -87,10 +87,7 @@ export const ReportList: React.FC<Props> = ({
                 fixedBrief={inModal ? false : true}
                 newBadge={report.isNew}
                 onLike={() =>
-                  handleLike(
-                    Number(report.identifier),
-                    report?.userFavorite ?? false,
-                  )
+                  handleLike(report.identifier, report?.userFavorite ?? false)
                 }
                 userFavorite={report.userFavorite}
                 videoBadge={report.hasVideo}
