@@ -1,5 +1,5 @@
-import { ReactComponent as Logo } from '@aress-assets/icons/b2c-logo.svg';
-import Abstract from '@aress-assets/images/footer-abstrack.png';
+import { ReactComponent as Logo } from '../../../assets/icons/b2c-logo.svg';
+import Abstract from '../../../assets/images/footer-abstrack.png';
 import Link from 'next/link';
 import { Icon } from 'design-system';
 import Image from 'next/image';
