@@ -10,7 +10,11 @@ type Props = {
   inModal?: boolean;
 };
 
-export const CategoryList: React.FC<Props> = ({ categories, reports,inModal }) => {
+export const CategoryList: React.FC<Props> = ({
+  categories,
+  reports,
+  inModal,
+}) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname(); // <-- get current path

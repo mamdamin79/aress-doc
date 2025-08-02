@@ -31,14 +31,12 @@ export interface OptionsDropdownProps {
 export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
   dropDownList,
   className,
-  shadow,
   dropDownStyles = {
     scrollable: false,
     anchor: 'bottom start',
     bg: 'primary',
     checkSelected: false,
     emphasize: 'medium',
-    shadow: true,
     size: 'md',
   },
   customTriggerRender,

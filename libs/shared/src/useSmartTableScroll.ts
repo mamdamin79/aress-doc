@@ -1,4 +1,4 @@
-import { RefObject } from "react";
+import { RefObject } from 'react';
 
 type UseSmartTableScrollReturn = {
   handleScrollRight: () => void;
@@ -7,7 +7,7 @@ type UseSmartTableScrollReturn = {
 
 export const useSmartTableScroll = (
   headerRefs: RefObject<(HTMLDivElement | null)[]>,
-  tableRef: RefObject<HTMLDivElement>
+  tableRef: RefObject<HTMLDivElement>,
 ): UseSmartTableScrollReturn => {
   // Calculates the left offset for each scrollable column.
   // Skips the first column (index === 0) since it's fixed and should not be scrolled.
@@ -40,7 +40,7 @@ export const useSmartTableScroll = (
   const scrollToColumn = (index: number) => {
     const offsets = getColumnOffsets();
     const scrollTo = offsets[index] || 0;
-    tableRef.current?.scrollTo({ left: -scrollTo, behavior: "smooth" });
+    tableRef.current?.scrollTo({ left: -scrollTo, behavior: 'smooth' });
   };
 
   // Handles scrolling one column to the right (i.e., visually to the left in RTL).
@@ -56,7 +56,7 @@ export const useSmartTableScroll = (
 
     if (scrollLeft > currentStart && scrollLeft < currentEnd) {
       const diff = currentEnd - scrollLeft;
-      tableRef.current?.scrollBy({ left: -diff, behavior: "smooth" });
+      tableRef.current?.scrollBy({ left: -diff, behavior: 'smooth' });
     } else {
       const nextIndex = Math.min(currentIndex + 1, offsets.length - 1);
       scrollToColumn(nextIndex);
@@ -75,7 +75,7 @@ export const useSmartTableScroll = (
 
     if (scrollLeft > currentStart && scrollLeft < currentEnd) {
       const diff = scrollLeft - currentStart;
-      tableRef.current?.scrollBy({ left: diff, behavior: "smooth" });
+      tableRef.current?.scrollBy({ left: diff, behavior: 'smooth' });
     } else {
       const prevIndex = Math.max(currentIndex - 1, 0);
       scrollToColumn(prevIndex);
