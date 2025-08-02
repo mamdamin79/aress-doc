@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 
 interface Props {
   tabs: TabItem[];
+  size?: 'small' | 'large';
   variant:
     | 'shaped'
     | 'lined'
@@ -26,6 +27,7 @@ export const Tabs: React.FC<Props> = ({
   onClickTab,
   activeTab,
   className,
+  size = 'large',
 }) => {
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const [sliderStyle, setSliderStyle] = useState({ left: 0, width: 0 });
@@ -59,12 +61,18 @@ export const Tabs: React.FC<Props> = ({
           {
             'border-border-neutral-secondary rounded-4xl bg-surface-neutral-tertiary w-fit gap-[7px] border p-1.5':
               variant === 'sliding',
+            'p-1': variant === 'sliding' && size === 'small',
           },
         )}
       >
         {variant === 'sliding' && (
           <div
-            className="bg-surface-brand-600-primary absolute z-0 h-9 rounded-[18px] transition-all duration-300"
+            className={cn(
+              'bg-surface-brand-600-primary absolute z-0 h-9 rounded-[18px] transition-all duration-300',
+              {
+                'h-[26px]': size === 'small',
+              },
+            )}
             style={{
               left: sliderStyle.left,
               width: sliderStyle.width,
@@ -132,6 +140,10 @@ export const Tabs: React.FC<Props> = ({
               {
                 'rounded-5xl hover:text-text-brand-primary-600 text-text-neutral-primary data-[selected]:text-text-onbrand-neutral-primary-on600 px-3 py-1 text-sm font-medium duration-300':
                   variant === 'sliding',
+              },
+              {
+                'px-1.5 py-0.5 text-xs font-medium':
+                  variant === 'sliding' && size === 'small',
               },
             )}
           >
