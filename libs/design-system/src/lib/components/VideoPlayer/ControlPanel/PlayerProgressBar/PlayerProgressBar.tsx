@@ -8,7 +8,7 @@ interface PlayerProgressBarProps {
   progress: number;
   seek: (newProgress: number) => void;
   currentTime: number;
-  videoRef: React.RefObject<HTMLVideoElement |null>;
+  videoRef: React.RefObject<HTMLVideoElement | null>;
   bufferedTime: number;
   spriteBaseUrl?: string;
 }

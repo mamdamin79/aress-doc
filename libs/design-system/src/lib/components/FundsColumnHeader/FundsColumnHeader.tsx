@@ -130,32 +130,35 @@ export function FundsColumnHeader({
           <span>{title}</span>
           <span>
             {subTitle !== 'مشخصات صندوق' &&
-              subTitle !== 'ارکان صندوق' &&
-              subTitle !== 'سهم پرتفوی صندوق' &&
-              subTitle}
+            subTitle !== 'ارکان صندوق' &&
+            subTitle !== 'سهم پرتفوی صندوق'
+              ? subTitle
+              : null}
           </span>
         </div>
-        <Tooltip className="text-md font-semibold cursor-pointer" title={tooltipTitle}>
+        <Tooltip
+          className="text-md cursor-pointer font-semibold"
+          title={tooltipTitle}
+        >
           <div
             onClick={() => {
               if (typeof clickFilterd === 'function') {
                 clickFilterd();
               }
               if (sortTypeValue === 'active-desc') {
-                defaultSort && defaultSort();
+                if (defaultSort) {
+                  defaultSort();
+                }
               }
             }}
-            className={cn('p-1 cursor-pointer', {
+            className={cn('cursor-pointer p-1', {
               'icon-sort-cell text-icon-neutral-secondarycontrast invisible group-hover/first:visible':
                 type === 'inactive',
               'hover:bg-surface-brand-600-primary hover:text-icon-onbrand-neutral-on600 rounded-md duration-150':
                 active,
             })}
           >
-            <Icon
-              key={'index'}
-              name={iconSort}
-            />
+            <Icon key={'index'} name={iconSort} />
           </div>
         </Tooltip>
       </div>

@@ -5,7 +5,7 @@ import React, { useRef } from 'react';
 type Props = {
   hoverTime: number | null;
   duration: number;
-  videoRef: React.RefObject<HTMLVideoElement|null>;
+  videoRef: React.RefObject<HTMLVideoElement | null>;
   spriteBaseUrl?: string;
 };
 

@@ -10,14 +10,17 @@ import {
   ModalProvider,
   SquaredButton,
 } from 'design-system';
-import { useHeaderVisibility, useHtmlPaddingRight } from '../../../hooks';
+import {
+  useHeaderVisibility,
+  useHtmlPaddingRight,
+  useThemeToggle,
+} from '@shared';
 import { DESKTOP_BREAKPOINT } from './Header.constants';
 import { BurgerMenu } from './BurgerMenu';
 import { DesktopMenu } from './DesktopMenu';
 import { MenuData } from './HeaderDataLite';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { useThemeToggle } from '../../../hooks';
 import {
   useDashboardsServiceGetDashboards,
   useUsersServiceGetUsersMe,
@@ -101,6 +104,10 @@ export const HeaderClient: React.FC = () => {
           isActive,
         };
       });
+      updatedMenuData[0].link = buildDashboardUrl(
+        query.data[0].identifier,
+        query.data[0].name,
+      );
     }
 
     return updatedMenuData;

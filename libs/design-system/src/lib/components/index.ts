@@ -50,4 +50,5 @@ export * from './SummaryCell';
 export * from './TextField';
 export * from './DatePicker';
 export * from './Bookmark';
+export * from './SelectionChips';
 export * from './Badge';

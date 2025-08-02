@@ -1,4 +1,3 @@
- 
 export default {
   displayName: 'b2c-app',
   preset: '../../jest.preset.js',

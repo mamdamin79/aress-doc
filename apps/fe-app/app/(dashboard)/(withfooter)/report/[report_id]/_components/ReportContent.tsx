@@ -9,17 +9,27 @@ import { ReactComponent as RightWaveSVG } from '@aress-assets/images/rightwaves.
 import { ReactComponent as LeftWaveSVG } from '@aress-assets/images/leftwaves.svg';
 import { StaticImageData } from 'next/image';
 
-async function getData(id: number) {
+async function getData(id: number, screenshotQueryId?: string) {
   const report = await ReportsService.getReportsByReportId({
     reportId: String(id),
+    screenshotQueryId: screenshotQueryId,
   });
 
   return report;
 }
 
-export default async function ReportContent({ id }: { id: number }) {
-  const REPORT = await getData(id);
+export default async function ReportContent({
+  id,
+  searchParams,
+}: {
+  id: number;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const screenshotQueryId = (await searchParams)?.queryId as string | undefined;
+  const REPORT = await getData(id, screenshotQueryId);
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
+  console.log('Search Params:', searchParams);
+
   return (
     <div className="text-text-neutral-primary mx-auto max-w-[1680px]">
       <section className="mb-16 flex w-full flex-col-reverse items-center gap-8 px-20 pt-6 xl:flex-row xl:items-start xl:justify-around">

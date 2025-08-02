@@ -3,806 +3,1046 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
-import type { GetHealthResponse, GetUsersLoginCaptchaData, GetUsersLoginCaptchaResponse, PostUsersLoginData, PostUsersLoginResponse, PostUsersTokenData, PostUsersTokenResponse, GetUsersMeResponse, PostUsersPasswordForgotCaptchaData, PostUsersPasswordForgotCaptchaResponse, PostUsersPasswordForgotOtpData, PostUsersPasswordForgotOtpResponse, PostUsersPasswordForgotResetData, PostUsersPasswordForgotResetResponse, GetUsersProfilePasswordChangeOtpResponse, PostUsersProfilePasswordChangeData, PostUsersProfilePasswordChangeResponse, PostUsersProfilePasswordValidateData, PostUsersProfilePasswordValidateResponse, PostUsersProfilePhoneChangeOtpData, PostUsersProfilePhoneChangeOtpResponse, PostUsersProfilePhoneChangeData, PostUsersProfilePhoneChangeResponse, PostUsersProfileUsernameChangeData, PostUsersProfileUsernameChangeResponse, PostUsersProfilePictureChangeData, PostUsersProfilePictureChangeResponse, GetReportsData, GetReportsResponse, GetReportsByReportIdData, GetReportsByReportIdResponse, PostReportsByReportIdData, PostReportsByReportIdResponse, GetReportsCategoriesResponse, PostReportsByReportIdFavoriteData, PostReportsByReportIdFavoriteResponse, DeleteReportsByReportIdFavoriteData, DeleteReportsByReportIdFavoriteResponse, GetDashboardsResponse, PutDashboardsData, PutDashboardsResponse, GetDashboardsByDashboardIdData, GetDashboardsByDashboardIdResponse, PostDashboardsByDashboardIdData, PostDashboardsByDashboardIdResponse, DeleteDashboardsByDashboardIdData, DeleteDashboardsByDashboardIdResponse, PutDashboardsByDashboardIdData, PutDashboardsByDashboardIdResponse, PostDashboardsByDashboardIdDuplicateData, PostDashboardsByDashboardIdDuplicateResponse, GetDashboardsByDashboardIdPreviewData, GetDashboardsByDashboardIdPreviewResponse, DeleteDashboardsByDashboardIdItemsByDashboardItemIdData, DeleteDashboardsByDashboardIdItemsByDashboardItemIdResponse, PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceData, PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceResponse, PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsData, PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsResponse, PostDashboardsByDashboardIdItemsByDashboardItemIdReorderData, PostDashboardsByDashboardIdItemsByDashboardItemIdReorderResponse, GetFundsResponse, GetFundsTypeByFundTypeData, GetFundsTypeByFundTypeResponse, GetFundsTableData, GetFundsTableResponse, PostFundsTablePinData, PostFundsTablePinResponse, PostFundsTableUnpinData, PostFundsTableUnpinResponse } from './types.gen';
+import type {
+  GetHealthResponse,
+  GetUsersLoginCaptchaData,
+  GetUsersLoginCaptchaResponse,
+  PostUsersLoginData,
+  PostUsersLoginResponse,
+  PostUsersTokenData,
+  PostUsersTokenResponse,
+  GetUsersMeResponse,
+  GetUsersPasswordForgotCaptchaData,
+  GetUsersPasswordForgotCaptchaResponse,
+  PostUsersPasswordForgotOtpData,
+  PostUsersPasswordForgotOtpResponse,
+  PostUsersPasswordForgotResetData,
+  PostUsersPasswordForgotResetResponse,
+  GetUsersProfilePasswordChangeOtpResponse,
+  PostUsersProfilePasswordChangeData,
+  PostUsersProfilePasswordChangeResponse,
+  PostUsersProfilePasswordValidateData,
+  PostUsersProfilePasswordValidateResponse,
+  PostUsersProfilePhoneChangeOtpData,
+  PostUsersProfilePhoneChangeOtpResponse,
+  PostUsersProfilePhoneChangeData,
+  PostUsersProfilePhoneChangeResponse,
+  PostUsersProfileEmailChangeOtpData,
+  PostUsersProfileEmailChangeOtpResponse,
+  PostUsersProfileEmailChangeData,
+  PostUsersProfileEmailChangeResponse,
+  PostUsersProfileUsernameChangeData,
+  PostUsersProfileUsernameChangeResponse,
+  PostUsersProfilePictureChangeData,
+  PostUsersProfilePictureChangeResponse,
+  GetReportsData,
+  GetReportsResponse,
+  GetReportsCategoriesResponse,
+  GetReportsByReportIdData,
+  GetReportsByReportIdResponse,
+  PostReportsByReportIdData,
+  PostReportsByReportIdResponse,
+  PostReportsByReportIdFavoriteData,
+  PostReportsByReportIdFavoriteResponse,
+  DeleteReportsByReportIdFavoriteData,
+  DeleteReportsByReportIdFavoriteResponse,
+  PostReportsByReportIdScreenshotData,
+  PostReportsByReportIdScreenshotResponse,
+  GetDashboardsResponse,
+  PutDashboardsData,
+  PutDashboardsResponse,
+  GetDashboardsByDashboardIdData,
+  GetDashboardsByDashboardIdResponse,
+  PostDashboardsByDashboardIdData,
+  PostDashboardsByDashboardIdResponse,
+  DeleteDashboardsByDashboardIdData,
+  DeleteDashboardsByDashboardIdResponse,
+  PutDashboardsByDashboardIdData,
+  PutDashboardsByDashboardIdResponse,
+  PostDashboardsByDashboardIdDuplicateData,
+  PostDashboardsByDashboardIdDuplicateResponse,
+  GetDashboardsByDashboardIdPreviewData,
+  GetDashboardsByDashboardIdPreviewResponse,
+  DeleteDashboardsByDashboardIdItemsByDashboardItemIdData,
+  DeleteDashboardsByDashboardIdItemsByDashboardItemIdResponse,
+  PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceData,
+  PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceResponse,
+  PostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotData,
+  PostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotResponse,
+  PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsData,
+  PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsResponse,
+  PostDashboardsByDashboardIdItemsByDashboardItemIdReorderData,
+  PostDashboardsByDashboardIdItemsByDashboardItemIdReorderResponse,
+  GetFundsResponse,
+  GetFundsTypeByFundTypeData,
+  GetFundsTypeByFundTypeResponse,
+  GetFundsTableData,
+  GetFundsTableResponse,
+  PostFundsTablePinData,
+  PostFundsTablePinResponse,
+  PostFundsTableUnpinData,
+  PostFundsTableUnpinResponse,
+} from './types.gen';
 
 export class HealthService {
-    /**
-     * Health
-     * Health check
-     * @returns HealthApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getHealth(): CancelablePromise<GetHealthResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/health'
-        });
-    }
-    
+  /**
+   * Health
+   * Health check
+   * @returns HealthApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getHealth(): CancelablePromise<GetHealthResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/health',
+    });
+  }
 }
 
 export class UsersService {
-    /**
-     * Captcha For Login
-     * Get captcha for a user. Captcha can be an **_image_** or an **_audio_**, depending on the **captchaType** param. In case of an image, you can also pass **captchaWidth** and **captchaHeight** for customizing the size of generated image.
-     * @param data The data for the request.
-     * @param data.captchaWidth
-     * @param data.captchaHeight
-     * @param data.captchaType
-     * @returns CaptchaApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getUsersLoginCaptcha(data: GetUsersLoginCaptchaData = {}): CancelablePromise<GetUsersLoginCaptchaResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/users/login/captcha',
-            query: {
-                captchaWidth: data.captchaWidth,
-                captchaHeight: data.captchaHeight,
-                captchaType: data.captchaType
-            },
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Login For Access Token
-     * Get access token using credentials for users. You must provide solved captcha value (_captcha_) and unique identifier of catpcha (_captchaUid_), along with user credentials (_username_ and _password_).**Important note**: _username_ can be either username, email, phone number or national code of user.
-     * @param data The data for the request.
-     * @param data.captchaUid
-     * @param data.captcha
-     * @param data.formData
-     * @returns TokenApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersLogin(data: PostUsersLoginData): CancelablePromise<PostUsersLoginResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/login',
-            query: {
-                captchaUid: data.captchaUid,
-                captcha: data.captcha
-            },
-            formData: data.formData,
-            mediaType: 'application/x-www-form-urlencoded',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Test User Access Token
-     * Get access token using credentials for test user. This method only works for **test** user. For login flow of real users, you must use _**login_captcha**_ and _**login**_ endpoints.
-     * @param data The data for the request.
-     * @param data.formData
-     * @returns TokenApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersToken(data: PostUsersTokenData): CancelablePromise<PostUsersTokenResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/token',
-            formData: data.formData,
-            mediaType: 'application/x-www-form-urlencoded',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Get Current User
-     * Get data of current logged in user.
-     * @returns unknown Successful Response
-     * @throws ApiError
-     */
-    public static getUsersMe(): CancelablePromise<GetUsersMeResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/users/me'
-        });
-    }
-    
-    /**
-     * Forgot Password Captcha
-     * Get captcha to reset password
-     * @param data The data for the request.
-     * @param data.captchaWidth
-     * @param data.captchaHeight
-     * @param data.captchaType
-     * @returns CaptchaApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersPasswordForgotCaptcha(data: PostUsersPasswordForgotCaptchaData = {}): CancelablePromise<PostUsersPasswordForgotCaptchaResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/password/forgot/captcha',
-            query: {
-                captchaWidth: data.captchaWidth,
-                captchaHeight: data.captchaHeight,
-                captchaType: data.captchaType
-            },
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Forgot Password Get Otp
-     * Get OTP to reset password
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns GetOtpForForgotPasswordResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersPasswordForgotOtp(data: PostUsersPasswordForgotOtpData): CancelablePromise<PostUsersPasswordForgotOtpResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/password/forgot/otp',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Forgot Password Reset By Otp
-     * Recover password using otp and new password
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns ResetForgotPasswordByOtpResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersPasswordForgotReset(data: PostUsersPasswordForgotResetData): CancelablePromise<PostUsersPasswordForgotResetResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/password/forgot/reset',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Change Password Get Otp
-     * Get otp to change password in user profile, does not need captcha
-     * @returns GetOtpForChangePasswordResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getUsersProfilePasswordChangeOtp(): CancelablePromise<GetUsersProfilePasswordChangeOtpResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/users/profile/password/change/otp',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Change Password By Otp
-     * Change password using otp and new password
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns ChangePasswordByOtpApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersProfilePasswordChange(data: PostUsersProfilePasswordChangeData): CancelablePromise<PostUsersProfilePasswordChangeResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/profile/password/change',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Validate Password For User
-     * Validate password for user
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns ValidatePasswordForUserResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersProfilePasswordValidate(data: PostUsersProfilePasswordValidateData): CancelablePromise<PostUsersProfilePasswordValidateResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/profile/password/validate',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Change Phone Number Get Otp
-     * get otp to change phone
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns ChangePhoneGetOtpResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersProfilePhoneChangeOtp(data: PostUsersProfilePhoneChangeOtpData): CancelablePromise<PostUsersProfilePhoneChangeOtpResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/profile/phone/change/otp',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Change Phone Number By Otp
-     * Change phone number with otp
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns ChangePhoneByOtpResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersProfilePhoneChange(data: PostUsersProfilePhoneChangeData): CancelablePromise<PostUsersProfilePhoneChangeResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/profile/phone/change',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Change Username
-     * Change username
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns ChangeUsernameResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersProfileUsernameChange(data: PostUsersProfileUsernameChangeData): CancelablePromise<PostUsersProfileUsernameChangeResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/profile/username/change',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Change Profile Picture
-     * Change profile picture
-     * @param data The data for the request.
-     * @param data.formData
-     * @returns ChangeProfilePictureResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersProfilePictureChange(data: PostUsersProfilePictureChangeData): CancelablePromise<PostUsersProfilePictureChangeResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/profile/picture/change',
-            formData: data.formData,
-            mediaType: 'multipart/form-data',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
+  /**
+   * Captcha For Login
+   * Get captcha for a user. Captcha can be an **_image_** or an **_audio_**, depending on the **captchaType** param. In case of an image, you can also pass **captchaWidth** and **captchaHeight** for customizing the size of generated image.
+   * @param data The data for the request.
+   * @param data.captchaWidth
+   * @param data.captchaHeight
+   * @param data.captchaType
+   * @returns CaptchaApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getUsersLoginCaptcha(
+    data: GetUsersLoginCaptchaData = {},
+  ): CancelablePromise<GetUsersLoginCaptchaResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/users/login/captcha',
+      query: {
+        captchaWidth: data.captchaWidth,
+        captchaHeight: data.captchaHeight,
+        captchaType: data.captchaType,
+      },
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Login For Access Token
+   * Get access token using credentials for users. You must provide solved captcha value (_captcha_) and unique identifier of catpcha (_captchaUid_), along with user credentials (_username_ and _password_).**Important note**: _username_ can be either username, email, phone number or national code of user.
+   * @param data The data for the request.
+   * @param data.captchaUid
+   * @param data.captcha
+   * @param data.formData
+   * @returns TokenApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersLogin(
+    data: PostUsersLoginData,
+  ): CancelablePromise<PostUsersLoginResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/login',
+      query: {
+        captchaUid: data.captchaUid,
+        captcha: data.captcha,
+      },
+      formData: data.formData,
+      mediaType: 'application/x-www-form-urlencoded',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Test User Access Token
+   * Get access token using credentials for test user. This method only works for **test** user. For login flow of real users, you must use _**login_captcha**_ and _**login**_ endpoints.
+   * @param data The data for the request.
+   * @param data.formData
+   * @returns TokenApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersToken(
+    data: PostUsersTokenData,
+  ): CancelablePromise<PostUsersTokenResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/token',
+      formData: data.formData,
+      mediaType: 'application/x-www-form-urlencoded',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Get Current User
+   * Get data of current logged in user.
+   * @returns unknown Successful Response
+   * @throws ApiError
+   */
+  public static getUsersMe(): CancelablePromise<GetUsersMeResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/users/me',
+    });
+  }
+
+  /**
+   * Forgot Password Captcha
+   * Get captcha to reset password
+   * @param data The data for the request.
+   * @param data.captchaWidth
+   * @param data.captchaHeight
+   * @param data.captchaType
+   * @returns CaptchaApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getUsersPasswordForgotCaptcha(
+    data: GetUsersPasswordForgotCaptchaData = {},
+  ): CancelablePromise<GetUsersPasswordForgotCaptchaResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/users/password/forgot/captcha',
+      query: {
+        captchaWidth: data.captchaWidth,
+        captchaHeight: data.captchaHeight,
+        captchaType: data.captchaType,
+      },
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Forgot Password Get Otp
+   * Get OTP to reset password
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns GetOtpForForgotPasswordResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersPasswordForgotOtp(
+    data: PostUsersPasswordForgotOtpData,
+  ): CancelablePromise<PostUsersPasswordForgotOtpResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/password/forgot/otp',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Forgot Password Reset By Otp
+   * Recover password using otp and new password
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ResetForgotPasswordByOtpResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersPasswordForgotReset(
+    data: PostUsersPasswordForgotResetData,
+  ): CancelablePromise<PostUsersPasswordForgotResetResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/password/forgot/reset',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Change Password Get Otp
+   * Get otp to change password in user profile, does not need captcha
+   * @returns GetOtpForChangePasswordResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getUsersProfilePasswordChangeOtp(): CancelablePromise<GetUsersProfilePasswordChangeOtpResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/users/profile/password/change/otp',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Change Password By Otp
+   * Change password using otp and new password
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ChangePasswordByOtpApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersProfilePasswordChange(
+    data: PostUsersProfilePasswordChangeData,
+  ): CancelablePromise<PostUsersProfilePasswordChangeResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/profile/password/change',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Validate Password For User
+   * Validate password for user
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ValidatePasswordForUserResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersProfilePasswordValidate(
+    data: PostUsersProfilePasswordValidateData,
+  ): CancelablePromise<PostUsersProfilePasswordValidateResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/profile/password/validate',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Change Phone Number Get Otp
+   * get otp to change phone
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ChangePhoneGetOtpResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersProfilePhoneChangeOtp(
+    data: PostUsersProfilePhoneChangeOtpData,
+  ): CancelablePromise<PostUsersProfilePhoneChangeOtpResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/profile/phone/change/otp',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Change Phone Number By Otp
+   * Change phone number with otp
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ChangePhoneByOtpResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersProfilePhoneChange(
+    data: PostUsersProfilePhoneChangeData,
+  ): CancelablePromise<PostUsersProfilePhoneChangeResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/profile/phone/change',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Change Email Get Otp
+   * get otp to change email
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ChangeEmailGetOtpResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersProfileEmailChangeOtp(
+    data: PostUsersProfileEmailChangeOtpData,
+  ): CancelablePromise<PostUsersProfileEmailChangeOtpResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/profile/email/change/otp',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Change Email By Otp
+   * Change email with otp
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ChangeEmailByOtpResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersProfileEmailChange(
+    data: PostUsersProfileEmailChangeData,
+  ): CancelablePromise<PostUsersProfileEmailChangeResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/profile/email/change',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Change Username
+   * Change username
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ChangeUsernameResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersProfileUsernameChange(
+    data: PostUsersProfileUsernameChangeData,
+  ): CancelablePromise<PostUsersProfileUsernameChangeResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/profile/username/change',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Change Profile Picture
+   * Change profile picture
+   * @param data The data for the request.
+   * @param data.formData
+   * @returns ChangeProfilePictureResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersProfilePictureChange(
+    data: PostUsersProfilePictureChangeData,
+  ): CancelablePromise<PostUsersProfilePictureChangeResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/profile/picture/change',
+      formData: data.formData,
+      mediaType: 'multipart/form-data',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
 }
 
 export class ReportsService {
-    /**
-     * Report List
-     * Get list of reports.
-     * @param data The data for the request.
-     * @param data.onlyFavorite
-     * @param data.onlyNew
-     * @param data.onlyHavingVideo
-     * @returns FinancialReportListItemApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getReports(data: GetReportsData = {}): CancelablePromise<GetReportsResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/reports',
-            query: {
-                onlyFavorite: data.onlyFavorite,
-                onlyNew: data.onlyNew,
-                onlyHavingVideo: data.onlyHavingVideo
-            },
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Report Details
-     * Get details of a report.
-     * @param data The data for the request.
-     * @param data.reportId
-     * @returns FinancialReportDetailsApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getReportsByReportId(data: GetReportsByReportIdData): CancelablePromise<GetReportsByReportIdResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/reports/{report_id}',
-            path: {
-                report_id: data.reportId
-            },
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Get Report Calculations
-     * Get report calculations.
-     * @param data The data for the request.
-     * @param data.reportId
-     * @param data.requestBody
-     * @returns FinancialReportCalculationApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postReportsByReportId(data: PostReportsByReportIdData): CancelablePromise<PostReportsByReportIdResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/reports/{report_id}',
-            path: {
-                report_id: data.reportId
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Report Categories
-     * Get list of report categories.
-     * @returns FinancialReportCategoryApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getReportsCategories(): CancelablePromise<GetReportsCategoriesResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/reports/categories'
-        });
-    }
-    
-    /**
-     * Add Report To Favorites
-     * Add a report to favorites
-     * @param data The data for the request.
-     * @param data.reportId
-     * @returns UserReportFavoriteStatus Successful Response
-     * @throws ApiError
-     */
-    public static postReportsByReportIdFavorite(data: PostReportsByReportIdFavoriteData): CancelablePromise<PostReportsByReportIdFavoriteResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/reports/{report_id}/favorite',
-            path: {
-                report_id: data.reportId
-            },
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Remove Report From Favorites
-     * Remove a report from favorites
-     * @param data The data for the request.
-     * @param data.reportId
-     * @returns UserReportFavoriteStatus Successful Response
-     * @throws ApiError
-     */
-    public static deleteReportsByReportIdFavorite(data: DeleteReportsByReportIdFavoriteData): CancelablePromise<DeleteReportsByReportIdFavoriteResponse> {
-        return __request(OpenAPI, {
-            method: 'DELETE',
-            url: '/reports/{report_id}/favorite',
-            path: {
-                report_id: data.reportId
-            },
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
+  /**
+   * Report List
+   * Get list of reports.
+   * @param data The data for the request.
+   * @param data.onlyFavorite
+   * @param data.onlyNew
+   * @param data.onlyHavingVideo
+   * @returns FinancialReportListItemApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getReports(
+    data: GetReportsData = {},
+  ): CancelablePromise<GetReportsResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/reports',
+      query: {
+        onlyFavorite: data.onlyFavorite,
+        onlyNew: data.onlyNew,
+        onlyHavingVideo: data.onlyHavingVideo,
+      },
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Report Categories
+   * Get list of report categories.
+   * @returns FinancialReportCategoryApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getReportsCategories(): CancelablePromise<GetReportsCategoriesResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/reports/categories',
+    });
+  }
+
+  /**
+   * Report Details
+   * Get details of a report.
+   * @param data The data for the request.
+   * @param data.reportId
+   * @param data.screenshotQueryId
+   * @returns FinancialReportDetailsApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getReportsByReportId(
+    data: GetReportsByReportIdData,
+  ): CancelablePromise<GetReportsByReportIdResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/reports/{report_id}',
+      path: {
+        report_id: data.reportId,
+      },
+      query: {
+        screenshotQueryId: data.screenshotQueryId,
+      },
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Get Report Calculations
+   * Get report calculations.
+   * @param data The data for the request.
+   * @param data.reportId
+   * @param data.requestBody
+   * @returns FinancialReportCalculationApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postReportsByReportId(
+    data: PostReportsByReportIdData,
+  ): CancelablePromise<PostReportsByReportIdResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/reports/{report_id}',
+      path: {
+        report_id: data.reportId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Add Report To Favorites
+   * Add a report to favorites
+   * @param data The data for the request.
+   * @param data.reportId
+   * @returns UserReportFavoriteStatus Successful Response
+   * @throws ApiError
+   */
+  public static postReportsByReportIdFavorite(
+    data: PostReportsByReportIdFavoriteData,
+  ): CancelablePromise<PostReportsByReportIdFavoriteResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/reports/{report_id}/favorite',
+      path: {
+        report_id: data.reportId,
+      },
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Remove Report From Favorites
+   * Remove a report from favorites
+   * @param data The data for the request.
+   * @param data.reportId
+   * @returns UserReportFavoriteStatus Successful Response
+   * @throws ApiError
+   */
+  public static deleteReportsByReportIdFavorite(
+    data: DeleteReportsByReportIdFavoriteData,
+  ): CancelablePromise<DeleteReportsByReportIdFavoriteResponse> {
+    return __request(OpenAPI, {
+      method: 'DELETE',
+      url: '/reports/{report_id}/favorite',
+      path: {
+        report_id: data.reportId,
+      },
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Save Screenshot
+   * Save report screenshot
+   * @param data The data for the request.
+   * @param data.reportId
+   * @param data.formData
+   * @returns ReportScreenshotResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postReportsByReportIdScreenshot(
+    data: PostReportsByReportIdScreenshotData,
+  ): CancelablePromise<PostReportsByReportIdScreenshotResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/reports/{report_id}/screenshot',
+      path: {
+        report_id: data.reportId,
+      },
+      formData: data.formData,
+      mediaType: 'multipart/form-data',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
 }
 
 export class DashboardsService {
-    /**
-     * User Dashboards
-     * Get user dashboards.
-     * @returns DashboardListItemApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getDashboards(): CancelablePromise<GetDashboardsResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/dashboards'
-        });
-    }
-    
-    /**
-     * Create Dashboard For User
-     * Add dashboard for user.
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns CreateDashboardResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static putDashboards(data: PutDashboardsData): CancelablePromise<PutDashboardsResponse> {
-        return __request(OpenAPI, {
-            method: 'PUT',
-            url: '/dashboards',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Dashboard Details
-     * Get dashboard details.
-     * @param data The data for the request.
-     * @param data.dashboardId
-     * @returns DashboardDetailsApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getDashboardsByDashboardId(data: GetDashboardsByDashboardIdData): CancelablePromise<GetDashboardsByDashboardIdResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/dashboards/{dashboard_id}',
-            path: {
-                dashboard_id: data.dashboardId
-            },
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Rename Dashboard
-     * Rename dashboard.
-     * @param data The data for the request.
-     * @param data.dashboardId
-     * @param data.requestBody
-     * @returns DashboardListItemApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postDashboardsByDashboardId(data: PostDashboardsByDashboardIdData): CancelablePromise<PostDashboardsByDashboardIdResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/dashboards/{dashboard_id}',
-            path: {
-                dashboard_id: data.dashboardId
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Delete Dashboard
-     * Delete dashboard.
-     * @param data The data for the request.
-     * @param data.dashboardId
-     * @returns DashboardListItemApiModel Successful Response
-     * @throws ApiError
-     */
-    public static deleteDashboardsByDashboardId(data: DeleteDashboardsByDashboardIdData): CancelablePromise<DeleteDashboardsByDashboardIdResponse> {
-        return __request(OpenAPI, {
-            method: 'DELETE',
-            url: '/dashboards/{dashboard_id}',
-            path: {
-                dashboard_id: data.dashboardId
-            },
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Add Report To Dashboard
-     * Add report item to dashboard.
-     * @param data The data for the request.
-     * @param data.dashboardId
-     * @param data.requestBody
-     * @returns DashboardItemApiModel Successful Response
-     * @throws ApiError
-     */
-    public static putDashboardsByDashboardId(data: PutDashboardsByDashboardIdData): CancelablePromise<PutDashboardsByDashboardIdResponse> {
-        return __request(OpenAPI, {
-            method: 'PUT',
-            url: '/dashboards/{dashboard_id}',
-            path: {
-                dashboard_id: data.dashboardId
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Dashboard Details
-     * Duplicate dashboard
-     * @param data The data for the request.
-     * @param data.dashboardId
-     * @param data.requestBody
-     * @returns DashboardDetailsApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postDashboardsByDashboardIdDuplicate(data: PostDashboardsByDashboardIdDuplicateData): CancelablePromise<PostDashboardsByDashboardIdDuplicateResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/dashboards/{dashboard_id}/duplicate',
-            path: {
-                dashboard_id: data.dashboardId
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Get Dashboard Items For Preview
-     * Get dashboard items for preview in dashboard list.
-     * @param data The data for the request.
-     * @param data.dashboardId
-     * @returns DashboardItemPreviewApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getDashboardsByDashboardIdPreview(data: GetDashboardsByDashboardIdPreviewData): CancelablePromise<GetDashboardsByDashboardIdPreviewResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/dashboards/{dashboard_id}/preview',
-            path: {
-                dashboard_id: data.dashboardId
-            },
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Remove Item From Dashboard
-     * Remove items from dashboard.
-     * @param data The data for the request.
-     * @param data.dashboardId
-     * @param data.dashboardItemId
-     * @returns DeleteDashboardItemResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static deleteDashboardsByDashboardIdItemsByDashboardItemId(data: DeleteDashboardsByDashboardIdItemsByDashboardItemIdData): CancelablePromise<DeleteDashboardsByDashboardIdItemsByDashboardItemIdResponse> {
-        return __request(OpenAPI, {
-            method: 'DELETE',
-            url: '/dashboards/{dashboard_id}/items/{dashboard_item_id}',
-            path: {
-                dashboard_id: data.dashboardId,
-                dashboard_item_id: data.dashboardItemId
-            },
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Replace Dashboard Item
-     * Replace item in dashboard.
-     * @param data The data for the request.
-     * @param data.dashboardId
-     * @param data.dashboardItemId
-     * @param data.requestBody
-     * @returns DashboardItemApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postDashboardsByDashboardIdItemsByDashboardItemIdReplace(data: PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceData): CancelablePromise<PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/dashboards/{dashboard_id}/items/{dashboard_item_id}/replace',
-            path: {
-                dashboard_id: data.dashboardId,
-                dashboard_item_id: data.dashboardItemId
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Get Dashboard Item Calculations
-     * Get dashboard item calculations.
-     * @param data The data for the request.
-     * @param data.dashboardId
-     * @param data.dashboardItemId
-     * @param data.requestBody
-     * @returns DashboardItemApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postDashboardsByDashboardIdItemsByDashboardItemIdCalculations(data: PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsData): CancelablePromise<PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/dashboards/{dashboard_id}/items/{dashboard_item_id}/calculations',
-            path: {
-                dashboard_id: data.dashboardId,
-                dashboard_item_id: data.dashboardItemId
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Change Dashboard Item Sort Order
-     * Change dashboard item sort order.
-     * @param data The data for the request.
-     * @param data.dashboardId
-     * @param data.dashboardItemId
-     * @param data.requestBody
-     * @returns unknown Successful Response
-     * @throws ApiError
-     */
-    public static postDashboardsByDashboardIdItemsByDashboardItemIdReorder(data: PostDashboardsByDashboardIdItemsByDashboardItemIdReorderData): CancelablePromise<PostDashboardsByDashboardIdItemsByDashboardItemIdReorderResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/dashboards/{dashboard_id}/items/{dashboard_item_id}/reorder',
-            path: {
-                dashboard_id: data.dashboardId,
-                dashboard_item_id: data.dashboardItemId
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
+  /**
+   * User Dashboards
+   * Get user dashboards.
+   * @returns DashboardListItemApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getDashboards(): CancelablePromise<GetDashboardsResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/dashboards',
+    });
+  }
+
+  /**
+   * Create Dashboard For User
+   * Add dashboard for user.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns CreateDashboardResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static putDashboards(
+    data: PutDashboardsData,
+  ): CancelablePromise<PutDashboardsResponse> {
+    return __request(OpenAPI, {
+      method: 'PUT',
+      url: '/dashboards',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Dashboard Details
+   * Get dashboard details.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @returns DashboardDetailsApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getDashboardsByDashboardId(
+    data: GetDashboardsByDashboardIdData,
+  ): CancelablePromise<GetDashboardsByDashboardIdResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/dashboards/{dashboard_id}',
+      path: {
+        dashboard_id: data.dashboardId,
+      },
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Rename Dashboard
+   * Rename dashboard.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @param data.requestBody
+   * @returns DashboardListItemApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postDashboardsByDashboardId(
+    data: PostDashboardsByDashboardIdData,
+  ): CancelablePromise<PostDashboardsByDashboardIdResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/dashboards/{dashboard_id}',
+      path: {
+        dashboard_id: data.dashboardId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Delete Dashboard
+   * Delete dashboard.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @returns DashboardListItemApiModel Successful Response
+   * @throws ApiError
+   */
+  public static deleteDashboardsByDashboardId(
+    data: DeleteDashboardsByDashboardIdData,
+  ): CancelablePromise<DeleteDashboardsByDashboardIdResponse> {
+    return __request(OpenAPI, {
+      method: 'DELETE',
+      url: '/dashboards/{dashboard_id}',
+      path: {
+        dashboard_id: data.dashboardId,
+      },
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Add Report To Dashboard
+   * Add report item to dashboard.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @param data.requestBody
+   * @returns DashboardItemApiModel Successful Response
+   * @throws ApiError
+   */
+  public static putDashboardsByDashboardId(
+    data: PutDashboardsByDashboardIdData,
+  ): CancelablePromise<PutDashboardsByDashboardIdResponse> {
+    return __request(OpenAPI, {
+      method: 'PUT',
+      url: '/dashboards/{dashboard_id}',
+      path: {
+        dashboard_id: data.dashboardId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Dashboard Details
+   * Duplicate dashboard
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @param data.requestBody
+   * @returns DashboardDetailsApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postDashboardsByDashboardIdDuplicate(
+    data: PostDashboardsByDashboardIdDuplicateData,
+  ): CancelablePromise<PostDashboardsByDashboardIdDuplicateResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/dashboards/{dashboard_id}/duplicate',
+      path: {
+        dashboard_id: data.dashboardId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Get Dashboard Items For Preview
+   * Get dashboard items for preview in dashboard list.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @returns DashboardItemPreviewApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getDashboardsByDashboardIdPreview(
+    data: GetDashboardsByDashboardIdPreviewData,
+  ): CancelablePromise<GetDashboardsByDashboardIdPreviewResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/dashboards/{dashboard_id}/preview',
+      path: {
+        dashboard_id: data.dashboardId,
+      },
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Remove Item From Dashboard
+   * Remove items from dashboard.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @param data.dashboardItemId
+   * @returns DeleteDashboardItemResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static deleteDashboardsByDashboardIdItemsByDashboardItemId(
+    data: DeleteDashboardsByDashboardIdItemsByDashboardItemIdData,
+  ): CancelablePromise<DeleteDashboardsByDashboardIdItemsByDashboardItemIdResponse> {
+    return __request(OpenAPI, {
+      method: 'DELETE',
+      url: '/dashboards/{dashboard_id}/items/{dashboard_item_id}',
+      path: {
+        dashboard_id: data.dashboardId,
+        dashboard_item_id: data.dashboardItemId,
+      },
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Replace Dashboard Item
+   * Replace item in dashboard.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @param data.dashboardItemId
+   * @param data.requestBody
+   * @returns DashboardItemApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postDashboardsByDashboardIdItemsByDashboardItemIdReplace(
+    data: PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceData,
+  ): CancelablePromise<PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/dashboards/{dashboard_id}/items/{dashboard_item_id}/replace',
+      path: {
+        dashboard_id: data.dashboardId,
+        dashboard_item_id: data.dashboardItemId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Save Dashboard Item Screenshot
+   * Replace item in dashboard.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @param data.dashboardItemId
+   * @param data.formData
+   * @returns DashboardItemScreenshotResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postDashboardsByDashboardIdItemsByDashboardItemIdScreenshot(
+    data: PostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotData,
+  ): CancelablePromise<PostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/dashboards/{dashboard_id}/items/{dashboard_item_id}/screenshot',
+      path: {
+        dashboard_id: data.dashboardId,
+        dashboard_item_id: data.dashboardItemId,
+      },
+      formData: data.formData,
+      mediaType: 'multipart/form-data',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Get Dashboard Item Calculations
+   * Get dashboard item calculations.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @param data.dashboardItemId
+   * @param data.requestBody
+   * @returns DashboardItemApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postDashboardsByDashboardIdItemsByDashboardItemIdCalculations(
+    data: PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsData,
+  ): CancelablePromise<PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/dashboards/{dashboard_id}/items/{dashboard_item_id}/calculations',
+      path: {
+        dashboard_id: data.dashboardId,
+        dashboard_item_id: data.dashboardItemId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Change Dashboard Item Sort Order
+   * Change dashboard item sort order.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @param data.dashboardItemId
+   * @param data.requestBody
+   * @returns unknown Successful Response
+   * @throws ApiError
+   */
+  public static postDashboardsByDashboardIdItemsByDashboardItemIdReorder(
+    data: PostDashboardsByDashboardIdItemsByDashboardItemIdReorderData,
+  ): CancelablePromise<PostDashboardsByDashboardIdItemsByDashboardItemIdReorderResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/dashboards/{dashboard_id}/items/{dashboard_item_id}/reorder',
+      path: {
+        dashboard_id: data.dashboardId,
+        dashboard_item_id: data.dashboardItemId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
 }
 
 export class FundsService {
-    /**
-     * All Funds
-     * Get list of all funds
-     * @returns FundListItemApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getFunds(): CancelablePromise<GetFundsResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/funds'
-        });
-    }
-    
-    /**
-     * Funds List
-     * Get list of funds of one type.
-     * @param data The data for the request.
-     * @param data.fundType
-     * @returns FundListItemApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getFundsTypeByFundType(data: GetFundsTypeByFundTypeData): CancelablePromise<GetFundsTypeByFundTypeResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/funds/type/{fund_type}',
-            path: {
-                fund_type: data.fundType
-            },
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Fund Table Tab
-     * Get a fund type or watchlist tab of fund table for user
-     * @param data The data for the request.
-     * @param data.tab
-     * @returns FundTableResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getFundsTable(data: GetFundsTableData = {}): CancelablePromise<GetFundsTableResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/funds/table',
-            query: {
-                tab: data.tab
-            },
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Pin Fund In Table Tab
-     * Pin fund in table tab
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns PinFundInTableTabResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postFundsTablePin(data: PostFundsTablePinData): CancelablePromise<PostFundsTablePinResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/funds/table/pin',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
-    /**
-     * Unpin Fund In Table Tab
-     * Unpin fund in table tab
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns UnpinFundInTableTabResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postFundsTableUnpin(data: PostFundsTableUnpinData): CancelablePromise<PostFundsTableUnpinResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/funds/table/unpin',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: 'Validation Error'
-            }
-        });
-    }
-    
+  /**
+   * All Funds
+   * Get list of all funds
+   * @returns FundListItemApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getFunds(): CancelablePromise<GetFundsResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/funds',
+    });
+  }
+
+  /**
+   * Funds List
+   * Get list of funds of one type.
+   * @param data The data for the request.
+   * @param data.fundType
+   * @returns FundListItemApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getFundsTypeByFundType(
+    data: GetFundsTypeByFundTypeData,
+  ): CancelablePromise<GetFundsTypeByFundTypeResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/funds/type/{fund_type}',
+      path: {
+        fund_type: data.fundType,
+      },
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Fund Table Tab
+   * Get a fund type or watchlist tab of fund table for user
+   * @param data The data for the request.
+   * @param data.tab
+   * @returns FundTableResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getFundsTable(
+    data: GetFundsTableData = {},
+  ): CancelablePromise<GetFundsTableResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/funds/table',
+      query: {
+        tab: data.tab,
+      },
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Pin Fund In Table Tab
+   * Pin fund in table tab
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns PinFundInTableTabResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsTablePin(
+    data: PostFundsTablePinData,
+  ): CancelablePromise<PostFundsTablePinResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/table/pin',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Unpin Fund In Table Tab
+   * Unpin fund in table tab
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns UnpinFundInTableTabResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsTableUnpin(
+    data: PostFundsTableUnpinData,
+  ): CancelablePromise<PostFundsTableUnpinResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/table/unpin',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
 }

@@ -28,13 +28,25 @@
 --color-surface-message-error-800-highcontrast: var(--color-red-red-800-light);
 --color-surface-message-success-300-disable: var(--color-green-green-300-light);
 --color-surface-message-success-600-primary: var(--color-green-green-600-light);
---color-surface-message-success-700-contrast: var(--color-green-green-700-light);
---color-surface-message-success-800-highcontrast: var(--color-green-green-800-light);
+--color-surface-message-success-700-contrast: var(
+  --color-green-green-700-light
+);
+--color-surface-message-success-800-highcontrast: var(
+  --color-green-green-800-light
+);
 --color-surface-message-warning-100-soft: var(--color-yellow-yellow-100-light);
---color-surface-message-warning-300-disable: var(--color-yellow-yellow-300-light);
---color-surface-message-warning-600-primary: var(--color-yellow-yellow-600-light);
---color-surface-message-warning-700-contrast: var(--color-yellow-yellow-700-light);
---color-surface-message-warning-800-highcontrast: var(--color-yellow-yellow-800-light);
+--color-surface-message-warning-300-disable: var(
+  --color-yellow-yellow-300-light
+);
+--color-surface-message-warning-600-primary: var(
+  --color-yellow-yellow-600-light
+);
+--color-surface-message-warning-700-contrast: var(
+  --color-yellow-yellow-700-light
+);
+--color-surface-message-warning-800-highcontrast: var(
+  --color-yellow-yellow-800-light
+);
 --color-text-neutral-primary: var(--color-gray-gray-1000-light);
 --color-text-neutral-secondarycontrast: var(--color-gray-gray-700-light);
 --color-text-neutral-secondary: var(--color-gray-gray-600-light);
@@ -59,7 +71,9 @@
 --color-text-message-error-oninverse: var(--color-red-red-400-light);
 --color-text-message-success-primary-600: var(--color-green-green-600-light);
 --color-text-message-success-contrast-700: var(--color-green-green-700-light);
---color-text-message-success-highcontrast-800: var(--color-green-green-800-light);
+--color-text-message-success-highcontrast-800: var(
+  --color-green-green-800-light
+);
 --color-text-message-success-disable-300: var(--color-green-green-300-light);
 --color-text-message-success-oninverse: var(--color-green-green-400-light);
 --color-icon-neutral-primary: var(--color-gray-gray-1000-light);
@@ -83,12 +97,16 @@
 --color-icon-message-error-oninverse: var(--color-red-red-400-light);
 --color-icon-message-success-primary-600: var(--color-green-green-600-light);
 --color-icon-message-success-contrast-700: var(--color-green-green-700-light);
---color-icon-message-success-highcontrast-800: var(--color-green-green-800-light);
+--color-icon-message-success-highcontrast-800: var(
+  --color-green-green-800-light
+);
 --color-icon-message-success-disable-300: var(--color-green-green-300-light);
 --color-icon-message-success-oninverse: var(--color-green-green-400-light);
 --color-icon-message-warning-primary-600: var(--color-yellow-yellow-600-light);
 --color-icon-message-warning-contrast-700: var(--color-yellow-yellow-700-light);
---color-icon-message-warning-highcontrast-800: var(--color-yellow-yellow-800-light);
+--color-icon-message-warning-highcontrast-800: var(
+  --color-yellow-yellow-800-light
+);
 --color-icon-message-warning-disable-300: var(--color-yellow-yellow-300-light);
 --color-icon-message-warning-oninverse: var(--color-yellow-yellow-400-light);
 --color-icon-neutral-white: var(--color-base-white);
@@ -111,12 +129,22 @@
 --color-border-message-success-soft-400: var(--color-green-green-400-light);
 --color-border-message-success-primary-600: var(--color-green-green-600-light);
 --color-border-message-success-contrast-700: var(--color-green-green-700-light);
---color-border-message-success-highcontrast-800: var(--color-green-green-800-light);
---color-border-message-warning-disable-300: var(--color-yellow-yellow-300-light);
+--color-border-message-success-highcontrast-800: var(
+  --color-green-green-800-light
+);
+--color-border-message-warning-disable-300: var(
+  --color-yellow-yellow-300-light
+);
 --color-border-message-warning-soft-400: var(--color-yellow-yellow-400-light);
---color-border-message-warning-primary-600: var(--color-yellow-yellow-600-light);
---color-border-message-warning-contrast-700: var(--color-yellow-yellow-700-light);
---color-border-message-warning-highcontrast-800: var(--color-yellow-yellow-800-light);
+--color-border-message-warning-primary-600: var(
+  --color-yellow-yellow-600-light
+);
+--color-border-message-warning-contrast-700: var(
+  --color-yellow-yellow-700-light
+);
+--color-border-message-warning-highcontrast-800: var(
+  --color-yellow-yellow-800-light
+);
 --color-border-brand-primary-600: var(--color-tiffany-tiffany-600-light);
 --color-border-brand-contrast-700: var(--color-tiffany-tiffany-700-light);
 --color-border-brand-highcontrast-800: var(--color-tiffany-tiffany-800-light);
@@ -161,17 +189,39 @@
 --color-border-accent-green-800: var(--color-green-green-800-light);
 --color-border-accent-green-900: var(--color-green-green-900-light);
 --color-border-accent-green-1000: var(--color-green-green-1000-light);
---color-border-accent-vividgreen-50: var(--color-vividgreen-vividgreen-50-light);
---color-border-accent-vividgreen-100: var(--color-vividgreen-vividgreen-100-light);
---color-border-accent-vividgreen-200: var(--color-vividgreen-vividgreen-200-light);
---color-border-accent-vividgreen-300: var(--color-vividgreen-vividgreen-300-light);
---color-border-accent-vividgreen-400: var(--color-vividgreen-vividgreen-400-light);
---color-border-accent-vividgreen-500: var(--color-vividgreen-vividgreen-500-light);
---color-border-accent-vividgreen-600: var(--color-vividgreen-vividgreen-600-light);
---color-border-accent-vividgreen-700: var(--color-vividgreen-vividgreen-700-light);
---color-border-accent-vividgreen-800: var(--color-vividgreen-vividgreen-800-light);
---color-border-accent-vividgreen-900: var(--color-vividgreen-vividgreen-900-light);
---color-border-accent-vividgreen-1000: var(--color-vividgreen-vividgreen-1000-light);
+--color-border-accent-vividgreen-50: var(
+  --color-vividgreen-vividgreen-50-light
+);
+--color-border-accent-vividgreen-100: var(
+  --color-vividgreen-vividgreen-100-light
+);
+--color-border-accent-vividgreen-200: var(
+  --color-vividgreen-vividgreen-200-light
+);
+--color-border-accent-vividgreen-300: var(
+  --color-vividgreen-vividgreen-300-light
+);
+--color-border-accent-vividgreen-400: var(
+  --color-vividgreen-vividgreen-400-light
+);
+--color-border-accent-vividgreen-500: var(
+  --color-vividgreen-vividgreen-500-light
+);
+--color-border-accent-vividgreen-600: var(
+  --color-vividgreen-vividgreen-600-light
+);
+--color-border-accent-vividgreen-700: var(
+  --color-vividgreen-vividgreen-700-light
+);
+--color-border-accent-vividgreen-800: var(
+  --color-vividgreen-vividgreen-800-light
+);
+--color-border-accent-vividgreen-900: var(
+  --color-vividgreen-vividgreen-900-light
+);
+--color-border-accent-vividgreen-1000: var(
+  --color-vividgreen-vividgreen-1000-light
+);
 --color-border-accent-yellow-50: var(--color-yellow-yellow-50-light);
 --color-border-accent-yellow-100: var(--color-yellow-yellow-100-light);
 --color-border-accent-yellow-200: var(--color-yellow-yellow-200-light);
@@ -184,79 +234,223 @@
 --color-border-accent-yellow-900: var(--color-yellow-yellow-900-light);
 --color-border-accent-yellow-1000: var(--color-yellow-yellow-1000-light);
 --color-icon-brand-aress-logo: var(--color-tiffany-tiffany-600-light);
---coloropacity-surface-neutral-background-0per: var(--coloropacity-base-white-0per);
---coloropacity-border-accent-blue-600-20per: var(--coloropacity-blue-blue-600-light-20per);
---coloropacity-border-accent-red-600-20per: var(--coloropacity-red-red-600-light-20per);
---coloropacity-border-accent-yellow-600-20per: var(--coloropacity-yellow-yellow-600-light-20per);
---coloropacity-border-accent-green-600-20per: var(--coloropacity-green-green-600-light-20per);
---coloropacity-border-accent-purple-600-20per: var(--coloropacity-purple-purple-600-light-20per);
---coloropacity-surface-neutral-primary-0per: var(--coloropacity-base-white-0per);
---coloropacity-surface-neutral-white-55per: var(--coloropacity-base-white-55per);
---coloropacity-surface-neutral-white-80per: var(--coloropacity-base-white-80per);
---coloropacity-surface-neutral-white-85per: var(--coloropacity-base-white-85per);
+--coloropacity-surface-neutral-background-0per: var(
+  --coloropacity-base-white-0per
+);
+--coloropacity-border-accent-blue-600-20per: var(
+  --coloropacity-blue-blue-600-light-20per
+);
+--coloropacity-border-accent-red-600-20per: var(
+  --coloropacity-red-red-600-light-20per
+);
+--coloropacity-border-accent-yellow-600-20per: var(
+  --coloropacity-yellow-yellow-600-light-20per
+);
+--coloropacity-border-accent-green-600-20per: var(
+  --coloropacity-green-green-600-light-20per
+);
+--coloropacity-border-accent-purple-600-20per: var(
+  --coloropacity-purple-purple-600-light-20per
+);
+--coloropacity-surface-neutral-primary-0per: var(
+  --coloropacity-base-white-0per
+);
+--coloropacity-surface-neutral-white-55per: var(
+  --coloropacity-base-white-55per
+);
+--coloropacity-surface-neutral-white-80per: var(
+  --coloropacity-base-white-80per
+);
+--coloropacity-surface-neutral-white-85per: var(
+  --coloropacity-base-white-85per
+);
 --coloropacity-surface-neutral-black-0per: var(--coloropacity-base-black-0per);
---coloropacity-surface-accent-blue-600-0per: var(--coloropacity-blue-blue-600-light-0per);
---coloropacity-surface-accent-blue-600-10per: var(--coloropacity-blue-blue-600-light-10per);
---coloropacity-surface-accent-blue-600-20per: var(--coloropacity-blue-blue-600-light-20per);
---coloropacity-surface-accent-blue-600-30per: var(--coloropacity-blue-blue-600-light-30per);
---coloropacity-surface-accent-blue-600-40per: var(--coloropacity-blue-blue-600-light-40per);
---coloropacity-surface-accent-blue-600-50per: var(--coloropacity-blue-blue-600-light-50per);
---coloropacity-surface-accent-blue-600-60per: var(--coloropacity-blue-blue-600-light-60per);
---coloropacity-surface-accent-blue-600-70per: var(--coloropacity-blue-blue-600-light-70per);
---coloropacity-surface-accent-blue-600-80per: var(--coloropacity-blue-blue-600-light-80per);
---coloropacity-surface-accent-blue-600-90per: var(--coloropacity-blue-blue-600-light-90per);
---coloropacity-surface-accent-red-600-0per: var(--coloropacity-red-red-600-light-0per);
---coloropacity-surface-accent-red-600-10per: var(--coloropacity-red-red-600-light-10per);
---coloropacity-surface-accent-red-600-20per: var(--coloropacity-red-red-600-light-20per);
---coloropacity-surface-accent-red-600-30per: var(--coloropacity-red-red-600-light-30per);
---coloropacity-surface-accent-red-600-40per: var(--coloropacity-red-red-600-light-40per);
---coloropacity-surface-accent-red-600-50per: var(--coloropacity-red-red-600-light-50per);
---coloropacity-surface-accent-red-600-60per: var(--coloropacity-red-red-600-light-60per);
---coloropacity-surface-accent-red-600-70per: var(--coloropacity-red-red-600-light-70per);
---coloropacity-surface-accent-red-600-80per: var(--coloropacity-red-red-600-light-80per);
---coloropacity-surface-accent-red-600-90per: var(--coloropacity-red-red-600-light-90per);
---coloropacity-surface-accent-green-600-0per: var(--coloropacity-green-green-600-light-0per);
---coloropacity-surface-accent-green-600-10per: var(--coloropacity-green-green-600-light-10per);
---coloropacity-surface-accent-green-600-20per: var(--coloropacity-green-green-600-light-20per);
---coloropacity-surface-accent-green-600-30per: var(--coloropacity-green-green-600-light-30per);
---coloropacity-surface-accent-green-600-40per: var(--coloropacity-green-green-600-light-40per);
---coloropacity-surface-accent-green-600-50per: var(--coloropacity-green-green-600-light-50per);
---coloropacity-surface-accent-green-600-60per: var(--coloropacity-green-green-600-light-60per);
---coloropacity-surface-accent-green-600-70per: var(--coloropacity-green-green-600-light-70per);
---coloropacity-surface-accent-green-600-80per: var(--coloropacity-green-green-600-light-80per);
---coloropacity-surface-accent-green-600-90per: var(--coloropacity-green-green-600-light-90per);
---coloropacity-surface-accent-yellow-600-0per: var(--coloropacity-yellow-yellow-600-light-0per);
---coloropacity-surface-accent-yellow-600-10per: var(--coloropacity-yellow-yellow-600-light-10per);
---coloropacity-surface-accent-yellow-600-20per: var(--coloropacity-yellow-yellow-600-light-20per);
---coloropacity-surface-accent-yellow-600-30per: var(--coloropacity-yellow-yellow-600-light-30per);
---coloropacity-surface-accent-yellow-600-40per: var(--coloropacity-yellow-yellow-600-light-40per);
---coloropacity-surface-accent-yellow-600-50per: var(--coloropacity-yellow-yellow-600-light-50per);
---coloropacity-surface-accent-yellow-600-60per: var(--coloropacity-yellow-yellow-600-light-60per);
---coloropacity-surface-accent-yellow-600-70per: var(--coloropacity-yellow-yellow-600-light-70per);
---coloropacity-surface-accent-yellow-600-80per: var(--coloropacity-yellow-yellow-600-light-80per);
---coloropacity-surface-accent-yellow-600-90per: var(--coloropacity-yellow-yellow-600-light-90per);
---coloropacity-surface-accent-purple-600-0per: var(--coloropacity-purple-purple-600-light-0per);
---coloropacity-surface-accent-purple-600-10per: var(--coloropacity-purple-purple-600-light-10per);
---coloropacity-surface-accent-purple-600-20per: var(--coloropacity-purple-purple-600-light-20per);
---coloropacity-surface-accent-purple-600-30per: var(--coloropacity-purple-purple-600-light-30per);
---coloropacity-surface-accent-purple-600-40per: var(--coloropacity-purple-purple-600-light-40per);
---coloropacity-surface-accent-purple-600-50per: var(--coloropacity-purple-purple-600-light-50per);
---coloropacity-surface-accent-purple-600-60per: var(--coloropacity-purple-purple-600-light-60per);
---coloropacity-surface-accent-purple-600-70per: var(--coloropacity-purple-purple-600-light-70per);
---coloropacity-surface-accent-purple-600-80per: var(--coloropacity-purple-purple-600-light-80per);
---coloropacity-surface-accent-purple-600-90per: var(--coloropacity-purple-purple-600-light-90per);
---coloropacity-surface-accent-gray-300-50per: var(--coloropacity-gray-gray-300-light-50per);
---coloropacity-surface-accent-gray-400-55per: var(--coloropacity-gray-gray-400-light-55per);
---coloropacity-surface-accent-gray-600-0per: var(--coloropacity-gray-gray-600-light-0per);
---coloropacity-surface-accent-gray-600-10per: var(--coloropacity-gray-gray-600-light-10per);
---coloropacity-surface-accent-gray-600-20per: var(--coloropacity-gray-gray-600-light-20per);
---coloropacity-surface-accent-gray-600-30per: var(--coloropacity-gray-gray-600-light-30per);
---coloropacity-surface-accent-gray-600-40per: var(--coloropacity-gray-gray-600-light-40per);
---coloropacity-surface-accent-gray-600-50per: var(--coloropacity-gray-gray-600-light-50per);
---coloropacity-surface-accent-gray-600-60per: var(--coloropacity-gray-gray-600-light-60per);
---coloropacity-surface-accent-gray-600-70per: var(--coloropacity-gray-gray-600-light-70per);
---coloropacity-surface-accent-gray-600-80per: var(--coloropacity-gray-gray-600-light-80per);
---coloropacity-surface-accent-gray-600-90per: var(--coloropacity-gray-gray-600-light-90per);
+--coloropacity-surface-accent-blue-600-0per: var(
+  --coloropacity-blue-blue-600-light-0per
+);
+--coloropacity-surface-accent-blue-600-10per: var(
+  --coloropacity-blue-blue-600-light-10per
+);
+--coloropacity-surface-accent-blue-600-20per: var(
+  --coloropacity-blue-blue-600-light-20per
+);
+--coloropacity-surface-accent-blue-600-30per: var(
+  --coloropacity-blue-blue-600-light-30per
+);
+--coloropacity-surface-accent-blue-600-40per: var(
+  --coloropacity-blue-blue-600-light-40per
+);
+--coloropacity-surface-accent-blue-600-50per: var(
+  --coloropacity-blue-blue-600-light-50per
+);
+--coloropacity-surface-accent-blue-600-60per: var(
+  --coloropacity-blue-blue-600-light-60per
+);
+--coloropacity-surface-accent-blue-600-70per: var(
+  --coloropacity-blue-blue-600-light-70per
+);
+--coloropacity-surface-accent-blue-600-80per: var(
+  --coloropacity-blue-blue-600-light-80per
+);
+--coloropacity-surface-accent-blue-600-90per: var(
+  --coloropacity-blue-blue-600-light-90per
+);
+--coloropacity-surface-accent-red-600-0per: var(
+  --coloropacity-red-red-600-light-0per
+);
+--coloropacity-surface-accent-red-600-10per: var(
+  --coloropacity-red-red-600-light-10per
+);
+--coloropacity-surface-accent-red-600-20per: var(
+  --coloropacity-red-red-600-light-20per
+);
+--coloropacity-surface-accent-red-600-30per: var(
+  --coloropacity-red-red-600-light-30per
+);
+--coloropacity-surface-accent-red-600-40per: var(
+  --coloropacity-red-red-600-light-40per
+);
+--coloropacity-surface-accent-red-600-50per: var(
+  --coloropacity-red-red-600-light-50per
+);
+--coloropacity-surface-accent-red-600-60per: var(
+  --coloropacity-red-red-600-light-60per
+);
+--coloropacity-surface-accent-red-600-70per: var(
+  --coloropacity-red-red-600-light-70per
+);
+--coloropacity-surface-accent-red-600-80per: var(
+  --coloropacity-red-red-600-light-80per
+);
+--coloropacity-surface-accent-red-600-90per: var(
+  --coloropacity-red-red-600-light-90per
+);
+--coloropacity-surface-accent-green-600-0per: var(
+  --coloropacity-green-green-600-light-0per
+);
+--coloropacity-surface-accent-green-600-10per: var(
+  --coloropacity-green-green-600-light-10per
+);
+--coloropacity-surface-accent-green-600-20per: var(
+  --coloropacity-green-green-600-light-20per
+);
+--coloropacity-surface-accent-green-600-30per: var(
+  --coloropacity-green-green-600-light-30per
+);
+--coloropacity-surface-accent-green-600-40per: var(
+  --coloropacity-green-green-600-light-40per
+);
+--coloropacity-surface-accent-green-600-50per: var(
+  --coloropacity-green-green-600-light-50per
+);
+--coloropacity-surface-accent-green-600-60per: var(
+  --coloropacity-green-green-600-light-60per
+);
+--coloropacity-surface-accent-green-600-70per: var(
+  --coloropacity-green-green-600-light-70per
+);
+--coloropacity-surface-accent-green-600-80per: var(
+  --coloropacity-green-green-600-light-80per
+);
+--coloropacity-surface-accent-green-600-90per: var(
+  --coloropacity-green-green-600-light-90per
+);
+--coloropacity-surface-accent-yellow-600-0per: var(
+  --coloropacity-yellow-yellow-600-light-0per
+);
+--coloropacity-surface-accent-yellow-600-10per: var(
+  --coloropacity-yellow-yellow-600-light-10per
+);
+--coloropacity-surface-accent-yellow-600-20per: var(
+  --coloropacity-yellow-yellow-600-light-20per
+);
+--coloropacity-surface-accent-yellow-600-30per: var(
+  --coloropacity-yellow-yellow-600-light-30per
+);
+--coloropacity-surface-accent-yellow-600-40per: var(
+  --coloropacity-yellow-yellow-600-light-40per
+);
+--coloropacity-surface-accent-yellow-600-50per: var(
+  --coloropacity-yellow-yellow-600-light-50per
+);
+--coloropacity-surface-accent-yellow-600-60per: var(
+  --coloropacity-yellow-yellow-600-light-60per
+);
+--coloropacity-surface-accent-yellow-600-70per: var(
+  --coloropacity-yellow-yellow-600-light-70per
+);
+--coloropacity-surface-accent-yellow-600-80per: var(
+  --coloropacity-yellow-yellow-600-light-80per
+);
+--coloropacity-surface-accent-yellow-600-90per: var(
+  --coloropacity-yellow-yellow-600-light-90per
+);
+--coloropacity-surface-accent-purple-600-0per: var(
+  --coloropacity-purple-purple-600-light-0per
+);
+--coloropacity-surface-accent-purple-600-10per: var(
+  --coloropacity-purple-purple-600-light-10per
+);
+--coloropacity-surface-accent-purple-600-20per: var(
+  --coloropacity-purple-purple-600-light-20per
+);
+--coloropacity-surface-accent-purple-600-30per: var(
+  --coloropacity-purple-purple-600-light-30per
+);
+--coloropacity-surface-accent-purple-600-40per: var(
+  --coloropacity-purple-purple-600-light-40per
+);
+--coloropacity-surface-accent-purple-600-50per: var(
+  --coloropacity-purple-purple-600-light-50per
+);
+--coloropacity-surface-accent-purple-600-60per: var(
+  --coloropacity-purple-purple-600-light-60per
+);
+--coloropacity-surface-accent-purple-600-70per: var(
+  --coloropacity-purple-purple-600-light-70per
+);
+--coloropacity-surface-accent-purple-600-80per: var(
+  --coloropacity-purple-purple-600-light-80per
+);
+--coloropacity-surface-accent-purple-600-90per: var(
+  --coloropacity-purple-purple-600-light-90per
+);
+--coloropacity-surface-accent-gray-300-50per: var(
+  --coloropacity-gray-gray-300-light-50per
+);
+--coloropacity-surface-accent-gray-400-55per: var(
+  --coloropacity-gray-gray-400-light-55per
+);
+--coloropacity-surface-accent-gray-600-0per: var(
+  --coloropacity-gray-gray-600-light-0per
+);
+--coloropacity-surface-accent-gray-600-10per: var(
+  --coloropacity-gray-gray-600-light-10per
+);
+--coloropacity-surface-accent-gray-600-20per: var(
+  --coloropacity-gray-gray-600-light-20per
+);
+--coloropacity-surface-accent-gray-600-30per: var(
+  --coloropacity-gray-gray-600-light-30per
+);
+--coloropacity-surface-accent-gray-600-40per: var(
+  --coloropacity-gray-gray-600-light-40per
+);
+--coloropacity-surface-accent-gray-600-50per: var(
+  --coloropacity-gray-gray-600-light-50per
+);
+--coloropacity-surface-accent-gray-600-60per: var(
+  --coloropacity-gray-gray-600-light-60per
+);
+--coloropacity-surface-accent-gray-600-70per: var(
+  --coloropacity-gray-gray-600-light-70per
+);
+--coloropacity-surface-accent-gray-600-80per: var(
+  --coloropacity-gray-gray-600-light-80per
+);
+--coloropacity-surface-accent-gray-600-90per: var(
+  --coloropacity-gray-gray-600-light-90per
+);
 --coloropacity-shadow-4per: var(--coloropacity-shadow-4per-light);
 --coloropacity-shadow-4_5per: var(--coloropacity-shadow-4_5per-light);
 --coloropacity-shadow-6per: var(--coloropacity-shadow-6per-light);
@@ -269,7 +463,9 @@
 --coloropacity-shadow-34per: var(--coloropacity-shadow-34per-light);
 --color-text-message-warning-primary-600: var(--color-yellow-yellow-600-light);
 --color-text-message-warning-contrast-700: var(--color-yellow-yellow-700-light);
---color-text-message-warning-highcontrast-800: var(--color-yellow-yellow-800-light);
+--color-text-message-warning-highcontrast-800: var(
+  --color-yellow-yellow-800-light
+);
 --color-text-message-warning-disable-300: var(--color-yellow-yellow-300-light);
 --color-text-message-warning-oninverse: var(--color-yellow-yellow-400-light);
 --color-surface-accent-blue-50: var(--color-blue-blue-50-light);
@@ -300,17 +496,39 @@
 --color-surface-accent-red-1000: var(--color-red-red-1000-light);
 --color-surface-accent-green-400: var(--color-green-green-400-light);
 --color-surface-accent-yellow-50: var(--color-yellow-yellow-50-light);
---color-surface-accent-vividgreen-50: var(--color-vividgreen-vividgreen-50-light);
---color-surface-accent-vividgreen-100: var(--color-vividgreen-vividgreen-100-light);
---color-surface-accent-vividgreen-200: var(--color-vividgreen-vividgreen-200-light);
---color-surface-accent-vividgreen-300: var(--color-vividgreen-vividgreen-300-light);
---color-surface-accent-vividgreen-400: var(--color-vividgreen-vividgreen-400-light);
---color-surface-accent-vividgreen-500: var(--color-vividgreen-vividgreen-500-light);
---color-surface-accent-vividgreen-600: var(--color-vividgreen-vividgreen-600-light);
---color-surface-accent-vividgreen-700: var(--color-vividgreen-vividgreen-700-light);
---color-surface-accent-vividgreen-800: var(--color-vividgreen-vividgreen-800-light);
---color-surface-accent-vividgreen-900: var(--color-vividgreen-vividgreen-900-light);
---color-surface-accent-vividgreen-1000: var(--color-vividgreen-vividgreen-1000-light);
+--color-surface-accent-vividgreen-50: var(
+  --color-vividgreen-vividgreen-50-light
+);
+--color-surface-accent-vividgreen-100: var(
+  --color-vividgreen-vividgreen-100-light
+);
+--color-surface-accent-vividgreen-200: var(
+  --color-vividgreen-vividgreen-200-light
+);
+--color-surface-accent-vividgreen-300: var(
+  --color-vividgreen-vividgreen-300-light
+);
+--color-surface-accent-vividgreen-400: var(
+  --color-vividgreen-vividgreen-400-light
+);
+--color-surface-accent-vividgreen-500: var(
+  --color-vividgreen-vividgreen-500-light
+);
+--color-surface-accent-vividgreen-600: var(
+  --color-vividgreen-vividgreen-600-light
+);
+--color-surface-accent-vividgreen-700: var(
+  --color-vividgreen-vividgreen-700-light
+);
+--color-surface-accent-vividgreen-800: var(
+  --color-vividgreen-vividgreen-800-light
+);
+--color-surface-accent-vividgreen-900: var(
+  --color-vividgreen-vividgreen-900-light
+);
+--color-surface-accent-vividgreen-1000: var(
+  --color-vividgreen-vividgreen-1000-light
+);
 --color-surface-accent-green-500: var(--color-green-green-500-light);
 --color-surface-accent-yellow-100: var(--color-yellow-yellow-100-light);
 --color-surface-accent-yellow-200: var(--color-yellow-yellow-200-light);
@@ -331,29 +549,61 @@
 --color-text-accent-blue-contrast-700: var(--color-blue-blue-700-light);
 --color-text-accent-red-primary-600: var(--color-red-red-600-light);
 --color-text-onbrand-neutral-primary-on600: var(--color-base-white);
---color-text-onbrand-neutral-primary-onbelow600: var(--color-gray-gray-1000-light);
+--color-text-onbrand-neutral-primary-onbelow600: var(
+  --color-gray-gray-1000-light
+);
 --color-text-onbrand-neutral-primary-onabove600: var(--color-base-white);
 --color-text-onmessage-neutral-primary-on600: var(--color-base-white);
---color-text-onbrand-neutral-secondary-on100_50: var(--color-gray-gray-600-light);
---color-text-onmessage-neutral-primary-onbelow600: var(--color-gray-gray-1000-light);
---color-text-onbrand-colored-primary-on200_100_50: var(--color-tiffany-tiffany-800-light);
---color-text-onbrand-colored-secondary-on100_50: var(--color-tiffany-tiffany-700-light);
+--color-text-onbrand-neutral-secondary-on100_50: var(
+  --color-gray-gray-600-light
+);
+--color-text-onmessage-neutral-primary-onbelow600: var(
+  --color-gray-gray-1000-light
+);
+--color-text-onbrand-colored-primary-on200_100_50: var(
+  --color-tiffany-tiffany-800-light
+);
+--color-text-onbrand-colored-secondary-on100_50: var(
+  --color-tiffany-tiffany-700-light
+);
 --color-text-onmessage-neutral-primary-onabove600: var(--color-base-white);
---color-text-onmessage-neutral-secondary-on100: var(--color-gray-gray-600-light);
+--color-text-onmessage-neutral-secondary-on100: var(
+  --color-gray-gray-600-light
+);
 --color-text-onmessage-colored-oninfo-on100: var(--color-blue-blue-800-light);
 --color-text-onaccent-neutral-primary-on600: var(--color-base-white);
 --color-text-onmessage-colored-onerror-on100: var(--color-red-red-800-light);
---color-text-onmessage-colored-onsuccess-on100: var(--color-green-green-800-light);
---color-text-onaccent-neutral-primary-onbelow600: var(--color-gray-gray-1000-light);
---color-text-onmessage-colored-onwarning-on100: var(--color-yellow-yellow-800-light);
+--color-text-onmessage-colored-onsuccess-on100: var(
+  --color-green-green-800-light
+);
+--color-text-onaccent-neutral-primary-onbelow600: var(
+  --color-gray-gray-1000-light
+);
+--color-text-onmessage-colored-onwarning-on100: var(
+  --color-yellow-yellow-800-light
+);
 --color-text-onaccent-neutral-primary-onabove600: var(--color-base-white);
---color-text-onaccent-neutral-secondary-on100_50: var(--color-gray-gray-600-light);
---color-text-onaccent-colored-onblue-on200_100_50: var(--color-blue-blue-800-light);
---color-text-onaccent-colored-onpurple-on200_100_50: var(--color-purple-purple-800-light);
---color-text-onaccent-colored-onred-on200_100_50: var(--color-red-red-800-light);
---color-text-onaccent-colored-ongreen-on200_100_50: var(--color-green-green-800-light);
---color-text-onaccent-colored-onvividgreen-on200_100_50: var(--color-vividgreen-vividgreen-800-light);
---color-text-onaccent-colored-onyellow-on200_100_50: var(--color-yellow-yellow-800-light);
+--color-text-onaccent-neutral-secondary-on100_50: var(
+  --color-gray-gray-600-light
+);
+--color-text-onaccent-colored-onblue-on200_100_50: var(
+  --color-blue-blue-800-light
+);
+--color-text-onaccent-colored-onpurple-on200_100_50: var(
+  --color-purple-purple-800-light
+);
+--color-text-onaccent-colored-onred-on200_100_50: var(
+  --color-red-red-800-light
+);
+--color-text-onaccent-colored-ongreen-on200_100_50: var(
+  --color-green-green-800-light
+);
+--color-text-onaccent-colored-onvividgreen-on200_100_50: var(
+  --color-vividgreen-vividgreen-800-light
+);
+--color-text-onaccent-colored-onyellow-on200_100_50: var(
+  --color-yellow-yellow-800-light
+);
 --color-text-accent-red-contrast-700: var(--color-red-red-700-light);
 --color-text-accent-green-primary-600: var(--color-green-green-600-light);
 --color-text-accent-green-contrast-700: var(--color-green-green-700-light);
@@ -378,12 +628,16 @@
 --color-icon-accent-green-primary-600: var(--color-green-green-600-light);
 --color-icon-accent-green-contrast-700: var(--color-green-green-700-light);
 --color-icon-accent-red-contrast-700: var(--color-red-red-700-light);
---color-icon-accent-vividgreen-primary-600: var(--color-vividgreen-vividgreen-600-light);
+--color-icon-accent-vividgreen-primary-600: var(
+  --color-vividgreen-vividgreen-600-light
+);
 --color-icon-accent-yellow-primary-600: var(--color-yellow-yellow-600-light);
 --color-icon-accent-yellow-contrast-700: var(--color-yellow-yellow-700-light);
 --color-icon-accent-pink-primary-600: var(--color-pink-pink-600-light);
 --color-icon-accent-pink-contrast-700: var(--color-pink-pink-700-light);
---color-icon-accent-vividgreen-contrast-700: var(--color-vividgreen-vividgreen-700-light);
+--color-icon-accent-vividgreen-contrast-700: var(
+  --color-vividgreen-vividgreen-700-light
+);
 --color-icon-onbrand-neutral-on600: var(--color-base-white);
 --color-icon-onbrand-neutral-onbelow600: var(--color-gray-gray-1000-light);
 --color-icon-onmessage-neutral-on600: var(--color-base-white);
@@ -391,20 +645,40 @@
 --color-icon-onmessage-neutral-onabove600: var(--color-base-white);
 --color-icon-onmessage-colored-oninfo-on100: var(--color-blue-blue-800-light);
 --color-icon-onmessage-colored-onerror-on100: var(--color-red-red-800-light);
---color-icon-onmessage-colored-onsuccess-on100: var(--color-green-green-800-light);
+--color-icon-onmessage-colored-onsuccess-on100: var(
+  --color-green-green-800-light
+);
 --color-icon-onaccent-neutral-on600: var(--color-base-white);
---color-icon-onmessage-colored-onwarning-on100: var(--color-yellow-yellow-800-light);
+--color-icon-onmessage-colored-onwarning-on100: var(
+  --color-yellow-yellow-800-light
+);
 --color-icon-onaccent-neutral-onbelow600: var(--color-gray-gray-1000-light);
 --color-icon-onaccent-neutral-onabove600: var(--color-base-white);
---color-icon-onaccent-colored-onblue-on200_100_50: var(--color-blue-blue-800-light);
---color-icon-onaccent-colored-onpurple-on200_100_50: var(--color-purple-purple-800-light);
---color-icon-onaccent-colored-onred-on200_100_50: var(--color-red-red-800-light);
---color-icon-onaccent-colored-ongreen-on200_100_50: var(--color-green-green-800-light);
---color-icon-onaccent-colored-onvividgreen-on200_100_50: var(--color-vividgreen-vividgreen-800-light);
---color-icon-onaccent-colored-onyellow-on200_100_50: var(--color-yellow-yellow-800-light);
+--color-icon-onaccent-colored-onblue-on200_100_50: var(
+  --color-blue-blue-800-light
+);
+--color-icon-onaccent-colored-onpurple-on200_100_50: var(
+  --color-purple-purple-800-light
+);
+--color-icon-onaccent-colored-onred-on200_100_50: var(
+  --color-red-red-800-light
+);
+--color-icon-onaccent-colored-ongreen-on200_100_50: var(
+  --color-green-green-800-light
+);
+--color-icon-onaccent-colored-onvividgreen-on200_100_50: var(
+  --color-vividgreen-vividgreen-800-light
+);
+--color-icon-onaccent-colored-onyellow-on200_100_50: var(
+  --color-yellow-yellow-800-light
+);
 --color-icon-onbrand-neutral-onabove600: var(--color-base-white);
---color-icon-onbrand-colored-primary-on200_100_50: var(--color-tiffany-tiffany-800-light);
---color-icon-onbrand-colored-secondary-on100_50: var(--color-tiffany-tiffany-700-light);
+--color-icon-onbrand-colored-primary-on200_100_50: var(
+  --color-tiffany-tiffany-800-light
+);
+--color-icon-onbrand-colored-secondary-on100_50: var(
+  --color-tiffany-tiffany-700-light
+);
 --color-border-accent-purple-50: var(--color-purple-purple-50-light);
 --color-border-accent-purple-100: var(--color-purple-purple-100-light);
 --color-border-accent-purple-200: var(--color-purple-purple-200-light);

@@ -44,7 +44,7 @@ export const Default: Story = {
           isOpen={isOpen}
           image="https://picsum.photos/600/400"
           onClose={() => setIsOpen(false)}
-          onChange={(image) => downloadBlob(image as any, 'test')}
+          onChange={(image) => downloadBlob(image, 'test')}
         />
       </>
     );
