@@ -1,5 +1,5 @@
-import { cn, Icon } from 'design-system';
-import { DateText } from '../index';
+import { DatePickerState } from '../DatePickerState';
+import { DateText } from '../DatePickerText';
 
 interface DatePickerTriggerProps {
   title: string[];
@@ -28,13 +28,12 @@ export function DatePickerTrigger({
       ) : (
         <DateText title={title[0]} date={date} />
       )}
-      <div
-        onClick={onClick}
-        className={cn(
-          'border-border-neutral-primary bg-surface-neutral-primary flex h-12 w-12 items-center justify-center rounded-full border p-3',
-        )}
-      >
-        <Icon name="calendar-range" size="lg" />
+      <div onClick={onClick}>
+        <DatePickerState
+          active={date ? true : false}
+          size="larg"
+          theme="default"
+        />
       </div>
     </div>
   );

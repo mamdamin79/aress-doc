@@ -1,6 +1,6 @@
 import { cn } from 'design-system';
 
-interface Porps {
+interface DateTextProps {
   title: string;
   date?: {
     day: number;
@@ -9,7 +9,7 @@ interface Porps {
   };
 }
 
-export function DateText({ title, date }: Porps) {
+export function DateText({ title, date }: DateTextProps) {
   return (
     <div className="flex flex-col gap-3">
       <span className="text-text-neutral-primary text-sm">{title}</span>
