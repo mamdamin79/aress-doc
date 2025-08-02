@@ -4,12 +4,10 @@ import HighchartsReact from 'highcharts-react-official';
 import { baseOptions } from '../Report.config.shared';
 import { financialDefinitions } from './Report15.constants';
 import { ReportCardBase } from 'design-system';
-import {
-  FinancialReportFilterApiModel,
-  Report15CalculationResult,
-} from '@openapi';
+import { Report15CalculationResult } from '@openapi';
 import { OptionItem } from 'design-system';
 import { toBasicSetting, toDropdownSetting } from '../Report.utils';
+import { ReportProps } from '../Report.types';
 
 interface InfoBoxProps {
   label: string;
@@ -23,16 +21,7 @@ const InfoBox: FC<InfoBoxProps> = ({ label, value }) => (
   </div>
 );
 
-export interface Report15Props {
-  title?: string;
-  data: Report15CalculationResult;
-  filters: FinancialReportFilterApiModel[];
-  onSubmit?: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
-  onRemove?: () => void;
-  onShare?: () => void;
-}
-
-export const Report15: FC<Report15Props> = ({
+export const Report15: FC<ReportProps<Report15CalculationResult>> = ({
   data,
   filters,
   onRemove,

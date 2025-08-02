@@ -4,26 +4,17 @@ import HighchartsReact from 'highcharts-react-official';
 import { baseOptions, xAxisLabels, yAxisLabels } from '../Report.config.shared';
 import { OptionItem, ReportCardBase } from 'design-system';
 import { report13Definitions } from './Report13_2.constants';
-import {
-  FinancialReportFilterApiModel,
-  Report13Dot2CalculationResult,
-} from '@openapi';
+import { Report13Dot2CalculationResult } from '@openapi';
 import { toBasicSetting } from '../Report.utils';
+import { ReportProps } from '../Report.types';
 
-export interface Report13_2Props {
-  title?: string;
-  data: Report13Dot2CalculationResult;
-  filters: FinancialReportFilterApiModel[];
-  onSubmit?: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
-  onRemove?: () => void;
-}
-
-export const Report13_2: FC<Report13_2Props> = ({
+export const Report13_2: FC<ReportProps<Report13Dot2CalculationResult>> = ({
   data,
   filters,
   onRemove,
   onSubmit,
   title,
+  onShare,
 }) => {
   const [dataState, setDataState] = useState(data);
   const [filterState, setFilterState] = useState(filters);
@@ -198,6 +189,7 @@ export const Report13_2: FC<Report13_2Props> = ({
       ]}
       onSubmit={handleSubmit}
       onRemove={onRemove}
+      onShare={onShare}
     >
       <HighchartsReact highcharts={Highcharts} options={options} />
     </ReportCardBase>
