@@ -1,29 +1,41 @@
-FROM node:23.9.0-slim
-
+# Install dependencies only when needed
+FROM node:20-alpine AS deps
 WORKDIR /app
 
-RUN npm install -g pnpm 
-RUN npm add --global nx@19.6.5
+# Copy only the package.json and lock file
+COPY apps/fe-app/package.json ./
+COPY pnpm-workspace.yaml ./
+COPY package.json ./
+COPY pnpm-lock.yaml ./
+COPY tsconfig.base.json ./
+COPY tsconfig.base.json /tsconfig.base.json
+RUN npm install -g pnpm && pnpm install --frozen-lockfile
 
-# Copy package files first for better caching
-COPY package.json pnpm-lock.yaml nx.json tsconfig.base.json /app/
-COPY libs/design-system/package.json /app/libs/design-system/
-COPY apps/fe-app/package.json /app/apps/fe-app/
+# Rebuild the source code only when needed
+FROM node:20-alpine AS builder
+WORKDIR /app
+RUN npm install -g pnpm
+COPY --from=deps /app/node_modules ./node_modules
+COPY apps/fe-app ./
+COPY libs ./libs
+COPY shared ./shared
+COPY tsconfig.base.json ./
+COPY tsconfig.base.json /tsconfig.base.json
+RUN pnpm build
 
-RUN pnpm install --frozen-lockfile
+# Production image, copy all the files and run next
+FROM node:20-alpine AS runner
+WORKDIR /app
 
-# Copy the rest of the application
-COPY . /app/
-
-# Build design-system first to ensure CSS is available
-# RUN nx run design-system:build-storybook --disable-telemetry
-
-# Build fe-app
 ENV NODE_ENV=production
-ENV NX_DAEMON=false
-RUN nx run fe-app:build --configuration=production --skip-nx-cache --disable-telemetry
 
-EXPOSE 3000:3000
+# If you use a custom server, expose the port it runs on
+EXPOSE 3000
 
-# Change the CMD to serve from the correct Next.js output directory
-CMD ["pnpm", "nx", "run", "fe-app:serve", "--port=3000"]
+# Copy built assets from builder
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/node_modules ./node_modules
+
+CMD ["pnpm", "start"]
