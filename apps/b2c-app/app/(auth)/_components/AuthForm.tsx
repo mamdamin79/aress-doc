@@ -119,7 +119,9 @@ const NationalIdForm = ({
         reactcontent={
           <div className="flex flex-row gap-2 font-medium">
             <span className="text-text-brand-primary-600">قوانین و مقررات</span>
-            <span>آرسس اینوستور را می‌پذیرم</span>
+            <span className="text-text-neutral-primary">
+              آرسس اینوستور را می‌پذیرم
+            </span>
           </div>
         }
       />

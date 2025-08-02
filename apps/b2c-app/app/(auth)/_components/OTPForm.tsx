@@ -65,22 +65,20 @@ export const OTPForm: React.FC<OTPFormProps> = ({
   return (
     <div
       className={cn(
-        'bg-surface-neutral-primary flex w-full flex-col gap-6 text-right',
+        'bg-surface-neutral-primary flex w-full flex-col gap-4 text-right',
         className,
       )}
     >
-      <div className="flex w-full flex-row justify-between">
-        <span className="text-md text-text-neutral-primary w-full text-center font-medium">
-          {title}
-        </span>
-      </div>
-      <span className="text-text-neutral-primary mt-4 text-sm font-medium">
+      <span className="text-md text-text-neutral-primary w-full text-center font-medium">
+        {title}
+      </span>
+      <span className="text-text-neutral-secondary text-center text-sm">
         {description}
       </span>
       <OtpInput
         shouldAutoFocus
         skipDefaultStyles
-        containerStyle="flex flex-row-reverse w-full gap-2"
+        containerStyle="flex flex-row-reverse w-full gap-2 mt-14"
         inputStyle="h-14 flex-1 min-w-0 basis-0  bg-surface-neutral-secondary text-center border border-border-neutral-secondary rounded-xl text-text-neutral-primary"
         value={otp}
         onChange={setOtp}
@@ -88,7 +86,7 @@ export const OTPForm: React.FC<OTPFormProps> = ({
         renderSeparator={null}
         renderInput={(props) => <input {...props} />}
       />
-      <div className="flex flex-row items-center justify-between">
+      <div className="mt-2 flex flex-row items-center justify-between">
         <div className="flex flex-row items-center gap-3">
           {countdown > 0 ? (
             <>
@@ -127,6 +125,7 @@ export const OTPForm: React.FC<OTPFormProps> = ({
       </div>
 
       <Button
+        className="mt-8"
         align="center"
         mode="primary"
         isLoading={isLoading}
