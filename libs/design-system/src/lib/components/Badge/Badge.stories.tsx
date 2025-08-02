@@ -17,6 +17,6 @@ export const Default: Story = {
   args: {
     title: 'قابل خرید',
     theme: 'green',
-    icon: { name: 'check', size: 'lg' },
+    icon: { name: 'check', size: 'sm' },
   },
 };

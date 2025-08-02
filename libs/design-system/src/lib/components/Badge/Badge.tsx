@@ -1,13 +1,13 @@
 import { cn } from '../../../utils';
 import { Icon, IconProps } from '../Icon';
 
-interface Props {
+interface BadgeProps {
   theme: 'disabled' | 'green' | 'blue' | 'pruple' | 'yellow' | 'red';
   icon: IconProps;
   title: string;
 }
 
-export function Badge({ title, theme, icon }: Props) {
+export function Badge({ title, theme, icon }: BadgeProps) {
   return (
     <div
       className={cn(
