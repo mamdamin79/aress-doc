@@ -1,8 +1,8 @@
 export function ReportTitleSkeleton() {
-    return (
-        <div className="flex justify-between items-center">
-            <div className="w-[188px] h-10 skeleton-shimmer rounded-tl-xl rounded-br-xl" />
-            <div className="rounded-full skeleton-shimmer w-10 h-10" />
-        </div>
-    )
+  return (
+    <div className="flex items-center justify-between">
+      <div className="skeleton-shimmer h-10 w-[188px] rounded-br-xl rounded-tl-xl" />
+      <div className="skeleton-shimmer h-10 w-10 rounded-full" />
+    </div>
+  );
 }

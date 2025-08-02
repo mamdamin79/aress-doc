@@ -17,6 +17,13 @@ export const Default: Story = {
   args: {
     title: ['تاریخ واریز', 'تاریخ برداشت'],
     mode: 'range',
+  },
+};
+
+export const Active: Story = {
+  args: {
+    title: ['تاریخ واریز', 'تاریخ برداشت'],
+    mode: 'range',
     date: {
       day: 1,
       month: 1,

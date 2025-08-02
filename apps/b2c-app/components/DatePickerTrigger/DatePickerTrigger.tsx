@@ -1,5 +1,6 @@
-import { cn, Icon } from 'design-system';
 import { DateText } from '../DatePicerText';
+import {} from './';
+import { DatePckerState } from '../DatePickerState';
 
 interface Porps {
   title: string[];
@@ -23,13 +24,12 @@ export function DatePickerTrigger({ title, date, onClick, mode }: Porps) {
       ) : (
         <DateText title={title[0]} date={date} />
       )}
-      <div
-        onClick={onClick}
-        className={cn(
-          'border-border-neutral-primary bg-surface-neutral-primary flex h-12 w-12 items-center justify-center rounded-full border p-3',
-        )}
-      >
-        <Icon name="calendar-range" size="lg" />
+      <div onClick={onClick}>
+        <DatePckerState
+          active={date ? true : false}
+          size="larg"
+          theme="default"
+        />
       </div>
     </div>
   );
