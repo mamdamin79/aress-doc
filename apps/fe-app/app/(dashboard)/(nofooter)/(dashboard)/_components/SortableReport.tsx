@@ -45,7 +45,7 @@ export const SortableReport: React.FC<SortableReportProps> = ({
   return (
     <div ref={setNodeRef} style={style} className="relative">
       <div
-        className="absolute right-0 top-0 z-10 h-14 w-[550px] cursor-grab"
+        className="absolute right-0 top-0 z-10 h-14 w-[500px] cursor-grab"
         {...attributes}
         {...listeners}
       />

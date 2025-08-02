@@ -39,8 +39,11 @@ export const renderCell = (
         (hoveredRow !== null && hoveredRow !== rowIndex)
       }
       format={
-        rowFormat ||
-        customFormat || { precision: 0, signed: true, type: 'percent' }
+        rowFormat !== undefined
+          ? rowFormat
+          : customFormat !== undefined
+            ? customFormat
+            : undefined
       }
       // merging shared style and style comming from render
       cellStyle={cellStyle || ''}
