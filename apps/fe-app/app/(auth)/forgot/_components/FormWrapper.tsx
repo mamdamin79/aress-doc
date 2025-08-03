@@ -35,6 +35,13 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
   const [enteredPhoneNumber, setEnteredPhoneNumber] =
     React.useState<string>('');
   const [nationalCode, setNationalCode] = React.useState<string>('');
+  const [captchaValues, setCaptchaValues] = React.useState<{
+    captchaValue: string;
+    captchaUid: number;
+  }>({
+    captchaValue: '',
+    captchaUid: 0,
+  });
 
   const [newPassword, setNewPassword] = React.useState<string>('');
 
@@ -44,6 +51,10 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
   const handleForgotPassword = async (values: ResetPasswordFormValues) => {
     setEnteredPhoneNumber(values.phoneNumber);
     setNationalCode(values.nationalCode);
+    setCaptchaValues({
+      captchaValue: values.captcha ?? '',
+      captchaUid: values.captchaUid ?? 0,
+    });
 
     sendForgotOtp(
       {
@@ -86,9 +97,9 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
       {
         requestBody: {
           phoneNumber: enteredPhoneNumber,
-          nationalCode: '', // اگر داری نگهش دار، اگر نه حذفش کن از API
-          captchaValue: '',
-          captchaUid: 0,
+          nationalCode: nationalCode,
+          captchaValue: captchaValues.captchaValue,
+          captchaUid: captchaValues.captchaUid,
         },
       },
       {
