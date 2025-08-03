@@ -45,7 +45,7 @@ export const Piechart: React.FC<PiechartProps> = ({ data, state }) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       formatter: function (this: any) {
         const point = this.point as Highcharts.Point;
-        return `<div dir='rtl' style='font-family: Vazirmatn, sans-serif; background: var(--color-surface-neutral-inverse); color: var(--color-text-neutral-oninverse); border-radius: 10px; padding: 8px 16px; min-width: 120px; direction: rtl; text-align: right;'>
+        return `<div dir='rtl' style='font-family: Vazirmatn, sans-serif; background: var(--color-surface-neutral-inverse); backdrop-filter: blur(6px); color: var(--color-text-neutral-oninverse); border-radius: 10px; padding: 8px 16px; min-width: 120px; direction: rtl; text-align: right;'>
           <div style='font-weight: 500;'>${point.name}</div>
           <div style='display: flex; justify-content: space-between; gap: 8px;'><span>ارزش:</span><span>${point.y?.toLocaleString?.() ?? '-'} ریال</span></div>
           <div style='display: flex; justify-content: space-between; gap: 8px;'><span>وزن:</span><span>${point.percentage?.toFixed?.(0) ?? '-'}٪</span></div>
