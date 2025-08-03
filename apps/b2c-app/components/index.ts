@@ -1,4 +1,5 @@
 export * from './Header';
 export * from './DatePicker';
 export * from './BarStickyBtn';
+export * from './Charts';
 export * from './TradePopup';
