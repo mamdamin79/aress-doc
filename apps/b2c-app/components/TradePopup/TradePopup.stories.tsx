@@ -26,9 +26,6 @@ const meta: Meta<typeof TradePopup> = {
     maxInvestment: {
       control: 'number',
     },
-    unitPrice: {
-      control: 'number',
-    },
   },
 };
 
@@ -54,7 +51,6 @@ export const Default: Story = {
     currentPrice: 152000000,
     minInvestment: 15000000,
     maxInvestment: 1000,
-    unitPrice: 10000,
   },
 };
 
@@ -65,7 +61,6 @@ export const WithCustomValues: Story = {
     currentPrice: 200000000,
     minInvestment: 20000000,
     maxInvestment: 2000,
-    unitPrice: 15000,
   },
 };
 
@@ -77,6 +72,5 @@ export const AlwaysOpen: Story = {
     currentPrice: 152000000,
     minInvestment: 15000000,
     maxInvestment: 1000,
-    unitPrice: 10000,
   },
 };

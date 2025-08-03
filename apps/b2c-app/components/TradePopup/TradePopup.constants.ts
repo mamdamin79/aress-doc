@@ -1,0 +1,16 @@
+export const TRADE_POPUP_BACKGROUNDS = {
+  buy: `linear-gradient(to left,
+    var(--color-surface-accent-green-100) 0%,
+    var(--color-surface-accent-green-100) 10%,
+    var(--color-surface-neutral-primary) 20%,
+    var(--color-surface-neutral-primary) 80%,
+    var(--color-surface-accent-green-100) 90%,
+    var(--color-surface-accent-green-100) 100%)`,
+  sell: `linear-gradient(to left,
+    var(--color-surface-accent-red-100) 0%,
+    var(--color-surface-accent-red-100) 10%,
+    var(--color-surface-neutral-primary) 20%,
+    var(--color-surface-neutral-primary) 80%,
+    var(--color-surface-accent-red-100) 90%,
+    var(--color-surface-accent-red-100) 100%)`,
+} as const;

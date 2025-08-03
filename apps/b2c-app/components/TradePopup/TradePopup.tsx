@@ -1,17 +1,30 @@
 'use client';
 import React, { useState } from 'react';
-import { Dialog, Button, TextField, Icon } from 'design-system';
+import {
+  Dialog,
+  Button,
+  Icon,
+  Badge,
+  BadgeProps,
+  Checkbox,
+  OptionsDropdown,
+} from 'design-system';
 import { cn } from 'design-system';
+import { TRADE_POPUP_BACKGROUNDS } from './TradePopup.constants';
 
 export interface TradePopupProps {
   isOpen: boolean;
   onClose: () => void;
   fundName?: string;
+  badge?: BadgeProps;
   currentPrice?: number;
   minInvestment?: number;
   maxInvestment?: number;
-  unitPrice?: number;
+  mode?: 'buy' | 'sell';
 }
+const quantityOptions = [
+  5000000, 10000000, 50000000, 100000000, 500000000, 1000000000,
+];
 
 export const TradePopup: React.FC<TradePopupProps> = ({
   isOpen,
@@ -20,200 +33,200 @@ export const TradePopup: React.FC<TradePopupProps> = ({
   currentPrice = 152000000,
   minInvestment = 15000000,
   maxInvestment = 1000,
-  unitPrice = 10000,
+  mode = 'buy',
+  badge = {
+    theme: 'green',
+    title: 'سهامی',
+  },
 }) => {
-  const [activeTab, setActiveTab] = useState<'buy' | 'sell'>('buy');
-  const [investmentAmount, setInvestmentAmount] = useState('');
+  const [investmentAmount, setInvestmentAmount] = useState(quantityOptions[0]);
   const [quantity, setQuantity] = useState(1);
   const [acceptTerms, setAcceptTerms] = useState(false);
-  const [showQuantityDropdown, setShowQuantityDropdown] = useState(false);
-
-  const quantityOptions = [
-    5000000, 10000000, 50000000, 100000000, 500000000, 1000000000,
-  ];
 
   const formatNumber = (num: number) => {
     return num.toLocaleString('fa-IR');
   };
 
-  const handleQuantityChange = (newQuantity: number) => {
-    setQuantity(newQuantity);
-    setShowQuantityDropdown(false);
-  };
-
   const incrementQuantity = () => {
-    setQuantity((prev) => prev + 1);
+    setQuantity((prev) => prev + Number(investmentAmount));
   };
 
   const decrementQuantity = () => {
     if (quantity > 1) {
-      setQuantity((prev) => prev - 1);
+      setQuantity((prev) => prev - Number(investmentAmount));
     }
   };
 
   return (
-    <Dialog isOpen={isOpen} onClose={onClose} className="w-full max-w-md">
-      <div className="space-y-6">
-        {/* Header with Tabs */}
-        <div className="bg-surface-neutral-secondary flex rounded-lg p-1">
-          <button
-            onClick={() => setActiveTab('buy')}
+    <Dialog
+      isOpen={isOpen}
+      onClose={onClose}
+      className="w-[542px] border-0 p-0 pb-8"
+    >
+      <div className="flex flex-col gap-6">
+        <div
+          className={cn(
+            'border-border-neutral-primary h-[72px] rounded-t-2xl border-b px-6',
+            'flex w-full flex-row items-center justify-start',
+          )}
+          style={{
+            background: TRADE_POPUP_BACKGROUNDS[mode],
+          }}
+        >
+          <span
             className={cn(
-              'flex-1 rounded-md px-4 py-2 text-sm font-medium transition-colors',
-              activeTab === 'buy'
-                ? 'bg-surface-accent-green-600-90per text-text-neutral-primary'
-                : 'text-text-neutral-secondary hover:text-text-neutral-primary',
+              'text-lg font-medium',
+              mode === 'buy'
+                ? 'text-text-accent-green-primary-600'
+                : 'text-text-accent-red-contrast-700',
             )}
           >
-            خرید واحد
-          </button>
-          <button
-            onClick={() => setActiveTab('sell')}
-            className={cn(
-              'flex-1 rounded-md px-4 py-2 text-sm font-medium transition-colors',
-              activeTab === 'sell'
-                ? 'bg-surface-accent-red-600-90per text-text-neutral-primary'
-                : 'text-text-neutral-secondary hover:text-text-neutral-primary',
-            )}
-          >
-            فروش واحد
-          </button>
+            {mode === 'buy' ? 'خرید واحد' : 'فروش واحد'}
+          </span>
         </div>
 
         {/* Fund Name */}
-        <div className="text-center">
-          <div className="bg-surface-neutral-secondary inline-flex items-center gap-2 rounded-full px-4 py-2">
-            <span className="text-text-neutral-secondary text-sm">سهامی</span>
-            <span className="text-sm font-medium">{fundName}</span>
+        <div className="w-full px-6 text-center">
+          <div className="bg-surface-neutral-primary border-border-neutral-primary inline-flex h-[62px] w-full items-center justify-between gap-2 rounded-2xl border px-4 py-1">
+            <div className="flex flex-row items-center gap-2">
+              <div className="bg-surface-neutral-secondary h-[38px] w-[38px] rounded-full"></div>
+              <span className="text-sm font-medium">{fundName}</span>
+            </div>
+            <Badge {...badge} />
           </div>
         </div>
 
         {/* Investment Amount Input */}
-        <div className="space-y-2">
-          <label className="text-text-neutral-primary text-sm font-medium">
+        <div className="flex flex-col items-center gap-2">
+          <span className="text-text-neutral-secondarycontrast text-sm font-medium">
             مبلغ سرمایه‌گذاری را وارد کنید.
-          </label>
-          <TextField
-            mergeTitleAndPlaceholder
-            mode="filled"
-            trailingIcons={[]}
-            value={investmentAmount}
-            onChange={(e) => setInvestmentAmount(e.target.value)}
-            placeholder="کم تغییر"
-            className="text-center"
-          />
-        </div>
-
-        {/* Price Display */}
-        <div className="text-center">
-          <div className="text-text-neutral-primary text-2xl font-bold">
-            {formatNumber(currentPrice)} <span className="text-lg">ریال</span>
-          </div>
-        </div>
-
-        {/* Quantity Controls */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-center gap-4">
-            <button
-              onClick={incrementQuantity}
-              className="bg-surface-accent-blue-600-90per text-text-neutral-primary hover:bg-surface-accent-blue-600-80per flex h-8 w-8 items-center justify-center rounded-full"
-            >
-              <Icon name="plus" size="sm" />
-            </button>
-
-            <div className="relative">
-              <button
-                onClick={() => setShowQuantityDropdown(!showQuantityDropdown)}
-                className="border-border-neutral-secondary bg-surface-neutral-primary text-text-neutral-primary hover:bg-surface-neutral-secondary flex items-center gap-2 rounded-lg border px-4 py-2"
-              >
-                <span>{formatNumber(quantity * unitPrice)}</span>
-                <Icon name="chevron-down" size="sm" />
-              </button>
-
-              {showQuantityDropdown && (
-                <div className="border-border-neutral-secondary bg-surface-neutral-primary absolute left-0 right-0 top-full z-10 mt-1 rounded-lg border shadow-lg">
-                  {quantityOptions.map((option) => (
-                    <button
-                      key={option}
-                      onClick={() => handleQuantityChange(option / unitPrice)}
-                      className="text-text-neutral-primary hover:bg-surface-neutral-secondary w-full px-4 py-2 text-right first:rounded-t-lg last:rounded-b-lg"
-                    >
-                      {formatNumber(option)}
-                    </button>
-                  ))}
-                </div>
-              )}
+          </span>
+          <div className="flex w-full flex-row justify-start px-6">
+            {/* Quantity Controls */}
+            <div className="flex flex-col">
+              <span className="text-text-neutral-secondarycontrast text-right text-xs font-medium">
+                گام تغییر
+              </span>
+              <div>
+                <OptionsDropdown
+                  triggerClassName="w-[107px]"
+                  dropDownStyles={{
+                    bg: 'primary',
+                    emphasize: 'high',
+                    size: 'md',
+                    anchor: 'bottom start',
+                  }}
+                  dropDownList={quantityOptions.map((option) => ({
+                    text: formatNumber(option),
+                  }))}
+                  onChange={(selectedtItem) =>
+                    setInvestmentAmount(Number(selectedtItem))
+                  }
+                />
+              </div>
             </div>
 
-            <button
-              onClick={decrementQuantity}
-              disabled={quantity <= 1}
-              className="bg-surface-accent-blue-600-90per text-text-neutral-primary hover:bg-surface-accent-blue-600-80per flex h-8 w-8 items-center justify-center rounded-full disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              <Icon name="minus" size="sm" />
-            </button>
+            <div className="flex flex-row items-center gap-4 px-6 pt-4">
+              <div className="flex flex-col justify-start gap-2">
+                <Button
+                  theme="brand"
+                  mode="primary"
+                  size="sm"
+                  className="h-8 w-10"
+                  onClick={incrementQuantity}
+                >
+                  <Icon name="plus" size="lg" />
+                </Button>
+                <Button
+                  theme="brand"
+                  mode="secondary"
+                  size="sm"
+                  className="h-8 w-10"
+                  onClick={decrementQuantity}
+                >
+                  <Icon name="minus" size="lg" />
+                </Button>
+              </div>
+              {/* Price Display */}
+              <div className="text-center">
+                <div className="text-text-neutral-primary flex items-center gap-1 text-[32px] font-medium">
+                  {formatNumber(currentPrice)}
+                  <span className="text-text-neutral-secondary text-sm">
+                    ریال
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
-
-          <div className="text-text-neutral-secondary text-center text-sm">
-            معادل پاداش میلیون تومان
+          <div className="flex w-full justify-center">
+            <div className="bg-surface-neutral-secondary text-text-neutral-secondary rounded-md px-2 pt-1 text-xs font-medium">
+              معادل پانزده میلیون تومان
+            </div>
           </div>
         </div>
 
         {/* Investment Limits */}
-        <div className="space-y-2">
+        <div className="space-y-2 px-6">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-text-neutral-secondary">
-              حداقل قیمت خرید:
+            <span className="text-text-neutral-secondarycontrast">
+              حدود قیمت خرید:
             </span>
-            <span className="text-text-neutral-primary">
+            <span className="text-text-neutral-primary font-medium">
               {formatNumber(minInvestment)} ریال
             </span>
           </div>
           <div className="flex items-center justify-between text-sm">
-            <span className="text-text-neutral-secondary">
-              حداکثر تعداد واحد:
+            <span className="text-text-neutral-secondarycontrast">
+              حدود تعداد واحد:
             </span>
-            <span className="text-text-neutral-primary">
+            <span className="text-text-neutral-primary font-medium">
               {formatNumber(maxInvestment)} واحد
             </span>
           </div>
         </div>
 
         {/* Terms Checkbox */}
-        <div className="flex items-start gap-3">
-          <input
-            type="checkbox"
-            id="terms"
-            checked={acceptTerms}
-            onChange={(e) => setAcceptTerms(e.target.checked)}
-            className="border-border-neutral-secondary text-surface-accent-blue-600-90per focus:ring-surface-accent-blue-600-50per mt-1 h-4 w-4 rounded"
+        <div className="flex w-full items-start px-6">
+          <Checkbox
+            onChange={() => setAcceptTerms(!acceptTerms)}
+            reactcontent={
+              <div className="flex flex-row items-center gap-1 whitespace-nowrap">
+                <span className="text-text-brand-primary-600 cursor-pointer underline underline-offset-8">
+                  اساس‌نامه
+                </span>
+                و
+                <span className="text-text-brand-primary-600 cursor-pointer underline underline-offset-8">
+                  امیدنامه
+                </span>
+                را می‌پذیرم و
+                <span className="text-text-brand-primary-600 cursor-pointer underline underline-offset-8">
+                  بیانیه ریسک را
+                </span>
+                قبول دارم.
+              </div>
+            }
           />
-          <label
-            htmlFor="terms"
-            className="text-text-neutral-secondary text-sm"
-          >
-            استراتژی‌نامه و اعتبارنامه را مطالعه کرده‌ام و پیامد ریسک را قبول
-            دارم.
-          </label>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-3">
-          <Button
-            mode="secondary"
-            theme="neutral"
-            onClick={onClose}
-            className="flex-1"
-          >
-            بازگشت
-          </Button>
+        <div className="flex w-full justify-end gap-2 px-6">
           <Button
             mode="primary"
-            theme={activeTab === 'buy' ? 'success' : 'error'}
+            theme={'brand'}
             disabled={!acceptTerms}
-            className="flex-1"
+            size="sm"
+            className="w-fit px-4"
           >
-            {activeTab === 'buy' ? 'ادامه خرید' : 'ادامه فروش'}
+            {mode === 'buy' ? 'ادامه خرید' : 'ادامه فروش'}
+          </Button>
+          <Button
+            mode="secondary"
+            theme="brand"
+            onClick={onClose}
+            size="sm"
+            className="w-fit px-4"
+          >
+            بازگشت
           </Button>
         </div>
       </div>

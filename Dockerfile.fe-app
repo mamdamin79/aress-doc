@@ -1,41 +1,74 @@
-# Install dependencies only when needed
-FROM node:20-alpine AS deps
+# Multi-stage Dockerfile for Next.js fe-app
+
+# Stage 1: Dependencies
+FROM node:18-alpine AS deps
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Copy only the package.json and lock file
-COPY apps/fe-app/package.json ./
-COPY pnpm-workspace.yaml ./
-COPY package.json ./
-COPY pnpm-lock.yaml ./
+# Install pnpm
+RUN npm install -g pnpm@10.13.1
+
+# Copy package files for monorepo
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY tsconfig.base.json ./
-COPY tsconfig.base.json /tsconfig.base.json
-RUN npm install -g pnpm && pnpm install --frozen-lockfile
+COPY nx.json ./
+COPY apps/fe-app/package.json ./apps/fe-app/
+COPY libs/design-system/package.json ./libs/design-system/
+COPY libs/openapi/package.json ./libs/openapi/
+COPY libs/shared/package.json ./libs/shared/
+COPY apps/renderer/package.json ./apps/renderer/
 
-# Rebuild the source code only when needed
-FROM node:20-alpine AS builder
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Stage 2: Builder
+FROM node:18-alpine AS builder
 WORKDIR /app
-RUN npm install -g pnpm
+
+# Install pnpm
+RUN npm install -g pnpm@10.13.1
+
+# Copy dependencies from deps stage
 COPY --from=deps /app/node_modules ./node_modules
-COPY apps/fe-app ./
-COPY libs ./libs
-COPY shared ./shared
-COPY tsconfig.base.json ./
-COPY tsconfig.base.json /tsconfig.base.json
-RUN pnpm build
+COPY --from=deps /app/package.json ./package.json
+COPY --from=deps /app/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY --from=deps /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
+COPY --from=deps /app/nx.json ./nx.json
+COPY --from=deps /app/tsconfig.base.json ./tsconfig.base.json
 
-# Production image, copy all the files and run next
-FROM node:20-alpine AS runner
+# Copy source code
+COPY . .
+
+# Build the application using Nx
+RUN pnpm nx build fe-app
+
+# Stage 3: Runner
+FROM node:18-alpine AS runner
 WORKDIR /app
 
-ENV NODE_ENV=production
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
 
-# If you use a custom server, expose the port it runs on
-EXPOSE 3000
+# Create non-root user
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 
-# Copy built assets from builder
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/package.json ./package.json
+# Copy built application
+COPY --from=builder /app/dist/apps/fe-app/public ./public
+COPY --from=builder /app/dist/apps/fe-app/.next ./apps/fe-app/.next
+COPY --from=builder /app/dist/apps/fe-app/package.json ./apps/fe-app/package.json
 COPY --from=builder /app/node_modules ./node_modules
 
-CMD ["pnpm", "start"]
+# Set correct permissions
+RUN chown -R nextjs:nodejs /app
+USER nextjs
+
+# Expose port
+EXPOSE 3000
+
+ENV PORT 3000
+ENV HOSTNAME "0.0.0.0"
+
+# Start the application
+WORKDIR /app/apps/fe-app
+CMD ["npx", "next", "start"]
