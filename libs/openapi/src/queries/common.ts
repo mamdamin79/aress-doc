@@ -284,6 +284,12 @@ export type UsersServicePostUsersProfileUsernameChangeMutationResult = Awaited<
 export type UsersServicePostUsersProfilePictureChangeMutationResult = Awaited<
   ReturnType<typeof UsersService.postUsersProfilePictureChange>
 >;
+export type UsersServicePostUsersLogoutMutationResult = Awaited<
+  ReturnType<typeof UsersService.postUsersLogout>
+>;
+export type ReportsServicePostReportsRequestMutationResult = Awaited<
+  ReturnType<typeof ReportsService.postReportsRequest>
+>;
 export type ReportsServicePostReportsByReportIdMutationResult = Awaited<
   ReturnType<typeof ReportsService.postReportsByReportId>
 >;

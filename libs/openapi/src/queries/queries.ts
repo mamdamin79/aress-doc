@@ -17,6 +17,7 @@ import {
   AddReportToDashboardForUserBody,
   Body_change_profile_picture_users_profile_picture_change_post,
   Body_login_for_access_token_users_login_post,
+  Body_request_new_report_reports_request_post,
   Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post,
   Body_save_screenshot_reports__report_id__screenshot_post,
   Body_test_user_access_token_users_token_post,
@@ -694,6 +695,52 @@ export const useUsersServicePostUsersProfilePictureChange = <
   >({
     mutationFn: ({ formData }) =>
       UsersService.postUsersProfilePictureChange({
+        formData,
+      }) as unknown as Promise<TData>,
+    ...options,
+  });
+export const useUsersServicePostUsersLogout = <
+  TData = Common.UsersServicePostUsersLogoutMutationResult,
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: Omit<
+    UseMutationOptions<TData, TError, void, TContext>,
+    'mutationFn'
+  >,
+) =>
+  useMutation<TData, TError, void, TContext>({
+    mutationFn: () =>
+      UsersService.postUsersLogout() as unknown as Promise<TData>,
+    ...options,
+  });
+export const useReportsServicePostReportsRequest = <
+  TData = Common.ReportsServicePostReportsRequestMutationResult,
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: Omit<
+    UseMutationOptions<
+      TData,
+      TError,
+      {
+        formData: Body_request_new_report_reports_request_post;
+      },
+      TContext
+    >,
+    'mutationFn'
+  >,
+) =>
+  useMutation<
+    TData,
+    TError,
+    {
+      formData: Body_request_new_report_reports_request_post;
+    },
+    TContext
+  >({
+    mutationFn: ({ formData }) =>
+      ReportsService.postReportsRequest({
         formData,
       }) as unknown as Promise<TData>,
     ...options,

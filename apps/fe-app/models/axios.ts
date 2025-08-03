@@ -106,6 +106,14 @@ export interface BodyLoginForAccessTokenUsersLoginPost {
   client_secret?: string | null;
 }
 
+/** Body_request_new_report_reports_request_post */
+export interface BodyRequestNewReportReportsRequestPost {
+  /** File */
+  file: File | null;
+  /** Request Form */
+  request_form: RequestReportForm;
+}
+
 /** Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post */
 export interface BodySaveDashboardItemScreenshotDashboardsDashboardIdItemsDashboardItemIdScreenshotPost {
   /**
@@ -351,6 +359,8 @@ export interface DashboardItemReportApiModel {
 export interface DashboardItemScreenshotResponseApiModel {
   /** Queryid */
   queryId: string;
+  /** Screenshoturl */
+  screenshotUrl: string;
 }
 
 /** DashboardListItemApiModel */
@@ -390,6 +400,7 @@ export interface FinancialReportCalculationApiModel {
     | Report13Dot2CalculationResult
     | Report13Dot3CalculationResult
     | Report15CalculationResult
+    | Report36CalculationResult
     | Report39CalculationResult;
   /** Filters */
   filters: FinancialReportFilterApiModel[];
@@ -956,6 +967,12 @@ export interface HealthApiModel {
   status: string;
 }
 
+/** LogoutResponseApiModel */
+export interface LogoutResponseApiModel {
+  /** Success */
+  success: boolean;
+}
+
 /** PinFundInTableTabBody */
 export interface PinFundInTableTabBody {
   /** Tab */
@@ -1120,6 +1137,32 @@ export interface Report2CalculationResultItem {
   netFlow: number;
 }
 
+/** Report36CalculationResult */
+export interface Report36CalculationResult {
+  /** Buckets */
+  buckets: Report36CalculationResultBucket[];
+  /** Positiveinstruments */
+  positiveInstruments: number;
+  /** Negativeinstruments */
+  negativeInstruments: number;
+  /** Bucketrangeunit */
+  bucketRangeUnit: string;
+  /** Bucketcountunit */
+  bucketCountUnit: string;
+}
+
+/** Report36CalculationResultBucket */
+export interface Report36CalculationResultBucket {
+  /** Bucketmin */
+  bucketMin: number | null;
+  /** Bucketmax */
+  bucketMax: number | null;
+  /** Displaybucketaverage */
+  displayBucketAverage: number;
+  /** Bucketinstrumentscount */
+  bucketInstrumentsCount: number;
+}
+
 /** Report39CalculationResult */
 export interface Report39CalculationResult {
   /** Data */
@@ -1162,6 +1205,26 @@ export interface Report6CalculationResultTimeSeriesItem {
 export interface ReportScreenshotResponseApiModel {
   /** Queryid */
   queryId: string;
+  /** Screenshoturl */
+  screenshotUrl: string;
+}
+
+/** RequestReportForm */
+export interface RequestReportForm {
+  /** Title */
+  title: string;
+  /** Text */
+  text: string;
+  /** Call */
+  call: string;
+}
+
+/** RequestReportResponseApiModel */
+export interface RequestReportResponseApiModel {
+  /** Requestfollowcode */
+  requestFollowCode: number;
+  /** Success */
+  success: boolean;
 }
 
 /** ResetForgotPasswordByOtpResponseApiModel */
@@ -2032,6 +2095,24 @@ export class Api<
         format: 'json',
         ...params,
       }),
+
+    /**
+     * @description Logout user
+     *
+     * @tags Users
+     * @name LogoutUserUsersLogoutPost
+     * @summary Logout User
+     * @request POST:/users/logout
+     * @secure
+     */
+    logoutUserUsersLogoutPost: (params: RequestParams = {}) =>
+      this.request<LogoutResponseApiModel, any>({
+        path: `/users/logout`,
+        method: 'POST',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
   };
   reports = {
     /**
@@ -2075,6 +2156,29 @@ export class Api<
       this.request<FinancialReportCategoryApiModel[], any>({
         path: `/reports/categories`,
         method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Request a new report
+     *
+     * @tags Reports
+     * @name RequestNewReportReportsRequestPost
+     * @summary Request New Report
+     * @request POST:/reports/request
+     * @secure
+     */
+    requestNewReportReportsRequestPost: (
+      data: BodyRequestNewReportReportsRequestPost,
+      params: RequestParams = {},
+    ) =>
+      this.request<RequestReportResponseApiModel, HTTPValidationError>({
+        path: `/reports/request`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
         format: 'json',
         ...params,
       }),

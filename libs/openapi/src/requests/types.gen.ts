@@ -64,6 +64,11 @@ export type Body_login_for_access_token_users_login_post = {
   client_secret?: string | null;
 };
 
+export type Body_request_new_report_reports_request_post = {
+  file: (Blob | File) | null;
+  request_form: RequestReportForm;
+};
+
 export type Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post =
   {
     file: Blob | File;
@@ -218,6 +223,7 @@ export type DashboardItemReportApiModel = {
 
 export type DashboardItemScreenshotResponseApiModel = {
   queryId: string;
+  screenshotUrl: string;
 };
 
 export type DashboardListItemApiModel = {
@@ -247,6 +253,7 @@ export type FinancialReportCalculationApiModel = {
     | Report13Dot2CalculationResult
     | Report13Dot3CalculationResult
     | Report15CalculationResult
+    | Report36CalculationResult
     | Report39CalculationResult;
   filters: Array<FinancialReportFilterApiModel>;
 };
@@ -663,6 +670,10 @@ export type HealthApiModel = {
   status: string;
 };
 
+export type LogoutResponseApiModel = {
+  success: boolean;
+};
+
 export type PinFundInTableTabBody = {
   tab: number;
   fund: number;
@@ -766,6 +777,21 @@ export type Report2CalculationResultItem = {
   netFlow: number;
 };
 
+export type Report36CalculationResult = {
+  buckets: Array<Report36CalculationResultBucket>;
+  positiveInstruments: number;
+  negativeInstruments: number;
+  bucketRangeUnit: string;
+  bucketCountUnit: string;
+};
+
+export type Report36CalculationResultBucket = {
+  bucketMin: number | null;
+  bucketMax: number | null;
+  displayBucketAverage: number;
+  bucketInstrumentsCount: number;
+};
+
 export type Report39CalculationResult = {
   data: Array<Report39CalculationResultItem>;
 };
@@ -792,6 +818,18 @@ export type Report6CalculationResultTimeSeriesItem = {
 
 export type ReportScreenshotResponseApiModel = {
   queryId: string;
+  screenshotUrl: string;
+};
+
+export type RequestReportForm = {
+  title: string;
+  text: string;
+  call: string;
+};
+
+export type RequestReportResponseApiModel = {
+  requestFollowCode: number;
+  success: boolean;
 };
 
 export type ResetForgotPasswordByOtpResponseApiModel = {
@@ -1038,6 +1076,8 @@ export type PostUsersProfilePictureChangeData = {
 export type PostUsersProfilePictureChangeResponse =
   ChangeProfilePictureResponseApiModel;
 
+export type PostUsersLogoutResponse = LogoutResponseApiModel;
+
 export type GetReportsData = {
   onlyFavorite?: boolean | null;
   onlyHavingVideo?: boolean | null;
@@ -1048,6 +1088,12 @@ export type GetReportsResponse = Array<FinancialReportListItemApiModel>;
 
 export type GetReportsCategoriesResponse =
   Array<FinancialReportCategoryApiModel>;
+
+export type PostReportsRequestData = {
+  formData: Body_request_new_report_reports_request_post;
+};
+
+export type PostReportsRequestResponse = RequestReportResponseApiModel;
 
 export type GetReportsByReportIdData = {
   reportId: string;
@@ -1449,6 +1495,16 @@ export type $OpenApiTs = {
       };
     };
   };
+  '/users/logout': {
+    post: {
+      res: {
+        /**
+         * Successful Response
+         */
+        200: LogoutResponseApiModel;
+      };
+    };
+  };
   '/reports': {
     get: {
       req: GetReportsData;
@@ -1471,6 +1527,21 @@ export type $OpenApiTs = {
          * Successful Response
          */
         200: Array<FinancialReportCategoryApiModel>;
+      };
+    };
+  };
+  '/reports/request': {
+    post: {
+      req: PostReportsRequestData;
+      res: {
+        /**
+         * Successful Response
+         */
+        200: RequestReportResponseApiModel;
+        /**
+         * Validation Error
+         */
+        422: HTTPValidationError;
       };
     };
   };

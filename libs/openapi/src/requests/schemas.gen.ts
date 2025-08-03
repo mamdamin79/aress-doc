@@ -201,6 +201,30 @@ export const $Body_login_for_access_token_users_login_post = {
   title: 'Body_login_for_access_token_users_login_post',
 } as const;
 
+export const $Body_request_new_report_reports_request_post = {
+  properties: {
+    file: {
+      anyOf: [
+        {
+          type: 'string',
+          format: 'binary',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'File',
+    },
+    request_form: {
+      $ref: '#/components/schemas/RequestReportForm',
+      title: 'Request Form',
+    },
+  },
+  type: 'object',
+  required: ['file', 'request_form'],
+  title: 'Body_request_new_report_reports_request_post',
+} as const;
+
 export const $Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post =
   {
     properties: {
@@ -801,9 +825,13 @@ export const $DashboardItemScreenshotResponseApiModel = {
       type: 'string',
       title: 'Queryid',
     },
+    screenshotUrl: {
+      type: 'string',
+      title: 'Screenshoturl',
+    },
   },
   type: 'object',
-  required: ['queryId'],
+  required: ['queryId', 'screenshotUrl'],
   title: 'DashboardItemScreenshotResponseApiModel',
 } as const;
 
@@ -882,6 +910,9 @@ export const $FinancialReportCalculationApiModel = {
         },
         {
           $ref: '#/components/schemas/Report15CalculationResult',
+        },
+        {
+          $ref: '#/components/schemas/Report36CalculationResult',
         },
         {
           $ref: '#/components/schemas/Report39CalculationResult',
@@ -2108,6 +2139,18 @@ export const $HealthApiModel = {
   title: 'HealthApiModel',
 } as const;
 
+export const $LogoutResponseApiModel = {
+  properties: {
+    success: {
+      type: 'boolean',
+      title: 'Success',
+    },
+  },
+  type: 'object',
+  required: ['success'],
+  title: 'LogoutResponseApiModel',
+} as const;
+
 export const $PinFundInTableTabBody = {
   properties: {
     tab: {
@@ -2485,6 +2528,86 @@ export const $Report2CalculationResultItem = {
   title: 'Report2CalculationResultItem',
 } as const;
 
+export const $Report36CalculationResult = {
+  properties: {
+    buckets: {
+      items: {
+        $ref: '#/components/schemas/Report36CalculationResultBucket',
+      },
+      type: 'array',
+      title: 'Buckets',
+    },
+    positiveInstruments: {
+      type: 'integer',
+      title: 'Positiveinstruments',
+    },
+    negativeInstruments: {
+      type: 'integer',
+      title: 'Negativeinstruments',
+    },
+    bucketRangeUnit: {
+      type: 'string',
+      title: 'Bucketrangeunit',
+    },
+    bucketCountUnit: {
+      type: 'string',
+      title: 'Bucketcountunit',
+    },
+  },
+  type: 'object',
+  required: [
+    'buckets',
+    'positiveInstruments',
+    'negativeInstruments',
+    'bucketRangeUnit',
+    'bucketCountUnit',
+  ],
+  title: 'Report36CalculationResult',
+} as const;
+
+export const $Report36CalculationResultBucket = {
+  properties: {
+    bucketMin: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Bucketmin',
+    },
+    bucketMax: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Bucketmax',
+    },
+    displayBucketAverage: {
+      type: 'number',
+      title: 'Displaybucketaverage',
+    },
+    bucketInstrumentsCount: {
+      type: 'integer',
+      title: 'Bucketinstrumentscount',
+    },
+  },
+  type: 'object',
+  required: [
+    'bucketMin',
+    'bucketMax',
+    'displayBucketAverage',
+    'bucketInstrumentsCount',
+  ],
+  title: 'Report36CalculationResultBucket',
+} as const;
+
 export const $Report39CalculationResult = {
   properties: {
     data: {
@@ -2576,10 +2699,50 @@ export const $ReportScreenshotResponseApiModel = {
       type: 'string',
       title: 'Queryid',
     },
+    screenshotUrl: {
+      type: 'string',
+      title: 'Screenshoturl',
+    },
   },
   type: 'object',
-  required: ['queryId'],
+  required: ['queryId', 'screenshotUrl'],
   title: 'ReportScreenshotResponseApiModel',
+} as const;
+
+export const $RequestReportForm = {
+  properties: {
+    title: {
+      type: 'string',
+      title: 'Title',
+    },
+    text: {
+      type: 'string',
+      title: 'Text',
+    },
+    call: {
+      type: 'string',
+      title: 'Call',
+    },
+  },
+  type: 'object',
+  required: ['title', 'text', 'call'],
+  title: 'RequestReportForm',
+} as const;
+
+export const $RequestReportResponseApiModel = {
+  properties: {
+    requestFollowCode: {
+      type: 'integer',
+      title: 'Requestfollowcode',
+    },
+    success: {
+      type: 'boolean',
+      title: 'Success',
+    },
+  },
+  type: 'object',
+  required: ['requestFollowCode', 'success'],
+  title: 'RequestReportResponseApiModel',
 } as const;
 
 export const $ResetForgotPasswordByOtpResponseApiModel = {

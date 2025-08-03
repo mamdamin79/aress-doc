@@ -35,9 +35,12 @@ import type {
   PostUsersProfileUsernameChangeResponse,
   PostUsersProfilePictureChangeData,
   PostUsersProfilePictureChangeResponse,
+  PostUsersLogoutResponse,
   GetReportsData,
   GetReportsResponse,
   GetReportsCategoriesResponse,
+  PostReportsRequestData,
+  PostReportsRequestResponse,
   GetReportsByReportIdData,
   GetReportsByReportIdResponse,
   PostReportsByReportIdData,
@@ -452,6 +455,19 @@ export class UsersService {
       },
     });
   }
+
+  /**
+   * Logout User
+   * Logout user
+   * @returns LogoutResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersLogout(): CancelablePromise<PostUsersLogoutResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/logout',
+    });
+  }
 }
 
 export class ReportsService {
@@ -492,6 +508,28 @@ export class ReportsService {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/reports/categories',
+    });
+  }
+
+  /**
+   * Request New Report
+   * Request a new report
+   * @param data The data for the request.
+   * @param data.formData
+   * @returns RequestReportResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postReportsRequest(
+    data: PostReportsRequestData,
+  ): CancelablePromise<PostReportsRequestResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/reports/request',
+      formData: data.formData,
+      mediaType: 'multipart/form-data',
+      errors: {
+        422: 'Validation Error',
+      },
     });
   }
 

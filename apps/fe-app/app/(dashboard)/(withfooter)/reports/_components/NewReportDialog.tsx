@@ -13,33 +13,67 @@ import {
   IconDialog,
 } from 'design-system';
 import { useHtmlPaddingRight } from '@shared';
+import {
+  Body_request_new_report_reports_request_post,
+  useReportsServicePostReportsRequest,
+} from '@openapi';
+
+type FormFields = {
+  title: string;
+  description: string;
+  call?: boolean;
+};
 
 export const NewReportDialog = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
   const htmlPaddingRight = useHtmlPaddingRight();
+  const reportMutation = useReportsServicePostReportsRequest();
 
   const {
     control,
     handleSubmit,
+
     formState: { isValid },
     reset,
-  } = useForm({
+  } = useForm<FormFields>({
     mode: 'onChange',
+    defaultValues: {
+      title: '',
+      description: '',
+      call: false,
+    },
   });
 
   const openDialog = () => setIsOpen(true);
   const closeDialog = () => setIsOpen(false);
 
-  const onSubmit = async () => {
+  const onSubmit = async (data: FormFields) => {
     setIsSubmitting(true);
-    await new Promise((r) => setTimeout(r, 2000)); // Simulate API call
-    setIsSubmitting(false);
-    closeDialog();
-    await new Promise((r) => setTimeout(r, 1000)); // Simulate API call
-    setIsSuccess(true);
-    reset();
+
+    try {
+      const payload: Body_request_new_report_reports_request_post = {
+        file: file,
+        request_form: {
+          title: data.title,
+          text: data.description,
+          call: `${data.call ?? false}`,
+        },
+      };
+
+      await reportMutation.mutateAsync({ formData: payload });
+
+      setIsSuccess(true);
+      reset();
+      setFile(null);
+      closeDialog();
+    } catch (error) {
+      console.error('خطا در ارسال گزارش:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -116,16 +150,22 @@ export const NewReportDialog = () => {
             <h3 className="mb-2 text-sm font-medium">
               پیوست فایل اکسل فرآیند طراحی نمودار را تسهیل می‌کند. (اختیاری)
             </h3>
-            <FileUpload types={['xls', 'xlsx']} maxSize={1000000000} />
+            <FileUpload
+              onChange={(selectedFile) => {
+                setFile(selectedFile);
+              }}
+              types={['xls', 'xlsx']}
+              maxSize={1000000000}
+            />
           </div>
           <div className="mb-8">
             <Controller
-              name="contact"
+              name="call"
               control={control}
               render={({ field }) => (
                 <Checkbox
-                  {...field}
                   onChange={() => field.onChange(!field.value)}
+                  checked={field.value}
                   content="در مورد تشریح جزئیات گزارش احتیاج دارم با من تماس گرفته شود."
                 />
               )}
@@ -136,7 +176,7 @@ export const NewReportDialog = () => {
             type="submit"
             isLoading={isSubmitting}
             mode="primary"
-            disabled={!isValid}
+            disabled={!isValid || file === null}
             size="sm"
           >
             ثبت درخواست
