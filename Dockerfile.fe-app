@@ -1,74 +1,80 @@
-# Multi-stage Dockerfile for Next.js fe-app
-
-# Stage 1: Dependencies
+# Stage 1: Install dependencies
 FROM node:18-alpine AS deps
-RUN apk add --no-cache libc6-compat
+
 WORKDIR /app
 
-# Install pnpm
+# Enable native modules
+RUN apk add --no-cache libc6-compat
+
+# Install pnpm globally
 RUN npm install -g pnpm@10.13.1
 
-# Copy package files for monorepo
+# Copy package management files
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY tsconfig.base.json ./
-COPY nx.json ./
+COPY tsconfig.base.json nx.json ./
 COPY apps/fe-app/package.json ./apps/fe-app/
 COPY libs/design-system/package.json ./libs/design-system/
 COPY libs/openapi/package.json ./libs/openapi/
 COPY libs/shared/package.json ./libs/shared/
 COPY apps/renderer/package.json ./apps/renderer/
 
-# Install dependencies
+# Install all workspace dependencies
 RUN pnpm install --frozen-lockfile
 
-# Stage 2: Builder
+
+# Stage 2: Build the application
 FROM node:18-alpine AS builder
+
 WORKDIR /app
 
-# Install pnpm
+# Install pnpm again (needed in this stage)
 RUN npm install -g pnpm@10.13.1
 
-# Copy dependencies from deps stage
+# Copy deps from previous stage
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/package.json ./package.json
 COPY --from=deps /app/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=deps /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
-COPY --from=deps /app/nx.json ./nx.json
 COPY --from=deps /app/tsconfig.base.json ./tsconfig.base.json
+COPY --from=deps /app/nx.json ./nx.json
 
-# Copy source code
+# Copy full source code
 COPY . .
 
-# Build the application using Nx
+# Build the target app
 RUN pnpm nx build fe-app
 
-# Stage 3: Runner
+
+# Stage 3: Prepare lightweight runner image
 FROM node:18-alpine AS runner
+
+# Setup working directory
 WORKDIR /app
 
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+# Environment configuration
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
 
 # Create non-root user
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
 
-# Copy built application
-COPY --from=builder /app/dist/apps/fe-app/public ./public
-COPY --from=builder /app/dist/apps/fe-app/.next ./apps/fe-app/.next
-COPY --from=builder /app/dist/apps/fe-app/package.json ./apps/fe-app/package.json
+# Copy build output and assets
+COPY --from=builder /app/apps/fe-app/.next ./.next
+COPY --from=builder /app/apps/fe-app/public ./public
+COPY --from=builder /app/apps/fe-app/package.json ./package.json
 COPY --from=builder /app/node_modules ./node_modules
 
-# Set correct permissions
+# Set correct ownership
 RUN chown -R nextjs:nodejs /app
+
+# Switch to non-root user
 USER nextjs
 
 # Expose port
 EXPOSE 3000
 
-ENV PORT 3000
-ENV HOSTNAME "0.0.0.0"
-
 # Start the application
-WORKDIR /app/apps/fe-app
-CMD ["npx", "next", "start"]
+CMD ["node", "node_modules/next/dist/bin/next", "start"]
