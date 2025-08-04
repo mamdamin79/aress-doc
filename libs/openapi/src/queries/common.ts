@@ -334,6 +334,12 @@ export type FundsServicePostFundsTablePinMutationResult = Awaited<
 export type FundsServicePostFundsTableUnpinMutationResult = Awaited<
   ReturnType<typeof FundsService.postFundsTableUnpin>
 >;
+export type FundsServicePostFundsTableMarkMutationResult = Awaited<
+  ReturnType<typeof FundsService.postFundsTableMark>
+>;
+export type FundsServicePostFundsTableUnmarkMutationResult = Awaited<
+  ReturnType<typeof FundsService.postFundsTableUnmark>
+>;
 export type DashboardsServicePutDashboardsMutationResult = Awaited<
   ReturnType<typeof DashboardsService.putDashboards>
 >;

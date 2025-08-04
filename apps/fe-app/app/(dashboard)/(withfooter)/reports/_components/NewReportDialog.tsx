@@ -176,7 +176,7 @@ export const NewReportDialog = () => {
             type="submit"
             isLoading={isSubmitting}
             mode="primary"
-            disabled={!isValid || file === null}
+            disabled={!isValid}
             size="sm"
           >
             ثبت درخواست

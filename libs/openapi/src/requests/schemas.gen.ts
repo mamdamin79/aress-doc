@@ -203,6 +203,10 @@ export const $Body_login_for_access_token_users_login_post = {
 
 export const $Body_request_new_report_reports_request_post = {
   properties: {
+    request_form: {
+      $ref: '#/components/schemas/RequestReportForm',
+      title: 'Request Form',
+    },
     file: {
       anyOf: [
         {
@@ -215,13 +219,9 @@ export const $Body_request_new_report_reports_request_post = {
       ],
       title: 'File',
     },
-    request_form: {
-      $ref: '#/components/schemas/RequestReportForm',
-      title: 'Request Form',
-    },
   },
   type: 'object',
-  required: ['file', 'request_form'],
+  required: ['request_form'],
   title: 'Body_request_new_report_reports_request_post',
 } as const;
 
@@ -2151,6 +2151,38 @@ export const $LogoutResponseApiModel = {
   title: 'LogoutResponseApiModel',
 } as const;
 
+export const $MarkFundInTableTabBody = {
+  properties: {
+    tab: {
+      type: 'integer',
+      title: 'Tab',
+    },
+    fund: {
+      type: 'integer',
+      title: 'Fund',
+    },
+    color: {
+      type: 'string',
+      title: 'Color',
+    },
+  },
+  type: 'object',
+  required: ['tab', 'fund', 'color'],
+  title: 'MarkFundInTableTabBody',
+} as const;
+
+export const $MarkFundInTableTabResponseApiModel = {
+  properties: {
+    success: {
+      type: 'boolean',
+      title: 'Success',
+    },
+  },
+  type: 'object',
+  required: ['success'],
+  title: 'MarkFundInTableTabResponseApiModel',
+} as const;
+
 export const $PinFundInTableTabBody = {
   properties: {
     tab: {
@@ -2771,6 +2803,18 @@ export const $TokenApiModel = {
   type: 'object',
   required: ['access_token', 'token_type'],
   title: 'TokenApiModel',
+} as const;
+
+export const $UnmarkFundInTableTabResponseApiModel = {
+  properties: {
+    success: {
+      type: 'boolean',
+      title: 'Success',
+    },
+  },
+  type: 'object',
+  required: ['success'],
+  title: 'UnmarkFundInTableTabResponseApiModel',
 } as const;
 
 export const $UnpinFundInTableTabBody = {

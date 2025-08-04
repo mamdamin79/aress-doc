@@ -108,10 +108,10 @@ export interface BodyLoginForAccessTokenUsersLoginPost {
 
 /** Body_request_new_report_reports_request_post */
 export interface BodyRequestNewReportReportsRequestPost {
-  /** File */
-  file: File | null;
   /** Request Form */
   request_form: RequestReportForm;
+  /** File */
+  file?: File | null;
 }
 
 /** Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post */
@@ -973,6 +973,22 @@ export interface LogoutResponseApiModel {
   success: boolean;
 }
 
+/** MarkFundInTableTabBody */
+export interface MarkFundInTableTabBody {
+  /** Tab */
+  tab: number;
+  /** Fund */
+  fund: number;
+  /** Color */
+  color: string;
+}
+
+/** MarkFundInTableTabResponseApiModel */
+export interface MarkFundInTableTabResponseApiModel {
+  /** Success */
+  success: boolean;
+}
+
 /** PinFundInTableTabBody */
 export interface PinFundInTableTabBody {
   /** Tab */
@@ -1239,6 +1255,12 @@ export interface TokenApiModel {
   access_token: string;
   /** Token Type */
   token_type: string;
+}
+
+/** UnmarkFundInTableTabResponseApiModel */
+export interface UnmarkFundInTableTabResponseApiModel {
+  /** Success */
+  success: boolean;
 }
 
 /** UnpinFundInTableTabBody */
@@ -2706,6 +2728,52 @@ export class Api<
     ) =>
       this.request<UnpinFundInTableTabResponseApiModel, HTTPValidationError>({
         path: `/funds/table/unpin`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Mark fund in table tab
+     *
+     * @tags Funds
+     * @name MarkFundInTableTabFundsTableMarkPost
+     * @summary Mark Fund In Table Tab
+     * @request POST:/funds/table/mark
+     * @secure
+     */
+    markFundInTableTabFundsTableMarkPost: (
+      data: MarkFundInTableTabBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<MarkFundInTableTabResponseApiModel, HTTPValidationError>({
+        path: `/funds/table/mark`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Unmark fund in table tab
+     *
+     * @tags Funds
+     * @name UnmarkFundInTableTabFundsTableUnmarkPost
+     * @summary Unmark Fund In Table Tab
+     * @request POST:/funds/table/unmark
+     * @secure
+     */
+    unmarkFundInTableTabFundsTableUnmarkPost: (
+      data: UnpinFundInTableTabBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<UnmarkFundInTableTabResponseApiModel, HTTPValidationError>({
+        path: `/funds/table/unmark`,
         method: 'POST',
         body: data,
         secure: true,

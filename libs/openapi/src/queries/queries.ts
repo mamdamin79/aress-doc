@@ -35,6 +35,7 @@ import {
   GetDashboardItemCalculationsBody,
   GetForgotPasswordOtpBody,
   GetReportCalculationsBody,
+  MarkFundInTableTabBody,
   PinFundInTableTabBody,
   RenameDashboardForUserBody,
   ReplaceDashboardItemCalculationsBody,
@@ -1114,6 +1115,68 @@ export const useFundsServicePostFundsTableUnpin = <
   >({
     mutationFn: ({ requestBody }) =>
       FundsService.postFundsTableUnpin({
+        requestBody,
+      }) as unknown as Promise<TData>,
+    ...options,
+  });
+export const useFundsServicePostFundsTableMark = <
+  TData = Common.FundsServicePostFundsTableMarkMutationResult,
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: Omit<
+    UseMutationOptions<
+      TData,
+      TError,
+      {
+        requestBody: MarkFundInTableTabBody;
+      },
+      TContext
+    >,
+    'mutationFn'
+  >,
+) =>
+  useMutation<
+    TData,
+    TError,
+    {
+      requestBody: MarkFundInTableTabBody;
+    },
+    TContext
+  >({
+    mutationFn: ({ requestBody }) =>
+      FundsService.postFundsTableMark({
+        requestBody,
+      }) as unknown as Promise<TData>,
+    ...options,
+  });
+export const useFundsServicePostFundsTableUnmark = <
+  TData = Common.FundsServicePostFundsTableUnmarkMutationResult,
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: Omit<
+    UseMutationOptions<
+      TData,
+      TError,
+      {
+        requestBody: UnpinFundInTableTabBody;
+      },
+      TContext
+    >,
+    'mutationFn'
+  >,
+) =>
+  useMutation<
+    TData,
+    TError,
+    {
+      requestBody: UnpinFundInTableTabBody;
+    },
+    TContext
+  >({
+    mutationFn: ({ requestBody }) =>
+      FundsService.postFundsTableUnmark({
         requestBody,
       }) as unknown as Promise<TData>,
     ...options,

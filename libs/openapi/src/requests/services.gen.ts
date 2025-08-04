@@ -85,6 +85,10 @@ import type {
   PostFundsTablePinResponse,
   PostFundsTableUnpinData,
   PostFundsTableUnpinResponse,
+  PostFundsTableMarkData,
+  PostFundsTableMarkResponse,
+  PostFundsTableUnmarkData,
+  PostFundsTableUnmarkResponse,
 } from './types.gen';
 
 export class HealthService {
@@ -1076,6 +1080,50 @@ export class FundsService {
     return __request(OpenAPI, {
       method: 'POST',
       url: '/funds/table/unpin',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Mark Fund In Table Tab
+   * Mark fund in table tab
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns MarkFundInTableTabResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsTableMark(
+    data: PostFundsTableMarkData,
+  ): CancelablePromise<PostFundsTableMarkResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/table/mark',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Unmark Fund In Table Tab
+   * Unmark fund in table tab
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns UnmarkFundInTableTabResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsTableUnmark(
+    data: PostFundsTableUnmarkData,
+  ): CancelablePromise<PostFundsTableUnmarkResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/table/unmark',
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {

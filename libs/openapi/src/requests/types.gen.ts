@@ -65,8 +65,8 @@ export type Body_login_for_access_token_users_login_post = {
 };
 
 export type Body_request_new_report_reports_request_post = {
-  file: (Blob | File) | null;
   request_form: RequestReportForm;
+  file?: (Blob | File) | null;
 };
 
 export type Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post =
@@ -674,6 +674,16 @@ export type LogoutResponseApiModel = {
   success: boolean;
 };
 
+export type MarkFundInTableTabBody = {
+  tab: number;
+  fund: number;
+  color: string;
+};
+
+export type MarkFundInTableTabResponseApiModel = {
+  success: boolean;
+};
+
 export type PinFundInTableTabBody = {
   tab: number;
   fund: number;
@@ -839,6 +849,10 @@ export type ResetForgotPasswordByOtpResponseApiModel = {
 export type TokenApiModel = {
   access_token: string;
   token_type: string;
+};
+
+export type UnmarkFundInTableTabResponseApiModel = {
+  success: boolean;
 };
 
 export type UnpinFundInTableTabBody = {
@@ -1249,6 +1263,18 @@ export type PostFundsTableUnpinData = {
 };
 
 export type PostFundsTableUnpinResponse = UnpinFundInTableTabResponseApiModel;
+
+export type PostFundsTableMarkData = {
+  requestBody: MarkFundInTableTabBody;
+};
+
+export type PostFundsTableMarkResponse = MarkFundInTableTabResponseApiModel;
+
+export type PostFundsTableUnmarkData = {
+  requestBody: UnpinFundInTableTabBody;
+};
+
+export type PostFundsTableUnmarkResponse = UnmarkFundInTableTabResponseApiModel;
 
 export type $OpenApiTs = {
   '/health': {
@@ -1861,6 +1887,36 @@ export type $OpenApiTs = {
          * Successful Response
          */
         200: UnpinFundInTableTabResponseApiModel;
+        /**
+         * Validation Error
+         */
+        422: HTTPValidationError;
+      };
+    };
+  };
+  '/funds/table/mark': {
+    post: {
+      req: PostFundsTableMarkData;
+      res: {
+        /**
+         * Successful Response
+         */
+        200: MarkFundInTableTabResponseApiModel;
+        /**
+         * Validation Error
+         */
+        422: HTTPValidationError;
+      };
+    };
+  };
+  '/funds/table/unmark': {
+    post: {
+      req: PostFundsTableUnmarkData;
+      res: {
+        /**
+         * Successful Response
+         */
+        200: UnmarkFundInTableTabResponseApiModel;
         /**
          * Validation Error
          */

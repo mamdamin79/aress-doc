@@ -2238,6 +2238,100 @@
           }
         ]
       }
+    },
+    "/funds/table/mark": {
+      "post": {
+        "tags": [
+          "Funds"
+        ],
+        "summary": "Mark Fund In Table Tab",
+        "description": "Mark fund in table tab",
+        "operationId": "mark_fund_in_table_tab_funds_table_mark_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MarkFundInTableTabBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarkFundInTableTabResponseApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/funds/table/unmark": {
+      "post": {
+        "tags": [
+          "Funds"
+        ],
+        "summary": "Unmark Fund In Table Tab",
+        "description": "Unmark fund in table tab",
+        "operationId": "unmark_fund_in_table_tab_funds_table_unmark_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnpinFundInTableTabBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnmarkFundInTableTabResponseApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -2447,6 +2541,10 @@
       },
       "Body_request_new_report_reports_request_post": {
         "properties": {
+          "request_form": {
+            "$ref": "#/components/schemas/RequestReportForm",
+            "title": "Request Form"
+          },
           "file": {
             "anyOf": [
               {
@@ -2458,15 +2556,10 @@
               }
             ],
             "title": "File"
-          },
-          "request_form": {
-            "$ref": "#/components/schemas/RequestReportForm",
-            "title": "Request Form"
           }
         },
         "type": "object",
         "required": [
-          "file",
           "request_form"
         ],
         "title": "Body_request_new_report_reports_request_post"
@@ -4485,6 +4578,42 @@
         ],
         "title": "LogoutResponseApiModel"
       },
+      "MarkFundInTableTabBody": {
+        "properties": {
+          "tab": {
+            "type": "integer",
+            "title": "Tab"
+          },
+          "fund": {
+            "type": "integer",
+            "title": "Fund"
+          },
+          "color": {
+            "type": "string",
+            "title": "Color"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tab",
+          "fund",
+          "color"
+        ],
+        "title": "MarkFundInTableTabBody"
+      },
+      "MarkFundInTableTabResponseApiModel": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          }
+        },
+        "type": "object",
+        "required": [
+          "success"
+        ],
+        "title": "MarkFundInTableTabResponseApiModel"
+      },
       "PinFundInTableTabBody": {
         "properties": {
           "tab": {
@@ -5147,6 +5276,19 @@
           "token_type"
         ],
         "title": "TokenApiModel"
+      },
+      "UnmarkFundInTableTabResponseApiModel": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          }
+        },
+        "type": "object",
+        "required": [
+          "success"
+        ],
+        "title": "UnmarkFundInTableTabResponseApiModel"
       },
       "UnpinFundInTableTabBody": {
         "properties": {
