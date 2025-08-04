@@ -12,7 +12,9 @@
   "dependencies": {
     "lottie-react": "^2.4.1",
     "next": "15.4.2",
+    "num2persian": "^4.2.0",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "react-flip-numbers": "^3.0.9"
   }
 }

@@ -17,13 +17,10 @@ const meta: Meta<typeof TradePopup> = {
     fundName: {
       control: 'text',
     },
-    currentPrice: {
+    estismatedBuyPrice: {
       control: 'number',
     },
-    minInvestment: {
-      control: 'number',
-    },
-    maxInvestment: {
+    estismatedUnit: {
       control: 'number',
     },
   },
@@ -48,9 +45,8 @@ export const Default: Story = {
   render: TradePopupWithState,
   args: {
     fundName: 'مشترک افق روشن کارگزاری بانک خاورمیانه',
-    currentPrice: 152000000,
-    minInvestment: 15000000,
-    maxInvestment: 1000,
+    estismatedBuyPrice: 15000000,
+    estismatedUnit: 1000,
   },
 };
 
@@ -58,9 +54,8 @@ export const WithCustomValues: Story = {
   render: TradePopupWithState,
   args: {
     fundName: 'صندوق سرمایه‌گذاری نمونه',
-    currentPrice: 200000000,
-    minInvestment: 20000000,
-    maxInvestment: 2000,
+    estismatedBuyPrice: 20000000,
+    estismatedUnit: 2000,
   },
 };
 
@@ -69,8 +64,7 @@ export const AlwaysOpen: Story = {
     isOpen: true,
     onClose: () => {},
     fundName: 'مشترک افق روشن کارگزاری بانک خاورمیانه',
-    currentPrice: 152000000,
-    minInvestment: 15000000,
-    maxInvestment: 1000,
+    estismatedBuyPrice: 15000000,
+    estismatedUnit: 1000,
   },
 };

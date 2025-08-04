@@ -1,61 +1,50 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Dialog,
   Button,
   Icon,
   Badge,
-  BadgeProps,
   Checkbox,
   OptionsDropdown,
 } from 'design-system';
 import { cn } from 'design-system';
-import { TRADE_POPUP_BACKGROUNDS } from './TradePopup.constants';
-
-export interface TradePopupProps {
-  isOpen: boolean;
-  onClose: () => void;
-  fundName?: string;
-  badge?: BadgeProps;
-  currentPrice?: number;
-  minInvestment?: number;
-  maxInvestment?: number;
-  mode?: 'buy' | 'sell';
-}
-const quantityOptions = [
-  5000000, 10000000, 50000000, 100000000, 500000000, 1000000000,
-];
+import {
+  formatNumber,
+  getQuantityInPersianWords,
+  persianToEnglishDigits,
+  useTradeQuantity,
+  TradePopupProps,
+} from './utils';
+import { ReactComponent as BuyPopupPatternSVG } from './assets/buypopup_pattern.svg';
+import { ReactComponent as SellPopupPatternSVG } from './assets/sellpopup_pattern.svg';
+import { SlidingNumber } from '../SlidingNumber';
 
 export const TradePopup: React.FC<TradePopupProps> = ({
   isOpen,
   onClose,
   fundName = 'مشترک افق روشن کارگزاری بانک خاورمیانه',
-  currentPrice = 152000000,
-  minInvestment = 15000000,
-  maxInvestment = 1000,
+  estismatedBuyPrice = 15000000,
+  estismatedUnit = 1000,
   mode = 'buy',
   badge = {
     theme: 'green',
     title: 'سهامی',
   },
+  disableCheck = false,
 }) => {
-  const [investmentAmount, setInvestmentAmount] = useState(quantityOptions[0]);
-  const [quantity, setQuantity] = useState(1);
-  const [acceptTerms, setAcceptTerms] = useState(false);
-
-  const formatNumber = (num: number) => {
-    return num.toLocaleString('fa-IR');
-  };
-
-  const incrementQuantity = () => {
-    setQuantity((prev) => prev + Number(investmentAmount));
-  };
-
-  const decrementQuantity = () => {
-    if (quantity > 1) {
-      setQuantity((prev) => prev - Number(investmentAmount));
-    }
-  };
+  const {
+    quantityOptions,
+    setQuantityStep,
+    quantity,
+    setQuantity,
+    acceptTerms,
+    setAcceptTerms,
+    showInput,
+    setShowInput,
+    incrementQuantity,
+    decrementQuantity,
+  } = useTradeQuantity(153000000, disableCheck);
 
   return (
     <Dialog
@@ -66,16 +55,27 @@ export const TradePopup: React.FC<TradePopupProps> = ({
       <div className="flex flex-col gap-6">
         <div
           className={cn(
-            'border-border-neutral-primary h-[72px] rounded-t-2xl border-b px-6',
-            'flex w-full flex-row items-center justify-start',
+            'border-border-neutral-primary relative h-[72px] rounded-t-2xl border-b px-6',
+            'flex w-full flex-row items-center justify-start overflow-hidden',
           )}
-          style={{
-            background: TRADE_POPUP_BACKGROUNDS[mode],
-          }}
         >
+          {mode === 'buy' ? (
+            <BuyPopupPatternSVG
+              width={175}
+              height={175}
+              className="absolute -right-10 -top-12 -z-0"
+            />
+          ) : (
+            <SellPopupPatternSVG
+              width={175}
+              height={175}
+              className="absolute -right-10 -top-12 -z-0"
+            />
+          )}
+
           <span
             className={cn(
-              'text-lg font-medium',
+              'z-10 text-lg font-medium',
               mode === 'buy'
                 ? 'text-text-accent-green-primary-600'
                 : 'text-text-accent-red-contrast-700',
@@ -109,6 +109,7 @@ export const TradePopup: React.FC<TradePopupProps> = ({
               </span>
               <div>
                 <OptionsDropdown
+                  initialSelectedIndex={0}
                   triggerClassName="w-[107px]"
                   dropDownStyles={{
                     bg: 'primary',
@@ -116,11 +117,12 @@ export const TradePopup: React.FC<TradePopupProps> = ({
                     size: 'md',
                     anchor: 'bottom start',
                   }}
-                  dropDownList={quantityOptions.map((option) => ({
+                  dropDownList={quantityOptions.map((option, index) => ({
                     text: formatNumber(option),
+                    id: index,
                   }))}
-                  onChange={(selectedtItem) =>
-                    setInvestmentAmount(Number(selectedtItem))
+                  onChange={(selectedtItem, id) =>
+                    setQuantityStep(quantityOptions[id ?? 0])
                   }
                 />
               </div>
@@ -147,20 +149,52 @@ export const TradePopup: React.FC<TradePopupProps> = ({
                   <Icon name="minus" size="lg" />
                 </Button>
               </div>
+
               {/* Price Display */}
-              <div className="text-center">
+              <div
+                className="text-center"
+                style={{ direction: 'ltr', minWidth: '200px' }}
+                onClick={() => {
+                  if (!showInput) setShowInput(true);
+                }}
+              >
                 <div className="text-text-neutral-primary flex items-center gap-1 text-[32px] font-medium">
-                  {formatNumber(currentPrice)}
-                  <span className="text-text-neutral-secondary text-sm">
+                  <span className="text-text-neutral-secondary text-sm font-normal">
                     ریال
                   </span>
+
+                  {showInput ? (
+                    <input
+                      autoFocus
+                      type="text"
+                      inputMode="numeric"
+                      className="border-border-neutral-primary w-full rounded border bg-transparent px-2 text-right text-[32px] font-medium outline-none"
+                      value={formatNumber(quantity)}
+                      onChange={(e) => {
+                        let val = e.target.value
+                          .replace(/[^0-9\u06F0-\u06F9,]/g, '') // Allow digits and commas
+                          .replace(/,/g, ''); // Remove commas
+                        val = persianToEnglishDigits(val);
+                        setQuantity(val === '' ? 0 : Number(val));
+                      }}
+                      onBlur={() => setShowInput(false)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          setShowInput(false);
+                          e.currentTarget.blur();
+                        }
+                      }}
+                    />
+                  ) : (
+                    <SlidingNumber quantity={quantity} />
+                  )}
                 </div>
               </div>
             </div>
           </div>
           <div className="flex w-full justify-center">
             <div className="bg-surface-neutral-secondary text-text-neutral-secondary rounded-md px-2 pt-1 text-xs font-medium">
-              معادل پانزده میلیون تومان
+              {getQuantityInPersianWords(quantity)}
             </div>
           </div>
         </div>
@@ -172,7 +206,7 @@ export const TradePopup: React.FC<TradePopupProps> = ({
               حدود قیمت خرید:
             </span>
             <span className="text-text-neutral-primary font-medium">
-              {formatNumber(minInvestment)} ریال
+              {formatNumber(estismatedBuyPrice)} ریال
             </span>
           </div>
           <div className="flex items-center justify-between text-sm">
@@ -180,7 +214,7 @@ export const TradePopup: React.FC<TradePopupProps> = ({
               حدود تعداد واحد:
             </span>
             <span className="text-text-neutral-primary font-medium">
-              {formatNumber(maxInvestment)} واحد
+              {formatNumber(estismatedUnit)} واحد
             </span>
           </div>
         </div>
@@ -188,6 +222,8 @@ export const TradePopup: React.FC<TradePopupProps> = ({
         {/* Terms Checkbox */}
         <div className="flex w-full items-start px-6">
           <Checkbox
+            checked={acceptTerms}
+            disabled={disableCheck}
             onChange={() => setAcceptTerms(!acceptTerms)}
             reactcontent={
               <div className="flex flex-row items-center gap-1 whitespace-nowrap">
