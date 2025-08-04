@@ -7,7 +7,10 @@ export interface SlidingNumberProps {
 }
 export const SlidingNumber: React.FC<SlidingNumberProps> = ({ quantity }) => {
   return (
-    <div style={{ display: 'flex', gap: 2 }}>
+    <div
+      style={{ display: 'flex', gap: 2 }}
+      className="text-text-neutral-primary flex items-center gap-1 text-[32px] font-medium"
+    >
       {splitNumberWithCommas(quantity.toString()).map((group, i) => (
         <React.Fragment key={i}>
           <FlipNumbers
