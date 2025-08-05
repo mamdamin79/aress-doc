@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { ProfileForm } from '../../../components';
-import { cn, Icon, ProfileSidebar } from 'design-system';
+import { cn, Icon, ProfileSidebar, useCustomToast } from 'design-system';
 import { LogoutModal } from 'design-system';
 import { useThrottle, useWindowSize } from '@uidotdev/usehooks';
 import {
@@ -24,17 +24,32 @@ const ProfilePage = () => {
   const throttledWidth = useThrottle(width, 200) ?? 0;
   const isDesktop = throttledWidth > 1024;
   const router = useRouter();
+  const { showToast } = useCustomToast();
 
   const logoutMutation = useUsersServicePostUsersLogout({
     onSuccess: () => {
       localStorage.removeItem('access_token');
-
-      router.push('/login');
     },
     onError: (error) => {
       console.error('خطا در خروج از حساب:', error);
     },
   });
+
+  const handleLogout = async () => {
+    try {
+      await logoutMutation.mutateAsync();
+
+      await fetch('/api/logout', { method: 'POST' });
+
+      router.push('/login');
+      showToast({
+        message: 'خروج با موفقیت انجام شد!',
+        type: 'success',
+      });
+    } catch (err) {
+      console.error('Logout error:', err);
+    }
+  };
 
   const { data, refetch } = useUsersServiceGetUsersMe();
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
@@ -117,7 +132,7 @@ const ProfilePage = () => {
         </div>
       </div>
       <LogoutModal
-        onLogout={() => logoutMutation.mutate()}
+        onLogout={() => handleLogout()}
         title="خروج از حساب کاربری"
         titleAlign="center"
         isOpen={isLogoutModalOpen}
