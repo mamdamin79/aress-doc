@@ -1,5 +1,5 @@
 import puppeteer, { Browser } from 'puppeteer';
-import { config } from './config';
+import { config } from './config.js';
 
 let browser: Browser | null = null;
 
