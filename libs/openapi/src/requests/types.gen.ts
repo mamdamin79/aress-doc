@@ -64,6 +64,22 @@ export type Body_login_for_access_token_users_login_post = {
   client_secret?: string | null;
 };
 
+export type Body_request_new_report_reports_request_post = {
+  request_form: RequestReportForm;
+  file?: (Blob | File) | null;
+};
+
+export type Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post =
+  {
+    file: Blob | File;
+    selected_filters: string | null;
+  };
+
+export type Body_save_screenshot_reports__report_id__screenshot_post = {
+  selected_filters: string | null;
+  file: Blob | File;
+};
+
 export type Body_test_user_access_token_users_token_post = {
   grant_type?: string | null;
   username: string;
@@ -74,8 +90,8 @@ export type Body_test_user_access_token_users_token_post = {
 };
 
 export type CaptchaApiModel = {
-  value: string;
-  uid: number;
+  value: string | null;
+  uid: number | null;
   required: boolean;
 };
 
@@ -83,6 +99,24 @@ export type CaptchaType = 'image' | 'audio';
 
 export type ChangeDashboardReportItemSortOrderBody = {
   order: number;
+};
+
+export type ChangeEmailByOtpBody = {
+  otp: string;
+};
+
+export type ChangeEmailByOtpResponseApiModel = {
+  success: boolean;
+};
+
+export type ChangeEmailGetOtpBody = {
+  newEmail: string;
+  passwordVerificationToken: string;
+};
+
+export type ChangeEmailGetOtpResponseApiModel = {
+  retrySeconds: number;
+  email: string;
 };
 
 export type ChangePasswordByOtpApiModel = {
@@ -187,6 +221,11 @@ export type DashboardItemReportApiModel = {
   reportCalculation: FinancialReportCalculationApiModel | null;
 };
 
+export type DashboardItemScreenshotResponseApiModel = {
+  queryId: string;
+  screenshotUrl: string;
+};
+
 export type DashboardListItemApiModel = {
   identifier: number;
   name: string;
@@ -214,6 +253,7 @@ export type FinancialReportCalculationApiModel = {
     | Report13Dot2CalculationResult
     | Report13Dot3CalculationResult
     | Report15CalculationResult
+    | Report36CalculationResult
     | Report39CalculationResult;
   filters: Array<FinancialReportFilterApiModel>;
 };
@@ -241,6 +281,7 @@ export type FinancialReportDetailsApiModel = {
   isNew?: boolean;
   relatedReports: Array<FinancialReportListItemApiModel>;
   reportCalculation: FinancialReportCalculationApiModel | null;
+  screenshotUrl: string | null;
 };
 
 export type FinancialReportFilterApiModel = {
@@ -309,7 +350,7 @@ export type FundListItemApiModel = {
   /**
    * وبسایت صندوق
    */
-  website: string;
+  website: string | null;
   /**
    * اساسنامه صندوق
    */
@@ -629,6 +670,20 @@ export type HealthApiModel = {
   status: string;
 };
 
+export type LogoutResponseApiModel = {
+  success: boolean;
+};
+
+export type MarkFundInTableTabBody = {
+  tab: number;
+  fund: number;
+  color: string;
+};
+
+export type MarkFundInTableTabResponseApiModel = {
+  success: boolean;
+};
+
 export type PinFundInTableTabBody = {
   tab: number;
   fund: number;
@@ -732,6 +787,21 @@ export type Report2CalculationResultItem = {
   netFlow: number;
 };
 
+export type Report36CalculationResult = {
+  buckets: Array<Report36CalculationResultBucket>;
+  positiveInstruments: number;
+  negativeInstruments: number;
+  bucketRangeUnit: string;
+  bucketCountUnit: string;
+};
+
+export type Report36CalculationResultBucket = {
+  bucketMin: number | null;
+  bucketMax: number | null;
+  displayBucketAverage: number;
+  bucketInstrumentsCount: number;
+};
+
 export type Report39CalculationResult = {
   data: Array<Report39CalculationResultItem>;
 };
@@ -756,6 +826,22 @@ export type Report6CalculationResultTimeSeriesItem = {
   netFlow: number;
 };
 
+export type ReportScreenshotResponseApiModel = {
+  queryId: string;
+  screenshotUrl: string;
+};
+
+export type RequestReportForm = {
+  title: string;
+  text: string;
+  call: string;
+};
+
+export type RequestReportResponseApiModel = {
+  requestFollowCode: number;
+  success: boolean;
+};
+
 export type ResetForgotPasswordByOtpResponseApiModel = {
   success: boolean;
 };
@@ -763,6 +849,10 @@ export type ResetForgotPasswordByOtpResponseApiModel = {
 export type TokenApiModel = {
   access_token: string;
   token_type: string;
+};
+
+export type UnmarkFundInTableTabResponseApiModel = {
+  success: boolean;
 };
 
 export type UnpinFundInTableTabBody = {
@@ -919,13 +1009,13 @@ export type PostUsersTokenResponse = TokenApiModel;
 
 export type GetUsersMeResponse = AressApiUser | AnonymousApiUser;
 
-export type PostUsersPasswordForgotCaptchaData = {
+export type GetUsersPasswordForgotCaptchaData = {
   captchaHeight?: number;
   captchaType?: CaptchaType;
   captchaWidth?: number;
 };
 
-export type PostUsersPasswordForgotCaptchaResponse = CaptchaApiModel;
+export type GetUsersPasswordForgotCaptchaResponse = CaptchaApiModel;
 
 export type PostUsersPasswordForgotOtpData = {
   requestBody: GetForgotPasswordOtpBody;
@@ -972,6 +1062,20 @@ export type PostUsersProfilePhoneChangeData = {
 export type PostUsersProfilePhoneChangeResponse =
   ChangePhoneByOtpResponseApiModel;
 
+export type PostUsersProfileEmailChangeOtpData = {
+  requestBody: ChangeEmailGetOtpBody;
+};
+
+export type PostUsersProfileEmailChangeOtpResponse =
+  ChangeEmailGetOtpResponseApiModel;
+
+export type PostUsersProfileEmailChangeData = {
+  requestBody: ChangeEmailByOtpBody;
+};
+
+export type PostUsersProfileEmailChangeResponse =
+  ChangeEmailByOtpResponseApiModel;
+
 export type PostUsersProfileUsernameChangeData = {
   requestBody: ChangeUsernameBody;
 };
@@ -986,6 +1090,8 @@ export type PostUsersProfilePictureChangeData = {
 export type PostUsersProfilePictureChangeResponse =
   ChangeProfilePictureResponseApiModel;
 
+export type PostUsersLogoutResponse = LogoutResponseApiModel;
+
 export type GetReportsData = {
   onlyFavorite?: boolean | null;
   onlyHavingVideo?: boolean | null;
@@ -994,8 +1100,18 @@ export type GetReportsData = {
 
 export type GetReportsResponse = Array<FinancialReportListItemApiModel>;
 
+export type GetReportsCategoriesResponse =
+  Array<FinancialReportCategoryApiModel>;
+
+export type PostReportsRequestData = {
+  formData: Body_request_new_report_reports_request_post;
+};
+
+export type PostReportsRequestResponse = RequestReportResponseApiModel;
+
 export type GetReportsByReportIdData = {
   reportId: string;
+  screenshotQueryId?: string | null;
 };
 
 export type GetReportsByReportIdResponse = FinancialReportDetailsApiModel;
@@ -1007,9 +1123,6 @@ export type PostReportsByReportIdData = {
 
 export type PostReportsByReportIdResponse = FinancialReportCalculationApiModel;
 
-export type GetReportsCategoriesResponse =
-  Array<FinancialReportCategoryApiModel>;
-
 export type PostReportsByReportIdFavoriteData = {
   reportId: string;
 };
@@ -1017,10 +1130,18 @@ export type PostReportsByReportIdFavoriteData = {
 export type PostReportsByReportIdFavoriteResponse = UserReportFavoriteStatus;
 
 export type DeleteReportsByReportIdFavoriteData = {
-  reportId: number;
+  reportId: string;
 };
 
 export type DeleteReportsByReportIdFavoriteResponse = UserReportFavoriteStatus;
+
+export type PostReportsByReportIdScreenshotData = {
+  formData: Body_save_screenshot_reports__report_id__screenshot_post;
+  reportId: string;
+};
+
+export type PostReportsByReportIdScreenshotResponse =
+  ReportScreenshotResponseApiModel;
 
 export type GetDashboardsResponse = Array<DashboardListItemApiModel>;
 
@@ -1089,6 +1210,15 @@ export type PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceData = {
 export type PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceResponse =
   DashboardItemApiModel;
 
+export type PostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotData = {
+  dashboardId: number;
+  dashboardItemId: number;
+  formData: Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post;
+};
+
+export type PostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotResponse =
+  DashboardItemScreenshotResponseApiModel;
+
 export type PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsData =
   {
     dashboardId: number;
@@ -1133,6 +1263,18 @@ export type PostFundsTableUnpinData = {
 };
 
 export type PostFundsTableUnpinResponse = UnpinFundInTableTabResponseApiModel;
+
+export type PostFundsTableMarkData = {
+  requestBody: MarkFundInTableTabBody;
+};
+
+export type PostFundsTableMarkResponse = MarkFundInTableTabResponseApiModel;
+
+export type PostFundsTableUnmarkData = {
+  requestBody: UnpinFundInTableTabBody;
+};
+
+export type PostFundsTableUnmarkResponse = UnmarkFundInTableTabResponseApiModel;
 
 export type $OpenApiTs = {
   '/health': {
@@ -1201,8 +1343,8 @@ export type $OpenApiTs = {
     };
   };
   '/users/password/forgot/captcha': {
-    post: {
-      req: PostUsersPasswordForgotCaptchaData;
+    get: {
+      req: GetUsersPasswordForgotCaptchaData;
       res: {
         /**
          * Successful Response
@@ -1319,6 +1461,36 @@ export type $OpenApiTs = {
       };
     };
   };
+  '/users/profile/email/change/otp': {
+    post: {
+      req: PostUsersProfileEmailChangeOtpData;
+      res: {
+        /**
+         * Successful Response
+         */
+        200: ChangeEmailGetOtpResponseApiModel;
+        /**
+         * Validation Error
+         */
+        422: HTTPValidationError;
+      };
+    };
+  };
+  '/users/profile/email/change': {
+    post: {
+      req: PostUsersProfileEmailChangeData;
+      res: {
+        /**
+         * Successful Response
+         */
+        200: ChangeEmailByOtpResponseApiModel;
+        /**
+         * Validation Error
+         */
+        422: HTTPValidationError;
+      };
+    };
+  };
   '/users/profile/username/change': {
     post: {
       req: PostUsersProfileUsernameChangeData;
@@ -1349,6 +1521,16 @@ export type $OpenApiTs = {
       };
     };
   };
+  '/users/logout': {
+    post: {
+      res: {
+        /**
+         * Successful Response
+         */
+        200: LogoutResponseApiModel;
+      };
+    };
+  };
   '/reports': {
     get: {
       req: GetReportsData;
@@ -1357,6 +1539,31 @@ export type $OpenApiTs = {
          * Successful Response
          */
         200: Array<FinancialReportListItemApiModel>;
+        /**
+         * Validation Error
+         */
+        422: HTTPValidationError;
+      };
+    };
+  };
+  '/reports/categories': {
+    get: {
+      res: {
+        /**
+         * Successful Response
+         */
+        200: Array<FinancialReportCategoryApiModel>;
+      };
+    };
+  };
+  '/reports/request': {
+    post: {
+      req: PostReportsRequestData;
+      res: {
+        /**
+         * Successful Response
+         */
+        200: RequestReportResponseApiModel;
         /**
          * Validation Error
          */
@@ -1392,16 +1599,6 @@ export type $OpenApiTs = {
       };
     };
   };
-  '/reports/categories': {
-    get: {
-      res: {
-        /**
-         * Successful Response
-         */
-        200: Array<FinancialReportCategoryApiModel>;
-      };
-    };
-  };
   '/reports/{report_id}/favorite': {
     post: {
       req: PostReportsByReportIdFavoriteData;
@@ -1423,6 +1620,21 @@ export type $OpenApiTs = {
          * Successful Response
          */
         200: UserReportFavoriteStatus;
+        /**
+         * Validation Error
+         */
+        422: HTTPValidationError;
+      };
+    };
+  };
+  '/reports/{report_id}/screenshot': {
+    post: {
+      req: PostReportsByReportIdScreenshotData;
+      res: {
+        /**
+         * Successful Response
+         */
+        200: ReportScreenshotResponseApiModel;
         /**
          * Validation Error
          */
@@ -1567,6 +1779,21 @@ export type $OpenApiTs = {
       };
     };
   };
+  '/dashboards/{dashboard_id}/items/{dashboard_item_id}/screenshot': {
+    post: {
+      req: PostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotData;
+      res: {
+        /**
+         * Successful Response
+         */
+        200: DashboardItemScreenshotResponseApiModel;
+        /**
+         * Validation Error
+         */
+        422: HTTPValidationError;
+      };
+    };
+  };
   '/dashboards/{dashboard_id}/items/{dashboard_item_id}/calculations': {
     post: {
       req: PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsData;
@@ -1660,6 +1887,36 @@ export type $OpenApiTs = {
          * Successful Response
          */
         200: UnpinFundInTableTabResponseApiModel;
+        /**
+         * Validation Error
+         */
+        422: HTTPValidationError;
+      };
+    };
+  };
+  '/funds/table/mark': {
+    post: {
+      req: PostFundsTableMarkData;
+      res: {
+        /**
+         * Successful Response
+         */
+        200: MarkFundInTableTabResponseApiModel;
+        /**
+         * Validation Error
+         */
+        422: HTTPValidationError;
+      };
+    };
+  };
+  '/funds/table/unmark': {
+    post: {
+      req: PostFundsTableUnmarkData;
+      res: {
+        /**
+         * Successful Response
+         */
+        200: UnmarkFundInTableTabResponseApiModel;
         /**
          * Validation Error
          */

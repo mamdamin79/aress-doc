@@ -273,13 +273,13 @@
       }
     },
     "/users/password/forgot/captcha": {
-      "post": {
+      "get": {
         "tags": [
           "Users"
         ],
         "summary": "Forgot Password Captcha",
         "description": "Get captcha to reset password",
-        "operationId": "forgot_password_captcha_users_password_forgot_captcha_post",
+        "operationId": "forgot_password_captcha_users_password_forgot_captcha_get",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -653,6 +653,100 @@
         ]
       }
     },
+    "/users/profile/email/change/otp": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Change Email Get Otp",
+        "description": "get otp to change email",
+        "operationId": "change_email_get_otp_users_profile_email_change_otp_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeEmailGetOtpBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeEmailGetOtpResponseApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/users/profile/email/change": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Change Email By Otp",
+        "description": "Change email with otp",
+        "operationId": "change_email_by_otp_users_profile_email_change_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeEmailByOtpBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeEmailByOtpResponseApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/users/profile/username/change": {
       "post": {
         "tags": [
@@ -735,6 +829,33 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/users/logout": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Logout User",
+        "description": "Logout user",
+        "operationId": "logout_user_users_logout_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogoutResponseApiModel"
                 }
               }
             }
@@ -838,6 +959,79 @@
         }
       }
     },
+    "/reports/categories": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Report Categories",
+        "description": "Get list of report categories.",
+        "operationId": "report_categories_reports_categories_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/FinancialReportCategoryApiModel"
+                  },
+                  "type": "array",
+                  "title": "Response Report Categories Reports Categories Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reports/request": {
+      "post": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Request New Report",
+        "description": "Request a new report",
+        "operationId": "request_new_report_reports_request_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_request_new_report_reports_request_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestReportResponseApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/reports/{report_id}": {
       "get": {
         "tags": [
@@ -859,6 +1053,22 @@
             "schema": {
               "type": "string",
               "title": "Report Id"
+            }
+          },
+          {
+            "name": "screenshotQueryId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Screenshotqueryid"
             }
           }
         ],
@@ -942,32 +1152,6 @@
         }
       }
     },
-    "/reports/categories": {
-      "get": {
-        "tags": [
-          "Reports"
-        ],
-        "summary": "Report Categories",
-        "description": "Get list of report categories.",
-        "operationId": "report_categories_reports_categories_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/FinancialReportCategoryApiModel"
-                  },
-                  "type": "array",
-                  "title": "Response Report Categories Reports Categories Get"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/reports/{report_id}/favorite": {
       "post": {
         "tags": [
@@ -1033,7 +1217,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
+              "type": "string",
               "title": "Report Id"
             }
           }
@@ -1045,6 +1229,64 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UserReportFavoriteStatus"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reports/{report_id}/screenshot": {
+      "post": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Save Screenshot",
+        "description": "Save report screenshot",
+        "operationId": "save_screenshot_reports__report_id__screenshot_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "report_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Report Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_save_screenshot_reports__report_id__screenshot_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportScreenshotResponseApiModel"
                 }
               }
             }
@@ -1582,6 +1824,73 @@
         }
       }
     },
+    "/dashboards/{dashboard_id}/items/{dashboard_item_id}/screenshot": {
+      "post": {
+        "tags": [
+          "Dashboards"
+        ],
+        "summary": "Save Dashboard Item Screenshot",
+        "description": "Replace item in dashboard.",
+        "operationId": "save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "dashboard_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dashboard Id"
+            }
+          },
+          {
+            "name": "dashboard_item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dashboard Item Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardItemScreenshotResponseApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/dashboards/{dashboard_id}/items/{dashboard_item_id}/calculations": {
       "post": {
         "tags": [
@@ -1929,6 +2238,100 @@
           }
         ]
       }
+    },
+    "/funds/table/mark": {
+      "post": {
+        "tags": [
+          "Funds"
+        ],
+        "summary": "Mark Fund In Table Tab",
+        "description": "Mark fund in table tab",
+        "operationId": "mark_fund_in_table_tab_funds_table_mark_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MarkFundInTableTabBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarkFundInTableTabResponseApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/funds/table/unmark": {
+      "post": {
+        "tags": [
+          "Funds"
+        ],
+        "summary": "Unmark Fund In Table Tab",
+        "description": "Unmark fund in table tab",
+        "operationId": "unmark_fund_in_table_tab_funds_table_unmark_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnpinFundInTableTabBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnmarkFundInTableTabResponseApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -2136,6 +2539,83 @@
         ],
         "title": "Body_login_for_access_token_users_login_post"
       },
+      "Body_request_new_report_reports_request_post": {
+        "properties": {
+          "request_form": {
+            "$ref": "#/components/schemas/RequestReportForm",
+            "title": "Request Form"
+          },
+          "file": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "binary"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "request_form"
+        ],
+        "title": "Body_request_new_report_reports_request_post"
+      },
+      "Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          },
+          "selected_filters": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selected Filters"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file",
+          "selected_filters"
+        ],
+        "title": "Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post"
+      },
+      "Body_save_screenshot_reports__report_id__screenshot_post": {
+        "properties": {
+          "selected_filters": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selected Filters"
+          },
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "selected_filters",
+          "file"
+        ],
+        "title": "Body_save_screenshot_reports__report_id__screenshot_post"
+      },
       "Body_test_user_access_token_users_token_post": {
         "properties": {
           "grant_type": {
@@ -2196,11 +2676,25 @@
       "CaptchaApiModel": {
         "properties": {
           "value": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Value"
           },
           "uid": {
-            "type": "integer",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Uid"
           },
           "required": {
@@ -2236,6 +2730,68 @@
           "order"
         ],
         "title": "ChangeDashboardReportItemSortOrderBody"
+      },
+      "ChangeEmailByOtpBody": {
+        "properties": {
+          "otp": {
+            "type": "string",
+            "title": "Otp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "otp"
+        ],
+        "title": "ChangeEmailByOtpBody"
+      },
+      "ChangeEmailByOtpResponseApiModel": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          }
+        },
+        "type": "object",
+        "required": [
+          "success"
+        ],
+        "title": "ChangeEmailByOtpResponseApiModel"
+      },
+      "ChangeEmailGetOtpBody": {
+        "properties": {
+          "newEmail": {
+            "type": "string",
+            "title": "Newemail"
+          },
+          "passwordVerificationToken": {
+            "type": "string",
+            "title": "Passwordverificationtoken"
+          }
+        },
+        "type": "object",
+        "required": [
+          "newEmail",
+          "passwordVerificationToken"
+        ],
+        "title": "ChangeEmailGetOtpBody"
+      },
+      "ChangeEmailGetOtpResponseApiModel": {
+        "properties": {
+          "retrySeconds": {
+            "type": "integer",
+            "title": "Retryseconds"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          }
+        },
+        "type": "object",
+        "required": [
+          "retrySeconds",
+          "email"
+        ],
+        "title": "ChangeEmailGetOtpResponseApiModel"
       },
       "ChangePasswordByOtpApiModel": {
         "properties": {
@@ -2651,6 +3207,24 @@
         ],
         "title": "DashboardItemReportApiModel"
       },
+      "DashboardItemScreenshotResponseApiModel": {
+        "properties": {
+          "queryId": {
+            "type": "string",
+            "title": "Queryid"
+          },
+          "screenshotUrl": {
+            "type": "string",
+            "title": "Screenshoturl"
+          }
+        },
+        "type": "object",
+        "required": [
+          "queryId",
+          "screenshotUrl"
+        ],
+        "title": "DashboardItemScreenshotResponseApiModel"
+      },
       "DashboardListItemApiModel": {
         "properties": {
           "identifier": {
@@ -2731,6 +3305,9 @@
               },
               {
                 "$ref": "#/components/schemas/Report15CalculationResult"
+              },
+              {
+                "$ref": "#/components/schemas/Report36CalculationResult"
               },
               {
                 "$ref": "#/components/schemas/Report39CalculationResult"
@@ -2848,6 +3425,17 @@
                 "type": "null"
               }
             ]
+          },
+          "screenshotUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Screenshoturl"
           }
         },
         "type": "object",
@@ -2860,7 +3448,8 @@
           "markdownDescription",
           "video",
           "relatedReports",
-          "reportCalculation"
+          "reportCalculation",
+          "screenshotUrl"
         ],
         "title": "FinancialReportDetailsApiModel"
       },
@@ -3058,7 +3647,14 @@
             "description": "آدرس لوگوی صندوق - سایز کوچک"
           },
           "website": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Website",
             "description": "وبسایت صندوق"
           },
@@ -3969,6 +4565,55 @@
         ],
         "title": "HealthApiModel"
       },
+      "LogoutResponseApiModel": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          }
+        },
+        "type": "object",
+        "required": [
+          "success"
+        ],
+        "title": "LogoutResponseApiModel"
+      },
+      "MarkFundInTableTabBody": {
+        "properties": {
+          "tab": {
+            "type": "integer",
+            "title": "Tab"
+          },
+          "fund": {
+            "type": "integer",
+            "title": "Fund"
+          },
+          "color": {
+            "type": "string",
+            "title": "Color"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tab",
+          "fund",
+          "color"
+        ],
+        "title": "MarkFundInTableTabBody"
+      },
+      "MarkFundInTableTabResponseApiModel": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          }
+        },
+        "type": "object",
+        "required": [
+          "success"
+        ],
+        "title": "MarkFundInTableTabResponseApiModel"
+      },
       "PinFundInTableTabBody": {
         "properties": {
           "tab": {
@@ -4238,14 +4883,7 @@
             "title": "Points"
           },
           "mean": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "integer"
-              }
-            ],
+            "type": "number",
             "title": "Mean"
           }
         },
@@ -4260,11 +4898,10 @@
         "properties": {
           "date": {
             "type": "string",
-            "format": "date",
             "title": "Date"
           },
           "value": {
-            "type": "integer",
+            "type": "number",
             "title": "Value"
           }
         },
@@ -4378,6 +5015,84 @@
         ],
         "title": "Report2CalculationResultItem"
       },
+      "Report36CalculationResult": {
+        "properties": {
+          "buckets": {
+            "items": {
+              "$ref": "#/components/schemas/Report36CalculationResultBucket"
+            },
+            "type": "array",
+            "title": "Buckets"
+          },
+          "positiveInstruments": {
+            "type": "integer",
+            "title": "Positiveinstruments"
+          },
+          "negativeInstruments": {
+            "type": "integer",
+            "title": "Negativeinstruments"
+          },
+          "bucketRangeUnit": {
+            "type": "string",
+            "title": "Bucketrangeunit"
+          },
+          "bucketCountUnit": {
+            "type": "string",
+            "title": "Bucketcountunit"
+          }
+        },
+        "type": "object",
+        "required": [
+          "buckets",
+          "positiveInstruments",
+          "negativeInstruments",
+          "bucketRangeUnit",
+          "bucketCountUnit"
+        ],
+        "title": "Report36CalculationResult"
+      },
+      "Report36CalculationResultBucket": {
+        "properties": {
+          "bucketMin": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bucketmin"
+          },
+          "bucketMax": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bucketmax"
+          },
+          "displayBucketAverage": {
+            "type": "number",
+            "title": "Displaybucketaverage"
+          },
+          "bucketInstrumentsCount": {
+            "type": "integer",
+            "title": "Bucketinstrumentscount"
+          }
+        },
+        "type": "object",
+        "required": [
+          "bucketMin",
+          "bucketMax",
+          "displayBucketAverage",
+          "bucketInstrumentsCount"
+        ],
+        "title": "Report36CalculationResultBucket"
+      },
       "Report39CalculationResult": {
         "properties": {
           "data": {
@@ -4453,7 +5168,6 @@
         "properties": {
           "dt": {
             "type": "string",
-            "format": "date",
             "title": "Dt"
           },
           "indexValue": {
@@ -4472,6 +5186,65 @@
           "netFlow"
         ],
         "title": "Report6CalculationResultTimeSeriesItem"
+      },
+      "ReportScreenshotResponseApiModel": {
+        "properties": {
+          "queryId": {
+            "type": "string",
+            "title": "Queryid"
+          },
+          "screenshotUrl": {
+            "type": "string",
+            "title": "Screenshoturl"
+          }
+        },
+        "type": "object",
+        "required": [
+          "queryId",
+          "screenshotUrl"
+        ],
+        "title": "ReportScreenshotResponseApiModel"
+      },
+      "RequestReportForm": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "call": {
+            "type": "string",
+            "title": "Call"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "text",
+          "call"
+        ],
+        "title": "RequestReportForm"
+      },
+      "RequestReportResponseApiModel": {
+        "properties": {
+          "requestFollowCode": {
+            "type": "integer",
+            "title": "Requestfollowcode"
+          },
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          }
+        },
+        "type": "object",
+        "required": [
+          "requestFollowCode",
+          "success"
+        ],
+        "title": "RequestReportResponseApiModel"
       },
       "ResetForgotPasswordByOtpResponseApiModel": {
         "properties": {
@@ -4503,6 +5276,19 @@
           "token_type"
         ],
         "title": "TokenApiModel"
+      },
+      "UnmarkFundInTableTabResponseApiModel": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          }
+        },
+        "type": "object",
+        "required": [
+          "success"
+        ],
+        "title": "UnmarkFundInTableTabResponseApiModel"
       },
       "UnpinFundInTableTabBody": {
         "properties": {
