@@ -106,6 +106,36 @@ export interface BodyLoginForAccessTokenUsersLoginPost {
   client_secret?: string | null;
 }
 
+/** Body_request_new_report_reports_request_post */
+export interface BodyRequestNewReportReportsRequestPost {
+  /** Request Form */
+  request_form: RequestReportForm;
+  /** File */
+  file?: File | null;
+}
+
+/** Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post */
+export interface BodySaveDashboardItemScreenshotDashboardsDashboardIdItemsDashboardItemIdScreenshotPost {
+  /**
+   * File
+   * @format binary
+   */
+  file: File;
+  /** Selected Filters */
+  selected_filters: string | null;
+}
+
+/** Body_save_screenshot_reports__report_id__screenshot_post */
+export interface BodySaveScreenshotReportsReportIdScreenshotPost {
+  /** Selected Filters */
+  selected_filters: string | null;
+  /**
+   * File
+   * @format binary
+   */
+  file: File;
+}
+
 /** Body_test_user_access_token_users_token_post */
 export interface BodyTestUserAccessTokenUsersTokenPost {
   /** Grant Type */
@@ -128,9 +158,9 @@ export interface BodyTestUserAccessTokenUsersTokenPost {
 /** CaptchaApiModel */
 export interface CaptchaApiModel {
   /** Value */
-  value: string;
+  value: string | null;
   /** Uid */
-  uid: number;
+  uid: number | null;
   /** Required */
   required: boolean;
 }
@@ -139,6 +169,34 @@ export interface CaptchaApiModel {
 export interface ChangeDashboardReportItemSortOrderBody {
   /** Order */
   order: number;
+}
+
+/** ChangeEmailByOtpBody */
+export interface ChangeEmailByOtpBody {
+  /** Otp */
+  otp: string;
+}
+
+/** ChangeEmailByOtpResponseApiModel */
+export interface ChangeEmailByOtpResponseApiModel {
+  /** Success */
+  success: boolean;
+}
+
+/** ChangeEmailGetOtpBody */
+export interface ChangeEmailGetOtpBody {
+  /** Newemail */
+  newEmail: string;
+  /** Passwordverificationtoken */
+  passwordVerificationToken: string;
+}
+
+/** ChangeEmailGetOtpResponseApiModel */
+export interface ChangeEmailGetOtpResponseApiModel {
+  /** Retryseconds */
+  retrySeconds: number;
+  /** Email */
+  email: string;
 }
 
 /** ChangePasswordByOtpApiModel */
@@ -297,6 +355,14 @@ export interface DashboardItemReportApiModel {
   reportCalculation: FinancialReportCalculationApiModel | null;
 }
 
+/** DashboardItemScreenshotResponseApiModel */
+export interface DashboardItemScreenshotResponseApiModel {
+  /** Queryid */
+  queryId: string;
+  /** Screenshoturl */
+  screenshotUrl: string;
+}
+
 /** DashboardListItemApiModel */
 export interface DashboardListItemApiModel {
   /** Identifier */
@@ -334,6 +400,7 @@ export interface FinancialReportCalculationApiModel {
     | Report13Dot2CalculationResult
     | Report13Dot3CalculationResult
     | Report15CalculationResult
+    | Report36CalculationResult
     | Report39CalculationResult;
   /** Filters */
   filters: FinancialReportFilterApiModel[];
@@ -380,6 +447,8 @@ export interface FinancialReportDetailsApiModel {
   /** Relatedreports */
   relatedReports: FinancialReportListItemApiModel[];
   reportCalculation: FinancialReportCalculationApiModel | null;
+  /** Screenshoturl */
+  screenshotUrl: string | null;
 }
 
 /** FinancialReportFilterApiModel */
@@ -484,7 +553,7 @@ export interface FundListItemApiModel {
    * Website
    * وبسایت صندوق
    */
-  website: string;
+  website: string | null;
   /**
    * Statuteurl
    * اساسنامه صندوق
@@ -898,6 +967,28 @@ export interface HealthApiModel {
   status: string;
 }
 
+/** LogoutResponseApiModel */
+export interface LogoutResponseApiModel {
+  /** Success */
+  success: boolean;
+}
+
+/** MarkFundInTableTabBody */
+export interface MarkFundInTableTabBody {
+  /** Tab */
+  tab: number;
+  /** Fund */
+  fund: number;
+  /** Color */
+  color: string;
+}
+
+/** MarkFundInTableTabResponseApiModel */
+export interface MarkFundInTableTabResponseApiModel {
+  /** Success */
+  success: boolean;
+}
+
 /** PinFundInTableTabBody */
 export interface PinFundInTableTabBody {
   /** Tab */
@@ -1014,10 +1105,7 @@ export interface Report13Dot3CalculationResultItem {
 
 /** Report13Dot3CalculationResultPoints */
 export interface Report13Dot3CalculationResultPoints {
-  /**
-   * Date
-   * @format date
-   */
+  /** Date */
   date: string;
   /** Value */
   value: number;
@@ -1065,6 +1153,32 @@ export interface Report2CalculationResultItem {
   netFlow: number;
 }
 
+/** Report36CalculationResult */
+export interface Report36CalculationResult {
+  /** Buckets */
+  buckets: Report36CalculationResultBucket[];
+  /** Positiveinstruments */
+  positiveInstruments: number;
+  /** Negativeinstruments */
+  negativeInstruments: number;
+  /** Bucketrangeunit */
+  bucketRangeUnit: string;
+  /** Bucketcountunit */
+  bucketCountUnit: string;
+}
+
+/** Report36CalculationResultBucket */
+export interface Report36CalculationResultBucket {
+  /** Bucketmin */
+  bucketMin: number | null;
+  /** Bucketmax */
+  bucketMax: number | null;
+  /** Displaybucketaverage */
+  displayBucketAverage: number;
+  /** Bucketinstrumentscount */
+  bucketInstrumentsCount: number;
+}
+
 /** Report39CalculationResult */
 export interface Report39CalculationResult {
   /** Data */
@@ -1095,15 +1209,38 @@ export interface Report6CalculationResult {
 
 /** Report6CalculationResultTimeSeriesItem */
 export interface Report6CalculationResultTimeSeriesItem {
-  /**
-   * Dt
-   * @format date
-   */
+  /** Dt */
   dt: string;
   /** Indexvalue */
   indexValue: number;
   /** Netflow */
   netFlow: number;
+}
+
+/** ReportScreenshotResponseApiModel */
+export interface ReportScreenshotResponseApiModel {
+  /** Queryid */
+  queryId: string;
+  /** Screenshoturl */
+  screenshotUrl: string;
+}
+
+/** RequestReportForm */
+export interface RequestReportForm {
+  /** Title */
+  title: string;
+  /** Text */
+  text: string;
+  /** Call */
+  call: string;
+}
+
+/** RequestReportResponseApiModel */
+export interface RequestReportResponseApiModel {
+  /** Requestfollowcode */
+  requestFollowCode: number;
+  /** Success */
+  success: boolean;
 }
 
 /** ResetForgotPasswordByOtpResponseApiModel */
@@ -1118,6 +1255,12 @@ export interface TokenApiModel {
   access_token: string;
   /** Token Type */
   token_type: string;
+}
+
+/** UnmarkFundInTableTabResponseApiModel */
+export interface UnmarkFundInTableTabResponseApiModel {
+  /** Success */
+  success: boolean;
 }
 
 /** UnpinFundInTableTabBody */
@@ -1682,12 +1825,12 @@ export class Api<
      * @description Get captcha to reset password
      *
      * @tags Users
-     * @name ForgotPasswordCaptchaUsersPasswordForgotCaptchaPost
+     * @name ForgotPasswordCaptchaUsersPasswordForgotCaptchaGet
      * @summary Forgot Password Captcha
-     * @request POST:/users/password/forgot/captcha
+     * @request GET:/users/password/forgot/captcha
      * @secure
      */
-    forgotPasswordCaptchaUsersPasswordForgotCaptchaPost: (
+    forgotPasswordCaptchaUsersPasswordForgotCaptchaGet: (
       query?: {
         /**
          * Captchawidth
@@ -1710,7 +1853,7 @@ export class Api<
     ) =>
       this.request<CaptchaApiModel, HTTPValidationError>({
         path: `/users/password/forgot/captcha`,
-        method: 'POST',
+        method: 'GET',
         query: query,
         secure: true,
         format: 'json',
@@ -1884,6 +2027,52 @@ export class Api<
       }),
 
     /**
+     * @description get otp to change email
+     *
+     * @tags Users
+     * @name ChangeEmailGetOtpUsersProfileEmailChangeOtpPost
+     * @summary Change Email Get Otp
+     * @request POST:/users/profile/email/change/otp
+     * @secure
+     */
+    changeEmailGetOtpUsersProfileEmailChangeOtpPost: (
+      data: ChangeEmailGetOtpBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<ChangeEmailGetOtpResponseApiModel, HTTPValidationError>({
+        path: `/users/profile/email/change/otp`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Change email with otp
+     *
+     * @tags Users
+     * @name ChangeEmailByOtpUsersProfileEmailChangePost
+     * @summary Change Email By Otp
+     * @request POST:/users/profile/email/change
+     * @secure
+     */
+    changeEmailByOtpUsersProfileEmailChangePost: (
+      data: ChangeEmailByOtpBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<ChangeEmailByOtpResponseApiModel, HTTPValidationError>({
+        path: `/users/profile/email/change`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
      * @description Change username
      *
      * @tags Users
@@ -1928,6 +2117,24 @@ export class Api<
         format: 'json',
         ...params,
       }),
+
+    /**
+     * @description Logout user
+     *
+     * @tags Users
+     * @name LogoutUserUsersLogoutPost
+     * @summary Logout User
+     * @request POST:/users/logout
+     * @secure
+     */
+    logoutUserUsersLogoutPost: (params: RequestParams = {}) =>
+      this.request<LogoutResponseApiModel, any>({
+        path: `/users/logout`,
+        method: 'POST',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
   };
   reports = {
     /**
@@ -1960,6 +2167,45 @@ export class Api<
       }),
 
     /**
+     * @description Get list of report categories.
+     *
+     * @tags Reports
+     * @name ReportCategoriesReportsCategoriesGet
+     * @summary Report Categories
+     * @request GET:/reports/categories
+     */
+    reportCategoriesReportsCategoriesGet: (params: RequestParams = {}) =>
+      this.request<FinancialReportCategoryApiModel[], any>({
+        path: `/reports/categories`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Request a new report
+     *
+     * @tags Reports
+     * @name RequestNewReportReportsRequestPost
+     * @summary Request New Report
+     * @request POST:/reports/request
+     * @secure
+     */
+    requestNewReportReportsRequestPost: (
+      data: BodyRequestNewReportReportsRequestPost,
+      params: RequestParams = {},
+    ) =>
+      this.request<RequestReportResponseApiModel, HTTPValidationError>({
+        path: `/reports/request`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
      * @description Get details of a report.
      *
      * @tags Reports
@@ -1970,11 +2216,16 @@ export class Api<
      */
     reportDetailsReportsReportIdGet: (
       reportId: string,
+      query?: {
+        /** Screenshotqueryid */
+        screenshotQueryId?: string | null;
+      },
       params: RequestParams = {},
     ) =>
       this.request<FinancialReportDetailsApiModel, HTTPValidationError>({
         path: `/reports/${reportId}`,
         method: 'GET',
+        query: query,
         secure: true,
         format: 'json',
         ...params,
@@ -2000,22 +2251,6 @@ export class Api<
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * @description Get list of report categories.
-     *
-     * @tags Reports
-     * @name ReportCategoriesReportsCategoriesGet
-     * @summary Report Categories
-     * @request GET:/reports/categories
-     */
-    reportCategoriesReportsCategoriesGet: (params: RequestParams = {}) =>
-      this.request<FinancialReportCategoryApiModel[], any>({
-        path: `/reports/categories`,
-        method: 'GET',
         format: 'json',
         ...params,
       }),
@@ -2051,13 +2286,37 @@ export class Api<
      * @secure
      */
     removeReportFromFavoritesReportsReportIdFavoriteDelete: (
-      reportId: number,
+      reportId: string,
       params: RequestParams = {},
     ) =>
       this.request<UserReportFavoriteStatus, HTTPValidationError>({
         path: `/reports/${reportId}/favorite`,
         method: 'DELETE',
         secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Save report screenshot
+     *
+     * @tags Reports
+     * @name SaveScreenshotReportsReportIdScreenshotPost
+     * @summary Save Screenshot
+     * @request POST:/reports/{report_id}/screenshot
+     * @secure
+     */
+    saveScreenshotReportsReportIdScreenshotPost: (
+      reportId: string,
+      data: BodySaveScreenshotReportsReportIdScreenshotPost,
+      params: RequestParams = {},
+    ) =>
+      this.request<ReportScreenshotResponseApiModel, HTTPValidationError>({
+        path: `/reports/${reportId}/screenshot`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
         format: 'json',
         ...params,
       }),
@@ -2287,6 +2546,35 @@ export class Api<
       }),
 
     /**
+     * @description Replace item in dashboard.
+     *
+     * @tags Dashboards
+     * @name SaveDashboardItemScreenshotDashboardsDashboardIdItemsDashboardItemIdScreenshotPost
+     * @summary Save Dashboard Item Screenshot
+     * @request POST:/dashboards/{dashboard_id}/items/{dashboard_item_id}/screenshot
+     * @secure
+     */
+    saveDashboardItemScreenshotDashboardsDashboardIdItemsDashboardItemIdScreenshotPost:
+      (
+        dashboardId: number,
+        dashboardItemId: number,
+        data: BodySaveDashboardItemScreenshotDashboardsDashboardIdItemsDashboardItemIdScreenshotPost,
+        params: RequestParams = {},
+      ) =>
+        this.request<
+          DashboardItemScreenshotResponseApiModel,
+          HTTPValidationError
+        >({
+          path: `/dashboards/${dashboardId}/items/${dashboardItemId}/screenshot`,
+          method: 'POST',
+          body: data,
+          secure: true,
+          type: ContentType.FormData,
+          format: 'json',
+          ...params,
+        }),
+
+    /**
      * @description Get dashboard item calculations.
      *
      * @tags Dashboards
@@ -2440,6 +2728,52 @@ export class Api<
     ) =>
       this.request<UnpinFundInTableTabResponseApiModel, HTTPValidationError>({
         path: `/funds/table/unpin`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Mark fund in table tab
+     *
+     * @tags Funds
+     * @name MarkFundInTableTabFundsTableMarkPost
+     * @summary Mark Fund In Table Tab
+     * @request POST:/funds/table/mark
+     * @secure
+     */
+    markFundInTableTabFundsTableMarkPost: (
+      data: MarkFundInTableTabBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<MarkFundInTableTabResponseApiModel, HTTPValidationError>({
+        path: `/funds/table/mark`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Unmark fund in table tab
+     *
+     * @tags Funds
+     * @name UnmarkFundInTableTabFundsTableUnmarkPost
+     * @summary Unmark Fund In Table Tab
+     * @request POST:/funds/table/unmark
+     * @secure
+     */
+    unmarkFundInTableTabFundsTableUnmarkPost: (
+      data: UnpinFundInTableTabBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<UnmarkFundInTableTabResponseApiModel, HTTPValidationError>({
+        path: `/funds/table/unmark`,
         method: 'POST',
         body: data,
         secure: true,

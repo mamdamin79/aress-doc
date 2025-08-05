@@ -5,10 +5,15 @@ import { ProfileForm } from '../../../components';
 import { cn, Icon, ProfileSidebar } from 'design-system';
 import { LogoutModal } from 'design-system';
 import { useThrottle, useWindowSize } from '@uidotdev/usehooks';
-import { AressApiUser, useUsersServiceGetUsersMe } from '@openapi';
+import {
+  AressApiUser,
+  useUsersServiceGetUsersMe,
+  useUsersServicePostUsersLogout,
+} from '@openapi';
 import { Toaster } from 'react-hot-toast';
 import { ProfileSidebarSkeleton } from './_components/skeletons/ProfileSidebarSkeleton';
 import { ProfileFormSkeleton } from './_components/skeletons/ProfileFormSkeleton';
+import { useRouter } from 'next/navigation';
 
 const ProfilePage = () => {
   const [activeSection, setActiveSection] = useState<undefined | string>(
@@ -18,6 +23,18 @@ const ProfilePage = () => {
   const { width } = useWindowSize();
   const throttledWidth = useThrottle(width, 200) ?? 0;
   const isDesktop = throttledWidth > 1024;
+  const router = useRouter();
+
+  const logoutMutation = useUsersServicePostUsersLogout({
+    onSuccess: () => {
+      localStorage.removeItem('access_token');
+
+      router.push('/login');
+    },
+    onError: (error) => {
+      console.error('خطا در خروج از حساب:', error);
+    },
+  });
 
   const { data, refetch } = useUsersServiceGetUsersMe();
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
@@ -100,7 +117,7 @@ const ProfilePage = () => {
         </div>
       </div>
       <LogoutModal
-        onLogout={() => alert('عملیات خروج در حال ساخت !')}
+        onLogout={() => logoutMutation.mutate()}
         title="خروج از حساب کاربری"
         titleAlign="center"
         isOpen={isLogoutModalOpen}
