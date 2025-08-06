@@ -13,18 +13,7 @@ import { formSchema } from './ProflieForm.constants';
 import { OTPForm } from '../OtpForm/OtpForm';
 import { ChangeNationalCode } from '../ChangeNationalCode/ChangeNationalCode';
 
-export const ProfileForm: React.FC = (
-  {
-    //   email,
-    //   fnameAndLname,
-    //   nationalID,
-    //   phoneNumber,
-    //   username,
-    //   image,
-    //   onImageChange,
-    //   refetch,
-  },
-) => {
+export const ProfileForm: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>();
   const [otpFormOpen, setOtpFormOpen] = useState(false);
   const [changeNationalCodeOpen, setChangeNationalCodeOpen] = useState(false);
@@ -33,7 +22,7 @@ export const ProfileForm: React.FC = (
   const { showToast } = useCustomToast();
 
   return (
-    <div className="flex w-full flex-col items-center gap-12">
+    <div className="mb-6 flex w-full flex-col items-center gap-12">
       <ProfileImageAndUpload
         loadingInitial={false}
         maxSize={2e13}
@@ -113,29 +102,7 @@ export const ProfileForm: React.FC = (
           </Dialog>
         </div>
 
-        {/* <form className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
-            {formSchema.map(({ name, label, value, icon }) => (
-              <TextField
-                key={name}
-                mergeTitleAndPlaceholder={false}
-                mode="filled"
-                type="text"
-                leadingIcon={
-                  icon && {
-                    name: icon,
-                    size: 'lg',
-                    color: 'secondary',
-                  }
-                }
-                trailingIcons={[]}
-                label={label}
-                placeholder=""
-                readOnly
-                value={value}
-              />
-            ))}
-          </form> */}
-        <FormWrapper formSchema={formSchema} />
+        <FormWrapper title="شخص حقیقی" formSchema={formSchema} />
       </div>
     </div>
   );
