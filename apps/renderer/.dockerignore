@@ -1,0 +1,39 @@
+# Dependencies
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+dist
+build
+
+# Development files
+*.log
+.DS_Store
+.vscode
+.idea
+
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Testing
+coverage
+*.test.js
+*.spec.js
+
+# Environment files (will be copied explicitly)
+# .env
+
+# Temporary files
+tmp
+temp
+
+# OS generated files
+Thumbs.db
+.DS_Store

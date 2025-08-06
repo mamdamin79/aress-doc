@@ -707,6 +707,7 @@ export type Report13Dot1CalculationResult = {
   maxValue: Report13Dot1CalculationResultColumn;
   minValue: Report13Dot1CalculationResultColumn;
   averageValue: Report13Dot1CalculationResultColumn;
+  currencyUnit: string;
 };
 
 export type Report13Dot1CalculationResultColumn = {
@@ -803,21 +804,19 @@ export type Report36CalculationResultBucket = {
 };
 
 export type Report39CalculationResult = {
-  data: Array<Report39CalculationResultItem>;
-};
-
-export type Report39CalculationResultItem = {
-  values: Array<Report39InstrumentsResultItem>;
+  data: Array<Report39InstrumentsResultItem>;
+  unit: string;
 };
 
 export type Report39InstrumentsResultItem = {
   instrument: string;
   netFlow: number;
-  unit: string;
 };
 
 export type Report6CalculationResult = {
   data: Array<Report6CalculationResultTimeSeriesItem>;
+  indexUnit: string;
+  netFlowUnit: string;
 };
 
 export type Report6CalculationResultTimeSeriesItem = {

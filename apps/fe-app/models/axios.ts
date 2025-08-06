@@ -1022,6 +1022,8 @@ export interface Report13Dot1CalculationResult {
   maxValue: Report13Dot1CalculationResultColumn;
   minValue: Report13Dot1CalculationResultColumn;
   averageValue: Report13Dot1CalculationResultColumn;
+  /** Currencyunit */
+  currencyUnit: string;
 }
 
 /** Report13Dot1CalculationResultColumn */
@@ -1182,13 +1184,9 @@ export interface Report36CalculationResultBucket {
 /** Report39CalculationResult */
 export interface Report39CalculationResult {
   /** Data */
-  data: Report39CalculationResultItem[];
-}
-
-/** Report39CalculationResultItem */
-export interface Report39CalculationResultItem {
-  /** Values */
-  values: Report39InstrumentsResultItem[];
+  data: Report39InstrumentsResultItem[];
+  /** Unit */
+  unit: string;
 }
 
 /** Report39InstrumentsResultItem */
@@ -1197,14 +1195,16 @@ export interface Report39InstrumentsResultItem {
   instrument: string;
   /** Netflow */
   netFlow: number;
-  /** Unit */
-  unit: string;
 }
 
 /** Report6CalculationResult */
 export interface Report6CalculationResult {
   /** Data */
   data: Report6CalculationResultTimeSeriesItem[];
+  /** Indexunit */
+  indexUnit: string;
+  /** Netflowunit */
+  netFlowUnit: string;
 }
 
 /** Report6CalculationResultTimeSeriesItem */

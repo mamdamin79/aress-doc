@@ -1,9 +1,9 @@
 import { cn } from '../../../utils';
 import { Icon, IconProps } from '../Icon';
 
-interface BadgeProps {
-  theme: 'disabled' | 'green' | 'blue' | 'pruple' | 'yellow' | 'red';
-  icon: IconProps;
+export interface BadgeProps {
+  theme: 'disabled' | 'green' | 'blue' | 'purple' | 'yellow' | 'red';
+  icon?: IconProps;
   title: string;
 }
 
@@ -20,7 +20,7 @@ export function Badge({ title, theme, icon }: BadgeProps) {
           'border-border-accent-blue-200 text-text-onaccent-colored-onblue-on200_100_50 bg-surface-accent-blue-100':
             theme === 'blue',
           'border-border-accent-purple-200 text-text-onaccent-colored-onpurple-on200_100_50 bg-surface-accent-purple-100':
-            theme === 'pruple',
+            theme === 'purple',
           'border-border-accent-yellow-200 text-text-onaccent-colored-onyellow-on200_100_50 bg-surface-accent-yellow-100':
             theme === 'yellow',
           'border-border-accent-red-200 text-text-onaccent-colored-onred-on200_100_50 bg-surface-accent-red-100':
@@ -29,7 +29,7 @@ export function Badge({ title, theme, icon }: BadgeProps) {
       )}
     >
       {title}
-      <Icon {...icon} />
+      {icon && <Icon {...icon} />}
     </div>
   );
 }

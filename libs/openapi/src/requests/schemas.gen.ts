@@ -2252,6 +2252,10 @@ export const $Report13Dot1CalculationResult = {
     averageValue: {
       $ref: '#/components/schemas/Report13Dot1CalculationResultColumn',
     },
+    currencyUnit: {
+      type: 'string',
+      title: 'Currencyunit',
+    },
   },
   type: 'object',
   required: [
@@ -2260,6 +2264,7 @@ export const $Report13Dot1CalculationResult = {
     'maxValue',
     'minValue',
     'averageValue',
+    'currencyUnit',
   ],
   title: 'Report13Dot1CalculationResult',
 } as const;
@@ -2644,30 +2649,19 @@ export const $Report39CalculationResult = {
   properties: {
     data: {
       items: {
-        $ref: '#/components/schemas/Report39CalculationResultItem',
+        $ref: '#/components/schemas/Report39InstrumentsResultItem',
       },
       type: 'array',
       title: 'Data',
     },
-  },
-  type: 'object',
-  required: ['data'],
-  title: 'Report39CalculationResult',
-} as const;
-
-export const $Report39CalculationResultItem = {
-  properties: {
-    values: {
-      items: {
-        $ref: '#/components/schemas/Report39InstrumentsResultItem',
-      },
-      type: 'array',
-      title: 'Values',
+    unit: {
+      type: 'string',
+      title: 'Unit',
     },
   },
   type: 'object',
-  required: ['values'],
-  title: 'Report39CalculationResultItem',
+  required: ['data', 'unit'],
+  title: 'Report39CalculationResult',
 } as const;
 
 export const $Report39InstrumentsResultItem = {
@@ -2680,13 +2674,9 @@ export const $Report39InstrumentsResultItem = {
       type: 'number',
       title: 'Netflow',
     },
-    unit: {
-      type: 'string',
-      title: 'Unit',
-    },
   },
   type: 'object',
-  required: ['instrument', 'netFlow', 'unit'],
+  required: ['instrument', 'netFlow'],
   title: 'Report39InstrumentsResultItem',
 } as const;
 
@@ -2699,9 +2689,17 @@ export const $Report6CalculationResult = {
       type: 'array',
       title: 'Data',
     },
+    indexUnit: {
+      type: 'string',
+      title: 'Indexunit',
+    },
+    netFlowUnit: {
+      type: 'string',
+      title: 'Netflowunit',
+    },
   },
   type: 'object',
-  required: ['data'],
+  required: ['data', 'indexUnit', 'netFlowUnit'],
   title: 'Report6CalculationResult',
 } as const;
 
@@ -2716,7 +2714,7 @@ export const $Report6CalculationResultTimeSeriesItem = {
       title: 'Indexvalue',
     },
     netFlow: {
-      type: 'integer',
+      type: 'number',
       title: 'Netflow',
     },
   },

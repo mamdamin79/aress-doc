@@ -1,8 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-
 import { Dialog, Icon, platformMappings, PlatformName } from 'design-system';
-import Image from 'next/image';
 import { ShareReportPopupSkeleton } from './skeletons/ShareReportPopupSkeleton';
 
 export interface SharePopUpProps {
@@ -60,7 +58,7 @@ export const ShareReportPopUp: React.FC<SharePopUpProps> = ({
           )}
           {image && (
             <div className="flex w-full justify-center">
-              <Image alt="shared image" src={image} width={400} height={234} />
+              <img alt="shared image" src={image} width={400} height={234} />
             </div>
           )}
           <div className="flex w-full flex-col">
