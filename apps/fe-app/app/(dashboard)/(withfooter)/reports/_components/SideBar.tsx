@@ -2,7 +2,7 @@
 import { cn, Icon } from 'design-system';
 import { CategoryList } from './CategoryList';
 import { GetReportsCategoriesResponse, GetReportsResponse } from '@openapi';
-import { useHeaderVisibility } from '../../../../../hooks/useHeaderVisiblity';
+import { useHeaderVisibility } from '@shared';
 
 type Props = {
   categories: GetReportsCategoriesResponse;
@@ -20,8 +20,8 @@ export const SideBar: React.FC<Props> = ({ categories, reports, inModal }) => {
           'top-[107px]': isHeaderVisible,
         },
         {
-          "static w-full" : inModal 
-        }
+          'static w-full': inModal,
+        },
       )}
     >
       {!inModal && (
@@ -33,7 +33,11 @@ export const SideBar: React.FC<Props> = ({ categories, reports, inModal }) => {
         <Icon name="layers-2" size="lg" />
         <div className="text-lg font-medium">دسته‌بندی‌ها</div>
       </div>
-      <CategoryList inModal={inModal} reports={reports} categories={categories} />
+      <CategoryList
+        inModal={inModal}
+        reports={reports}
+        categories={categories}
+      />
     </div>
   );
 };

@@ -4687,6 +4687,10 @@
           },
           "averageValue": {
             "$ref": "#/components/schemas/Report13Dot1CalculationResultColumn"
+          },
+          "currencyUnit": {
+            "type": "string",
+            "title": "Currencyunit"
           }
         },
         "type": "object",
@@ -4695,7 +4699,8 @@
           "lastDayNormalized",
           "maxValue",
           "minValue",
-          "averageValue"
+          "averageValue",
+          "currencyUnit"
         ],
         "title": "Report13Dot1CalculationResult"
       },
@@ -5097,33 +5102,22 @@
         "properties": {
           "data": {
             "items": {
-              "$ref": "#/components/schemas/Report39CalculationResultItem"
-            },
-            "type": "array",
-            "title": "Data"
-          }
-        },
-        "type": "object",
-        "required": [
-          "data"
-        ],
-        "title": "Report39CalculationResult"
-      },
-      "Report39CalculationResultItem": {
-        "properties": {
-          "values": {
-            "items": {
               "$ref": "#/components/schemas/Report39InstrumentsResultItem"
             },
             "type": "array",
-            "title": "Values"
+            "title": "Data"
+          },
+          "unit": {
+            "type": "string",
+            "title": "Unit"
           }
         },
         "type": "object",
         "required": [
-          "values"
+          "data",
+          "unit"
         ],
-        "title": "Report39CalculationResultItem"
+        "title": "Report39CalculationResult"
       },
       "Report39InstrumentsResultItem": {
         "properties": {
@@ -5134,17 +5128,12 @@
           "netFlow": {
             "type": "number",
             "title": "Netflow"
-          },
-          "unit": {
-            "type": "string",
-            "title": "Unit"
           }
         },
         "type": "object",
         "required": [
           "instrument",
-          "netFlow",
-          "unit"
+          "netFlow"
         ],
         "title": "Report39InstrumentsResultItem"
       },
@@ -5156,11 +5145,21 @@
             },
             "type": "array",
             "title": "Data"
+          },
+          "indexUnit": {
+            "type": "string",
+            "title": "Indexunit"
+          },
+          "netFlowUnit": {
+            "type": "string",
+            "title": "Netflowunit"
           }
         },
         "type": "object",
         "required": [
-          "data"
+          "data",
+          "indexUnit",
+          "netFlowUnit"
         ],
         "title": "Report6CalculationResult"
       },
@@ -5175,7 +5174,7 @@
             "title": "Indexvalue"
           },
           "netFlow": {
-            "type": "integer",
+            "type": "number",
             "title": "Netflow"
           }
         },

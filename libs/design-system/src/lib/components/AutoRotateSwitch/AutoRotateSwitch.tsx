@@ -1,7 +1,7 @@
 'use client';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Icon } from '../Icon';
-import { cn } from 'libs/design-system/src/utils';
+import { cn } from '../../../utils/index';
 import { AutoRotateProps } from './AutoRotateSwitch.types';
 import { Tooltip } from '../Tooltip';
 

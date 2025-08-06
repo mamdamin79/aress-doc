@@ -1,7 +1,6 @@
 'use client';
 import { Button } from 'design-system';
 import { useEffect } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { FooterLite } from './(layout)';
 import { Header } from './(layout)/(header)';
@@ -27,20 +26,17 @@ export default function GlobalError({
         }}
       >
         <div className="absolute left-0 top-12 -z-10 max-h-[600px] min-h-[350px] w-full px-8 lg:min-h-[432px]">
-          <Image
+          <img
             alt="pattern"
             src="/Pattern1.svg"
-            fill
-            className="object-cover px-8"
+            className="h-full max-h-[450px] min-h-[250px] w-full object-cover px-8 lg:min-h-[350px]"
           />
         </div>
 
-        <Image
+        <img
           alt="500 error"
           src={'/500-Error.svg'}
-          width={400}
-          height={307}
-          className="z-10"
+          className="z-10 h-[307px] w-[435px]"
         />
 
         <div className="flex flex-col items-center justify-center gap-3">

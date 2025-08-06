@@ -9,10 +9,9 @@ type SortableAddReportButtonProps = {
   onClick: () => void;
 };
 
-export const SortableAddReportButton: React.FC<SortableAddReportButtonProps> = ({
-  slotId,
-  onClick,
-}) => {
+export const SortableAddReportButton: React.FC<
+  SortableAddReportButtonProps
+> = ({ slotId, onClick }) => {
   const {
     attributes,
     listeners,

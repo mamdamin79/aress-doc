@@ -39,6 +39,7 @@ const IconWithBadge = ({
   isDisabled = false,
   active = false,
 }: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   icon?: any;
   badgeColor?: string;
   isDisabled: boolean;
@@ -130,7 +131,6 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
   prefix = '',
   link,
   meta,
-  onClick,
 }) => {
   const wrapperClasses = `w-full min-w-[240px] max-w-[272px] flex items-center justify-between py-2 pr-3 transition-all 
     bg-surface-neutral-primary ${!isDisabled && 'hover:bg-surface-brand-100'}`;
@@ -146,6 +146,7 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
   const { openModal } = useMenuModal();
   const handleOnClick = () => {
     if (action === 'openModal' && meta?.modalName) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       openModal(meta?.modalName as any);
     }
   };

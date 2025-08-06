@@ -80,7 +80,7 @@ export const ModalProvider: FC<ModalProviderProps> = ({
         isOpen={modalName === 'changeDashboardName'}
         onClose={closeModal}
         onConfirm={async (data) => {
-        if (onActions?.changeDashboardName) {
+          if (onActions?.changeDashboardName) {
             await onActions.changeDashboardName(data);
           }
         }}

@@ -4,12 +4,10 @@ import HighchartsReact from 'highcharts-react-official';
 import { baseOptions } from '../Report.config.shared';
 import { financialDefinitions } from './Report15.constants';
 import { ReportCardBase } from 'design-system';
-import {
-  FinancialReportFilterApiModel,
-  Report15CalculationResult,
-} from '@openapi';
+import { Report15CalculationResult } from '@openapi';
 import { OptionItem } from 'design-system';
 import { toBasicSetting, toDropdownSetting } from '../Report.utils';
+import { ReportProps } from '../Report.types';
 
 interface InfoBoxProps {
   label: string;
@@ -23,19 +21,12 @@ const InfoBox: FC<InfoBoxProps> = ({ label, value }) => (
   </div>
 );
 
-export interface Report15Props {
-  title?: string;
-  data: Report15CalculationResult;
-  filters: FinancialReportFilterApiModel[];
-  onSubmit?: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
-  onRemove?: () => void;
-}
-
-export const Report15: FC<Report15Props> = ({
+export const Report15: FC<ReportProps<Report15CalculationResult>> = ({
   data,
   filters,
   onRemove,
   onSubmit,
+  onShare,
   title,
 }) => {
   const [filterState, setFilterState] = useState(filters);
@@ -239,6 +230,7 @@ export const Report15: FC<Report15Props> = ({
       popupInfoItems={financialDefinitions}
       onSubmit={handleSubmit}
       onRemove={onRemove}
+      onShare={onShare}
     >
       <div className="flex flex-col gap-1">
         <div className="text-text-neutral-primary flex items-center justify-start gap-6 px-3 pt-1 text-xs font-medium">

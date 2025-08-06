@@ -1,12 +1,9 @@
-"use client";
-import * as React from "react";
-import { useWindowScroll } from "@uidotdev/usehooks";
-import {
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+'use client';
+import * as React from 'react';
+import { useWindowScroll } from '@uidotdev/usehooks';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-const HEADER_KEY = ["isHeaderVisible"];
+const HEADER_KEY = ['isHeaderVisible'];
 
 export const useHeaderVisibility = () => {
   const queryClient = useQueryClient();
