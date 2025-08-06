@@ -64,6 +64,11 @@ export type Body_login_for_access_token_users_login_post = {
   client_secret?: string | null;
 };
 
+export type Body_request_new_report_reports_request_post = {
+  request_form: RequestReportForm;
+  file?: (Blob | File) | null;
+};
+
 export type Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post =
   {
     file: Blob | File;
@@ -218,6 +223,7 @@ export type DashboardItemReportApiModel = {
 
 export type DashboardItemScreenshotResponseApiModel = {
   queryId: string;
+  screenshotUrl: string;
 };
 
 export type DashboardListItemApiModel = {
@@ -247,6 +253,7 @@ export type FinancialReportCalculationApiModel = {
     | Report13Dot2CalculationResult
     | Report13Dot3CalculationResult
     | Report15CalculationResult
+    | Report36CalculationResult
     | Report39CalculationResult;
   filters: Array<FinancialReportFilterApiModel>;
 };
@@ -663,6 +670,20 @@ export type HealthApiModel = {
   status: string;
 };
 
+export type LogoutResponseApiModel = {
+  success: boolean;
+};
+
+export type MarkFundInTableTabBody = {
+  tab: number;
+  fund: number;
+  color: string;
+};
+
+export type MarkFundInTableTabResponseApiModel = {
+  success: boolean;
+};
+
 export type PinFundInTableTabBody = {
   tab: number;
   fund: number;
@@ -686,6 +707,7 @@ export type Report13Dot1CalculationResult = {
   maxValue: Report13Dot1CalculationResultColumn;
   minValue: Report13Dot1CalculationResultColumn;
   averageValue: Report13Dot1CalculationResultColumn;
+  currencyUnit: string;
 };
 
 export type Report13Dot1CalculationResultColumn = {
@@ -766,22 +788,35 @@ export type Report2CalculationResultItem = {
   netFlow: number;
 };
 
-export type Report39CalculationResult = {
-  data: Array<Report39CalculationResultItem>;
+export type Report36CalculationResult = {
+  buckets: Array<Report36CalculationResultBucket>;
+  positiveInstruments: number;
+  negativeInstruments: number;
+  bucketRangeUnit: string;
+  bucketCountUnit: string;
 };
 
-export type Report39CalculationResultItem = {
-  values: Array<Report39InstrumentsResultItem>;
+export type Report36CalculationResultBucket = {
+  bucketMin: number | null;
+  bucketMax: number | null;
+  displayBucketAverage: number;
+  bucketInstrumentsCount: number;
+};
+
+export type Report39CalculationResult = {
+  data: Array<Report39InstrumentsResultItem>;
+  unit: string;
 };
 
 export type Report39InstrumentsResultItem = {
   instrument: string;
   netFlow: number;
-  unit: string;
 };
 
 export type Report6CalculationResult = {
   data: Array<Report6CalculationResultTimeSeriesItem>;
+  indexUnit: string;
+  netFlowUnit: string;
 };
 
 export type Report6CalculationResultTimeSeriesItem = {
@@ -792,6 +827,18 @@ export type Report6CalculationResultTimeSeriesItem = {
 
 export type ReportScreenshotResponseApiModel = {
   queryId: string;
+  screenshotUrl: string;
+};
+
+export type RequestReportForm = {
+  title: string;
+  text: string;
+  call: string;
+};
+
+export type RequestReportResponseApiModel = {
+  requestFollowCode: number;
+  success: boolean;
 };
 
 export type ResetForgotPasswordByOtpResponseApiModel = {
@@ -801,6 +848,10 @@ export type ResetForgotPasswordByOtpResponseApiModel = {
 export type TokenApiModel = {
   access_token: string;
   token_type: string;
+};
+
+export type UnmarkFundInTableTabResponseApiModel = {
+  success: boolean;
 };
 
 export type UnpinFundInTableTabBody = {
@@ -1038,6 +1089,8 @@ export type PostUsersProfilePictureChangeData = {
 export type PostUsersProfilePictureChangeResponse =
   ChangeProfilePictureResponseApiModel;
 
+export type PostUsersLogoutResponse = LogoutResponseApiModel;
+
 export type GetReportsData = {
   onlyFavorite?: boolean | null;
   onlyHavingVideo?: boolean | null;
@@ -1048,6 +1101,12 @@ export type GetReportsResponse = Array<FinancialReportListItemApiModel>;
 
 export type GetReportsCategoriesResponse =
   Array<FinancialReportCategoryApiModel>;
+
+export type PostReportsRequestData = {
+  formData: Body_request_new_report_reports_request_post;
+};
+
+export type PostReportsRequestResponse = RequestReportResponseApiModel;
 
 export type GetReportsByReportIdData = {
   reportId: string;
@@ -1203,6 +1262,18 @@ export type PostFundsTableUnpinData = {
 };
 
 export type PostFundsTableUnpinResponse = UnpinFundInTableTabResponseApiModel;
+
+export type PostFundsTableMarkData = {
+  requestBody: MarkFundInTableTabBody;
+};
+
+export type PostFundsTableMarkResponse = MarkFundInTableTabResponseApiModel;
+
+export type PostFundsTableUnmarkData = {
+  requestBody: UnpinFundInTableTabBody;
+};
+
+export type PostFundsTableUnmarkResponse = UnmarkFundInTableTabResponseApiModel;
 
 export type $OpenApiTs = {
   '/health': {
@@ -1449,6 +1520,16 @@ export type $OpenApiTs = {
       };
     };
   };
+  '/users/logout': {
+    post: {
+      res: {
+        /**
+         * Successful Response
+         */
+        200: LogoutResponseApiModel;
+      };
+    };
+  };
   '/reports': {
     get: {
       req: GetReportsData;
@@ -1471,6 +1552,21 @@ export type $OpenApiTs = {
          * Successful Response
          */
         200: Array<FinancialReportCategoryApiModel>;
+      };
+    };
+  };
+  '/reports/request': {
+    post: {
+      req: PostReportsRequestData;
+      res: {
+        /**
+         * Successful Response
+         */
+        200: RequestReportResponseApiModel;
+        /**
+         * Validation Error
+         */
+        422: HTTPValidationError;
       };
     };
   };
@@ -1790,6 +1886,36 @@ export type $OpenApiTs = {
          * Successful Response
          */
         200: UnpinFundInTableTabResponseApiModel;
+        /**
+         * Validation Error
+         */
+        422: HTTPValidationError;
+      };
+    };
+  };
+  '/funds/table/mark': {
+    post: {
+      req: PostFundsTableMarkData;
+      res: {
+        /**
+         * Successful Response
+         */
+        200: MarkFundInTableTabResponseApiModel;
+        /**
+         * Validation Error
+         */
+        422: HTTPValidationError;
+      };
+    };
+  };
+  '/funds/table/unmark': {
+    post: {
+      req: PostFundsTableUnmarkData;
+      res: {
+        /**
+         * Successful Response
+         */
+        200: UnmarkFundInTableTabResponseApiModel;
         /**
          * Validation Error
          */

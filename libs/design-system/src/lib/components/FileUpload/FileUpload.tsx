@@ -55,7 +55,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   };
 
   return (
-    <>
+    <div className="flex">
       {file && (
         <button
           onClick={clearFile}
@@ -174,6 +174,6 @@ export const FileUpload: React.FC<FileUploadProps> = ({
           </div>
         </div>
       </FileUploader>
-    </>
+    </div>
   );
 };

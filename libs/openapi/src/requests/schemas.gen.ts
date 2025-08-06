@@ -201,6 +201,30 @@ export const $Body_login_for_access_token_users_login_post = {
   title: 'Body_login_for_access_token_users_login_post',
 } as const;
 
+export const $Body_request_new_report_reports_request_post = {
+  properties: {
+    request_form: {
+      $ref: '#/components/schemas/RequestReportForm',
+      title: 'Request Form',
+    },
+    file: {
+      anyOf: [
+        {
+          type: 'string',
+          format: 'binary',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'File',
+    },
+  },
+  type: 'object',
+  required: ['request_form'],
+  title: 'Body_request_new_report_reports_request_post',
+} as const;
+
 export const $Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post =
   {
     properties: {
@@ -801,9 +825,13 @@ export const $DashboardItemScreenshotResponseApiModel = {
       type: 'string',
       title: 'Queryid',
     },
+    screenshotUrl: {
+      type: 'string',
+      title: 'Screenshoturl',
+    },
   },
   type: 'object',
-  required: ['queryId'],
+  required: ['queryId', 'screenshotUrl'],
   title: 'DashboardItemScreenshotResponseApiModel',
 } as const;
 
@@ -882,6 +910,9 @@ export const $FinancialReportCalculationApiModel = {
         },
         {
           $ref: '#/components/schemas/Report15CalculationResult',
+        },
+        {
+          $ref: '#/components/schemas/Report36CalculationResult',
         },
         {
           $ref: '#/components/schemas/Report39CalculationResult',
@@ -2108,6 +2139,50 @@ export const $HealthApiModel = {
   title: 'HealthApiModel',
 } as const;
 
+export const $LogoutResponseApiModel = {
+  properties: {
+    success: {
+      type: 'boolean',
+      title: 'Success',
+    },
+  },
+  type: 'object',
+  required: ['success'],
+  title: 'LogoutResponseApiModel',
+} as const;
+
+export const $MarkFundInTableTabBody = {
+  properties: {
+    tab: {
+      type: 'integer',
+      title: 'Tab',
+    },
+    fund: {
+      type: 'integer',
+      title: 'Fund',
+    },
+    color: {
+      type: 'string',
+      title: 'Color',
+    },
+  },
+  type: 'object',
+  required: ['tab', 'fund', 'color'],
+  title: 'MarkFundInTableTabBody',
+} as const;
+
+export const $MarkFundInTableTabResponseApiModel = {
+  properties: {
+    success: {
+      type: 'boolean',
+      title: 'Success',
+    },
+  },
+  type: 'object',
+  required: ['success'],
+  title: 'MarkFundInTableTabResponseApiModel',
+} as const;
+
 export const $PinFundInTableTabBody = {
   properties: {
     tab: {
@@ -2177,6 +2252,10 @@ export const $Report13Dot1CalculationResult = {
     averageValue: {
       $ref: '#/components/schemas/Report13Dot1CalculationResultColumn',
     },
+    currencyUnit: {
+      type: 'string',
+      title: 'Currencyunit',
+    },
   },
   type: 'object',
   required: [
@@ -2185,6 +2264,7 @@ export const $Report13Dot1CalculationResult = {
     'maxValue',
     'minValue',
     'averageValue',
+    'currencyUnit',
   ],
   title: 'Report13Dot1CalculationResult',
 } as const;
@@ -2485,34 +2565,103 @@ export const $Report2CalculationResultItem = {
   title: 'Report2CalculationResultItem',
 } as const;
 
+export const $Report36CalculationResult = {
+  properties: {
+    buckets: {
+      items: {
+        $ref: '#/components/schemas/Report36CalculationResultBucket',
+      },
+      type: 'array',
+      title: 'Buckets',
+    },
+    positiveInstruments: {
+      type: 'integer',
+      title: 'Positiveinstruments',
+    },
+    negativeInstruments: {
+      type: 'integer',
+      title: 'Negativeinstruments',
+    },
+    bucketRangeUnit: {
+      type: 'string',
+      title: 'Bucketrangeunit',
+    },
+    bucketCountUnit: {
+      type: 'string',
+      title: 'Bucketcountunit',
+    },
+  },
+  type: 'object',
+  required: [
+    'buckets',
+    'positiveInstruments',
+    'negativeInstruments',
+    'bucketRangeUnit',
+    'bucketCountUnit',
+  ],
+  title: 'Report36CalculationResult',
+} as const;
+
+export const $Report36CalculationResultBucket = {
+  properties: {
+    bucketMin: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Bucketmin',
+    },
+    bucketMax: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Bucketmax',
+    },
+    displayBucketAverage: {
+      type: 'number',
+      title: 'Displaybucketaverage',
+    },
+    bucketInstrumentsCount: {
+      type: 'integer',
+      title: 'Bucketinstrumentscount',
+    },
+  },
+  type: 'object',
+  required: [
+    'bucketMin',
+    'bucketMax',
+    'displayBucketAverage',
+    'bucketInstrumentsCount',
+  ],
+  title: 'Report36CalculationResultBucket',
+} as const;
+
 export const $Report39CalculationResult = {
   properties: {
     data: {
       items: {
-        $ref: '#/components/schemas/Report39CalculationResultItem',
+        $ref: '#/components/schemas/Report39InstrumentsResultItem',
       },
       type: 'array',
       title: 'Data',
     },
-  },
-  type: 'object',
-  required: ['data'],
-  title: 'Report39CalculationResult',
-} as const;
-
-export const $Report39CalculationResultItem = {
-  properties: {
-    values: {
-      items: {
-        $ref: '#/components/schemas/Report39InstrumentsResultItem',
-      },
-      type: 'array',
-      title: 'Values',
+    unit: {
+      type: 'string',
+      title: 'Unit',
     },
   },
   type: 'object',
-  required: ['values'],
-  title: 'Report39CalculationResultItem',
+  required: ['data', 'unit'],
+  title: 'Report39CalculationResult',
 } as const;
 
 export const $Report39InstrumentsResultItem = {
@@ -2525,13 +2674,9 @@ export const $Report39InstrumentsResultItem = {
       type: 'number',
       title: 'Netflow',
     },
-    unit: {
-      type: 'string',
-      title: 'Unit',
-    },
   },
   type: 'object',
-  required: ['instrument', 'netFlow', 'unit'],
+  required: ['instrument', 'netFlow'],
   title: 'Report39InstrumentsResultItem',
 } as const;
 
@@ -2544,9 +2689,17 @@ export const $Report6CalculationResult = {
       type: 'array',
       title: 'Data',
     },
+    indexUnit: {
+      type: 'string',
+      title: 'Indexunit',
+    },
+    netFlowUnit: {
+      type: 'string',
+      title: 'Netflowunit',
+    },
   },
   type: 'object',
-  required: ['data'],
+  required: ['data', 'indexUnit', 'netFlowUnit'],
   title: 'Report6CalculationResult',
 } as const;
 
@@ -2561,7 +2714,7 @@ export const $Report6CalculationResultTimeSeriesItem = {
       title: 'Indexvalue',
     },
     netFlow: {
-      type: 'integer',
+      type: 'number',
       title: 'Netflow',
     },
   },
@@ -2576,10 +2729,50 @@ export const $ReportScreenshotResponseApiModel = {
       type: 'string',
       title: 'Queryid',
     },
+    screenshotUrl: {
+      type: 'string',
+      title: 'Screenshoturl',
+    },
   },
   type: 'object',
-  required: ['queryId'],
+  required: ['queryId', 'screenshotUrl'],
   title: 'ReportScreenshotResponseApiModel',
+} as const;
+
+export const $RequestReportForm = {
+  properties: {
+    title: {
+      type: 'string',
+      title: 'Title',
+    },
+    text: {
+      type: 'string',
+      title: 'Text',
+    },
+    call: {
+      type: 'string',
+      title: 'Call',
+    },
+  },
+  type: 'object',
+  required: ['title', 'text', 'call'],
+  title: 'RequestReportForm',
+} as const;
+
+export const $RequestReportResponseApiModel = {
+  properties: {
+    requestFollowCode: {
+      type: 'integer',
+      title: 'Requestfollowcode',
+    },
+    success: {
+      type: 'boolean',
+      title: 'Success',
+    },
+  },
+  type: 'object',
+  required: ['requestFollowCode', 'success'],
+  title: 'RequestReportResponseApiModel',
 } as const;
 
 export const $ResetForgotPasswordByOtpResponseApiModel = {
@@ -2608,6 +2801,18 @@ export const $TokenApiModel = {
   type: 'object',
   required: ['access_token', 'token_type'],
   title: 'TokenApiModel',
+} as const;
+
+export const $UnmarkFundInTableTabResponseApiModel = {
+  properties: {
+    success: {
+      type: 'boolean',
+      title: 'Success',
+    },
+  },
+  type: 'object',
+  required: ['success'],
+  title: 'UnmarkFundInTableTabResponseApiModel',
 } as const;
 
 export const $UnpinFundInTableTabBody = {

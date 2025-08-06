@@ -9,12 +9,7 @@ interface Props {
   type: 'start' | 'end';
 }
 
-export function MonthSelect({
-  months,
-  calendar,
-  type,
-  setCurrentDate,
-}: Props) {
+export function MonthSelect({ months, calendar, type, setCurrentDate }: Props) {
   return (
     <OptionsDropdown
       initialSelectedIndex={+calendar.slice(5, 7) - 1}
@@ -33,15 +28,20 @@ export function MonthSelect({
           {text}
         </div>
       )}
-      customTriggerRender={({isActive}) => (
-        <div className={cn("flex h-10 w-[100px] items-center border-2 border-white justify-between rounded-md bg-white px-2 text-sm font-semibold", {
-          'border-[#0C9292]': isActive
-        })}>
+      customTriggerRender={({ isActive }) => (
+        <div
+          className={cn(
+            'flex h-10 w-[100px] items-center justify-between rounded-md border-2 border-white bg-white px-2 text-sm font-semibold',
+            {
+              'border-[#0C9292]': isActive,
+            },
+          )}
+        >
           {months[parseInt(calendar.slice(5, 7), 10) - 1]}
           <Icon name="chevron-down" size="md" />
         </div>
       )}
-      onChange={(_, id) => {        
+      onChange={(_, id) => {
         setCurrentDate(
           `${calendar.slice(0, 4)}-${
             id && id < 10 ? `0${id}` : id
