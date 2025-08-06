@@ -72,11 +72,6 @@ const ProfilePage = () => {
                     icon: { name: 'user' },
                   },
                   {
-                    key: 'dashboard',
-                    text: 'داشبورد',
-                    icon: { name: 'layout-dashboard' },
-                  },
-                  {
                     key: 'logout',
                     text: 'خروج',
                     icon: { name: 'power' },
