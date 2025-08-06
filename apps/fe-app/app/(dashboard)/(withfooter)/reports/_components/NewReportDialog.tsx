@@ -11,6 +11,7 @@ import {
   Dialog,
   Tooltip,
   IconDialog,
+  useCustomToast,
 } from 'design-system';
 import { useHtmlPaddingRight } from '@shared';
 import {
@@ -31,6 +32,7 @@ export const NewReportDialog = () => {
   const [file, setFile] = useState<File | null>(null);
   const htmlPaddingRight = useHtmlPaddingRight();
   const reportMutation = useReportsServicePostReportsRequest();
+  const { showToast } = useCustomToast();
 
   const {
     control,
@@ -70,7 +72,11 @@ export const NewReportDialog = () => {
       setFile(null);
       closeDialog();
     } catch (error) {
-      console.error('خطا در ارسال گزارش:', error);
+      console.error('Error submitting report request:', error);
+      showToast({
+        message: 'خطا در ارسال گزارش',
+        type: 'error',
+      });
     } finally {
       setIsSubmitting(false);
     }
