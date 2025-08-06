@@ -1,5 +1,5 @@
 import colors from './tailwindColors';
-import defaultTheme from './defaultTheme';
+import defaultTheme from 'tailwindcss/defaultTheme';
 module.exports = {
   theme: {
     extend: {

@@ -183,9 +183,9 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
           <OTPForm
             onSubmit={handleOtpSubmit}
             onResendCode={handleResendOtp}
-            backBtnLabel="ویرایش شماره"
+            backBtnLabel="ویرایش رمز عبور"
             title="بازنشانی رمز عبور"
-            onBackBtn={() => setActiveIndex(0)}
+            onBackBtn={() => setActiveIndex(1)}
             isLoading={isPendingSendForgotReset}
             description={`جهت تغییر رمز عبور، ابتدا کد تایید ارسال شده به شماره ${enteredPhoneNumber} را وارد کنید.`}
           />
