@@ -112,7 +112,11 @@ export const NewReportDialog = () => {
           <Controller
             name="title"
             control={control}
-            rules={{ required: 'عنوان گزارش الزامی است.' }}
+            rules={{
+              required: 'عنوان گزارش الزامی است.',
+              validate: (value) =>
+                value.trim().length > 0 || 'عنوان نباید فقط شامل فاصله باشد.',
+            }}
             render={({ field, fieldState }) => (
               <TextField
                 label="عنوان گزارش"
@@ -127,10 +131,16 @@ export const NewReportDialog = () => {
               />
             )}
           />
+
           <Controller
             name="description"
             control={control}
-            rules={{ required: 'شرح گزارش الزامی است.' }}
+            rules={{
+              required: 'شرح گزارش الزامی است.',
+              validate: (value) =>
+                value.trim().length > 0 ||
+                'شرح گزارش نباید فقط شامل فاصله باشد.',
+            }}
             render={({ field, fieldState }) => (
               <TextField
                 label="شرح گزارش"
@@ -146,6 +156,7 @@ export const NewReportDialog = () => {
               />
             )}
           />
+
           <div className="mb-6">
             <h3 className="mb-2 text-sm font-medium">
               پیوست فایل اکسل فرآیند طراحی نمودار را تسهیل می‌کند. (اختیاری)
