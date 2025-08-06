@@ -12,5 +12,6 @@ type Story = StoryObj<typeof FundsLogo>;
 export const Default: Story = {
   args: {
     size: 'md', // Default size
+    hasTag: true, // Example prop to show badge
   },
 };

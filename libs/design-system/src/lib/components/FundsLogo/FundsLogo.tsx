@@ -5,10 +5,12 @@ import { FundsTag } from '../FundsTag';
 interface FundsLogoProps {
   // Define any props if needed
   size?: 'sm' | 'md' | 'lg'; // Example prop for size
+  hasTag?: boolean; // Example prop to conditionally render a badge
 }
 
 export const FundsLogo: React.FC<FundsLogoProps> = ({
   size = 'md', // Default size
+  hasTag = true, // Default to showing badge
 }) => {
   // You can use the size prop to conditionally apply styles or classes
   const sizeClasses = {
@@ -26,9 +28,11 @@ export const FundsLogo: React.FC<FundsLogoProps> = ({
         alt="Fund Logo"
         className={`rounded-full ${sizeClasses[size]}`}
       />
-      <div className="absolute bottom-0 right-0">
-        <FundsTag size={size === 'sm' ? 'md' : size} color="green" />
-      </div>
+      {hasTag && (
+        <div className="absolute bottom-0 right-0">
+          <FundsTag color="green" size={size === 'lg' ? 'lg' : 'md'} />
+        </div>
+      )}
     </div>
   );
 };
