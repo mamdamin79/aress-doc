@@ -19,7 +19,6 @@ export const withPic: Story = {
 export const withoutPic: Story = {
   args: {
     activeSection: 'profile',
-
     title: 'علی محمدی',
     subTitle: '09179151234',
   },

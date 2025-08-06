@@ -4,7 +4,6 @@ import { Icon } from '../Icon';
 import { FileUploader } from 'react-drag-drop-files';
 import { FileUploadErrorType } from '../FileUpload/FileUpload.constants';
 import { ReactComponent as USER_SVG } from '../../../assets/icons/profile vector-large.svg';
-import Image from 'next/image';
 import { cn } from '../../../utils';
 
 type FileUploadProps = {
@@ -58,7 +57,7 @@ export const ProfileImageAndUpload: React.FC<FileUploadProps> = ({
           <div className="flex h-full w-full items-end justify-center overflow-hidden rounded-full">
             <div className={cn('object-cover', `h-[120px] w-[120px]`)}>
               {image ? (
-                <Image
+                <img
                   alt="profile image"
                   src={image}
                   width={imageDimension}

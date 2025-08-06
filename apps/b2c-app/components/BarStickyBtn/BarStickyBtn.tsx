@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { cn, Icon, Button } from 'design-system';
-import Image from 'next/image';
 
 export interface BarStickyBtnProps {
   fundLogo?: string;
@@ -21,7 +20,7 @@ export const BarStickyBtn: React.FC<BarStickyBtnProps> = ({
         <div className="flex flex-row items-center gap-2">
           <div className="bg-surface-neutral-secondary h-[38px] w-[38px] rounded-full">
             {fundLogo && (
-              <Image
+              <img
                 alt={title ?? 'fund logo'}
                 src={fundLogo}
                 width={38}
