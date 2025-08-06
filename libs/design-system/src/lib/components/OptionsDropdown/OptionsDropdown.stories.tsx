@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { OptionsDropdown } from './OptionsDropdown';
 const meta: Meta<typeof OptionsDropdown> = {
   component: OptionsDropdown,

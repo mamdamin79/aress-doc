@@ -1,5 +1,5 @@
 'use client';
-import { cn } from 'libs/design-system/src/utils';
+import { cn } from '../../../utils';
 import React, { JSXElementConstructor, ReactElement, useState } from 'react';
 import { Icon } from '../Icon';
 import { Tooltip } from '../Tooltip';
@@ -22,6 +22,7 @@ export const DualSwitch: React.FC<DualSwitchProps> = ({
 
   const Wrapper: React.FC<{
     item: DualSwitchItem;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     children: ReactElement<any, string | JSXElementConstructor<any>>;
   }> = ({ item, children }) => {
     return item.tooltip ? (
@@ -35,7 +36,9 @@ export const DualSwitch: React.FC<DualSwitchProps> = ({
     <div
       className={cn(
         'shadow-xs flex h-fit w-fit flex-row gap-1 rounded-[100px] p-1 text-xs',
-        bgWhite ? 'bg-surface-neutral-primary' : 'bg-surface-neutral-secondary transition-colors',
+        bgWhite
+          ? 'bg-surface-neutral-primary'
+          : 'bg-surface-neutral-secondary transition-colors',
         size === 'lg'
           ? disabled
             ? 'border-border-brand-disable-300 border'
@@ -51,11 +54,11 @@ export const DualSwitch: React.FC<DualSwitchProps> = ({
             role="radio"
             aria-checked={activeItemIndex === index}
             className={cn(
-              'rounded-full bg-surface-neutral-primary p-[5px]',
+              'bg-surface-neutral-primary rounded-full p-[5px]',
               disabled
                 ? activeItemIndex === index
-                  ? 'bg-surface-brand-300-disable cursor-default text-icon-neutral-oncoloreddisable'
-                  : 'cursor-default text-icon-neutral-disable'
+                  ? 'bg-surface-brand-300-disable text-icon-neutral-oncoloreddisable cursor-default'
+                  : 'text-icon-neutral-disable cursor-default'
                 : activeItemIndex === index
                   ? 'bg-surface-brand-600-primary text-icon-onbrand-neutral-on600 transition-colors'
                   : '',

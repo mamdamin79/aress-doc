@@ -5,13 +5,13 @@ import {
   ResetPasswordForm,
 } from '../../../components';
 import { Toaster } from 'react-hot-toast';
-import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
+import { useCustomToast } from 'design-system';
 import {
   ApiError,
   useUsersServicePostUsersPasswordForgotOtp,
   useUsersServicePostUsersPasswordForgotReset,
 } from '@openapi';
-import { ResetPasswordFormValues } from 'apps/fe-app/app/components/ResetPasswordForm/ResetPasswordForm.types';
+import { ResetPasswordFormValues } from '../../../components/ResetPasswordForm/ResetPasswordForm.types';
 
 interface FormWrapperProps {
   activeIndex: number;
@@ -103,7 +103,7 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
         },
       },
       {
-        onSuccess: (data) => {
+        onSuccess: () => {
           showToast({
             message: 'کد تأیید مجدداً ارسال شد.',
             type: 'success',

@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { ProfileSidebar } from './ProfileSidebar';
 const meta: Meta<typeof ProfileSidebar> = {
   component: ProfileSidebar,
@@ -19,7 +19,6 @@ export const withPic: Story = {
 export const withoutPic: Story = {
   args: {
     activeSection: 'profile',
-
     title: 'علی محمدی',
     subTitle: '09179151234',
   },

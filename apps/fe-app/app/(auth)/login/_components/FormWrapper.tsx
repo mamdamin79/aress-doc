@@ -3,13 +3,13 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { LoginForm } from '../../../components';
 import { LoginFormValues } from '../../../components/LoginForm/LoginForm.types';
-import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
+import { useCustomToast } from 'design-system';
 import { Toaster } from 'react-hot-toast';
 
 export const FormWrapper = () => {
   const { showToast } = useCustomToast();
   const router = useRouter();
-  const refetchCaptchaRef = React.useRef<() => void>();
+  const refetchCaptchaRef = React.useRef<() => void>(undefined);
 
   const handleLogin = async (values: LoginFormValues) => {
     try {
@@ -45,6 +45,7 @@ export const FormWrapper = () => {
           refetchCaptchaRef.current();
         }
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       showToast({
         message: error?.message || 'خطا در ورود. لطفاً اطلاعات را بررسی کنید.',

@@ -2,15 +2,10 @@
 import { useForm, Controller } from 'react-hook-form';
 import { Button, Checkbox, TextField } from 'design-system';
 import Link from 'next/link';
-import {
-  validateNationalCode,
-  validatePhoneNumber,
-  validateUsername,
-} from './LoginForm.utils';
+import { validateUsername } from './LoginForm.utils';
 import { LoginFormValues } from './LoginForm.types';
 import { useUsersServiceGetUsersLoginCaptcha } from '@openapi';
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 export interface LoginFormProps {
   onSubmit: (values: LoginFormValues) => void;
   setRefetchCaptcha?: (fn: () => void) => void;
@@ -35,8 +30,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     },
   });
 
-  
-
   // Fetch captcha
   const {
     data: captchaData,
@@ -49,13 +42,12 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     if (setRefetchCaptcha) {
       setRefetchCaptcha(refetchCaptcha);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refetchCaptcha]);
 
   // Set captchaUid in form when captchaData changes
   useEffect(() => {
     if (captchaData?.uid !== undefined) {
-      setValue('captchaUid', captchaData.uid);
+      setValue('captchaUid', captchaData.uid ?? 0);
       setValue('captcha', ''); // clear captcha input on new captcha
     }
   }, [captchaData, setValue]);
@@ -143,7 +135,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
                   placeholder="کد را وارد کنید"
                   isError={!!fieldState.error}
                   supportText={fieldState.error?.message || ' '}
-                  captchaValue={captchaData.value}
+                  captchaValue={captchaData.value ?? undefined}
                   onRefreshCaptcha={refetchCaptcha}
                   trailingIcons={[]}
                   {...field}

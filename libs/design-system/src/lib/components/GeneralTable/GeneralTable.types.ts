@@ -15,6 +15,8 @@ export interface Column<T = unknown> {
   header: string;
   headerDivider?: 'left' | 'right' | 'both';
   render?: (props: RenderCellProps<T>) => React.ReactNode;
+  rowHeaderClassName?: string;
+  headerClassName?: string;
 }
 
 export type Separator = { type: 'separator'; label?: string };
@@ -29,11 +31,13 @@ export interface TableProps<T> {
   tableDataStyleClasses?: string;
   border?: boolean;
   striped?: boolean;
+  theadClassName?: string;
 }
 
 export interface TableRow {
   name: string;
   format?: TableCellFormat;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
 

@@ -2,6 +2,8 @@ import { Button, TextField } from 'design-system';
 import React, { useState } from 'react';
 import { InputPasswordForm } from '../ChangeNumber';
 import { Controller, useForm } from 'react-hook-form';
+import { useUsersServicePostUsersProfileUsernameChange } from '@openapi';
+import { queryClient } from '../../../lib/react-query';
 const SectionHeader = ({ title }: { title: string }) => (
   <span className="text-md text-text-neutral-primary text-center font-medium">
     {title}
@@ -13,22 +15,48 @@ interface NewUsernameFormValues {
 const NewUsernameForm = ({
   username,
   onSubmit,
+  passwordVerificationToken,
 }: {
   username?: string;
   onSubmit?: () => void;
+  passwordVerificationToken: string;
 }) => {
   const {
     control,
     handleSubmit,
+    setError,
     formState: { isSubmitting },
   } = useForm<NewUsernameFormValues>({
     defaultValues: {
       username: '',
     },
   });
+  const { mutate, isPending } = useUsersServicePostUsersProfileUsernameChange();
 
   const onSaveData = async (data: NewUsernameFormValues) => {
-    await new Promise((r) => setTimeout(r, 2000));
+    mutate(
+      {
+        requestBody: {
+          newUsername: data.username,
+          passwordVerificationToken: passwordVerificationToken,
+        },
+      },
+      {
+        onSuccess: () => {
+          onSubmit?.();
+          queryClient.invalidateQueries({
+            queryKey: ['UsersServiceGetUsersMe'],
+          });
+        },
+        onError: () => {
+          setError('username', {
+            type: 'manual',
+            message:
+              'این نام کاربری قبلا انتخاب شده است. لطفا یک نام دیگر وارد کنید.',
+          });
+        },
+      },
+    );
     onSubmit?.();
   };
   return (
@@ -45,7 +73,7 @@ const NewUsernameForm = ({
       <span className="mt-4 text-sm">
         <span className="text-text-neutral-primary font-medium">
           نام کاربری فعلی:{' '}
-        </span>{' '}
+        </span>
         {username}
       </span>
       <Controller
@@ -56,6 +84,11 @@ const NewUsernameForm = ({
             value: true,
             message: 'این فیلد اجباری است.',
           },
+          pattern: {
+            value: /^[A-Za-z0-9_.]+$/,
+            message:
+              'نام‌کاربری باید فقط شامل حروف انگلیسی، اعداد و کاراکترهای (_) و (.) باشد و فاصله نداشته باشد.',
+          },
         }}
         render={({ field, fieldState }) => (
           <TextField
@@ -65,7 +98,7 @@ const NewUsernameForm = ({
             label="نام کاربری جدید"
             placeholder="نام کاربری جدید را وارد کنید..."
             isError={!!fieldState.error}
-            supportText={fieldState.error?.message}
+            supportText={fieldState.error?.message || ' '}
             trailingIcons={[]}
             {...field}
           />
@@ -74,7 +107,7 @@ const NewUsernameForm = ({
       <Button
         align="center"
         mode="primary"
-        isLoading={isSubmitting}
+        isLoading={isSubmitting || isPending}
         size="md"
         type="submit"
       >
@@ -91,8 +124,11 @@ enum ChangeUsernameStage {
 }
 export const ChangeUsername: React.FC<{
   onClose?: (success?: boolean) => void;
-}> = ({ onClose }) => {
+  username?: string;
+}> = ({ onClose, username }) => {
   const [stage, setStage] = useState<ChangeUsernameStage | null>(0);
+  const [passwordVerificationToken, setPasswordVerificationToken] =
+    useState('');
 
   return (
     <>
@@ -100,11 +136,18 @@ export const ChangeUsername: React.FC<{
         <InputPasswordForm
           title="نام کاربری جدید"
           subTitle="جهت تغییر نام کاربری، ابتدا رمز فعلی خود را وارد کنید."
-          onSubmit={() => setStage(ChangeUsernameStage.NEW_USERNAME)}
+          onSubmit={(passwordToken) => {
+            setStage(ChangeUsernameStage.NEW_USERNAME);
+            setPasswordVerificationToken(passwordToken);
+          }}
         />
       )}
       {stage === ChangeUsernameStage.NEW_USERNAME && (
-        <NewUsernameForm username="sinapir" onSubmit={() => onClose?.(true)} />
+        <NewUsernameForm
+          onSubmit={() => onClose?.(true)}
+          passwordVerificationToken={passwordVerificationToken}
+          username={username}
+        />
       )}
     </>
   );

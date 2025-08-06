@@ -12,7 +12,7 @@ import {
   Tooltip,
   IconDialog,
 } from 'design-system';
-import { useHtmlPaddingRight } from '../../../../../hooks';
+import { useHtmlPaddingRight } from '@shared';
 
 export const NewReportDialog = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +23,7 @@ export const NewReportDialog = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { isValid },
     reset,
   } = useForm({
     mode: 'onChange',
@@ -32,7 +32,7 @@ export const NewReportDialog = () => {
   const openDialog = () => setIsOpen(true);
   const closeDialog = () => setIsOpen(false);
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async () => {
     setIsSubmitting(true);
     await new Promise((r) => setTimeout(r, 2000)); // Simulate API call
     setIsSubmitting(false);

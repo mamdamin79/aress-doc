@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { LikeDislike } from './LikeDislike';
 import { LikeDislikeProps } from './LikeDislike.types';
 const meta: Meta<typeof LikeDislike> = {

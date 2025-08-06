@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 
 import { InfoPopover } from './InfoPopover';
 
@@ -18,10 +18,6 @@ export const Default: Story = {
     title: 'upload',
     message:
       'پردازش آرسس اطلاعات مالی را از منابع مختلف جمع‌آوری کرده و آن‌ها را به‌صورت یک فهرست کاربردی به شما نشان می‌دهد. پیشنهادات جستجو بر اساس شباهت با متنی که وارد کرده‌اید و تعداد دفعات جستجوی آن توسط سایر کاربران پردازش آرسس نمایش داده می‌شود. متونی که بیشترین شباهت را به عبارت شما دارند، در اولویت قرار می‌گیرند.',
-    button: (
-      <button className="bg-brand-300 rounded-md p-2 text-gray-900">
-        پیشنهادات
-      </button>
-    ),
+    button: <button className="bg-brand-300 rounded-md p-2">پیشنهادات</button>,
   },
 };

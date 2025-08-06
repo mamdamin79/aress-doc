@@ -1,7 +1,7 @@
 import React from 'react';
 import { NumberCellProps } from './CellProps';
 import { FourlevelIndicator } from './FourlevelIndicator';
-import { cn } from 'libs/design-system/src/utils';
+import { cn } from '../../../../utils';
 
 export const Cell: React.FC<NumberCellProps> = ({
   value,

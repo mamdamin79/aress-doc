@@ -6,46 +6,46 @@ export const MarkdownRender = ({ markdown }: { markdown: string }) => {
     <Markdown
       components={{
         // Custom renderer for the ul element
-        ul: ({ node, ...props }) => (
+        ul: ({ ...props }) => (
           <ul
             className="rtl marker:text-surface-brand-600-primary list-disc text-right marker:text-3xl"
             {...props}
           />
         ),
         // Custom renderer for h1 (titles)
-        h1: ({ node, ...props }) => (
+        h1: ({ ...props }) => (
           <div className="before:bg-surface-brand-600-primary relative pr-4 before:absolute before:bottom-3.5 before:right-0 before:h-2 before:w-2 before:rounded-full before:content-['']">
             <h1 className="pt-10 text-right text-xl font-medium" {...props} />
           </div>
         ),
         // Custom renderer for h2 (subtitles)
 
-        h2: ({ node, ...props }) => (
+        h2: ({ ...props }) => (
           <h2 className="text-right text-lg font-medium" {...props} />
         ),
         // Custom renderer for paragraphs
-        p: ({ node, ...props }) => (
+        p: ({ ...props }) => (
           <p
             className="text-md text-text-neutral-secondary mt-4 text-right font-normal leading-relaxed"
             {...props}
           />
         ),
         // ** strong **
-        strong: ({ node, ...props }) => (
+        strong: ({ ...props }) => (
           <strong
             className="text-text-neutral-primary text-lg font-medium"
             {...props}
           />
         ),
         // Custom renderer for ordered lists
-        ol: ({ node, ...props }) => (
+        ol: ({ ...props }) => (
           <ol
             className="list-decimal pr-2.5 text-right text-lg font-medium leading-relaxed"
             {...props}
           />
         ),
         // Custom renderer for list items
-        li: ({ node, ...props }) => <li className="text-right" {...props} />,
+        li: ({ ...props }) => <li className="text-right" {...props} />,
       }}
     >
       {markdown}

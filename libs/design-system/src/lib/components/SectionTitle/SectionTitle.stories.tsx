@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { SectionTitle } from './SectionTitle';
 const meta: Meta<typeof SectionTitle> = {
   component: SectionTitle,

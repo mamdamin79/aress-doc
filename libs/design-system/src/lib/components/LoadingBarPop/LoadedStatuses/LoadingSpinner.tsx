@@ -3,8 +3,8 @@ import { useEffect, useState, useRef } from 'react';
 
 export const LoadingSpinner = ({ duration }: { duration: number }) => {
   const [progress, setProgress] = useState(0);
-  const requestRef = useRef<number>();
-  const startTimeRef = useRef<number>();
+  const requestRef = useRef<number>(0);
+  const startTimeRef = useRef<number>(0);
 
   useEffect(() => {
     const totalSteps = 100;

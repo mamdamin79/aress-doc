@@ -1,22 +1,39 @@
-import { Button, TextField } from 'design-system';
+// imports
 import React, { useState } from 'react';
+import { Button, Icon, TextField } from 'design-system';
 import { Controller, useForm } from 'react-hook-form';
 import { OTPForm } from '../../OTPForm';
+import {
+  useUsersServicePostUsersProfilePasswordValidate,
+  useUsersServicePostUsersProfilePhoneChange,
+  useUsersServicePostUsersProfilePhoneChangeOtp,
+} from '@openapi';
+import { queryClient } from '../../../lib/react-query';
+import { useCustomToast } from 'design-system';
+
+const genericErrorText = 'خطایی رخ داد.';
 
 const SectionHeader = ({ title }: { title: string }) => (
   <span className="text-md text-text-neutral-primary text-center font-medium">
     {title}
   </span>
 );
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const extractErrorMessage = (error: any) =>
+  error?.body?.message || error?.message || genericErrorText;
+
+// Input Password Form
 interface InputPasswordFormValues {
   password: string;
 }
+
 export const InputPasswordForm = ({
   onSubmit,
   title,
   subTitle,
 }: {
-  onSubmit?: () => void;
+  onSubmit?: (token: string) => void;
   title?: string;
   subTitle?: string;
 }) => {
@@ -24,16 +41,26 @@ export const InputPasswordForm = ({
     control,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm<InputPasswordFormValues>({
-    defaultValues: {
-      password: '',
-    },
-  });
+    setError,
+  } = useForm<InputPasswordFormValues>({ defaultValues: { password: '' } });
+
+  const { mutate, isPending } =
+    useUsersServicePostUsersProfilePasswordValidate();
 
   const onSaveData = async (data: InputPasswordFormValues) => {
-    await new Promise((r) => setTimeout(r, 2000));
-    onSubmit?.();
+    mutate(
+      { requestBody: { password: data.password } },
+      {
+        onSuccess: (res) => onSubmit?.(res.passwordVerificationToken),
+        onError: (error) =>
+          setError('password', {
+            type: 'manual',
+            message: extractErrorMessage(error),
+          }),
+      },
+    );
   };
+
   return (
     <form
       dir="rtl"
@@ -45,22 +72,20 @@ export const InputPasswordForm = ({
       <Controller
         name="password"
         control={control}
-        rules={{
-          required: 'این فیلد اجباری است.',
-        }}
+        rules={{ required: 'این فیلد اجباری است.' }}
         render={({ field, fieldState }) => (
           <TextField
-            mergeTitleAndPlaceholder={false}
-            mode="outline"
             type="password"
+            mode="outline"
+            label="رمز عبور"
+            placeholder="رمز عبور فعلی خود را وارد کنید..."
+            isError={!!fieldState.error}
+            supportText={fieldState.error?.message || ' '}
+            mergeTitleAndPlaceholder={false}
             trailingIcons={[
               { name: 'x', size: 'lg' },
               { name: 'eye', size: 'lg' },
             ]}
-            label="رمز عبور"
-            placeholder="رمز عبور فعلی خود را وارد کنید..."
-            isError={!!fieldState.error}
-            supportText={fieldState.error?.message}
             {...field}
           />
         )}
@@ -68,7 +93,7 @@ export const InputPasswordForm = ({
       <Button
         align="center"
         mode="primary"
-        isLoading={isSubmitting}
+        isLoading={isSubmitting || isPending}
         size="md"
         type="submit"
       >
@@ -78,77 +103,85 @@ export const InputPasswordForm = ({
   );
 };
 
+// New Number Form
 interface NewNumberFormValues {
   phoneNumber: string;
 }
+
 const NewNumber = ({
-  phone,
   onSubmit,
   title,
+  passwordVerificationToken,
 }: {
-  phone?: string;
-  onSubmit?: (phoneNumber: NewNumberFormValues) => void;
+  onSubmit?: (data: NewNumberFormValues) => void;
   title?: string;
+  passwordVerificationToken: string;
 }) => {
   const {
     control,
     handleSubmit,
+    setError,
     formState: { isSubmitting },
-  } = useForm<NewNumberFormValues>({
-    defaultValues: {
-      phoneNumber: '',
-    },
-  });
+  } = useForm<NewNumberFormValues>({ defaultValues: { phoneNumber: '' } });
+
+  const { mutate, isPending } = useUsersServicePostUsersProfilePhoneChangeOtp();
 
   const onSaveData = async (data: NewNumberFormValues) => {
-    await new Promise((r) => setTimeout(r, 2000));
-    onSubmit?.(data);
+    mutate(
+      {
+        requestBody: {
+          newPhoneNumber: data.phoneNumber,
+          passwordVerificationToken,
+        },
+      },
+      {
+        onSuccess: (res) => onSubmit?.({ phoneNumber: res.phoneNumber }),
+        onError: (error) =>
+          setError('phoneNumber', {
+            type: 'manual',
+            message: extractErrorMessage(error),
+          }),
+      },
+    );
   };
+
   return (
     <form
       dir="rtl"
       className="flex w-full flex-col gap-6 text-right"
       onSubmit={handleSubmit(onSaveData)}
     >
-      <div className="flex w-full flex-row justify-between">
-        <span className="w-1/3"></span>
+      <div className="flex w-full justify-between">
+        <span className="w-1/3" />
         <SectionHeader title={title || ''} />
-        <div className="text-text-brand-primary-600 flex w-1/3 flex-row justify-end text-sm font-medium"></div>
+        <div className="text-text-brand-primary-600 flex w-1/3 justify-end text-sm font-medium" />
       </div>
-      <span className="mt-4 text-sm">
-        <span className="text-right font-medium">شماره همراه فعلی: </span>
-        <span className="text-left" dir="ltr">
-          {phone}
+      <div className="flex items-center gap-2">
+        <div className="bg-surface-message-warning-100-soft text-icon-onmessage-colored-onwarning-on100 flex h-8 w-8 items-center justify-center rounded-full">
+          <Icon name="triangle-alert" size="md" />
+        </div>
+        <span className="text-text-neutral-primary text-sm">
+          دقت کنید که شماره وارد شده حتما باید به نام خودتان باشد.
         </span>
-      </span>
+      </div>
       <Controller
         name="phoneNumber"
         control={control}
         rules={{
-          required: {
-            value: true,
-            message: 'این فیلد اجباری است.',
-          },
-          validate: (value) => {
-            const isPhoneNumber = /^09[0-9]{9}$/.test(value);
-
-            if (!isPhoneNumber) {
-              return 'لطفا یک شماره همراه معتبر وارد کنید';
-            }
-
-            return true;
-          },
+          required: 'این فیلد اجباری است.',
+          validate: (val) =>
+            /^09[0-9]{9}$/.test(val) || 'لطفا یک شماره همراه معتبر وارد کنید',
         }}
         render={({ field, fieldState }) => (
           <TextField
-            mergeTitleAndPlaceholder={false}
-            mode="outline"
             type="text"
-            trailingIcons={[]}
+            mode="outline"
             label="شماره همراه جدید"
             placeholder="شماره همراه جدید را وارد کنید..."
             isError={!!fieldState.error}
-            supportText={fieldState.error?.message}
+            supportText={fieldState.error?.message || ' '}
+            mergeTitleAndPlaceholder={false}
+            trailingIcons={[]}
             {...field}
           />
         )}
@@ -156,7 +189,7 @@ const NewNumber = ({
       <Button
         align="center"
         mode="primary"
-        isLoading={isSubmitting}
+        isLoading={isSubmitting || isPending}
         size="md"
         type="submit"
       >
@@ -166,10 +199,11 @@ const NewNumber = ({
   );
 };
 
+// Main ChangeNumber Component
 enum ChangeNumberStage {
-  PASSWORD = 0,
-  NEW_NUMBER = 1,
-  OTP = 2,
+  PASSWORD,
+  NEW_NUMBER,
+  OTP,
 }
 
 export const ChangeNumber = ({
@@ -177,41 +211,86 @@ export const ChangeNumber = ({
 }: {
   onClose?: (success?: boolean) => void;
 }) => {
-  const [stage, setStage] = useState<ChangeNumberStage | null>(0);
-  const [newNumber, setNewNumber] = useState<null | string>(null);
-  const onSaveData = async (code: string) => {
-    // Send data to server
+  const [stage, setStage] = useState<ChangeNumberStage>(
+    ChangeNumberStage.PASSWORD,
+  );
+  const [newNumber, setNewNumber] = useState<string | null>(null);
+  const [passwordVerificationToken, setPasswordVerificationToken] =
+    useState('');
+  const [retrySeconds, setRetrySeconds] = useState(120);
+  const { showToast } = useCustomToast();
+
+  const { mutate, isPending } = useUsersServicePostUsersProfilePhoneChange();
+
+  const verifyOtp = async (otp: string) => {
+    mutate(
+      { requestBody: { otp } },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: ['UsersServiceGetUsersMe'],
+          });
+          onClose?.(true);
+        },
+        onError: (error) =>
+          showToast({ message: extractErrorMessage(error), type: 'error' }),
+      },
+    );
   };
+
+  const resendOTP = async () => {
+    if (!newNumber || !passwordVerificationToken) return;
+    const otpMutate = useUsersServicePostUsersProfilePhoneChangeOtp().mutate;
+    otpMutate(
+      {
+        requestBody: {
+          newPhoneNumber: newNumber,
+          passwordVerificationToken,
+        },
+      },
+      {
+        onError: (error) =>
+          showToast({ message: extractErrorMessage(error), type: 'error' }),
+        onSuccess(response) {
+          setRetrySeconds(response.retrySeconds);
+        },
+      },
+    );
+  };
+
   return (
     <>
       {stage === ChangeNumberStage.PASSWORD && (
         <InputPasswordForm
-          onSubmit={() => setStage(ChangeNumberStage.NEW_NUMBER)}
           title="شماره همراه جدید"
-          subTitle="جهت تغییر شماره همراه، ابتدا رمز فعلی خود را وارد کنید.
-"
+          subTitle="جهت تغییر شماره همراه، ابتدا رمز فعلی خود را وارد کنید."
+          onSubmit={(token) => {
+            setPasswordVerificationToken(token);
+            setStage(ChangeNumberStage.NEW_NUMBER);
+          }}
         />
       )}
       {stage === ChangeNumberStage.NEW_NUMBER && (
         <NewNumber
           title="شماره همراه جدید"
-          phone="+989339123456"
+          passwordVerificationToken={passwordVerificationToken}
           onSubmit={(data) => {
-            setStage(ChangeNumberStage.OTP);
             setNewNumber(data.phoneNumber);
+            setStage(ChangeNumberStage.OTP);
+            showToast({ message: 'کد تایید ارسال شد.', type: 'info' });
           }}
         />
       )}
       {stage === ChangeNumberStage.OTP && (
         <OTPForm
-          description={`کد تایید ارسال شده به ${newNumber} را وارد کنید.`}
-          onBackBtn={() => setStage(ChangeNumberStage.NEW_NUMBER)}
-          backBtnLabel="ویرایش شماره"
           title="شماره همراه جدید"
-          onSubmit={(code) => {
-            onSaveData(code);
-            onClose?.(true);
-          }}
+          description={`کد تایید ارسال شده به ${newNumber} را وارد کنید.`}
+          backBtnLabel="ویرایش شماره"
+          onBackBtn={() => setStage(ChangeNumberStage.NEW_NUMBER)}
+          onSubmit={verifyOtp}
+          onResendCode={resendOTP}
+          isLoading={isPending}
+          countdownSeconds={retrySeconds}
         />
       )}
     </>

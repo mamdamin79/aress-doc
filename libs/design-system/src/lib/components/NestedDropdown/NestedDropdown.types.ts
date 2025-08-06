@@ -12,6 +12,7 @@ export interface NestedDropdownItemProps {
   hasTooltip?: boolean;
   hasChildren?: boolean;
   optionsListProps: OptionsListExplorerProps;
+  disabled?: boolean;
 }
 
 export interface NestedDropdownProps {

@@ -1,130 +1,55 @@
-import { ReportSelectionPopupProps } from './ReportSelectionPopup.types';
-import {
-  Button,
-  Dialog,
-  Icon,
-  NewBadge,
-  Report6,
-  ReportCardBase,
-  VideoBadge,
-} from 'design-system';
-
+import { ReportList } from '../../(dashboard)/(withfooter)/reports/_components/ReportsList';
+import { Dialog, Pagination } from 'design-system';
+import { GetReportsCategoriesResponse, GetReportsResponse } from '@openapi';
+interface ReportSelectionPopupProps {
+  reports: GetReportsResponse;
+  filteredReports: GetReportsResponse;
+  currentPage: number;
+  pageCount: number;
+  pageSize: number;
+  totalItems: number;
+  categories: GetReportsCategoriesResponse;
+  isOpen?: boolean;
+  onClose: () => void;
+  onReportClick?: (identifier: number | string) => void;
+}
 export const ReportSelectionPopup: React.FC<ReportSelectionPopupProps> = ({
+  reports,
+  currentPage,
+  pageCount,
+  pageSize,
+  totalItems,
+  categories,
   isOpen,
   onClose,
-  category,
-  isNew,
-  summary,
-  title,
-  video,
-  report,
-  onSubmit,
+  onReportClick,
+  filteredReports,
 }) => {
   return (
     <Dialog
+      onClose={onClose}
       isOpen={isOpen}
-      onClose={() => onClose()}
-      className="bg-surface-neutral-primary text-text-neutral-primary relative flex h-[90vh] max-h-[800px] min-h-[456px] w-full min-w-[670px] max-w-[696px] items-center justify-center p-0 pr-1 text-right"
+      className="text-right sm:min-w-[480px] sm:max-w-[576px] lg:min-w-[480px] lg:max-w-[696px]"
+      // className="bg-baseBackground relative flex h-[90vh] max-h-[800px] min-h-[456px] w-full min-w-[670px] max-w-[696px] items-center justify-center p-0 pr-1 text-right"
     >
-      <div className="flex h-full w-full flex-col pt-8">
-        {/* Scrollable content wrapper */}
-        <div
-          dir="ltr"
-          className="scrollbar-md flex h-full max-h-[700px] w-full flex-grow overflow-y-auto overflow-x-hidden pb-12 pl-6 pr-4"
-        >
-          <div className="flex flex-col gap-4" dir="rtl">
-            <div
-              className="flex cursor-pointer flex-row items-center gap-1"
-              onClick={onClose}
-            >
-              <Icon name="chevron-right" size="lg" />
-              <span className="text-md font-medium">
-                بازگشت به لیست گزارش‌ها
-              </span>
-            </div>
-            <div className="text-2xl font-medium">{title}</div>
-            <div className="flex w-full flex-row items-center gap-4">
-              <div className="text-text-neutral-secondarycontrast flex flex-row gap-1 text-sm font-medium">
-                <Icon name="layers-2" />
-                <span>{category}</span>
-              </div>
-              {isNew && <NewBadge />}
-              {video && <VideoBadge />}
-            </div>
-            <div className="border-border-neutral-primary w-full border"></div>
-            <div className="flex flex-col gap-2">
-              <span className="text-md font-medium">معرفی کوتاه:</span>
-              <span className="text-sm font-normal">{summary}</span>
-            </div>
-            <div className="flex w-full justify-center py-4">
-              <Report6
-                indexData={[
-                  { y: -2.5, unit: 'میلیون واحد' },
-                  { y: 2.5, unit: 'میلیون واحد' },
-                  { y: -2.5, unit: 'میلیون واحد' },
-                  { y: -2, unit: 'میلیون واحد' },
-                  { y: -1.5, unit: 'میلیون واحد' },
-                  { y: -4, unit: 'میلیون واحد' },
-                  { y: 2, unit: 'میلیون واحد' },
-                  { y: 5.5, unit: 'میلیون واحد' },
-                  { y: 3.5, unit: 'میلیون واحد' },
-                  { y: -4.5, unit: 'میلیون واحد' },
-                  { y: 0.5, unit: 'میلیون واحد' },
-                  { y: 3.5, unit: 'میلیون واحد' },
-                ]}
-                inFlowData={[
-                  { y: 115, unit: 'میلیارد ریال' },
-                  { y: 105, unit: 'میلیارد ریال' },
-                  null,
-                  null,
-                  { y: 85, unit: 'میلیارد ریال' },
-                  null,
-                  { y: 115, unit: 'میلیارد ریال' },
-                  { y: 95, unit: 'میلیارد ریال' },
-                  null,
-                  null,
-                  { y: 85, unit: 'میلیارد ریال' },
-                  { y: 105, unit: 'میلیارد ریال' },
-                ]}
-                outFlowData={[
-                  null,
-                  null,
-                  { y: -55, unit: 'میلیارد ریال' },
-                  { y: -45, unit: 'میلیارد ریال' },
-                  null,
-                  { y: -90, unit: 'میلیارد ریال' },
-                  null,
-                  null,
-                  { y: -10, unit: 'میلیارد ریال' },
-                  { y: -75, unit: 'میلیارد ریال' },
-                  null,
-                  null,
-                ]}
+      <div className="mx-auto flex justify-center xl:block">
+        <div className="flex flex-col items-stretch justify-between gap-8 md:max-w-[772px] xl:max-w-full xl:justify-center">
+          <div>
+            <ReportList
+              inModal={true}
+              reports={reports}
+              onReportClick={onReportClick}
+              categories={categories}
+              filteredReports={filteredReports}
+            />
+            <div className="mt-12">
+              <Pagination
+                currentPage={currentPage}
+                pageCount={pageCount}
+                pageSize={pageSize}
+                totalItems={totalItems}
               />
             </div>
-          </div>
-        </div>
-
-        {/* Footer section (does not scroll) */}
-        <div className="mt-4 flex w-full flex-row justify-end gap-2 px-6 pb-4">
-          <div className="w-fit">
-            <Button align="center" isLoading={false} mode="secondary" size="sm">
-              اطلاعات بیشتر
-            </Button>
-          </div>
-          <div className="w-fit">
-            <Button
-              align="center"
-              isLoading={false}
-              mode="primary"
-              size="sm"
-              onClick={onSubmit}
-            >
-              <div className="flex flex-row gap-2">
-                <Icon name="plus" />
-                افزودن
-              </div>
-            </Button>
           </div>
         </div>
       </div>

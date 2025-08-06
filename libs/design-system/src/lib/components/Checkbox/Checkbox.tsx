@@ -5,11 +5,12 @@ import {
   Label,
 } from '@headlessui/react';
 import { cn } from '../../../utils';
-import { useId } from 'react';
+import React, { ReactNode, useId } from 'react';
 import { Check } from 'lucide-react';
 
 interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onChange: () => void;
+  reactcontent?: string | ReactNode;
 }
 
 export function Checkbox(props: CheckboxProps) {
@@ -44,7 +45,7 @@ export function Checkbox(props: CheckboxProps) {
           'text-sm',
         )}
       >
-        {props.content}
+        {props.reactcontent ? props.reactcontent : props.content}
       </Label>
     </Field>
   );

@@ -1,6 +1,5 @@
-const { default: colors } = require('./tailwindColors');
-const defaultTheme = require('tailwindcss/defaultTheme');
-
+import colors from './tailwindColors';
+import defaultTheme from './defaultTheme';
 module.exports = {
   theme: {
     extend: {
@@ -104,6 +103,7 @@ module.exports = {
         '3xl': '1680px',
         '4xl': '1920px',
         '5xl': '2560px',
+        '6xl': '3560px',
       },
     },
   },

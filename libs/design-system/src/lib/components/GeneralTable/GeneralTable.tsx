@@ -1,16 +1,48 @@
 'use client';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { TableRow, TableProps } from './GeneralTable.types';
-import { cn } from 'libs/design-system/src/utils';
+import { cn } from '../../../utils';
 import { getCellBackgroundColor } from './GeneralTable.utils';
 import { SeparatorLine } from './TableComponents';
 
-export const GeneralTable: React.FC<TableProps<TableRow>> = ({
+export interface GeneralTableProps<T extends TableRow> extends TableProps<T> {
+  showHeadBodySpacer?: boolean;
+  headBodySpacerHeight?: string | number;
+  headBodySpacerClassName?: string;
+}
+
+/**
+ * GeneralTable component renders a customizable table with optional styles, headers, and formatting.
+ *
+ * @template T - Type of each row of data.
+ *
+ * @param data - The data to render in the table.
+ * @param schema - Defines the structure and rendering logic for each column.
+ * @param tableDataStyleClasses - Optional class names to style individual table data cells.
+ * @param border - Whether to render table borders.
+ * @param striped - Whether to render striped rows for better readability.
+ * @param theadClassName - Class name applied to the `<thead>` element for styling the table header section.
+ * @param showHeadBodySpacer - If `true`, inserts a spacer row between `<thead>` and `<tbody>`.
+ *                              Useful for visual separation.
+ * @param headBodySpacerHeight - The height of the spacer row between `<thead>` and `<tbody>`.
+ *                               Default is `'8px'`.
+ * @param headBodySpacerClassName - CSS class applied to the spacer row for custom styling.
+ *                                   Default is `'transparent'`.
+ * @param rowHeaderClassName - Class name applied to the **first cell of each row** (usually the row header),
+ *                              useful for distinguishing or styling it differently.
+ * @param headerClassName - Class name applied to individual **header cells** (`<th>`), allowing per-column customization.
+ */
+
+export const GeneralTable: React.FC<GeneralTableProps<TableRow>> = ({
   data,
   schema,
   tableDataStyleClasses,
   border = false,
   striped,
+  theadClassName,
+  showHeadBodySpacer = false,
+  headBodySpacerHeight = '8px',
+  headBodySpacerClassName = 'transparent',
 }) => {
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const [hoveredCol, setHoveredCol] = useState<number | null>(null);
@@ -83,6 +115,7 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
                       isHoveredOrMatching
                         ? 'bg-surface-accent-blue-600 text-text-neutral-white'
                         : '',
+                      column.rowHeaderClassName,
                     )}
                   >
                     {column.render
@@ -138,7 +171,12 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
         role="grid"
         aria-label="Financial Records Table"
       >
-        <thead className="text-md h-16 bg-transparent font-medium after:block after:h-4 after:content-['']">
+        <thead
+          className={cn(
+            "text-md h-16 bg-transparent font-medium after:block after:h-4 after:content-['']",
+            theadClassName,
+          )}
+        >
           <tr>
             {schema.map((column, index) => (
               <th
@@ -148,12 +186,13 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
                 className={cn(
                   'bg-surface-neutral-secondary relative',
                   column.key === 'name' ? 'text-right' : '',
+                  column.headerClassName,
                 )}
               >
                 <div className="flex w-full items-center justify-center">
                   <div
                     className={cn(
-                      'h-[30px] w-fit rounded-sm pl-[6px] pr-[6px]',
+                      'h-[22px] w-fit rounded-sm pl-[6px] pr-[6px]',
                       matchingCol === index || hoveredCol === index
                         ? 'bg-surface-accent-blue-600 text-text-neutral-white'
                         : '',
@@ -176,7 +215,18 @@ export const GeneralTable: React.FC<TableProps<TableRow>> = ({
             ))}
           </tr>
         </thead>
-        <tbody>{renderRows()}</tbody>
+        <tbody>
+          {showHeadBodySpacer && (
+            <tr>
+              <td
+                colSpan={schema.length}
+                className={headBodySpacerClassName}
+                style={{ height: headBodySpacerHeight, padding: 0 }}
+              ></td>
+            </tr>
+          )}
+          {renderRows()}
+        </tbody>
       </table>
     </div>
   );

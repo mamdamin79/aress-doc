@@ -3,7 +3,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { Button, TextField } from 'design-system';
 import Link from 'next/link';
 import { ResetPasswordFormValues } from './ResetPasswordForm.types';
-import { validateNationalCode } from './ResetPasswordForm.utils';
+import { validateNationalCode } from '@shared';
 import { validatePhoneNumber } from '../LoginForm/LoginForm.utils';
 import { useEffect } from 'react';
 import { useUsersServiceGetUsersPasswordForgotCaptcha } from '@openapi';
@@ -38,7 +38,6 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
     if (setRefetchCaptcha) {
       setRefetchCaptcha(refetchCaptcha);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refetchCaptcha]);
 
   // Set captchaUid in form when captchaData changes
