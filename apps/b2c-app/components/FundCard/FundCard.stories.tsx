@@ -19,6 +19,5 @@ export const Default: Story = {
   args: {
     fundCategory: 'سهامی',
     name: 'مشترک افق روشن کارگزاری بانک خاورمیانه',
-    logo: 'https://orfund.mebbco.com/FundData/Images/logoinfo.png',
   },
 };
