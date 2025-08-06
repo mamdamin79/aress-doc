@@ -32,64 +32,7 @@ export const LineChart: React.FC<LineChartProps> = ({ points }) => {
     rangeSelector: { enabled: false },
     scrollbar: { enabled: false },
     tooltip: {
-      shared: true,
-      useHTML: true,
-      backgroundColor: 'transparent',
-      borderWidth: 0,
-      shadow: false,
-      style: { direction: 'rtl' },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      formatter: function (this: any) {
-        const gregorianDate = new Date(this.x as number);
-        const formattedDate = `${gregorianDate.getFullYear()}/${String(
-          gregorianDate.getMonth() + 1,
-        ).padStart(
-          2,
-          '0',
-        )}/${String(gregorianDate.getDate()).padStart(2, '0')}`;
-
-        interface TooltipPoint {
-          series: { color: string; name: string };
-          y: number;
-        }
-
-        return `
-          <div dir="rtl"
-            style="
-              background: var(--color-surface-neutral-inverse);
-              color: var(--color-text-neutral-oninverse);
-              border-radius: 10px;
-              padding: 8px 16px;
-              font-family: Vazirmatn;
-              font-size: 14px;
-              font-weight: 500;
-              line-height: 26px;
-              text-align: right;
-              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-              margin-bottom: 4px;
-              backdrop-filter: blur(6px);
-              -webkit-backdrop-filter: blur(6px);
-            "
-          >
-            <div style="font-weight: 500;">${formattedDate}</div>
-
-            ${this.points
-              ?.map(
-                (point: TooltipPoint) => `
-                <div style="display: flex; align-items: center; gap: 4px;">
-                  <span style="color:${point.series.color}; font-size: 12px;">●</span>
-                  <div style="display: flex; align-items: center; gap: 4px; justify-content: space-between; width: 100%;">
-                    <span style="font-size: 14px; font-weight: 400;">${point.series.name}</span>
-                    <span style="font-size: 14px; font-weight: 400; margin-left: 12px;">مقدار</span>
-                    <span style="unicode-bidi: plaintext;">${Math.round(point.y)} میلیارد</span>
-                  </div>
-                </div>
-              `,
-              )
-              .join('')}
-          </div>
-        `;
-      },
+      enabled: false,
     },
     title: { text: '' },
     yAxis: {
