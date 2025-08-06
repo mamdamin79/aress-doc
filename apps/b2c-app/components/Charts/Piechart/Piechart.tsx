@@ -11,11 +11,16 @@ const PIE_COLORS = [
 ];
 
 export interface PiechartProps {
-  data: { name: string; value: number; visible?: boolean; tooltip?: string }[];
+  data: { name: string; value: number }[];
   state: 'default' | 'empty';
+  showValues?: boolean;
 }
 
-export const Piechart: React.FC<PiechartProps> = ({ data, state }) => {
+export const Piechart: React.FC<PiechartProps> = ({
+  data,
+  state,
+  showValues = true,
+}) => {
   if (state === 'empty') {
     return (
       <div className="border-surface-accent-gray-400 flex h-[224px] w-[224px] flex-col items-center justify-center rounded-full border-4">
@@ -47,7 +52,7 @@ export const Piechart: React.FC<PiechartProps> = ({ data, state }) => {
         const point = this.point as Highcharts.Point;
         return `<div dir='rtl' style='font-family: Vazirmatn, sans-serif; background: var(--color-surface-neutral-inverse); backdrop-filter: blur(6px); color: var(--color-text-neutral-oninverse); border-radius: 10px; padding: 8px 16px; min-width: 120px; direction: rtl; text-align: right;'>
           <div style='font-weight: 500;'>${point.name}</div>
-          <div style='display: flex; justify-content: space-between; gap: 8px;'><span>ارزش:</span><span>${point.y?.toLocaleString?.() ?? '-'} ریال</span></div>
+          ${showValues ? `<div style='display: flex; justify-content: space-between; gap: 8px;'><span>ارزش:</span><span>${point.y?.toLocaleString?.() ?? '-'} ریال</span></div>` : ''}
           <div style='display: flex; justify-content: space-between; gap: 8px;'><span>وزن:</span><span>${point.percentage?.toFixed?.(0) ?? '-'}٪</span></div>
         </div>`;
       },
@@ -69,7 +74,6 @@ export const Piechart: React.FC<PiechartProps> = ({ data, state }) => {
           name: item.name,
           y: item.value,
           color: PIE_COLORS[i % PIE_COLORS.length],
-          visible: item.visible !== false,
         })),
         showInLegend: false,
       },

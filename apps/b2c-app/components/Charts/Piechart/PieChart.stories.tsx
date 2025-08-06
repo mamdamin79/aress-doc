@@ -34,6 +34,20 @@ export const Default: Story = {
     },
   },
 };
+export const HideValues: Story = {
+  args: {
+    data: demoData,
+    showValues: false,
+    state: 'default',
+  } as PiechartProps,
+  parameters: {
+    docs: {
+      description: {
+        story: 'حالت پیش‌فرض نمودار دایره‌ای.',
+      },
+    },
+  },
+};
 
 export const Empty: Story = {
   args: {
