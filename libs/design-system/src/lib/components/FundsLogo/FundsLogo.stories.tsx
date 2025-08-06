@@ -13,5 +13,6 @@ export const Default: Story = {
   args: {
     size: 'md', // Default size
     hasTag: true, // Example prop to show badge
+    isVerified: false, // Example prop to indicate if the fund is verified
   },
 };

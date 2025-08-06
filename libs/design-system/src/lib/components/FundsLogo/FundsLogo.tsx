@@ -1,18 +1,23 @@
 import React from 'react';
 import FundLogoFallback from '../../../assets/images/FundLogoFallback.png';
 import { FundsTag } from '../FundsTag';
+import { ReactComponent as VerifiedSVG } from '../../../assets/icons/ic_round-verified.svg';
+import { Icon } from '../Icon';
+import { cn } from '../../../utils/classNames.utils';
 
 interface FundsLogoProps {
-  // Define any props if needed
-  size?: 'sm' | 'md' | 'lg'; // Example prop for size
-  hasTag?: boolean; // Example prop to conditionally render a badge
+  size?: 'sm' | 'md' | 'lg';
+  hasTag?: boolean;
+  isVerified?: boolean;
+  isPin?: boolean;
 }
 
 export const FundsLogo: React.FC<FundsLogoProps> = ({
-  size = 'md', // Default size
-  hasTag = true, // Default to showing badge
+  size = 'md',
+  hasTag = true,
+  isVerified = false,
+  isPin = false,
 }) => {
-  // You can use the size prop to conditionally apply styles or classes
   const sizeClasses = {
     sm: 'h-8 w-8',
     md: 'h-[38px] w-[38px]',
@@ -28,9 +33,20 @@ export const FundsLogo: React.FC<FundsLogoProps> = ({
         alt="Fund Logo"
         className={`rounded-full ${sizeClasses[size]}`}
       />
-      {hasTag && (
-        <div className="absolute bottom-0 right-0">
-          <FundsTag color="green" size={size === 'lg' ? 'lg' : 'md'} />
+      {(isPin || hasTag) && (
+        <div
+          className={cn('absolute bottom-0 right-0', { '-bottom-3': isPin })}
+        >
+          {isPin ? (
+            <Icon name="CustomPin" />
+          ) : (
+            <FundsTag color="green" size={size === 'lg' ? 'lg' : 'md'} />
+          )}
+        </div>
+      )}
+      {isVerified && (
+        <div className="absolute -top-1">
+          <VerifiedSVG />
         </div>
       )}
     </div>
