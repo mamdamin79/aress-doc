@@ -1,4 +1,6 @@
-import type { Decorator, Preview } from '@storybook/nextjs';
+import type { Preview } from '@storybook/nextjs';
+import type { Decorator } from '@storybook/react';
+import React from 'react'; // required for JSX
 import './tailwind-imports.css';
 
 export const globalTypes: Preview['globalTypes'] = {
@@ -23,16 +25,13 @@ const withTheme: Decorator = (Story, context) => {
     document.documentElement.classList.add('dark');
   }
 
-  // Let browser handle background and native widgets with system default
   document.documentElement.style.colorScheme = theme;
 
-  // Optional: clear manual background styles if any
-  const previewWrapper = document.getElementById('storybook-preview-wrapper');
-  if (previewWrapper) {
-    previewWrapper.style.backgroundColor = '';
-  }
-
-  return Story();
+  return (
+    <div className="bg-surface-neutral-background text-text-neutral-primary h-screen p-4">
+      <Story />
+    </div>
+  );
 };
 
 export const decorators = [withTheme];
