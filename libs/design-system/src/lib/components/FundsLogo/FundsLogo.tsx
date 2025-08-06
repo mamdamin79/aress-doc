@@ -1,5 +1,6 @@
 import React from 'react';
 import FundLogoFallback from '../../../assets/images/FundLogoFallback.png';
+import { FundsTag } from '../FundsTag';
 
 interface FundsLogoProps {
   // Define any props if needed
@@ -17,7 +18,7 @@ export const FundsLogo: React.FC<FundsLogoProps> = ({
   };
 
   return (
-    <div>
+    <div className="relative">
       <img
         // eslint-disable-next-line
         // @ts-ignore
@@ -25,6 +26,9 @@ export const FundsLogo: React.FC<FundsLogoProps> = ({
         alt="Fund Logo"
         className={`rounded-full ${sizeClasses[size]}`}
       />
+      <div className="absolute bottom-0 right-0">
+        <FundsTag size={size === 'sm' ? 'md' : size} color="green" />
+      </div>
     </div>
   );
 };

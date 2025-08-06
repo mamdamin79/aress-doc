@@ -18,5 +18,6 @@ type Story = StoryObj<typeof FundsTag>;
 export const Default: Story = {
   args: {
     color: 'blue',
+    size: 'md', // Default size
   },
 };
