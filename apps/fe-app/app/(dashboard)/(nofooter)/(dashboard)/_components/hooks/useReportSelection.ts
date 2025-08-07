@@ -27,10 +27,16 @@ export function useReportSelection(selectedReportID: string | null) {
   const [categories, setCategories] =
     useState<GetReportsCategoriesResponse | null>();
 
-  const { data: reportsList } = useReportsServiceGetReports(queryParams);
+  const { data: reportsList } = useReportsServiceGetReports(
+    queryParams,
+    undefined,
+    { enabled: !!selectedReportID },
+  );
 
   const { refetch: fetchReportsCategories } =
-    useReportsServiceGetReportsCategories();
+    useReportsServiceGetReportsCategories(undefined, {
+      enabled: !!selectedReportID,
+    });
 
   const filteredReports = useMemo(() => {
     return reportsList?.filter((report) => {

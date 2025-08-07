@@ -71,25 +71,34 @@ export const Report15: FC<ReportProps<Report15CalculationResult>> = ({
       return false;
     }
   };
+
   const containerWidth = 367;
   const containerHeight = 223;
 
+  // ✅ Scale x and y values by 100
+  const scaledGraphData = useMemo(() => {
+    return data.graphData.map((point) => ({
+      ...point,
+      x: point.x * 100,
+      y: point.y * 100,
+    }));
+  }, [data.graphData]);
+
   const chartData = useMemo(() => {
-    const xValues = data.graphData.map((p) => p.x);
-    const yValues = data.graphData.map((p) => p.y);
+    const xValues = scaledGraphData.map((p) => p.x);
+    const yValues = scaledGraphData.map((p) => p.y);
 
     const minX = Math.min(...xValues);
     const maxX = Math.max(...xValues);
     const minY = Math.min(...yValues);
     const maxY = Math.max(...yValues);
 
-    // Make axis symmetric for centered cross lines
     const fullMin = Math.min(minX, minY);
     const fullMax = Math.max(maxX, maxY);
 
     const regressionLine = [
-      [fullMin, data.beta * fullMin + data.yIntersect],
-      [fullMax, data.beta * fullMax + data.yIntersect],
+      [fullMin, data.beta * fullMin + data.yIntersect * 100],
+      [fullMax, data.beta * fullMax + data.yIntersect * 100],
     ];
 
     const squareSize = Math.min(containerWidth, containerHeight);
@@ -109,7 +118,7 @@ export const Report15: FC<ReportProps<Report15CalculationResult>> = ({
       xMiddle: (minX + maxX) / 2,
       yMiddle: (minY + maxY) / 2,
     };
-  }, [data.graphData, data.beta, data.yIntersect]);
+  }, [scaledGraphData, data.beta, data.yIntersect]);
 
   const tickInterval = (chartData.maxXY - chartData.minXY) / 10;
 
@@ -158,7 +167,7 @@ export const Report15: FC<ReportProps<Report15CalculationResult>> = ({
                 <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; width: 100%;">
                   <span style="font-size: 0.875rem; font-weight: 400;">بازدهی شاخص قیمت (وزنی-ارزشی)</span>
                   <span style="unicode-bidi: plaintext;">
-                    ${this.x < 0 ? '-' + Math.abs(this.x.toFixed(4)) : this.x.toFixed(4)}${this.point?.unit ? ' ' + this.point.unit : ''}
+                    ${this.x < 0 ? '-' + Math.abs(this.x.toFixed(4)) : this.x.toFixed(4)}%${this.point?.unit ? ' ' + this.point.unit : ''}
                   </span>
                 </div>
               </div>
@@ -166,7 +175,7 @@ export const Report15: FC<ReportProps<Report15CalculationResult>> = ({
                 <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; width: 100%;">
                   <span style="font-size: 0.875rem; font-weight: 400;">بازده شاخص پالایشی</span>
                   <span style="unicode-bidi: plaintext;">
-                    ${this.y < 0 ? '-' + Math.abs(this.y.toFixed(4)) : this.y.toFixed(4)}${this.point?.unit ? ' ' + this.point.unit : ''}
+                    ${this.y < 0 ? '-' + Math.abs(this.y.toFixed(4)) : this.y.toFixed(4)}%${this.point?.unit ? ' ' + this.point.unit : ''}
                   </span>
                 </div>
               </div>
@@ -199,7 +208,11 @@ export const Report15: FC<ReportProps<Report15CalculationResult>> = ({
       {
         name: 'داده‌های واقعی',
         type: 'scatter',
-        data: data.graphData,
+        data: scaledGraphData.map((graphItem) => ({
+          x: graphItem.x,
+          y: graphItem.y,
+          tradeDateShamsi: graphItem.tradeDateShamsi,
+        })),
         marker: {
           symbol: 'diamond',
           radius: 5,
@@ -261,7 +274,7 @@ export const Report15: FC<ReportProps<Report15CalculationResult>> = ({
             />
             <InfoBox
               label="عرض از مبدا (C)"
-              value={`${data.yIntersect.toFixed(4)}%+`}
+              value={`${(data.yIntersect * 100).toFixed(4)}%+`}
             />
             <InfoBox label="ضریب تعیین (R2)" value={data.rSquared.toFixed(4)} />
             <InfoBox
