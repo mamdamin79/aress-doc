@@ -7,7 +7,9 @@ import { ReportCardBase } from 'design-system';
 import { Report6CalculationResult } from '@openapi';
 import { OptionItem } from 'design-system';
 import { toBasicSetting, toDropdownSetting } from '../Report.utils';
-import { ReportProps } from '../Report.types';
+import { CustomChartOptions, ReportProps } from '../Report.types';
+
+// Custom interface extending Highcharts.Options with unit property for series
 
 export const Report6: FC<ReportProps<Report6CalculationResult>> = ({
   data,
@@ -84,7 +86,7 @@ export const Report6: FC<ReportProps<Report6CalculationResult>> = ({
     return { xCategories, inFlowData, outFlowData, indexData };
   }, [dataState]);
 
-  const chartOptions: Highcharts.Options = {
+  const chartOptions: CustomChartOptions = {
     ...baseOptions,
     xAxis: {
       categories: xCategories,
@@ -110,6 +112,7 @@ export const Report6: FC<ReportProps<Report6CalculationResult>> = ({
         data: inFlowData,
         color: 'var(--color-surface-accent-green-600)',
         yAxis: 0,
+        unit: data.netFlowUnit + ' ریال ',
       },
       {
         name: 'خروج',
@@ -117,6 +120,7 @@ export const Report6: FC<ReportProps<Report6CalculationResult>> = ({
         data: outFlowData,
         color: 'var(--color-surface-accent-red-600)',
         yAxis: 0,
+        unit: data.netFlowUnit + ' ریال ',
       },
       {
         name: 'شاخص کل',
@@ -124,6 +128,7 @@ export const Report6: FC<ReportProps<Report6CalculationResult>> = ({
         data: indexData,
         color: 'var(--color-border-accent-blue-600)',
         yAxis: 1,
+        unit: data.indexUnit + ' واحد ',
       },
     ],
     legend: {
@@ -131,11 +136,11 @@ export const Report6: FC<ReportProps<Report6CalculationResult>> = ({
       useHTML: true,
       labelFormatter: function () {
         if (this.name === 'ورود') {
-          return 'ورود <span style="color: var(--color-text-neutral-secondary); font-size: 11px;">(میلیارد ریال)</span>';
+          return `ورود <span style="color: var(--color-text-neutral-secondary); font-size: 11px;">${data.netFlowUnit} ریال</span>`;
         } else if (this.name === 'خروج') {
-          return 'خروج <span style="color: var(--color-text-neutral-secondary);">(میلیارد ریال)</span>';
+          return `خروج <span style="color: var(--color-text-neutral-secondary);">${data.netFlowUnit} ریال</span>`;
         }
-        return 'شاخص کل <span style="color: var(--color-text-neutral-secondary);">(میلیون واحد)</span>';
+        return `شاخص کل <span style="color: var(--color-text-neutral-secondary);">${data.indexUnit} واحد</span>`;
       },
     },
   };

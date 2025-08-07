@@ -56,9 +56,13 @@ export function useReportSelection(selectedReportID: string | null) {
     : 0;
 
   const { data: previewData, refetch: fetchReportPreview } =
-    useReportsServiceGetReportsByReportId({
-      reportId: selectedReportID ?? '6',
-    });
+    useReportsServiceGetReportsByReportId(
+      {
+        reportId: selectedReportID ?? '6',
+      },
+      undefined,
+      { enabled: !!selectedReportID },
+    );
 
   const openPopup = async () => {
     const categoryRes = await fetchReportsCategories();

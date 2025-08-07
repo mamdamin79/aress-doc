@@ -11,7 +11,7 @@ import { OptionItem } from 'design-system';
 import { financialDefinitions } from './Report2.constants';
 import { toBasicSetting } from '../Report.utils';
 import { useEffect, useState, useMemo } from 'react';
-import { ReportProps } from '../Report.types';
+import { CustomChartOptions, ReportProps } from '../Report.types';
 
 export function Report2({
   data,
@@ -76,7 +76,7 @@ export function Report2({
     }));
   }, [dataState]);
 
-  const chartOptions: Highcharts.Options = useMemo(() => {
+  const chartOptions: CustomChartOptions = useMemo(() => {
     return {
       ...baseOptions,
       chart: {
@@ -87,10 +87,10 @@ export function Report2({
         reversed: true,
         min: 0,
         title: {
-          text: 'میلیارد ریال',
+          text: data.unit,
           textAlign: 'right',
           offset: 15,
-          x: 590,
+          x: 350,
         },
         labels: yAxisLabels,
       },
@@ -98,6 +98,7 @@ export function Report2({
       series: [
         {
           name: 'صنعت',
+          unit: data.unit,
           type: 'bar',
           data: seriesData,
           borderRadius: 4,

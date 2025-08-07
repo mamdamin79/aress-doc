@@ -9,3 +9,10 @@ export interface ReportProps<T> {
   onRemove?: () => void;
   onShare?: () => void;
 }
+export interface CustomChartOptions extends Highcharts.Options {
+  series?: Array<
+    Highcharts.SeriesOptionsType & {
+      unit?: string;
+    }
+  >;
+}
