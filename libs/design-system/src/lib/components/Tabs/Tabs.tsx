@@ -19,6 +19,7 @@ interface Props {
   activeTab: number;
   onClickTab: (idTab: number) => void;
   className?: string;
+  fullWidthDivider?: boolean;
 }
 
 export const Tabs: React.FC<Props> = ({
@@ -28,6 +29,7 @@ export const Tabs: React.FC<Props> = ({
   activeTab,
   className,
   size = 'large',
+  fullWidthDivider = false,
 }) => {
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const [sliderStyle, setSliderStyle] = useState({ left: 0, width: 0 });
@@ -55,8 +57,10 @@ export const Tabs: React.FC<Props> = ({
         className={cn(
           'relative flex gap-2',
           {
+            'border-border-neutral-primary w-full justify-start border-b-2':
+              variant === 'lined' && fullWidthDivider,
             'border-border-neutral-primary w-max gap-[50px] border-b-2':
-              variant === 'lined',
+              variant === 'lined' && !fullWidthDivider,
           },
           {
             'border-border-neutral-secondary rounded-4xl bg-surface-neutral-tertiary w-fit gap-[7px] border p-1.5':
