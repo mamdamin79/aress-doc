@@ -38,13 +38,14 @@ export default function MyFund() {
         <Tabs
           activeTab={0}
           className="w-full"
-          colorMode="neutral"
+          fullWidthDivider
           // onClickTab={(id) => console.log(id)}
           variant="lined"
           tabs={[
             {
               id: 'tab1',
               title: 'خلاصه',
+              content: <Summary />,
             },
             {
               id: 'tab2',
@@ -60,3 +61,7 @@ export default function MyFund() {
     </div>
   );
 }
+
+const Summary = () => {
+  return <div>mamad amin</div>;
+};
