@@ -1,4 +1,3 @@
-import { SectionTitle } from 'design-system';
 import { ReportTitleSettingSkeleton } from './_components/skeletons/ReportTitleSettingSkeleton';
 import { ReportTitleSectinoSkeleton } from './_components/skeletons/ReportTitleSectionSkeleton';
 import { ReportTabSkeleton } from './_components/skeletons/ReportTabSkeleton';
@@ -23,13 +22,12 @@ export default function loading() {
         <SectionTitleSkeleton />
       </div>
       <div className="flex w-full flex-col items-center px-20" id="0">
-        <SectionTitle align="center" level={3} title="ویدیو بررسی" />
         <div className="mt-10">
           <VideoPlayerSkeleton />
         </div>
       </div>
       <div className="relative flex flex-col items-center justify-center overflow-hidden px-4 pt-[112px] sm:px-10 md:px-20">
-        <SectionTitle align="center" level={3} title="اطلاعات بیشتر" />
+        <SectionTitleSkeleton />
         <div className="mt-2 flex w-full flex-col text-right">
           <div className="flex flex-col gap-[100px]">
             <MarkdownSkeleton />
@@ -39,8 +37,8 @@ export default function loading() {
         </div>
       </div>
       <div className="flex flex-col gap-12 pb-20 pt-[112px]" id="2">
-        <SectionTitle align="center" level={2} title="گزارش‌های مرتبط" />
-        <div className="flex items-center justify-between px-10">
+        <SectionTitleSkeleton />
+        <div className="flex items-center justify-center gap-3 px-10">
           <RelationReportSkeleton />
           <RelationReportSkeleton />
           <RelationReportSkeleton />
