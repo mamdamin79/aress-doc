@@ -284,6 +284,12 @@ export type UsersServicePostUsersProfileUsernameChangeMutationResult = Awaited<
 export type UsersServicePostUsersProfilePictureChangeMutationResult = Awaited<
   ReturnType<typeof UsersService.postUsersProfilePictureChange>
 >;
+export type UsersServicePostUsersLogoutMutationResult = Awaited<
+  ReturnType<typeof UsersService.postUsersLogout>
+>;
+export type ReportsServicePostReportsRequestMutationResult = Awaited<
+  ReturnType<typeof ReportsService.postReportsRequest>
+>;
 export type ReportsServicePostReportsByReportIdMutationResult = Awaited<
   ReturnType<typeof ReportsService.postReportsByReportId>
 >;
@@ -327,6 +333,12 @@ export type FundsServicePostFundsTablePinMutationResult = Awaited<
 >;
 export type FundsServicePostFundsTableUnpinMutationResult = Awaited<
   ReturnType<typeof FundsService.postFundsTableUnpin>
+>;
+export type FundsServicePostFundsTableMarkMutationResult = Awaited<
+  ReturnType<typeof FundsService.postFundsTableMark>
+>;
+export type FundsServicePostFundsTableUnmarkMutationResult = Awaited<
+  ReturnType<typeof FundsService.postFundsTableUnmark>
 >;
 export type DashboardsServicePutDashboardsMutationResult = Awaited<
   ReturnType<typeof DashboardsService.putDashboards>

@@ -1,16 +1,18 @@
+'use client';
 import React, { useState } from 'react';
 import { cn, Icon, Button } from 'design-system';
-import Image from 'next/image';
 
 export interface BarStickyBtnProps {
   fundLogo?: string;
   title?: string;
   sellAble?: boolean;
+  fundSelected?: boolean;
 }
 
 export const BarStickyBtn: React.FC<BarStickyBtnProps> = ({
   fundLogo,
   sellAble,
+  fundSelected,
   title,
 }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -21,7 +23,7 @@ export const BarStickyBtn: React.FC<BarStickyBtnProps> = ({
         <div className="flex flex-row items-center gap-2">
           <div className="bg-surface-neutral-secondary h-[38px] w-[38px] rounded-full">
             {fundLogo && (
-              <Image
+              <img
                 alt={title ?? 'fund logo'}
                 src={fundLogo}
                 width={38}
@@ -29,7 +31,12 @@ export const BarStickyBtn: React.FC<BarStickyBtnProps> = ({
               />
             )}
           </div>
-          <div className="text-md max-w-[270px] truncate font-medium">
+          <div
+            className={cn(
+              'text-md max-w-[270px] truncate',
+              fundSelected && 'font-medium',
+            )}
+          >
             {title}
           </div>
         </div>
@@ -74,6 +81,8 @@ export const BarStickyBtn: React.FC<BarStickyBtnProps> = ({
               'bg-button-brand-surface-default text-text-neutral-white hover:bg-button-brand-surface-hover flex h-[38px] w-24 items-center justify-center gap-2 rounded-md px-2 py-1 transition-all',
               isDrawerOpen &&
                 'border-button-brand-border-default text-button-brand-label-plain-default hover:bg-button-brand-surface-default hover:text-text-neutral-white border bg-transparent',
+              !fundSelected &&
+                'bg-button-brand-surface-disable pointer-events-none',
             )}
             onClick={() => setIsDrawerOpen((prev) => !prev)}
           >

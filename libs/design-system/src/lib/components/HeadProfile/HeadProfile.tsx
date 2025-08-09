@@ -1,5 +1,4 @@
 import { cn } from '../../../utils/classNames.utils';
-import Image from 'next/image';
 import React from 'react';
 import { ReactComponent as USER_SVG } from '../../../assets/icons/profile vector-large.svg';
 interface HeadProfileProps {
@@ -16,7 +15,7 @@ export const HeadProfile: React.FC<HeadProfileProps> = ({ profileImage }) => {
         )}
       >
         {profileImage ? (
-          <Image
+          <img
             src={profileImage ?? USER_SVG}
             alt="profile picture"
             width={32}

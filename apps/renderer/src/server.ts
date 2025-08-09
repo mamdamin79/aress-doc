@@ -2,9 +2,9 @@ import express from 'express';
 import fetch from 'node-fetch';
 import FormData from 'form-data';
 import { setTimeout as delay } from 'node:timers/promises';
-import { getBrowser, closeBrowser } from './browser';
-import { config } from './config';
-import { log, logError } from './utils/logger';
+import { getBrowser, closeBrowser } from './browser.js';
+import { config } from './config.js';
+import { log, logError } from './utils/logger.js';
 import { z } from 'zod';
 import { URL, URLSearchParams } from 'url';
 import cors from 'cors';
@@ -115,6 +115,11 @@ app.post('/render', async (req, res) => {
       details: err instanceof Error ? err.message : String(err),
     });
   }
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
 app.listen(config.PORT, () => {

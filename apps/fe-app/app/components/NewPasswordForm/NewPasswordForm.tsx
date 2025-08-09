@@ -90,7 +90,6 @@ export const NewPasswordForm: React.FC<NewPasswordFormProps> = ({
                   ]}
                   label="رمز عبور"
                   placeholder=""
-                  dir="ltr"
                   isError={!!fieldState.error}
                   {...field}
                 />
