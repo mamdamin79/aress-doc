@@ -3,28 +3,14 @@ import HighchartsReact from 'highcharts-react-official';
 import { useMemo, useState, useEffect } from 'react';
 import { ReportCardBase } from 'design-system';
 import { baseOptions } from './../Report.config.shared';
-import {
-  FinancialReportFilterApiModel,
-  Report13Dot3CalculationResult,
-} from '@openapi';
+import { Report13Dot3CalculationResult } from '@openapi';
 import { OptionItem } from 'design-system';
 import { toBasicSetting } from '../Report.utils';
+import { ReportProps } from '../Report.types';
 
-export interface Report13_3Props {
-  title?: string;
-  data: Report13Dot3CalculationResult;
-  filters: FinancialReportFilterApiModel[];
-  onSubmit?: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
-  onRemove?: () => void;
-}
-
-export const Report13_3: React.FC<Report13_3Props> = ({
-  data,
-  filters,
-  title,
-  onSubmit,
-  onRemove,
-}) => {
+export const Report13_3: React.FC<
+  ReportProps<Report13Dot3CalculationResult>
+> = ({ data, filters, title, onSubmit, onRemove, onShare }) => {
   const [dataState, setDataState] = useState(data);
   const [filterState, setFilterState] = useState(filters);
 
@@ -236,6 +222,7 @@ export const Report13_3: React.FC<Report13_3Props> = ({
         toBasicSetting(filterState[1], updateOption),
         toBasicSetting(filterState[2], updateOption),
       ]}
+      onShare={onShare}
       title={title ?? ''}
     >
       <HighchartsReact highcharts={Highcharts} options={options} />

@@ -45,6 +45,31 @@ export const ensureUseUsersServiceGetUsersMeData = (queryClient: QueryClient) =>
     queryKey: Common.UseUsersServiceGetUsersMeKeyFn(),
     queryFn: () => UsersService.getUsersMe(),
   });
+export const ensureUseUsersServiceGetUsersPasswordForgotCaptchaData = (
+  queryClient: QueryClient,
+  {
+    captchaHeight,
+    captchaType,
+    captchaWidth,
+  }: {
+    captchaHeight?: number;
+    captchaType?: CaptchaType;
+    captchaWidth?: number;
+  } = {},
+) =>
+  queryClient.ensureQueryData({
+    queryKey: Common.UseUsersServiceGetUsersPasswordForgotCaptchaKeyFn({
+      captchaHeight,
+      captchaType,
+      captchaWidth,
+    }),
+    queryFn: () =>
+      UsersService.getUsersPasswordForgotCaptcha({
+        captchaHeight,
+        captchaType,
+        captchaWidth,
+      }),
+  });
 export const ensureUseUsersServiceGetUsersProfilePasswordChangeOtpData = (
   queryClient: QueryClient,
 ) =>
@@ -73,24 +98,30 @@ export const ensureUseReportsServiceGetReportsData = (
     queryFn: () =>
       ReportsService.getReports({ onlyFavorite, onlyHavingVideo, onlyNew }),
   });
-export const ensureUseReportsServiceGetReportsByReportIdData = (
-  queryClient: QueryClient,
-  {
-    reportId,
-  }: {
-    reportId: string;
-  },
-) =>
-  queryClient.ensureQueryData({
-    queryKey: Common.UseReportsServiceGetReportsByReportIdKeyFn({ reportId }),
-    queryFn: () => ReportsService.getReportsByReportId({ reportId }),
-  });
 export const ensureUseReportsServiceGetReportsCategoriesData = (
   queryClient: QueryClient,
 ) =>
   queryClient.ensureQueryData({
     queryKey: Common.UseReportsServiceGetReportsCategoriesKeyFn(),
     queryFn: () => ReportsService.getReportsCategories(),
+  });
+export const ensureUseReportsServiceGetReportsByReportIdData = (
+  queryClient: QueryClient,
+  {
+    reportId,
+    screenshotQueryId,
+  }: {
+    reportId: string;
+    screenshotQueryId?: string;
+  },
+) =>
+  queryClient.ensureQueryData({
+    queryKey: Common.UseReportsServiceGetReportsByReportIdKeyFn({
+      reportId,
+      screenshotQueryId,
+    }),
+    queryFn: () =>
+      ReportsService.getReportsByReportId({ reportId, screenshotQueryId }),
   });
 export const ensureUseDashboardsServiceGetDashboardsData = (
   queryClient: QueryClient,

@@ -45,6 +45,31 @@ export const prefetchUseUsersServiceGetUsersMe = (queryClient: QueryClient) =>
     queryKey: Common.UseUsersServiceGetUsersMeKeyFn(),
     queryFn: () => UsersService.getUsersMe(),
   });
+export const prefetchUseUsersServiceGetUsersPasswordForgotCaptcha = (
+  queryClient: QueryClient,
+  {
+    captchaHeight,
+    captchaType,
+    captchaWidth,
+  }: {
+    captchaHeight?: number;
+    captchaType?: CaptchaType;
+    captchaWidth?: number;
+  } = {},
+) =>
+  queryClient.prefetchQuery({
+    queryKey: Common.UseUsersServiceGetUsersPasswordForgotCaptchaKeyFn({
+      captchaHeight,
+      captchaType,
+      captchaWidth,
+    }),
+    queryFn: () =>
+      UsersService.getUsersPasswordForgotCaptcha({
+        captchaHeight,
+        captchaType,
+        captchaWidth,
+      }),
+  });
 export const prefetchUseUsersServiceGetUsersProfilePasswordChangeOtp = (
   queryClient: QueryClient,
 ) =>
@@ -73,24 +98,30 @@ export const prefetchUseReportsServiceGetReports = (
     queryFn: () =>
       ReportsService.getReports({ onlyFavorite, onlyHavingVideo, onlyNew }),
   });
-export const prefetchUseReportsServiceGetReportsByReportId = (
-  queryClient: QueryClient,
-  {
-    reportId,
-  }: {
-    reportId: string;
-  },
-) =>
-  queryClient.prefetchQuery({
-    queryKey: Common.UseReportsServiceGetReportsByReportIdKeyFn({ reportId }),
-    queryFn: () => ReportsService.getReportsByReportId({ reportId }),
-  });
 export const prefetchUseReportsServiceGetReportsCategories = (
   queryClient: QueryClient,
 ) =>
   queryClient.prefetchQuery({
     queryKey: Common.UseReportsServiceGetReportsCategoriesKeyFn(),
     queryFn: () => ReportsService.getReportsCategories(),
+  });
+export const prefetchUseReportsServiceGetReportsByReportId = (
+  queryClient: QueryClient,
+  {
+    reportId,
+    screenshotQueryId,
+  }: {
+    reportId: string;
+    screenshotQueryId?: string;
+  },
+) =>
+  queryClient.prefetchQuery({
+    queryKey: Common.UseReportsServiceGetReportsByReportIdKeyFn({
+      reportId,
+      screenshotQueryId,
+    }),
+    queryFn: () =>
+      ReportsService.getReportsByReportId({ reportId, screenshotQueryId }),
   });
 export const prefetchUseDashboardsServiceGetDashboards = (
   queryClient: QueryClient,

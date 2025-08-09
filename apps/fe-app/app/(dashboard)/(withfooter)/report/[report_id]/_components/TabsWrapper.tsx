@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { cn, Tabs } from 'design-system';
-import { useGetCurrentSection } from '../../../../../../hooks';
+import { useGetCurrentSection } from '@shared';
 
 const TABS = [
   { id: 'videoReview', title: 'ویدیو بررسی' },

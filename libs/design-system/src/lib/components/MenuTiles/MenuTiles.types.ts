@@ -4,6 +4,7 @@ interface iconPropsPlusColor extends IconProps {
 }
 type metaType = {
   modalName?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   modalProps?: any;
 };
 export interface MenuTilesProps {

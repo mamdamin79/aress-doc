@@ -2,7 +2,7 @@
 import { cn, Icon } from 'design-system';
 import { CategoryList } from './CategoryList';
 import { GetReportsCategoriesResponse, GetReportsResponse } from '@openapi';
-import { useHeaderVisibility } from '../../../../../hooks/useHeaderVisiblity';
+import { useHeaderVisibility } from '@shared';
 
 type Props = {
   categories: GetReportsCategoriesResponse;

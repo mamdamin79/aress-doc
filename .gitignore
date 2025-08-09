@@ -5,6 +5,7 @@ build
 
 .nx/cache
 .nx/workspace-data
+.trae
 
 # Next.js
 .next

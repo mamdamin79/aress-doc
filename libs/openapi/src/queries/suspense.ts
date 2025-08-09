@@ -66,6 +66,36 @@ export const useUsersServiceGetUsersMeSuspense = <
     queryFn: () => UsersService.getUsersMe() as TData,
     ...options,
   });
+export const useUsersServiceGetUsersPasswordForgotCaptchaSuspense = <
+  TData = Common.UsersServiceGetUsersPasswordForgotCaptchaDefaultResponse,
+  TError = unknown,
+  TQueryKey extends Array<unknown> = unknown[],
+>(
+  {
+    captchaHeight,
+    captchaType,
+    captchaWidth,
+  }: {
+    captchaHeight?: number;
+    captchaType?: CaptchaType;
+    captchaWidth?: number;
+  } = {},
+  queryKey?: TQueryKey,
+  options?: Omit<UseQueryOptions<TData, TError>, 'queryKey' | 'queryFn'>,
+) =>
+  useSuspenseQuery<TData, TError>({
+    queryKey: Common.UseUsersServiceGetUsersPasswordForgotCaptchaKeyFn(
+      { captchaHeight, captchaType, captchaWidth },
+      queryKey,
+    ),
+    queryFn: () =>
+      UsersService.getUsersPasswordForgotCaptcha({
+        captchaHeight,
+        captchaType,
+        captchaWidth,
+      }) as TData,
+    ...options,
+  });
 export const useUsersServiceGetUsersProfilePasswordChangeOtpSuspense = <
   TData = Common.UsersServiceGetUsersProfilePasswordChangeOtpDefaultResponse,
   TError = unknown,
@@ -110,27 +140,6 @@ export const useReportsServiceGetReportsSuspense = <
       }) as TData,
     ...options,
   });
-export const useReportsServiceGetReportsByReportIdSuspense = <
-  TData = Common.ReportsServiceGetReportsByReportIdDefaultResponse,
-  TError = unknown,
-  TQueryKey extends Array<unknown> = unknown[],
->(
-  {
-    reportId,
-  }: {
-    reportId: string;
-  },
-  queryKey?: TQueryKey,
-  options?: Omit<UseQueryOptions<TData, TError>, 'queryKey' | 'queryFn'>,
-) =>
-  useSuspenseQuery<TData, TError>({
-    queryKey: Common.UseReportsServiceGetReportsByReportIdKeyFn(
-      { reportId },
-      queryKey,
-    ),
-    queryFn: () => ReportsService.getReportsByReportId({ reportId }) as TData,
-    ...options,
-  });
 export const useReportsServiceGetReportsCategoriesSuspense = <
   TData = Common.ReportsServiceGetReportsCategoriesDefaultResponse,
   TError = unknown,
@@ -142,6 +151,33 @@ export const useReportsServiceGetReportsCategoriesSuspense = <
   useSuspenseQuery<TData, TError>({
     queryKey: Common.UseReportsServiceGetReportsCategoriesKeyFn(queryKey),
     queryFn: () => ReportsService.getReportsCategories() as TData,
+    ...options,
+  });
+export const useReportsServiceGetReportsByReportIdSuspense = <
+  TData = Common.ReportsServiceGetReportsByReportIdDefaultResponse,
+  TError = unknown,
+  TQueryKey extends Array<unknown> = unknown[],
+>(
+  {
+    reportId,
+    screenshotQueryId,
+  }: {
+    reportId: string;
+    screenshotQueryId?: string;
+  },
+  queryKey?: TQueryKey,
+  options?: Omit<UseQueryOptions<TData, TError>, 'queryKey' | 'queryFn'>,
+) =>
+  useSuspenseQuery<TData, TError>({
+    queryKey: Common.UseReportsServiceGetReportsByReportIdKeyFn(
+      { reportId, screenshotQueryId },
+      queryKey,
+    ),
+    queryFn: () =>
+      ReportsService.getReportsByReportId({
+        reportId,
+        screenshotQueryId,
+      }) as TData,
     ...options,
   });
 export const useDashboardsServiceGetDashboardsSuspense = <

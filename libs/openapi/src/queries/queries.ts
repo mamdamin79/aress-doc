@@ -17,9 +17,14 @@ import {
   AddReportToDashboardForUserBody,
   Body_change_profile_picture_users_profile_picture_change_post,
   Body_login_for_access_token_users_login_post,
+  Body_request_new_report_reports_request_post,
+  Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post,
+  Body_save_screenshot_reports__report_id__screenshot_post,
   Body_test_user_access_token_users_token_post,
   CaptchaType,
   ChangeDashboardReportItemSortOrderBody,
+  ChangeEmailByOtpBody,
+  ChangeEmailGetOtpBody,
   ChangePasswordByOtpBody,
   ChangePhoneByOtpBody,
   ChangePhoneGetOtpBody,
@@ -30,6 +35,7 @@ import {
   GetDashboardItemCalculationsBody,
   GetForgotPasswordOtpBody,
   GetReportCalculationsBody,
+  MarkFundInTableTabBody,
   PinFundInTableTabBody,
   RenameDashboardForUserBody,
   ReplaceDashboardItemCalculationsBody,
@@ -93,6 +99,36 @@ export const useUsersServiceGetUsersMe = <
     queryFn: () => UsersService.getUsersMe() as TData,
     ...options,
   });
+export const useUsersServiceGetUsersPasswordForgotCaptcha = <
+  TData = Common.UsersServiceGetUsersPasswordForgotCaptchaDefaultResponse,
+  TError = unknown,
+  TQueryKey extends Array<unknown> = unknown[],
+>(
+  {
+    captchaHeight,
+    captchaType,
+    captchaWidth,
+  }: {
+    captchaHeight?: number;
+    captchaType?: CaptchaType;
+    captchaWidth?: number;
+  } = {},
+  queryKey?: TQueryKey,
+  options?: Omit<UseQueryOptions<TData, TError>, 'queryKey' | 'queryFn'>,
+) =>
+  useQuery<TData, TError>({
+    queryKey: Common.UseUsersServiceGetUsersPasswordForgotCaptchaKeyFn(
+      { captchaHeight, captchaType, captchaWidth },
+      queryKey,
+    ),
+    queryFn: () =>
+      UsersService.getUsersPasswordForgotCaptcha({
+        captchaHeight,
+        captchaType,
+        captchaWidth,
+      }) as TData,
+    ...options,
+  });
 export const useUsersServiceGetUsersProfilePasswordChangeOtp = <
   TData = Common.UsersServiceGetUsersProfilePasswordChangeOtpDefaultResponse,
   TError = unknown,
@@ -137,27 +173,6 @@ export const useReportsServiceGetReports = <
       }) as TData,
     ...options,
   });
-export const useReportsServiceGetReportsByReportId = <
-  TData = Common.ReportsServiceGetReportsByReportIdDefaultResponse,
-  TError = unknown,
-  TQueryKey extends Array<unknown> = unknown[],
->(
-  {
-    reportId,
-  }: {
-    reportId: string;
-  },
-  queryKey?: TQueryKey,
-  options?: Omit<UseQueryOptions<TData, TError>, 'queryKey' | 'queryFn'>,
-) =>
-  useQuery<TData, TError>({
-    queryKey: Common.UseReportsServiceGetReportsByReportIdKeyFn(
-      { reportId },
-      queryKey,
-    ),
-    queryFn: () => ReportsService.getReportsByReportId({ reportId }) as TData,
-    ...options,
-  });
 export const useReportsServiceGetReportsCategories = <
   TData = Common.ReportsServiceGetReportsCategoriesDefaultResponse,
   TError = unknown,
@@ -169,6 +184,33 @@ export const useReportsServiceGetReportsCategories = <
   useQuery<TData, TError>({
     queryKey: Common.UseReportsServiceGetReportsCategoriesKeyFn(queryKey),
     queryFn: () => ReportsService.getReportsCategories() as TData,
+    ...options,
+  });
+export const useReportsServiceGetReportsByReportId = <
+  TData = Common.ReportsServiceGetReportsByReportIdDefaultResponse,
+  TError = unknown,
+  TQueryKey extends Array<unknown> = unknown[],
+>(
+  {
+    reportId,
+    screenshotQueryId,
+  }: {
+    reportId: string;
+    screenshotQueryId?: string;
+  },
+  queryKey?: TQueryKey,
+  options?: Omit<UseQueryOptions<TData, TError>, 'queryKey' | 'queryFn'>,
+) =>
+  useQuery<TData, TError>({
+    queryKey: Common.UseReportsServiceGetReportsByReportIdKeyFn(
+      { reportId, screenshotQueryId },
+      queryKey,
+    ),
+    queryFn: () =>
+      ReportsService.getReportsByReportId({
+        reportId,
+        screenshotQueryId,
+      }) as TData,
     ...options,
   });
 export const useDashboardsServiceGetDashboards = <
@@ -346,43 +388,6 @@ export const useUsersServicePostUsersToken = <
   >({
     mutationFn: ({ formData }) =>
       UsersService.postUsersToken({ formData }) as unknown as Promise<TData>,
-    ...options,
-  });
-export const useUsersServicePostUsersPasswordForgotCaptcha = <
-  TData = Common.UsersServicePostUsersPasswordForgotCaptchaMutationResult,
-  TError = unknown,
-  TContext = unknown,
->(
-  options?: Omit<
-    UseMutationOptions<
-      TData,
-      TError,
-      {
-        captchaHeight?: number;
-        captchaType?: CaptchaType;
-        captchaWidth?: number;
-      },
-      TContext
-    >,
-    'mutationFn'
-  >,
-) =>
-  useMutation<
-    TData,
-    TError,
-    {
-      captchaHeight?: number;
-      captchaType?: CaptchaType;
-      captchaWidth?: number;
-    },
-    TContext
-  >({
-    mutationFn: ({ captchaHeight, captchaType, captchaWidth }) =>
-      UsersService.postUsersPasswordForgotCaptcha({
-        captchaHeight,
-        captchaType,
-        captchaWidth,
-      }) as unknown as Promise<TData>,
     ...options,
   });
 export const useUsersServicePostUsersPasswordForgotOtp = <
@@ -571,6 +576,68 @@ export const useUsersServicePostUsersProfilePhoneChange = <
       }) as unknown as Promise<TData>,
     ...options,
   });
+export const useUsersServicePostUsersProfileEmailChangeOtp = <
+  TData = Common.UsersServicePostUsersProfileEmailChangeOtpMutationResult,
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: Omit<
+    UseMutationOptions<
+      TData,
+      TError,
+      {
+        requestBody: ChangeEmailGetOtpBody;
+      },
+      TContext
+    >,
+    'mutationFn'
+  >,
+) =>
+  useMutation<
+    TData,
+    TError,
+    {
+      requestBody: ChangeEmailGetOtpBody;
+    },
+    TContext
+  >({
+    mutationFn: ({ requestBody }) =>
+      UsersService.postUsersProfileEmailChangeOtp({
+        requestBody,
+      }) as unknown as Promise<TData>,
+    ...options,
+  });
+export const useUsersServicePostUsersProfileEmailChange = <
+  TData = Common.UsersServicePostUsersProfileEmailChangeMutationResult,
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: Omit<
+    UseMutationOptions<
+      TData,
+      TError,
+      {
+        requestBody: ChangeEmailByOtpBody;
+      },
+      TContext
+    >,
+    'mutationFn'
+  >,
+) =>
+  useMutation<
+    TData,
+    TError,
+    {
+      requestBody: ChangeEmailByOtpBody;
+    },
+    TContext
+  >({
+    mutationFn: ({ requestBody }) =>
+      UsersService.postUsersProfileEmailChange({
+        requestBody,
+      }) as unknown as Promise<TData>,
+    ...options,
+  });
 export const useUsersServicePostUsersProfileUsernameChange = <
   TData = Common.UsersServicePostUsersProfileUsernameChangeMutationResult,
   TError = unknown,
@@ -629,6 +696,52 @@ export const useUsersServicePostUsersProfilePictureChange = <
   >({
     mutationFn: ({ formData }) =>
       UsersService.postUsersProfilePictureChange({
+        formData,
+      }) as unknown as Promise<TData>,
+    ...options,
+  });
+export const useUsersServicePostUsersLogout = <
+  TData = Common.UsersServicePostUsersLogoutMutationResult,
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: Omit<
+    UseMutationOptions<TData, TError, void, TContext>,
+    'mutationFn'
+  >,
+) =>
+  useMutation<TData, TError, void, TContext>({
+    mutationFn: () =>
+      UsersService.postUsersLogout() as unknown as Promise<TData>,
+    ...options,
+  });
+export const useReportsServicePostReportsRequest = <
+  TData = Common.ReportsServicePostReportsRequestMutationResult,
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: Omit<
+    UseMutationOptions<
+      TData,
+      TError,
+      {
+        formData: Body_request_new_report_reports_request_post;
+      },
+      TContext
+    >,
+    'mutationFn'
+  >,
+) =>
+  useMutation<
+    TData,
+    TError,
+    {
+      formData: Body_request_new_report_reports_request_post;
+    },
+    TContext
+  >({
+    mutationFn: ({ formData }) =>
+      ReportsService.postReportsRequest({
         formData,
       }) as unknown as Promise<TData>,
     ...options,
@@ -694,6 +807,40 @@ export const useReportsServicePostReportsByReportIdFavorite = <
   >({
     mutationFn: ({ reportId }) =>
       ReportsService.postReportsByReportIdFavorite({
+        reportId,
+      }) as unknown as Promise<TData>,
+    ...options,
+  });
+export const useReportsServicePostReportsByReportIdScreenshot = <
+  TData = Common.ReportsServicePostReportsByReportIdScreenshotMutationResult,
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: Omit<
+    UseMutationOptions<
+      TData,
+      TError,
+      {
+        formData: Body_save_screenshot_reports__report_id__screenshot_post;
+        reportId: string;
+      },
+      TContext
+    >,
+    'mutationFn'
+  >,
+) =>
+  useMutation<
+    TData,
+    TError,
+    {
+      formData: Body_save_screenshot_reports__report_id__screenshot_post;
+      reportId: string;
+    },
+    TContext
+  >({
+    mutationFn: ({ formData, reportId }) =>
+      ReportsService.postReportsByReportIdScreenshot({
+        formData,
         reportId,
       }) as unknown as Promise<TData>,
     ...options,
@@ -799,6 +946,42 @@ export const useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItem
       mutationFn: ({ dashboardId, dashboardItemId, requestBody }) =>
         DashboardsService.postDashboardsByDashboardIdItemsByDashboardItemIdReplace(
           { dashboardId, dashboardItemId, requestBody },
+        ) as unknown as Promise<TData>,
+      ...options,
+    });
+export const useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdScreenshot =
+  <
+    TData = Common.DashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotMutationResult,
+    TError = unknown,
+    TContext = unknown,
+  >(
+    options?: Omit<
+      UseMutationOptions<
+        TData,
+        TError,
+        {
+          dashboardId: number;
+          dashboardItemId: number;
+          formData: Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post;
+        },
+        TContext
+      >,
+      'mutationFn'
+    >,
+  ) =>
+    useMutation<
+      TData,
+      TError,
+      {
+        dashboardId: number;
+        dashboardItemId: number;
+        formData: Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post;
+      },
+      TContext
+    >({
+      mutationFn: ({ dashboardId, dashboardItemId, formData }) =>
+        DashboardsService.postDashboardsByDashboardIdItemsByDashboardItemIdScreenshot(
+          { dashboardId, dashboardItemId, formData },
         ) as unknown as Promise<TData>,
       ...options,
     });
@@ -936,6 +1119,68 @@ export const useFundsServicePostFundsTableUnpin = <
       }) as unknown as Promise<TData>,
     ...options,
   });
+export const useFundsServicePostFundsTableMark = <
+  TData = Common.FundsServicePostFundsTableMarkMutationResult,
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: Omit<
+    UseMutationOptions<
+      TData,
+      TError,
+      {
+        requestBody: MarkFundInTableTabBody;
+      },
+      TContext
+    >,
+    'mutationFn'
+  >,
+) =>
+  useMutation<
+    TData,
+    TError,
+    {
+      requestBody: MarkFundInTableTabBody;
+    },
+    TContext
+  >({
+    mutationFn: ({ requestBody }) =>
+      FundsService.postFundsTableMark({
+        requestBody,
+      }) as unknown as Promise<TData>,
+    ...options,
+  });
+export const useFundsServicePostFundsTableUnmark = <
+  TData = Common.FundsServicePostFundsTableUnmarkMutationResult,
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: Omit<
+    UseMutationOptions<
+      TData,
+      TError,
+      {
+        requestBody: UnpinFundInTableTabBody;
+      },
+      TContext
+    >,
+    'mutationFn'
+  >,
+) =>
+  useMutation<
+    TData,
+    TError,
+    {
+      requestBody: UnpinFundInTableTabBody;
+    },
+    TContext
+  >({
+    mutationFn: ({ requestBody }) =>
+      FundsService.postFundsTableUnmark({
+        requestBody,
+      }) as unknown as Promise<TData>,
+    ...options,
+  });
 export const useDashboardsServicePutDashboards = <
   TData = Common.DashboardsServicePutDashboardsMutationResult,
   TError = unknown,
@@ -1011,7 +1256,7 @@ export const useReportsServiceDeleteReportsByReportIdFavorite = <
       TData,
       TError,
       {
-        reportId: number;
+        reportId: string;
       },
       TContext
     >,
@@ -1022,7 +1267,7 @@ export const useReportsServiceDeleteReportsByReportIdFavorite = <
     TData,
     TError,
     {
-      reportId: number;
+      reportId: string;
     },
     TContext
   >({

@@ -42,4 +42,11 @@ export default tseslint.config(
       ],
     },
   },
+  // Disable module boundaries for Storybook files
+  {
+    files: ['**/.storybook/**/*'],
+    rules: {
+      '@nx/enforce-module-boundaries': 'off',
+    },
+  },
 );

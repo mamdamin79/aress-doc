@@ -354,7 +354,8 @@ export const useVideo = (
     video.addEventListener('loadedmetadata', () => {
       video.currentTime = state.currentTime;
     });
-    state.isPlaying ? play() : pause();
+    if (state.isPlaying) play();
+    else pause();
 
     const updateProgress = () => {
       // first of all we should calculate progress form duration and current time - it used in handle time update and handle durationchange
@@ -485,34 +486,15 @@ export const useVideo = (
     }
   }, []);
 
-  const handleVolumeChange = useCallback(
-    (e: MouseEvent, progressBar: HTMLElement) => {
-      const rect = progressBar.getBoundingClientRect();
-      const clickPosition = e.clientX - rect.left;
-      const newVolume = Math.min(Math.max(clickPosition / rect.width, 0), 1);
-      setVolume(newVolume);
-    },
-    [setVolume],
-  );
-
-  const startVolumeDrag = useCallback(
-    (e: React.MouseEvent<HTMLElement>, progressBar: HTMLElement) => {
-      e.preventDefault();
-
-      const handleMouseMove = (e: MouseEvent) => {
-        handleVolumeChange(e, progressBar);
-      };
-
-      const handleMouseUp = () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
-      };
-
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-    },
-    [handleVolumeChange],
-  );
+  // const handleVolumeChange = useCallback(
+  //   (e: MouseEvent, progressBar: HTMLElement) => {
+  //     const rect = progressBar.getBoundingClientRect();
+  //     const clickPosition = e.clientX - rect.left;
+  //     const newVolume = Math.min(Math.max(clickPosition / rect.width, 0), 1);
+  //     setVolume(newVolume);
+  //   },
+  //   [setVolume],
+  // );
 
   const toggleMute = useCallback(() => {
     if (videoRef.current) {

@@ -4,23 +4,23 @@ import { ButtonMode, ButtonSize } from './Button.types';
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  isLoading: boolean;
+  isLoading?: boolean;
   iconLeft?: IconProps;
   iconRight?: IconProps;
-  size: ButtonSize;
-  mode: ButtonMode;
-  align: 'center' | 'right';
+  size?: ButtonSize;
+  mode?: ButtonMode;
+  align?: 'center' | 'right';
   theme?: 'brand' | 'error' | 'success' | 'neutral';
 }
 
 export const Button: React.FC<ButtonProps> = ({
-  mode,
+  mode = 'primary',
   theme = 'brand',
-  size,
+  size = 'md',
   disabled,
-  align,
+  align = 'center',
   iconRight,
-  isLoading,
+  isLoading = false,
   iconLeft,
   children,
   className,
