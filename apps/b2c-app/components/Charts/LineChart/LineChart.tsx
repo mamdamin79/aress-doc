@@ -1,3 +1,5 @@
+'use client';
+
 import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 import { useMemo } from 'react';
@@ -9,7 +11,7 @@ export interface LineChartProps {
     value: number;
   }[];
 }
-export const LineChart: React.FC<LineChartProps> = ({ points }) => {
+export const LineChart = ({ points }: LineChartProps) => {
   const priceData = useMemo<[number, number][]>(() => {
     if (!points.length) return [];
 
@@ -54,6 +56,7 @@ export const LineChart: React.FC<LineChartProps> = ({ points }) => {
       },
     },
     xAxis: {
+      tickLength: 0,
       reversed: true,
       type: 'datetime',
       tickInterval: 1000 * 60 * 60 * 24 * 2,
