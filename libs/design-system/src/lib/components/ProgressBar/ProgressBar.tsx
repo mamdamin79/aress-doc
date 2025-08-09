@@ -1,41 +1,37 @@
 import { cn } from './../../../utils';
 import { Icon } from '../Icon';
 import { ProgressCircle } from './ProgressCircle';
+import { ProgressBarItemType } from './ProgressBar.types';
 
-interface ProgressBarItemType {
-  text: string;
-  status: 'error' | 'success';
-}
-
-interface Props {
+interface ProgressBarProps {
   progressBarItems: ProgressBarItemType[];
   activeIndex: number;
-  orientation?: 'vertical' | 'horizental';
+  orientation?: 'vertical' | 'horizontal';
 }
 
 export function ProgressBar({
   progressBarItems,
   activeIndex,
-  orientation,
-}: Props) {
+  orientation = 'horizontal',
+}: ProgressBarProps) {
   return (
     <div className="relative flex items-center justify-between">
       <div
         className={cn('flex w-full items-start justify-center', {
           'flex-col': orientation === 'vertical',
-          'flex-row': orientation === 'horizental',
+          'flex-row': orientation === 'horizontal',
         })}
       >
         {progressBarItems.map((item, index) => (
           <div
             className={cn('grid', {
-              'w-96 grid-cols-12': orientation === 'horizental',
+              'w-96 grid-cols-12': orientation === 'horizontal',
               'h-[120px] grid-rows-12': orientation === 'vertical',
             })}
             key={index}
           >
             {/* Connecting Line */}
-            {orientation === 'horizental' &&
+            {orientation === 'horizontal' &&
               index + 1 < progressBarItems.length && (
                 <div className="relative col-span-12 -mt-2 flex items-center justify-center">
                   <div className="bg-border-neutral-primary absolute mr-[90%] h-1 w-full" />
@@ -90,7 +86,7 @@ export function ProgressBar({
               ) : (
                 <ProgressCircle mode="passed" />
               )}
-              {orientation === 'horizental' && (
+              {orientation === 'horizontal' && (
                 <div
                   className={cn(
                     'text-md text-text-neutral-primary mt-3 w-full text-center font-medium',

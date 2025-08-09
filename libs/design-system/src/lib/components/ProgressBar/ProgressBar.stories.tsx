@@ -23,7 +23,7 @@ export const Default: Story = {
       { text: 'رمز عبور جدید', status: 'success' },
       { text: 'رمز عبور جدید', status: 'success' },
     ],
-    orientation: 'horizental',
+    orientation: 'horizontal',
     activeIndex: 0,
   },
 };
