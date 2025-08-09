@@ -1,9 +1,9 @@
 'use client';
-import { Tabs, Accordion } from 'design-system';
+import { Tabs, Accordion, IconProps } from 'design-system';
 import React, { useState } from 'react';
 import { faqs } from './faqs.constanst';
 
-const tabList = [
+const tabList: { id: string; title: string; icons: IconProps[] }[] = [
   {
     id: 'registrationAndActivation',
     title: 'ثبت‌نام و فعال‌سازی',
@@ -30,7 +30,7 @@ const page = () => {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
-    <div className="mt-8">
+    <div className="mt-8 min-h-[60vh]">
       <h1 className="text-text-neutral-primary text-center text-xl font-semibold">
         سؤالی دارید؟
       </h1>
@@ -47,7 +47,7 @@ const page = () => {
       </div>
       <div className="mx-auto w-[700px] md:w-[704px] lg:w-[1000px]">
         {Object.values(faqs)?.map((_, index) => (
-          <>
+          <React.Fragment key={index}>
             {index === activeTab && (
               <div>
                 <div className="my-3">
@@ -60,7 +60,7 @@ const page = () => {
                 </div>
               </div>
             )}
-          </>
+          </React.Fragment>
         ))}
         <div className="bg-border-neutral-secondary mb-20 h-[1px] w-full" />
       </div>
