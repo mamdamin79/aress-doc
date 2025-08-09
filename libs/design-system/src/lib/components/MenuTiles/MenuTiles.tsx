@@ -118,7 +118,7 @@ const TextContainer = ({
     )}
   </div>
 );
-export const MenuTiles: React.FC<MenuTilesProps> = ({
+export const MenuTiles = ({
   text,
   subText,
   icon,
@@ -131,7 +131,7 @@ export const MenuTiles: React.FC<MenuTilesProps> = ({
   prefix = '',
   link,
   meta,
-}) => {
+}: MenuTilesProps) => {
   const wrapperClasses = `w-full min-w-[240px] max-w-[272px] flex items-center justify-between py-2 pr-3 transition-all 
     bg-surface-neutral-primary ${!isDisabled && 'hover:bg-surface-brand-100'}`;
 
