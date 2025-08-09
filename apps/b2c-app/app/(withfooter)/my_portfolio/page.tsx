@@ -1,4 +1,4 @@
-import { LineChart } from '../../../components';
+import { BarStickyBtn, LineChart } from '../../../components';
 import React from 'react';
 import { TabsWrapper } from './_components';
 import { FundsSummary } from './_components/FundsSummary';
@@ -30,6 +30,9 @@ const MyPortfolio = () => {
         </div>
         {/* Funds Summary Section */}
         <FundsSummary />
+        <div className="sticky bottom-6 z-50 flex justify-center pb-[52px]">
+          <BarStickyBtn title="یک صندوق برای سرمایه‌گذاری انتخاب کنید" />
+        </div>
       </div>
     </>
   );
