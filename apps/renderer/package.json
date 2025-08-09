@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/apps/renderer/server.js",
+    "start": "node dist/server.js",
     "build": "tsc -p tsconfig.json",
     "dev": "nodemon --watch src --ext ts --exec tsx src/server.ts"
   },

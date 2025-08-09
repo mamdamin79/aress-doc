@@ -12,7 +12,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fa">
-      <body>{children}</body>
+      <body className="bg-surface-neutral-background min-w-[768px]">
+        {children}
+      </body>
     </html>
   );
 }

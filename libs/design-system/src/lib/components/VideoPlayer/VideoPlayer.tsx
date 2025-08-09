@@ -7,7 +7,6 @@ import { PlayerActions } from './ControlPanel/PlayerActions';
 import { PlayerOptions } from './ControlPanel/PlayerOptions';
 import { cn } from '../../../utils/classNames.utils';
 import { PlayerProgressBar } from './ControlPanel/PlayerProgressBar';
-import Image from 'next/image';
 import { PlayList } from '../PlayList';
 import { Video, VideoQuality } from './VideoPlayer.types';
 
@@ -182,7 +181,7 @@ export const VideoPlayer: React.FC<Props> = ({
           )}
         >
           {
-            <Image
+            <img
               src={'../../../assets/icons/logo.svg'}
               width={100}
               height={100}

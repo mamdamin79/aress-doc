@@ -6,10 +6,11 @@ export default async function Page({
   params,
   searchParams,
 }: {
-  params: { chart_id: string; chart_title: string };
-  searchParams: { [key: string]: string };
+  params: Promise<{ chart_id: string; chart_title: string }>;
+  searchParams: Promise<{ [key: string]: string }>;
 }) {
-  const { chart_id, chart_title } = params;
+  const { chart_id, chart_title } = await params;
+  const resolvedSearchParams = await searchParams;
   const cookieStore = await cookies();
 
   OpenAPI.TOKEN = cookieStore.get('access_token')?.value;
@@ -17,7 +18,7 @@ export default async function Page({
   const { calculation, filters } = await ReportsService.postReportsByReportId({
     reportId: chart_id,
     requestBody: {
-      selectedFilters: searchParams,
+      selectedFilters: resolvedSearchParams,
     },
   });
 
