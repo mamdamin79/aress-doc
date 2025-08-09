@@ -33,7 +33,7 @@ export const BarStickyBtn: React.FC<BarStickyBtnProps> = ({
           </div>
           <div
             className={cn(
-              'text-md max-w-[270px] truncate',
+              'text-md text-text-neutral-primary max-w-[270px] truncate',
               fundSelected && 'font-medium',
             )}
           >
