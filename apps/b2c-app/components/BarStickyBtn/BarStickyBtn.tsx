@@ -82,9 +82,12 @@ export const BarStickyBtn: React.FC<BarStickyBtnProps> = ({
               isDrawerOpen &&
                 'border-button-brand-border-default text-button-brand-label-plain-default hover:bg-button-brand-surface-default hover:text-text-neutral-white border bg-transparent',
               !fundSelected &&
-                'bg-button-brand-surface-disable pointer-events-none',
+                'bg-button-brand-surface-disable hover:bg-button-brand-surface-disable cursor-not-allowed',
             )}
-            onClick={() => setIsDrawerOpen((prev) => !prev)}
+            disabled={!fundSelected}
+            onClick={() => {
+              if (fundSelected) setIsDrawerOpen((prev) => !prev);
+            }}
           >
             {!isDrawerOpen ? 'معامله' : <Icon name="x" size="md" />}
           </button>
