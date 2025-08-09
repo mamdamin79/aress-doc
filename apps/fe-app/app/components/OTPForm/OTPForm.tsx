@@ -119,7 +119,7 @@ export const OTPForm: React.FC<OTPFormProps> = ({
           showResendButton && (
             <Button
               align="center"
-              isLoading={false}
+              isLoading={isLoading}
               mode="secondary"
               size="sm"
               className="text-md w-fit px-2 py-1 font-medium"

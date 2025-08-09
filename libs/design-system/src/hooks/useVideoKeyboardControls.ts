@@ -17,7 +17,8 @@ export const useVideoKeyboardControls = (
       const keyHandlers: Record<string, () => void> = {
         Space: () => {
           e.preventDefault();
-          isPlaying ? controls.pause() : controls.play();
+          if (isPlaying) controls.pause();
+          else controls.play();
         },
         KeyF: controls.fullScreen,
         KeyM: controls.toggleMute,

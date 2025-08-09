@@ -3,12 +3,9 @@
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "composite": true,
-    "noEmit": false
+    "declaration": true
   },
-  "exclude": [
-    "components/**/*.spec.ts",
-    "components/**/*.test.ts"
-  ],
+  "exclude": ["components/**/*.spec.ts", "components/**/*.test.ts"],
   "include": [
     "components/**/*.stories.ts",
     "components/**/*.stories.js",
@@ -18,6 +15,8 @@
     ".storybook/*.js",
     ".storybook/*.ts",
     "components/**/*.ts",
-    "components/**/*.tsx"
-, ".storybook/preview.tsx"  ]
+    "components/**/*.tsx",
+    "../../libs/design-system/src/**/*.ts",
+    "../../libs/design-system/src/**/*.tsx"
+  ]
 }

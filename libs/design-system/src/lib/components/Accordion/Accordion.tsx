@@ -74,12 +74,12 @@ export const Accordion: React.FC<Props> = ({
               </span>
             </button>
           ) : (
-            <DisclosureButton className="flex w-full items-center justify-between">
+            <DisclosureButton className="group flex w-full items-center justify-between">
               <span
                 className={cn(
                   'group flex w-full items-center justify-between',
                   {
-                    'group-hover:text-text-brand-primary-600 py-4':
+                    'group-hover:text-text-brand-primary-600 text-text-neutral-primary py-4':
                       mode === 'b2c',
                   },
                 )}

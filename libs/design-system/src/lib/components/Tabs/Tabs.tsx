@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 
 interface Props {
   tabs: TabItem[];
+  size?: 'small' | 'large';
   variant:
     | 'shaped'
     | 'lined'
@@ -18,6 +19,7 @@ interface Props {
   activeTab: number;
   onClickTab: (idTab: number) => void;
   className?: string;
+  fullWidthDivider?: boolean;
 }
 
 export const Tabs: React.FC<Props> = ({
@@ -26,6 +28,8 @@ export const Tabs: React.FC<Props> = ({
   onClickTab,
   activeTab,
   className,
+  size = 'large',
+  fullWidthDivider = false,
 }) => {
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const [sliderStyle, setSliderStyle] = useState({ left: 0, width: 0 });
@@ -65,18 +69,26 @@ export const Tabs: React.FC<Props> = ({
         className={cn(
           'relative flex gap-2',
           {
-            'border-border-neutral-primary w-max gap-[50px] border-b-2 text-center':
-              variant === 'lined',
+            'border-border-neutral-primary w-full justify-start border-b-2':
+              variant === 'lined' && fullWidthDivider,
+            'border-border-neutral-primary w-max gap-[50px] border-b-2':
+              variant === 'lined' && !fullWidthDivider,
           },
           {
             'border-border-neutral-secondary rounded-4xl bg-surface-neutral-tertiary w-fit gap-[7px] border p-1.5':
               variant === 'sliding',
+            'p-1': variant === 'sliding' && size === 'small',
           },
         )}
       >
         {variant === 'sliding' && (
           <div
-            className="bg-surface-brand-600-primary absolute z-0 h-9 rounded-[18px] transition-all duration-300"
+            className={cn(
+              'bg-surface-brand-600-primary absolute z-0 h-9 rounded-[18px] transition-all duration-300',
+              {
+                'h-[26px]': size === 'small',
+              },
+            )}
             style={{
               left: sliderStyle.left,
               width: sliderStyle.width,
@@ -95,7 +107,7 @@ export const Tabs: React.FC<Props> = ({
                 e.stopPropagation();
               }
             }}
-            key={index}
+            key={props.id ?? props.title ?? index}
             className={cn(
               'text-md relative outline-none',
               {
@@ -142,8 +154,12 @@ export const Tabs: React.FC<Props> = ({
                 'bg-surface-neutral-secondary': variant === 'rounded-full',
               },
               {
-                'rounded-5xl hover:text-text-brand-primary-600 text-text-neutral-primary data-[selected]:text-text-onbrand-neutral-primary-on600 px-3 py-1 text-sm font-medium duration-300':
+                'rounded-5xl hover:text-text-brand-primary-600 text-text-neutral-primary data-[selected]:text-text-onbrand-neutral-primary-on600 h-[36px] px-3 text-sm font-medium duration-300':
                   variant === 'sliding',
+              },
+              {
+                'h-[26px] px-1.5 py-0.5 text-xs font-medium':
+                  variant === 'sliding' && size === 'small',
               },
             )}
           >
@@ -154,24 +170,26 @@ export const Tabs: React.FC<Props> = ({
                 {variant === 'lined' && selected && (
                   <div className="bg-surface-brand-600-primary absolute bottom-0 left-0 right-0 h-[5px] rounded-t-md" />
                 )}
-                <div className="flex items-center justify-center gap-2">
-                  {props.tag && <FundsTag color={props.tag} />}
-                  {props.icons?.length && (
-                    <Icon {...props.icons[1]} size="lg" />
-                  )}
-                  {props.title}
-                  {props.icons?.length && props.title && (
-                    <Icon {...props.icons[0]} size="lg" />
-                  )}
-                </div>
+                {variant === 'shaped' ? (
+                  <div className="flex items-center gap-2">
+                    {props.tag && <FundsTag color={props.tag} />}
+                    {props.icons?.[0] && <Icon {...props.icons[0]} size="lg" />}
+                    {props.title}
+                    {props.icons?.[1] && props.title && (
+                      <Icon {...props.icons[1]} size="lg" />
+                    )}
+                  </div>
+                ) : (
+                  <span>{props.title}</span>
+                )}
               </>
             )}
           </Tab>
         ))}
       </TabList>
-      <TabPanels className="mt-12">
-        {tabs.map(({ content }, index) => (
-          <TabPanel key={index}>{content}</TabPanel>
+      <TabPanels className="mt-3">
+        {tabs.map(({ content, id, title }, index) => (
+          <TabPanel key={id ?? title ?? index}>{content}</TabPanel>
         ))}
       </TabPanels>
     </TabGroup>

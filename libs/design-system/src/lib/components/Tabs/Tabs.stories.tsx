@@ -43,6 +43,8 @@ export const Default: Story = {
     );
   },
   args: {
+    size: 'small',
+    fullWidthDivider: false,
     tabs: [
       {
         id: '1',

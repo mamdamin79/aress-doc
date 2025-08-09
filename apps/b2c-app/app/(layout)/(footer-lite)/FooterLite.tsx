@@ -1,8 +1,7 @@
-import { ReactComponent as Logo } from '@aress-assets/icons/b2c-logo.svg';
-import Abstract from '@aress-assets/images/footer-abstrack.png';
+import { ReactComponent as Logo } from '../../../assets/icons/b2c-logo.svg';
+import Abstract from '../../../assets/images/footer-abstrack.png';
 import Link from 'next/link';
 import { Icon } from 'design-system';
-import Image from 'next/image';
 
 export function FooterLite() {
   return (
@@ -68,14 +67,10 @@ export function FooterLite() {
         </div>
       </div>
 
-      <div className="absolute top-20 w-full rotate-6 lg:-top-14 xl:-top-20">
-        <Image
-          src={Abstract}
-          width={0}
-          height={0}
-          className="h-full"
-          alt="footer abstact"
-        />
+      <div className="absolute top-20 w-full lg:-top-14 xl:-top-20">
+        {Abstract && typeof Abstract === 'string' && (
+          <img src={Abstract} className="h-full" />
+        )}
       </div>
     </div>
   );

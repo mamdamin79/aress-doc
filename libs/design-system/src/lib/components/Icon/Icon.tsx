@@ -10,8 +10,8 @@ export interface IconProps {
 }
 
 // Memoize the Icon component to avoid unnecessary re-renders
-const IconComponent: React.FC<IconProps> = ({ name, size = 'md' }) => {
-  const isCustomIcon = useMemo(() => name?.includes('Custom'), [name]);
+const IconComponent = ({ name, size = 'md' }: IconProps) => {
+  const isCustomIcon = useMemo(() => name.includes('Custom'), [name]);
   const iconProps = useMemo(() => ({ name, size }), [name, size]);
 
   return isCustomIcon ? (

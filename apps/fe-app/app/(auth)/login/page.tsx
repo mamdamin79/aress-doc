@@ -14,9 +14,9 @@ const LoginPage = () => {
       <div className="max-w-screen-3xl flex w-full flex-col items-start justify-center gap-10 pt-[46px]">
         <div className="flex w-full items-center justify-center">
           <div className="absolute right-0 top-[34px] mr-8">
-            <div className="hidden h-[38px] w-[38px] items-center gap-4 py-3 xl:flex">
-              <Logo />
-              <h1 className="text-text-neutral-primary text-lg font-semibold">
+            <div className="hidden items-center gap-4 py-3 xl:flex">
+              <Logo className="h-[38px] w-[38px]" />
+              <h1 className="text-text-neutral-primary whitespace-normal text-lg font-semibold">
                 پردازش اطلاعات مالی آرسس
               </h1>
             </div>
