@@ -6,7 +6,7 @@ import { FundsSummary } from './_components/FundsSummary';
 const MyPortfolio = () => {
   return (
     <>
-      <div className="text-text-neutral-primary relative flex flex-col gap-1 px-20 pb-8 pt-6">
+      <div className="text-text-neutral-primary relative flex flex-col gap-1 px-20 pt-6">
         <div className="flex flex-col items-center gap-4 pb-12">
           <h1 className="w-full text-right text-xl font-semibold">دارایی من</h1>
           <div className="bg-surface-brand-200 h-[66px] w-full">
@@ -30,13 +30,9 @@ const MyPortfolio = () => {
         </div>
         {/* Funds Summary Section */}
         <FundsSummary />
-        <div className="sticky bottom-6 z-50 flex justify-center pb-[52px]">
+        <div className="sticky -bottom-7 z-50 flex justify-center pb-[52px] pt-8">
           <BarStickyBtn title="یک صندوق برای سرمایه‌گذاری انتخاب کنید" />
         </div>
-      </div>
-      {/* Sticky positioned BarStickyBtn */}
-      <div className="sticky -bottom-7 z-50 flex justify-center pb-[52px]">
-        <BarStickyBtn title="یک صندوق برای سرمایه‌گذاری انتخاب کنید" />
       </div>
     </>
   );

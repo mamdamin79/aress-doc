@@ -11,9 +11,14 @@ import { MENU_ITEM_APPROX_WIDTH } from './DesktopMenu.constants';
 interface MenuProps {
   menuItems: MenuItem[];
   activeTab: number;
+  showSeperator?: boolean;
 }
 
-export const DesktopMenu: React.FC<MenuProps> = ({ menuItems, activeTab }) => {
+export const DesktopMenu: React.FC<MenuProps> = ({
+  menuItems,
+  activeTab,
+  showSeperator,
+}) => {
   const [activeSubMenu, setActiveSubMenu] = useState<null | dropdownType>(null);
   const [showMoreMenu, setShowMoreMenu] = useState(false);
   const [menus, setMenus] = useState<{
@@ -135,10 +140,13 @@ export const DesktopMenu: React.FC<MenuProps> = ({ menuItems, activeTab }) => {
           if (menus.main.length > 2 && index == 2)
             return (
               <React.Fragment key={`desktop-menu-item-${index}`}>
-                <div
-                  className="bg-border-neutral-contrast -mt-2 h-5 w-0.5 rounded-[100px]"
-                  key={index}
-                ></div>
+                {showSeperator && (
+                  <div
+                    className="bg-border-neutral-contrast -mt-2 h-5 w-0.5 rounded-[100px]"
+                    key={index}
+                  ></div>
+                )}
+
                 {renderMenuItem(item, index)}
               </React.Fragment>
             );
