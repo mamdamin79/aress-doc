@@ -94,7 +94,6 @@ export const LineChart = ({
     },
     xAxis: {
       tickLength: 0,
-      reversed: true,
       type: 'datetime',
       tickInterval: 1000 * 60 * 60 * 24 * 2,
       crosshair: {

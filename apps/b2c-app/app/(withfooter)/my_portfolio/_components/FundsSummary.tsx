@@ -3,7 +3,13 @@ import { MyFundsTable, Piechart } from '../../../../components';
 import { Tabs } from 'design-system';
 import React, { useState } from 'react';
 
-export const FundsSummary: React.FC = () => {
+interface FundsSummaryProps {
+  hiddenContent?: boolean;
+}
+
+export const FundsSummary: React.FC<FundsSummaryProps> = ({
+  hiddenContent = false,
+}) => {
   const [activeTab, setActiveTab] = useState(0);
   return (
     <div className="flex w-full flex-col gap-6">
@@ -25,6 +31,7 @@ export const FundsSummary: React.FC = () => {
       </div>
       <div className="flex flex-row gap-8">
         <MyFundsTable
+          hiddenContent={hiddenContent}
           data={[
             {
               typeID: 1, // درآمد ثابت

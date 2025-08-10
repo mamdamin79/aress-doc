@@ -33,9 +33,13 @@ const fundTypeMaps: Record<number, { title: string; color: string }> = {
 
 export interface MyFundsTableProps {
   data: FundData[];
+  hiddenContent?: boolean;
 }
 
-export function MyFundsTable({ data }: MyFundsTableProps) {
+export function MyFundsTable({
+  data,
+  hiddenContent = false,
+}: MyFundsTableProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showLeftButton, setShowLeftButton] = useState(false);
   const [showRightButton, setShowRightButton] = useState(false);
@@ -189,10 +193,14 @@ export function MyFundsTable({ data }: MyFundsTableProps) {
                 {/* Daily Value */}
                 <div className="text-center">
                   <div className="text-text-neutral-primary text-base">
-                    {fund.dailyValue.toLocaleString('fa-IR')} ریال
+                    {hiddenContent
+                      ? '.....'
+                      : `${fund.dailyValue.toLocaleString('fa-IR')} ریال`}
                   </div>
                   <div className="text-text-neutral-secondarycontrast text-sm">
-                    {fund.userInvestValue.toLocaleString('fa-IR')} ریال
+                    {hiddenContent
+                      ? '.....'
+                      : `${fund.userInvestValue.toLocaleString('fa-IR')} ریال`}
                   </div>
                 </div>
 
@@ -206,7 +214,9 @@ export function MyFundsTable({ data }: MyFundsTableProps) {
                         : 'text-text-accent-red-primary-600',
                     )}
                   >
-                    {Math.abs(fund.profitLoss).toLocaleString('fa-IR')} ریال
+                    {hiddenContent
+                      ? '.....'
+                      : `${Math.abs(fund.profitLoss).toLocaleString('fa-IR')} ریال`}
                   </div>
                   <div
                     className={cn(
@@ -227,7 +237,7 @@ export function MyFundsTable({ data }: MyFundsTableProps) {
                     {fund.fundWeightPercentage}٪
                   </div>
                   <div className="text-text-neutral-secondarycontrast text-sm">
-                    {fund.fundWeight} صندوق
+                    {hiddenContent ? '.....' : `${fund.fundWeight} صندوق`}
                   </div>
                 </div>
               </div>

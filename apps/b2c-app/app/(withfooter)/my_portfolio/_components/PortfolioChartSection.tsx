@@ -17,6 +17,8 @@ interface PortfolioChartSectionProps {
   defaultQuantity: number;
   defaultValueChange: number;
   defaultPercentageChange: number;
+  hiddenContent?: boolean;
+  onToggleHiddenContent?: () => void;
 }
 
 export const PortfolioChartSection: React.FC<PortfolioChartSectionProps> = ({
@@ -24,16 +26,13 @@ export const PortfolioChartSection: React.FC<PortfolioChartSectionProps> = ({
   defaultQuantity,
   defaultValueChange,
   defaultPercentageChange,
+  hiddenContent = false,
+  onToggleHiddenContent,
 }) => {
   const [hoveredData, setHoveredData] = useState<HoverData | null>(null);
-  const [hiddenContent, setHiddenContent] = useState(false);
 
   const handleChartHover = (data: HoverData | null) => {
     setHoveredData(data);
-  };
-
-  const handleToggleHiddenContent = () => {
-    setHiddenContent(!hiddenContent);
   };
 
   // Use hovered data if available, otherwise use default values
@@ -49,7 +48,7 @@ export const PortfolioChartSection: React.FC<PortfolioChartSectionProps> = ({
       <div className="flex h-[66px] w-full items-center justify-end">
         <AssetInfoBox
           hiddenContent={hiddenContent}
-          onToggleHiddenContent={handleToggleHiddenContent}
+          onToggleHiddenContent={onToggleHiddenContent || (() => {})}
           quantity={displayQuantity}
           valueChange={displayValueChange}
           percentageChange={displayPercentageChange}

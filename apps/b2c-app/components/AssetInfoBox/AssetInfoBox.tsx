@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { SlidingNumber } from '../SlidingNumber';
 import { Badge, formatNumber, Icon } from 'design-system';
 
@@ -17,6 +17,15 @@ export const AssetInfoBox: React.FC<AssetInfoBoxProps> = ({
   valueChange,
   percentageChange,
 }) => {
+  const slidingNumberRef = useRef<HTMLDivElement>(null);
+  const [slidingNumberWidth, setSlidingNumberWidth] = useState<number>(165);
+
+  useEffect(() => {
+    if (slidingNumberRef.current && !hiddenContent) {
+      const width = slidingNumberRef.current.offsetWidth;
+      setSlidingNumberWidth(width);
+    }
+  }, [quantity, hiddenContent]);
   return (
     <div className="flex w-fit flex-col">
       <div className="flex flex-row items-center gap-2">
@@ -31,14 +40,26 @@ export const AssetInfoBox: React.FC<AssetInfoBoxProps> = ({
           style={{ direction: 'ltr', minWidth: '165px' }}
         >
           <div className="text-text-neutral-primary text-left text-[32px] font-medium">
-            {!hiddenContent ? <SlidingNumber quantity={quantity} /> : '.....'}
+            {!hiddenContent ? (
+              <div ref={slidingNumberRef}>
+                <SlidingNumber quantity={quantity} />
+              </div>
+            ) : (
+              <div
+                className="flex items-end justify-start"
+                style={{
+                  width: `${slidingNumberWidth}px`,
+                  height: '47px',
+                }}
+              >
+                .....
+              </div>
+            )}
           </div>
         </div>
-        {!hiddenContent && (
-          <span className="text-text-neutral-secondary text-sm font-normal">
-            ریال
-          </span>
-        )}
+        <span className="text-text-neutral-secondary text-sm font-normal">
+          ریال{' '}
+        </span>
       </div>
       <div className="flex w-full justify-between">
         <Badge
@@ -57,7 +78,7 @@ export const AssetInfoBox: React.FC<AssetInfoBoxProps> = ({
               ریال
             </span>
           ) : (
-            '.....'
+            <span>........ ریال</span>
           )}
         </span>
       </div>
