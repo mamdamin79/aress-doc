@@ -28,6 +28,7 @@ export const Report15: FC<ReportProps<Report15CalculationResult>> = ({
   onSubmit,
   onShare,
   title,
+  onReplace,
 }) => {
   const [filterState, setFilterState] = useState(filters);
 
@@ -244,6 +245,7 @@ export const Report15: FC<ReportProps<Report15CalculationResult>> = ({
       onSubmit={handleSubmit}
       onRemove={onRemove}
       onShare={onShare}
+      onReplace={onReplace}
     >
       <div className="flex flex-col gap-1">
         <div className="text-text-neutral-primary flex items-center justify-start gap-6 px-3 pt-1 text-xs font-medium">

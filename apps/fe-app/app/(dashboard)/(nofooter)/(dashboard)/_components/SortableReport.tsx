@@ -15,6 +15,7 @@ type SortableReportProps = {
   onSubmit: (changedOptions: Record<string, any>) => Promise<boolean>;
   onRemoveReport: () => void;
   onShare?: () => void;
+  onReplace?: () => void;
 };
 
 export const SortableReport: React.FC<SortableReportProps> = ({
@@ -26,6 +27,7 @@ export const SortableReport: React.FC<SortableReportProps> = ({
   onSubmit,
   onRemoveReport,
   onShare,
+  onReplace,
 }) => {
   const {
     attributes,
@@ -57,6 +59,7 @@ export const SortableReport: React.FC<SortableReportProps> = ({
         onSubmit={onSubmit}
         onRemove={onRemoveReport}
         onShare={onShare}
+        onReplace={onReplace}
       />
     </div>
   );

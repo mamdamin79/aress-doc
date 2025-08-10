@@ -8,6 +8,7 @@ export interface ReportProps<T> {
   onSubmit?: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
   onRemove?: () => void;
   onShare?: () => void;
+  onReplace?: () => void;
 }
 export interface CustomChartOptions extends Highcharts.Options {
   series?: Array<

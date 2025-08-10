@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect, useState } from 'react';
 import Highcharts from 'highcharts';
 import 'highcharts/highcharts-more';
@@ -27,7 +28,7 @@ const categories = [
 
 export const Report_13_1: React.FC<
   ReportProps<Report13Dot1CalculationResult>
-> = ({ data, filters, onSubmit, title, onRemove, onShare }) => {
+> = ({ data, filters, onSubmit, title, onRemove, onShare, onReplace }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [switchIndex, setSwitchIndex] = useState<number>(1); // 1 is initialIndex
 
@@ -54,11 +55,11 @@ export const Report_13_1: React.FC<
         ? Number(chartData[i]).toLocaleString('fa-IR')
         : '۰';
     return `
-      <div class="category-label" style="text-align:center; font-weight:500; direction:rtl;">
+      <div class="category-label" style="text-align:center; font-weight:500; direction:rtl; color:var(--color-text-text-neutral-primary);">
         <div class="label-text" style="white-space:nowrap;">${label}</div>
         <div class="label-value" style="white-space:nowrap;">
           <span class="value-number">${value}</span>
-          <span class="value-unit" style="margin-left:4px;">${data.currencyUnit}</span>
+          <span class="value-unit" style="margin-left:4px; color:var(--color-text-text-neutral-secondary);">${data.currencyUnit}</span>
         </div>
       </div>
     `;
@@ -281,6 +282,7 @@ export const Report_13_1: React.FC<
         toBasicSetting(filterState[1], updateOption),
       ]}
       onShare={onShare}
+      onReplace={onReplace}
       switchIcons={{
         items: [
           { icon: { name: 'grid-3x3' } },

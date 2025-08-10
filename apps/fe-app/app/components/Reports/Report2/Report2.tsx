@@ -20,6 +20,7 @@ export function Report2({
   title,
   onRemove,
   onShare,
+  onReplace,
 }: ReportProps<Report2CalculationResult>) {
   const [dataState, setDataState] = useState(data);
   const [filterState, setFilterState] = useState(filters);
@@ -129,6 +130,7 @@ export function Report2({
       onShare={onShare}
       onSubmit={handleSubmit}
       onRemove={onRemove}
+      onReplace={onReplace}
     >
       <HighchartsReact highcharts={Highcharts} options={chartOptions} />
     </ReportCardBase>

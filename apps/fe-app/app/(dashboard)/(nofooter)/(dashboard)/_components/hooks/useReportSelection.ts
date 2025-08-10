@@ -8,7 +8,10 @@ import {
   useReportsServiceGetReportsCategories,
 } from '@openapi';
 
-export function useReportSelection(selectedReportID: string | null) {
+export function useReportSelection(
+  selectedReportID: string | null,
+  isReportSelectionPopupOpen: boolean,
+) {
   const searchParams = useSearchParams();
   const ITEMS_PER_PAGE = 6;
 
@@ -30,12 +33,12 @@ export function useReportSelection(selectedReportID: string | null) {
   const { data: reportsList } = useReportsServiceGetReports(
     queryParams,
     undefined,
-    { enabled: !!selectedReportID },
+    { enabled: isReportSelectionPopupOpen },
   );
 
   const { refetch: fetchReportsCategories } =
     useReportsServiceGetReportsCategories(undefined, {
-      enabled: !!selectedReportID,
+      enabled: isReportSelectionPopupOpen,
     });
 
   const filteredReports = useMemo(() => {

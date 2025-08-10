@@ -75,6 +75,7 @@ export const SlidersBox: React.FC = () => {
       }
     >
   >({});
+  const [replaceReportID, setReplaceReportID] = useState<number | null>(null);
   const baseURL = process.env.NEXT_PUBLIC_API_URL ?? '';
 
   const {
@@ -100,6 +101,7 @@ export const SlidersBox: React.FC = () => {
     handleAddNewReport,
     handleDragEnd: handleDragEndInternal,
     callRenderEndpoint,
+    handleReplaceReport,
   } = useDashboardActions({
     dashboardId: dashboardIdParam ? Number(dashboardIdParam) : null,
     dashboardData,
@@ -126,7 +128,7 @@ export const SlidersBox: React.FC = () => {
     paginatedReports,
     categories,
     totalPages,
-  } = useReportSelection(selectedReportID);
+  } = useReportSelection(selectedReportID, isReportSelectionPopupOpen);
   useEffect(() => {
     const cols = window.matchMedia('(min-width: 1280px)').matches ? 4 : 2;
     setSlidesPerView(cols);
@@ -238,6 +240,12 @@ export const SlidersBox: React.FC = () => {
                               report.selectedFilters,
                             )
                           }
+                          onReplace={async () => {
+                            setReplaceReportID(report.identifier);
+                            setActiveReportPlacementOrder(slotId);
+                            await handleReportSelectionPopupOpen();
+                            setIsReportSelectionPopupOpen(true);
+                          }}
                         />
                       );
                     }
@@ -331,11 +339,17 @@ export const SlidersBox: React.FC = () => {
             setSelectedReportID(null);
           }}
           onSubmit={(options) => {
-            handleAddNewReport(
-              String(selectedReportID),
-              activeReportPlacementOrder,
-              options,
-            );
+            if (!!replaceReportID) {
+              handleReplaceReport(replaceReportID, String(selectedReportID));
+              setReplaceReportID(null);
+              setIsReportPreviewOpen(false);
+            } else {
+              handleAddNewReport(
+                String(selectedReportID),
+                activeReportPlacementOrder,
+                options,
+              );
+            }
             setIsReportPreviewOpen(false);
           }}
           category={reportsPreviewData.category.title}

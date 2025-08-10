@@ -10,7 +10,7 @@ import { ReportProps } from '../Report.types';
 
 export const Report13_3: React.FC<
   ReportProps<Report13Dot3CalculationResult>
-> = ({ data, filters, title, onSubmit, onRemove, onShare }) => {
+> = ({ data, filters, title, onSubmit, onRemove, onShare, onReplace }) => {
   const [dataState, setDataState] = useState(data);
   const [filterState, setFilterState] = useState(filters);
 
@@ -192,6 +192,7 @@ export const Report13_3: React.FC<
       ]}
       onShare={onShare}
       title={title ?? ''}
+      onReplace={onReplace}
     >
       <HighchartsReact highcharts={Highcharts} options={options} />
     </ReportCardBase>
