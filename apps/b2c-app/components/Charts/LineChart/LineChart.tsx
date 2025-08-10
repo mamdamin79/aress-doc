@@ -10,15 +10,21 @@ export interface LineChartProps {
     date: string;
     value: number;
   }[];
+  onHover?: (data: { date: string; value: number } | null) => void;
+  hiddenContent?: boolean;
 }
-export const LineChart = ({ points }: LineChartProps) => {
+export const LineChart = ({
+  points,
+  onHover,
+  hiddenContent = false,
+}: LineChartProps) => {
   const priceData = useMemo<[number, number][]>(() => {
     if (!points.length) return [];
 
     return points.map(({ date, value }) => {
       const [year, month, day] = date.split('-').map(Number);
       const timestamp = Date.UTC(year, month - 1, day);
-      return [timestamp, parseFloat((value / 10000000000000).toFixed(2))];
+      return [timestamp, parseFloat((value / 1000000).toFixed(2))];
     });
   }, [points]);
 
@@ -34,7 +40,38 @@ export const LineChart = ({ points }: LineChartProps) => {
     rangeSelector: { enabled: false },
     scrollbar: { enabled: false },
     tooltip: {
-      enabled: false,
+      enabled: true,
+      backgroundColor: 'transparent',
+      borderWidth: 0,
+      shadow: false,
+      useHTML: true,
+      formatter: function () {
+        return '';
+      },
+    },
+    plotOptions: {
+      series: {
+        point: {
+          events: {
+            mouseOver: function () {
+              if (onHover) {
+                const point = this as Highcharts.Point;
+                const date = new Date(point.x as number);
+                const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+                onHover({
+                  date: formattedDate,
+                  value: (point.y as number) * 1000000,
+                });
+              }
+            },
+            mouseOut: function () {
+              if (onHover) {
+                onHover(null);
+              }
+            },
+          },
+        },
+      },
     },
     title: { text: '' },
     yAxis: {
@@ -45,7 +82,7 @@ export const LineChart = ({ points }: LineChartProps) => {
       min: 0,
       labels: {
         formatter: function () {
-          return `${this.value}`;
+          return hiddenContent ? '.....' : `${this.value}`;
         },
         style: {
           fontSize: '16px',
@@ -60,6 +97,11 @@ export const LineChart = ({ points }: LineChartProps) => {
       reversed: true,
       type: 'datetime',
       tickInterval: 1000 * 60 * 60 * 24 * 2,
+      crosshair: {
+        width: 1,
+        color: 'var(--color-border-accent-blue-600)',
+        dashStyle: 'Solid',
+      },
       labels: {
         formatter: function () {
           const d = new Date(this.value as number);
@@ -101,7 +143,19 @@ export const LineChart = ({ points }: LineChartProps) => {
           }
           return { x: point[0], y: point[1] };
         }),
-        marker: { enabled: false },
+        marker: {
+          enabled: false,
+          states: {
+            hover: {
+              enabled: true,
+              radius: 6,
+              fillColor: 'var(--color-border-accent-blue-600)',
+              lineWidth: 2,
+              lineColor: 'var(--color-surface-neutral-primary)',
+            },
+          },
+        },
+        enableMouseTracking: true,
         lineWidth: 2,
       },
     ],

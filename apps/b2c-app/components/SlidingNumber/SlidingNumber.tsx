@@ -25,7 +25,7 @@ export const SlidingNumber: React.FC<SlidingNumberProps> = ({ quantity }) => {
             }}
             perspective={1000}
             numbers={group}
-            duration={0.3}
+            duration={0.7}
           />
           {i !== splitNumberWithCommas(quantity.toString()).length - 1 && (
             <span

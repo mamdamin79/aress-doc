@@ -5,7 +5,7 @@ import BG_CARD_DARK from '@aress-assets/icons/pattern-dark.svg';
 import BG_CARD_LIGHT from '@aress-assets/icons/pattern-light.svg';
 import Image from 'next/image';
 import { Props, bankInfo } from './CreditCard.types';
-import { useThemeToggle } from '@shared/hooks/ToggleTheme';
+import { useThemeToggle } from '@shared';
 
 // Utility function to validate arrays
 const isValidArray = (arr: unknown[]): boolean =>
