@@ -378,7 +378,7 @@ export const SlidersBox: React.FC = () => {
           'Linkedin',
           'Telegram',
         ]}
-        url={`http://localhost:3000/report/${shareReportData?.reportID}?queryId=${shareReportData?.data.uploadResult.queryId}`}
+        url={`${typeof window !== 'undefined' ? window.location.origin : ''}/report/${shareReportData?.reportID}?queryId=${shareReportData?.data.uploadResult.queryId}`}
         image={
           shareReportData?.data.uploadResult.screenshotUrl
             ? baseURL + shareReportData?.data.uploadResult.screenshotUrl
