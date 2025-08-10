@@ -8,7 +8,10 @@ import {
   useReportsServiceGetReportsCategories,
 } from '@openapi';
 
-export function useReportSelection(selectedReportID: string | null) {
+export function useReportSelection(
+  selectedReportID: string | null,
+  isReportSelectionPopupOpen: boolean,
+) {
   const searchParams = useSearchParams();
   const ITEMS_PER_PAGE = 6;
 
@@ -27,10 +30,16 @@ export function useReportSelection(selectedReportID: string | null) {
   const [categories, setCategories] =
     useState<GetReportsCategoriesResponse | null>();
 
-  const { data: reportsList } = useReportsServiceGetReports(queryParams);
+  const { data: reportsList } = useReportsServiceGetReports(
+    queryParams,
+    undefined,
+    { enabled: isReportSelectionPopupOpen },
+  );
 
   const { refetch: fetchReportsCategories } =
-    useReportsServiceGetReportsCategories();
+    useReportsServiceGetReportsCategories(undefined, {
+      enabled: isReportSelectionPopupOpen,
+    });
 
   const filteredReports = useMemo(() => {
     return reportsList?.filter((report) => {
@@ -56,9 +65,13 @@ export function useReportSelection(selectedReportID: string | null) {
     : 0;
 
   const { data: previewData, refetch: fetchReportPreview } =
-    useReportsServiceGetReportsByReportId({
-      reportId: selectedReportID ?? '6',
-    });
+    useReportsServiceGetReportsByReportId(
+      {
+        reportId: selectedReportID ?? '6',
+      },
+      undefined,
+      { enabled: !!selectedReportID },
+    );
 
   const openPopup = async () => {
     const categoryRes = await fetchReportsCategories();

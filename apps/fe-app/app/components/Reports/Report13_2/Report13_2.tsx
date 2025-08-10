@@ -15,6 +15,7 @@ export const Report13_2: FC<ReportProps<Report13Dot2CalculationResult>> = ({
   onSubmit,
   title,
   onShare,
+  onReplace,
 }) => {
   const [dataState, setDataState] = useState(data);
   const [filterState, setFilterState] = useState(filters);
@@ -190,6 +191,7 @@ export const Report13_2: FC<ReportProps<Report13Dot2CalculationResult>> = ({
       onSubmit={handleSubmit}
       onRemove={onRemove}
       onShare={onShare}
+      onReplace={onReplace}
     >
       <HighchartsReact highcharts={Highcharts} options={options} />
     </ReportCardBase>

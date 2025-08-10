@@ -28,6 +28,7 @@ export const Report15: FC<ReportProps<Report15CalculationResult>> = ({
   onSubmit,
   onShare,
   title,
+  onReplace,
 }) => {
   const [filterState, setFilterState] = useState(filters);
 
@@ -71,25 +72,34 @@ export const Report15: FC<ReportProps<Report15CalculationResult>> = ({
       return false;
     }
   };
+
   const containerWidth = 367;
   const containerHeight = 223;
 
+  // ✅ Scale x and y values by 100
+  const scaledGraphData = useMemo(() => {
+    return data.graphData.map((point) => ({
+      ...point,
+      x: point.x * 100,
+      y: point.y * 100,
+    }));
+  }, [data.graphData]);
+
   const chartData = useMemo(() => {
-    const xValues = data.graphData.map((p) => p.x);
-    const yValues = data.graphData.map((p) => p.y);
+    const xValues = scaledGraphData.map((p) => p.x);
+    const yValues = scaledGraphData.map((p) => p.y);
 
     const minX = Math.min(...xValues);
     const maxX = Math.max(...xValues);
     const minY = Math.min(...yValues);
     const maxY = Math.max(...yValues);
 
-    // Make axis symmetric for centered cross lines
     const fullMin = Math.min(minX, minY);
     const fullMax = Math.max(maxX, maxY);
 
     const regressionLine = [
-      [fullMin, data.beta * fullMin + data.yIntersect],
-      [fullMax, data.beta * fullMax + data.yIntersect],
+      [fullMin, data.beta * fullMin + data.yIntersect * 100],
+      [fullMax, data.beta * fullMax + data.yIntersect * 100],
     ];
 
     const squareSize = Math.min(containerWidth, containerHeight);
@@ -109,7 +119,7 @@ export const Report15: FC<ReportProps<Report15CalculationResult>> = ({
       xMiddle: (minX + maxX) / 2,
       yMiddle: (minY + maxY) / 2,
     };
-  }, [data.graphData, data.beta, data.yIntersect]);
+  }, [scaledGraphData, data.beta, data.yIntersect]);
 
   const tickInterval = (chartData.maxXY - chartData.minXY) / 10;
 
@@ -152,13 +162,13 @@ export const Report15: FC<ReportProps<Report15CalculationResult>> = ({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       formatter: function (this: any) {
         return `
-          <div dir="rtl" style="font-family: vazirmatn, sans-serif; margin-bottom: 0.25rem; border-radius: 10px; background-color: #171717; padding: 0.5rem 1rem; text-align: right; font-size: 0.875rem; font-weight: 500; line-height: 1.5rem; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); backdrop-filter: blur(6px); z-index: 1000;">
+        <div dir="rtl" style="font-family: vazirmatn, sans-serif; margin-bottom: 0.25rem; border-radius: 10px; background-color: rgba(6, 8, 15,0.85); padding: 0.5rem 1rem; text-align: right; font-size: 0.875rem; font-weight: 500; line-height: 1.5rem; color: var(--color-text-neutral-oninverse); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); backdrop-filter: blur(6px); z-index: 1000;">
             <div style="font-weight: 500;">${this.tradeDateShamsi}</div>
               <div style="margin-top: 0.25rem; display: flex; align-items: center; gap: 0.25rem;">
                 <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; width: 100%;">
                   <span style="font-size: 0.875rem; font-weight: 400;">بازدهی شاخص قیمت (وزنی-ارزشی)</span>
                   <span style="unicode-bidi: plaintext;">
-                    ${this.x < 0 ? '-' + Math.abs(this.x) : this.x}${this.point?.unit ? ' ' + this.point.unit : ''}
+                    ${this.x < 0 ? '-' + Math.abs(this.x.toFixed(4)) : this.x.toFixed(4)}%${this.point?.unit ? ' ' + this.point.unit : ''}
                   </span>
                 </div>
               </div>
@@ -166,7 +176,7 @@ export const Report15: FC<ReportProps<Report15CalculationResult>> = ({
                 <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; width: 100%;">
                   <span style="font-size: 0.875rem; font-weight: 400;">بازده شاخص پالایشی</span>
                   <span style="unicode-bidi: plaintext;">
-                    ${this.y < 0 ? '-' + Math.abs(this.y) : this.y}${this.point?.unit ? ' ' + this.point.unit : ''}
+                    ${this.y < 0 ? '-' + Math.abs(this.y.toFixed(4)) : this.y.toFixed(4)}%${this.point?.unit ? ' ' + this.point.unit : ''}
                   </span>
                 </div>
               </div>
@@ -199,7 +209,11 @@ export const Report15: FC<ReportProps<Report15CalculationResult>> = ({
       {
         name: 'داده‌های واقعی',
         type: 'scatter',
-        data: data.graphData,
+        data: scaledGraphData.map((graphItem) => ({
+          x: graphItem.x,
+          y: graphItem.y,
+          tradeDateShamsi: graphItem.tradeDateShamsi,
+        })),
         marker: {
           symbol: 'diamond',
           radius: 5,
@@ -231,6 +245,7 @@ export const Report15: FC<ReportProps<Report15CalculationResult>> = ({
       onSubmit={handleSubmit}
       onRemove={onRemove}
       onShare={onShare}
+      onReplace={onReplace}
     >
       <div className="flex flex-col gap-1">
         <div className="text-text-neutral-primary flex items-center justify-start gap-6 px-3 pt-1 text-xs font-medium">
@@ -254,11 +269,20 @@ export const Report15: FC<ReportProps<Report15CalculationResult>> = ({
 
         <div className="flex flex-row gap-3 px-3 pb-3" dir="rtl">
           <div className="flex flex-col gap-2 pt-[18px]">
-            <InfoBox label="بتا (β)" value={data.beta} />
-            <InfoBox label="بتای تعدیل شده" value={data.betaAdjusted} />
-            <InfoBox label="عرض از مبدا (C)" value={`${data.yIntersect}%+`} />
-            <InfoBox label="ضریب تعیین (R2)" value={data.rSquared} />
-            <InfoBox label="سطح معنادار (P-Value)" value={data.pValue} />
+            <InfoBox label="بتا (β)" value={data.beta.toFixed(4)} />
+            <InfoBox
+              label="بتای تعدیل شده"
+              value={data.betaAdjusted.toFixed(4)}
+            />
+            <InfoBox
+              label="عرض از مبدا (C)"
+              value={`${(data.yIntersect * 100).toFixed(4)}%+`}
+            />
+            <InfoBox label="ضریب تعیین (R2)" value={data.rSquared.toFixed(4)} />
+            <InfoBox
+              label="سطح معنادار (P-Value)"
+              value={data.pValue.toFixed(4)}
+            />
           </div>
           <div className="h-[223px] w-[367px] pt-[18px]">
             <HighchartsReact highcharts={Highcharts} options={options} />

@@ -4,6 +4,7 @@ import {
   useDashboardsServiceDeleteDashboardsByDashboardIdItemsByDashboardItemId,
   useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdCalculations,
   useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdReorder,
+  useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdReplace,
   useDashboardsServicePutDashboardsByDashboardId,
 } from '@openapi';
 import { SuccessShareResponse } from '../types/types';
@@ -62,6 +63,9 @@ export function useDashboardActions({
 
   const { mutate: updateOrder } =
     useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdReorder();
+
+  const { mutateAsync: replaceReport } =
+    useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdReplace();
 
   // Update report filters/calculation
   const handleSubmit = async (
@@ -126,13 +130,21 @@ export function useDashboardActions({
           if (dashboardData) {
             // It's better if dashboardData.items is managed outside and passed in as state
             // Here, just update slotsToRender accordingly
-
+            showToast({
+              message: 'گزارش با موفقیت حذف شد',
+              type: 'success',
+            });
             setSlotsToRender((prev) => {
               const removedOrder = dashboardData.items?.find(
                 (item) => item.identifier === dashboardItemID,
               )?.order;
               if (removedOrder === undefined) return prev;
               return prev.filter((order) => order !== removedOrder);
+            });
+          } else {
+            showToast({
+              message: 'خطایی رخ داده است',
+              type: 'error',
             });
           }
         },
@@ -201,6 +213,62 @@ export function useDashboardActions({
         message: 'خطا در افزودن گزارش جدید',
         type: 'error',
       });
+    }
+  };
+
+  // Replace a report in dashboard
+  const handleReplaceReport = async (
+    dashboardItemId: number,
+    newReportIdentifier: string,
+  ) => {
+    if (!dashboardId) return false;
+
+    try {
+      const replacedItem = await replaceReport({
+        dashboardId,
+        dashboardItemId,
+        requestBody: {
+          newReportIdentifier,
+        },
+      });
+
+      if (!replacedItem?.report) return false;
+
+      // Update the report data map with the new report data
+      setReportDataMap((prev) => ({
+        ...prev,
+        [dashboardItemId]: {
+          data: replacedItem.report?.reportCalculation
+            ?.calculation as FinancialReportCalculationApiModel['calculation'],
+          filters: replacedItem.report.reportCalculation?.filters ?? [],
+        },
+      }));
+
+      // Update dashboard data if available
+      if (dashboardData) {
+        const updatedItems = dashboardData.items?.map((item) =>
+          item.identifier === dashboardItemId ? replacedItem : item,
+        );
+
+        setDashboardData({
+          ...dashboardData,
+          items: updatedItems,
+        });
+      }
+
+      showToast({
+        message: 'گزارش با موفقیت جایگزین شد',
+        type: 'success',
+      });
+
+      return true;
+    } catch (error) {
+      console.error('Error replacing report', error);
+      showToast({
+        message: 'خطا در جایگزینی گزارش',
+        type: 'error',
+      });
+      return false;
     }
   };
 
@@ -311,6 +379,7 @@ export function useDashboardActions({
     handleSubmit,
     handleRemoveReport,
     handleAddNewReport,
+    handleReplaceReport,
     handleDragEnd,
     callRenderEndpoint,
   };
