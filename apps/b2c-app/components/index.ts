@@ -5,3 +5,4 @@ export * from './MyFundsTable';
 export * from './Charts';
 export * from './FundCard';
 export * from './TradePopup';
+export * from './AssetInfoBox';
