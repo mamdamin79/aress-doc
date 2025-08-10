@@ -62,6 +62,7 @@ interface DynamicReportRendererProps {
   onSubmit?: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
   onRemove?: () => void;
   onShare?: () => void;
+  onReplace?: () => void;
 }
 
 export const DynamicReportRenderer: React.FC<DynamicReportRendererProps> = ({
@@ -72,6 +73,7 @@ export const DynamicReportRenderer: React.FC<DynamicReportRendererProps> = ({
   title,
   onRemove,
   onShare,
+  onReplace,
 }) => {
   // Convert identifier to string to ensure proper lookup with underscore values
   const identifierKey = String(identifier);
@@ -90,6 +92,7 @@ export const DynamicReportRenderer: React.FC<DynamicReportRendererProps> = ({
       title={title}
       onRemove={onRemove}
       onShare={onShare}
+      onReplace={onReplace}
     />
   );
 };
