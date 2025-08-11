@@ -27,9 +27,7 @@ export const FundsLogo: React.FC<FundsLogoProps> = ({
   return (
     <div className="relative">
       <img
-        // eslint-disable-next-line
-        // @ts-ignore
-        src={FundLogoFallback.src}
+        src={FundLogoFallback}
         alt="Fund Logo"
         className={`rounded-full ${sizeClasses[size]}`}
       />
@@ -38,7 +36,7 @@ export const FundsLogo: React.FC<FundsLogoProps> = ({
           className={cn('absolute bottom-0 right-0', { '-bottom-3': isPin })}
         >
           {isPin ? (
-            <Icon name="CustomPin" />
+            <Icon name="CustomPin" size={'sm'} />
           ) : (
             <FundsTag color="green" size={size === 'lg' ? 'lg' : 'md'} />
           )}
@@ -46,7 +44,12 @@ export const FundsLogo: React.FC<FundsLogoProps> = ({
       )}
       {isVerified && (
         <div className="absolute -top-1">
-          <VerifiedSVG />
+          <VerifiedSVG
+            viewBox="0 0 14 14"
+            className="object-cover"
+            width={16}
+            height={16}
+          />
         </div>
       )}
     </div>
