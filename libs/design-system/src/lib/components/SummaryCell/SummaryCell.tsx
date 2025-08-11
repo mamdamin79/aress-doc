@@ -1,7 +1,7 @@
 import { Icon } from '../Icon';
 import { IconName } from '../Icon/Icon.types';
 
-export interface SummaryCellProps {
+interface Props {
   label: {
     icon: IconName;
     title: string;
@@ -9,7 +9,7 @@ export interface SummaryCellProps {
   value: string;
 }
 
-export function SummaryCell({ label, value }: SummaryCellProps) {
+export function SummaryCell({ label, value }: Props) {
   return (
     <div className="hover:bg-surface-neutral-tertiary border-border-neutral-secondary bg-surface-neutral-primary group flex h-[132px] w-52 cursor-pointer items-center justify-center overflow-hidden rounded-3xl border p-5">
       <div className="w-full">

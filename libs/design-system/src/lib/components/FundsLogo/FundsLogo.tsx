@@ -27,7 +27,9 @@ export const FundsLogo: React.FC<FundsLogoProps> = ({
   return (
     <div className="relative">
       <img
-        src={FundLogoFallback}
+        // eslint-disable-next-line
+        // @ts-ignore
+        src={FundLogoFallback.src}
         alt="Fund Logo"
         className={`rounded-full ${sizeClasses[size]}`}
       />
