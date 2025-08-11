@@ -18,7 +18,6 @@ import {
 } from './utils';
 import { ReactComponent as BuyPopupPatternSVG } from './assets/buypopup_pattern.svg';
 import { ReactComponent as SellPopupPatternSVG } from './assets/sellpopup_pattern.svg';
-import { SlidingNumber } from '../SlidingNumber';
 
 export const TradePopup: React.FC<TradePopupProps> = ({
   isOpen,
@@ -40,8 +39,6 @@ export const TradePopup: React.FC<TradePopupProps> = ({
     setQuantity,
     acceptTerms,
     setAcceptTerms,
-    showInput,
-    setShowInput,
     incrementQuantity,
     decrementQuantity,
   } = useTradeQuantity(153000000, disableCheck);
@@ -104,90 +101,97 @@ export const TradePopup: React.FC<TradePopupProps> = ({
           <div className="flex w-full flex-row justify-start px-6">
             {/* Quantity Controls */}
             <div className="flex flex-col">
-              <span className="text-text-neutral-secondarycontrast text-right text-xs font-medium">
-                گام تغییر
-              </span>
-              <div>
-                <OptionsDropdown
-                  initialSelectedIndex={0}
-                  triggerClassName="w-[107px]"
-                  dropDownStyles={{
-                    bg: 'primary',
-                    emphasize: 'high',
-                    size: 'md',
-                    anchor: 'bottom start',
-                  }}
-                  dropDownList={quantityOptions.map((option, index) => ({
-                    text: formatNumber(option),
-                    id: index,
-                  }))}
-                  onChange={(selectedtItem, id) =>
-                    setQuantityStep(quantityOptions[id ?? 0])
-                  }
-                />
-              </div>
+              {mode === 'buy' ? (
+                <>
+                  <span className="text-text-neutral-secondarycontrast text-right text-xs font-medium">
+                    گام تغییر
+                  </span>
+                  <div>
+                    <OptionsDropdown
+                      initialSelectedIndex={0}
+                      triggerClassName="w-[107px]"
+                      dropDownStyles={{
+                        bg: 'primary',
+                        emphasize: 'high',
+                        size: 'md',
+                        anchor: 'bottom start',
+                      }}
+                      dropDownList={quantityOptions.map((option, index) => ({
+                        text: formatNumber(option),
+                        id: index,
+                      }))}
+                      onChange={(selectedtItem, id) =>
+                        setQuantityStep(quantityOptions[id ?? 0])
+                      }
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex w-[107px] pt-7">
+                    <Button
+                      mode="primary"
+                      theme="brand"
+                      size="sm"
+                      className="w-14"
+                      onClick={() => {
+                        // Set quantity to estimated unit value (maximum available for selling)
+                        setQuantity(estismatedUnit * estismatedBuyPrice);
+                      }}
+                    >
+                      همه
+                    </Button>
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="flex flex-row items-center gap-4 px-6 pt-4">
-              <div className="flex flex-col justify-start gap-2">
-                <Button
-                  theme="brand"
-                  mode="primary"
-                  size="sm"
-                  className="h-8 w-10"
-                  onClick={incrementQuantity}
-                >
-                  <Icon name="plus" size="lg" />
-                </Button>
-                <Button
-                  theme="brand"
-                  mode="secondary"
-                  size="sm"
-                  className="h-8 w-10"
-                  onClick={decrementQuantity}
-                >
-                  <Icon name="minus" size="lg" />
-                </Button>
-              </div>
+              {mode === 'buy' && (
+                <div className="flex flex-col justify-start gap-2">
+                  <Button
+                    theme="brand"
+                    mode="primary"
+                    size="sm"
+                    className="h-8 w-10"
+                    onClick={incrementQuantity}
+                  >
+                    <Icon name="plus" size="lg" />
+                  </Button>
+                  <Button
+                    theme="brand"
+                    mode="secondary"
+                    size="sm"
+                    className="h-8 w-10"
+                    onClick={decrementQuantity}
+                  >
+                    <Icon name="minus" size="lg" />
+                  </Button>
+                </div>
+              )}
 
               {/* Price Display */}
               <div
                 className="text-center"
                 style={{ direction: 'ltr', minWidth: '200px' }}
-                onClick={() => {
-                  if (!showInput) setShowInput(true);
-                }}
               >
                 <div className="text-text-neutral-primary flex items-center gap-1 text-[32px] font-medium">
                   <span className="text-text-neutral-secondary text-sm font-normal">
                     ریال
                   </span>
-
-                  {showInput ? (
-                    <input
-                      autoFocus
-                      type="text"
-                      inputMode="numeric"
-                      className="border-border-neutral-primary w-full rounded border bg-transparent px-2 text-right text-[32px] font-medium outline-none"
-                      value={formatNumber(quantity)}
-                      onChange={(e) => {
-                        let val = e.target.value
-                          .replace(/[^0-9\u06F0-\u06F9,]/g, '') // Allow digits and commas
-                          .replace(/,/g, ''); // Remove commas
-                        val = persianToEnglishDigits(val);
-                        setQuantity(val === '' ? 0 : Number(val));
-                      }}
-                      onBlur={() => setShowInput(false)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          setShowInput(false);
-                          e.currentTarget.blur();
-                        }
-                      }}
-                    />
-                  ) : (
-                    <SlidingNumber quantity={quantity} />
-                  )}
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    className="w-full bg-transparent text-right text-[32px] font-medium outline-none"
+                    value={formatNumber(quantity)}
+                    onChange={(e) => {
+                      let val = e.target.value
+                        .replace(/[^0-9\u06F0-\u06F9,]/g, '') // Allow digits and commas
+                        .replace(/,/g, ''); // Remove commas
+                      val = persianToEnglishDigits(val);
+                      setQuantity(val === '' ? 0 : Number(val));
+                    }}
+                  />
                 </div>
               </div>
             </div>

@@ -7,6 +7,8 @@ export interface BarStickyBtnProps {
   title?: string;
   sellAble?: boolean;
   fundSelected?: boolean;
+  onBuyClick?: () => void;
+  onSellClick?: () => void;
 }
 
 export const BarStickyBtn: React.FC<BarStickyBtnProps> = ({
@@ -14,6 +16,8 @@ export const BarStickyBtn: React.FC<BarStickyBtnProps> = ({
   sellAble,
   fundSelected,
   title,
+  onBuyClick,
+  onSellClick,
 }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -58,6 +62,7 @@ export const BarStickyBtn: React.FC<BarStickyBtnProps> = ({
               mode="primary"
               size="md"
               className="text-text-neutral-white h-[38px] w-24"
+              onClick={onBuyClick}
             >
               خرید
             </Button>
@@ -69,6 +74,7 @@ export const BarStickyBtn: React.FC<BarStickyBtnProps> = ({
                 mode="primary"
                 size="md"
                 className="text-text-neutral-white h-[38px] w-24"
+                onClick={onSellClick}
               >
                 فروش
               </Button>

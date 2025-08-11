@@ -28,6 +28,33 @@ export const LineChart = ({
     });
   }, [points]);
 
+  // Calculate Y-axis range
+  const yAxisConfig = useMemo(() => {
+    if (!priceData.length) return { min: 0 };
+
+    const values = priceData.map(([, value]) => value);
+    const minValue = Math.min(...values);
+    const maxValue = Math.max(...values);
+
+    // If all values are the same (including all zeros)
+    if (minValue === maxValue) {
+      if (minValue === 0) {
+        // For all zeros, set a range that shows the line at the bottom
+        return { min: 0, max: 10 };
+      } else {
+        // For other constant values, add some padding
+        const padding = Math.abs(minValue) * 0.1;
+        return {
+          min: Math.max(0, minValue - padding),
+          max: maxValue + padding,
+        };
+      }
+    }
+
+    // For varying values, let Highcharts handle it but ensure min is 0
+    return { min: 0 };
+  }, [priceData]);
+
   const options: Highcharts.Options = {
     ...baseOptions,
     legend: { enabled: false },
@@ -79,7 +106,7 @@ export const LineChart = ({
       gridLineInterpolation: 'polygon',
       gridLineColor: 'Var(--color-border-neutral-secondary)',
       title: { text: '' },
-      min: 0,
+      ...yAxisConfig,
       labels: {
         formatter: function () {
           return hiddenContent ? '.....' : `${this.value}`;

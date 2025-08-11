@@ -2,16 +2,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Button, cn, Icon } from 'design-system';
 import { ReactComponent as FundIcon } from './FundIcon.svg';
-export interface FundData {
-  typeID: number;
-  dailyValue: number;
-  userInvestValue: number;
-  profitLoss: number;
-  profitLossPercentage: number;
-  fundWeight: number;
-  fundWeightPercentage: number;
-  isStock?: boolean;
-}
+import { type FundData } from '../../app/(withfooter)/my_portfolio/_components/data/fundsData';
 const fundTypeMaps: Record<number, { title: string; color: string }> = {
   0: {
     title: 'سهامی',
@@ -34,11 +25,17 @@ const fundTypeMaps: Record<number, { title: string; color: string }> = {
 export interface MyFundsTableProps {
   data: FundData[];
   hiddenContent?: boolean;
+  onRowClick?: (fund: FundData) => void;
+  onFundSelect?: (fund: FundData) => void;
+  isDetailView?: boolean;
 }
 
 export function MyFundsTable({
   data,
   hiddenContent = false,
+  onRowClick,
+  onFundSelect,
+  isDetailView = false,
 }: MyFundsTableProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showLeftButton, setShowLeftButton] = useState(false);
@@ -101,7 +98,7 @@ export function MyFundsTable({
   return (
     <div
       className={cn(
-        'bg-surface-neutral-background border-border-neutral-secondary relative flex flex-col rounded-2xl border-2 p-7 pt-3',
+        'bg-surface-neutral-background border-border-neutral-secondary relative flex h-[369px] flex-col rounded-2xl border-2 p-7 pt-3',
       )}
     >
       {/* Scroll Left Button */}
@@ -132,13 +129,13 @@ export function MyFundsTable({
 
       <div
         ref={scrollContainerRef}
-        className="scrollbar-md w-full overflow-x-auto pb-2.5"
+        className="scrollbar-sm-hidden w-full overflow-x-auto pb-2.5"
       >
         <div className="min-w-[800px]">
           {/* Header */}
           <div className="grid grid-cols-4 gap-4 pb-3">
             <div className="text-text-neutral-primary text-md text-center font-medium">
-              نوع صندوق
+              {isDetailView ? 'نام صندوق' : 'نوع صندوق'}
             </div>
             <div className="text-text-neutral-primary text-md text-center font-medium">
               ارزش روز/سرمایه
@@ -155,12 +152,22 @@ export function MyFundsTable({
           <div className="border-border-neutral-secondary flex flex-col border-b-2 border-t-2">
             {data.map((fund, i) => (
               <div
-                key={fund.typeID}
+                key={fund.code || fund.typeID}
+                onClick={() => {
+                  if (!isDetailView) {
+                    onRowClick?.(fund);
+                  } else {
+                    onFundSelect?.(fund);
+                  }
+                }}
                 className={cn(
                   'relative grid h-[70px] grid-cols-4 items-center gap-4 border-b border-t',
                   i % 2 == 0
                     ? 'bg-surface-neutral-tertiary'
                     : 'bg-surface-neutral-background',
+                  ((!isDetailView && onRowClick) ||
+                    (isDetailView && onFundSelect)) &&
+                    'hover:bg-surface-neutral-secondary cursor-pointer transition-colors',
                 )}
               >
                 {/* Fund Type */}
@@ -179,7 +186,9 @@ export function MyFundsTable({
                   ></div>
                   <div className="text-right">
                     <div className="text-text-neutral-primary text-base font-medium">
-                      {fundTypeMaps[fund.typeID].title}
+                      {isDetailView && fund.name
+                        ? fund.name
+                        : fundTypeMaps[fund.typeID].title}
                     </div>
                   </div>
                   {/* color line */}
@@ -191,45 +200,53 @@ export function MyFundsTable({
                   ></div>
                 </div>
                 {/* Daily Value */}
-                <div className="text-center">
-                  <div className="text-text-neutral-primary text-base">
-                    {hiddenContent
-                      ? '.....'
-                      : `${fund.dailyValue.toLocaleString('fa-IR')} ریال`}
+                {fund.userInvestValue > 0 ? (
+                  <div className="text-center">
+                    <div className="text-text-neutral-primary text-base">
+                      {hiddenContent
+                        ? '.....'
+                        : `${fund.dailyValue.toLocaleString('fa-IR')} ریال`}
+                    </div>
+                    <div className="text-text-neutral-secondarycontrast text-sm">
+                      {hiddenContent
+                        ? '.....'
+                        : `${fund.userInvestValue.toLocaleString('fa-IR')} ریال`}
+                    </div>
                   </div>
-                  <div className="text-text-neutral-secondarycontrast text-sm">
-                    {hiddenContent
-                      ? '.....'
-                      : `${fund.userInvestValue.toLocaleString('fa-IR')} ریال`}
-                  </div>
-                </div>
+                ) : (
+                  <span className="text-center">-</span>
+                )}
 
                 {/* Profit/Loss */}
-                <div className="text-center">
-                  <div
-                    className={cn(
-                      'text-base',
-                      fund.profitLoss >= 0
-                        ? 'text-text-accent-green-primary-600'
-                        : 'text-text-accent-red-primary-600',
-                    )}
-                  >
-                    {hiddenContent
-                      ? '.....'
-                      : `${Math.abs(fund.profitLoss).toLocaleString('fa-IR')} ریال`}
+                {fund.profitLoss && fund.profitLossPercentage ? (
+                  <div className="text-center">
+                    <div
+                      className={cn(
+                        'text-base',
+                        fund.profitLoss >= 0
+                          ? 'text-text-accent-green-primary-600'
+                          : 'text-text-accent-red-primary-600',
+                      )}
+                    >
+                      {hiddenContent
+                        ? '.....'
+                        : `${Math.abs(fund.profitLoss).toLocaleString('fa-IR')} ریال`}
+                    </div>
+                    <div
+                      className={cn(
+                        'text-sm font-medium',
+                        fund.profitLoss >= 0
+                          ? 'text-text-accent-green-primary-600'
+                          : 'text-text-accent-red-primary-600',
+                      )}
+                    >
+                      {Math.abs(fund.profitLossPercentage)}٪
+                      {fund.profitLoss >= 0 ? ' + ' : ' - '}
+                    </div>
                   </div>
-                  <div
-                    className={cn(
-                      'text-sm font-medium',
-                      fund.profitLoss >= 0
-                        ? 'text-text-accent-green-primary-600'
-                        : 'text-text-accent-red-primary-600',
-                    )}
-                  >
-                    {Math.abs(fund.profitLossPercentage)}٪
-                    {fund.profitLoss >= 0 ? ' + ' : ' - '}
-                  </div>
-                </div>
+                ) : (
+                  <span className="text-center">-</span>
+                )}
 
                 {/* Weight/Count */}
                 <div className="text-center">

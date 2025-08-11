@@ -8,6 +8,7 @@ export type ConfirmModalProps = {
   };
   description?: ReactNode;
   checkBoxText?: string;
+  narrow?: boolean;
   onConfirm: ({ checked, input }: { checked: boolean; input?: string }) => void;
   isOpen: boolean;
   onClose?: () => void;

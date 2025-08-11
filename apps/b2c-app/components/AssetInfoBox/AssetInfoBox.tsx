@@ -61,27 +61,29 @@ export const AssetInfoBox: React.FC<AssetInfoBoxProps> = ({
           ریال{' '}
         </span>
       </div>
-      <div className="flex w-full justify-between">
-        <Badge
-          theme="green"
-          title={`${percentageChange}%`}
-          icon={{
-            name: 'arrow-up',
-          }}
-        />
-        <span className="text-text-accent-green-primary-600 text-sm font-medium">
-          {!hiddenContent ? (
-            <span>
-              {formatNumber(valueChange, {
-                commaSeparated: true,
-              })}{' '}
-              ریال
-            </span>
-          ) : (
-            <span>........ ریال</span>
-          )}
-        </span>
-      </div>
+      {quantity > 0 && (
+        <div className="flex w-full justify-between">
+          <Badge
+            theme="green"
+            title={`${percentageChange}%`}
+            icon={{
+              name: 'arrow-up',
+            }}
+          />
+          <span className="text-text-accent-green-primary-600 text-sm font-medium">
+            {!hiddenContent ? (
+              <span>
+                {formatNumber(valueChange, {
+                  commaSeparated: true,
+                })}{' '}
+                ریال
+              </span>
+            ) : (
+              <span>........ ریال</span>
+            )}
+          </span>
+        </div>
+      )}
     </div>
   );
 };

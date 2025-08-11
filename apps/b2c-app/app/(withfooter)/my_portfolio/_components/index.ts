@@ -1,2 +1,2 @@
-export * from './TabsWrapper';
-export * from './PortfolioChartSection';
+export * from './MyPortfolioPage';
+export * from './EmptyPortfolioModal';
