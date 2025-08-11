@@ -112,21 +112,14 @@ const data: FundsSidebarData[] = [
     title: 'صندوق تک سهم بورس',
   },
 ];
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useHeaderVisibility } from '@shared';
 import { SidebarSkeleton } from './skeletons/SideBarSkeleton';
 import { SidebarItemSkeleton } from './skeletons/SidebarItemSkeleton';
+import { useDashboardData } from './hooks/useDashboardData';
 export const FundsSidebarWrapper: React.FC = () => {
   const { isHeaderVisible } = useHeaderVisibility();
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, []);
+  const { isDashboardLoading } = useDashboardData();
 
   return (
     <div
@@ -137,7 +130,7 @@ export const FundsSidebarWrapper: React.FC = () => {
         top: isHeaderVisible ? `104px` : `24px`,
       }}
     >
-      {isLoading ? (
+      {isDashboardLoading ? (
         <SidebarSkeleton>
           {Array.from({ length: 12 }).map((_, idx) => (
             <SidebarItemSkeleton key={idx} />
@@ -145,7 +138,7 @@ export const FundsSidebarWrapper: React.FC = () => {
         </SidebarSkeleton>
       ) : (
         <FundsSidebar data={data} />
-      )}{' '}
+      )}
     </div>
   );
 };

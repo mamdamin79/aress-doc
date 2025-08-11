@@ -11,6 +11,7 @@ type Story = StoryObj<typeof Report_13_1>;
 export const Default: Story = {
   args: {
     data: {
+      currencyUnit: 'میلیارد',
       lastDay: {
         totalTrades: 49138070581247,
         totalBuyIndividual: 15852582021815,

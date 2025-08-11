@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect, useState } from 'react';
 import Highcharts from 'highcharts';
 import 'highcharts/highcharts-more';
@@ -15,7 +16,7 @@ import { baseOptions, xAxisLabels, yAxisLabels } from '../Report.config.shared';
 import { Report13Dot1CalculationResult } from '@openapi';
 import { toBasicSetting } from '../Report.utils';
 import { financialDefinitionsReport13_1 } from './Report_13_1.constants';
-import { ReportProps } from '../Report.types';
+import { CustomChartOptions, ReportProps } from '../Report.types';
 
 const categories = [
   'ارزش معاملات',
@@ -27,7 +28,7 @@ const categories = [
 
 export const Report_13_1: React.FC<
   ReportProps<Report13Dot1CalculationResult>
-> = ({ data, filters, onSubmit, title, onRemove, onShare }) => {
+> = ({ data, filters, onSubmit, title, onRemove, onShare, onReplace }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [switchIndex, setSwitchIndex] = useState<number>(1); // 1 is initialIndex
 
@@ -40,11 +41,11 @@ export const Report_13_1: React.FC<
   }, [data, filters]);
 
   const chartData = [
-    data.lastDay.totalTrades,
-    data.lastDay.totalBuyIndividual,
-    data.lastDay.totalSellIndividual,
-    data.lastDay.totalBuyCorporate,
-    data.lastDay.totalSellCorporate,
+    data.lastDay.totalTrades.toFixed(2),
+    data.lastDay.totalBuyIndividual.toFixed(2),
+    data.lastDay.totalSellIndividual.toFixed(2),
+    data.lastDay.totalBuyCorporate.toFixed(2),
+    data.lastDay.totalSellCorporate.toFixed(2),
   ];
 
   // Build categoriesWithValues using dynamic chartData
@@ -54,11 +55,11 @@ export const Report_13_1: React.FC<
         ? Number(chartData[i]).toLocaleString('fa-IR')
         : '۰';
     return `
-      <div class="category-label" style="text-align:center; font-weight:500; direction:rtl;">
+      <div class="category-label" style="text-align:center; font-weight:500; direction:rtl; color:var(--color-text-text-neutral-primary);">
         <div class="label-text" style="white-space:nowrap;">${label}</div>
         <div class="label-value" style="white-space:nowrap;">
           <span class="value-number">${value}</span>
-          <span class="value-unit" style="margin-left:4px;">میلیارد ریال</span>
+          <span class="value-unit" style="margin-left:4px; color:var(--color-text-text-neutral-secondary);">${data.currencyUnit}</span>
         </div>
       </div>
     `;
@@ -154,57 +155,50 @@ export const Report_13_1: React.FC<
     })),
   ];
 
-  // Helper to safely convert to میلیارد ریال
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const toBillion = (val: any) => {
-    if (val === null || val === undefined || isNaN(Number(val))) return val;
-    return Number(val) / 1_000_000_000;
-  };
-
   const tableData = [
     {
-      'آخرین روز معاملاتی': toBillion(data.lastDay.totalTrades),
-      'بیشترین مقدار': toBillion(data.maxValue.totalTrades),
-      'کمترین مقدار': toBillion(data.minValue.totalTrades),
-      میانگین: toBillion(data.averageValue.totalTrades),
-      میانه: toBillion(data.lastDayNormalized.totalTradesNormalized),
+      'آخرین روز معاملاتی': data.lastDay.totalTrades,
+      'بیشترین مقدار': data.maxValue.totalTrades,
+      'کمترین مقدار': data.minValue.totalTrades,
+      میانگین: data.averageValue.totalTrades,
+      میانه: data.lastDayNormalized.totalTradesNormalized,
       name: 'ارزش کل معاملات',
     },
     {
-      'آخرین روز معاملاتی': toBillion(data.lastDay.totalBuyIndividual),
-      'بیشترین مقدار': toBillion(data.maxValue.totalBuyIndividual),
-      'کمترین مقدار': toBillion(data.minValue.totalBuyIndividual),
-      میانگین: toBillion(data.averageValue.totalBuyIndividual),
-      میانه: toBillion(data.lastDayNormalized.totalBuyIndividualNormalized),
+      'آخرین روز معاملاتی': data.lastDay.totalBuyIndividual,
+      'بیشترین مقدار': data.maxValue.totalBuyIndividual,
+      'کمترین مقدار': data.minValue.totalBuyIndividual,
+      میانگین: data.averageValue.totalBuyIndividual,
+      میانه: data.lastDayNormalized.totalBuyIndividualNormalized,
       name: 'ارزش کل خرید حقیقی',
     },
     {
-      'آخرین روز معاملاتی': toBillion(data.lastDay.totalBuyCorporate),
-      'بیشترین مقدار': toBillion(data.maxValue.totalBuyCorporate),
-      'کمترین مقدار': toBillion(data.minValue.totalBuyCorporate),
-      میانگین: toBillion(data.averageValue.totalBuyCorporate),
-      میانه: toBillion(data.lastDayNormalized.totalBuyCorporateNormalized),
+      'آخرین روز معاملاتی': data.lastDay.totalBuyCorporate,
+      'بیشترین مقدار': data.maxValue.totalBuyCorporate,
+      'کمترین مقدار': data.minValue.totalBuyCorporate,
+      میانگین: data.averageValue.totalBuyCorporate,
+      میانه: data.lastDayNormalized.totalBuyCorporateNormalized,
       name: 'ارزش کل خرید حقوقی',
     },
     {
-      'آخرین روز معاملاتی': toBillion(data.lastDay.totalSellIndividual),
-      'بیشترین مقدار': toBillion(data.maxValue.totalSellIndividual),
-      'کمترین مقدار': toBillion(data.minValue.totalSellIndividual),
-      میانگین: toBillion(data.averageValue.totalSellIndividual),
-      میانه: toBillion(data.lastDayNormalized.totalSellIndividualNormalized),
+      'آخرین روز معاملاتی': data.lastDay.totalSellIndividual,
+      'بیشترین مقدار': data.maxValue.totalSellIndividual,
+      'کمترین مقدار': data.minValue.totalSellIndividual,
+      میانگین: data.averageValue.totalSellIndividual,
+      میانه: data.lastDayNormalized.totalSellIndividualNormalized,
       name: 'ارزش کل فروش حقیقی',
     },
     {
-      'آخرین روز معاملاتی': toBillion(data.lastDay.totalSellCorporate),
-      'بیشترین مقدار': toBillion(data.maxValue.totalSellCorporate),
-      'کمترین مقدار': toBillion(data.minValue.totalSellCorporate),
-      میانگین: toBillion(data.averageValue.totalSellCorporate),
-      میانه: toBillion(data.lastDayNormalized.totalSellCorporateNormalized),
+      'آخرین روز معاملاتی': data.lastDay.totalSellCorporate,
+      'بیشترین مقدار': data.maxValue.totalSellCorporate,
+      'کمترین مقدار': data.minValue.totalSellCorporate,
+      میانگین: data.averageValue.totalSellCorporate,
+      میانه: data.lastDayNormalized.totalSellCorporateNormalized,
       name: 'ارزش کل فروش حقوقی',
     },
   ];
 
-  const options: Highcharts.Options = {
+  const options: CustomChartOptions = {
     ...baseOptions,
     chart: {
       ...baseOptions.chart,
@@ -288,6 +282,7 @@ export const Report_13_1: React.FC<
         toBasicSetting(filterState[1], updateOption),
       ]}
       onShare={onShare}
+      onReplace={onReplace}
       switchIcons={{
         items: [
           { icon: { name: 'grid-3x3' } },

@@ -114,7 +114,9 @@ export default async function ReportPage({
   return (
     <>
       <div className="px-8 pt-3">
-        <Breadcrumb items={[{ title: 'گزارش ها' }, { title: '...' }]} />
+        <Breadcrumb
+          items={[{ title: 'گزارش ها', link: '/reports' }, { title: '' }]}
+        />
       </div>
 
       <div className="text-text-neutral-primary mx-auto max-w-[1680px]">

@@ -10,7 +10,7 @@ import { ReportProps } from '../Report.types';
 
 export const Report13_3: React.FC<
   ReportProps<Report13Dot3CalculationResult>
-> = ({ data, filters, title, onSubmit, onRemove, onShare }) => {
+> = ({ data, filters, title, onSubmit, onRemove, onShare, onReplace }) => {
   const [dataState, setDataState] = useState(data);
   const [filterState, setFilterState] = useState(filters);
 
@@ -100,23 +100,7 @@ export const Report13_3: React.FC<
         }
 
         return `
-          <div dir="rtl"
-            style="
-              background: var(--color-surface-neutral-inverse);
-              color: var(--color-text-neutral-oninverse);
-              border-radius: 10px;
-              padding: 8px 16px;
-              font-family: Vazirmatn;
-              font-size: 14px;
-              font-weight: 500;
-              line-height: 26px;
-              text-align: right;
-              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-              margin-bottom: 4px;
-              backdrop-filter: blur(6px);
-              -webkit-backdrop-filter: blur(6px);
-            "
-          >
+            <div dir="rtl" style="font-family: vazirmatn, sans-serif; margin-bottom: 0.25rem; border-radius: 10px; background-color: rgba(6, 8, 15,0.85); padding: 0.5rem 1rem; text-align: right; font-size: 0.875rem; font-weight: 500; line-height: 1.5rem; color: var(--color-text-neutral-oninverse); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); backdrop-filter: blur(6px); z-index: 1000;">
             <div style="font-weight: 500;">${formattedDate}</div>
 
             ${this.points
@@ -125,9 +109,8 @@ export const Report13_3: React.FC<
                 <div style="display: flex; align-items: center; gap: 4px;">
                   <span style="color:${point.series.color}; font-size: 12px;">●</span>
                   <div style="display: flex; align-items: center; gap: 4px; justify-content: space-between; width: 100%;">
-                    <span style="font-size: 14px; font-weight: 400;">${point.series.name}</span>
-                    <span style="font-size: 14px; font-weight: 400; margin-left: 12px;">مقدار</span>
-                    <span style="unicode-bidi: plaintext;">${Math.round(point.y)} میلیارد</span>
+                    <span style="font-size: 14px; font-weight: 400; margin-left: 12px;">نسبت</span>
+                    <span style="unicode-bidi: plaintext;">${point.y.toFixed(2)} صدم درصد</span>
                   </div>
                 </div>
               `,
@@ -143,19 +126,27 @@ export const Report13_3: React.FC<
       gridLineColor: 'Var(--color-border-neutral-secondary)',
       title: { text: '' },
       min: 0,
-      tickInterval: 10,
       labels: {
-        formatter: function () {
-          return `${this.value} میلیارد`;
-        },
         style: {
           fontSize: '12px',
           color: 'var(--color-text-neutral-secondarycontrast)',
+          fontFamily: 'Vazirmatn',
         },
       },
+      plotLines: [
+        {
+          value: data.data[0].mean,
+          color: 'var(--color-border-accent-gray-600)',
+          dashStyle: 'Dash',
+          width: 1.5,
+          zIndex: 5,
+        },
+      ],
     },
     xAxis: {
-      reversed: true,
+      tickLength: 0,
+      tickPixelInterval: 120,
+      reversed: false,
       type: 'datetime',
       labels: {
         formatter: function () {
@@ -165,9 +156,11 @@ export const Report13_3: React.FC<
         style: {
           fontSize: '12px',
           color: 'var(--color-text-neutral-secondarycontrast)',
+          fontFamily: 'Vazirmatn',
         },
       },
     },
+
     series: [
       {
         type: 'area' as const,
@@ -184,31 +177,6 @@ export const Report13_3: React.FC<
         marker: { enabled: false },
         lineWidth: 2,
       },
-      ...(dataState.data[0]?.mean
-        ? [
-            {
-              type: 'line' as const,
-              name: 'میانگین',
-              color: 'red',
-              dashStyle: 'Dash' as const,
-              marker: { enabled: false },
-              data: [
-                [
-                  priceData[0]?.[0] ?? 0,
-                  parseFloat(
-                    (dataState.data[0].mean / 1_000_000_000).toFixed(2),
-                  ),
-                ],
-                [
-                  priceData[priceData.length - 1]?.[0] ?? 0,
-                  parseFloat(
-                    (dataState.data[0].mean / 1_000_000_000).toFixed(2),
-                  ),
-                ],
-              ],
-            },
-          ]
-        : []),
     ],
   };
 
@@ -224,6 +192,7 @@ export const Report13_3: React.FC<
       ]}
       onShare={onShare}
       title={title ?? ''}
+      onReplace={onReplace}
     >
       <HighchartsReact highcharts={Highcharts} options={options} />
     </ReportCardBase>
