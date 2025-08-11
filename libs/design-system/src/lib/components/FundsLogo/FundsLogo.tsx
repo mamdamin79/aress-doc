@@ -38,7 +38,7 @@ export const FundsLogo: React.FC<FundsLogoProps> = ({
           className={cn('absolute bottom-0 right-0', { '-bottom-3': isPin })}
         >
           {isPin ? (
-            <Icon name="CustomPin" size={'sm'} />
+            <Icon name="CustomPin" />
           ) : (
             <FundsTag color="green" size={size === 'lg' ? 'lg' : 'md'} />
           )}
@@ -46,12 +46,7 @@ export const FundsLogo: React.FC<FundsLogoProps> = ({
       )}
       {isVerified && (
         <div className="absolute -top-1">
-          <VerifiedSVG
-            viewBox="0 0 14 14"
-            className="object-cover"
-            width={16}
-            height={16}
-          />
+          <VerifiedSVG />
         </div>
       )}
     </div>
