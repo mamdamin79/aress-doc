@@ -146,7 +146,7 @@ export const TradePopup: React.FC<TradePopupProps> = ({
               )}
             </div>
 
-            <div className="flex flex-row items-center gap-4 px-6 pt-4">
+            <div className="flex flex-row items-center justify-center gap-4 px-6 pt-4">
               {mode === 'buy' && (
                 <div className="flex flex-col justify-start gap-2">
                   <Button
@@ -172,27 +172,33 @@ export const TradePopup: React.FC<TradePopupProps> = ({
 
               {/* Price Display */}
               <div
-                className="text-center"
-                style={{ direction: 'ltr', minWidth: '200px' }}
+                className={cn(
+                  'text-text-neutral-primary flex w-full items-center text-[32px] font-medium',
+                  mode === 'sell' && 'w-[280px] justify-center',
+                )}
               >
-                <div className="text-text-neutral-primary flex items-center gap-1 text-[32px] font-medium">
-                  <span className="text-text-neutral-secondary text-sm font-normal">
-                    ریال
-                  </span>
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    className="w-full bg-transparent text-right text-[32px] font-medium outline-none"
-                    value={formatNumber(quantity)}
-                    onChange={(e) => {
-                      let val = e.target.value
-                        .replace(/[^0-9\u06F0-\u06F9,]/g, '') // Allow digits and commas
-                        .replace(/,/g, ''); // Remove commas
-                      val = persianToEnglishDigits(val);
-                      setQuantity(val === '' ? 0 : Number(val));
-                    }}
-                  />
-                </div>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  className={cn(
+                    'min-w-0 bg-transparent text-[32px] font-medium outline-none',
+                    mode === 'sell' ? 'text-center' : 'text-left',
+                  )}
+                  style={{
+                    width: `${Math.max(formatNumber(quantity).length * 1.1 + 1.5, 3)}ch`,
+                  }}
+                  value={formatNumber(quantity)}
+                  onChange={(e) => {
+                    let val = e.target.value
+                      .replace(/[^0-9\u06F0-\u06F9,]/g, '') // Allow digits and commas
+                      .replace(/,/g, ''); // Remove commas
+                    val = persianToEnglishDigits(val);
+                    setQuantity(val === '' ? 0 : Number(val));
+                  }}
+                />
+                <span className="text-text-neutral-secondary mr-1 text-sm font-normal">
+                  ریال
+                </span>
               </div>
             </div>
           </div>
