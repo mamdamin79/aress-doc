@@ -1,12 +1,14 @@
 'use client';
 import React, {
+  RefObject,
   startTransition,
   useEffect,
   useMemo,
   useRef,
   useState,
 } from 'react';
-import { useHeaderVisibility } from '../../../../hooks/useHeaderVisiblity';
+import { Toaster } from 'react-hot-toast';
+import { useHeaderVisibility } from '@shared';
 // needed for table body level scope DnD setup
 import {
   DndContext,
@@ -33,6 +35,7 @@ import {
   Dialog,
   Checkbox,
   FundsTag,
+  FundsTagProps,
 } from 'design-system';
 import {
   ColumnDef,
@@ -49,16 +52,17 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import { useSortable } from '@dnd-kit/sortable';
 import { columnVisibility, filterList } from './FundsTable.constants';
 import { ExportExel } from './_components/ExportExel';
-import { useSmartTableScroll } from './../../../../hooks/useSmartTableScroll';
+import { useSmartTableScroll } from '@shared';
 import { TableBody } from './_components/TableBody';
 import { Person } from './types';
 import {
   useDragIndicator,
   useTableDragSensors,
 } from './utils/investmentFunds.utils';
-import { OpenAPI, useFundsServiceGetFundsTable } from '@openapi';
-import { fetchToken } from 'apps/fe-app/app/(auth)/auth.utils';
-import { Toaster } from 'react-hot-toast';
+import { useFundsServiceGetFundsTable } from '@openapi';
+import { TabsSkeleton } from './_components/skeletons/TabsSkeleton';
+import { RowSkeleton } from './_components/skeletons/RowSkeleton';
+import { HeaderTableSkeleton } from './_components/skeletons/HeaderTableSkeleton';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
   const [activeIndexCategoryTab, setActiveIndexCategoryTab] = useState(1);
@@ -69,6 +73,7 @@ const Funds = () => {
   const [fundSearchQuery, setFundSearchQuery] = useState<string>('');
   const tableRef = useRef<HTMLDivElement>(null);
   const [pinnedList, setPinnedList] = useState<number[]>([]);
+  const [rowsMark, setRowsMark] = useState<{ color: string; id: number }[]>([]);
   const [sorting, setSorting] = useState<SortingState>([
     {
       id: 'nameFund',
@@ -86,7 +91,7 @@ const Funds = () => {
   const [activeId, setActiveId] = useState<null | string>(null);
   const { handleScrollRight, handleScrollLeft } = useSmartTableScroll(
     headerRefs,
-    tableRef,
+    tableRef as RefObject<HTMLDivElement>,
   );
 
   const columns = React.useMemo<ColumnDef<Person>[]>(
@@ -102,10 +107,11 @@ const Funds = () => {
           if (pinnedA !== pinnedB) {
             return pinnedA ? -1 : 1;
           }
-
           const a = rowA.getValue(columnId);
           const b = rowB.getValue(columnId);
-          return String(a).localeCompare(String(b), 'fa', { sensitivity: 'base' });
+          return String(a).localeCompare(String(b), 'fa', {
+            sensitivity: 'base',
+          });
         },
       },
       {
@@ -264,7 +270,7 @@ const Funds = () => {
 
     const dragIndicator = useDragIndicator();
     const isDraggingOver = dragIndicator.columnId === header.column.id;
-    const position = dragIndicator.position;
+    const position = 'right'
 
     return (
       <th
@@ -294,8 +300,9 @@ const Funds = () => {
       >
         {isDraggingOver && position && (
           <div
-            className={`bg-border-brand-contrast-700 absolute bottom-0 top-1 z-10 h-[90%] w-0.5 ${position === 'left' ? 'right-0' : 'left-0'
-              }`}
+            className={`bg-border-brand-contrast-700 absolute bottom-0 top-1 z-10 h-[90%] w-0.5 ${
+              position === 'left' ? 'right-0' : 'left-0'
+            }`}
           >
             <div className="bg-border-brand-contrast-700 absolute top-0 flex h-2.5 w-2.5 translate-x-1 items-center justify-center rounded-full">
               <div className="bg-surface-neutral-primary h-1.5 w-1.5 rounded-full" />
@@ -320,53 +327,37 @@ const Funds = () => {
     }
   }
 
-
   // request to get funds table data
-  const query = useFundsServiceGetFundsTable({ tab: activeIndexCategoryTab }, undefined, {
-    enabled: false,
-  });
-
-  // set token
-  const fetchDataTable = async () => {
-    const token = await fetchToken();
-
-    if (!token) {
-      throw new Error('Failed to fetch access token');
-    }
-
-    OpenAPI.HEADERS = {
-      Authorization: `Bearer ${token}`,
-    };
-
-    await query.refetch();
-  };
+  const query = useFundsServiceGetFundsTable({ tab: activeIndexCategoryTab });
 
 
   useEffect(() => {
-    fetchDataTable();
     table.setPageSize(10);
   }, [activeIndexCategoryTab]);
 
-  const tabs = query.data?.tabs.map(({ color, ...rest }) => ({
-    ...rest,
-    tag: color === 'vividgreen' ? 'green' : (color || ''),
-  }));
-
   // set pinned list fund
   useEffect(() => {
-    if (
-      query.isLoading ||
-      query.isFetching ||
-      !query.data?.selectedTabFunds
-    ) return;
+    if (query.isLoading || query.isFetching || !query.data?.selectedTabFunds)
+      return;
 
     const initialPinnedList = query.data.selectedTabFunds
-      .filter(fund => fund.pinned)
-      .map(fund => fund.fund.identifier);
+      .filter((fund) => fund.pinned)
+      .map((fund) => fund.fund.identifier);
+
+    const initialMarkedList = query.data.selectedTabFunds
+      .filter((fund) => fund.mark)
+      .map((fund) => {
+        return {
+          id: fund.fund.identifier,
+          color: fund.mark,
+        };
+      });
+
+      setRowsMark(initialMarkedList)
 
     setPinnedList(initialPinnedList);
   }, [query.isLoading, query.isFetching, query.data?.selectedTabFunds]);
-
+  
 
   const simplifiedFunds = useMemo(() => {
     if (!query.data?.selectedTabFunds) return [];
@@ -400,12 +391,11 @@ const Funds = () => {
     return funds.sort((a, b) => Number(b.pinned) - Number(a.pinned));
   }, [query.data?.selectedTabFunds, pinnedList]);
 
-
   const sortedFunds = useMemo(() => {
     if (!simplifiedFunds) return [];
 
-    const pinned = simplifiedFunds.filter(f => f.pinned);
-    const unpinned = simplifiedFunds.filter(f => !f.pinned);
+    const pinned = simplifiedFunds.filter((f) => f.pinned);
+    const unpinned = simplifiedFunds.filter((f) => !f.pinned);
 
     if (sorting.length === 0) {
       return [...pinned, ...unpinned];
@@ -427,7 +417,7 @@ const Funds = () => {
 
     return [...pinned, ...sortedUnpinned];
   }, [simplifiedFunds, sorting]);
-  
+
   const table = useReactTable({
     data: sortedFunds,
     columns,
@@ -437,7 +427,8 @@ const Funds = () => {
       sorting,
     },
     onSortingChange: (updater) => {
-      const newSorting = typeof updater === 'function' ? updater(sorting) : updater;
+      const newSorting =
+        typeof updater === 'function' ? updater(sorting) : updater;
       setSorting(newSorting);
     },
     onColumnOrderChange: setColumnOrder,
@@ -556,7 +547,7 @@ const Funds = () => {
   const { rows } = table.getRowModel();
 
   // Scroll lock handler factory
-  const freezeScroll = (el: HTMLDivElement) => (e: Event) => {
+  const freezeScroll = (el: HTMLDivElement) => () => {
     if (el.dataset.scrollTop) {
       el.scrollTop = parseInt(el.dataset.scrollTop);
     }
@@ -587,38 +578,46 @@ const Funds = () => {
     tableRef.current?.scrollBy({ top: 100, behavior: 'smooth' }),
   );
 
+  const sensors = useTableDragSensors();
+  const totalCount = query.data?.selectedTabFunds.length;
+  const staticOptions = [10, 25, 50, 100].filter(
+    (size) => totalCount && size < totalCount,
+  );
 
-
-
-
-
-  const totalCount = query.data?.selectedTabFunds.length
-  const staticOptions = [10, 25, 50, 100].filter((size) => totalCount && size < totalCount);
-
-  const pageSizeOptions = [
-    ...staticOptions,
-    totalCount
-  ];
+  const pageSizeOptions = [...staticOptions, totalCount];
   const options = pageSizeOptions.map((size) => ({
     text: String(size),
   }));
 
   const handlerPinned = (e: number) => {
-    setPinnedList(prev => [...prev, e])
-  }
-
-  const handlerUnPinned = (e: number) => {
-    setPinnedList(prev => {
-      const updated = prev.filter(id => id !== e);
-      return updated;
-    });
-
-
-
+    setPinnedList((prev) => [...prev, e]);
   };
 
+  const handlerUnPinned = (e: number) => {
+    setPinnedList((prev) => {
+      const updated = prev.filter((id) => id !== e);
+      return updated;
+    });
+  };
+
+const handlerMarkFund = (id: number, color: string) => {
+  setRowsMark((prev) => {
+    const existingMark = prev.find(mark => mark.id === id);
+
+    // If exists and color is same, remove the mark (unmark)
+    if (existingMark && existingMark.color === color) {
+      return prev.filter(mark => mark.id !== id);
+    }
+
+    // Else, update the color or add new mark
+    const updatedMarks = prev.filter(mark => mark.id !== id);
+    return [...updatedMarks, { id, color }];
+  });
+};
 
 
+  console.log('re rendering...');
+  
 
   return (
     <>
@@ -628,17 +627,26 @@ const Funds = () => {
           isHeaderVisible ? 'translate-y-0' : '-translate-y-full',
         )}
       >
-        <div className='h-12'>
-          {query.data?.tabs && (
+        {!query.data ? (
+          <div className="-mt-2">
+            <TabsSkeleton />
+          </div>
+        ) : (
+          query.data.tabs && (
             <Tabs
               variant="shaped-color"
-              onClickTab={(e) => setActiveIndexCategoryTab(query.data.tabs[e].identifier)}
+              onClickTab={(e) =>
+                setActiveIndexCategoryTab(query.data.tabs[e].identifier)
+              }
               activeTab={activeIndexCategoryTab - 1}
-              colorMode="neutral"
-              tabs={tabs}
+              tabs={query.data.tabs?.map((tab) => ({
+                id: String(tab.identifier),
+                title: tab.title,
+                tag: tab.color as FundsTagProps['color'],
+              }))}
             />
-          )}
-        </div>
+          )
+        )}
         <Tooltip title="خروجی اکسل">
           <div className="border-button-border-default cursor-pointer rounded-md border p-1.5">
             <ExportExel />
@@ -648,11 +656,12 @@ const Funds = () => {
 
       <div
         dir="ltr"
-        className={cn(
-          'border-border-brand-soft-200 relative top-0 flex flex-col items-center overflow-hidden border-t-2',
-        )}
+        className={cn('', {
+          'border-border-brand-soft-200 relative top-0 flex flex-col items-center overflow-hidden border-t-2':
+            rows.length,
+        })}
       >
-        <div className="bg-border-brand-soft-200 absolute right-0 top-[75px] z-50 h-0.5 w-full" />
+        <div className="bg-border-brand-soft-200 absolute top-[75px] right-2 z-50 h-0.5 w-full" />
         <div
           ref={tableRef}
           className="table-scroll group/table bg-surface-neutral-primary scrollbar-lg h-[calc(100vh-172px)] w-screen overflow-auto scroll-smooth"
@@ -661,315 +670,349 @@ const Funds = () => {
             dir="rtl"
             className="w-full table-fixed rounded-xl text-center"
           >
-            <thead
-              className={cn(
-                'group sticky right-0 top-0 z-50 m-0 p-0 duration-300',
-              )}
-            >
-              <DndContext
-                onDragStart={(event) => {
-                  setIsRotating(true);
-                  setActiveId(String(event.active.id));
-                }}
-                collisionDetection={closestCenter}
-                modifiers={[restrictToHorizontalAxis]}
-                onDragEnd={handleDragEnd}
-                sensors={useTableDragSensors()}
-                onDragOver={() => setIsRotating(true)}
-                onDragCancel={() => setIsRotating(false)}
-              >
+            {query.isLoading ||
+            query.isFetching ||
+            query.status === 'pending' ? (
+              <thead>
                 <tr>
-                  <th
-                    style={{
-                      transform:
-                        activeSortIndex !== 0
-                          ? `translateX(-${sortIndicatorPosition.right}px)`
-                          : '',
-                      width:
-                        activeSortIndex !== 0
-                          ? `${sortIndicatorPosition.width}px`
-                          : '',
-                    }}
-                    className={cn('z-[9999] duration-300', {
-                      'absolute bottom-0 z-20 transition-transform':
-                        activeSortIndex !== 0,
-                      'group-hover/table:-right-0':
-                        activeSortIndex !== 0 && isScrollAtStart,
-                      'fixed right-[215px] top-[240px] z-10 w-fit':
-                        activeSortIndex === 0,
-                      'top-[157px]': activeSortIndex === 0 && !isHeaderVisible,
-                    })}
-                  >
-                    <div className="bg-surface-brand-600-primary mx-auto h-1.5 w-16 rounded-t-[10px]"></div>
-                  </th>
-                  <th className="sticky right-[340px] z-30 mt-5 p-0">
-                    {isScrollAtStart && (
-                      <div className="hidden group-hover:block">
-                        <Tooltip title="پیمایش به راست (D)">
-                          <button
-                            onMouseDown={startScrollLeft}
-                            onMouseLeave={stopScroll}
-                            className={cn(
-                              'bg-button-brand-surface-default rounded-md p-1 text-white',
-                            )}
-                          >
-                            <Icon name="arrow-right" size="lg" />
-                          </button>
-                        </Tooltip>
-                      </div>
-                    )}
-                  </th>
-                  <SortableContext
-                    items={columnOrder.slice(1)}
-                    strategy={horizontalListSortingStrategy}
-                  >
-                    {table.getHeaderGroups()[0].headers.map((header, index) => {
-                      return (
-                        <>
-                          {index === 0 && (
-                            <th
-                              key={index}
-                              className="bg-surface-brand-100 sticky right-0 top-0 z-20 m-0 h-[64px] w-[385px] py-0"
-                            >
-                              <div
-                                className={cn({
-                                  'bg-surface-brand-100 h-[75px] w-[384px] select-none':
-                                    header.column.getCanSort(),
-                                  'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]':
-                                    isScrollAtStart,
-                                })}
-                              >
-                                <div className="bg-surface-brand-100 mr-[75px] flex">
-                                  <div className="mr-24">
-                                    <FundsColumnHeader
-                                      activeSorticon={
-                                        sorting[0]?.id === 'nameFund'
-                                      }
-                                      active={!isRotating}
-                                      clickFilterd={() => {
-                                        setActiveSortIndex(0);
-                                        header.column.toggleSorting(
-                                          header.column.getIsSorted() === 'desc'
-                                            ? false
-                                            : true,
-                                        );
-                                      }}
-                                      size="medium"
-                                      shadow={false}
-                                      type={
-                                        header.column.getIsSorted() === 'asc'
-                                          ? 'active-asc'
-                                          : header.column.getIsSorted() ===
-                                            'desc'
-                                            ? 'inactive'
-                                            : 'inactive'
-                                      }
-                                      filterable={false}
-                                      title={String(
-                                        flexRender(
-                                          header.column.columnDef.header,
-                                          header.getContext(),
-                                        ),
-                                      )}
-                                      sortType={'alphabetical'}
-                                    />
-                                  </div>
-                                </div>
-
-                                <div className="absolute top-[19px] flex items-center gap-2 pr-[24px]">
-                                  <Tooltip title="انتخاب ستون‌ها">
-                                    <div
-                                      onClick={() => {
-                                        setIsSettingModalOpen(true);
-                                      }}
-                                      className="bg-button-brand-surface-default text-button-brand-label-onsurface relative cursor-pointer rounded-md p-1"
-                                    >
-                                      {isChanged && (
-                                        <div className="absolute -right-1 -top-1">
-                                          <FundsTag color="pink" />
-                                        </div>
-                                      )}
-                                      <Icon size="lg" name="settings" />
-                                    </div>
-                                  </Tooltip>
-                                  <Tooltip title="فیلتر صندوق‌ها">
-                                    <div
-                                      onClick={() => {
-                                        setIsFilterModalOpen(true);
-                                      }}
-                                      className="bg-button-brand-surface-default text-button-brand-label-onsurface relative cursor-pointer rounded-md p-1"
-                                    >
-                                      {(Object.entries(selectedFilters).length >
-                                        0 ||
-                                        fundSearchQuery) && (
-                                          <div className="absolute -right-1 -top-1 z-30">
-                                            <FundsTag color="pink" />
-                                          </div>
-                                        )}
-                                      <Icon size="lg" name="filter" />
-                                    </div>
-                                  </Tooltip>
-                                </div>
-                              </div>
-                            </th>
-                          )}
-                          {index > 0 && (
-                            <DraggableTableHeader
-                              key={header.id}
-                              header={header}
-                            >
-                              <div
-                                ref={(el) => {
-                                  if (headerRefs?.current) {
-                                    headerRefs.current[index] = el;
-                                  }
-                                }}
-                                key={index}
-                                className={cn(
-                                  'bg-surface-brand-100 m-0 h-full w-full text-nowrap p-0 text-sm font-medium',
-                                  String(
-                                    flexRender(
-                                      header.column.columnDef.header,
-                                      header.getContext(),
-                                    ),
-                                  ).length > 10
-                                    ? 'w-[200px]'
-                                    : 'w-[144px]',
-                                )}
-                              >
-                                {index >= 2 && header.isPlaceholder ? null : (
-                                  <div
-                                    {...{
-                                      className: header.column.getCanSort()
-                                        ? 'cursor-pointer h-[75px] select-none'
-                                        : '',
-                                    }}
-                                  >
-                                    <FundsColumnHeader
-                                      active={!isRotating}
-                                      activeStyle={header.id === activeId}
-                                      activePlaceholder={activeId !== header.id}
-                                      defaultSort={() => {
-                                        setActiveSortIndex(0);
-                                        setSorting([
-                                          {
-                                            id: 'nameFund',
-                                            desc: false,
-                                          },
-                                        ]);
-                                      }}
-                                      clickFilterd={() => {
-                                        setActiveSortIndex(index);
-                                        header.column.getToggleSortingHandler()?.(
-                                          new Event('click'),
-                                        );
-                                      }}
-                                      size={
-                                        String(
-                                          flexRender(
-                                            header.column.columnDef.header,
-                                            header.getContext(),
-                                          ),
-                                        ).length > 10
-                                          ? 'large'
-                                          : 'medium'
-                                      }
-                                      type={
-                                        header.column.getIsSorted() === 'asc'
-                                          ? 'active-desc'
-                                          : header.column.getIsSorted() ===
-                                            'desc'
-                                            ? 'active-asc'
-                                            : 'inactive'
-                                      }
-                                      filterable={false}
-                                      subTitle={header.column.parent?.id}
-                                      title={String(
-                                        flexRender(
-                                          header.column.columnDef.header,
-                                          header.getContext(),
-                                        ),
-                                      )}
-                                      sortType={
-                                        (
-                                          columns[index]?.meta as {
-                                            type?: string;
-                                          }
-                                        )?.type === 'text'
-                                          ? 'alphabetical'
-                                          : 'ranked'
-                                      }
-                                    />
-                                  </div>
-                                )}
-                              </div>
-                            </DraggableTableHeader>
-                          )}
-                        </>
-                      );
-                    })}
-                    <DragOverlay
-                      adjustScale={false}
-                      zIndex={100}
-                      style={{
-                        zIndex: 9999,
-                        pointerEvents: 'none',
-                      }}
-                    >
-                      {activeId ? (
-                        <th
-                          className="absolute top-0 mt-9 flex -rotate-12 items-start justify-center transition-none"
-                          style={{
-                            width:
-                              String(activeId).length > 10 ? '200px' : '144px',
-                            backgroundColor: '#E3F8F8',
-                            borderBottom: '1px solid #eee',
-                            padding: '0',
-                            zIndex: 100,
-                            height: '64px',
-                          }}
-                        >
-                          {activeId && (
-                            <div className="text-text-neutral-primary bg-surface-brand-200 flex h-20 w-full items-center justify-center">
-                              {activeId}
-                            </div>
-                          )}
-                        </th>
-                      ) : (
-                        <></>
-                      )}
-                    </DragOverlay>
-                  </SortableContext>
-                  <th className="fixed left-[35px] m-0 mt-5">
-                    {isScrollAtEnd && (
-                      <div
-                        onMouseDown={startScrollRight}
-                        onMouseLeave={stopScroll}
-                        className={cn('hidden group-hover:block')}
-                      >
-                        <Tooltip title="پیمایش به چپ (A)">
-                          <button
-                            className={cn(
-                              'bg-button-brand-surface-default text-button-brand-label-onsurface rounded-md p-1',
-                            )}
-                          >
-                            <Icon name="arrow-left" size="lg" />
-                          </button>
-                        </Tooltip>
-                      </div>
-                    )}
-                  </th>
+                  <HeaderTableSkeleton />
                 </tr>
-              </DndContext>
-            </thead>
-            <TableBody
-              handlerPinned={handlerPinned}
-              handlerUnPinned={handlerUnPinned}
-              tableRef={tableRef}
-              rows={rows}
-              activeIndexCategoryTab={activeIndexCategoryTab}
-              rowMarks={[]}
-            />
+              </thead>
+            ) : (
+              <thead
+                className={cn(
+                  'group sticky right-0 top-0 z-50 m-0 p-0 duration-300',
+                )}
+              >
+                <DndContext
+                  onDragStart={(event) => {
+                    setIsRotating(true);
+                    setActiveId(String(event.active.id));
+                  }}
+                  collisionDetection={closestCenter}
+                  modifiers={[restrictToHorizontalAxis]}
+                  onDragEnd={handleDragEnd}
+                  sensors={sensors}
+                  onDragOver={() => setIsRotating(true)}
+                  onDragCancel={() => setIsRotating(false)}
+                >
+                  <tr>
+                    <th
+                      style={{
+                        transform:
+                          activeSortIndex !== 0
+                            ? `translateX(-${sortIndicatorPosition.right}px)`
+                            : '',
+                        width:
+                          activeSortIndex !== 0
+                            ? `${sortIndicatorPosition.width}px`
+                            : '',
+                      }}
+                      className={cn('z-[9999] duration-300', {
+                        'absolute bottom-0 z-20 transition-transform':
+                          activeSortIndex !== 0,
+                        'group-hover/table:-right-0':
+                          activeSortIndex !== 0 && isScrollAtStart,
+                        'fixed right-[208px] top-[240px] z-10 w-fit':
+                          activeSortIndex === 0,
+                        'top-[157px]':
+                          activeSortIndex === 0 && !isHeaderVisible,
+                          '': sorting[0].id === 'nameFund'
+                      })}
+                    >
+                      <div className="bg-surface-brand-600-primary mx-auto h-1.5 w-16 rounded-t-[10px]"></div>
+                    </th>
+                    <th className="sticky right-[340px] z-30 mt-5 p-0">
+                      {isScrollAtStart && (
+                        <div className="hidden group-hover:block">
+                          <Tooltip title="پیمایش به راست (D)">
+                            <button
+                              onMouseDown={startScrollLeft}
+                              onMouseLeave={stopScroll}
+                              className={cn(
+                                'bg-button-brand-surface-default rounded-md p-1 text-white',
+                              )}
+                            >
+                              <Icon name="arrow-right" size="lg" />
+                            </button>
+                          </Tooltip>
+                        </div>
+                      )}
+                    </th>
+                    <SortableContext
+                      items={columnOrder.slice(1)}
+                      strategy={horizontalListSortingStrategy}
+                    >
+                      {table
+                        .getHeaderGroups()[0]
+                        .headers.map((header, index) => {
+                          return (
+                            <React.Fragment key={index}>
+                              {index === 0 && (
+                                <th
+                                  key={index}
+                                  className="bg-surface-brand-100 sticky right-0 top-0 z-20 m-0 h-[64px] w-[385px] py-0"
+                                >
+                                  <div
+                                    className={cn({
+                                      'bg-surface-brand-100 h-[75px] w-[384px] select-none':
+                                        header.column.getCanSort(),
+                                      'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]':
+                                        isScrollAtStart,
+                                    })}
+                                  >
+                                    <div className="bg-surface-brand-100 mr-[75px] flex">
+                                      <div className="mr-24">
+                                        <FundsColumnHeader
+                                          activeSorticon={
+                                            sorting[0]?.id === 'nameFund'
+                                          }
+                                          active={!isRotating}
+                                          clickFilterd={() => {
+                                            setActiveSortIndex(0);
+                                            header.column.toggleSorting(
+                                              header.column.getIsSorted() ===
+                                                'desc'
+                                                ? false
+                                                : true,
+                                            );
+                                          }}
+                                          size="medium"
+                                          shadow={false}
+                                          type={
+                                            header.column.getIsSorted() ===
+                                            'asc'
+                                              ? 'active-asc'
+                                              : header.column.getIsSorted() ===
+                                                  'desc'
+                                                ? 'inactive'
+                                                : 'inactive'
+                                          }
+                                          filterable={false}
+                                          title={String(
+                                            flexRender(
+                                              header.column.columnDef.header,
+                                              header.getContext(),
+                                            ),
+                                          )}
+                                          sortType={'alphabetical'}
+                                        />
+                                      </div>
+                                    </div>
+
+                                    <div className="absolute top-[19px] flex items-center gap-2 pr-[24px]">
+                                      <Tooltip title="انتخاب ستون‌ها">
+                                        <div
+                                          onClick={() => {
+                                            setIsSettingModalOpen(true);
+                                          }}
+                                          className="bg-button-brand-surface-default text-button-brand-label-onsurface relative cursor-pointer rounded-md p-1"
+                                        >
+                                          {isChanged && (
+                                            <div className="absolute -right-1 -top-1">
+                                              <FundsTag color="pink" />
+                                            </div>
+                                          )}
+                                          <Icon size="lg" name="settings" />
+                                        </div>
+                                      </Tooltip>
+                                      <Tooltip title="فیلتر صندوق‌ها">
+                                        <div
+                                          onClick={() => {
+                                            setIsFilterModalOpen(true);
+                                          }}
+                                          className="bg-button-brand-surface-default text-button-brand-label-onsurface relative cursor-pointer rounded-md p-1"
+                                        >
+                                          {(Object.entries(selectedFilters)
+                                            .length > 0 ||
+                                            fundSearchQuery) && (
+                                            <div className="absolute -right-1 -top-1 z-30">
+                                              <FundsTag color="pink" />
+                                            </div>
+                                          )}
+                                          <Icon size="lg" name="filter" />
+                                        </div>
+                                      </Tooltip>
+                                    </div>
+                                  </div>
+                                </th>
+                              )}
+                              {index > 0 && (
+                                <DraggableTableHeader
+                                  key={header.id}
+                                  header={
+                                    header as unknown as Header<Person, unknown>
+                                  }
+                                >
+                                  <div
+                                    ref={(el) => {
+                                      if (headerRefs?.current) {
+                                        headerRefs.current[index] = el;
+                                      }
+                                    }}
+                                    key={index}
+                                    className={cn(
+                                      'bg-surface-brand-100 m-0 h-full w-full text-nowrap p-0 text-sm font-medium',
+                                      String(
+                                        flexRender(
+                                          header.column.columnDef.header,
+                                          header.getContext(),
+                                        ),
+                                      ).length > 10
+                                        ? 'w-[200px]'
+                                        : 'w-[144px]',
+                                    )}
+                                  >
+                                    {index >= 2 &&
+                                    header.isPlaceholder ? null : (
+                                      <div
+                                        {...{
+                                          className: header.column.getCanSort()
+                                            ? 'cursor-pointer h-[75px] select-none'
+                                            : '',
+                                        }}
+                                      >
+                                        <FundsColumnHeader
+                                          active={!isRotating}
+                                          activeStyle={header.id === activeId}
+                                          activePlaceholder={
+                                            activeId !== header.id
+                                          }
+                                          defaultSort={() => {
+                                            setActiveSortIndex(0);
+                                            setSorting([
+                                              {
+                                                id: 'nameFund',
+                                                desc: false,
+                                              },
+                                            ]);
+                                          }}
+                                          clickFilterd={() => {
+                                            setActiveSortIndex(index);
+                                            header.column.getToggleSortingHandler()?.(
+                                              new Event('click'),
+                                            );
+                                          }}
+                                          size={
+                                            String(
+                                              flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext(),
+                                              ),
+                                            ).length > 10
+                                              ? 'large'
+                                              : 'medium'
+                                          }
+                                          type={
+                                            header.column.getIsSorted() ===
+                                            'asc'
+                                              ? 'active-desc'
+                                              : header.column.getIsSorted() ===
+                                                  'desc'
+                                                ? 'active-asc'
+                                                : 'inactive'
+                                          }
+                                          filterable={false}
+                                          subTitle={header.column.parent?.id}
+                                          title={String(
+                                            flexRender(
+                                              header.column.columnDef.header,
+                                              header.getContext(),
+                                            ),
+                                          )}
+                                          sortType={
+                                            (
+                                              columns[index]?.meta as {
+                                                type?: string;
+                                              }
+                                            )?.type === 'text'
+                                              ? 'alphabetical'
+                                              : 'ranked'
+                                          }
+                                        />
+                                      </div>
+                                    )}
+                                  </div>
+                                </DraggableTableHeader>
+                              )}
+                            </React.Fragment>
+                          );
+                        })}
+                      <DragOverlay
+                        adjustScale={false}
+                        zIndex={100}
+                        style={{
+                          zIndex: 9999,
+                          pointerEvents: 'none',
+                        }}
+                      >
+                        {activeId ? (
+                          <th
+                            className="absolute top-0 mt-9 flex -rotate-12 items-start justify-center transition-none"
+                            style={{
+                              width:
+                                String(activeId).length > 10
+                                  ? '200px'
+                                  : '144px',
+                              backgroundColor: '#E3F8F8',
+                              borderBottom: '1px solid #eee',
+                              padding: '0',
+                              zIndex: 100,
+                              height: '64px',
+                            }}
+                          >
+                            {activeId && (
+                              <div className="text-text-neutral-primary bg-surface-brand-200 flex h-20 w-full items-center justify-center">
+                                {activeId}
+                              </div>
+                            )}
+                          </th>
+                        ) : (
+                          <></>
+                        )}
+                      </DragOverlay>
+                    </SortableContext>
+                    <th className="fixed left-[35px] m-0 mt-5">
+                      {isScrollAtEnd && (
+                        <div
+                          onMouseDown={startScrollRight}
+                          onMouseLeave={stopScroll}
+                          className={cn('hidden group-hover:block')}
+                        >
+                          <Tooltip title="پیمایش به چپ (A)">
+                            <button
+                              className={cn(
+                                'bg-button-brand-surface-default text-button-brand-label-onsurface rounded-md p-1',
+                              )}
+                            >
+                              <Icon name="arrow-left" size="lg" />
+                            </button>
+                          </Tooltip>
+                        </div>
+                      )}
+                    </th>
+                  </tr>
+                </DndContext>
+              </thead>
+            )}
+            {rows.length ? (
+              <TableBody
+                handlerMarkFund={handlerMarkFund}
+                rowMarks={rowsMark}
+                tableRef={tableRef as RefObject<HTMLDivElement>}
+                isScrollAtStart={isScrollAtStart}
+                handlerPinned={handlerPinned}
+                handlerUnPinned={handlerUnPinned}
+                rows={rows}
+                activeIndexCategoryTab={activeIndexCategoryTab}
+              />
+            ) : (
+              <tbody>
+                {Array.from({ length: 10 }).map((_, i) => (
+                  <RowSkeleton key={i} />
+                ))}
+              </tbody>
+            )}
           </table>
         </div>
       </div>
@@ -997,7 +1040,7 @@ const Funds = () => {
                     <span>تعداد سطر در جدول: </span>
                     {formatNumber(
                       table.getState().pagination.pageSize *
-                      (table.getState().pagination.pageIndex + 1),
+                        (table.getState().pagination.pageIndex + 1),
                       { commaSeparated: true },
                     )}
                   </div>
@@ -1019,18 +1062,13 @@ const Funds = () => {
                   {
                     'pb-2':
                       table.getState().pagination.pageSize *
-                      (table.getState().pagination.pageIndex + 1) *
-                      table.getPageCount() ===
+                        (table.getState().pagination.pageIndex + 1) *
+                        table.getPageCount() ===
                       +prop.text,
                   },
                 )}
               >
-                <span>
-                  {totalCount ===
-                    +prop.text
-                    ? 'همه'
-                    : prop.text}
-                </span>
+                <span>{totalCount === +prop.text ? 'همه' : prop.text}</span>
               </div>
             )}
             dropDownList={options}
@@ -1048,7 +1086,7 @@ const Funds = () => {
             <div>
               {formatNumber(
                 table.getState().pagination.pageSize *
-                (table.getState().pagination.pageIndex + 1),
+                  (table.getState().pagination.pageIndex + 1),
                 { commaSeparated: true },
               )}
               -
@@ -1223,7 +1261,7 @@ const Funds = () => {
           }}
         ></DatePicker>
       </Dialog>
-      <Toaster position='bottom-center' />
+      <Toaster position="bottom-center" />
     </>
   );
 };

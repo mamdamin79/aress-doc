@@ -6,22 +6,33 @@ import { ReportSettings } from '../ReportSettings';
 import { ContextMenu } from '../ContextMenu';
 import { SlideFromLeft } from './SlideFromLeft';
 import { OptionsListExplorer } from '../OptionsListExplorer';
-import { cn } from 'libs/design-system/src/utils';
+import { cn } from '../../../utils';
 import { LoadingBarPop } from '../LoadingBarPop';
 import { Button } from '../Button';
 import { ReportCardBaseProps } from './ReportCardBase.types';
-
+import { PopupInfo } from '../PopupInfo';
+import { OptionsListExplorerProps } from '../OptionsListExplorer/OptionsListExplorer';
 export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
   title,
   switchIcons,
-  optionsListItems,
   compactHeader = false,
+  children,
+  popupInfoItems,
+  settingOptions,
+  onSubmit,
+  onRemove,
+  onShare,
+  onReplace,
 }) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [optionsListOpen, setOptionsListOpen] = useState(false);
   const [loadingStatus, setLoadingStatus] = useState<
     null | 'loading' | 'done' | 'rejected'
   >(null);
+  const [popupInfoOpen, setPopupInfoOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [optionsListItems, setOptionsListItems] =
+    useState<null | OptionsListExplorerProps>(null);
+
   const returnLoadingStatusText = () => {
     switch (loadingStatus) {
       case 'loading':
@@ -30,156 +41,140 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
         return 'انجام شد';
       case 'rejected':
         return 'انجام نشد!';
+      default:
+        return '';
     }
   };
-  const mockLoading = () => {
+
+  const handleSubmit = async () => {
     setSettingsOpen(false);
     setLoadingStatus('loading');
-    setTimeout(() => {
+    try {
+      const result = await onSubmit?.();
+      if (result === true) {
+        setLoadingStatus('done');
+      } else {
+        setLoadingStatus('rejected');
+      }
+    } catch {
       setLoadingStatus('rejected');
-    }, 3000);
+    }
   };
+
   return (
-    <div className="bg-surface-neutral-primary shadow-6xl border-border-neutral-secondary group relative flex w-[616px] flex-col overflow-hidden rounded-2xl border-2">
+    <div className="bg-surface-neutral-primary shadow-6xl border-border-neutral-secondary group relative flex h-[336px] w-[616px] flex-col overflow-hidden rounded-2xl border-2">
       <SlideFromLeft isOpen={settingsOpen}>
         <ReportSettings
-          onSubmit={mockLoading}
+          onSubmit={handleSubmit} // <- use new async handler
           onClose={() => setSettingsOpen(false)}
-          options={[
-            {
-              type: 'nestedDropdown',
-              props: {
-                title: 'مبنای ارزش معاملات',
-                items: [
-                  {
-                    title: 'نوع بازار:',
-                    icon: { name: 'square-mouse-pointer', size: 'sm' },
-                    status: 'normal',
-                    selectedOption: 'کل بازار',
-                    onClick: () => setOptionsListOpen(true),
-                  },
-                  {
-                    title: 'صنعت:',
-                    icon: { name: 'square-mouse-pointer', size: 'sm' },
-                    status: 'normal',
-                    selectedOption: 'کانی‌ های فلزی',
-                    onClick: () => setOptionsListOpen(true),
-                  },
-                  {
-                    title: 'صنعت:',
-                    icon: { name: 'square-mouse-pointer', size: 'sm' },
-                    status: 'normal',
-                    selectedOption: 'کانی‌ های فلزی',
-                    onClick: () => setOptionsListOpen(true),
-                  },
-                  {
-                    title: 'ابزار مالی:',
-                    icon: { name: 'square-mouse-pointer', size: 'sm' },
-                    status: 'error',
-                    placeHolder: 'یک مورد را انتخاب کنید...',
-                    onClick: () => setOptionsListOpen(true),
-                  },
-                ],
-              },
-            },
-            {
-              type: 'basicSelection',
-              props: {
-                title: 'نوع نمودار:',
-                icon: { name: 'square-mouse-pointer', size: 'sm' },
-                status: 'normal',
-                selectedOption: 'خطی',
-                onClick: () => setOptionsListOpen(true),
-              },
-            },
-          ]}
+          options={settingOptions}
+          onChangeOptionsListExplorerItem={(item) => setOptionsListItems(item)}
         />
       </SlideFromLeft>
-      <SlideFromLeft isOpen={optionsListOpen}>
+
+      <SlideFromLeft isOpen={optionsListItems !== null}>
         <OptionsListExplorer
-          items={optionsListItems}
-          onBackButtonClick={() => setOptionsListOpen(false)}
+          {...optionsListItems}
+          items={optionsListItems?.items ?? { items: [], categories: [] }}
+          title={optionsListItems?.title ?? ''}
+          onBackButtonClick={() => setOptionsListItems(null)}
           onSearch={(value) => console.log(value)}
-          title="انتخاب دسته بندی اوراق"
+          onChange={(item) => {
+            if (optionsListItems) optionsListItems.onChange?.(item);
+            setOptionsListItems(null);
+          }}
         />
       </SlideFromLeft>
-      <div className="relative w-full p-3 pb-2">
-        <div className="flex w-full items-center justify-between">
-          {!compactHeader ? (
-            <div className="text-text-neutral-primary flex flex-row items-center text-xs font-semibold">
-              <div className="p-1.5">
-                <Icon name="info" size="md" />
-              </div>
-              <span className={cn(loadingStatus && 'opacity-30')}>{title}</span>
+
+      <div className="relative flex w-full items-center justify-between px-3 pb-2 pt-3">
+        {!compactHeader ? (
+          <div className="text-icon-neutral-primary flex flex-row items-center text-xs font-semibold">
+            <div
+              className="cursor-pointer p-1.5"
+              onClick={() => setPopupInfoOpen(true)}
+            >
+              <Icon name="info" size="md" />
             </div>
-          ) : (
-            <div></div>
+            <span className={cn(loadingStatus && 'opacity-30')}>{title}</span>
+          </div>
+        ) : (
+          <div></div>
+        )}
+
+        <div className={cn('flex flex-row items-center gap-2')}>
+          {switchIcons && (
+            <div
+              className={cn(
+                'transition-opacity',
+                menuOpen || settingsOpen
+                  ? 'opacity-100'
+                  : 'opacity-0 group-hover:opacity-100',
+                compactHeader && 'opacity-100',
+              )}
+            >
+              <DualSwitch {...switchIcons} size="sm" />
+            </div>
           )}
 
-          <div className={cn('flex flex-row items-center gap-2')}>
-            <DualSwitch {...switchIcons} size="sm" />
-
-            {compactHeader ? (
-              <div
-                className="bg-surface-neutral-secondary text-text-neutral-primary flex h-8 w-8 cursor-pointer items-center justify-center rounded-full"
-                onClick={() => setSettingsOpen(true)}
-              >
-                <Icon name="settings" size="md" />
-              </div>
-            ) : (
+          {compactHeader ? (
+            <div
+              className="bg-surface-neutral-secondary text-icon-neutral-primary flex h-8 w-8 cursor-pointer items-center justify-center rounded-full"
+              onClick={() => setSettingsOpen(true)}
+            >
+              <Icon name="settings" size="md" />
+            </div>
+          ) : (
+            <div
+              className={cn(
+                'h-8 transition-opacity',
+                menuOpen || settingsOpen
+                  ? 'opacity-100'
+                  : 'opacity-0 group-hover:opacity-100',
+              )}
+            >
               <ContextMenu
+                onOpenChange={setMenuOpen}
                 anchor="bottom end"
                 items={[
                   {
                     icon: 'settings',
-                    title: 'تنظیمات گزارش',
+                    title: 'تنظیمات',
                     onClick: () => setSettingsOpen(true),
-                  },
-                  {
-                    icon: 'share-2',
-                    title: 'اشتراک گذاری',
-                    onClick: () => console.log('اشتراک گذاری'),
-                  },
-                  {
-                    icon: 'square-arrow-out-up-right',
-                    title: 'هدایت به نسخه مادر',
-                    onClick: () => console.log('تنظیمات گزارش'),
-                  },
-                  {
-                    icon: 'info',
-                    title: 'اطلاعات بیشتر',
-                    onClick: () => console.log('اطلاعات بیشتر'),
                   },
                   {
                     icon: 'repeat',
                     title: 'جایگزینی گزارش',
-                    onClick: () => console.log('جایگزینی گزارش'),
+                    onClick: () => onReplace?.(),
+                  },
+                  {
+                    icon: 'share-2',
+                    title: 'اشتراک گذاری',
+                    onClick: () => onShare?.(),
                   },
                   {
                     icon: 'trash-2',
                     title: 'حذف گزارش از این فضا',
-                    onClick: () => console.log('حذف گزارش از این فضا'),
+                    onClick: () => onRemove?.(),
                   },
                 ]}
               >
                 <Icon name="ellipsis-vertical" size="md" />
               </ContextMenu>
-            )}
-          </div>
-        </div>
-        <div
-          className={cn(
-            'border-border-neutral-primary absolute bottom-0 w-[592px] border-b',
-            !compactHeader && 'group-hover:hidden',
+            </div>
           )}
-        ></div>
+        </div>
+
+        <div className="border-border-neutral-primary absolute bottom-0 w-[592px] border-b"></div>
       </div>
-      <div className="bg-surface-neutral-primary flex h-[268px] w-full items-center justify-center p-3 pt-2">
-        {loadingStatus && (
-          <div className="flex h-full flex-col items-center justify-between pb-3 pt-16">
+
+      {loadingStatus && (
+        <div className="bg-surface-neutral-primary absolute top-4 z-10 flex h-full w-full items-center justify-center p-3 pt-2">
+          <div className="flex flex-col items-center gap-4">
             <div className="flex flex-col items-center justify-center gap-4">
               <LoadingBarPop status={loadingStatus} />
-              <span>{returnLoadingStatusText()}</span>
+              <span className="text-text-neutral-secondarycontrast">
+                {returnLoadingStatusText()}
+              </span>
             </div>
             <div className="flex flex-row gap-2">
               {loadingStatus === 'rejected' && (
@@ -189,6 +184,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                     isLoading={false}
                     mode="primary"
                     size="sm"
+                    onClick={handleSubmit}
                   >
                     تلاش مجدد
                   </Button>
@@ -207,8 +203,19 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
               </div>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      {children}
+
+      {popupInfoItems && (
+        <PopupInfo
+          isOpen={popupInfoOpen}
+          itemsList={popupInfoItems}
+          title="تعاریف مالی به کار رفته"
+          onClose={() => setPopupInfoOpen(false)}
+        />
+      )}
     </div>
   );
 };

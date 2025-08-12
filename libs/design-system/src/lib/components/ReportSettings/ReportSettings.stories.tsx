@@ -1,6 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { ReportSettings } from './ReportSettings';
-import { useState } from 'react'; // Import useState
 
 // Meta configuration for the ReportSettings component in Storybook
 const meta: Meta<typeof ReportSettings> = {
@@ -30,6 +29,12 @@ export const Default: Story = {
               status: 'normal',
               selectedOption: 'کل بازار',
               onClick: () => console.log('نوع بازار clicked'),
+              optionsListProps: {
+                items: {
+                  items: [],
+                },
+                title: '',
+              },
             },
             {
               title: 'صنعت:',
@@ -37,6 +42,12 @@ export const Default: Story = {
               status: 'normal',
               selectedOption: 'کانی‌ های فلزی',
               onClick: () => console.log('صنعت clicked'),
+              optionsListProps: {
+                items: {
+                  items: [],
+                },
+                title: '',
+              },
             },
             {
               title: 'صنعت:',
@@ -44,6 +55,12 @@ export const Default: Story = {
               status: 'normal',
               selectedOption: 'کانی‌ های فلزی',
               onClick: () => console.log('صنعت clicked'),
+              optionsListProps: {
+                items: {
+                  items: [],
+                },
+                title: '',
+              },
             },
             {
               title: 'ابزار مالی:',
@@ -51,6 +68,12 @@ export const Default: Story = {
               status: 'error',
               placeHolder: 'یک مورد را انتخاب کنید...',
               onClick: () => console.log('ابزار مالی clicked'),
+              optionsListProps: {
+                items: {
+                  items: [],
+                },
+                title: '',
+              },
             },
           ],
         },
@@ -63,6 +86,12 @@ export const Default: Story = {
           status: 'normal',
           selectedOption: 'خطی',
           onClick: () => console.log('hi'),
+          optionsListProps: {
+            items: {
+              items: [],
+            },
+            title: '',
+          },
         },
       },
       {
@@ -73,6 +102,12 @@ export const Default: Story = {
           status: 'normal',
           selectedOption: 'مشترک افق روشن سرمایه‌گذاری بانک نوین',
           onClick: () => console.log('hi'),
+          optionsListProps: {
+            items: {
+              items: [],
+            },
+            title: '',
+          },
         },
       },
       {
@@ -83,6 +118,12 @@ export const Default: Story = {
           status: 'normal',
           selectedOption: 'کل اوراق',
           onClick: () => console.log('hi'),
+          optionsListProps: {
+            items: {
+              items: [],
+            },
+            title: '',
+          },
         },
       },
     ],

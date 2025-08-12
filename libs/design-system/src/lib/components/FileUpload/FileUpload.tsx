@@ -4,7 +4,7 @@ import { Icon } from '../Icon';
 import { FileUploader } from 'react-drag-drop-files';
 import { formatFileSize } from './FileUpload.utils';
 import { FileUploadErrorType } from './FileUpload.constants';
-import { cn } from 'libs/design-system/src/utils';
+import { cn } from '../../../utils';
 
 type FileUploadProps = {
   types: string[];
@@ -55,9 +55,12 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   };
 
   return (
-    <>
+    <div className="flex">
       {file && (
-        <button onClick={clearFile} className="z-10 ml-[-40px] cursor-pointer text-icon-neutral-primary">
+        <button
+          onClick={clearFile}
+          className="text-icon-neutral-primary z-10 ml-[-40px] cursor-pointer"
+        >
           <Icon name="trash-2" size="lg" />
         </button>
       )}
@@ -65,7 +68,9 @@ export const FileUpload: React.FC<FileUploadProps> = ({
       <FileUploader handleChange={handleFileChange} name="file" types={types}>
         <div
           className={`hover:border-border-brand-primary-600 hover group relative flex w-full max-w-[384px] items-center gap-2 rounded-md border-2 p-[15px_16px] transition-all ${
-            file ? 'border-border-neutral-primary pr-12' : 'border-dashed border-border-neutral-primary'
+            file
+              ? 'border-border-neutral-primary pr-12'
+              : 'border-border-neutral-primary border-dashed'
           }`}
         >
           {!file && (
@@ -74,16 +79,20 @@ export const FileUpload: React.FC<FileUploadProps> = ({
             </div>
           )}
           <div
-            className={cn('flex w-full shrink-0 flex-row gap-2 text-right text-sm font-medium', {
-              'group-hover:text-text-brand-contrast-700': !file,
-            })}>
+            className={cn(
+              'flex w-full shrink-0 flex-row gap-2 text-right text-sm font-medium',
+              {
+                'group-hover:text-text-brand-contrast-700': !file,
+              },
+            )}
+          >
             {file ? (
               <span
                 style={{ direction: 'ltr' }}
                 className="text-text-neutral-primary max-w-[235px] truncate font-medium"
               >
                 {file.name}
-                <span className="ml-2 text-xs text-text-neutral-secondary">
+                <span className="text-text-neutral-secondary ml-2 text-xs">
                   {formatFileSize(file)}
                 </span>
               </span>
@@ -165,6 +174,6 @@ export const FileUpload: React.FC<FileUploadProps> = ({
           </div>
         </div>
       </FileUploader>
-    </>
+    </div>
   );
 };

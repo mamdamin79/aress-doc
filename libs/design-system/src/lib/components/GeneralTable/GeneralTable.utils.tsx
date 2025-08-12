@@ -1,9 +1,9 @@
-import { cn } from 'libs/design-system/src/utils';
 import { RowData, TableCellFormat, TableRow } from './GeneralTable.types';
 import { Cell } from './TableNumberCell';
 
 export const addFormatsToRows = (
   modifiedRows: { index: number; format: TableCellFormat }[],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any,
 ): RowData<TableRow>[] => {
   const newData = [...data];
@@ -39,8 +39,11 @@ export const renderCell = (
         (hoveredRow !== null && hoveredRow !== rowIndex)
       }
       format={
-        rowFormat ||
-        customFormat || { precision: 0, signed: true, type: 'percent' }
+        rowFormat !== undefined
+          ? rowFormat
+          : customFormat !== undefined
+            ? customFormat
+            : undefined
       }
       // merging shared style and style comming from render
       cellStyle={cellStyle || ''}

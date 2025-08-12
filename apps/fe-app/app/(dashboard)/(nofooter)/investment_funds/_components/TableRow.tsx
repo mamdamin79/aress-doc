@@ -1,13 +1,24 @@
 import React, { useCallback, useState } from 'react';
 import { Bookmark } from 'libs/design-system/src/lib/components/Bookmark';
 import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
-import { Icon, OptionsDropdown, Tooltip, cn, formatNumber } from 'design-system';
-import { useFundsServicePostFundsTablePin, useFundsServicePostFundsTableUnpin } from '@openapi';
+import {
+  Icon,
+  OptionsDropdown,
+  Tooltip,
+  cn,
+  formatNumber,
+} from 'design-system';
+import {
+  useFundsServicePostFundsTableTabByTabPin,
+  useFundsServicePostFundsTableTabByTabUnpin,
+  useFundsServicePostFundsTableTabByTabMark,
+  useFundsServicePostFundsTableTabByTabUnmark,
+} from '@openapi';
 import { FundRow, FundsInfoCellProps, TableRowProps } from '../types';
 
 function FundsInfoCell({
   name,
-  investmentMethod,
+  isEtf,
   tag,
   unPinedFunction,
   pinedFunction,
@@ -17,7 +28,7 @@ function FundsInfoCell({
   selected,
   isScrolled,
   className,
-  isRowHovered,
+  isTradable,
 }: FundsInfoCellProps) {
   const { showProgressToast, showToast } = useCustomToast();
   const [isShowDropDown, setIsShowDropDown] = useState(false);
@@ -28,7 +39,7 @@ function FundsInfoCell({
         'bg-surface-neutral-primary text-text-neutral-primary sticky right-0 top-0 m-0 flex h-[46px] w-[384px] items-center justify-between p-0 py-0',
         className,
         {
-          'dark:shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]': isScrolled,
+          'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]': isScrolled,
           'bg-surface-accent-blue-50 group-hover:surface-accent-blue-100':
             pined,
           'bg-blue-200': selected,
@@ -41,8 +52,7 @@ function FundsInfoCell({
           className={cn(
             'border-border-accent-vividgreen-200 text-text-onaccent-colored-onvividgreen-on200_100_50 bg-surface-accent-vividgreen-100 h-[25px] w-fit select-none rounded-sm border px-2 pt-0.5 text-xs font-medium',
             {
-              'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]':
-                investmentMethod === 'T',
+              'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]': !isEtf,
             },
           )}
         >
@@ -52,20 +62,16 @@ function FundsInfoCell({
           className={cn(
             'border-border-accent-vividgreen-200 text-text-onaccent-colored-onvividgreen-on200_100_50 bg-surface-accent-vividgreen-100 h-[25px] w-fit select-none whitespace-nowrap rounded-sm border px-2 text-xs font-medium',
             {
-              'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]':
-                investmentMethod === 'T',
+              'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]': !isTradable,
             },
           )}
         >
           قابل خرید
         </span>
         <div
-          className={cn(
-            'bg-vividGreen-600 invisible box-content h-2.5 w-2.5 rounded-full border-2 border-white',
-            {
-              visible: tag,
-            },
-          )}
+          className={cn('invisible box-content h-2.5 w-2.5 rounded-full', {
+            visible: tag,
+          })}
         ></div>
         <div className="group/img relative">
           <div className="h-8 w-8 overflow-hidden rounded-full">
@@ -132,7 +138,7 @@ function FundsInfoCell({
               //     size: 'md',
               //   },
               // },
-              {text: 'افزودن به دیده بان'}
+              { text: 'افزودن به دیده بان' },
             ]}
             customTriggerRender={(prop) => {
               return (
@@ -210,24 +216,26 @@ function TableRowInner<T extends FundRow>({
   row,
   isMainTab,
   activeIndexCategoryTab,
-  rowMarks,
   handleColorChange,
   isScrollAtStart,
   handlerPinned,
   handlerUnPinned,
-  logo,
-}: TableRowProps<T>) {  
-
+  handlerMarkFund,
+  rowMarks,
+}: TableRowProps<T>) {
   const { showProgressToast, showToast } = useCustomToast();
 
-  const pinFundMutation = useFundsServicePostFundsTablePin();
-  const unPinFundMutation = useFundsServicePostFundsTableUnpin();
+  const [showMark, setShowMark] = useState(false);
+  const pinFundMutation = useFundsServicePostFundsTableTabByTabPin();
+  const unPinFundMutation = useFundsServicePostFundsTableTabByTabUnpin();
+  const markFundMutation = useFundsServicePostFundsTableTabByTabMark();
+  const unMarkFundMutation = useFundsServicePostFundsTableTabByTabUnmark();
 
   const handlePinFund = async (fundId: number, isShowToast: boolean) => {
     try {
       await pinFundMutation.mutateAsync({
+        tab: activeIndexCategoryTab,
         requestBody: {
-          tab: activeIndexCategoryTab,
           fund: fundId,
         },
       });
@@ -240,8 +248,7 @@ function TableRowInner<T extends FundRow>({
       }
     } catch (err) {
       showToast({
-        message:
-          'حداکثر میتوانید ۳ صندوق را در هر دسته بندی پین کنید.',
+        message: 'حداکثر میتوانید ۳ صندوق را در هر دسته بندی پین کنید.',
         type: 'warning',
       });
     }
@@ -250,11 +257,11 @@ function TableRowInner<T extends FundRow>({
   const handleUnPinFund = async (fundId: number) => {
     try {
       await unPinFundMutation.mutateAsync({
+        tab: activeIndexCategoryTab,
         requestBody: {
-          tab: activeIndexCategoryTab,
           fund: fundId,
         },
-      })
+      });
       handlerUnPinned(fundId);
       showProgressToast({
         title: 'صندوق از لیست پین شده‌ها خارج شد.',
@@ -265,33 +272,64 @@ function TableRowInner<T extends FundRow>({
         },
       });
     } catch (err) {
-      alert("خطا در unPin کردن صندوق");
+      alert('خطا در unPin کردن صندوق');
       console.error(err);
     }
   };
 
   const handlePin = useCallback(
-    () => (handlePinFund(row.original.id, true)),
-    [isMainTab, row.id],
+    () => handlePinFund(row.original.id, true),
+    [isMainTab, row.original.id],
   );
 
   const handleUnPin = () => {
     if (row.original.pinned) {
-      (handleUnPinFund(row.original.id))
+      handleUnPinFund(row.original.id);
     }
-  }
+  };
+
+  const markFund = async (fundId: number, color: string) => {
+    const existingMark = rowMarks.find((mark) => mark.id === fundId);
+    try {
+      if (existingMark && existingMark.color === color) {
+        // Call unmark API
+        await unMarkFundMutation.mutateAsync({
+          tab: activeIndexCategoryTab,
+          requestBody: { fund: fundId },
+        });
+        // Update local state
+        handlerMarkFund(fundId, color); // This will remove the mark as per your handler
+      } else {
+        // Call mark API
+        await markFundMutation.mutateAsync({
+          tab: activeIndexCategoryTab,
+          requestBody: { fund: fundId, color },
+        });
+        // Update local state
+        handlerMarkFund(fundId, color);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <tr
+      onMouseEnter={() => setShowMark(true)}
       key={row.id}
       className="border-border-neutral-secondary group h-[46px] border-b"
     >
       <td className="sticky right-0 top-0 z-40 m-0 flex items-center py-0">
         <div className="absolute z-50 pr-0">
-          <Bookmark
-            selectedColor={rowMarks[activeIndexCategoryTab]?.[row.id] || ''}
-            onColorChange={(color) => handleColorChange(row.id, color)}
-          />
+          {(showMark || rowMarks.find((item) => item.id === row.original.id)) && (
+            <Bookmark
+              selectedColor={
+                rowMarks.find((item) => item.id === row.original.id)?.color ??
+                ''
+              }
+              onColorChange={(color) => markFund(row.original.id, color)}
+            />
+          )}
         </div>
         <div>
           <FundsInfoCell
@@ -301,7 +339,8 @@ function TableRowInner<T extends FundRow>({
             pinedFunction={handlePin}
             unPinedFunction={handleUnPin}
             isScrolled={isScrollAtStart}
-            investmentMethod={row.original?.investmentMethod}
+            isEtf={!!row.original?.isEtf}
+            isTradable={row.original.isTradable}
             name={row.original?.nameFund}
             pined={row.original.pinned}
             selected={false}
@@ -312,14 +351,23 @@ function TableRowInner<T extends FundRow>({
       <td></td>
       {row?.getVisibleCells().map((item) => (
         <td
-          dir='ltr'
-          className={cn("bg-surface-neutral-primary text-text-neutral-primary group-hover:bg-surface-accent-blue-50", {
-            'text-text-accent-red-contrast-700': item.getValue() as number < 0,
-            'bg-surface-accent-blue-50 group-hover:surface-accent-blue-100': row.original.pinned
-          })}
+          dir="ltr"
+          className={cn(
+            'bg-surface-neutral-primary text-text-neutral-primary group-hover:bg-surface-accent-blue-50',
+            {
+              'text-text-accent-red-contrast-700':
+                (item.getValue() as number) < 0,
+              'bg-surface-accent-blue-50 group-hover:surface-accent-blue-100':
+                row.original.pinned,
+            },
+          )}
           key={item.id}
         >
-          {formatNumber(item.getValue() as string, { decimals: 2, commaSeparated: false })}
+          {/* {formatNumber(item.getValue() as string, {
+            decimals: 2,
+            commaSeparated: false,
+          })} */}
+          {item.getValue() as string}
         </td>
       ))}
     </tr>

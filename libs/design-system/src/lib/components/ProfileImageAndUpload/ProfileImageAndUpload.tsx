@@ -3,9 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Icon } from '../Icon';
 import { FileUploader } from 'react-drag-drop-files';
 import { FileUploadErrorType } from '../FileUpload/FileUpload.constants';
-import USER_SVG from '../../../assets/icons/profile vector-large.svg';
-import Image from 'next/image';
-import { cn } from 'libs/design-system/src/utils';
+import { ReactComponent as USER_SVG } from '../../../assets/icons/profile vector-large.svg';
+import { cn } from '../../../utils';
 
 type FileUploadProps = {
   types: string[];
@@ -54,22 +53,28 @@ export const ProfileImageAndUpload: React.FC<FileUploadProps> = ({
   return (
     <div className="outline-none">
       <FileUploader handleChange={handleFileChange} name="file" types={types}>
-        <div className="bg-surface-neutral-primary relative h-32 w-32 rounded-full border-2 border-border-neutral-tertiary p-1 outline-none">
+        <div className="bg-surface-neutral-primary border-border-neutral-tertiary relative h-32 w-32 rounded-full border-2 p-1 outline-none">
           <div className="flex h-full w-full items-end justify-center overflow-hidden rounded-full">
-            <Image
-              alt="profile image"
-              src={image ? image : USER_SVG}
-              width={imageDimension}
-              height={imageDimension}
-              className={cn('object-cover', image && `h-[120px] w-[120px]`)}
-            />
+            <div className={cn('object-cover', `h-[120px] w-[120px]`)}>
+              {image ? (
+                <img
+                  alt="profile image"
+                  src={image}
+                  width={imageDimension}
+                  height={imageDimension}
+                  className={cn('object-cover', image && `h-[120px] w-[120px]`)}
+                />
+              ) : (
+                <USER_SVG width={120} height={120} />
+              )}
+            </div>
           </div>
           {isLoading && (
             <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black bg-opacity-50">
               <div className="h-10 w-10 animate-spin rounded-full border-4 border-white border-t-transparent"></div>
             </div>
           )}
-          <div className="bg-surface-neutral-primary absolute left-[88px] top-[88px] flex h-10 w-10 items-center justify-center rounded-full text-text-neutral-secondarycontrast shadow-2xl">
+          <div className="bg-surface-neutral-primary text-text-neutral-secondarycontrast absolute left-[88px] top-[88px] flex h-10 w-10 items-center justify-center rounded-full shadow-2xl">
             <Icon name="image-up" size="lg" />
           </div>
         </div>

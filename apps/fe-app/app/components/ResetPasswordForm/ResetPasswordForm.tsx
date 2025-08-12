@@ -3,25 +3,53 @@ import { useForm, Controller } from 'react-hook-form';
 import { Button, TextField } from 'design-system';
 import Link from 'next/link';
 import { ResetPasswordFormValues } from './ResetPasswordForm.types';
-import { validateNationalCode } from './ResetPasswordForm.utils';
+import { validateNationalCode } from '@shared';
 import { validatePhoneNumber } from '../LoginForm/LoginForm.utils';
-import { useState } from 'react';
+import { useEffect } from 'react';
+import { useUsersServiceGetUsersPasswordForgotCaptcha } from '@openapi';
 export interface ResetPasswordFormProps {
   onSubmit: (values: ResetPasswordFormValues) => void;
+  setRefetchCaptcha?: (fn: () => void) => void;
+  isLoading?: boolean;
 }
 export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
   onSubmit,
+  setRefetchCaptcha,
+  isLoading = false,
 }) => {
-  const {
-    control,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<ResetPasswordFormValues>({
+  const { control, handleSubmit, setValue } = useForm<ResetPasswordFormValues>({
     defaultValues: {
       nationalCode: '',
       phoneNumber: '',
     },
   });
+
+  // Use query for captcha
+  const { data: captchaData, refetch: refetchCaptcha } =
+    useUsersServiceGetUsersPasswordForgotCaptcha({});
+
+  // Refresh captcha handler
+  const handleRefreshCaptcha = () => {
+    refetchCaptcha();
+  };
+
+  // Expose refetchCaptcha to parent if needed
+  useEffect(() => {
+    if (setRefetchCaptcha) {
+      setRefetchCaptcha(refetchCaptcha);
+    }
+  }, [refetchCaptcha]);
+
+  // Set captchaUid in form when captchaData changes
+  useEffect(() => {
+    if (captchaData?.uid !== undefined && captchaData?.uid !== null) {
+      setValue('captchaUid', captchaData.uid);
+      setValue('captcha', ''); // clear captcha input on new captcha
+    } else {
+      setValue('captchaUid', undefined);
+    }
+  }, [captchaData, setValue]);
+
   return (
     <form
       dir="rtl"
@@ -57,6 +85,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
                 placeholder=""
                 isError={!!fieldState.error}
                 supportText={fieldState.error?.message || ' '}
+                onRefreshCaptcha={refetchCaptcha}
                 {...field}
               />
             )}
@@ -90,12 +119,36 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
               />
             )}
           />
+
+          {captchaData?.required && (
+            <Controller
+              name="captcha"
+              control={control}
+              rules={{
+                required: 'کد کپچا الزامی است.',
+              }}
+              render={({ field, fieldState }) => (
+                <TextField
+                  mergeTitleAndPlaceholder={false}
+                  mode="outline"
+                  label="کد امنیتی"
+                  placeholder="کد را وارد کنید"
+                  isError={!!fieldState.error}
+                  supportText={fieldState.error?.message || ' '}
+                  captchaValue={captchaData?.value ?? undefined}
+                  onRefreshCaptcha={handleRefreshCaptcha}
+                  trailingIcons={[]}
+                  {...field}
+                />
+              )}
+            />
+          )}
         </div>
         <div className="flex flex-col justify-center gap-4">
           <Button
             align="center"
             mode="primary"
-            isLoading={isSubmitting}
+            isLoading={isLoading}
             size="md"
             type="submit"
           >

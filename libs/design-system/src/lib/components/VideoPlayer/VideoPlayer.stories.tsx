@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Meta, StoryFn } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/nextjs';
 import { VideoPlayer } from './VideoPlayer';
 import video1080 from '../../../assets/videos/The Breathtaking Beauty of Nature1080p.mp4';
 import video720 from '../../../assets/videos/The Breathtaking Beauty of Nature720p.mp4';

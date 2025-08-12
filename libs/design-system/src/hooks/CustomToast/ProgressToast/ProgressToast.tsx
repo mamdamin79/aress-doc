@@ -1,7 +1,8 @@
+'use client';
 import { useEffect, useState } from 'react';
 import { ProgressToastProps } from './ProgressToast.types';
-import { Icon } from 'libs/design-system/src/lib/components/Icon';
-import { Button } from 'libs/design-system/src/lib/components/Button';
+import { Icon } from '../../../lib/components';
+import { Button } from '../../../lib/components';
 
 export const ProgressToast = ({
   title,
@@ -16,7 +17,7 @@ export const ProgressToast = ({
 
   return (
     <div
-      className={`animate-toast bg-surface-neutral-inverse relative flex h-[50px] w-fit transform-gpu items-center justify-center overflow-hidden rounded-lg transition-all duration-500 ease-in-out`}
+      className={`animate-toast bg-black relative flex h-[50px] w-fit transform-gpu items-center justify-center overflow-hidden rounded-lg transition-all duration-500 ease-in-out`}
     >
       <div className="flex w-full items-center gap-2 px-2">
         {leadingAction && (

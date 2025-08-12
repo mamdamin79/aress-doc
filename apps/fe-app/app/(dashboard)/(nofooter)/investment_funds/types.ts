@@ -40,25 +40,30 @@ export interface FundRow {
   logo: string;
   pinned: boolean;
   id: number;
+  mark: string;
 }
 
 export interface TableBodyProps {
   rows: Row<FundRow>[];
   tableRef: MutableRefObject<HTMLDivElement | null>;
+  isScrollAtStart: boolean;
   activeIndexCategoryTab: number;
   handlerPinned: (id: number) => void;
   handlerUnPinned: (id: number) => void;
+  handlerMarkFund: (id: number, color: string) => void;
+  rowMarks: {id: number, color: string}[];
 }
 
 
 export interface TableRowProps<T extends FundRow> {
   row: Row<T>;
   logo: string;
+  handlerMarkFund: (id: number, color: string) => void;
   isMainTab: boolean;
   handlerPinned: (e: number) => void;
   handlerUnPinned: (e: number) => void;
   activeIndexCategoryTab: number;
-  rowMarks: Record<number, Record<string, string>>;
+  rowMarks: {id: number, color: string}[];
   handleColorChange: (id: string, color: string) => void;
   isScrollAtStart: boolean;
 }

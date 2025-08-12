@@ -6,6 +6,10 @@ import { cn } from '../../../../utils/classNames.utils';
 
 export const CustomIcon: React.FC<IconProps> = ({ name, size = 'md' }) => {
   const CustomIconComponent = CUSTOM_ICONS[name as keyof typeof CUSTOM_ICONS];
+  if (!CustomIconComponent) {
+    console.error(`Icon component for name "${name}" not found`);
+    return null;
+  }
   return (
     <div
       className={cn('group relative inline-block', {

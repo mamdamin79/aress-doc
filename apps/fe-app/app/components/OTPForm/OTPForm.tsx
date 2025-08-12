@@ -2,7 +2,6 @@
 import { Button, cn, Icon } from 'design-system';
 import React, { useState, useEffect } from 'react';
 import OtpInput from 'react-otp-input';
-import { DEFAULT_COUNTDOWN_SECONDS } from './OTPForm.constants.ts';
 
 export interface OTPFormProps {
   onBackBtn?: () => void;
@@ -12,8 +11,10 @@ export interface OTPFormProps {
   className?: string;
   onResendCode?: () => void;
   backBtnLabel?: string;
+  isLoading?: boolean;
+  countdownSeconds?: number;
 }
-
+const DEFAULT_COUNTDOWN_SECONDS = 120;
 export const OTPForm: React.FC<OTPFormProps> = ({
   onBackBtn,
   onSubmit,
@@ -22,10 +23,11 @@ export const OTPForm: React.FC<OTPFormProps> = ({
   className,
   onResendCode,
   backBtnLabel = 'ویرایش',
+  isLoading = false,
+  countdownSeconds = DEFAULT_COUNTDOWN_SECONDS,
 }) => {
   const [otp, setOtp] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [countdown, setCountdown] = useState(DEFAULT_COUNTDOWN_SECONDS);
+  const [countdown, setCountdown] = useState(countdownSeconds);
   const [showResendButton, setShowResendButton] = useState(false);
 
   useEffect(() => {
@@ -51,11 +53,7 @@ export const OTPForm: React.FC<OTPFormProps> = ({
   };
 
   const handleSubmit = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      onSubmit?.(otp);
-    }, 1000);
+    onSubmit?.(otp);
   };
 
   const handleResendCode = () => {
@@ -121,7 +119,7 @@ export const OTPForm: React.FC<OTPFormProps> = ({
           showResendButton && (
             <Button
               align="center"
-              isLoading={false}
+              isLoading={isLoading}
               mode="secondary"
               size="sm"
               className="text-md w-fit px-2 py-1 font-medium"

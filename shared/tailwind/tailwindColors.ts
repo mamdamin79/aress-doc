@@ -266,21 +266,16 @@ const colors = {
     settingspopup: {
       divider: 'var(--color-videoplayer-settingspopup-divider)',
     },
-    fullscreen: {
-      videoselection: {
-        surface: 'var(--color-videoplayer-fullscreen-videoselection-surface)',
-      },
-    },
   },
   surface: {
     neutral: {
+      invers: 'var(--color-surface-neutral-invers)',
       background: 'var(--color-surface-neutral-background)',
       primary: 'var(--color-surface-neutral-primary)',
       secondarycontrast: 'var(--color-surface-neutral-secondarycontrast)',
       secondary: 'var(--color-surface-neutral-secondary)',
       tertiary: 'var(--color-surface-neutral-tertiary)',
       disable: 'var(--color-surface-neutral-disable)',
-      inverse: 'var(--color-surface-neutral-inverse)',
     },
     brand: {
       50: 'var(--color-surface-brand-50)',

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Icon } from '../Icon';
 import { RemovableLabel } from '../RemovableLabel';
 import { Checkbox } from '../Checkbox';
-import { cn } from 'libs/design-system/src/utils';
+import { cn } from '../../../utils';
 import { TextField } from '../TextField';
 import { Button } from '../Button';
 
@@ -69,7 +69,7 @@ export function FilterPopUpSection({
 
       if (singleSelect) {
         if (currentOptions.includes(option)) {
-          const { [category]: _, ...rest } = prev;
+          const { ...rest } = prev;
           return rest;
         }
         return { ...prev, [category]: [option] };
@@ -79,7 +79,7 @@ export function FilterPopUpSection({
           : [...currentOptions, option];
 
         if (updatedOptions.length === 0) {
-          const { [category]: _, ...rest } = prev;
+          const { ...rest } = prev;
           return rest;
         }
         return { ...prev, [category]: updatedOptions };
@@ -138,7 +138,8 @@ export function FilterPopUpSection({
             <div key={index}>
               <div
                 onClick={() => openFilter(item.title)}
-                className="rounded-lg border-border-neutral-primary border p-3">
+                className="border-border-neutral-primary rounded-lg border p-3"
+              >
                 <div className="text-text-neutral-primary flex cursor-pointer items-center justify-between text-sm font-medium">
                   <span>{item.title}</span>
                   <Icon name="chevron-left" size="lg" />
@@ -160,8 +161,7 @@ export function FilterPopUpSection({
                               (o) => o !== option,
                             );
                             if (updatedOptions.length === 0) {
-                              const { [item.title]: _, ...rest } =
-                                selectedFilters;
+                              const { ...rest } = selectedFilters;
                               onFilterChange(rest);
                             } else {
                               onFilterChange({

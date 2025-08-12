@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useRef, useState } from 'react';
 import Draggable from 'react-draggable';
 import { PlayerThumbnail } from '../PlayerThumbnail';
@@ -8,7 +8,7 @@ interface PlayerProgressBarProps {
   progress: number;
   seek: (newProgress: number) => void;
   currentTime: number;
-  videoRef: React.RefObject<HTMLVideoElement>;
+  videoRef: React.RefObject<HTMLVideoElement | null>;
   bufferedTime: number;
   spriteBaseUrl?: string;
 }
@@ -25,7 +25,7 @@ export const PlayerProgressBar: React.FC<PlayerProgressBarProps> = ({
   const progressBarRef = useRef<HTMLProgressElement>(null);
   const [hoverTime, setHoverTime] = useState<number | null>(null);
   const handleMouseMove = (e: React.MouseEvent<HTMLProgressElement>) => {
-    if (!progressBarRef.current || !videoRef.current) return;
+    if (!videoRef || !progressBarRef.current || !videoRef.current) return;
 
     const rect = progressBarRef.current.getBoundingClientRect();
     const hoverPosition = e.clientX - rect.left;
@@ -50,6 +50,7 @@ export const PlayerProgressBar: React.FC<PlayerProgressBarProps> = ({
   };
 
   // throttle this func
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleDrag = (e: any, data: any) => {
     if (progressBarRef.current) {
       const progressBarWidth = progressBarRef.current.offsetWidth;
@@ -58,6 +59,7 @@ export const PlayerProgressBar: React.FC<PlayerProgressBarProps> = ({
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleDragStop = (e: any, data: any) => {
     setIsDragging(false);
     if (progressBarRef.current) {

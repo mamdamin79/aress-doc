@@ -23,7 +23,9 @@ export const Tooltip: React.FC<Props> = ({
   return (
     <>
       {/* Apply tooltip ID directly to the child element */}
-      {cloneElement(children, { 'data-tooltip-id': id })}
+      {cloneElement(children, {
+        ...({ 'data-tooltip-id': id } as React.HTMLAttributes<HTMLElement>),
+      })}
       <ReactTooltip
         id={id}
         noArrow

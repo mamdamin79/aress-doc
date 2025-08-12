@@ -1,7 +1,7 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import { Icon } from '../Icon';
-import Image from 'next/image';
+import { StaticImageData } from 'next/image';
 import { NewBadge, VideoBadge, LikeBadge } from './Badges/Badges';
 import { cn } from '../../../utils/classNames.utils';
 import { Button } from '../Button';
@@ -14,7 +14,7 @@ export interface ReportCardProps {
   categoryType?: string;
   newBadge?: boolean;
   videoBadge?: boolean;
-  image: string;
+  image: StaticImageData | null;
   fixedBrief?: boolean;
   userFavorite?: boolean;
   link?: string;
@@ -39,7 +39,7 @@ export const ReportCard: React.FC<ReportCardProps> = ({
   return (
     <div
       className={cn(
-        `hover:shadow-7xl border-surface-neutral-secondary bg-surface-neutral-secondary group relative flex flex-col overflow-hidden rounded-3xl border-[2px] transition-all`,
+        `hover:shadow-7xl border-surface-neutral-secondary text-text-neutral-primary bg-surface-neutral-secondary group relative flex flex-col overflow-hidden rounded-3xl border-[2px] transition-all`,
         fixedBrief
           ? 'h-[448px] min-w-[380px] max-w-[512px] items-start'
           : 'h-[318px] min-w-[304px] max-w-[416px]',
@@ -54,13 +54,15 @@ export const ReportCard: React.FC<ReportCardProps> = ({
             fixedBrief ? 'mx-auto h-[192px]' : 'h-[184px]',
           )}
         >
-          <Image
-            width={408}
-            height={192}
-            src={image}
-            alt={title}
-            className="h-full w-full object-contain"
-          />
+          {image && typeof image === 'string' && (
+            <img
+              width={408}
+              height={192}
+              src={image}
+              alt={title}
+              className="h-full w-full object-contain"
+            />
+          )}
         </div>
       </div>
 
@@ -69,7 +71,7 @@ export const ReportCard: React.FC<ReportCardProps> = ({
         className={cn(
           `w-full`,
           !fixedBrief &&
-            'absolute bottom-0 left-0 h-full overflow-hidden bg-gradient-to-b from-[rgba(255,255,255,0)] via-white to-[rgba(255,255,255,1)] opacity-0 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:duration-500 dark:from-[rgba(0,0,0,0)] dark:via-[#242528] dark:to-[rgba(36,37,40,1)]',
+            'from-coloropacity-surface-neutral-primary-0per via-surface-neutral-primary to-surface-neutral-primary absolute bottom-0 left-0 h-full overflow-hidden bg-gradient-to-b opacity-0 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:duration-500',
         )}
       ></div>
       <div
@@ -146,7 +148,7 @@ export const ReportCard: React.FC<ReportCardProps> = ({
 
           {/* summary Section (Drawer Animation) */}
           {!fixedBrief && (
-            <span className="text-text-neutral-secondary -mb-2 line-clamp-4 h-fit translate-y-12 transform overflow-hidden text-right text-sm text-gray-600 opacity-0 transition-all duration-500 ease-in-out group-hover:translate-y-0 group-hover:opacity-100">
+            <span className="text-text-neutral-secondary -mb-2 line-clamp-4 h-fit translate-y-12 transform overflow-hidden text-right text-sm opacity-0 transition-all duration-500 ease-in-out group-hover:translate-y-0 group-hover:opacity-100">
               {summary}
             </span>
           )}

@@ -1,14 +1,14 @@
 import { BulletList, NotesHeading } from 'design-system';
 import React from 'react';
 const OurTermsOfServiceText: React.FC = () => (
-    <div>
-      <span>همچنین توصیه می‌کنیم که </span>
-      <span className="text-brand-700 cursor-pointer underline-offset-4 hover:underline">
-        شیوه‌نامه خدمات
-      </span>
-      <span> ما را به دقت مطالعه فرمایید.</span>
-    </div>
-  );
+  <div>
+    <span>همچنین توصیه می‌کنیم که </span>
+    <span className="text-brand-700 cursor-pointer underline-offset-4 hover:underline">
+      شیوه‌نامه خدمات
+    </span>
+    <span> ما را به دقت مطالعه فرمایید.</span>
+  </div>
+);
 export const SecurityNoticeBox: React.FC = () => {
   return (
     <div className="flex flex-col gap-4">
@@ -26,7 +26,7 @@ export const SecurityNoticeBox: React.FC = () => {
               title: `هیچ‌وقت اطلاعات حساب کاربری خود را با دیگران به اشتراک نگذارید.`,
             },
             {
-              title: <OurTermsOfServiceText/>,
+              title: <OurTermsOfServiceText />,
             },
           ]}
         />

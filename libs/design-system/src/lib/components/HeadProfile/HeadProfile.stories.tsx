@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { HeadProfile } from './HeadProfile';
 const meta: Meta<typeof HeadProfile> = {
   component: HeadProfile,

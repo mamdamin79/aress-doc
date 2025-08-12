@@ -1,40 +1,42 @@
-import Image from 'next/image';
 import React from 'react';
 import { ProfileSidebarOption } from './ProfileSidebarOption';
-import UserSVG from '../../../assets/icons/profile-vector-large.svg';
-import { cn } from 'libs/design-system/src/utils';
+import { ReactComponent as UserSVG } from '../../../assets/icons/profile-vector-large.svg';
+import { ProfileSidebarItem } from './ProfileSidebar.types';
 export interface ProfileSidebarProps {
-  image?: string;
+  image?: string | null;
   title?: string;
   subTitle?: string;
   onNavigation?: (section: string) => void;
-  onLogoutBtn?: () => void;
   activeSection?: string;
+  items: ProfileSidebarItem[];
 }
 
 export const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
   image,
   subTitle,
   title,
-  onLogoutBtn,
   onNavigation,
   activeSection,
+  items = [],
 }) => {
   return (
     <div className="border-border-neutral-secondary bg-surface-neutral-primary flex h-fit w-full flex-col gap-4 rounded-3xl border-2 p-4">
       <div className="flex flex-row items-center gap-3">
         <div className="bg-surface-neutral-secondary flex h-14 w-14 items-center justify-center rounded-2xl p-1">
           <div className="bg-surface-neutral-background flex h-12 w-12 flex-col items-center justify-end overflow-hidden rounded-xl">
-            <Image
-              alt="profile image"
-              src={image ? image : UserSVG}
-              width={48}
-              height={48}
-              className={cn(
-                'h-12 w-12 object-contain',
-                !image && 'translate-y-2',
+            <div
+              className={`flex h-[120px] w-[120px] items-center justify-center`}
+            >
+              {image ? (
+                <img
+                  alt="profile image"
+                  src={image}
+                  className="h-12 w-12 object-contain"
+                />
+              ) : (
+                <UserSVG width={48} height={48} />
               )}
-            />
+            </div>
           </div>
         </div>
         <div className="flex flex-col">
@@ -46,17 +48,18 @@ export const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
       </div>
       <div className="border-border-neutral-secondary w-full border-t"></div>
       <div className="flex w-full flex-col gap-2">
-        <ProfileSidebarOption
-          text="حساب کاربری"
-          icon={{ name: 'user' }}
-          isActive={activeSection == 'profile'}
-          onClick={() => onNavigation?.('profile')}
-        />
-        <ProfileSidebarOption
-          onClick={onLogoutBtn}
-          text="خروج از حساب کاربری"
-          icon={{ name: 'power' }}
-        />
+        {items.map((item) => (
+          <ProfileSidebarOption
+            key={item.key}
+            text={item.text}
+            icon={item.icon}
+            isActive={activeSection === item.key}
+            onClick={() => {
+              item.onClick?.();
+              onNavigation?.(item.key);
+            }}
+          />
+        ))}
       </div>
     </div>
   );

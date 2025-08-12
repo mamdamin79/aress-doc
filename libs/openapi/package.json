@@ -1,7 +1,6 @@
 {
-    "name": "@aress/openapi",
-    "version": "1.0.0",
-    "main": "src/index.ts",
-    "typings": "src/index.ts"
-  }
-  
+  "name": "@aress/openapi",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "typings": "src/index.ts"
+}

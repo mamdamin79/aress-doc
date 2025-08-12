@@ -1,56 +1,18 @@
-'use client';
-import { TextField } from 'design-system';
-import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useState, useEffect } from 'react';
-import { useDebounce } from '@uidotdev/usehooks';
+import React, { Suspense } from 'react';
+import { SearchBarClient } from './SearchBarClient';
 
-export const SearchBar: React.FC = () => {
-  const router = useRouter();
-  const queries = useSearchParams().toString();
-  const [searchInput, setSearchInput] = useState('');
-  const debouncedSearch = useDebounce(searchInput, 300);
+type Props = {
+  inModal?: boolean;
+};
 
-  useEffect(() => {
-    if (debouncedSearch === '') {
-      handleClear();
-    } else {
-      handleSearch(debouncedSearch);
-    }
-  }, [debouncedSearch]);
+const SearchBarFallback = () => (
+  <div className="xl:w skeleton-shimmer h-10 rounded-md sm:w-[324px] md:w-[416px]" />
+);
 
-  const handleSearch = (
-    value: string | number | readonly string[] | undefined,
-  ) => {
-    const params = new URLSearchParams(queries);
-    params.set('search', value as string);
-    params.set('page', '1');
-    router.replace(`/reports?${params.toString()}`);
-  };
-
-  const handleClear = () => {
-    const params = new URLSearchParams(queries);
-    params.delete('search');
-    params.set('page', '1');
-    router.replace(`/reports?${params.toString()}`);
-  };
-
+export const SearchBar: React.FC<Props> = ({ inModal }) => {
   return (
-    <>
-      <TextField
-        className="xl:w sm:w-[324px] md:w-[416px]"
-        mergeTitleAndPlaceholder={false}
-        mode="outline"
-        leadingIcon={{
-          name: 'search',
-          size: 'lg',
-        }}
-        trailingIcons={[
-          { name: 'x', size: 'lg', onClick: () => handleClear() },
-        ]}
-        placeholder="جستجو گزارش..."
-        value={searchInput}
-        onChange={(e) => setSearchInput(e.target.value)}
-      />
-    </>
+    <Suspense fallback={<SearchBarFallback />}>
+      <SearchBarClient inModal={inModal} />
+    </Suspense>
   );
 };

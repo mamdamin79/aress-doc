@@ -273,13 +273,13 @@
       }
     },
     "/users/password/forgot/captcha": {
-      "post": {
+      "get": {
         "tags": [
           "Users"
         ],
         "summary": "Forgot Password Captcha",
         "description": "Get captcha to reset password",
-        "operationId": "forgot_password_captcha_users_password_forgot_captcha_post",
+        "operationId": "forgot_password_captcha_users_password_forgot_captcha_get",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -653,6 +653,100 @@
         ]
       }
     },
+    "/users/profile/email/change/otp": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Change Email Get Otp",
+        "description": "get otp to change email",
+        "operationId": "change_email_get_otp_users_profile_email_change_otp_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeEmailGetOtpBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeEmailGetOtpResponseApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/users/profile/email/change": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Change Email By Otp",
+        "description": "Change email with otp",
+        "operationId": "change_email_by_otp_users_profile_email_change_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeEmailByOtpBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeEmailByOtpResponseApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/users/profile/username/change": {
       "post": {
         "tags": [
@@ -735,6 +829,33 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/users/logout": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Logout User",
+        "description": "Logout user",
+        "operationId": "logout_user_users_logout_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogoutResponseApiModel"
                 }
               }
             }
@@ -838,6 +959,79 @@
         }
       }
     },
+    "/reports/categories": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Report Categories",
+        "description": "Get list of report categories.",
+        "operationId": "report_categories_reports_categories_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/FinancialReportCategoryApiModel"
+                  },
+                  "type": "array",
+                  "title": "Response Report Categories Reports Categories Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reports/request": {
+      "post": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Request New Report",
+        "description": "Request a new report",
+        "operationId": "request_new_report_reports_request_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_request_new_report_reports_request_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestReportResponseApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/reports/{report_id}": {
       "get": {
         "tags": [
@@ -857,8 +1051,24 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
+              "type": "string",
               "title": "Report Id"
+            }
+          },
+          {
+            "name": "screenshotQueryId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Screenshotqueryid"
             }
           }
         ],
@@ -903,7 +1113,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
+              "type": "string",
               "title": "Report Id"
             }
           }
@@ -942,32 +1152,6 @@
         }
       }
     },
-    "/reports/categories": {
-      "get": {
-        "tags": [
-          "Reports"
-        ],
-        "summary": "Report Categories",
-        "description": "Get list of report categories.",
-        "operationId": "report_categories_reports_categories_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/FinancialReportCategoryApiModel"
-                  },
-                  "type": "array",
-                  "title": "Response Report Categories Reports Categories Get"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/reports/{report_id}/favorite": {
       "post": {
         "tags": [
@@ -987,7 +1171,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
+              "type": "string",
               "title": "Report Id"
             }
           }
@@ -1033,7 +1217,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
+              "type": "string",
               "title": "Report Id"
             }
           }
@@ -1045,6 +1229,64 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UserReportFavoriteStatus"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reports/{report_id}/screenshot": {
+      "post": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Save Screenshot",
+        "description": "Save report screenshot",
+        "operationId": "save_screenshot_reports__report_id__screenshot_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "report_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Report Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_save_screenshot_reports__report_id__screenshot_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportScreenshotResponseApiModel"
                 }
               }
             }
@@ -1115,7 +1357,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DashboardListItemApiModel"
+                  "$ref": "#/components/schemas/CreateDashboardResponseApiModel"
                 }
               }
             }
@@ -1139,6 +1381,52 @@
       }
     },
     "/dashboards/{dashboard_id}": {
+      "get": {
+        "tags": [
+          "Dashboards"
+        ],
+        "summary": "Dashboard Details",
+        "description": "Get dashboard details.",
+        "operationId": "dashboard_details_dashboards__dashboard_id__get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "dashboard_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dashboard Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardDetailsApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "tags": [
           "Dashboards"
@@ -1223,7 +1511,13 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DashboardListItemApiModel"
+                  },
+                  "title": "Response Delete Dashboard Dashboards  Dashboard Id  Delete"
+                }
               }
             }
           },
@@ -1239,113 +1533,13 @@
           }
         }
       },
-      "get": {
-        "tags": [
-          "Dashboards"
-        ],
-        "summary": "Dashboard Details",
-        "description": "Get dashboard details.",
-        "operationId": "dashboard_details_dashboards__dashboard_id__get",
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "dashboard_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Dashboard Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DashboardDetailsApiModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/dashboards/{dashboard_id}/items/preview": {
-      "get": {
-        "tags": [
-          "Dashboards"
-        ],
-        "summary": "Get Dashboard Items For Preview",
-        "description": "Get dashboard items for preview in dashboard list.",
-        "operationId": "get_dashboard_items_for_preview_dashboards__dashboard_id__items_preview_get",
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "dashboard_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Dashboard Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DashboardItemPreviewApiModel"
-                  },
-                  "title": "Response Get Dashboard Items For Preview Dashboards  Dashboard Id  Items Preview Get"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/dashboards/{dashboard_id}/items": {
       "put": {
         "tags": [
           "Dashboards"
         ],
         "summary": "Add Report To Dashboard",
-        "description": "Add items to dashboard.",
-        "operationId": "add_report_to_dashboard_dashboards__dashboard_id__items_put",
+        "description": "Add report item to dashboard.",
+        "operationId": "add_report_to_dashboard_dashboards__dashboard_id__put",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -1394,14 +1588,16 @@
             }
           }
         }
-      },
-      "delete": {
+      }
+    },
+    "/dashboards/{dashboard_id}/duplicate": {
+      "post": {
         "tags": [
           "Dashboards"
         ],
-        "summary": "Remove Item From Dashboard",
-        "description": "Remove items from dashboard.",
-        "operationId": "remove_item_from_dashboard_dashboards__dashboard_id__items_delete",
+        "summary": "Duplicate Dashboard",
+        "description": "Duplicate dashboard",
+        "operationId": "duplicate_dashboard_dashboards__dashboard_id__duplicate_post",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -1423,7 +1619,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DeleteDashboardItemFromDashboardBody"
+                "$ref": "#/components/schemas/DuplicateDashboardForUserBody"
               }
             }
           }
@@ -1433,7 +1629,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardDetailsApiModel"
+                }
               }
             }
           },
@@ -1448,14 +1646,16 @@
             }
           }
         }
-      },
-      "post": {
+      }
+    },
+    "/dashboards/{dashboard_id}/preview": {
+      "get": {
         "tags": [
           "Dashboards"
         ],
-        "summary": "Get Dashboard Item Calculations",
-        "description": "Get dashboard item calculations.",
-        "operationId": "get_dashboard_item_calculations_dashboards__dashboard_id__items_post",
+        "summary": "Get Dashboard Items For Preview",
+        "description": "Get dashboard items for preview in dashboard list.",
+        "operationId": "get_dashboard_items_for_preview_dashboards__dashboard_id__preview_get",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -1469,6 +1669,258 @@
             "schema": {
               "type": "integer",
               "title": "Dashboard Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DashboardItemPreviewApiModel"
+                  },
+                  "title": "Response Get Dashboard Items For Preview Dashboards  Dashboard Id  Preview Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboards/{dashboard_id}/items/{dashboard_item_id}": {
+      "delete": {
+        "tags": [
+          "Dashboards"
+        ],
+        "summary": "Remove Item From Dashboard",
+        "description": "Remove items from dashboard.",
+        "operationId": "remove_item_from_dashboard_dashboards__dashboard_id__items__dashboard_item_id__delete",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "dashboard_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dashboard Id"
+            }
+          },
+          {
+            "name": "dashboard_item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dashboard Item Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteDashboardItemResponseApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboards/{dashboard_id}/items/{dashboard_item_id}/replace": {
+      "post": {
+        "tags": [
+          "Dashboards"
+        ],
+        "summary": "Replace Dashboard Item",
+        "description": "Replace item in dashboard.",
+        "operationId": "replace_dashboard_item_dashboards__dashboard_id__items__dashboard_item_id__replace_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "dashboard_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dashboard Id"
+            }
+          },
+          {
+            "name": "dashboard_item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dashboard Item Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReplaceDashboardItemCalculationsBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardItemApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboards/{dashboard_id}/items/{dashboard_item_id}/screenshot": {
+      "post": {
+        "tags": [
+          "Dashboards"
+        ],
+        "summary": "Save Dashboard Item Screenshot",
+        "description": "Replace item in dashboard.",
+        "operationId": "save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "dashboard_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dashboard Id"
+            }
+          },
+          {
+            "name": "dashboard_item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dashboard Item Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardItemScreenshotResponseApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboards/{dashboard_id}/items/{dashboard_item_id}/calculations": {
+      "post": {
+        "tags": [
+          "Dashboards"
+        ],
+        "summary": "Get Dashboard Item Calculations",
+        "description": "Get dashboard item calculations.",
+        "operationId": "get_dashboard_item_calculations_dashboards__dashboard_id__items__dashboard_item_id__calculations_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "dashboard_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dashboard Id"
+            }
+          },
+          {
+            "name": "dashboard_item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dashboard Item Id"
             }
           }
         ],
@@ -1506,14 +1958,14 @@
         }
       }
     },
-    "/dashboards/{dashboard_id}/items/reorder": {
+    "/dashboards/{dashboard_id}/items/{dashboard_item_id}/reorder": {
       "post": {
         "tags": [
           "Dashboards"
         ],
         "summary": "Change Dashboard Item Sort Order",
         "description": "Change dashboard item sort order.",
-        "operationId": "change_dashboard_item_sort_order_dashboards__dashboard_id__items_reorder_post",
+        "operationId": "change_dashboard_item_sort_order_dashboards__dashboard_id__items__dashboard_item_id__reorder_post",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -1527,6 +1979,15 @@
             "schema": {
               "type": "integer",
               "title": "Dashboard Id"
+            }
+          },
+          {
+            "name": "dashboard_item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dashboard Item Id"
             }
           }
         ],
@@ -1684,23 +2145,39 @@
         }
       }
     },
-    "/funds/table/pin": {
+    "/funds/table/tab/{tab}/pin": {
       "post": {
         "tags": [
           "Funds"
         ],
         "summary": "Pin Fund In Table Tab",
         "description": "Pin fund in table tab",
-        "operationId": "pin_fund_in_table_tab_funds_table_pin_post",
+        "operationId": "pin_fund_in_table_tab_funds_table_tab__tab__pin_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tab",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Tab"
+            }
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PinFundInTableTabBody"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -1723,31 +2200,42 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     },
-    "/funds/table/unpin": {
+    "/funds/table/tab/{tab}/unpin": {
       "post": {
         "tags": [
           "Funds"
         ],
-        "summary": "Pin Fund In Table Tab",
+        "summary": "Unpin Fund In Table Tab",
         "description": "Unpin fund in table tab",
-        "operationId": "pin_fund_in_table_tab_funds_table_unpin_post",
+        "operationId": "unpin_fund_in_table_tab_funds_table_tab__tab__unpin_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tab",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Tab"
+            }
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/UnpinFundInTableTabBody"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -1770,12 +2258,239 @@
               }
             }
           }
-        },
+        }
+      }
+    },
+    "/funds/table/tab/{tab}/mark": {
+      "post": {
+        "tags": [
+          "Funds"
+        ],
+        "summary": "Mark Fund In Table Tab",
+        "description": "Mark fund in table tab",
+        "operationId": "mark_fund_in_table_tab_funds_table_tab__tab__mark_post",
         "security": [
           {
             "OAuth2PasswordBearer": []
           }
-        ]
+        ],
+        "parameters": [
+          {
+            "name": "tab",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Tab"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MarkFundInTableTabBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarkFundInTableTabResponseApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/funds/table/tab/{tab}/unmark": {
+      "post": {
+        "tags": [
+          "Funds"
+        ],
+        "summary": "Unmark Fund In Table Tab",
+        "description": "Unmark fund in table tab",
+        "operationId": "unmark_fund_in_table_tab_funds_table_tab__tab__unmark_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tab",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Tab"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnmarkFundInTableTabBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnmarkFundInTableTabResponseApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/funds/table/tab/{tab}/sort": {
+      "post": {
+        "tags": [
+          "Funds"
+        ],
+        "summary": "Sort Fund Tab",
+        "description": "Update columns of a fund tab",
+        "operationId": "sort_fund_tab_funds_table_tab__tab__sort_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tab",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Tab"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SortFundTabBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SortFundTabResponseApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/funds/table/tab/{tab}/columns": {
+      "post": {
+        "tags": [
+          "Funds"
+        ],
+        "summary": "Update Fund Tab Columns",
+        "description": "Update columns of a fund tab",
+        "operationId": "update_fund_tab_columns_funds_table_tab__tab__columns_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tab",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Tab"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFundTableTabColumnsBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateFundTabColumnsResponseApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -1861,6 +2576,42 @@
             "type": "boolean",
             "title": "Active",
             "description": "Whether this user is active or not, is always \"true\" for logged in user."
+          },
+          "firstName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Firstname",
+            "description": "First name of user."
+          },
+          "lastName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lastname",
+            "description": "Last name the user."
+          },
+          "profilePicture": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profilepicture",
+            "description": "Profile picture url of the user."
           }
         },
         "type": "object",
@@ -1870,7 +2621,10 @@
           "email",
           "phoneNumber",
           "nationalCode",
-          "active"
+          "active",
+          "firstName",
+          "lastName",
+          "profilePicture"
         ],
         "title": "AressApiUser"
       },
@@ -1945,6 +2699,83 @@
         ],
         "title": "Body_login_for_access_token_users_login_post"
       },
+      "Body_request_new_report_reports_request_post": {
+        "properties": {
+          "request_form": {
+            "$ref": "#/components/schemas/RequestReportForm",
+            "title": "Request Form"
+          },
+          "file": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "binary"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "request_form"
+        ],
+        "title": "Body_request_new_report_reports_request_post"
+      },
+      "Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          },
+          "selected_filters": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selected Filters"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file",
+          "selected_filters"
+        ],
+        "title": "Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post"
+      },
+      "Body_save_screenshot_reports__report_id__screenshot_post": {
+        "properties": {
+          "selected_filters": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selected Filters"
+          },
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "selected_filters",
+          "file"
+        ],
+        "title": "Body_save_screenshot_reports__report_id__screenshot_post"
+      },
       "Body_test_user_access_token_users_token_post": {
         "properties": {
           "grant_type": {
@@ -2005,11 +2836,25 @@
       "CaptchaApiModel": {
         "properties": {
           "value": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Value"
           },
           "uid": {
-            "type": "integer",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Uid"
           },
           "required": {
@@ -2035,10 +2880,6 @@
       },
       "ChangeDashboardReportItemSortOrderBody": {
         "properties": {
-          "dashboardItemId": {
-            "type": "integer",
-            "title": "Dashboarditemid"
-          },
           "order": {
             "type": "integer",
             "title": "Order"
@@ -2046,10 +2887,71 @@
         },
         "type": "object",
         "required": [
-          "dashboardItemId",
           "order"
         ],
         "title": "ChangeDashboardReportItemSortOrderBody"
+      },
+      "ChangeEmailByOtpBody": {
+        "properties": {
+          "otp": {
+            "type": "string",
+            "title": "Otp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "otp"
+        ],
+        "title": "ChangeEmailByOtpBody"
+      },
+      "ChangeEmailByOtpResponseApiModel": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          }
+        },
+        "type": "object",
+        "required": [
+          "success"
+        ],
+        "title": "ChangeEmailByOtpResponseApiModel"
+      },
+      "ChangeEmailGetOtpBody": {
+        "properties": {
+          "newEmail": {
+            "type": "string",
+            "title": "Newemail"
+          },
+          "passwordVerificationToken": {
+            "type": "string",
+            "title": "Passwordverificationtoken"
+          }
+        },
+        "type": "object",
+        "required": [
+          "newEmail",
+          "passwordVerificationToken"
+        ],
+        "title": "ChangeEmailGetOtpBody"
+      },
+      "ChangeEmailGetOtpResponseApiModel": {
+        "properties": {
+          "retrySeconds": {
+            "type": "integer",
+            "title": "Retryseconds"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          }
+        },
+        "type": "object",
+        "required": [
+          "retrySeconds",
+          "email"
+        ],
+        "title": "ChangeEmailGetOtpResponseApiModel"
       },
       "ChangePasswordByOtpApiModel": {
         "properties": {
@@ -2201,6 +3103,27 @@
         ],
         "title": "CreateDashboardForUserBody"
       },
+      "CreateDashboardResponseApiModel": {
+        "properties": {
+          "createdDashboardId": {
+            "type": "integer",
+            "title": "Createddashboardid"
+          },
+          "dashboards": {
+            "items": {
+              "$ref": "#/components/schemas/DashboardListItemApiModel"
+            },
+            "type": "array",
+            "title": "Dashboards"
+          }
+        },
+        "type": "object",
+        "required": [
+          "createdDashboardId",
+          "dashboards"
+        ],
+        "title": "CreateDashboardResponseApiModel"
+      },
       "DashboardDetailsApiModel": {
         "properties": {
           "identifier": {
@@ -2211,12 +3134,12 @@
             "type": "string",
             "title": "Name"
           },
-          "reports": {
+          "items": {
             "items": {
               "$ref": "#/components/schemas/DashboardItemApiModel"
             },
             "type": "array",
-            "title": "Reports"
+            "title": "Items"
           },
           "fundsByCategory": {
             "items": {
@@ -2230,7 +3153,7 @@
         "required": [
           "identifier",
           "name",
-          "reports",
+          "items",
           "fundsByCategory"
         ],
         "title": "DashboardDetailsApiModel"
@@ -2296,6 +3219,20 @@
               }
             ],
             "title": "Returnlastyearpercent"
+          },
+          "dailyRedeemNavMonth": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dailyredeemnavmonth"
           }
         },
         "type": "object",
@@ -2307,7 +3244,8 @@
           "returnLastWeekPercent",
           "returnLastMonthPercent",
           "returnLast3MonthsPercent",
-          "returnLastYearPercent"
+          "returnLastYearPercent",
+          "dailyRedeemNavMonth"
         ],
         "title": "DashboardFundApiModel"
       },
@@ -2429,6 +3367,24 @@
         ],
         "title": "DashboardItemReportApiModel"
       },
+      "DashboardItemScreenshotResponseApiModel": {
+        "properties": {
+          "queryId": {
+            "type": "string",
+            "title": "Queryid"
+          },
+          "screenshotUrl": {
+            "type": "string",
+            "title": "Screenshoturl"
+          }
+        },
+        "type": "object",
+        "required": [
+          "queryId",
+          "screenshotUrl"
+        ],
+        "title": "DashboardItemScreenshotResponseApiModel"
+      },
       "DashboardListItemApiModel": {
         "properties": {
           "identifier": {
@@ -2470,18 +3426,23 @@
         ],
         "title": "DashboardReportPreviewApiModel"
       },
-      "DeleteDashboardItemFromDashboardBody": {
+      "DeleteDashboardItemResponseApiModel": {
+        "properties": {},
+        "type": "object",
+        "title": "DeleteDashboardItemResponseApiModel"
+      },
+      "DuplicateDashboardForUserBody": {
         "properties": {
-          "dashboardItemId": {
-            "type": "integer",
-            "title": "Dashboarditemid"
+          "name": {
+            "type": "string",
+            "title": "Name"
           }
         },
         "type": "object",
         "required": [
-          "dashboardItemId"
+          "name"
         ],
-        "title": "DeleteDashboardItemFromDashboardBody"
+        "title": "DuplicateDashboardForUserBody"
       },
       "FinancialReportCalculationApiModel": {
         "properties": {
@@ -2504,6 +3465,12 @@
               },
               {
                 "$ref": "#/components/schemas/Report15CalculationResult"
+              },
+              {
+                "$ref": "#/components/schemas/Report36CalculationResult"
+              },
+              {
+                "$ref": "#/components/schemas/Report39CalculationResult"
               }
             ],
             "title": "Calculation"
@@ -2545,7 +3512,7 @@
       "FinancialReportDetailsApiModel": {
         "properties": {
           "identifier": {
-            "type": "integer",
+            "type": "string",
             "title": "Identifier",
             "description": "Unique identifier of report"
           },
@@ -2557,7 +3524,14 @@
             "$ref": "#/components/schemas/FinancialReportCategoryApiModel"
           },
           "image": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Image"
           },
           "summary": {
@@ -2611,6 +3585,17 @@
                 "type": "null"
               }
             ]
+          },
+          "screenshotUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Screenshoturl"
           }
         },
         "type": "object",
@@ -2623,7 +3608,8 @@
           "markdownDescription",
           "video",
           "relatedReports",
-          "reportCalculation"
+          "reportCalculation",
+          "screenshotUrl"
         ],
         "title": "FinancialReportDetailsApiModel"
       },
@@ -2695,7 +3681,7 @@
       "FinancialReportListItemApiModel": {
         "properties": {
           "identifier": {
-            "type": "integer",
+            "type": "string",
             "title": "Identifier",
             "description": "Unique identifier of report"
           },
@@ -2707,7 +3693,14 @@
             "$ref": "#/components/schemas/FinancialReportCategoryApiModel"
           },
           "image": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Image"
           },
           "summary": {
@@ -2767,22 +3760,27 @@
         "properties": {
           "identifier": {
             "type": "integer",
-            "title": "Identifier"
+            "title": "Identifier",
+            "description": "شناسه صندوق"
           },
           "registrationNumber": {
             "type": "integer",
-            "title": "Registrationnumber"
+            "title": "Registrationnumber",
+            "description": "شماره ثبت نزد سازمان بورس"
           },
           "name": {
             "type": "string",
-            "title": "Name"
+            "title": "Name",
+            "description": "نام کامل صندوق"
           },
           "abbreviatedName": {
             "type": "string",
-            "title": "Abbreviatedname"
+            "title": "Abbreviatedname",
+            "description": "نام صندوق"
           },
           "fundType": {
-            "$ref": "#/components/schemas/FundTypeApiModel"
+            "$ref": "#/components/schemas/FundTypeApiModel",
+            "description": "نوع صندوق"
           },
           "logoMedium": {
             "anyOf": [
@@ -2793,7 +3791,8 @@
                 "type": "null"
               }
             ],
-            "title": "Logomedium"
+            "title": "Logomedium",
+            "description": "آدرس لوگوی صندوق - سایز متوسط"
           },
           "logoThumbnail": {
             "anyOf": [
@@ -2804,73 +3803,140 @@
                 "type": "null"
               }
             ],
-            "title": "Logothumbnail"
+            "title": "Logothumbnail",
+            "description": "آدرس لوگوی صندوق - سایز کوچک"
           },
           "website": {
-            "type": "string",
-            "title": "Website"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Website",
+            "description": "وبسایت صندوق"
           },
           "statuteUrl": {
             "type": "string",
-            "title": "Statuteurl"
+            "title": "Statuteurl",
+            "description": "اساسنامه صندوق"
           },
           "prospectusUrl": {
             "type": "string",
-            "title": "Prospectusurl"
+            "title": "Prospectusurl",
+            "description": "امیدنامه صندوق"
           },
           "isEtf": {
             "type": "boolean",
-            "title": "Isetf"
+            "title": "Isetf",
+            "description": "آیا صندوق etf است"
           },
           "isCharity": {
             "type": "boolean",
-            "title": "Ischarity"
+            "title": "Ischarity",
+            "description": "آیا صندوق نیکوکاری است"
+          },
+          "hasVideo": {
+            "type": "boolean",
+            "title": "Hasvideo",
+            "description": "دارای ویدیو بررسی"
           },
           "manager": {
-            "type": "string",
-            "title": "Manager"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Manager",
+            "description": "مدیر صنودق"
           },
           "custodian": {
-            "type": "string",
-            "title": "Custodian"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Custodian",
+            "description": "متولی صندوق"
           },
           "auditor": {
-            "type": "string",
-            "title": "Auditor"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Auditor",
+            "description": "حسابرس صندوق"
           },
           "liquidityGuarantor": {
-            "type": "string",
-            "title": "Liquidityguarantor"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Liquidityguarantor",
+            "description": "ضامن نقد شوندگی صندوق"
+          },
+          "marketMaker": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Marketmaker",
+            "description": "بازارگردان"
           },
           "initiationDate": {
             "type": "string",
             "title": "Initiationdate",
-            "description": "Gregorian date of fund initiation in YYYY-mm-dd format"
+            "description": "تاریخ آغاز فعالیت میلادی"
           },
           "initiationJdate": {
             "type": "string",
             "title": "Initiationjdate",
-            "description": "Jalali date of fund initiation in YYYY-mm-dd format"
+            "description": "تاریخ آغاز فعالیت"
           },
           "issueNavRials": {
             "type": "integer",
-            "title": "Issuenavrials"
+            "title": "Issuenavrials",
+            "description": "قیمت صدور (ریال)"
           },
           "redeemNavRials": {
             "type": "integer",
-            "title": "Redeemnavrials"
+            "title": "Redeemnavrials",
+            "description": "قیمت ابطال (ریال)"
           },
           "statisticalNavRials": {
             "type": "integer",
-            "title": "Statisticalnavrials"
+            "title": "Statisticalnavrials",
+            "description": "قیمت آماری (ریال)"
           },
           "assetUnderManagementRials": {
             "type": "integer",
-            "title": "Assetundermanagementrials"
+            "title": "Assetundermanagementrials",
+            "description": "دارایی تحت مدیریت (ریال)"
           },
           "numberOfUnits": {
             "type": "integer",
-            "title": "Numberofunits"
+            "title": "Numberofunits",
+            "description": "تعداد واحد"
           },
           "returnLastWeekPercent": {
             "anyOf": [
@@ -2881,7 +3947,8 @@
                 "type": "null"
               }
             ],
-            "title": "Returnlastweekpercent"
+            "title": "Returnlastweekpercent",
+            "description": "بازدهی هفته اخیر"
           },
           "returnLastMonthPercent": {
             "anyOf": [
@@ -2892,7 +3959,8 @@
                 "type": "null"
               }
             ],
-            "title": "Returnlastmonthpercent"
+            "title": "Returnlastmonthpercent",
+            "description": "بازدهی ماه اخیر"
           },
           "returnLast3MonthsPercent": {
             "anyOf": [
@@ -2903,7 +3971,8 @@
                 "type": "null"
               }
             ],
-            "title": "Returnlast3Monthspercent"
+            "title": "Returnlast3Monthspercent",
+            "description": "بازدهی سه ماه اخیر"
           },
           "returnLastYearPercent": {
             "anyOf": [
@@ -2914,7 +3983,8 @@
                 "type": "null"
               }
             ],
-            "title": "Returnlastyearpercent"
+            "title": "Returnlastyearpercent",
+            "description": "بازدهی سال اخیر"
           },
           "returnLastWeekVsTedpixPercent": {
             "anyOf": [
@@ -2925,7 +3995,8 @@
                 "type": "null"
               }
             ],
-            "title": "Returnlastweekvstedpixpercent"
+            "title": "Returnlastweekvstedpixpercent",
+            "description": "بازدهی هفته اخیر به شاخص"
           },
           "returnLastMonthVsTedpixPercent": {
             "anyOf": [
@@ -2936,7 +4007,8 @@
                 "type": "null"
               }
             ],
-            "title": "Returnlastmonthvstedpixpercent"
+            "title": "Returnlastmonthvstedpixpercent",
+            "description": "بازدهی ماه اخیر به شاخص"
           },
           "returnLast3MonthsVsTedpixPercent": {
             "anyOf": [
@@ -2947,7 +4019,8 @@
                 "type": "null"
               }
             ],
-            "title": "Returnlast3Monthsvstedpixpercent"
+            "title": "Returnlast3Monthsvstedpixpercent",
+            "description": "بازدهی سه ماه اخیر به شاخص"
           },
           "returnLastYearVsTedpixPercent": {
             "anyOf": [
@@ -2958,39 +4031,48 @@
                 "type": "null"
               }
             ],
-            "title": "Returnlastyearvstedpixpercent"
+            "title": "Returnlastyearvstedpixpercent",
+            "description": "بازدهی سال اخیر به شاخص"
           },
           "assetAllocationBondPercent": {
             "type": "number",
-            "title": "Assetallocationbondpercent"
+            "title": "Assetallocationbondpercent",
+            "description": "سهم اوراق از پورتفوی"
           },
           "assetAllocationBankDepositPercent": {
             "type": "number",
-            "title": "Assetallocationbankdepositpercent"
+            "title": "Assetallocationbankdepositpercent",
+            "description": "سهم سپرده بانکی از پورتفوی"
           },
           "assetAllocationCommodityDepositCertificatePercent": {
             "type": "number",
-            "title": "Assetallocationcommoditydepositcertificatepercent"
+            "title": "Assetallocationcommoditydepositcertificatepercent",
+            "description": "سهم گواهی سپرده کالایی از پورتفوی"
           },
           "assetAllocationCashPercent": {
             "type": "number",
-            "title": "Assetallocationcashpercent"
+            "title": "Assetallocationcashpercent",
+            "description": "سهم وجه نقد از پورتفوی"
           },
           "assetAllocationStocksIncludingTop5Percent": {
             "type": "number",
-            "title": "Assetallocationstocksincludingtop5Percent"
+            "title": "Assetallocationstocksincludingtop5Percent",
+            "description": "سهم سهام از پورتفوی"
           },
           "assetAllocationFundUnitsPercent": {
             "type": "number",
-            "title": "Assetallocationfundunitspercent"
+            "title": "Assetallocationfundunitspercent",
+            "description": "سهم واحد صندوق‌ها از پورتفوی"
           },
           "assetAllocationOtherPercent": {
             "type": "number",
-            "title": "Assetallocationotherpercent"
+            "title": "Assetallocationotherpercent",
+            "description": "سهم سایر از پورتفوی"
           },
           "assetAllocationTop5StocksPercent": {
             "type": "number",
-            "title": "Assetallocationtop5Stockspercent"
+            "title": "Assetallocationtop5Stockspercent",
+            "description": "سهم پنج سهم برتر از پورتفوی"
           },
           "averageLeverageLastWeek": {
             "anyOf": [
@@ -3001,7 +4083,8 @@
                 "type": "null"
               }
             ],
-            "title": "Averageleveragelastweek"
+            "title": "Averageleveragelastweek",
+            "description": "میانگین اهرم هفته اخیر"
           },
           "averageLeverageLastMonth": {
             "anyOf": [
@@ -3012,7 +4095,8 @@
                 "type": "null"
               }
             ],
-            "title": "Averageleveragelastmonth"
+            "title": "Averageleveragelastmonth",
+            "description": "میانگین اهرم ماه اخیر"
           },
           "averageLeverageLast3Months": {
             "anyOf": [
@@ -3023,7 +4107,8 @@
                 "type": "null"
               }
             ],
-            "title": "Averageleveragelast3Months"
+            "title": "Averageleveragelast3Months",
+            "description": "میانگین اهرم سه ماه اخیر"
           },
           "averageLeverageLastYear": {
             "anyOf": [
@@ -3034,7 +4119,8 @@
                 "type": "null"
               }
             ],
-            "title": "Averageleveragelastyear"
+            "title": "Averageleveragelastyear",
+            "description": "میانگین اهرم سال اخیر"
           },
           "standardDeviationLastWeek": {
             "anyOf": [
@@ -3045,7 +4131,8 @@
                 "type": "null"
               }
             ],
-            "title": "Standarddeviationlastweek"
+            "title": "Standarddeviationlastweek",
+            "description": "انحراف از میانگین هفته اخیر"
           },
           "standardDeviationLastMonth": {
             "anyOf": [
@@ -3056,7 +4143,8 @@
                 "type": "null"
               }
             ],
-            "title": "Standarddeviationlastmonth"
+            "title": "Standarddeviationlastmonth",
+            "description": "انحراف از میانگین ماه اخیر"
           },
           "standardDeviationLast3Month": {
             "anyOf": [
@@ -3067,7 +4155,8 @@
                 "type": "null"
               }
             ],
-            "title": "Standarddeviationlast3Month"
+            "title": "Standarddeviationlast3Month",
+            "description": "انحراف از میانگین سه ماه اخیر"
           },
           "standardDeviationLastYear": {
             "anyOf": [
@@ -3078,7 +4167,8 @@
                 "type": "null"
               }
             ],
-            "title": "Standarddeviationlastyear"
+            "title": "Standarddeviationlastyear",
+            "description": "انحراف از میانگین سال اخیر"
           },
           "sharpeRatioLastWeek": {
             "anyOf": [
@@ -3089,7 +4179,8 @@
                 "type": "null"
               }
             ],
-            "title": "Sharperatiolastweek"
+            "title": "Sharperatiolastweek",
+            "description": "نسبت شارپی هفته اخیر"
           },
           "sharpeRatioLastMonth": {
             "anyOf": [
@@ -3100,7 +4191,8 @@
                 "type": "null"
               }
             ],
-            "title": "Sharperatiolastmonth"
+            "title": "Sharperatiolastmonth",
+            "description": "نسبت شارپی ماه اخیر"
           },
           "sharpeRatioLast3Months": {
             "anyOf": [
@@ -3111,7 +4203,8 @@
                 "type": "null"
               }
             ],
-            "title": "Sharperatiolast3Months"
+            "title": "Sharperatiolast3Months",
+            "description": "نسبت شارپی سه ماه اخیر"
           },
           "sharpeRatioLastYear": {
             "anyOf": [
@@ -3122,7 +4215,8 @@
                 "type": "null"
               }
             ],
-            "title": "Sharperatiolastyear"
+            "title": "Sharperatiolastyear",
+            "description": "نسبت شارپی سال اخیر"
           },
           "informationRatioLastWeek": {
             "anyOf": [
@@ -3133,7 +4227,8 @@
                 "type": "null"
               }
             ],
-            "title": "Informationratiolastweek"
+            "title": "Informationratiolastweek",
+            "description": "نسبت اصلاعاتی هفته اخیر"
           },
           "informationRatioLastMonth": {
             "anyOf": [
@@ -3144,7 +4239,8 @@
                 "type": "null"
               }
             ],
-            "title": "Informationratiolastmonth"
+            "title": "Informationratiolastmonth",
+            "description": "نسبت اصلاعاتی ماه اخیر"
           },
           "informationRatioLast3Months": {
             "anyOf": [
@@ -3155,7 +4251,8 @@
                 "type": "null"
               }
             ],
-            "title": "Informationratiolast3Months"
+            "title": "Informationratiolast3Months",
+            "description": "نسبت اصلاعاتی سه ماه اخیر"
           },
           "informationRatioLastYear": {
             "anyOf": [
@@ -3166,7 +4263,8 @@
                 "type": "null"
               }
             ],
-            "title": "Informationratiolastyear"
+            "title": "Informationratiolastyear",
+            "description": "نسبت اصلاعاتی سال اخیر"
           },
           "alphaLastDay": {
             "anyOf": [
@@ -3177,7 +4275,8 @@
                 "type": "null"
               }
             ],
-            "title": "Alphalastday"
+            "title": "Alphalastday",
+            "description": "آلفا روز اخیر"
           },
           "alphaLastWeek": {
             "anyOf": [
@@ -3188,7 +4287,8 @@
                 "type": "null"
               }
             ],
-            "title": "Alphalastweek"
+            "title": "Alphalastweek",
+            "description": "آلفا هفته اخیر"
           },
           "alphaLastMonth": {
             "anyOf": [
@@ -3199,7 +4299,8 @@
                 "type": "null"
               }
             ],
-            "title": "Alphalastmonth"
+            "title": "Alphalastmonth",
+            "description": "آلفا ماه اخیر"
           },
           "alphaLast3Months": {
             "anyOf": [
@@ -3210,7 +4311,8 @@
                 "type": "null"
               }
             ],
-            "title": "Alphalast3Months"
+            "title": "Alphalast3Months",
+            "description": "آلفا سه ماه اخیر"
           },
           "alphaLastYear": {
             "anyOf": [
@@ -3221,7 +4323,8 @@
                 "type": "null"
               }
             ],
-            "title": "Alphalastyear"
+            "title": "Alphalastyear",
+            "description": "آلفا سال اخیر"
           },
           "betaLastDay": {
             "anyOf": [
@@ -3232,7 +4335,8 @@
                 "type": "null"
               }
             ],
-            "title": "Betalastday"
+            "title": "Betalastday",
+            "description": "بتا روز اخیر"
           },
           "betaLastWeek": {
             "anyOf": [
@@ -3243,7 +4347,8 @@
                 "type": "null"
               }
             ],
-            "title": "Betalastweek"
+            "title": "Betalastweek",
+            "description": "بتا هفته اخیر"
           },
           "betaLastMonth": {
             "anyOf": [
@@ -3254,7 +4359,8 @@
                 "type": "null"
               }
             ],
-            "title": "Betalastmonth"
+            "title": "Betalastmonth",
+            "description": "بتا ماه اخیر"
           },
           "betaLast3Months": {
             "anyOf": [
@@ -3265,7 +4371,8 @@
                 "type": "null"
               }
             ],
-            "title": "Betalast3Months"
+            "title": "Betalast3Months",
+            "description": "بتا سه ماه اخیر"
           },
           "betaLastYear": {
             "anyOf": [
@@ -3276,9 +4383,10 @@
                 "type": "null"
               }
             ],
-            "title": "Betalastyear"
+            "title": "Betalastyear",
+            "description": "بتا سال اخیر"
           },
-          "maxDrawDawnWeek": {
+          "maxDrawdownWeek": {
             "anyOf": [
               {
                 "type": "number"
@@ -3287,9 +4395,10 @@
                 "type": "null"
               }
             ],
-            "title": "Maxdrawdawnweek"
+            "title": "Maxdrawdownweek",
+            "description": "ماکزیمم افت هفته اخیر"
           },
-          "maxDrawDawnMonth": {
+          "maxDrawdownMonth": {
             "anyOf": [
               {
                 "type": "number"
@@ -3298,9 +4407,10 @@
                 "type": "null"
               }
             ],
-            "title": "Maxdrawdawnmonth"
+            "title": "Maxdrawdownmonth",
+            "description": "ماکزیمم افت ماه اخیر"
           },
-          "maxDrawDawn3Month": {
+          "maxDrawdown3Month": {
             "anyOf": [
               {
                 "type": "number"
@@ -3309,9 +4419,10 @@
                 "type": "null"
               }
             ],
-            "title": "Maxdrawdawn3Month"
+            "title": "Maxdrawdown3Month",
+            "description": "ماکزیمم افت سه ماه اخیر"
           },
-          "maxDrawDawnYear": {
+          "maxDrawdownYear": {
             "anyOf": [
               {
                 "type": "number"
@@ -3320,7 +4431,23 @@
                 "type": "null"
               }
             ],
-            "title": "Maxdrawdawnyear"
+            "title": "Maxdrawdownyear",
+            "description": "ماکزیمم افت سال اخیر"
+          },
+          "dailyRedeemNavMonth": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dailyredeemnavmonth",
+            "description": "قیمت ابطال روزانه ماه اخیر"
           }
         },
         "type": "object",
@@ -3337,10 +4464,12 @@
           "prospectusUrl",
           "isEtf",
           "isCharity",
+          "hasVideo",
           "manager",
           "custodian",
           "auditor",
           "liquidityGuarantor",
+          "marketMaker",
           "initiationDate",
           "initiationJdate",
           "issueNavRials",
@@ -3390,10 +4519,11 @@
           "betaLastMonth",
           "betaLast3Months",
           "betaLastYear",
-          "maxDrawDawnWeek",
-          "maxDrawDawnMonth",
-          "maxDrawDawn3Month",
-          "maxDrawDawnYear"
+          "maxDrawdownWeek",
+          "maxDrawdownMonth",
+          "maxDrawdown3Month",
+          "maxDrawdownYear",
+          "dailyRedeemNavMonth"
         ],
         "title": "FundListItemApiModel"
       },
@@ -3416,13 +4546,21 @@
             },
             "type": "array",
             "title": "Selectedtabfunds"
+          },
+          "columns": {
+            "items": {
+              "$ref": "#/components/schemas/FundTableTabColumnDto"
+            },
+            "type": "array",
+            "title": "Columns"
           }
         },
         "type": "object",
         "required": [
           "tabs",
           "selectedTabIdentifier",
-          "selectedTabFunds"
+          "selectedTabFunds",
+          "columns"
         ],
         "title": "FundTableResponseApiModel"
       },
@@ -3436,7 +4574,7 @@
             "type": "string",
             "title": "Title"
           },
-          "colorHexRgb": {
+          "color": {
             "anyOf": [
               {
                 "type": "string"
@@ -3445,16 +4583,126 @@
                 "type": "null"
               }
             ],
-            "title": "Colorhexrgb"
+            "title": "Color"
           }
         },
         "type": "object",
         "required": [
           "identifier",
           "title",
-          "colorHexRgb"
+          "color"
         ],
         "title": "FundTableTabApiModel"
+      },
+      "FundTableTabColumnDto": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "visible": {
+            "type": "boolean",
+            "title": "Visible"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/FundTableTabColumnSort"
+          },
+          "columnFilter": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FundTableTabColumnFilterTextDto"
+              },
+              {
+                "$ref": "#/components/schemas/FundTableTabColumnFilterOptionsDto"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Columnfilter"
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "key",
+          "visible",
+          "sort",
+          "columnFilter"
+        ],
+        "title": "FundTableTabColumnDto"
+      },
+      "FundTableTabColumnFilterOptionDto": {
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "title": "Identifier"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "selected": {
+            "type": "boolean",
+            "title": "Selected"
+          }
+        },
+        "type": "object",
+        "required": [
+          "identifier",
+          "label",
+          "selected"
+        ],
+        "title": "FundTableTabColumnFilterOptionDto"
+      },
+      "FundTableTabColumnFilterOptionsDto": {
+        "properties": {
+          "options": {
+            "items": {
+              "$ref": "#/components/schemas/FundTableTabColumnFilterOptionDto"
+            },
+            "type": "array",
+            "title": "Options"
+          }
+        },
+        "type": "object",
+        "required": [
+          "options"
+        ],
+        "title": "FundTableTabColumnFilterOptionsDto"
+      },
+      "FundTableTabColumnFilterTextDto": {
+        "properties": {
+          "filter_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Filter Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "filter_text"
+        ],
+        "title": "FundTableTabColumnFilterTextDto"
+      },
+      "FundTableTabColumnSort": {
+        "type": "string",
+        "enum": [
+          "NO",
+          "ASC",
+          "DESC"
+        ],
+        "title": "FundTableTabColumnSort"
       },
       "FundTypeApiModel": {
         "properties": {
@@ -3482,21 +4730,29 @@
           "pinned": {
             "type": "boolean",
             "title": "Pinned"
+          },
+          "mark": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mark"
           }
         },
         "type": "object",
         "required": [
           "fund",
-          "pinned"
+          "pinned",
+          "mark"
         ],
         "title": "FundsTableItemApiModel"
       },
       "GetDashboardItemCalculationsBody": {
         "properties": {
-          "dashboardItemId": {
-            "type": "integer",
-            "title": "Dashboarditemid"
-          },
           "selectedFilters": {
             "anyOf": [
               {
@@ -3511,9 +4767,6 @@
           }
         },
         "type": "object",
-        "required": [
-          "dashboardItemId"
-        ],
         "title": "GetDashboardItemCalculationsBody"
       },
       "GetForgotPasswordOtpBody": {
@@ -3637,12 +4890,52 @@
         ],
         "title": "HealthApiModel"
       },
+      "LogoutResponseApiModel": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          }
+        },
+        "type": "object",
+        "required": [
+          "success"
+        ],
+        "title": "LogoutResponseApiModel"
+      },
+      "MarkFundInTableTabBody": {
+        "properties": {
+          "fund": {
+            "type": "integer",
+            "title": "Fund"
+          },
+          "color": {
+            "type": "string",
+            "title": "Color"
+          }
+        },
+        "type": "object",
+        "required": [
+          "fund",
+          "color"
+        ],
+        "title": "MarkFundInTableTabBody"
+      },
+      "MarkFundInTableTabResponseApiModel": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          }
+        },
+        "type": "object",
+        "required": [
+          "success"
+        ],
+        "title": "MarkFundInTableTabResponseApiModel"
+      },
       "PinFundInTableTabBody": {
         "properties": {
-          "tab": {
-            "type": "integer",
-            "title": "Tab"
-          },
           "fund": {
             "type": "integer",
             "title": "Fund"
@@ -3650,7 +4943,6 @@
         },
         "type": "object",
         "required": [
-          "tab",
           "fund"
         ],
         "title": "PinFundInTableTabBody"
@@ -3681,6 +4973,19 @@
         ],
         "title": "RenameDashboardForUserBody"
       },
+      "ReplaceDashboardItemCalculationsBody": {
+        "properties": {
+          "newReportIdentifier": {
+            "type": "string",
+            "title": "Newreportidentifier"
+          }
+        },
+        "type": "object",
+        "required": [
+          "newReportIdentifier"
+        ],
+        "title": "ReplaceDashboardItemCalculationsBody"
+      },
       "Report13Dot1CalculationResult": {
         "properties": {
           "lastDay": {
@@ -3697,6 +5002,10 @@
           },
           "averageValue": {
             "$ref": "#/components/schemas/Report13Dot1CalculationResultColumn"
+          },
+          "currencyUnit": {
+            "type": "string",
+            "title": "Currencyunit"
           }
         },
         "type": "object",
@@ -3705,7 +5014,8 @@
           "lastDayNormalized",
           "maxValue",
           "minValue",
-          "averageValue"
+          "averageValue",
+          "currencyUnit"
         ],
         "title": "Report13Dot1CalculationResult"
       },
@@ -3893,14 +5203,7 @@
             "title": "Points"
           },
           "mean": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "integer"
-              }
-            ],
+            "type": "number",
             "title": "Mean"
           }
         },
@@ -3915,11 +5218,10 @@
         "properties": {
           "date": {
             "type": "string",
-            "format": "date",
             "title": "Date"
           },
           "value": {
-            "type": "integer",
+            "type": "number",
             "title": "Value"
           }
         },
@@ -3980,12 +5282,17 @@
           "y": {
             "type": "number",
             "title": "Y"
+          },
+          "tradeDateShamsi": {
+            "type": "string",
+            "title": "Tradedateshamsi"
           }
         },
         "type": "object",
         "required": [
           "x",
-          "y"
+          "y",
+          "tradeDateShamsi"
         ],
         "title": "Report15CalculationResultGraphPoint"
       },
@@ -3997,11 +5304,16 @@
             },
             "type": "array",
             "title": "Data"
+          },
+          "unit": {
+            "type": "string",
+            "title": "Unit"
           }
         },
         "type": "object",
         "required": [
-          "data"
+          "data",
+          "unit"
         ],
         "title": "Report2CalculationResult"
       },
@@ -4012,7 +5324,7 @@
             "title": "Sectortitle"
           },
           "netFlow": {
-            "type": "integer",
+            "type": "number",
             "title": "Netflow"
           }
         },
@@ -4023,6 +5335,123 @@
         ],
         "title": "Report2CalculationResultItem"
       },
+      "Report36CalculationResult": {
+        "properties": {
+          "buckets": {
+            "items": {
+              "$ref": "#/components/schemas/Report36CalculationResultBucket"
+            },
+            "type": "array",
+            "title": "Buckets"
+          },
+          "positiveInstruments": {
+            "type": "integer",
+            "title": "Positiveinstruments"
+          },
+          "negativeInstruments": {
+            "type": "integer",
+            "title": "Negativeinstruments"
+          },
+          "bucketRangeUnit": {
+            "type": "string",
+            "title": "Bucketrangeunit"
+          },
+          "bucketCountUnit": {
+            "type": "string",
+            "title": "Bucketcountunit"
+          }
+        },
+        "type": "object",
+        "required": [
+          "buckets",
+          "positiveInstruments",
+          "negativeInstruments",
+          "bucketRangeUnit",
+          "bucketCountUnit"
+        ],
+        "title": "Report36CalculationResult"
+      },
+      "Report36CalculationResultBucket": {
+        "properties": {
+          "bucketMin": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bucketmin"
+          },
+          "bucketMax": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bucketmax"
+          },
+          "displayBucketAverage": {
+            "type": "number",
+            "title": "Displaybucketaverage"
+          },
+          "bucketInstrumentsCount": {
+            "type": "integer",
+            "title": "Bucketinstrumentscount"
+          }
+        },
+        "type": "object",
+        "required": [
+          "bucketMin",
+          "bucketMax",
+          "displayBucketAverage",
+          "bucketInstrumentsCount"
+        ],
+        "title": "Report36CalculationResultBucket"
+      },
+      "Report39CalculationResult": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/Report39InstrumentsResultItem"
+            },
+            "type": "array",
+            "title": "Data"
+          },
+          "unit": {
+            "type": "string",
+            "title": "Unit"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data",
+          "unit"
+        ],
+        "title": "Report39CalculationResult"
+      },
+      "Report39InstrumentsResultItem": {
+        "properties": {
+          "instrument": {
+            "type": "string",
+            "title": "Instrument"
+          },
+          "netFlow": {
+            "type": "number",
+            "title": "Netflow"
+          }
+        },
+        "type": "object",
+        "required": [
+          "instrument",
+          "netFlow"
+        ],
+        "title": "Report39InstrumentsResultItem"
+      },
       "Report6CalculationResult": {
         "properties": {
           "data": {
@@ -4031,11 +5460,21 @@
             },
             "type": "array",
             "title": "Data"
+          },
+          "indexUnit": {
+            "type": "string",
+            "title": "Indexunit"
+          },
+          "netFlowUnit": {
+            "type": "string",
+            "title": "Netflowunit"
           }
         },
         "type": "object",
         "required": [
-          "data"
+          "data",
+          "indexUnit",
+          "netFlowUnit"
         ],
         "title": "Report6CalculationResult"
       },
@@ -4043,7 +5482,6 @@
         "properties": {
           "dt": {
             "type": "string",
-            "format": "date",
             "title": "Dt"
           },
           "indexValue": {
@@ -4051,7 +5489,7 @@
             "title": "Indexvalue"
           },
           "netFlow": {
-            "type": "integer",
+            "type": "number",
             "title": "Netflow"
           }
         },
@@ -4062,6 +5500,65 @@
           "netFlow"
         ],
         "title": "Report6CalculationResultTimeSeriesItem"
+      },
+      "ReportScreenshotResponseApiModel": {
+        "properties": {
+          "queryId": {
+            "type": "string",
+            "title": "Queryid"
+          },
+          "screenshotUrl": {
+            "type": "string",
+            "title": "Screenshoturl"
+          }
+        },
+        "type": "object",
+        "required": [
+          "queryId",
+          "screenshotUrl"
+        ],
+        "title": "ReportScreenshotResponseApiModel"
+      },
+      "RequestReportForm": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "call": {
+            "type": "string",
+            "title": "Call"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "text",
+          "call"
+        ],
+        "title": "RequestReportForm"
+      },
+      "RequestReportResponseApiModel": {
+        "properties": {
+          "requestFollowCode": {
+            "type": "integer",
+            "title": "Requestfollowcode"
+          },
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          }
+        },
+        "type": "object",
+        "required": [
+          "requestFollowCode",
+          "success"
+        ],
+        "title": "RequestReportResponseApiModel"
       },
       "ResetForgotPasswordByOtpResponseApiModel": {
         "properties": {
@@ -4075,6 +5572,47 @@
           "success"
         ],
         "title": "ResetForgotPasswordByOtpResponseApiModel"
+      },
+      "SortFundTabBody": {
+        "properties": {
+          "columnKey": {
+            "type": "string",
+            "title": "Columnkey"
+          },
+          "direction": {
+            "$ref": "#/components/schemas/FundTableTabColumnSort"
+          }
+        },
+        "type": "object",
+        "required": [
+          "columnKey",
+          "direction"
+        ],
+        "title": "SortFundTabBody"
+      },
+      "SortFundTabResponseApiModel": {
+        "properties": {
+          "funds": {
+            "items": {
+              "$ref": "#/components/schemas/FundsTableItemApiModel"
+            },
+            "type": "array",
+            "title": "Funds"
+          },
+          "columns": {
+            "items": {
+              "$ref": "#/components/schemas/FundTableTabColumnDto"
+            },
+            "type": "array",
+            "title": "Columns"
+          }
+        },
+        "type": "object",
+        "required": [
+          "funds",
+          "columns"
+        ],
+        "title": "SortFundTabResponseApiModel"
       },
       "TokenApiModel": {
         "properties": {
@@ -4094,12 +5632,8 @@
         ],
         "title": "TokenApiModel"
       },
-      "UnpinFundInTableTabBody": {
+      "UnmarkFundInTableTabBody": {
         "properties": {
-          "tab": {
-            "type": "integer",
-            "title": "Tab"
-          },
           "fund": {
             "type": "integer",
             "title": "Fund"
@@ -4107,7 +5641,32 @@
         },
         "type": "object",
         "required": [
-          "tab",
+          "fund"
+        ],
+        "title": "UnmarkFundInTableTabBody"
+      },
+      "UnmarkFundInTableTabResponseApiModel": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          }
+        },
+        "type": "object",
+        "required": [
+          "success"
+        ],
+        "title": "UnmarkFundInTableTabResponseApiModel"
+      },
+      "UnpinFundInTableTabBody": {
+        "properties": {
+          "fund": {
+            "type": "integer",
+            "title": "Fund"
+          }
+        },
+        "type": "object",
+        "required": [
           "fund"
         ],
         "title": "UnpinFundInTableTabBody"
@@ -4124,6 +5683,80 @@
           "success"
         ],
         "title": "UnpinFundInTableTabResponseApiModel"
+      },
+      "UpdateFundTabColumnsResponseApiModel": {
+        "properties": {
+          "funds": {
+            "items": {
+              "$ref": "#/components/schemas/FundsTableItemApiModel"
+            },
+            "type": "array",
+            "title": "Funds"
+          },
+          "columns": {
+            "items": {
+              "$ref": "#/components/schemas/FundTableTabColumnDto"
+            },
+            "type": "array",
+            "title": "Columns"
+          }
+        },
+        "type": "object",
+        "required": [
+          "funds",
+          "columns"
+        ],
+        "title": "UpdateFundTabColumnsResponseApiModel"
+      },
+      "UpdateFundTableTabColumnItem": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "sortDirection": {
+            "$ref": "#/components/schemas/FundTableTabColumnSort"
+          },
+          "visible": {
+            "type": "boolean",
+            "title": "Visible"
+          },
+          "selectedFilter": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selectedfilter"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "sortDirection",
+          "visible",
+          "selectedFilter"
+        ],
+        "title": "UpdateFundTableTabColumnItem"
+      },
+      "UpdateFundTableTabColumnsBody": {
+        "properties": {
+          "columns": {
+            "items": {
+              "$ref": "#/components/schemas/UpdateFundTableTabColumnItem"
+            },
+            "type": "array",
+            "title": "Columns"
+          }
+        },
+        "type": "object",
+        "required": [
+          "columns"
+        ],
+        "title": "UpdateFundTableTabColumnsBody"
       },
       "UserReportFavoriteStatus": {
         "properties": {

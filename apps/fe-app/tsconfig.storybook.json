@@ -14,5 +14,5 @@
     "components/**/*.stories.mdx",
     ".storybook/*.js",
     ".storybook/*.ts"
-  ]
+, ".storybook/preview.tsx"  ]
 }
