@@ -78,13 +78,13 @@ export const PlayerOptions: React.FC<Props> = React.memo(
             <button
               onClick={() => setOpen(!open)}
               className={cn(
-                'relative  flex items-center justify-center p-1 text-white transition-transform duration-300',
+                'relative flex items-center justify-center p-1 text-white transition-transform duration-300',
               )}
             >
-              <span className={cn("hidden sm:block",{"rotate-12":open})}>
+              <span className={cn('hidden sm:block', { 'rotate-12': open })}>
                 <Icon name="settings" />
               </span>
-              <span className={cn("block sm:hidden",{"rotate-12":open})}>
+              <span className={cn('block sm:hidden', { 'rotate-12': open })}>
                 <Icon size="sm" name="settings" />
               </span>
             </button>
@@ -154,8 +154,9 @@ export const PlayerOptions: React.FC<Props> = React.memo(
                     </span>
                     <span>سرعت پخش</span>
                   </li>
-                  {PLAYBACK_RATES.map((item) => (
+                  {PLAYBACK_RATES.map((item, index) => (
                     <li
+                      key={index}
                       onClick={() => setPlaybackRate(item)}
                       className={cn(
                         'flex cursor-pointer gap-2 py-2 pr-10 transition-colors duration-700 hover:bg-gray-800/80',
@@ -240,8 +241,9 @@ export const PlayerOptions: React.FC<Props> = React.memo(
                     </span>
                     <span>کیفیت پخش</span>
                   </li>
-                  {qualities.map((item) => (
+                  {qualities.map((item, index) => (
                     <li
+                      key={index}
                       onClick={() => changeQuality(item)}
                       className={cn(
                         'flex cursor-pointer gap-2 py-2 pr-10 transition-colors duration-700 hover:bg-gray-800/80',
