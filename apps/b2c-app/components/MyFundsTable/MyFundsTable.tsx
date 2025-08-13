@@ -75,6 +75,7 @@ export function MyFundsTable({
   const [showLeftButton, setShowLeftButton] = useState(false);
   const [showRightButton, setShowRightButton] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [displayedView, setDisplayedView] = useState(isDetailView);
   const { recheckAllElements, isTruncated } = useTextTruncation();
 
   // Store refs for truncation checking
@@ -138,16 +139,22 @@ export function MyFundsTable({
 
   // Trigger animation when view changes
   useEffect(() => {
-    setIsAnimating(true);
-    const timer = setTimeout(() => {
-      setIsAnimating(false);
-      // Check scrollable after animation completes to ensure proper button visibility
-      setTimeout(() => {
-        checkScrollable();
-      }, 50);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [isDetailView]);
+    if (displayedView !== isDetailView) {
+      setIsAnimating(true);
+
+      // Fade out, change content, then fade in
+      const timer = setTimeout(() => {
+        setDisplayedView(isDetailView);
+        setIsAnimating(false);
+        // Check scrollable after animation completes to ensure proper button visibility
+        setTimeout(() => {
+          checkScrollable();
+        }, 50);
+      }, 200); // Shorter, simpler transition
+
+      return () => clearTimeout(timer);
+    }
+  }, [isDetailView, displayedView]);
 
   // Check truncation when detail view or data changes
   useEffect(() => {
@@ -205,7 +212,7 @@ export function MyFundsTable({
                   isAnimating ? 'opacity-0' : 'opacity-100',
                 )}
               >
-                {isDetailView ? 'صندوق' : 'نوع صندوق'}
+                {displayedView ? 'صندوق' : 'نوع صندوق'}
               </div>
               <div className="text-text-neutral-primary text-md text-center font-medium">
                 ارزش روز/سرمایه
@@ -251,11 +258,11 @@ export function MyFundsTable({
                       )}
                     ></div>
                     <div className="min-w-0 flex-1 text-right">
-                      {isDetailView &&
+                      {displayedView &&
                       isTruncated(`fund-${fund.code || fund.typeID}`) ? (
                         <Tooltip
                           title={
-                            isDetailView && fund.name
+                            displayedView && fund.name
                               ? fund.name
                               : fundTypeMaps[fund.typeID].title
                           }
@@ -272,12 +279,12 @@ export function MyFundsTable({
                             data-fund-id={`fund-${fund.code || fund.typeID}`}
                             className={cn(
                               'text-text-neutral-primary truncate text-base font-medium transition-all duration-100 ease-out',
-                              isDetailView &&
+                              displayedView &&
                                 fund.name &&
                                 onFundLinkClick &&
                                 'hover:text-text-brand-primary-600 cursor-pointer',
                               fund.isStock &&
-                                !isDetailView &&
+                                !displayedView &&
                                 'hover:text-text-brand-primary-600 cursor-pointer',
                               isAnimating ? 'opacity-0' : 'opacity-100',
                             )}
@@ -292,7 +299,7 @@ export function MyFundsTable({
                               }
                             }}
                           >
-                            {isDetailView && fund.name
+                            {displayedView && fund.name
                               ? fund.name
                               : fundTypeMaps[fund.typeID].title}
                           </div>
@@ -310,12 +317,12 @@ export function MyFundsTable({
                           data-fund-id={`fund-${fund.code || fund.typeID}`}
                           className={cn(
                             'text-text-neutral-primary truncate text-base font-medium transition-all duration-100 ease-out',
-                            isDetailView &&
+                            displayedView &&
                               fund.name &&
                               onFundLinkClick &&
                               'hover:text-text-brand-primary-600 cursor-pointer',
                             fund.isStock &&
-                              !isDetailView &&
+                              !displayedView &&
                               'hover:text-text-brand-primary-600 cursor-pointer',
                             isAnimating ? 'opacity-0' : 'opacity-100',
                           )}
@@ -326,7 +333,7 @@ export function MyFundsTable({
                             }
                           }}
                         >
-                          {isDetailView && fund.name
+                          {displayedView && fund.name
                             ? fund.name
                             : fundTypeMaps[fund.typeID].title}
                         </div>
