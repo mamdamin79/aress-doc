@@ -8,7 +8,7 @@ import {
 import { cn, ReportCard } from 'design-system';
 import React from 'react';
 import emptyState from '@aress-assets/icons/Empty state.png';
-import Image, { StaticImageData } from 'next/image';
+import { StaticImageData } from 'next/image';
 import { FilterReport } from './FilterReport';
 import { SearchBar } from './SearchBar';
 import { SideBar } from './SideBar';
@@ -32,7 +32,7 @@ export const ReportList: React.FC<Props> = ({
   const deleteFavoriteMutation =
     useReportsServiceDeleteReportsByReportIdFavorite();
 
-  const handleLike = async (reportId: number, isFavorite: boolean) => {
+  const handleLike = async (reportId: string, isFavorite: boolean) => {
     if (isFavorite) {
       deleteFavoriteMutation.mutate({ reportId });
     } else {
@@ -87,10 +87,7 @@ export const ReportList: React.FC<Props> = ({
                 fixedBrief={inModal ? false : true}
                 newBadge={report.isNew}
                 onLike={() =>
-                  handleLike(
-                    Number(report.identifier),
-                    report?.userFavorite ?? false,
-                  )
+                  handleLike(report.identifier, report?.userFavorite ?? false)
                 }
                 userFavorite={report.userFavorite}
                 videoBadge={report.hasVideo}
@@ -115,11 +112,13 @@ export const ReportList: React.FC<Props> = ({
               : '4xl:w-[1550px] mx-auto flex h-full flex-col items-center justify-start md:w-[512px] xl:w-[904px]'
           }
         >
-          <Image
-            src={emptyState}
-            alt="empty state"
-            className="h-[345px] w-[380px] object-contain md:h-[380px] md:w-[412px]"
-          />
+          {emptyState && typeof emptyState === 'string' && (
+            <img
+              src={emptyState}
+              alt="empty state"
+              className="h-[345px] w-[380px] object-contain md:h-[380px] md:w-[412px]"
+            />
+          )}
           <p className="text-lg font-normal text-gray-500">
             گزارشی برای نمایش وجود ندارد
           </p>

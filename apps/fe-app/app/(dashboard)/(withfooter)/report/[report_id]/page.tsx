@@ -17,7 +17,7 @@ interface ReportPageParams {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-async function getData(id: number, screenshotQueryId?: string) {
+async function getData(id: string, screenshotQueryId?: string) {
   const report = await ReportsService.getReportsByReportId({
     reportId: String(id),
     screenshotQueryId: screenshotQueryId,
@@ -30,13 +30,12 @@ export async function generateMetadata({
   params,
   searchParams,
 }: ReportPageParams): Promise<Metadata> {
-  const { report_id } = await params;
+  const { report_id: id } = await params;
   const cookieStore = await cookies();
 
   OpenAPI.TOKEN = cookieStore.get('access_token')?.value;
-  const id = Number(report_id);
 
-  if (!id || isNaN(id)) {
+  if (!id) {
     return {
       title: 'گزارش نامعتبر',
       description: 'آی‌دی گزارش نامعتبر است.',
@@ -115,7 +114,9 @@ export default async function ReportPage({
   return (
     <>
       <div className="px-8 pt-3">
-        <Breadcrumb items={[{ title: 'گزارش ها' }, { title: '...' }]} />
+        <Breadcrumb
+          items={[{ title: 'گزارش ها', link: '/reports' }, { title: '' }]}
+        />
       </div>
 
       <div className="text-text-neutral-primary mx-auto max-w-[1680px]">

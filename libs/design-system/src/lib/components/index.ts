@@ -51,3 +51,6 @@ export * from './TextField';
 export * from './DatePicker';
 export * from './Bookmark';
 export * from './PlayList';
+export * from './LogoutModal';
+export * from './SelectionChips';
+export * from './Badge';

@@ -35,9 +35,12 @@ import type {
   PostUsersProfileUsernameChangeResponse,
   PostUsersProfilePictureChangeData,
   PostUsersProfilePictureChangeResponse,
+  PostUsersLogoutResponse,
   GetReportsData,
   GetReportsResponse,
   GetReportsCategoriesResponse,
+  PostReportsRequestData,
+  PostReportsRequestResponse,
   GetReportsByReportIdData,
   GetReportsByReportIdResponse,
   PostReportsByReportIdData,
@@ -78,10 +81,18 @@ import type {
   GetFundsTypeByFundTypeResponse,
   GetFundsTableData,
   GetFundsTableResponse,
-  PostFundsTablePinData,
-  PostFundsTablePinResponse,
-  PostFundsTableUnpinData,
-  PostFundsTableUnpinResponse,
+  PostFundsTableTabByTabPinData,
+  PostFundsTableTabByTabPinResponse,
+  PostFundsTableTabByTabUnpinData,
+  PostFundsTableTabByTabUnpinResponse,
+  PostFundsTableTabByTabMarkData,
+  PostFundsTableTabByTabMarkResponse,
+  PostFundsTableTabByTabUnmarkData,
+  PostFundsTableTabByTabUnmarkResponse,
+  PostFundsTableTabByTabSortData,
+  PostFundsTableTabByTabSortResponse,
+  PostFundsTableTabByTabColumnsData,
+  PostFundsTableTabByTabColumnsResponse,
 } from './types.gen';
 
 export class HealthService {
@@ -452,6 +463,19 @@ export class UsersService {
       },
     });
   }
+
+  /**
+   * Logout User
+   * Logout user
+   * @returns LogoutResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersLogout(): CancelablePromise<PostUsersLogoutResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/logout',
+    });
+  }
 }
 
 export class ReportsService {
@@ -492,6 +516,28 @@ export class ReportsService {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/reports/categories',
+    });
+  }
+
+  /**
+   * Request New Report
+   * Request a new report
+   * @param data The data for the request.
+   * @param data.formData
+   * @returns RequestReportResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postReportsRequest(
+    data: PostReportsRequestData,
+  ): CancelablePromise<PostReportsRequestResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/reports/request',
+      formData: data.formData,
+      mediaType: 'multipart/form-data',
+      errors: {
+        422: 'Validation Error',
+      },
     });
   }
 
@@ -756,7 +802,7 @@ export class DashboardsService {
   }
 
   /**
-   * Dashboard Details
+   * Duplicate Dashboard
    * Duplicate dashboard
    * @param data The data for the request.
    * @param data.dashboardId
@@ -1006,16 +1052,20 @@ export class FundsService {
    * Pin Fund In Table Tab
    * Pin fund in table tab
    * @param data The data for the request.
+   * @param data.tab
    * @param data.requestBody
    * @returns PinFundInTableTabResponseApiModel Successful Response
    * @throws ApiError
    */
-  public static postFundsTablePin(
-    data: PostFundsTablePinData,
-  ): CancelablePromise<PostFundsTablePinResponse> {
+  public static postFundsTableTabByTabPin(
+    data: PostFundsTableTabByTabPinData,
+  ): CancelablePromise<PostFundsTableTabByTabPinResponse> {
     return __request(OpenAPI, {
       method: 'POST',
-      url: '/funds/table/pin',
+      url: '/funds/table/tab/{tab}/pin',
+      path: {
+        tab: data.tab,
+      },
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
@@ -1028,16 +1078,124 @@ export class FundsService {
    * Unpin Fund In Table Tab
    * Unpin fund in table tab
    * @param data The data for the request.
+   * @param data.tab
    * @param data.requestBody
    * @returns UnpinFundInTableTabResponseApiModel Successful Response
    * @throws ApiError
    */
-  public static postFundsTableUnpin(
-    data: PostFundsTableUnpinData,
-  ): CancelablePromise<PostFundsTableUnpinResponse> {
+  public static postFundsTableTabByTabUnpin(
+    data: PostFundsTableTabByTabUnpinData,
+  ): CancelablePromise<PostFundsTableTabByTabUnpinResponse> {
     return __request(OpenAPI, {
       method: 'POST',
-      url: '/funds/table/unpin',
+      url: '/funds/table/tab/{tab}/unpin',
+      path: {
+        tab: data.tab,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Mark Fund In Table Tab
+   * Mark fund in table tab
+   * @param data The data for the request.
+   * @param data.tab
+   * @param data.requestBody
+   * @returns MarkFundInTableTabResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsTableTabByTabMark(
+    data: PostFundsTableTabByTabMarkData,
+  ): CancelablePromise<PostFundsTableTabByTabMarkResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/table/tab/{tab}/mark',
+      path: {
+        tab: data.tab,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Unmark Fund In Table Tab
+   * Unmark fund in table tab
+   * @param data The data for the request.
+   * @param data.tab
+   * @param data.requestBody
+   * @returns UnmarkFundInTableTabResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsTableTabByTabUnmark(
+    data: PostFundsTableTabByTabUnmarkData,
+  ): CancelablePromise<PostFundsTableTabByTabUnmarkResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/table/tab/{tab}/unmark',
+      path: {
+        tab: data.tab,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Sort Fund Tab
+   * Update columns of a fund tab
+   * @param data The data for the request.
+   * @param data.tab
+   * @param data.requestBody
+   * @returns SortFundTabResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsTableTabByTabSort(
+    data: PostFundsTableTabByTabSortData,
+  ): CancelablePromise<PostFundsTableTabByTabSortResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/table/tab/{tab}/sort',
+      path: {
+        tab: data.tab,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        422: 'Validation Error',
+      },
+    });
+  }
+
+  /**
+   * Update Fund Tab Columns
+   * Update columns of a fund tab
+   * @param data The data for the request.
+   * @param data.tab
+   * @param data.requestBody
+   * @returns UpdateFundTabColumnsResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsTableTabByTabColumns(
+    data: PostFundsTableTabByTabColumnsData,
+  ): CancelablePromise<PostFundsTableTabByTabColumnsResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/table/tab/{tab}/columns',
+      path: {
+        tab: data.tab,
+      },
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {

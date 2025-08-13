@@ -201,6 +201,30 @@ export const $Body_login_for_access_token_users_login_post = {
   title: 'Body_login_for_access_token_users_login_post',
 } as const;
 
+export const $Body_request_new_report_reports_request_post = {
+  properties: {
+    request_form: {
+      $ref: '#/components/schemas/RequestReportForm',
+      title: 'Request Form',
+    },
+    file: {
+      anyOf: [
+        {
+          type: 'string',
+          format: 'binary',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'File',
+    },
+  },
+  type: 'object',
+  required: ['request_form'],
+  title: 'Body_request_new_report_reports_request_post',
+} as const;
+
 export const $Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post =
   {
     properties: {
@@ -801,9 +825,13 @@ export const $DashboardItemScreenshotResponseApiModel = {
       type: 'string',
       title: 'Queryid',
     },
+    screenshotUrl: {
+      type: 'string',
+      title: 'Screenshoturl',
+    },
   },
   type: 'object',
-  required: ['queryId'],
+  required: ['queryId', 'screenshotUrl'],
   title: 'DashboardItemScreenshotResponseApiModel',
 } as const;
 
@@ -882,6 +910,9 @@ export const $FinancialReportCalculationApiModel = {
         },
         {
           $ref: '#/components/schemas/Report15CalculationResult',
+        },
+        {
+          $ref: '#/components/schemas/Report36CalculationResult',
         },
         {
           $ref: '#/components/schemas/Report39CalculationResult',
@@ -1246,27 +1277,62 @@ export const $FundListItemApiModel = {
       description: 'دارای ویدیو بررسی',
     },
     manager: {
-      type: 'string',
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
       title: 'Manager',
       description: 'مدیر صنودق',
     },
     custodian: {
-      type: 'string',
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
       title: 'Custodian',
       description: 'متولی صندوق',
     },
     auditor: {
-      type: 'string',
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
       title: 'Auditor',
       description: 'حسابرس صندوق',
     },
     liquidityGuarantor: {
-      type: 'string',
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
       title: 'Liquidityguarantor',
       description: 'ضامن نقد شوندگی صندوق',
     },
     marketMaker: {
-      type: 'string',
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
       title: 'Marketmaker',
       description: 'بازارگردان',
     },
@@ -1283,22 +1349,22 @@ export const $FundListItemApiModel = {
     issueNavRials: {
       type: 'integer',
       title: 'Issuenavrials',
-      description: 'قیمت صدور',
+      description: 'قیمت صدور (ریال)',
     },
     redeemNavRials: {
       type: 'integer',
       title: 'Redeemnavrials',
-      description: 'قیمت ابطال',
+      description: 'قیمت ابطال (ریال)',
     },
     statisticalNavRials: {
       type: 'integer',
       title: 'Statisticalnavrials',
-      description: 'قیمت آماری',
+      description: 'قیمت آماری (ریال)',
     },
     assetUnderManagementRials: {
       type: 'integer',
       title: 'Assetundermanagementrials',
-      description: 'دارایی تحت مدیریت',
+      description: 'دارایی تحت مدیریت (ریال)',
     },
     numberOfUnits: {
       type: 'integer',
@@ -1915,9 +1981,16 @@ export const $FundTableResponseApiModel = {
       type: 'array',
       title: 'Selectedtabfunds',
     },
+    columns: {
+      items: {
+        $ref: '#/components/schemas/FundTableTabColumnDto',
+      },
+      type: 'array',
+      title: 'Columns',
+    },
   },
   type: 'object',
-  required: ['tabs', 'selectedTabIdentifier', 'selectedTabFunds'],
+  required: ['tabs', 'selectedTabIdentifier', 'selectedTabFunds', 'columns'],
   title: 'FundTableResponseApiModel',
 } as const;
 
@@ -1948,6 +2021,103 @@ export const $FundTableTabApiModel = {
   title: 'FundTableTabApiModel',
 } as const;
 
+export const $FundTableTabColumnDto = {
+  properties: {
+    label: {
+      type: 'string',
+      title: 'Label',
+    },
+    key: {
+      type: 'string',
+      title: 'Key',
+    },
+    visible: {
+      type: 'boolean',
+      title: 'Visible',
+    },
+    sort: {
+      $ref: '#/components/schemas/FundTableTabColumnSort',
+    },
+    columnFilter: {
+      anyOf: [
+        {
+          $ref: '#/components/schemas/FundTableTabColumnFilterTextDto',
+        },
+        {
+          $ref: '#/components/schemas/FundTableTabColumnFilterOptionsDto',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Columnfilter',
+    },
+  },
+  type: 'object',
+  required: ['label', 'key', 'visible', 'sort', 'columnFilter'],
+  title: 'FundTableTabColumnDto',
+} as const;
+
+export const $FundTableTabColumnFilterOptionDto = {
+  properties: {
+    identifier: {
+      type: 'string',
+      title: 'Identifier',
+    },
+    label: {
+      type: 'string',
+      title: 'Label',
+    },
+    selected: {
+      type: 'boolean',
+      title: 'Selected',
+    },
+  },
+  type: 'object',
+  required: ['identifier', 'label', 'selected'],
+  title: 'FundTableTabColumnFilterOptionDto',
+} as const;
+
+export const $FundTableTabColumnFilterOptionsDto = {
+  properties: {
+    options: {
+      items: {
+        $ref: '#/components/schemas/FundTableTabColumnFilterOptionDto',
+      },
+      type: 'array',
+      title: 'Options',
+    },
+  },
+  type: 'object',
+  required: ['options'],
+  title: 'FundTableTabColumnFilterOptionsDto',
+} as const;
+
+export const $FundTableTabColumnFilterTextDto = {
+  properties: {
+    filter_text: {
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Filter Text',
+    },
+  },
+  type: 'object',
+  required: ['filter_text'],
+  title: 'FundTableTabColumnFilterTextDto',
+} as const;
+
+export const $FundTableTabColumnSort = {
+  type: 'string',
+  enum: ['NO', 'ASC', 'DESC'],
+  title: 'FundTableTabColumnSort',
+} as const;
+
 export const $FundTypeApiModel = {
   properties: {
     identifier: {
@@ -1973,9 +2143,20 @@ export const $FundsTableItemApiModel = {
       type: 'boolean',
       title: 'Pinned',
     },
+    mark: {
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Mark',
+    },
   },
   type: 'object',
-  required: ['fund', 'pinned'],
+  required: ['fund', 'pinned', 'mark'],
   title: 'FundsTableItemApiModel',
 } as const;
 
@@ -2108,19 +2289,55 @@ export const $HealthApiModel = {
   title: 'HealthApiModel',
 } as const;
 
+export const $LogoutResponseApiModel = {
+  properties: {
+    success: {
+      type: 'boolean',
+      title: 'Success',
+    },
+  },
+  type: 'object',
+  required: ['success'],
+  title: 'LogoutResponseApiModel',
+} as const;
+
+export const $MarkFundInTableTabBody = {
+  properties: {
+    fund: {
+      type: 'integer',
+      title: 'Fund',
+    },
+    color: {
+      type: 'string',
+      title: 'Color',
+    },
+  },
+  type: 'object',
+  required: ['fund', 'color'],
+  title: 'MarkFundInTableTabBody',
+} as const;
+
+export const $MarkFundInTableTabResponseApiModel = {
+  properties: {
+    success: {
+      type: 'boolean',
+      title: 'Success',
+    },
+  },
+  type: 'object',
+  required: ['success'],
+  title: 'MarkFundInTableTabResponseApiModel',
+} as const;
+
 export const $PinFundInTableTabBody = {
   properties: {
-    tab: {
-      type: 'integer',
-      title: 'Tab',
-    },
     fund: {
       type: 'integer',
       title: 'Fund',
     },
   },
   type: 'object',
-  required: ['tab', 'fund'],
+  required: ['fund'],
   title: 'PinFundInTableTabBody',
 } as const;
 
@@ -2177,6 +2394,10 @@ export const $Report13Dot1CalculationResult = {
     averageValue: {
       $ref: '#/components/schemas/Report13Dot1CalculationResultColumn',
     },
+    currencyUnit: {
+      type: 'string',
+      title: 'Currencyunit',
+    },
   },
   type: 'object',
   required: [
@@ -2185,6 +2406,7 @@ export const $Report13Dot1CalculationResult = {
     'maxValue',
     'minValue',
     'averageValue',
+    'currencyUnit',
   ],
   title: 'Report13Dot1CalculationResult',
 } as const;
@@ -2485,34 +2707,103 @@ export const $Report2CalculationResultItem = {
   title: 'Report2CalculationResultItem',
 } as const;
 
+export const $Report36CalculationResult = {
+  properties: {
+    buckets: {
+      items: {
+        $ref: '#/components/schemas/Report36CalculationResultBucket',
+      },
+      type: 'array',
+      title: 'Buckets',
+    },
+    positiveInstruments: {
+      type: 'integer',
+      title: 'Positiveinstruments',
+    },
+    negativeInstruments: {
+      type: 'integer',
+      title: 'Negativeinstruments',
+    },
+    bucketRangeUnit: {
+      type: 'string',
+      title: 'Bucketrangeunit',
+    },
+    bucketCountUnit: {
+      type: 'string',
+      title: 'Bucketcountunit',
+    },
+  },
+  type: 'object',
+  required: [
+    'buckets',
+    'positiveInstruments',
+    'negativeInstruments',
+    'bucketRangeUnit',
+    'bucketCountUnit',
+  ],
+  title: 'Report36CalculationResult',
+} as const;
+
+export const $Report36CalculationResultBucket = {
+  properties: {
+    bucketMin: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Bucketmin',
+    },
+    bucketMax: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Bucketmax',
+    },
+    displayBucketAverage: {
+      type: 'number',
+      title: 'Displaybucketaverage',
+    },
+    bucketInstrumentsCount: {
+      type: 'integer',
+      title: 'Bucketinstrumentscount',
+    },
+  },
+  type: 'object',
+  required: [
+    'bucketMin',
+    'bucketMax',
+    'displayBucketAverage',
+    'bucketInstrumentsCount',
+  ],
+  title: 'Report36CalculationResultBucket',
+} as const;
+
 export const $Report39CalculationResult = {
   properties: {
     data: {
       items: {
-        $ref: '#/components/schemas/Report39CalculationResultItem',
+        $ref: '#/components/schemas/Report39InstrumentsResultItem',
       },
       type: 'array',
       title: 'Data',
     },
-  },
-  type: 'object',
-  required: ['data'],
-  title: 'Report39CalculationResult',
-} as const;
-
-export const $Report39CalculationResultItem = {
-  properties: {
-    values: {
-      items: {
-        $ref: '#/components/schemas/Report39InstrumentsResultItem',
-      },
-      type: 'array',
-      title: 'Values',
+    unit: {
+      type: 'string',
+      title: 'Unit',
     },
   },
   type: 'object',
-  required: ['values'],
-  title: 'Report39CalculationResultItem',
+  required: ['data', 'unit'],
+  title: 'Report39CalculationResult',
 } as const;
 
 export const $Report39InstrumentsResultItem = {
@@ -2525,13 +2816,9 @@ export const $Report39InstrumentsResultItem = {
       type: 'number',
       title: 'Netflow',
     },
-    unit: {
-      type: 'string',
-      title: 'Unit',
-    },
   },
   type: 'object',
-  required: ['instrument', 'netFlow', 'unit'],
+  required: ['instrument', 'netFlow'],
   title: 'Report39InstrumentsResultItem',
 } as const;
 
@@ -2544,9 +2831,17 @@ export const $Report6CalculationResult = {
       type: 'array',
       title: 'Data',
     },
+    indexUnit: {
+      type: 'string',
+      title: 'Indexunit',
+    },
+    netFlowUnit: {
+      type: 'string',
+      title: 'Netflowunit',
+    },
   },
   type: 'object',
-  required: ['data'],
+  required: ['data', 'indexUnit', 'netFlowUnit'],
   title: 'Report6CalculationResult',
 } as const;
 
@@ -2561,7 +2856,7 @@ export const $Report6CalculationResultTimeSeriesItem = {
       title: 'Indexvalue',
     },
     netFlow: {
-      type: 'integer',
+      type: 'number',
       title: 'Netflow',
     },
   },
@@ -2576,10 +2871,50 @@ export const $ReportScreenshotResponseApiModel = {
       type: 'string',
       title: 'Queryid',
     },
+    screenshotUrl: {
+      type: 'string',
+      title: 'Screenshoturl',
+    },
   },
   type: 'object',
-  required: ['queryId'],
+  required: ['queryId', 'screenshotUrl'],
   title: 'ReportScreenshotResponseApiModel',
+} as const;
+
+export const $RequestReportForm = {
+  properties: {
+    title: {
+      type: 'string',
+      title: 'Title',
+    },
+    text: {
+      type: 'string',
+      title: 'Text',
+    },
+    call: {
+      type: 'string',
+      title: 'Call',
+    },
+  },
+  type: 'object',
+  required: ['title', 'text', 'call'],
+  title: 'RequestReportForm',
+} as const;
+
+export const $RequestReportResponseApiModel = {
+  properties: {
+    requestFollowCode: {
+      type: 'integer',
+      title: 'Requestfollowcode',
+    },
+    success: {
+      type: 'boolean',
+      title: 'Success',
+    },
+  },
+  type: 'object',
+  required: ['requestFollowCode', 'success'],
+  title: 'RequestReportResponseApiModel',
 } as const;
 
 export const $ResetForgotPasswordByOtpResponseApiModel = {
@@ -2592,6 +2927,43 @@ export const $ResetForgotPasswordByOtpResponseApiModel = {
   type: 'object',
   required: ['success'],
   title: 'ResetForgotPasswordByOtpResponseApiModel',
+} as const;
+
+export const $SortFundTabBody = {
+  properties: {
+    columnKey: {
+      type: 'string',
+      title: 'Columnkey',
+    },
+    direction: {
+      $ref: '#/components/schemas/FundTableTabColumnSort',
+    },
+  },
+  type: 'object',
+  required: ['columnKey', 'direction'],
+  title: 'SortFundTabBody',
+} as const;
+
+export const $SortFundTabResponseApiModel = {
+  properties: {
+    funds: {
+      items: {
+        $ref: '#/components/schemas/FundsTableItemApiModel',
+      },
+      type: 'array',
+      title: 'Funds',
+    },
+    columns: {
+      items: {
+        $ref: '#/components/schemas/FundTableTabColumnDto',
+      },
+      type: 'array',
+      title: 'Columns',
+    },
+  },
+  type: 'object',
+  required: ['funds', 'columns'],
+  title: 'SortFundTabResponseApiModel',
 } as const;
 
 export const $TokenApiModel = {
@@ -2610,19 +2982,39 @@ export const $TokenApiModel = {
   title: 'TokenApiModel',
 } as const;
 
-export const $UnpinFundInTableTabBody = {
+export const $UnmarkFundInTableTabBody = {
   properties: {
-    tab: {
-      type: 'integer',
-      title: 'Tab',
-    },
     fund: {
       type: 'integer',
       title: 'Fund',
     },
   },
   type: 'object',
-  required: ['tab', 'fund'],
+  required: ['fund'],
+  title: 'UnmarkFundInTableTabBody',
+} as const;
+
+export const $UnmarkFundInTableTabResponseApiModel = {
+  properties: {
+    success: {
+      type: 'boolean',
+      title: 'Success',
+    },
+  },
+  type: 'object',
+  required: ['success'],
+  title: 'UnmarkFundInTableTabResponseApiModel',
+} as const;
+
+export const $UnpinFundInTableTabBody = {
+  properties: {
+    fund: {
+      type: 'integer',
+      title: 'Fund',
+    },
+  },
+  type: 'object',
+  required: ['fund'],
   title: 'UnpinFundInTableTabBody',
 } as const;
 
@@ -2636,6 +3028,73 @@ export const $UnpinFundInTableTabResponseApiModel = {
   type: 'object',
   required: ['success'],
   title: 'UnpinFundInTableTabResponseApiModel',
+} as const;
+
+export const $UpdateFundTabColumnsResponseApiModel = {
+  properties: {
+    funds: {
+      items: {
+        $ref: '#/components/schemas/FundsTableItemApiModel',
+      },
+      type: 'array',
+      title: 'Funds',
+    },
+    columns: {
+      items: {
+        $ref: '#/components/schemas/FundTableTabColumnDto',
+      },
+      type: 'array',
+      title: 'Columns',
+    },
+  },
+  type: 'object',
+  required: ['funds', 'columns'],
+  title: 'UpdateFundTabColumnsResponseApiModel',
+} as const;
+
+export const $UpdateFundTableTabColumnItem = {
+  properties: {
+    key: {
+      type: 'string',
+      title: 'Key',
+    },
+    sortDirection: {
+      $ref: '#/components/schemas/FundTableTabColumnSort',
+    },
+    visible: {
+      type: 'boolean',
+      title: 'Visible',
+    },
+    selectedFilter: {
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Selectedfilter',
+    },
+  },
+  type: 'object',
+  required: ['key', 'sortDirection', 'visible', 'selectedFilter'],
+  title: 'UpdateFundTableTabColumnItem',
+} as const;
+
+export const $UpdateFundTableTabColumnsBody = {
+  properties: {
+    columns: {
+      items: {
+        $ref: '#/components/schemas/UpdateFundTableTabColumnItem',
+      },
+      type: 'array',
+      title: 'Columns',
+    },
+  },
+  type: 'object',
+  required: ['columns'],
+  title: 'UpdateFundTableTabColumnsBody',
 } as const;
 
 export const $UserReportFavoriteStatus = {

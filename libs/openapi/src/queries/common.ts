@@ -284,6 +284,12 @@ export type UsersServicePostUsersProfileUsernameChangeMutationResult = Awaited<
 export type UsersServicePostUsersProfilePictureChangeMutationResult = Awaited<
   ReturnType<typeof UsersService.postUsersProfilePictureChange>
 >;
+export type UsersServicePostUsersLogoutMutationResult = Awaited<
+  ReturnType<typeof UsersService.postUsersLogout>
+>;
+export type ReportsServicePostReportsRequestMutationResult = Awaited<
+  ReturnType<typeof ReportsService.postReportsRequest>
+>;
 export type ReportsServicePostReportsByReportIdMutationResult = Awaited<
   ReturnType<typeof ReportsService.postReportsByReportId>
 >;
@@ -322,11 +328,23 @@ export type DashboardsServicePostDashboardsByDashboardIdItemsByDashboardItemIdRe
       typeof DashboardsService.postDashboardsByDashboardIdItemsByDashboardItemIdReorder
     >
   >;
-export type FundsServicePostFundsTablePinMutationResult = Awaited<
-  ReturnType<typeof FundsService.postFundsTablePin>
+export type FundsServicePostFundsTableTabByTabPinMutationResult = Awaited<
+  ReturnType<typeof FundsService.postFundsTableTabByTabPin>
 >;
-export type FundsServicePostFundsTableUnpinMutationResult = Awaited<
-  ReturnType<typeof FundsService.postFundsTableUnpin>
+export type FundsServicePostFundsTableTabByTabUnpinMutationResult = Awaited<
+  ReturnType<typeof FundsService.postFundsTableTabByTabUnpin>
+>;
+export type FundsServicePostFundsTableTabByTabMarkMutationResult = Awaited<
+  ReturnType<typeof FundsService.postFundsTableTabByTabMark>
+>;
+export type FundsServicePostFundsTableTabByTabUnmarkMutationResult = Awaited<
+  ReturnType<typeof FundsService.postFundsTableTabByTabUnmark>
+>;
+export type FundsServicePostFundsTableTabByTabSortMutationResult = Awaited<
+  ReturnType<typeof FundsService.postFundsTableTabByTabSort>
+>;
+export type FundsServicePostFundsTableTabByTabColumnsMutationResult = Awaited<
+  ReturnType<typeof FundsService.postFundsTableTabByTabColumns>
 >;
 export type DashboardsServicePutDashboardsMutationResult = Awaited<
   ReturnType<typeof DashboardsService.putDashboards>

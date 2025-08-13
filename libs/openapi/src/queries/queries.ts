@@ -17,6 +17,7 @@ import {
   AddReportToDashboardForUserBody,
   Body_change_profile_picture_users_profile_picture_change_post,
   Body_login_for_access_token_users_login_post,
+  Body_request_new_report_reports_request_post,
   Body_save_dashboard_item_screenshot_dashboards__dashboard_id__items__dashboard_item_id__screenshot_post,
   Body_save_screenshot_reports__report_id__screenshot_post,
   Body_test_user_access_token_users_token_post,
@@ -34,10 +35,14 @@ import {
   GetDashboardItemCalculationsBody,
   GetForgotPasswordOtpBody,
   GetReportCalculationsBody,
+  MarkFundInTableTabBody,
   PinFundInTableTabBody,
   RenameDashboardForUserBody,
   ReplaceDashboardItemCalculationsBody,
+  SortFundTabBody,
+  UnmarkFundInTableTabBody,
   UnpinFundInTableTabBody,
+  UpdateFundTableTabColumnsBody,
   ValidatePasswordForUserBody,
 } from '../requests/types.gen';
 import * as Common from './common';
@@ -698,6 +703,52 @@ export const useUsersServicePostUsersProfilePictureChange = <
       }) as unknown as Promise<TData>,
     ...options,
   });
+export const useUsersServicePostUsersLogout = <
+  TData = Common.UsersServicePostUsersLogoutMutationResult,
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: Omit<
+    UseMutationOptions<TData, TError, void, TContext>,
+    'mutationFn'
+  >,
+) =>
+  useMutation<TData, TError, void, TContext>({
+    mutationFn: () =>
+      UsersService.postUsersLogout() as unknown as Promise<TData>,
+    ...options,
+  });
+export const useReportsServicePostReportsRequest = <
+  TData = Common.ReportsServicePostReportsRequestMutationResult,
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: Omit<
+    UseMutationOptions<
+      TData,
+      TError,
+      {
+        formData: Body_request_new_report_reports_request_post;
+      },
+      TContext
+    >,
+    'mutationFn'
+  >,
+) =>
+  useMutation<
+    TData,
+    TError,
+    {
+      formData: Body_request_new_report_reports_request_post;
+    },
+    TContext
+  >({
+    mutationFn: ({ formData }) =>
+      ReportsService.postReportsRequest({
+        formData,
+      }) as unknown as Promise<TData>,
+    ...options,
+  });
 export const useReportsServicePostReportsByReportId = <
   TData = Common.ReportsServicePostReportsByReportIdMutationResult,
   TError = unknown,
@@ -1009,8 +1060,8 @@ export const useDashboardsServicePostDashboardsByDashboardIdItemsByDashboardItem
         ) as unknown as Promise<TData>,
       ...options,
     });
-export const useFundsServicePostFundsTablePin = <
-  TData = Common.FundsServicePostFundsTablePinMutationResult,
+export const useFundsServicePostFundsTableTabByTabPin = <
+  TData = Common.FundsServicePostFundsTableTabByTabPinMutationResult,
   TError = unknown,
   TContext = unknown,
 >(
@@ -1020,6 +1071,7 @@ export const useFundsServicePostFundsTablePin = <
       TError,
       {
         requestBody: PinFundInTableTabBody;
+        tab: number;
       },
       TContext
     >,
@@ -1031,17 +1083,19 @@ export const useFundsServicePostFundsTablePin = <
     TError,
     {
       requestBody: PinFundInTableTabBody;
+      tab: number;
     },
     TContext
   >({
-    mutationFn: ({ requestBody }) =>
-      FundsService.postFundsTablePin({
+    mutationFn: ({ requestBody, tab }) =>
+      FundsService.postFundsTableTabByTabPin({
         requestBody,
+        tab,
       }) as unknown as Promise<TData>,
     ...options,
   });
-export const useFundsServicePostFundsTableUnpin = <
-  TData = Common.FundsServicePostFundsTableUnpinMutationResult,
+export const useFundsServicePostFundsTableTabByTabUnpin = <
+  TData = Common.FundsServicePostFundsTableTabByTabUnpinMutationResult,
   TError = unknown,
   TContext = unknown,
 >(
@@ -1051,6 +1105,7 @@ export const useFundsServicePostFundsTableUnpin = <
       TError,
       {
         requestBody: UnpinFundInTableTabBody;
+        tab: number;
       },
       TContext
     >,
@@ -1062,12 +1117,150 @@ export const useFundsServicePostFundsTableUnpin = <
     TError,
     {
       requestBody: UnpinFundInTableTabBody;
+      tab: number;
     },
     TContext
   >({
-    mutationFn: ({ requestBody }) =>
-      FundsService.postFundsTableUnpin({
+    mutationFn: ({ requestBody, tab }) =>
+      FundsService.postFundsTableTabByTabUnpin({
         requestBody,
+        tab,
+      }) as unknown as Promise<TData>,
+    ...options,
+  });
+export const useFundsServicePostFundsTableTabByTabMark = <
+  TData = Common.FundsServicePostFundsTableTabByTabMarkMutationResult,
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: Omit<
+    UseMutationOptions<
+      TData,
+      TError,
+      {
+        requestBody: MarkFundInTableTabBody;
+        tab: number;
+      },
+      TContext
+    >,
+    'mutationFn'
+  >,
+) =>
+  useMutation<
+    TData,
+    TError,
+    {
+      requestBody: MarkFundInTableTabBody;
+      tab: number;
+    },
+    TContext
+  >({
+    mutationFn: ({ requestBody, tab }) =>
+      FundsService.postFundsTableTabByTabMark({
+        requestBody,
+        tab,
+      }) as unknown as Promise<TData>,
+    ...options,
+  });
+export const useFundsServicePostFundsTableTabByTabUnmark = <
+  TData = Common.FundsServicePostFundsTableTabByTabUnmarkMutationResult,
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: Omit<
+    UseMutationOptions<
+      TData,
+      TError,
+      {
+        requestBody: UnmarkFundInTableTabBody;
+        tab: number;
+      },
+      TContext
+    >,
+    'mutationFn'
+  >,
+) =>
+  useMutation<
+    TData,
+    TError,
+    {
+      requestBody: UnmarkFundInTableTabBody;
+      tab: number;
+    },
+    TContext
+  >({
+    mutationFn: ({ requestBody, tab }) =>
+      FundsService.postFundsTableTabByTabUnmark({
+        requestBody,
+        tab,
+      }) as unknown as Promise<TData>,
+    ...options,
+  });
+export const useFundsServicePostFundsTableTabByTabSort = <
+  TData = Common.FundsServicePostFundsTableTabByTabSortMutationResult,
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: Omit<
+    UseMutationOptions<
+      TData,
+      TError,
+      {
+        requestBody: SortFundTabBody;
+        tab: number;
+      },
+      TContext
+    >,
+    'mutationFn'
+  >,
+) =>
+  useMutation<
+    TData,
+    TError,
+    {
+      requestBody: SortFundTabBody;
+      tab: number;
+    },
+    TContext
+  >({
+    mutationFn: ({ requestBody, tab }) =>
+      FundsService.postFundsTableTabByTabSort({
+        requestBody,
+        tab,
+      }) as unknown as Promise<TData>,
+    ...options,
+  });
+export const useFundsServicePostFundsTableTabByTabColumns = <
+  TData = Common.FundsServicePostFundsTableTabByTabColumnsMutationResult,
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: Omit<
+    UseMutationOptions<
+      TData,
+      TError,
+      {
+        requestBody: UpdateFundTableTabColumnsBody;
+        tab: number;
+      },
+      TContext
+    >,
+    'mutationFn'
+  >,
+) =>
+  useMutation<
+    TData,
+    TError,
+    {
+      requestBody: UpdateFundTableTabColumnsBody;
+      tab: number;
+    },
+    TContext
+  >({
+    mutationFn: ({ requestBody, tab }) =>
+      FundsService.postFundsTableTabByTabColumns({
+        requestBody,
+        tab,
       }) as unknown as Promise<TData>,
     ...options,
   });

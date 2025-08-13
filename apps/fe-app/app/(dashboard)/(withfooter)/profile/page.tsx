@@ -2,13 +2,18 @@
 
 import React, { useState } from 'react';
 import { ProfileForm } from '../../../components';
-import { cn, Icon, ProfileSidebar } from 'design-system';
-import { LogoutModal } from './_components/LogoutModal';
+import { cn, Icon, ProfileSidebar, useCustomToast } from 'design-system';
+import { LogoutModal } from 'design-system';
 import { useThrottle, useWindowSize } from '@uidotdev/usehooks';
-import { AressApiUser, useUsersServiceGetUsersMe } from '@openapi';
+import {
+  AressApiUser,
+  useUsersServiceGetUsersMe,
+  useUsersServicePostUsersLogout,
+} from '@openapi';
 import { Toaster } from 'react-hot-toast';
 import { ProfileSidebarSkeleton } from './_components/skeletons/ProfileSidebarSkeleton';
 import { ProfileFormSkeleton } from './_components/skeletons/ProfileFormSkeleton';
+import { useRouter } from 'next/navigation';
 
 const ProfilePage = () => {
   const [activeSection, setActiveSection] = useState<undefined | string>(
@@ -18,6 +23,33 @@ const ProfilePage = () => {
   const { width } = useWindowSize();
   const throttledWidth = useThrottle(width, 200) ?? 0;
   const isDesktop = throttledWidth > 1024;
+  const router = useRouter();
+  const { showToast } = useCustomToast();
+
+  const logoutMutation = useUsersServicePostUsersLogout({
+    onSuccess: () => {
+      localStorage.removeItem('access_token');
+    },
+    onError: (error) => {
+      console.error('خطا در خروج از حساب:', error);
+    },
+  });
+
+  const handleLogout = async () => {
+    try {
+      await logoutMutation.mutateAsync();
+
+      await fetch('/api/logout', { method: 'POST' });
+
+      router.push('/login');
+      showToast({
+        message: 'خروج با موفقیت انجام شد!',
+        type: 'success',
+      });
+    } catch (err) {
+      console.error('Logout error:', err);
+    }
+  };
 
   const { data, refetch } = useUsersServiceGetUsersMe();
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
@@ -33,11 +65,25 @@ const ProfilePage = () => {
           <div className="flex w-full justify-center lg:w-[264px]">
             {data ? (
               <ProfileSidebar
+                items={[
+                  {
+                    key: 'profile',
+                    text: 'حساب کاربری',
+                    icon: { name: 'user' },
+                  },
+                  {
+                    key: 'logout',
+                    text: 'خروج',
+                    icon: { name: 'power' },
+                    onClick: () => setIsLogoutModalOpen(true),
+                  },
+                ]}
                 image={profilePicture}
                 title={fullName}
                 subTitle={user?.phoneNumber ?? ''}
-                onLogoutBtn={() => setIsLogoutModalOpen(true)}
-                onNavigation={(section) => setActiveSection(section)}
+                onNavigation={(section) => {
+                  setActiveSection(section);
+                }}
                 activeSection={isDesktop ? 'profile' : activeSection}
               />
             ) : (
@@ -81,6 +127,9 @@ const ProfilePage = () => {
         </div>
       </div>
       <LogoutModal
+        onLogout={() => handleLogout()}
+        title="خروج از حساب کاربری"
+        titleAlign="center"
         isOpen={isLogoutModalOpen}
         onClose={() => setIsLogoutModalOpen(false)}
       />

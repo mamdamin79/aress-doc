@@ -1,4 +1,4 @@
-import { cn } from 'libs/design-system/src/utils/classNames.utils';
+import { cn } from '../../../../utils';
 
 interface FourlevelIndicatorProps {
   value: number;

@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/nextjs';
-import { Report13_2, Report13_2Props } from './Report13_2';
+import { Report13_2 } from './Report13_2';
 
-const meta: Meta<Report13_2Props> = {
+const meta: Meta<typeof Report13_2> = {
   component: Report13_2,
   argTypes: {},
 };

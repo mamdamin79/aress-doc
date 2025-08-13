@@ -359,7 +359,6 @@ export const useVideo = (
     } else {
       pause();
     }
-
     const updateProgress = () => {
       // first of all we should calculate progress form duration and current time - it used in handle time update and handle durationchange
       const { currentTime, duration } = videoRef.current!;

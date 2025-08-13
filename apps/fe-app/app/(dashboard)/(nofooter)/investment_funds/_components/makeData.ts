@@ -1,8 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { Person } from '../types';
 
-
-
 const range = (len: number) => {
   const arr: number[] = [];
   for (let i = 0; i < len; i++) {
@@ -15,7 +13,7 @@ const newPerson = (): Person => {
   const fixedNow = new Date('2020-01-01').getTime(); // fixed reference point to avoid hydration error
 
   return {
-    investmentMethod: "I&C",
+    investmentMethod: 'I&C',
     // logo: faker.image.avatar(),
     nameFund: faker.person.fullName(),
     startDate:
