@@ -1,3 +1,4 @@
+'use client';
 import React, { useRef, useState } from 'react';
 import { Icon } from '../Icon';
 import { secondsToHHMMSS } from '../../../utils/time';
@@ -168,7 +169,7 @@ const PlayListCell: React.FC<
           <Icon name="play" />
         </span>
         {durations[index] && (
-          <span className="rounded-xs text-text-neutral-white absolute bottom-1 right-1 bg-black/55 px-1 text-xs font-medium">
+          <span className="rounded-xs text-text-neutral-white absolute bottom-2.5 right-1 bg-black/55 px-1 text-xs font-medium">
             {durations[index]}
           </span>
         )}
