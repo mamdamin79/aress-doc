@@ -59,7 +59,7 @@ export const LineChart = ({
     ...baseOptions,
     legend: { enabled: false },
     chart: {
-      backgroundColor: 'var(--color-surface-neutral-primary)',
+      backgroundColor: 'var(--color-surface-neutral-background)',
       type: 'spline',
     },
     credits: { enabled: false },

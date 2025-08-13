@@ -39,7 +39,7 @@ export const TradePopup: React.FC<TradePopupProps> = ({
     setAcceptTerms,
     incrementQuantity,
     decrementQuantity,
-  } = useTradeQuantity(153000000, disableCheck);
+  } = useTradeQuantity(0, disableCheck);
 
   return (
     <Dialog
@@ -48,8 +48,8 @@ export const TradePopup: React.FC<TradePopupProps> = ({
       className="bg-surface-neutral-primary w-[542px] border-0 p-0 pb-8"
     >
       {/* Fund Name */}
-      <div className="h-[72px] w-full">
-        <div className="inline-flex h-[62px] w-full items-center justify-between gap-2 px-6 py-2">
+      <div className="border-border-neutral-primary w-full border-b-2 pb-1 pt-3">
+        <div className="inline-flex h-[62px] w-full items-center gap-3 px-6 py-2">
           <div className="flex flex-row items-center gap-2">
             <div className="bg-surface-neutral-secondary h-[38px] w-[38px] rounded-full"></div>
             <span className="text-sm font-medium">{fundName}</span>
@@ -59,143 +59,155 @@ export const TradePopup: React.FC<TradePopupProps> = ({
       </div>
 
       {/* Investment Amount Input */}
-      <div className="flex flex-col items-center gap-2">
+      <div className="mt-6 flex flex-col items-center gap-2">
         <span className="text-text-neutral-secondarycontrast text-sm font-medium">
           مبلغ سرمایه‌گذاری را وارد کنید.
         </span>
-        <div className="flex w-full flex-row justify-start px-6">
-          {/* Quantity Controls */}
-          <div className="flex flex-col">
-            {mode === 'buy' ? (
-              <>
-                <span className="text-text-neutral-secondarycontrast text-right text-xs font-medium">
-                  گام تغییر
-                </span>
-                <div>
-                  <OptionsDropdown
-                    initialSelectedIndex={0}
-                    triggerClassName="w-[107px]"
-                    dropDownStyles={{
-                      bg: 'primary',
-                      emphasize: 'high',
-                      size: 'md',
-                      anchor: 'bottom start',
-                    }}
-                    dropDownList={quantityOptions.map((option, index) => ({
-                      text: formatNumber(option),
-                      id: index,
-                    }))}
-                    onChange={(selectedtItem, id) =>
-                      setQuantityStep(quantityOptions[id ?? 0])
-                    }
-                  />
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="flex w-[107px] pt-7">
-                  <Button
-                    mode="primary"
-                    theme="brand"
-                    size="sm"
-                    className="w-14"
-                    onClick={() => {
-                      // Set quantity to estimated unit value (maximum available for selling)
-                      setQuantity(estismatedUnit * estismatedBuyPrice);
-                    }}
-                  >
-                    همه
-                  </Button>
-                </div>
-              </>
-            )}
-          </div>
-
-          <div className="flex flex-row items-center justify-center gap-4 px-6 pt-4">
+        <div className="mt-8 flex w-full flex-row justify-center">
+          <div className="relative flex w-full flex-row items-center justify-center gap-4">
             {mode === 'buy' && (
-              <div className="flex flex-col justify-start gap-2">
+              <>
                 <Button
                   theme="brand"
                   mode="primary"
                   size="sm"
-                  className="h-8 w-10"
+                  className="absolute right-6 top-0 h-8 w-9"
                   onClick={incrementQuantity}
                 >
-                  <Icon name="plus" size="lg" />
+                  <Icon name="plus" size="md" />
                 </Button>
                 <Button
                   theme="brand"
                   mode="secondary"
                   size="sm"
-                  className="h-8 w-10"
+                  className="absolute left-6 top-0 h-8 w-9"
                   onClick={decrementQuantity}
                 >
-                  <Icon name="minus" size="lg" />
+                  <Icon name="minus" size="md" />
+                </Button>
+              </>
+            )}
+            {/* All button  */}
+            {mode === 'sell' && (
+              <div className="absolute right-6 top-1 flex w-[107px]">
+                <Button
+                  mode="primary"
+                  theme="brand"
+                  size="sm"
+                  disabled={quantity === 400}
+                  className="w-14"
+                  onClick={() => {
+                    setQuantity(400);
+                  }}
+                >
+                  همه
                 </Button>
               </div>
             )}
 
             {/* Price Display */}
-            <div
-              className={cn(
-                'text-text-neutral-primary flex w-full items-center text-[32px] font-medium',
-                mode === 'sell' && 'w-[280px] justify-center',
-              )}
-            >
-              <input
-                type="text"
-                inputMode="numeric"
-                className={cn(
-                  'min-w-0 bg-transparent text-[32px] font-medium outline-none',
-                  mode === 'sell' ? 'text-center' : 'text-left',
-                )}
-                style={{
-                  width: `${Math.max(formatNumber(quantity).length * 1.1 + 1.5, 3)}ch`,
-                }}
-                value={formatNumber(quantity)}
-                onChange={(e) => {
-                  let val = e.target.value
-                    .replace(/[^0-9\u06F0-\u06F9,]/g, '') // Allow digits and commas
-                    .replace(/,/g, ''); // Remove commas
-                  val = persianToEnglishDigits(val);
-                  setQuantity(val === '' ? 0 : Number(val));
-                }}
-              />
-              <span className="text-text-neutral-secondary mr-1 text-sm font-normal">
-                ریال
-              </span>
+            <div className="flex w-full items-center justify-center">
+              <div className="flex items-center gap-1">
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  dir="ltr"
+                  style={{
+                    width: `${Math.max(formatNumber(quantity).length * 1.1 + 1.5, 3)}ch`,
+                  }}
+                  className={cn(
+                    'bg-transparent text-left text-[32px] font-medium outline-none',
+                  )}
+                  value={formatNumber(quantity)}
+                  onChange={(e) => {
+                    let val = e.target.value
+                      .replace(/[^0-9\u06F0-\u06F9,]/g, '')
+                      .replace(/,/g, '');
+                    val = persianToEnglishDigits(val);
+                    setQuantity(val === '' ? 0 : Number(val));
+                  }}
+                />
+                <span className="text-text-neutral-secondary text-sm font-normal">
+                  {mode === 'buy' ? 'ریال' : 'واحد'}
+                </span>
+              </div>
             </div>
           </div>
         </div>
-        <div className="flex w-full justify-center">
-          <div className="bg-surface-neutral-secondary text-text-neutral-secondary rounded-md px-2 pt-1 text-xs font-medium">
-            {getQuantityInPersianWords(quantity)}
+        <div className="mt-1 flex w-full justify-center">
+          <div className="bg-surface-neutral-secondary text-text-neutral-secondary rounded-md px-2 pt-1 text-right text-xs font-medium">
+            {mode === 'buy'
+              ? getQuantityInPersianWords(quantity)
+              : `دارایی قابل فروش: 400 واحد`}
           </div>
+        </div>
+        {/* Quantity Controls */}
+        <div className="mt-3 flex w-full flex-row items-center justify-between px-6">
+          {mode === 'buy' && (
+            <>
+              <span className="text-text-neutral-secondarycontrast text-right text-sm">
+                گام تغییر را انتخاب کنید
+              </span>
+              <div>
+                <OptionsDropdown
+                  shadow={true}
+                  initialSelectedIndex={0}
+                  triggerClassName="w-[107px] justify-center text-center border-border-neutral-primary active:border-border-primary-600"
+                  dropDownStyles={{
+                    fixedWidth: 107,
+                    bg: 'secondary',
+                    emphasize: 'high',
+                    size: 'sm',
+                    anchor: 'bottom start',
+                  }}
+                  className="shadow-7xl"
+                  optionClassName="text-center justify-center"
+                  dropDownList={quantityOptions.map((option, index) => ({
+                    text: formatNumber(option),
+                    id: index,
+                  }))}
+                  onChange={(selectedtItem, id) =>
+                    setQuantityStep(quantityOptions[id ?? 0])
+                  }
+                />
+              </div>
+            </>
+          )}
         </div>
       </div>
 
       {/* Investment Limits */}
-      <div className="space-y-2 px-6">
+      <div className="mt-10 space-y-2 px-6">
         <div className="flex items-center justify-between text-sm">
-          <span className="text-text-neutral-secondarycontrast">
-            حدود قیمت خرید:
-          </span>
+          <div className="text-text-neutral-secondarycontrast flex items-center gap-2">
+            <Icon name="info" size="sm" />
+            {mode === 'buy' ? (
+              <span>حدود قیمت خرید</span>
+            ) : (
+              <span>حدود قیمت فروش هر واحد</span>
+            )}
+          </div>
           <span className="text-text-neutral-primary font-medium">
             {formatNumber(estismatedBuyPrice)} ریال
           </span>
         </div>
         <div className="flex items-center justify-between text-sm">
-          <span className="text-text-neutral-secondarycontrast">
-            حدود تعداد واحد:
-          </span>
+          <div className="text-text-neutral-secondarycontrast flex items-center gap-2">
+            <Icon name="info" size="sm" />
+            {mode === 'buy' ? (
+              <span>حدود تعداد واحد</span>
+            ) : (
+              <span>حدود مبلغ واریزی</span>
+            )}
+          </div>
           <span className="text-text-neutral-primary font-medium">
-            {formatNumber(estismatedUnit)} واحد
+            {formatNumber(estismatedUnit)} {mode === 'buy' ? 'واحد' : 'ریال'}
           </span>
         </div>
       </div>
 
       {/* Terms Checkbox */}
-      <div className="flex w-full items-start px-6">
+      <div className="mt-10 flex w-full items-start px-6">
         <Checkbox
           checked={acceptTerms}
           disabled={disableCheck}
@@ -220,10 +232,10 @@ export const TradePopup: React.FC<TradePopupProps> = ({
       </div>
 
       {/* Action Buttons */}
-      <div className="flex w-full justify-end gap-2 px-6">
+      <div className="mt-6 flex w-full justify-end gap-2 px-6">
         <Button
           mode="primary"
-          theme={'brand'}
+          theme={mode === 'buy' ? 'success' : 'error'}
           disabled={!acceptTerms}
           size="sm"
           className="w-fit px-4"
@@ -232,7 +244,7 @@ export const TradePopup: React.FC<TradePopupProps> = ({
         </Button>
         <Button
           mode="secondary"
-          theme="brand"
+          theme={'brand'}
           onClick={onClose}
           size="sm"
           className="w-fit px-4"

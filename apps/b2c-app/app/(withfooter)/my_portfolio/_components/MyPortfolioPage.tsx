@@ -7,7 +7,7 @@ import {
   Piechart,
   TradePopup,
 } from '../../../../components';
-import { Icon, OptionsDropdown, Tabs } from 'design-system';
+import { cn, Icon, OptionsDropdown, Tabs } from 'design-system';
 import { LineChart } from '../../../../components/Charts/LineChart';
 import { AssetInfoBox } from '../../../../components/AssetInfoBox';
 import { EmptyPortfolioModal } from './EmptyPortfolioModal';
@@ -111,6 +111,26 @@ export const MyPortfolioPage: React.FC<MyPortfolioPageProps> = ({
     // You can add actual navigation logic here
   };
 
+  // Fund type mappings for badges
+  const fundTypeMaps: Record<number, { title: string; theme: string }> = {
+    0: {
+      title: 'سهامی',
+      theme: 'green',
+    },
+    1: {
+      title: 'درآمد ثابت',
+      theme: 'blue',
+    },
+    2: {
+      title: 'مختلط',
+      theme: 'purple',
+    },
+    3: {
+      title: 'کالایی',
+      theme: 'yellow',
+    },
+  };
+
   // Trade popup handlers
   const handleBuyClick = () => {
     setTradeMode('buy');
@@ -124,6 +144,13 @@ export const MyPortfolioPage: React.FC<MyPortfolioPageProps> = ({
 
   const handleTradeClose = () => {
     setShowTradePopup(false);
+  };
+
+  // Fund link handler
+  const handleFundLinkClick = (fund: FundData) => {
+    // Navigate to fund details page - you can implement actual navigation logic here
+    console.log('Navigate to fund details:', fund.name, fund.code);
+    // Example: router.push(`/funds/${fund.code}`)
   };
 
   // Computed values
@@ -173,7 +200,7 @@ export const MyPortfolioPage: React.FC<MyPortfolioPageProps> = ({
 
   return (
     <>
-      <div className="text-text-neutral-primary relative flex flex-col gap-1 px-20 pt-6">
+      <div className="text-text-neutral-primary relative flex w-full max-w-[1680px] flex-col gap-1 px-8 pt-6 lg:px-20">
         <div className="flex flex-col gap-4 pb-12">
           <h1 className="w-full text-right text-xl font-semibold">دارایی من</h1>
 
@@ -224,7 +251,7 @@ export const MyPortfolioPage: React.FC<MyPortfolioPageProps> = ({
           </div>
 
           {/* Chart Tabs */}
-          <div className="flex w-full justify-center">
+          <div className="flex w-full flex-col items-center justify-center gap-12">
             <Tabs
               tabs={[
                 { id: 'one_month', title: 'یک ماهه' },
@@ -237,6 +264,7 @@ export const MyPortfolioPage: React.FC<MyPortfolioPageProps> = ({
               activeTab={chartActiveTab}
               onClickTab={setChartActiveTab}
             />
+            <div className="border-border-neutral-primary w-full border border-dashed"></div>
           </div>
         </div>
 
@@ -244,52 +272,80 @@ export const MyPortfolioPage: React.FC<MyPortfolioPageProps> = ({
         <div className="flex w-full flex-col gap-6">
           <div className="text-xl font-medium">خلاصه دارایی</div>
 
-          {/* Header with back button and tabs */}
-          <div className="flex flex-row items-center justify-between gap-8">
-            {isDetailView ? (
-              <div
-                className="text-md hover:text-text-brand-primary-600 flex cursor-pointer items-center gap-2 font-medium transition-colors"
-                onClick={handleBackClick}
-              >
-                <Icon name="chevron-right" size="lg" />
-                <span>بازگشت</span>
-              </div>
-            ) : (
-              <div></div>
-            )}
-
-            <div className="flex flex-row items-center">
-              <Tabs
-                className="pt-2"
-                tabs={[
-                  { id: 'rial', title: 'ریال' },
-                  { id: 'toman', title: 'تومان' },
-                ]}
-                variant="sliding"
-                activeTab={fundsActiveTab}
-                onClickTab={setFundsActiveTab}
-              />
-              <div className="text-text-brand-primary-600 w-[300px]">
-                <div className="font-medium">وزن دارایی</div>
-              </div>
-            </div>
-          </div>
-
           {/* Funds Table and Chart */}
-          <div className="flex flex-row gap-8">
-            <MyFundsTable
-              hiddenContent={hiddenContent}
-              data={currentFundsData}
-              onRowClick={handleCategoryClick}
-              onFundSelect={handleFundSelect}
-              isDetailView={isDetailView}
-            />
-            <div className="flex h-[356px] w-[300px] items-center justify-center">
-              <Piechart
-                data={currentPieChartData}
-                state={isPieChartEmpty ? 'empty' : 'default'}
-                showValues={!hiddenContent}
+          <div className="flex max-w-full flex-row gap-8">
+            <div className="flex w-full flex-col items-end gap-5">
+              <div className="flex w-full flex-row justify-between">
+                {/* Header with back button and tabs */}
+                <div className="flex flex-row items-center justify-between gap-8">
+                  {isDetailView ? (
+                    <div
+                      className="text-md hover:text-text-brand-primary-600 flex cursor-pointer items-center gap-2 font-medium transition-colors"
+                      onClick={handleBackClick}
+                    >
+                      <Icon name="chevron-right" size="lg" />
+                      <span>بازگشت</span>
+                    </div>
+                  ) : (
+                    <div></div>
+                  )}
+                </div>
+                <Tabs
+                  className="pt-2"
+                  tabs={[
+                    { id: 'rial', title: 'ریال' },
+                    { id: 'toman', title: 'تومان' },
+                  ]}
+                  variant="sliding"
+                  activeTab={fundsActiveTab}
+                  onClickTab={setFundsActiveTab}
+                />
+              </div>
+
+              <MyFundsTable
+                hiddenContent={hiddenContent}
+                data={currentFundsData}
+                onRowClick={handleCategoryClick}
+                onFundSelect={handleFundSelect}
+                onFundLinkClick={handleFundLinkClick}
+                isDetailView={isDetailView}
               />
+            </div>
+
+            <div className="hidden w-[300px] items-center justify-center xl:flex">
+              <div className="flex flex-col items-start gap-5">
+                <div className="-mt-14 hidden flex-row items-center xl:flex">
+                  <span
+                    className={cn(
+                      isDetailView &&
+                        'text-text-neutral-secondary transition-colors',
+                    )}
+                  >
+                    وزن دارایی
+                  </span>
+                  <div className="relative overflow-hidden">
+                    <div
+                      className={`mr-1 flex items-center gap-1 transition-all duration-300 ease-in-out ${
+                        isDetailView
+                          ? 'translate-x-0 opacity-100'
+                          : 'translate-x-4 opacity-0'
+                      }`}
+                    >
+                      <div className="text-text-neutral-secondary">
+                        <Icon name={'chevron-left'} />
+                      </div>
+                      <span>وزن صندوق سهامی</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-24">
+                  <Piechart
+                    data={currentPieChartData}
+                    state={isPieChartEmpty ? 'empty' : 'default'}
+                    showValues={!hiddenContent}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -326,15 +382,20 @@ export const MyPortfolioPage: React.FC<MyPortfolioPageProps> = ({
         mode={tradeMode}
         fundName={selectedFund?.name || 'صندوق انتخاب شده'}
         badge={{
-          theme: 'green',
           title:
-            selectedFund?.typeID === 0
-              ? 'سهامی'
-              : selectedFund?.typeID === 1
-                ? 'درآمد ثابت'
-                : selectedFund?.typeID === 2
-                  ? 'مختلط'
-                  : 'کالایی',
+            selectedFund?.typeID !== undefined
+              ? fundTypeMaps[selectedFund.typeID].title
+              : 'سهامی',
+          theme:
+            selectedFund?.typeID !== undefined
+              ? (fundTypeMaps[selectedFund.typeID].theme as
+                  | 'green'
+                  | 'disabled'
+                  | 'blue'
+                  | 'purple'
+                  | 'yellow'
+                  | 'red')
+              : 'green',
         }}
         estismatedBuyPrice={selectedFund?.dailyValue || 0}
         estismatedUnit={selectedFund?.fundWeight || 0}

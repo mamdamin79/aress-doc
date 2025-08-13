@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { cn, Icon, Button } from 'design-system';
 
 export interface BarStickyBtnProps {
@@ -20,7 +20,9 @@ export const BarStickyBtn: React.FC<BarStickyBtnProps> = ({
   onSellClick,
 }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
+  useEffect(() => {
+    setIsDrawerOpen(false);
+  }, [fundSelected]);
   return (
     <div className="relative z-10">
       <div className="bg-surface-neutral-primary border-border-neutral-primary shadow-3xl flex w-[458px] flex-row items-center justify-between gap-6 rounded-xl border p-3">

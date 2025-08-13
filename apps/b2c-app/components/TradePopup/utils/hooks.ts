@@ -13,7 +13,7 @@ export const useTradeQuantity = (
 ) => {
   // Define quantity step options
   const quantityOptions = useMemo(
-    () => [5000000, 10000000, 50000000, 100000000, 500000000, 1000000000],
+    () => [100000000, 500000000, 1000000000, 5000000000, 10000000000],
     [],
   );
 
