@@ -16,6 +16,7 @@ import {
   useTradeQuantity,
   TradePopupProps,
 } from './utils';
+import { TradePopupInfos } from './TradePopupInfos';
 
 export const TradePopup: React.FC<TradePopupProps> = ({
   isOpen,
@@ -180,7 +181,9 @@ export const TradePopup: React.FC<TradePopupProps> = ({
       <div className="mt-10 space-y-2 px-6">
         <div className="flex items-center justify-between text-sm">
           <div className="text-text-neutral-secondarycontrast flex items-center gap-2">
-            <Icon name="info" size="sm" />
+            <TradePopupInfos selectedItemIndex={mode === 'buy' ? 0 : 2}>
+              <Icon name="info" size="sm" />
+            </TradePopupInfos>
             {mode === 'buy' ? (
               <span>حدود قیمت خرید</span>
             ) : (
@@ -193,7 +196,9 @@ export const TradePopup: React.FC<TradePopupProps> = ({
         </div>
         <div className="flex items-center justify-between text-sm">
           <div className="text-text-neutral-secondarycontrast flex items-center gap-2">
-            <Icon name="info" size="sm" />
+            <TradePopupInfos selectedItemIndex={mode === 'buy' ? 1 : 3}>
+              <Icon name="info" size="sm" />
+            </TradePopupInfos>{' '}
             {mode === 'buy' ? (
               <span>حدود تعداد واحد</span>
             ) : (
