@@ -1,6 +1,4 @@
-import { OpenAPI, ReportsService } from '@openapi';
 import { Video } from 'design-system';
-import { cookies } from 'next/headers';
 import VideoWrapper from './_components/VideoWrapper';
 
 interface ServerVideoData {
@@ -30,19 +28,14 @@ interface ServerVideoData {
   }>;
 }
 
-interface ReportPageParams {
-  params: Promise<{ report_id: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}
+// async function getData(id: number, screenshotQueryId?: string) {
+//   const report = await ReportsService.getReportsByReportId({
+//     reportId: String(id),
+//     screenshotQueryId: screenshotQueryId,
+//   });
 
-async function getData(id: number, screenshotQueryId?: string) {
-  const report = await ReportsService.getReportsByReportId({
-    reportId: String(id),
-    screenshotQueryId: screenshotQueryId,
-  });
-
-  return report;
-}
+//   return report;
+// }
 
 // Transform server video data to VideoPlayer format
 function transformVideoData(
@@ -107,37 +100,89 @@ function transformVideoData(
   };
 }
 
-export default async function Page({ params, searchParams }: ReportPageParams) {
-  const { report_id } = await params;
-  const cookieStore = await cookies();
+export default async function Page() {
+  // const { report_id } = await params;
+  // const cookieStore = await cookies();
 
-  OpenAPI.TOKEN = cookieStore.get('access_token')?.value;
-  const screenshotQueryId = (await searchParams)?.queryId as string | undefined;
-  const id = String(report_id);
+  // OpenAPI.TOKEN = cookieStore.get('access_token')?.value;
+  // const screenshotQueryId = (await searchParams)?.queryId as string | undefined;
+  // const id = String(report_id);
 
-  const REPORT = await getData(Number(id), screenshotQueryId);
-  console.log('Original video data:', REPORT.video);
+  // const REPORT = await getData(Number(id), screenshotQueryId);
+  // console.log('Original video data:', REPORT.video);
 
-  // Get base URL for constructing full URLs
-  const baseURL =
-    process.env.NEXT_PUBLIC_API_URL || 'http://185.236.36.153:8000';
+  // // Get base URL for constructing full URLs
+  // const baseURL =
+  //   process.env.NEXT_PUBLIC_API_URL || 'http://185.236.36.153:8000';
 
-  // Transform the video data to the correct format
-  const videos: Video[] = [];
+  // // Transform the video data to the correct format
+  // const videos: Video[] = [];
 
-  if (REPORT.video) {
-    const transformedVideo = transformVideoData(
-      REPORT.video as ServerVideoData,
-      baseURL,
-    );
-    console.log('Transformed video data:', transformedVideo);
-    videos.push(transformedVideo);
-  }
-  console.log('mamad');
+  // if (REPORT.video) {
+  //   const transformedVideo = transformVideoData(
+  //     REPORT.video as ServerVideoData,
+  //     baseURL,
+  //   );
+  //   console.log('Transformed video data:', transformedVideo);
+  //   videos.push(transformedVideo);
+  // }
+  // console.log('mamad');
+
+  const testVideo: ServerVideoData = {
+    identifier: 1,
+    title: 'Big Buck Bunny',
+    description: 'A short computer animated film',
+    mp4Video1080P:
+      'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+    mp4Video1080PSizeBytes: null,
+    mp4Video720P:
+      'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+    mp4Video720PSizeBytes: null,
+    mp4Video480P:
+      'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    mp4Video480PSizeBytes: null,
+    mp4Video360P: null,
+    mp4Video360PSizeBytes: null,
+    mp4Video240P: null,
+    mp4Video240PSizeBytes: null,
+    durationInSeconds: 596,
+    poster:
+      'https://peach.blender.org/wp-content/uploads/title_anouncement.jpg?x11217',
+    thumbnailImages: [],
+  };
+
+  const testVideo2: ServerVideoData = {
+    identifier: 1,
+    title: 'Big Buck Bunny',
+    description: 'A short computer animated film',
+    mp4Video1080P:
+      'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+    mp4Video1080PSizeBytes: null,
+    mp4Video720P:
+      'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+    mp4Video720PSizeBytes: null,
+    mp4Video480P:
+      'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    mp4Video480PSizeBytes: null,
+    mp4Video360P: null,
+    mp4Video360PSizeBytes: null,
+    mp4Video240P: null,
+    mp4Video240PSizeBytes: null,
+    durationInSeconds: 596,
+    poster:
+      'https://peach.blender.org/wp-content/uploads/title_anouncement.jpg?x11217',
+    thumbnailImages: [],
+  };
+  const baseURL = '';
+  const transformedVideo = transformVideoData(testVideo, baseURL);
+  const transformedVideo2 = transformVideoData(testVideo2, baseURL);
+
   return (
     <div className="p-8">
-      <h1 className="mb-4 text-2xl font-bold">Video Player Test</h1>
-      <VideoWrapper videos={videos} />
+      <h1 className="mb-4 text-2xl font-bold">
+        Video Player Test (Multiple Qualities)
+      </h1>
+      <VideoWrapper videos={[transformedVideo, transformedVideo2]} />
     </div>
   );
 }

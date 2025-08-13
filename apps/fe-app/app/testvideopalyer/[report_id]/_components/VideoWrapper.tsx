@@ -1,5 +1,5 @@
 'use client';
-import { Video, VideoPlayer } from 'design-system';
+import { Video, VideoPlayer, PlayList } from 'design-system';
 import React, { useState } from 'react';
 
 const VideoWrapper = ({ videos }: { videos: Video[] }) => {
@@ -21,7 +21,14 @@ const VideoWrapper = ({ videos }: { videos: Video[] }) => {
         videos={videos}
         setSelectedVideo={setSelectedVideo}
         {...selectedVideo}
-        className="w-full"
+        className="h-[459px] w-full"
+        selectedVideo={selectedVideo}
+      />
+      <PlayList
+        playListTitle="لیست ویدیوها"
+        isFullscreen={false}
+        videos={videos}
+        setSelectedVideo={setSelectedVideo}
         selectedVideo={selectedVideo}
       />
     </div>
