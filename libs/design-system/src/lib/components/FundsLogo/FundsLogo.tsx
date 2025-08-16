@@ -38,7 +38,7 @@ export const FundsLogo: React.FC<FundsLogoProps> = ({
           className={cn('absolute bottom-0 right-0', { '-bottom-3': isPin })}
         >
           {isPin ? (
-            <Icon name="CustomPin" />
+            <Icon name="CustomPin" size="lg" />
           ) : (
             <FundsTag color="green" size={size === 'lg' ? 'lg' : 'md'} />
           )}
