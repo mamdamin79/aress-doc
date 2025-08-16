@@ -10,6 +10,7 @@ interface FundsLogoProps {
   hasTag?: boolean;
   isVerified?: boolean;
   isPin?: boolean;
+  src: string;
   color: 'purple' | 'blue' | 'green' | 'yellow' | 'pink' | 'neutral';
 }
 
@@ -19,6 +20,7 @@ export const FundsLogo: React.FC<FundsLogoProps> = ({
   isVerified = false,
   isPin = false,
   color = 'green',
+  src,
 }) => {
   const sizeClasses = {
     sm: 'h-8 w-8',
@@ -37,7 +39,7 @@ export const FundsLogo: React.FC<FundsLogoProps> = ({
       <img
         // eslint-disable-next-line
         // @ts-ignore
-        src={FundLogoFallback.src}
+        src={src ? src : FundLogoFallback.src}
         alt="Fund Logo"
         className={`rounded-full ${sizeClasses[size]}`}
       />

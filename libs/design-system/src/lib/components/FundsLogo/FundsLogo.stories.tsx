@@ -14,5 +14,6 @@ export const Default: Story = {
     size: 'md', // Default size
     hasTag: true, // Example prop to show badge
     isVerified: false, // Example prop to indicate if the fund is verified
+    src: 'https://picsum.photos/300/200',
   },
 };
