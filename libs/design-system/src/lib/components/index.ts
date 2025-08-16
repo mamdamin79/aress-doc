@@ -53,4 +53,5 @@ export * from './Bookmark';
 export * from './LogoutModal';
 export * from './SelectionChips';
 export * from './Badge';
+export * from './ToolTipInfo';
 export * from './FundsLogo';

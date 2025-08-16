@@ -18,6 +18,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   submitBtnLabel = 'ذخیره',
   cancelBtnLabel = 'انصراف',
   description,
+  narrow = false,
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [checked, setChecked] = useState(false);
@@ -77,12 +78,17 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
           </div>
 
           {/* Handle Submit or Cancel */}
-          <div className="flex justify-end gap-2">
+          <div
+            className={cn(
+              'flex justify-end gap-2',
+              narrow && 'flex-col-reverse gap-2',
+            )}
+          >
             <div className="min-w-14">
               <Button
                 align="center"
                 isLoading={false}
-                size="sm"
+                size={narrow ? 'md' : 'sm'}
                 mode="secondary"
                 onClick={() => onClose?.()}
                 type="button"
@@ -96,7 +102,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
                 align="center"
                 isLoading={false}
                 mode="primary"
-                size="sm"
+                size={narrow ? 'md' : 'sm'}
                 type={!inputValue && isWithInput ? 'button' : 'submit'}
                 disabled={Boolean(!inputValue && isWithInput)}
                 className={cn(
