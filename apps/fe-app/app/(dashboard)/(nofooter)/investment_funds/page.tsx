@@ -270,7 +270,7 @@ const Funds = () => {
 
     const dragIndicator = useDragIndicator();
     const isDraggingOver = dragIndicator.columnId === header.column.id;
-    const position = 'right'
+    const position = 'right';
 
     return (
       <th
@@ -330,7 +330,6 @@ const Funds = () => {
   // request to get funds table data
   const query = useFundsServiceGetFundsTable({ tab: activeIndexCategoryTab });
 
-
   useEffect(() => {
     table.setPageSize(10);
   }, [activeIndexCategoryTab]);
@@ -353,11 +352,10 @@ const Funds = () => {
         };
       });
 
-      setRowsMark(initialMarkedList)
+    setRowsMark(initialMarkedList);
 
     setPinnedList(initialPinnedList);
   }, [query.isLoading, query.isFetching, query.data?.selectedTabFunds]);
-  
 
   const simplifiedFunds = useMemo(() => {
     if (!query.data?.selectedTabFunds) return [];
@@ -600,24 +598,22 @@ const Funds = () => {
     });
   };
 
-const handlerMarkFund = (id: number, color: string) => {
-  setRowsMark((prev) => {
-    const existingMark = prev.find(mark => mark.id === id);
+  const handlerMarkFund = (id: number, color: string) => {
+    setRowsMark((prev) => {
+      const existingMark = prev.find((mark) => mark.id === id);
 
-    // If exists and color is same, remove the mark (unmark)
-    if (existingMark && existingMark.color === color) {
-      return prev.filter(mark => mark.id !== id);
-    }
+      // If exists and color is same, remove the mark (unmark)
+      if (existingMark && existingMark.color === color) {
+        return prev.filter((mark) => mark.id !== id);
+      }
 
-    // Else, update the color or add new mark
-    const updatedMarks = prev.filter(mark => mark.id !== id);
-    return [...updatedMarks, { id, color }];
-  });
-};
+      // Else, update the color or add new mark
+      const updatedMarks = prev.filter((mark) => mark.id !== id);
+      return [...updatedMarks, { id, color }];
+    });
+  };
 
-
-  console.log('re rendering...');
-  
+  console.log(query.data?.columns);
 
   return (
     <>
@@ -661,7 +657,7 @@ const handlerMarkFund = (id: number, color: string) => {
             rows.length,
         })}
       >
-        <div className="bg-border-brand-soft-200 absolute top-[75px] right-2 z-50 h-0.5 w-full" />
+        <div className="bg-border-brand-soft-200 absolute right-2 top-[75px] z-50 h-0.5 w-full" />
         <div
           ref={tableRef}
           className="table-scroll group/table bg-surface-neutral-primary scrollbar-lg h-[calc(100vh-172px)] w-screen overflow-auto scroll-smooth"
@@ -717,7 +713,7 @@ const handlerMarkFund = (id: number, color: string) => {
                           activeSortIndex === 0,
                         'top-[157px]':
                           activeSortIndex === 0 && !isHeaderVisible,
-                          '': sorting[0].id === 'nameFund'
+                        '': sorting[0].id === 'nameFund',
                       })}
                     >
                       <div className="bg-surface-brand-600-primary mx-auto h-1.5 w-16 rounded-t-[10px]"></div>
