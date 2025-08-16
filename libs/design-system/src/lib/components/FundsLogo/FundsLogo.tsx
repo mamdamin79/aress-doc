@@ -24,6 +24,12 @@ export const FundsLogo: React.FC<FundsLogoProps> = ({
     lg: 'h-12 w-12',
   };
 
+  const verifySizes: Record<'sm' | 'md' | 'lg', { w: number; h: number }> = {
+    sm: { w: 14, h: 14 },
+    md: { w: 16, h: 16 },
+    lg: { w: 20, h: 20 },
+  };
+
   return (
     <div className="relative">
       <img
@@ -38,15 +44,19 @@ export const FundsLogo: React.FC<FundsLogoProps> = ({
           className={cn('absolute bottom-0 right-0', { '-bottom-3': isPin })}
         >
           {isPin ? (
-            <Icon name="CustomPin" size="lg" />
+            <Icon name="CustomPin" size={size} />
           ) : (
             <FundsTag color="green" size={size === 'lg' ? 'lg' : 'md'} />
           )}
         </div>
       )}
       {isVerified && (
-        <div className="absolute -top-1">
-          <VerifiedSVG />
+        <div className="absolute -top-1 right-0">
+          <VerifiedSVG
+            viewBox="0 0 14 14"
+            width={verifySizes[size].w}
+            height={verifySizes[size].h}
+          />
         </div>
       )}
     </div>
