@@ -10,7 +10,11 @@ type Props = {
   inModal?: boolean;
 };
 
-export const CategoryList: React.FC<Props> = ({ categories, reports,inModal }) => {
+export const CategoryList: React.FC<Props> = ({
+  categories,
+  reports,
+  inModal,
+}) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname(); // <-- get current path
@@ -31,62 +35,70 @@ export const CategoryList: React.FC<Props> = ({ categories, reports,inModal }) =
       <li
         onClick={() => handleCategory('همه‌ی گزارش‌‌‌‌‌‌ها')}
         className={cn(
-          'mb-4 flex cursor-pointer items-center gap-2 rounded-md text-sm font-medium text-gray-700',
-          { 'text-gray-900': !searchParams.get('category') },
+          'text-text-neutral-secondary hover:text-text-neutral-secondarycontrast group mb-4 flex cursor-pointer items-center gap-2 rounded-md text-sm font-medium',
+          { 'text-text-neutral-disable': !searchParams.get('category') },
         )}
       >
         <div
-          className={cn('h-4 w-[2px] rounded-md bg-gray-300', {
-            'bg-brand-600 h-5 w-1 text-gray-900': !searchParams.get('category'),
-          })}
-        ></div>
+          className={cn(
+            'bg-border-neutral-contrast h-4 w-0.5 rounded-md transition-all duration-300 group-hover:h-5 group-hover:w-1',
+            {
+              'bg-border-brand-primary-600 text-text-neutral-primary h-5 w-1':
+                !searchParams.get('category'),
+            },
+          )}
+        />
         <span
           className={cn({
-            'border-brand-600 border-b-[1.5px]': !searchParams.get('category'),
+            'border-border-brand-primary-600 text-text-neutral-primary border-b':
+              !searchParams.get('category'),
           })}
         >
           همه‌ی گزارش‌‌‌‌‌‌ها ({reports.length})
         </span>
       </li>
       {categories.map((category) => (
-        <>
-          <li
-            onClick={() => handleCategory(category.title)}
-            key={category.identifier}
+        <li
+          onClick={() => handleCategory(category.title)}
+          key={category.identifier}
+          className={cn(
+            'text-text-neutral-secondary group mb-4 flex cursor-pointer items-center gap-2 rounded-md text-sm font-medium',
+            {
+              'text-text-neutral-primary':
+                category.title === searchParams.get('category'),
+              'hover:text-text-neutral-secondarycontrast':
+                category.title !== searchParams.get('category'),
+            },
+          )}
+        >
+          <div
             className={cn(
-              'group mb-4 flex cursor-pointer items-center gap-2 rounded-md text-sm font-medium text-gray-600 hover:text-gray-700',
+              'bg-text-neutral-secondary h-4 w-0.5 rounded-md transition-all duration-300',
               {
-                'text-gray-1000':
+                'bg-border-brand-primary-600 h-5 w-1':
                   category.title === searchParams.get('category'),
+                'group-hover:bg-text-neutral-secondarycontrast group-hover:h-5 group-hover:w-1':
+                  category.title !== searchParams.get('category'),
               },
             )}
+          />
+          <span
+            className={cn({
+              'border-border-brand-primary-600 border-b transition-colors':
+                category.title === searchParams.get('category'),
+              'group-hover:border-b-0':
+                category.title !== searchParams.get('category'),
+            })}
           >
-            <div
-              className={cn(
-                'h-4 w-[2px] rounded-md bg-gray-400 transition-all duration-300 group-hover:h-5 group-hover:w-1 group-hover:bg-gray-500',
-                {
-                  'bg-brand-600 h-5 w-1':
-                    category.title === searchParams.get('category'),
-                },
-              )}
-            ></div>
-            <span
-              className={cn({
-                'border-brand-600 border-b-[1.5px] transition-colors group-hover:text-gray-700':
-                  category.title === searchParams.get('category'),
-              })}
-            >
-              {category.title}
-            </span>
-            (
-            {
-              reports.filter(
-                (report) => report.category.title === category.title,
-              ).length
-            }
-            )
-          </li>
-        </>
+            {category.title}
+          </span>
+          (
+          {
+            reports.filter((report) => report.category.title === category.title)
+              .length
+          }
+          )
+        </li>
       ))}
     </ul>
   );

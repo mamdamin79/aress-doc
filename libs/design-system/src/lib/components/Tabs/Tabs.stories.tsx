@@ -1,22 +1,21 @@
+import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import { Tabs } from './Tabs';
-import { cn } from '../../../utils/classNames.utils';
 
-// Meta configuration for the Tabs component in Storybook
 const meta: Meta<typeof Tabs> = {
-  title: 'Components/Tabs', // Defines the title in Storybook's UI
-  component: Tabs, // Links to the actual component
-  tags: ['autodocs'], // Optional: Add any additional tags for better categorization
+  title: 'Components/Tabs',
+  component: Tabs,
+  tags: ['autodocs'],
   argTypes: {
     variant: {
       control: 'radio',
       options: [
         'shaped',
         'lined',
-        'divided',
         'rounded',
         'rounded-full',
         'shaped-color',
+        'sliding',
       ],
     },
   },
@@ -26,62 +25,55 @@ export default meta;
 
 type Story = StoryObj<typeof Tabs>;
 
-// examples story for the Tabs component
 export const Default: Story = {
-  argTypes: {
-    colorMode: {
-      control: 'radio',
-      options: ['neutral', 'inverse'],
-    },
-  },
-  render: (args) => (
-    <div className={cn({ 'w-max p-10': args.colorMode === 'inverse' })}>
-      <Tabs {...args} />
-    </div>
-  ),
-  args: {
-    onClickTab: (e) => console.log(e),
+  render: (args) => {
+    const [activeTab, setActiveTab] = useState<number>(1);
 
+    return (
+      <div>
+        <Tabs
+          {...args}
+          activeTab={activeTab}
+          onClickTab={(newTabId) => {
+            setActiveTab(newTabId);
+            console.log('clicked tab id:', newTabId);
+          }}
+        />
+      </div>
+    );
+  },
+  args: {
+    size: 'small',
+    fullWidthDivider: false,
     tabs: [
       {
+        id: '1',
+        title: 'خلاصه',
+        tag: 'green',
         content: (
           <div className="flex items-center justify-between rounded-md p-3">
-            <p>خلاطه</p>
+            <p>خلاصه</p>
             <p>تحلیل بازدهی</p>
             <p>ارزیابی ریسک</p>
-            <p>پرتفوی صندوق</p>
           </div>
         ),
-        id: '1',
-        tag: 'green',
-        title: 'خلاصه',
       },
       {
         id: '2',
-        content: 'تحلیل بازدهی',
         title: 'تحلیل بازدهی',
-        tag: 'blue',
-      },
-      {
-        id: '3',
         content: 'تحلیل بازدهی',
-        title: 'تحلیل بازدهی',
-        tag: 'yellow',
       },
       {
         id: '4',
-        content: 'تحلیل بازدهی',
-        tag: 'purple',
         title: 'تحلیل بازدهی',
+        content: 'تحلیل بازدهی',
       },
       {
         id: '5',
-        content: 'تحلیل بازدهی',
         title: 'تحلیل بازدهی',
+        content: 'تحلیل بازدهی',
       },
     ],
-    colorMode: 'inverse',
     variant: 'lined',
-    activeTab: 1,
   },
 };

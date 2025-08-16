@@ -374,23 +374,23 @@ export type FundListItemApiModel = {
   /**
    * مدیر صنودق
    */
-  manager: string;
+  manager: string | null;
   /**
    * متولی صندوق
    */
-  custodian: string;
+  custodian: string | null;
   /**
    * حسابرس صندوق
    */
-  auditor: string;
+  auditor: string | null;
   /**
    * ضامن نقد شوندگی صندوق
    */
-  liquidityGuarantor: string;
+  liquidityGuarantor: string | null;
   /**
    * بازارگردان
    */
-  marketMaker: string;
+  marketMaker: string | null;
   /**
    * تاریخ آغاز فعالیت میلادی
    */
@@ -400,19 +400,19 @@ export type FundListItemApiModel = {
    */
   initiationJdate: string;
   /**
-   * قیمت صدور
+   * قیمت صدور (ریال)
    */
   issueNavRials: number;
   /**
-   * قیمت ابطال
+   * قیمت ابطال (ریال)
    */
   redeemNavRials: number;
   /**
-   * قیمت آماری
+   * قیمت آماری (ریال)
    */
   statisticalNavRials: number;
   /**
-   * دارایی تحت مدیریت
+   * دارایی تحت مدیریت (ریال)
    */
   assetUnderManagementRials: number;
   /**
@@ -613,6 +613,7 @@ export type FundTableResponseApiModel = {
   tabs: Array<FundTableTabApiModel>;
   selectedTabIdentifier: number;
   selectedTabFunds: Array<FundsTableItemApiModel>;
+  columns: Array<FundTableTabColumnDto>;
 };
 
 export type FundTableTabApiModel = {
@@ -620,6 +621,33 @@ export type FundTableTabApiModel = {
   title: string;
   color: string | null;
 };
+
+export type FundTableTabColumnDto = {
+  label: string;
+  key: string;
+  visible: boolean;
+  sort: FundTableTabColumnSort;
+  columnFilter:
+    | FundTableTabColumnFilterTextDto
+    | FundTableTabColumnFilterOptionsDto
+    | null;
+};
+
+export type FundTableTabColumnFilterOptionDto = {
+  identifier: string;
+  label: string;
+  selected: boolean;
+};
+
+export type FundTableTabColumnFilterOptionsDto = {
+  options: Array<FundTableTabColumnFilterOptionDto>;
+};
+
+export type FundTableTabColumnFilterTextDto = {
+  filter_text: string | null;
+};
+
+export type FundTableTabColumnSort = 'NO' | 'ASC' | 'DESC';
 
 export type FundTypeApiModel = {
   identifier: number;
@@ -629,6 +657,7 @@ export type FundTypeApiModel = {
 export type FundsTableItemApiModel = {
   fund: FundListItemApiModel;
   pinned: boolean;
+  mark: string | null;
 };
 
 export type GetDashboardItemCalculationsBody = {
@@ -675,7 +704,6 @@ export type LogoutResponseApiModel = {
 };
 
 export type MarkFundInTableTabBody = {
-  tab: number;
   fund: number;
   color: string;
 };
@@ -685,7 +713,6 @@ export type MarkFundInTableTabResponseApiModel = {
 };
 
 export type PinFundInTableTabBody = {
-  tab: number;
   fund: number;
 };
 
@@ -707,6 +734,7 @@ export type Report13Dot1CalculationResult = {
   maxValue: Report13Dot1CalculationResultColumn;
   minValue: Report13Dot1CalculationResultColumn;
   averageValue: Report13Dot1CalculationResultColumn;
+  currencyUnit: string;
 };
 
 export type Report13Dot1CalculationResultColumn = {
@@ -803,21 +831,19 @@ export type Report36CalculationResultBucket = {
 };
 
 export type Report39CalculationResult = {
-  data: Array<Report39CalculationResultItem>;
-};
-
-export type Report39CalculationResultItem = {
-  values: Array<Report39InstrumentsResultItem>;
+  data: Array<Report39InstrumentsResultItem>;
+  unit: string;
 };
 
 export type Report39InstrumentsResultItem = {
   instrument: string;
   netFlow: number;
-  unit: string;
 };
 
 export type Report6CalculationResult = {
   data: Array<Report6CalculationResultTimeSeriesItem>;
+  indexUnit: string;
+  netFlowUnit: string;
 };
 
 export type Report6CalculationResultTimeSeriesItem = {
@@ -846,9 +872,23 @@ export type ResetForgotPasswordByOtpResponseApiModel = {
   success: boolean;
 };
 
+export type SortFundTabBody = {
+  columnKey: string;
+  direction: FundTableTabColumnSort;
+};
+
+export type SortFundTabResponseApiModel = {
+  funds: Array<FundsTableItemApiModel>;
+  columns: Array<FundTableTabColumnDto>;
+};
+
 export type TokenApiModel = {
   access_token: string;
   token_type: string;
+};
+
+export type UnmarkFundInTableTabBody = {
+  fund: number;
 };
 
 export type UnmarkFundInTableTabResponseApiModel = {
@@ -856,12 +896,27 @@ export type UnmarkFundInTableTabResponseApiModel = {
 };
 
 export type UnpinFundInTableTabBody = {
-  tab: number;
   fund: number;
 };
 
 export type UnpinFundInTableTabResponseApiModel = {
   success: boolean;
+};
+
+export type UpdateFundTabColumnsResponseApiModel = {
+  funds: Array<FundsTableItemApiModel>;
+  columns: Array<FundTableTabColumnDto>;
+};
+
+export type UpdateFundTableTabColumnItem = {
+  key: string;
+  sortDirection: FundTableTabColumnSort;
+  visible: boolean;
+  selectedFilter: string | null;
+};
+
+export type UpdateFundTableTabColumnsBody = {
+  columns: Array<UpdateFundTableTabColumnItem>;
 };
 
 export type UserReportFavoriteStatus = {
@@ -1252,29 +1307,52 @@ export type GetFundsTableData = {
 
 export type GetFundsTableResponse = FundTableResponseApiModel;
 
-export type PostFundsTablePinData = {
+export type PostFundsTableTabByTabPinData = {
   requestBody: PinFundInTableTabBody;
+  tab: number;
 };
 
-export type PostFundsTablePinResponse = PinFundInTableTabResponseApiModel;
+export type PostFundsTableTabByTabPinResponse =
+  PinFundInTableTabResponseApiModel;
 
-export type PostFundsTableUnpinData = {
+export type PostFundsTableTabByTabUnpinData = {
   requestBody: UnpinFundInTableTabBody;
+  tab: number;
 };
 
-export type PostFundsTableUnpinResponse = UnpinFundInTableTabResponseApiModel;
+export type PostFundsTableTabByTabUnpinResponse =
+  UnpinFundInTableTabResponseApiModel;
 
-export type PostFundsTableMarkData = {
+export type PostFundsTableTabByTabMarkData = {
   requestBody: MarkFundInTableTabBody;
+  tab: number;
 };
 
-export type PostFundsTableMarkResponse = MarkFundInTableTabResponseApiModel;
+export type PostFundsTableTabByTabMarkResponse =
+  MarkFundInTableTabResponseApiModel;
 
-export type PostFundsTableUnmarkData = {
-  requestBody: UnpinFundInTableTabBody;
+export type PostFundsTableTabByTabUnmarkData = {
+  requestBody: UnmarkFundInTableTabBody;
+  tab: number;
 };
 
-export type PostFundsTableUnmarkResponse = UnmarkFundInTableTabResponseApiModel;
+export type PostFundsTableTabByTabUnmarkResponse =
+  UnmarkFundInTableTabResponseApiModel;
+
+export type PostFundsTableTabByTabSortData = {
+  requestBody: SortFundTabBody;
+  tab: number;
+};
+
+export type PostFundsTableTabByTabSortResponse = SortFundTabResponseApiModel;
+
+export type PostFundsTableTabByTabColumnsData = {
+  requestBody: UpdateFundTableTabColumnsBody;
+  tab: number;
+};
+
+export type PostFundsTableTabByTabColumnsResponse =
+  UpdateFundTabColumnsResponseApiModel;
 
 export type $OpenApiTs = {
   '/health': {
@@ -1864,9 +1942,9 @@ export type $OpenApiTs = {
       };
     };
   };
-  '/funds/table/pin': {
+  '/funds/table/tab/{tab}/pin': {
     post: {
-      req: PostFundsTablePinData;
+      req: PostFundsTableTabByTabPinData;
       res: {
         /**
          * Successful Response
@@ -1879,9 +1957,9 @@ export type $OpenApiTs = {
       };
     };
   };
-  '/funds/table/unpin': {
+  '/funds/table/tab/{tab}/unpin': {
     post: {
-      req: PostFundsTableUnpinData;
+      req: PostFundsTableTabByTabUnpinData;
       res: {
         /**
          * Successful Response
@@ -1894,9 +1972,9 @@ export type $OpenApiTs = {
       };
     };
   };
-  '/funds/table/mark': {
+  '/funds/table/tab/{tab}/mark': {
     post: {
-      req: PostFundsTableMarkData;
+      req: PostFundsTableTabByTabMarkData;
       res: {
         /**
          * Successful Response
@@ -1909,14 +1987,44 @@ export type $OpenApiTs = {
       };
     };
   };
-  '/funds/table/unmark': {
+  '/funds/table/tab/{tab}/unmark': {
     post: {
-      req: PostFundsTableUnmarkData;
+      req: PostFundsTableTabByTabUnmarkData;
       res: {
         /**
          * Successful Response
          */
         200: UnmarkFundInTableTabResponseApiModel;
+        /**
+         * Validation Error
+         */
+        422: HTTPValidationError;
+      };
+    };
+  };
+  '/funds/table/tab/{tab}/sort': {
+    post: {
+      req: PostFundsTableTabByTabSortData;
+      res: {
+        /**
+         * Successful Response
+         */
+        200: SortFundTabResponseApiModel;
+        /**
+         * Validation Error
+         */
+        422: HTTPValidationError;
+      };
+    };
+  };
+  '/funds/table/tab/{tab}/columns': {
+    post: {
+      req: PostFundsTableTabByTabColumnsData;
+      res: {
+        /**
+         * Successful Response
+         */
+        200: UpdateFundTabColumnsResponseApiModel;
         /**
          * Validation Error
          */

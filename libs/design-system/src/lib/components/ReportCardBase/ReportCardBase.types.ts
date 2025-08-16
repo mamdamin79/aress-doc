@@ -12,4 +12,6 @@ export interface ReportCardBaseProps {
   settingOptions: optionProps[];
   onSubmit?: () => Promise<boolean>;
   onRemove?: () => void;
+  onShare?: () => void;
+  onReplace?: () => void;
 }

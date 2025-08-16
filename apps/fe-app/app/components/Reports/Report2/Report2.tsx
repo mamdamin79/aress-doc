@@ -6,22 +6,12 @@ import {
   yAxisLabels,
   xAxisLabels,
 } from './../Report.config.shared';
-import {
-  FinancialReportFilterApiModel,
-  Report2CalculationResult,
-} from '@openapi';
+import { Report2CalculationResult } from '@openapi';
 import { OptionItem } from 'design-system';
 import { financialDefinitions } from './Report2.constants';
 import { toBasicSetting } from '../Report.utils';
 import { useEffect, useState, useMemo } from 'react';
-
-export interface Report2Props {
-  title?: string;
-  data: Report2CalculationResult;
-  filters: FinancialReportFilterApiModel[];
-  onSubmit?: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
-  onRemove?: () => void;
-}
+import { CustomChartOptions, ReportProps } from '../Report.types';
 
 export function Report2({
   data,
@@ -29,7 +19,9 @@ export function Report2({
   onSubmit,
   title,
   onRemove,
-}: Report2Props) {
+  onShare,
+  onReplace,
+}: ReportProps<Report2CalculationResult>) {
   const [dataState, setDataState] = useState(data);
   const [filterState, setFilterState] = useState(filters);
 
@@ -85,7 +77,7 @@ export function Report2({
     }));
   }, [dataState]);
 
-  const chartOptions: Highcharts.Options = useMemo(() => {
+  const chartOptions: CustomChartOptions = useMemo(() => {
     return {
       ...baseOptions,
       chart: {
@@ -96,10 +88,10 @@ export function Report2({
         reversed: true,
         min: 0,
         title: {
-          text: 'میلیارد ریال',
+          text: data.unit,
           textAlign: 'right',
           offset: 15,
-          x: 590,
+          x: 350,
         },
         labels: yAxisLabels,
       },
@@ -107,6 +99,7 @@ export function Report2({
       series: [
         {
           name: 'صنعت',
+          unit: data.unit,
           type: 'bar',
           data: seriesData,
           borderRadius: 4,
@@ -134,8 +127,10 @@ export function Report2({
         toBasicSetting(filterState[1], updateOption),
         toBasicSetting(filterState[2], updateOption),
       ]}
+      onShare={onShare}
       onSubmit={handleSubmit}
       onRemove={onRemove}
+      onReplace={onReplace}
     >
       <HighchartsReact highcharts={Highcharts} options={chartOptions} />
     </ReportCardBase>

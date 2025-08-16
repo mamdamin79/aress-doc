@@ -1,9 +1,7 @@
 'use client';
-import Image from 'next/image';
 import React from 'react';
 import { ProfileSidebarOption } from './ProfileSidebarOption';
 import { ReactComponent as UserSVG } from '../../../assets/icons/profile-vector-large.svg';
-import { cn } from '../../../utils';
 import { ProfileSidebarItem } from './ProfileSidebar.types';
 export interface ProfileSidebarProps {
   image?: string | null;
@@ -27,14 +25,14 @@ export const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
       <div className="flex flex-row items-center gap-3">
         <div className="bg-surface-neutral-secondary flex h-14 w-14 items-center justify-center rounded-2xl p-1">
           <div className="bg-surface-neutral-background flex h-12 w-12 flex-col items-center justify-end overflow-hidden rounded-xl">
-            <div className={cn('object-cover', `h-[120px] w-[120px]`)}>
+            <div
+              className={`flex h-[120px] w-[120px] items-center justify-center`}
+            >
               {image ? (
-                <Image
+                <img
                   alt="profile image"
                   src={image}
-                  width={48}
-                  height={48}
-                  className={cn('object-cover', image && `h-[120px] w-[120px]`)}
+                  className="h-12 w-12 object-contain"
                 />
               ) : (
                 <UserSVG width={48} height={48} />

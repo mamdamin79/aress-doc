@@ -21,6 +21,8 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
   settingOptions,
   onSubmit,
   onRemove,
+  onShare,
+  onReplace,
 }) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [loadingStatus, setLoadingStatus] = useState<
@@ -142,12 +144,12 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
                   {
                     icon: 'repeat',
                     title: 'جایگزینی گزارش',
-                    onClick: () => console.log('اطلاعات بیشتر'),
+                    onClick: () => onReplace?.(),
                   },
                   {
                     icon: 'share-2',
                     title: 'اشتراک گذاری',
-                    onClick: () => console.log('اشتراک گذاری'),
+                    onClick: () => onShare?.(),
                   },
                   {
                     icon: 'trash-2',

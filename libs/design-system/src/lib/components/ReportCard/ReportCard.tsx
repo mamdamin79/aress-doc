@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { Icon } from '../Icon';
-import Image, { StaticImageData } from 'next/image';
+import { StaticImageData } from 'next/image';
 import { NewBadge, VideoBadge, LikeBadge } from './Badges/Badges';
 import { cn } from '../../../utils/classNames.utils';
 import { Button } from '../Button';
@@ -54,8 +54,8 @@ export const ReportCard: React.FC<ReportCardProps> = ({
             fixedBrief ? 'mx-auto h-[192px]' : 'h-[184px]',
           )}
         >
-          {image && (
-            <Image
+          {image && typeof image === 'string' && (
+            <img
               width={408}
               height={192}
               src={image}

@@ -23,7 +23,7 @@ import {
   sortableKeyboardCoordinates,
   rectSortingStrategy,
 } from '@dnd-kit/sortable';
-import { useHtmlPaddingRight } from '../../../../../hooks';
+import { useHtmlPaddingRight } from '@shared';
 import { useCustomToast } from 'design-system';
 import { FinancialReportCalculationApiModel } from '@openapi';
 import { useAutoRotate } from './hooks/useAutoRotate';
@@ -39,6 +39,8 @@ import { generateTooltips } from './utils';
 import { useDashboardData } from './hooks/useDashboardData';
 import { useDashboardActions } from './hooks/useDashboardActions';
 import { useReportSelection } from './hooks/useReportSelection';
+import { SuccessShareResponse } from './types/types';
+import { ShareReportPopUp } from './ShareReportPopup';
 
 const MAX_TOTAL_SLOTS = 16;
 
@@ -53,6 +55,11 @@ export const SlidersBox: React.FC = () => {
   const [activeReportPlacementOrder, setActiveReportPlacementOrder] = useState<
     string | null
   >(null);
+  const [shareReportData, setShareReportData] = useState<{
+    data: SuccessShareResponse;
+    reportID: string;
+  } | null>(null);
+  const [shareReportOpen, setShareReportOpen] = useState(false);
   const [isRemoveReportOpen, setIsRemoveReportOpen] = useState({
     open: false,
     dashboardName: '',
@@ -68,6 +75,9 @@ export const SlidersBox: React.FC = () => {
       }
     >
   >({});
+  const [replaceReportID, setReplaceReportID] = useState<number | null>(null);
+  const baseURL = process.env.NEXT_PUBLIC_API_URL ?? '';
+
   const {
     dashboardData,
     setDashboardData,
@@ -90,6 +100,8 @@ export const SlidersBox: React.FC = () => {
     handleRemoveReport,
     handleAddNewReport,
     handleDragEnd: handleDragEndInternal,
+    callRenderEndpoint,
+    handleReplaceReport,
   } = useDashboardActions({
     dashboardId: dashboardIdParam ? Number(dashboardIdParam) : null,
     dashboardData,
@@ -116,7 +128,7 @@ export const SlidersBox: React.FC = () => {
     paginatedReports,
     categories,
     totalPages,
-  } = useReportSelection(selectedReportID);
+  } = useReportSelection(selectedReportID, isReportSelectionPopupOpen);
   useEffect(() => {
     const cols = window.matchMedia('(min-width: 1280px)').matches ? 4 : 2;
     setSlidesPerView(cols);
@@ -132,6 +144,30 @@ export const SlidersBox: React.FC = () => {
     if (!result) return;
 
     setSlotsToRender((prev) => result.updatedSlotsToRender(prev));
+  };
+  const shareReport = async (
+    id: string,
+    title: string,
+    selectedFilters?: { [key: string]: unknown } | null,
+  ) => {
+    setShareReportOpen(true);
+    const selectedFiltersParsed: Record<string, string> | undefined =
+      selectedFilters
+        ? Object.fromEntries(
+            Object.entries(selectedFilters).map(([k, v]) => [k, String(v)]),
+          )
+        : undefined;
+    const data = await callRenderEndpoint({
+      id: id,
+      selectedFilters: selectedFiltersParsed,
+      title: title,
+    });
+    if (data.uploadResult) {
+      setShareReportData({
+        data: data,
+        reportID: id,
+      });
+    }
   };
 
   return (
@@ -197,6 +233,19 @@ export const SlidersBox: React.FC = () => {
                               open: true,
                             })
                           }
+                          onShare={() =>
+                            shareReport(
+                              String(report.report.identifier),
+                              report.report.title,
+                              report.selectedFilters,
+                            )
+                          }
+                          onReplace={async () => {
+                            setReplaceReportID(report.identifier);
+                            setActiveReportPlacementOrder(slotId);
+                            await handleReportSelectionPopupOpen();
+                            setIsReportSelectionPopupOpen(true);
+                          }}
                         />
                       );
                     }
@@ -290,11 +339,17 @@ export const SlidersBox: React.FC = () => {
             setSelectedReportID(null);
           }}
           onSubmit={(options) => {
-            handleAddNewReport(
-              String(selectedReportID),
-              activeReportPlacementOrder,
-              options,
-            );
+            if (!!replaceReportID) {
+              handleReplaceReport(replaceReportID, String(selectedReportID));
+              setReplaceReportID(null);
+              setIsReportPreviewOpen(false);
+            } else {
+              handleAddNewReport(
+                String(selectedReportID),
+                activeReportPlacementOrder,
+                options,
+              );
+            }
             setIsReportPreviewOpen(false);
           }}
           category={reportsPreviewData.category.title}
@@ -309,6 +364,28 @@ export const SlidersBox: React.FC = () => {
           video={!!reportsPreviewData.video}
         />
       )}
+      <ShareReportPopUp
+        isOpen={shareReportOpen}
+        onClose={() => {
+          setShareReportData(null);
+          setShareReportOpen(false);
+        }}
+        message="گزارش‌ تخصصی از آرسس"
+        platformNames={[
+          'WhatsApp',
+          'Email',
+          'Instagram',
+          'Linkedin',
+          'Telegram',
+        ]}
+        url={`${typeof window !== 'undefined' ? window.location.origin : ''}/report/${shareReportData?.reportID}?queryId=${shareReportData?.data.uploadResult.queryId}`}
+        image={
+          shareReportData?.data.uploadResult.screenshotUrl
+            ? baseURL + shareReportData?.data.uploadResult.screenshotUrl
+            : null
+        }
+      />
+
       <ConfirmModal
         isOpen={isRemoveReportOpen.open}
         onConfirm={() => handleRemoveReport(isRemoveReportOpen.dashboardItemID)}
@@ -319,8 +396,7 @@ export const SlidersBox: React.FC = () => {
           <span>
             آیا مطمئن هستید که می‌خواهید گزارش
             <span className="font-medium">
-              {' '}
-              {isRemoveReportOpen.dashboardName}{' '}
+              {isRemoveReportOpen.dashboardName}
             </span>
             را از این فضا حذف کنید؟
           </span>

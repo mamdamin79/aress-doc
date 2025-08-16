@@ -7,10 +7,12 @@ import { ReactComponent as Logo } from '@aress-assets/icons/fullLogo.svg';
 import { ReactComponent as LogoWithText } from '@aress-assets/icons/LogoWithText.svg';
 import { Notice } from './_components/Notice';
 import { FormWrapper } from './_components';
+import { useRouter } from 'next/navigation';
 
 const ForgotPasswordPage = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isIconDialogOpen, setIsIconDialogOpen] = useState(false);
+  const router = useRouter();
 
   return (
     <div className="flex h-full justify-center">
@@ -33,8 +35,8 @@ const ForgotPasswordPage = () => {
                 activeIndex={activeIndex}
                 progressBarItems={[
                   'کد ملی و شماره همراه',
-                  'رمز یک‌بار مصرف',
                   'رمز عبور جدید',
+                  'رمز یک‌بار مصرف',
                 ]}
               />
             </div>
@@ -62,7 +64,9 @@ const ForgotPasswordPage = () => {
         btnText="بازگشت به صفحه ورود"
         isOpen={isIconDialogOpen}
         mode="success"
-        onClose={() => setIsIconDialogOpen(false)}
+        onClose={() => {
+          router.push('/login');
+        }}
         title="رمز عبور جدید با موفقیت ذخیره شد!"
       />
     </div>

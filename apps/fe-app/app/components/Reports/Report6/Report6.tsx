@@ -4,27 +4,21 @@ import HighchartsReact from 'highcharts-react-official';
 import { baseOptions, xAxisLabels, yAxisLabels } from '../Report.config.shared';
 import { financialDefinitions } from './Report6.constants';
 import { ReportCardBase } from 'design-system';
-import {
-  FinancialReportFilterApiModel,
-  Report6CalculationResult,
-} from '@openapi';
+import { Report6CalculationResult } from '@openapi';
 import { OptionItem } from 'design-system';
 import { toBasicSetting, toDropdownSetting } from '../Report.utils';
+import { CustomChartOptions, ReportProps } from '../Report.types';
 
-export interface Report6Props {
-  title?: string;
-  data: Report6CalculationResult;
-  filters: FinancialReportFilterApiModel[];
-  onSubmit?: (changedOptions: Record<string, OptionItem>) => Promise<boolean>;
-  onRemove?: () => void;
-}
+// Custom interface extending Highcharts.Options with unit property for series
 
-export const Report6: FC<Report6Props> = ({
+export const Report6: FC<ReportProps<Report6CalculationResult>> = ({
   data,
   filters,
   onSubmit,
   title,
   onRemove,
+  onShare,
+  onReplace,
 }) => {
   const [dataState, setDataState] = useState(data);
   const [filterState, setFilterState] = useState(filters);
@@ -93,7 +87,7 @@ export const Report6: FC<Report6Props> = ({
     return { xCategories, inFlowData, outFlowData, indexData };
   }, [dataState]);
 
-  const chartOptions: Highcharts.Options = {
+  const chartOptions: CustomChartOptions = {
     ...baseOptions,
     xAxis: {
       categories: xCategories,
@@ -119,6 +113,7 @@ export const Report6: FC<Report6Props> = ({
         data: inFlowData,
         color: 'var(--color-surface-accent-green-600)',
         yAxis: 0,
+        unit: data.netFlowUnit + ' ریال ',
       },
       {
         name: 'خروج',
@@ -126,6 +121,7 @@ export const Report6: FC<Report6Props> = ({
         data: outFlowData,
         color: 'var(--color-surface-accent-red-600)',
         yAxis: 0,
+        unit: data.netFlowUnit + ' ریال ',
       },
       {
         name: 'شاخص کل',
@@ -133,6 +129,7 @@ export const Report6: FC<Report6Props> = ({
         data: indexData,
         color: 'var(--color-border-accent-blue-600)',
         yAxis: 1,
+        unit: data.indexUnit + ' واحد ',
       },
     ],
     legend: {
@@ -140,11 +137,11 @@ export const Report6: FC<Report6Props> = ({
       useHTML: true,
       labelFormatter: function () {
         if (this.name === 'ورود') {
-          return 'ورود <span style="color: var(--color-text-neutral-secondary); font-size: 11px;">(میلیارد ریال)</span>';
+          return `ورود <span style="color: var(--color-text-neutral-secondary); font-size: 11px;">${data.netFlowUnit} ریال</span>`;
         } else if (this.name === 'خروج') {
-          return 'خروج <span style="color: var(--color-text-neutral-secondary);">(میلیارد ریال)</span>';
+          return `خروج <span style="color: var(--color-text-neutral-secondary);">${data.netFlowUnit} ریال</span>`;
         }
-        return 'شاخص کل <span style="color: var(--color-text-neutral-secondary);">(میلیون واحد)</span>';
+        return `شاخص کل <span style="color: var(--color-text-neutral-secondary);">${data.indexUnit} واحد</span>`;
       },
     },
   };
@@ -160,6 +157,8 @@ export const Report6: FC<Report6Props> = ({
       ]}
       onSubmit={handleSubmit}
       onRemove={onRemove}
+      onShare={onShare}
+      onReplace={onReplace}
     >
       <HighchartsReact highcharts={Highcharts} options={chartOptions} />
     </ReportCardBase>

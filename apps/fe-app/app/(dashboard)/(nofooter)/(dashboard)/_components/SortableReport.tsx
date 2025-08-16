@@ -14,6 +14,8 @@ type SortableReportProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSubmit: (changedOptions: Record<string, any>) => Promise<boolean>;
   onRemoveReport: () => void;
+  onShare?: () => void;
+  onReplace?: () => void;
 };
 
 export const SortableReport: React.FC<SortableReportProps> = ({
@@ -24,6 +26,8 @@ export const SortableReport: React.FC<SortableReportProps> = ({
   filters,
   onSubmit,
   onRemoveReport,
+  onShare,
+  onReplace,
 }) => {
   const {
     attributes,
@@ -43,7 +47,7 @@ export const SortableReport: React.FC<SortableReportProps> = ({
   return (
     <div ref={setNodeRef} style={style} className="relative">
       <div
-        className="absolute right-0 top-0 z-10 h-14 w-[550px] cursor-grab"
+        className="absolute right-[50px] top-0 z-10 h-14 w-[450px] cursor-grab"
         {...attributes}
         {...listeners}
       />
@@ -54,6 +58,8 @@ export const SortableReport: React.FC<SortableReportProps> = ({
         filters={filters}
         onSubmit={onSubmit}
         onRemove={onRemoveReport}
+        onShare={onShare}
+        onReplace={onReplace}
       />
     </div>
   );
