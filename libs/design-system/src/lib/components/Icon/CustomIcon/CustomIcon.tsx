@@ -17,6 +17,7 @@ export const CustomIcon: React.FC<IconProps> = ({ name, size = 'md' }) => {
       })}
     >
       <CustomIconComponent
+        stroke="currentColor"
         width={SIZE_VALUES[size]}
         height={SIZE_VALUES[size]}
         strokeWidth={
