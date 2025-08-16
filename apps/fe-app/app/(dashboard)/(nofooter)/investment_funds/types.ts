@@ -1,4 +1,4 @@
-import { Row } from "@tanstack/react-table";
+import { Row } from '@tanstack/react-table';
 import type { MutableRefObject } from 'react';
 
 export type DragPosition = 'left' | 'right';
@@ -33,7 +33,6 @@ export interface VirtualItem {
   measureRef?: (el: HTMLElement | null) => void;
 }
 
-
 export interface FundRow {
   nameFund: string;
   investmentMethod: 'T' | 'I&C';
@@ -44,6 +43,7 @@ export interface FundRow {
 }
 
 export interface TableBodyProps {
+  allRows: number;
   rows: Row<FundRow>[];
   tableRef: MutableRefObject<HTMLDivElement | null>;
   isScrollAtStart: boolean;
@@ -51,9 +51,8 @@ export interface TableBodyProps {
   handlerPinned: (id: number) => void;
   handlerUnPinned: (id: number) => void;
   handlerMarkFund: (id: number, color: string) => void;
-  rowMarks: {id: number, color: string}[];
+  rowMarks: { id: number; color: string }[];
 }
-
 
 export interface TableRowProps<T extends FundRow> {
   row: Row<T>;
@@ -63,7 +62,7 @@ export interface TableRowProps<T extends FundRow> {
   handlerPinned: (e: number) => void;
   handlerUnPinned: (e: number) => void;
   activeIndexCategoryTab: number;
-  rowMarks: {id: number, color: string}[];
+  rowMarks: { id: number; color: string }[];
   handleColorChange: (id: string, color: string) => void;
   isScrollAtStart: boolean;
 }

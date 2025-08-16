@@ -2,7 +2,16 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import TableRow from './TableRow';
 import { TableBodyProps, VirtualItem } from '../types';
 
-export function TableBody({ rows, tableRef, activeIndexCategoryTab, handlerPinned, handlerUnPinned, handlerMarkFund, rowMarks }: TableBodyProps) {
+export function TableBody({
+  rows,
+  tableRef,
+  activeIndexCategoryTab,
+  handlerPinned,
+  handlerUnPinned,
+  handlerMarkFund,
+  rowMarks,
+  allRows,
+}: TableBodyProps) {
   const virtualizer = useVirtualizer({
     count: rows?.length,
     getScrollElement: () => tableRef.current,
@@ -18,23 +27,33 @@ export function TableBody({ rows, tableRef, activeIndexCategoryTab, handlerPinne
 
       {virtualizer.getVirtualItems().map((virtualRow: VirtualItem) => {
         const row = rows[virtualRow.index];
-        const isMainTab = activeIndexCategoryTab === 0;           
+        const isMainTab = activeIndexCategoryTab === 0;
         return (
-          <TableRow
-            row={row}
-            handlerMarkFund={handlerMarkFund}
-            isMainTab={isMainTab}
-            activeIndexCategoryTab={activeIndexCategoryTab}
-            rowMarks={rowMarks}
-            handleColorChange={() => void 0}
-            isScrollAtStart={false}
-            handlerUnPinned={handlerUnPinned}
-            handlerPinned={handlerPinned}
-            key={row.id}
-            logo={row.original.logo}
-          />
+          <>
+            <TableRow
+              row={row}
+              handlerMarkFund={handlerMarkFund}
+              isMainTab={isMainTab}
+              activeIndexCategoryTab={activeIndexCategoryTab}
+              rowMarks={rowMarks}
+              handleColorChange={() => void 0}
+              isScrollAtStart={false}
+              handlerUnPinned={handlerUnPinned}
+              handlerPinned={handlerPinned}
+              key={row.id}
+              logo={row.original.logo}
+            />
+            {allRows === virtualRow.index + 1 && (
+              <div className="sticky right-0 mb-2 mt-5 w-screen whitespace-nowrap text-sm text-gray-600">
+                پایان لیست صندوق ها.
+              </div>
+            )}
+          </>
         );
       })}
+      <tr className="h-[64px] w-full">
+        <td className="h-full"></td>
+      </tr>
       <tr
         style={{
           height:
@@ -48,4 +67,4 @@ export function TableBody({ rows, tableRef, activeIndexCategoryTab, handlerPinne
       </tr>
     </tbody>
   );
-};
+}

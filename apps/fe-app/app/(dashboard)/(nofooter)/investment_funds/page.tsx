@@ -613,8 +613,6 @@ const Funds = () => {
     });
   };
 
-  console.log(query.data?.columns);
-
   return (
     <>
       <div
@@ -994,6 +992,7 @@ const Funds = () => {
             {rows.length ? (
               <TableBody
                 handlerMarkFund={handlerMarkFund}
+                allRows={sortedFunds.length}
                 rowMarks={rowsMark}
                 tableRef={tableRef as RefObject<HTMLDivElement>}
                 isScrollAtStart={isScrollAtStart}
