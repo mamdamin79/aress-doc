@@ -10,6 +10,7 @@ interface FundsLogoProps {
   hasTag?: boolean;
   isVerified?: boolean;
   isPin?: boolean;
+  color: 'purple' | 'blue' | 'green' | 'yellow' | 'pink' | 'neutral';
 }
 
 export const FundsLogo: React.FC<FundsLogoProps> = ({
@@ -17,6 +18,7 @@ export const FundsLogo: React.FC<FundsLogoProps> = ({
   hasTag = true,
   isVerified = false,
   isPin = false,
+  color = 'green',
 }) => {
   const sizeClasses = {
     sm: 'h-8 w-8',
@@ -44,9 +46,9 @@ export const FundsLogo: React.FC<FundsLogoProps> = ({
           className={cn('absolute bottom-0 right-0', { '-bottom-3': isPin })}
         >
           {isPin ? (
-            <Icon name="CustomPin" size={size} />
+            <Icon name="CustomPin" size="sm" />
           ) : (
-            <FundsTag color="green" size={size === 'lg' ? 'lg' : 'md'} />
+            <FundsTag color={color} size={size === 'lg' ? 'lg' : 'md'} />
           )}
         </div>
       )}
