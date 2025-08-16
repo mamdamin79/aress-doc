@@ -12,7 +12,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="text-text-neutral-primary mx-auto flex w-full max-w-[1680px] justify-center">
-      <div className="flex w-full flex-row px-8 pb-28 pt-12 md:gap-8 md:px-8 xl:gap-14 xl:px-20">
+      <div className="flex w-full flex-row gap-8 px-8 pb-28 pt-12 md:px-8 xl:gap-14 xl:px-20">
         <div className="flex w-[264px] justify-center">
           <ProfileSidebar
             items={[
@@ -48,9 +48,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           />
         </div>
 
-        <div className="hidden max-w-[1032px] flex-grow md:block">
-          {children}
-        </div>
+        <div className="block max-w-[1032px] flex-grow">{children}</div>
       </div>
 
       <LogoutModal

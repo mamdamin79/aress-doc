@@ -5,7 +5,7 @@ import { ProfileForm } from './components/ProfileForm/ProfileForm';
 
 export default function Profile() {
   return (
-    <div className="hidden max-w-[1032px] flex-grow md:block">
+    <div className="block max-w-[1032px] flex-grow">
       <ProfileForm />
       <AddressForm />
       <BankAccountInformation />
