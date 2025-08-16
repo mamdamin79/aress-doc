@@ -83,7 +83,7 @@ export const ProfileForm: React.FC = () => {
                 setIsLoading(false);
               }}
               title="کد تایید را وارد نمایید"
-              description="۰۹۱*******۸۹ کد تایید برای شماره ارسال شد."
+              description="09392892633 کد تایید برای شماره ارسال شد."
               backBtnLabel="تغییر کد ملی"
               onBackBtn={() => {
                 setOtpFormOpen(false);
