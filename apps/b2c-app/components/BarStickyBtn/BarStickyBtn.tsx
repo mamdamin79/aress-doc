@@ -63,7 +63,7 @@ export const BarStickyBtn: React.FC<BarStickyBtnProps> = ({
               isLoading={false}
               mode="primary"
               size="md"
-              className="text-text-neutral-white h-[38px] w-24"
+              className="text-text-neutral-white hover:bg-surface-accent-green-600 active:bg-surface-accent-green-600 h-[38px] w-24"
               onClick={onBuyClick}
             >
               خرید
@@ -75,7 +75,7 @@ export const BarStickyBtn: React.FC<BarStickyBtnProps> = ({
                 isLoading={false}
                 mode="primary"
                 size="md"
-                className="text-text-neutral-white h-[38px] w-24"
+                className="text-text-neutral-white hover:bg-surface-accent-red-600 active:bg-surface-accent-red-600 h-[38px] w-24"
                 onClick={onSellClick}
               >
                 فروش

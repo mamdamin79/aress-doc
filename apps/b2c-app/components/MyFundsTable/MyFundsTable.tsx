@@ -2,7 +2,7 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { Button, cn, Icon, Tooltip } from 'design-system';
 import { ReactComponent as FundIcon } from './FundIcon.svg';
-import { type FundData } from '../../app/(withfooter)/my_portfolio/_components/data/fundsData';
+import { type FundData } from '../../app/(withfooter)/my-portfolio/_components/data/fundsData';
 const fundTypeMaps: Record<number, { title: string; color: string }> = {
   0: {
     title: 'سهامی',
@@ -167,7 +167,7 @@ export function MyFundsTable({
   }, [isDetailView, data, isAnimating, recheckAllElements]);
 
   return (
-    <div
+    <table
       className={cn(
         'bg-surface-neutral-background border-border-neutral-secondary relative flex h-[369px] w-full max-w-full flex-col rounded-2xl border-2 p-7 pt-3',
       )}
@@ -205,7 +205,7 @@ export function MyFundsTable({
         <div className="min-w-[800px]">
           <div>
             {/* Header */}
-            <div className="grid grid-cols-4 gap-4 pb-3">
+            <thead className="grid grid-cols-4 gap-4 pb-3">
               <div
                 className={cn(
                   'text-text-neutral-primary text-md text-center font-medium transition-opacity duration-100 ease-out',
@@ -223,10 +223,10 @@ export function MyFundsTable({
               <div className="text-text-neutral-primary text-md text-center font-medium">
                 وزن/تعداد
               </div>
-            </div>
+            </thead>
 
             {/* Table Body */}
-            <div className="border-border-neutral-secondary flex flex-col border-b-2 border-t-2">
+            <tbody className="border-border-neutral-secondary flex flex-col border-b-2 border-t-2">
               {data.map((fund, i) => (
                 <div
                   key={fund.code || fund.typeID}
@@ -244,7 +244,7 @@ export function MyFundsTable({
                       : 'bg-surface-neutral-background',
                     ((!isDetailView && onRowClick) ||
                       (isDetailView && onFundSelect)) &&
-                      'hover:bg-surface-neutral-secondary cursor-pointer transition-colors',
+                      'hover:bg-surface-brand-100 cursor-pointer transition-colors',
                   )}
                 >
                   {/* Fund Type */}
@@ -443,10 +443,10 @@ export function MyFundsTable({
                   </div>
                 </div>
               ))}
-            </div>
+            </tbody>
           </div>
         </div>
       </div>
-    </div>
+    </table>
   );
 }

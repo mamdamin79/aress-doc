@@ -1,7 +1,7 @@
 'use client';
 import React, { useRef, useEffect, useState } from 'react';
 import { SlidingNumber } from '../SlidingNumber';
-import { Badge, formatNumber, Icon } from 'design-system';
+import { Badge, cn, formatNumber, Icon } from 'design-system';
 
 export interface AssetInfoBoxProps {
   hiddenContent: boolean;
@@ -46,7 +46,7 @@ export const AssetInfoBox: React.FC<AssetInfoBoxProps> = ({
               </div>
             ) : (
               <div
-                className="flex items-end justify-start"
+                className="flex items-end justify-start text-[40px]"
                 style={{
                   width: `${slidingNumberWidth}px`,
                   height: '47px',
@@ -57,7 +57,12 @@ export const AssetInfoBox: React.FC<AssetInfoBoxProps> = ({
             )}
           </div>
         </div>
-        <span className="text-text-neutral-secondary text-sm font-normal">
+        <span
+          className={cn(
+            'text-text-neutral-secondary text-sm font-normal',
+            hiddenContent && 'opacity-0',
+          )}
+        >
           ریال{' '}
         </span>
       </div>
@@ -79,7 +84,10 @@ export const AssetInfoBox: React.FC<AssetInfoBoxProps> = ({
                 ریال
               </span>
             ) : (
-              <span>........ ریال</span>
+              <span className="text-lg font-semibold">
+                <span>.....</span>
+                <span className="opacity-0">ریال</span>
+              </span>
             )}
           </span>
         </div>

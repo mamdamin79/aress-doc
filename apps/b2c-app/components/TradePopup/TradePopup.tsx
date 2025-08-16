@@ -108,7 +108,7 @@ export const TradePopup: React.FC<TradePopupProps> = ({
 
             {/* Price Display */}
             <div className="flex w-full items-center justify-center">
-              <div className="flex items-center gap-1">
+              <div className="ml-7 flex items-center gap-1">
                 <input
                   type="text"
                   inputMode="numeric"
@@ -241,7 +241,7 @@ export const TradePopup: React.FC<TradePopupProps> = ({
         <Button
           mode="primary"
           theme={mode === 'buy' ? 'success' : 'error'}
-          disabled={!acceptTerms}
+          disabled={!acceptTerms || quantity === 0}
           size="sm"
           className="w-fit px-4"
         >

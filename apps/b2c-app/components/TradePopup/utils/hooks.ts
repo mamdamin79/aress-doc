@@ -30,8 +30,10 @@ export const useTradeQuantity = (
 
   // Quantity decrement function
   const decrementQuantity = () => {
-    if (quantity > 1) {
+    if (quantity - quantityStep > 0) {
       setQuantity((prev) => prev - quantityStep);
+    } else {
+      setQuantity(0);
     }
   };
 
