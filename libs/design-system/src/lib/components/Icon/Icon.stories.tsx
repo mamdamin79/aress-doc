@@ -30,6 +30,6 @@ type Story = StoryObj<typeof Icon>;
 export const icon: Story = {
   args: {
     name: 'CustomScalesOfJustice',
-    size: 'lg',
+    size: 'xs',
   },
 };
