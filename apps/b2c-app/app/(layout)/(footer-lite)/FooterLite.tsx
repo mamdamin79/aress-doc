@@ -68,9 +68,7 @@ export function FooterLite() {
       </div>
 
       <div className="absolute top-20 w-full lg:-top-14 xl:-top-20">
-        {Abstract && typeof Abstract === 'string' && (
-          <img src={Abstract} className="h-full" />
-        )}
+        {Abstract && <img src={Abstract.src} className="h-full" />}
       </div>
     </div>
   );

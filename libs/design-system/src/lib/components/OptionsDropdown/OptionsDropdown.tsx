@@ -70,7 +70,7 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
   };
   useEffect(() => {
     setSelectedItem(dropDownList[initialSelectedIndex]);
-  }, [dropDownList, initialSelectedIndex]);
+  }, [initialSelectedIndex]);
   return (
     <Listbox value={selectedItem} onChange={handleSelectionChange}>
       <ListboxButton
