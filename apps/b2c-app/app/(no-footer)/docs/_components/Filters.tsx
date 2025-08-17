@@ -81,13 +81,15 @@ export const Filters = () => {
   return (
     <>
       <div className="flex flex-col items-end gap-[27px]">
-        <Button mode="secondary" className="w-[170px]" size="sm">
-          <div className="flex items-center gap-2 font-medium">
-            <span>درخواست گزارش</span>
-            <Icon name="file-plus-2" />
-          </div>
-        </Button>
-        <div className="border-border-neutral-secondary flex w-full items-center justify-between border-b pb-4 pr-4">
+        <div className="hidden gap-3 lg:flex">
+          <Button mode="secondary" className="w-[170px]" size="sm">
+            <div className="flex items-center gap-2 font-medium">
+              <span>درخواست گزارش</span>
+              <Icon name="file-plus-2" />
+            </div>
+          </Button>
+        </div>
+        <div className="border-border-neutral-secondary hidden w-full items-center justify-between border-b pb-4 pr-4 lg:flex">
           <span className="text-text-neutral-secondary text-lg font-semibold">
             فیلترها
           </span>
