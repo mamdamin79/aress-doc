@@ -9,9 +9,12 @@ export default function DocsPage() {
     <div className="relative flex max-w-full flex-row justify-center">
       <div className="flex w-full max-w-[1680px] flex-row gap-8 px-8 pb-8 pt-8 xl:px-20">
         <div className="flex w-full flex-col gap-8 text-right">
-          <h1 className="text-text-neutral-primary text-xl font-semibold">
-            مستندات
-          </h1>
+          <div className="flex w-full flex-col justify-center gap-3">
+            <h1 className="text-text-neutral-primary text-xl font-semibold">
+              مستندات
+            </h1>
+            <SidebarWrapper />
+          </div>
           {documentsData.map((document) => {
             return (
               <div className="flex flex-col gap-3" key={document.date}>
@@ -29,8 +32,6 @@ export default function DocsPage() {
           <Filters />
         </div>
       </div>
-
-      <SidebarWrapper />
     </div>
   );
 }
