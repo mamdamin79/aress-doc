@@ -97,12 +97,14 @@ export const Accordion: React.FC<Props> = ({
     <div className={cn('space-y-2', className)}>
       {items.map((item, index) => {
         const isCustomMode = item.trigger && item.content;
+        const isDefaultOpen =
+          defaultOpenItems.includes(index) || item.defaultOpen;
 
         return (
           <Disclosure
             as="div"
             key={`accordion-item-${index}`}
-            defaultOpen={item.defaultOpen}
+            defaultOpen={isDefaultOpen}
             className={cn(
               'w-full',
               {

@@ -159,31 +159,4 @@ export const documentsData: DocumentSection[] = [
       },
     ],
   },
-  {
-    date: '20 بهمن 1403',
-    documents: [
-      {
-        title: 'گزارش تحلیلی بازار',
-        subtitle: 'تحلیل بهمن ماه',
-        icon: 'pie-chart',
-        downloadButtons: [
-          {
-            title: 'دانلود',
-            icon: 'file-down',
-          },
-        ],
-      },
-      {
-        title: 'اعلان تغییرات',
-        subtitle: 'تغییرات مهم صندوق',
-        icon: 'bell',
-        downloadButtons: [
-          {
-            title: 'دانلود',
-            icon: 'file-down',
-          },
-        ],
-      },
-    ],
-  },
 ];

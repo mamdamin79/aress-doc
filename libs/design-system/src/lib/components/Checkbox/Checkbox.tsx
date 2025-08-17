@@ -11,6 +11,7 @@ import { Check } from 'lucide-react';
 interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onChange: () => void;
   reactcontent?: string | ReactNode;
+  className?: string;
 }
 
 export function Checkbox(props: CheckboxProps) {
@@ -43,6 +44,7 @@ export function Checkbox(props: CheckboxProps) {
               props.checked && !props.disabled,
           },
           'text-sm',
+          props.className,
         )}
       >
         {props.reactcontent ? props.reactcontent : props.content}
