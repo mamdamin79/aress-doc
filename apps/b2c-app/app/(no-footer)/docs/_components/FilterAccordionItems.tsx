@@ -1,5 +1,5 @@
 import { DatePickerTrigger } from '../../../../components';
-import { Checkbox, Icon, cn, AccordionItem } from 'design-system';
+import { Checkbox, Radio, Icon, cn, AccordionItem } from 'design-system';
 import React from 'react';
 
 export interface FilterOption {
@@ -48,12 +48,24 @@ export const FilterAccordionItem = (section: FilterSection): AccordionItem => {
             key={option.id}
             className="flex items-center justify-start px-2 py-3"
           >
-            <Checkbox
-              className="text-text-neutral-primary"
-              content={option.label}
-              checked={section.selectedValues.includes(option.value)}
-              onChange={() => section.onValueChange(option.value)}
-            />
+            {section.id === 'time-filters' ? (
+              <Radio
+                id={`${section.id}-${option.id}`}
+                name={section.id}
+                value={option.value}
+                content={option.label}
+                checked={section.selectedValues.includes(option.value)}
+                onChange={() => section.onValueChange(option.value)}
+                className="text-text-neutral-primary"
+              />
+            ) : (
+              <Checkbox
+                className="text-text-neutral-primary"
+                content={option.label}
+                checked={section.selectedValues.includes(option.value)}
+                onChange={() => section.onValueChange(option.value)}
+              />
+            )}
           </div>
         ))}
         {section.id === 'time-filters' && (

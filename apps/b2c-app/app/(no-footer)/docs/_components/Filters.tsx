@@ -58,9 +58,7 @@ export const Filters = forwardRef<FiltersRef>(
 
     const handleTimeFilterChange = (timeFilter: string) => {
       setSelectedTimeFilters((prev) =>
-        prev.includes(timeFilter)
-          ? prev.filter((filter) => filter !== timeFilter)
-          : [...prev, timeFilter],
+        prev.includes(timeFilter) ? [] : [timeFilter],
       );
     };
 
