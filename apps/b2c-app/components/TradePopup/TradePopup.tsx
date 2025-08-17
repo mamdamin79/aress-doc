@@ -30,6 +30,7 @@ export const TradePopup: React.FC<TradePopupProps> = ({
     title: 'سهامی',
   },
   disableCheck = false,
+  maxQuantity = 400,
 }) => {
   const {
     quantityOptions,
@@ -95,10 +96,10 @@ export const TradePopup: React.FC<TradePopupProps> = ({
                   mode="primary"
                   theme="brand"
                   size="sm"
-                  disabled={quantity === 400}
+                  disabled={quantity === maxQuantity}
                   className="w-14"
                   onClick={() => {
-                    setQuantity(400);
+                    setQuantity(maxQuantity);
                   }}
                 >
                   همه
@@ -139,7 +140,7 @@ export const TradePopup: React.FC<TradePopupProps> = ({
           <div className="bg-surface-neutral-secondary text-text-neutral-secondary rounded-md px-2 pt-1 text-right text-xs font-medium">
             {mode === 'buy'
               ? getQuantityInPersianWords(quantity)
-              : `دارایی قابل فروش: 400 واحد`}
+              : `دارایی قابل فروش: ${maxQuantity} واحد`}
           </div>
         </div>
         {/* Quantity Controls */}
@@ -241,7 +242,11 @@ export const TradePopup: React.FC<TradePopupProps> = ({
         <Button
           mode="primary"
           theme={mode === 'buy' ? 'success' : 'error'}
-          disabled={!acceptTerms || quantity === 0}
+          disabled={
+            !acceptTerms ||
+            quantity === 0 ||
+            (mode === 'sell' && quantity > maxQuantity)
+          }
           size="sm"
           className="w-fit px-4"
         >

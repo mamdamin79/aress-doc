@@ -20,6 +20,8 @@ export interface TradePopupProps {
   mode?: 'buy' | 'sell';
   /** Whether to disable the terms checkbox */
   disableCheck?: boolean;
+  /** Maximum quantity for sell mode */
+  maxQuantity?: number;
 }
 
 /**

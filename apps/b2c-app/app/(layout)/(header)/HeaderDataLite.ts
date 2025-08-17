@@ -7,11 +7,11 @@ export const MenuData: MenuItem[] = [
   },
   {
     text: 'دارایی من',
-    link: '/my_portfolio',
+    link: '/my-portfolio',
   },
   {
     text: 'فعالیت‌های اخیر',
-    link: '/recent_activities',
+    link: '/recent-activities',
   },
   {
     text: 'مستندات',
