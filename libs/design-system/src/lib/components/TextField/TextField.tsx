@@ -110,7 +110,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
           )}
         </div>
       )}
-      {longText ? (
+      {/* {longText ? (
         <textarea
           id={id}
           onFocus={() => setIsFocused(true)}
@@ -167,7 +167,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
           },
         )}
         placeholder={mergeTitleAndPlaceholder ? '' : placeholder}
-      />
+      /> */}
 
       <div
         className={cn(

@@ -42,7 +42,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
   const [day, setDay] = useState<number>(0);
   const [month, setMonth] = useState<number>(0);
   const [year, setYear] = useState<number>(0);
-
+const [inputValue, setInputValue] = useState(""); 
   const [minDate, setMinDate] = useState({
     day: 0,
     month: 0,
@@ -59,6 +59,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
   const yearRef = useRef<HTMLInputElement | null>(null);
   const [isArrowKeyPressed, setIsArrowKeyPressed] = useState(false);
   const [activeInput, setActiveInput] = useState(active || false);
+  const [toggleFlag, setToggleFlag] = useState(false);
 
   useEffect(() => {
     if (defaultValue) {
@@ -165,11 +166,50 @@ export const DateInput: React.FC<DatePickerProps> = ({
   let tempMaxError = false;
 
   // Function handler to change the input day value
-  const changeDayInput = (e: number, arrowChange?: boolean) => {
-    // Validate day input (1-31)
-    if (dayRegex.test(String(e))) {
-      setDay(e);
+const changeDayInput = (e: number, arrowChange?: boolean) => {
+  const digits = e.toString().replace(/\D/g, "");
+const lastDigit = digits.slice(-1);
+let newInput = digits;
+
+// --- اگر عدد قبلی دو رقمی بود و کاربر عدد جدید زده ---
+if (Number(inputValue) >= 10 && digits.length === 1) {
+  newInput = lastDigit; // عدد جدید جایگزین عدد قبلی می‌شود
+}
+
+// اگر عدد جدید به شکل ۱۱، ۱۲، ... و غیره بود و نیاز به leading zero داریم
+if (newInput.length === 1) {
+  newInput = newInput.padStart(2, "0"); // مثلا 2 -> 02
+}
+
+setInputValue(newInput);
+
+const num = Number(newInput);
+
+if (num >= 1 && num <= 30) {
+  if (!arrowChange && num > 3) {
+    dayRef.current?.blur();
+    monthRef.current?.focus();
+    setActiveIndex(2);
+  }
+  setDay(num);
+} else {
+  // fallback اگر کاربر عدد نامعتبر زد
+  const lastOne = lastDigit;
+  setInputValue(lastOne);
+  const n = Number(lastOne);
+  if (n >= 1 && n <= 9) {
+    setDay(n);
+    if (!arrowChange && n > 3) {
+      dayRef.current?.blur();
+      monthRef.current?.focus();
+      setActiveIndex(2);
     }
+  } else {
+    setDay(0);
+  }
+}
+
+
 
     // Check for minimum date constraints
     if (minDate.year && minDate.month && minDate.day) {
@@ -237,11 +277,70 @@ export const DateInput: React.FC<DatePickerProps> = ({
   };
 
   // Function handler to change the input month value
-  const changeMonthInput = (e: number, arrowChange?: boolean) => {
-    // Validate month input
-    if (monthRegex.test(String(e))) {
-      setMonth(e);
+  const changeMonthInput = (e: number, arrowChange?: boolean) => {    
+
+  const digits = e.toString().replace(/\D/g, "");
+  const lastDigit = digits.slice(-1);
+  let lastTwo = digits.slice(-2);
+
+  if (inputValue === "11" && lastDigit === "1" && !toggleFlag) {
+    lastTwo = "01";
+    setToggleFlag(true);  // دفعه بعد toggle نده
+  } else {
+    setToggleFlag(false); // هر ورودی جدید reset toggle
+  }
+
+  setInputValue(lastTwo);
+
+  if (lastTwo.length === 0) {
+    setMonth(0);
+  } else {
+    const num = Number(lastTwo);
+    if (num >= 1 && num <= 12) {
+      setMonth(num);
+    } else {
+      const lastOne = digits.slice(-1);
+      setInputValue(lastOne);
+      const n = Number(lastOne);
+      if (n >= 1 && n <= 9) {
+        setMonth(n);
+      } else {
+        setMonth(0);
+      }
     }
+  }
+
+  setInputValue(lastTwo);
+
+  if (lastTwo.length === 0) {
+    setMonth(0);
+  } else {
+    const num = Number(lastTwo);
+
+    if (num >= 1 && num <= 12) {
+        if (!arrowChange && num > 1) {
+          monthRef.current?.blur();
+          yearRef.current?.focus();
+          setActiveIndex(3);
+        }      setMonth(num);
+    } else {
+      const lastOne = digits.slice(-1);
+      setInputValue(lastOne);
+      const n = Number(lastOne);
+      console.log(n);
+      if (n >= 1 && n <= 9) {
+        setMonth(n);
+        if (!arrowChange && n > 1) {
+          monthRef.current?.blur();
+          yearRef.current?.focus();
+          setActiveIndex(3);
+        }
+      } else {
+        setMonth(0);
+      }
+    }
+  }  
+
     // Check for minimum date constraints
     if (minDate.year && minDate.month && minDate.day) {
       if (
@@ -269,6 +368,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
     if (!e) {
       setMonth(0);
     }
+
     errorHandler({
       minError: tempMinError,
       maxError: tempMaxError,
@@ -315,9 +415,21 @@ export const DateInput: React.FC<DatePickerProps> = ({
 
   // Function handler to change the input year value
   const changeYearInput = (e: number, arrowChangg?: boolean) => {
-    if (yearRegex.test(String(e))) {
-      setYear(e);
-    }
+const digits = e.toString().replace(/\D/g, "");
+const lastDigit = digits.slice(-1);
+
+const currentYear = inputValue.padStart(4, "0"); // همیشه ۴ رقمی
+
+// shift کردن ارقام به چپ و قرار دادن رقم جدید در آخر
+const newYear = currentYear.slice(1) + lastDigit;
+
+if (!arrowChangg){
+
+  setInputValue(newYear);
+  setYear(Number(newYear));
+} else {
+  setYear(e);
+}
     // Check for minimum date constraints
     if (minDate.year && minDate.month && minDate.day) {
       if (
@@ -332,7 +444,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
     // Check for maximum date constraints
     if (maxDate.year && maxDate.month && maxDate.day) {
       if (
-        e + String(moment).padStart(2, '0') + String(day).padStart(2, '0') >
+        e + String(month).padStart(2, '0') + String(day).padStart(2, '0') >
         maxDate.year +
           String(maxDate.month).padStart(2, '0') +
           String(maxDate.day).padStart(2, '0')
@@ -418,12 +530,12 @@ export const DateInput: React.FC<DatePickerProps> = ({
         setIsArrowKeyPressed(false);
         if (activeIndex === 2) {
           dayRef?.current?.focus();
-          dayRef?.current?.setSelectionRange(2, 2);
+          dayRef?.current?.setSelectionRange(0, 2);
           monthRef?.current?.blur();
         }
         if (activeIndex === 3) {
           monthRef?.current?.focus();
-          monthRef?.current?.setSelectionRange(2, 2);
+          monthRef?.current?.setSelectionRange(0, 2);
           yearRef?.current?.blur();
         }
         if (activeIndex > 1) {
@@ -433,31 +545,31 @@ export const DateInput: React.FC<DatePickerProps> = ({
       if (e.key === 'ArrowUp') {
         e.preventDefault();
         if (activeIndex === 3) {
-          changeYearInput(year ? year + 1 : 1);
+          changeYearInput(year ? year + 1 : 1, true);
         }
         if (activeIndex === 2) {
           changeMonthInput(
             month ? (month >= 1 && month < 12 ? month + 1 : month) : 1
-          );
+          , true);
         }
         if (activeIndex === 1) {
-          changeDayInput(day + 1);
+          changeDayInput(day + 1, true);
         }
         setIsArrowKeyPressed(false);
       }
       if (e.key === 'ArrowDown') {
         e.preventDefault();
         if (activeIndex === 1) {
-          changeDayInput(day ? (day >= 1 && day <= 31 ? day - 1 : 2) : 0);
+          changeDayInput(day ? (day >= 1 && day <= 31 ? day - 1 : 2) : 0, true);
           setIsArrowKeyPressed(false);
         }
         if (activeIndex === 3) {
-          changeYearInput(year ? year - 1 : 0);
+          changeYearInput(year ? year - 1 : 0, true);
           setIsArrowKeyPressed(false);
         }
         if (activeIndex === 2) {
           changeMonthInput(
-            month ? (month >= 1 && month <= 12 ? month - 1 : 0) : 0
+            month ? (month >= 1 && month <= 12 ? month - 1 : 0) : 0, true
           );
           setIsArrowKeyPressed(false);
         }
@@ -527,7 +639,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
               }}
               ref={dayRef}
               value={formatDay(day)}
-              onChange={(e) => changeDayInput(+e.target.value, true)}
+              onChange={(e) => changeDayInput(+e.target.value)}
               placeholder="روز"
               className={cn(
                 'w-5 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
@@ -543,7 +655,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
               }}
               ref={monthRef}
               value={formatMonth(month)}
-              onChange={(e) => changeMonthInput(+e.target.value, true)}
+              onChange={(e) => changeMonthInput(+e.target.value, false)}
               placeholder="ماه"
               className={cn(
                 'w-5 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
@@ -562,7 +674,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
               }}
               ref={yearRef}
               value={formatYear(year)}
-              onChange={(e) => changeYearInput(+e.target.value, true)}
+              onChange={(e) => changeYearInput(+e.target.value)}
               placeholder="سال"
               className={cn(
                 'w-10 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
