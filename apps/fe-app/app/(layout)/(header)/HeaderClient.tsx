@@ -16,8 +16,8 @@ import {
   useThemeToggle,
 } from '@shared';
 import { DESKTOP_BREAKPOINT } from './Header.constants';
-import { BurgerMenu } from './BurgerMenu';
-import { DesktopMenu } from './DesktopMenu';
+import { BurgerMenu } from '@shared';
+import { DesktopMenu } from '@shared';
 import { MenuData } from './HeaderDataLite';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
@@ -87,7 +87,7 @@ export const HeaderClient: React.FC = () => {
 
     const updatedMenuData = [...MenuData];
     const dashboardSection = updatedMenuData[0]?.dropdown?.find(
-      (group) => group.id === 'userDashboards',
+      (group: { id: string }) => group.id === 'userDashboards',
     );
     if (dashboardSection) {
       dashboardSection.children = query.data.map((dashboard) => {

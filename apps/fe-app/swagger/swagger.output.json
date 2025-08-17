@@ -1595,9 +1595,9 @@
         "tags": [
           "Dashboards"
         ],
-        "summary": "Dashboard Details",
+        "summary": "Duplicate Dashboard",
         "description": "Duplicate dashboard",
-        "operationId": "dashboard_details_dashboards__dashboard_id__duplicate_post",
+        "operationId": "duplicate_dashboard_dashboards__dashboard_id__duplicate_post",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -2145,23 +2145,39 @@
         }
       }
     },
-    "/funds/table/pin": {
+    "/funds/table/tab/{tab}/pin": {
       "post": {
         "tags": [
           "Funds"
         ],
         "summary": "Pin Fund In Table Tab",
         "description": "Pin fund in table tab",
-        "operationId": "pin_fund_in_table_tab_funds_table_pin_post",
+        "operationId": "pin_fund_in_table_tab_funds_table_tab__tab__pin_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tab",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Tab"
+            }
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PinFundInTableTabBody"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -2184,31 +2200,42 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     },
-    "/funds/table/unpin": {
+    "/funds/table/tab/{tab}/unpin": {
       "post": {
         "tags": [
           "Funds"
         ],
         "summary": "Unpin Fund In Table Tab",
         "description": "Unpin fund in table tab",
-        "operationId": "unpin_fund_in_table_tab_funds_table_unpin_post",
+        "operationId": "unpin_fund_in_table_tab_funds_table_tab__tab__unpin_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tab",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Tab"
+            }
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/UnpinFundInTableTabBody"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -2231,31 +2258,42 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     },
-    "/funds/table/mark": {
+    "/funds/table/tab/{tab}/mark": {
       "post": {
         "tags": [
           "Funds"
         ],
         "summary": "Mark Fund In Table Tab",
         "description": "Mark fund in table tab",
-        "operationId": "mark_fund_in_table_tab_funds_table_mark_post",
+        "operationId": "mark_fund_in_table_tab_funds_table_tab__tab__mark_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tab",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Tab"
+            }
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/MarkFundInTableTabBody"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -2278,31 +2316,42 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     },
-    "/funds/table/unmark": {
+    "/funds/table/tab/{tab}/unmark": {
       "post": {
         "tags": [
           "Funds"
         ],
         "summary": "Unmark Fund In Table Tab",
         "description": "Unmark fund in table tab",
-        "operationId": "unmark_fund_in_table_tab_funds_table_unmark_post",
+        "operationId": "unmark_fund_in_table_tab_funds_table_tab__tab__unmark_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tab",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Tab"
+            }
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UnpinFundInTableTabBody"
+                "$ref": "#/components/schemas/UnmarkFundInTableTabBody"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -2325,12 +2374,123 @@
               }
             }
           }
-        },
+        }
+      }
+    },
+    "/funds/table/tab/{tab}/sort": {
+      "post": {
+        "tags": [
+          "Funds"
+        ],
+        "summary": "Sort Fund Tab",
+        "description": "Update columns of a fund tab",
+        "operationId": "sort_fund_tab_funds_table_tab__tab__sort_post",
         "security": [
           {
             "OAuth2PasswordBearer": []
           }
-        ]
+        ],
+        "parameters": [
+          {
+            "name": "tab",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Tab"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SortFundTabBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SortFundTabResponseApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/funds/table/tab/{tab}/columns": {
+      "post": {
+        "tags": [
+          "Funds"
+        ],
+        "summary": "Update Fund Tab Columns",
+        "description": "Update columns of a fund tab",
+        "operationId": "update_fund_tab_columns_funds_table_tab__tab__columns_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tab",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Tab"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFundTableTabColumnsBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateFundTabColumnsResponseApiModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -3684,27 +3844,62 @@
             "description": "دارای ویدیو بررسی"
           },
           "manager": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Manager",
             "description": "مدیر صنودق"
           },
           "custodian": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Custodian",
             "description": "متولی صندوق"
           },
           "auditor": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Auditor",
             "description": "حسابرس صندوق"
           },
           "liquidityGuarantor": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Liquidityguarantor",
             "description": "ضامن نقد شوندگی صندوق"
           },
           "marketMaker": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Marketmaker",
             "description": "بازارگردان"
           },
@@ -3721,22 +3916,22 @@
           "issueNavRials": {
             "type": "integer",
             "title": "Issuenavrials",
-            "description": "قیمت صدور"
+            "description": "قیمت صدور (ریال)"
           },
           "redeemNavRials": {
             "type": "integer",
             "title": "Redeemnavrials",
-            "description": "قیمت ابطال"
+            "description": "قیمت ابطال (ریال)"
           },
           "statisticalNavRials": {
             "type": "integer",
             "title": "Statisticalnavrials",
-            "description": "قیمت آماری"
+            "description": "قیمت آماری (ریال)"
           },
           "assetUnderManagementRials": {
             "type": "integer",
             "title": "Assetundermanagementrials",
-            "description": "دارایی تحت مدیریت"
+            "description": "دارایی تحت مدیریت (ریال)"
           },
           "numberOfUnits": {
             "type": "integer",
@@ -4351,13 +4546,21 @@
             },
             "type": "array",
             "title": "Selectedtabfunds"
+          },
+          "columns": {
+            "items": {
+              "$ref": "#/components/schemas/FundTableTabColumnDto"
+            },
+            "type": "array",
+            "title": "Columns"
           }
         },
         "type": "object",
         "required": [
           "tabs",
           "selectedTabIdentifier",
-          "selectedTabFunds"
+          "selectedTabFunds",
+          "columns"
         ],
         "title": "FundTableResponseApiModel"
       },
@@ -4391,6 +4594,116 @@
         ],
         "title": "FundTableTabApiModel"
       },
+      "FundTableTabColumnDto": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "visible": {
+            "type": "boolean",
+            "title": "Visible"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/FundTableTabColumnSort"
+          },
+          "columnFilter": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FundTableTabColumnFilterTextDto"
+              },
+              {
+                "$ref": "#/components/schemas/FundTableTabColumnFilterOptionsDto"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Columnfilter"
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "key",
+          "visible",
+          "sort",
+          "columnFilter"
+        ],
+        "title": "FundTableTabColumnDto"
+      },
+      "FundTableTabColumnFilterOptionDto": {
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "title": "Identifier"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "selected": {
+            "type": "boolean",
+            "title": "Selected"
+          }
+        },
+        "type": "object",
+        "required": [
+          "identifier",
+          "label",
+          "selected"
+        ],
+        "title": "FundTableTabColumnFilterOptionDto"
+      },
+      "FundTableTabColumnFilterOptionsDto": {
+        "properties": {
+          "options": {
+            "items": {
+              "$ref": "#/components/schemas/FundTableTabColumnFilterOptionDto"
+            },
+            "type": "array",
+            "title": "Options"
+          }
+        },
+        "type": "object",
+        "required": [
+          "options"
+        ],
+        "title": "FundTableTabColumnFilterOptionsDto"
+      },
+      "FundTableTabColumnFilterTextDto": {
+        "properties": {
+          "filter_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Filter Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "filter_text"
+        ],
+        "title": "FundTableTabColumnFilterTextDto"
+      },
+      "FundTableTabColumnSort": {
+        "type": "string",
+        "enum": [
+          "NO",
+          "ASC",
+          "DESC"
+        ],
+        "title": "FundTableTabColumnSort"
+      },
       "FundTypeApiModel": {
         "properties": {
           "identifier": {
@@ -4417,12 +4730,24 @@
           "pinned": {
             "type": "boolean",
             "title": "Pinned"
+          },
+          "mark": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mark"
           }
         },
         "type": "object",
         "required": [
           "fund",
-          "pinned"
+          "pinned",
+          "mark"
         ],
         "title": "FundsTableItemApiModel"
       },
@@ -4580,10 +4905,6 @@
       },
       "MarkFundInTableTabBody": {
         "properties": {
-          "tab": {
-            "type": "integer",
-            "title": "Tab"
-          },
           "fund": {
             "type": "integer",
             "title": "Fund"
@@ -4595,7 +4916,6 @@
         },
         "type": "object",
         "required": [
-          "tab",
           "fund",
           "color"
         ],
@@ -4616,10 +4936,6 @@
       },
       "PinFundInTableTabBody": {
         "properties": {
-          "tab": {
-            "type": "integer",
-            "title": "Tab"
-          },
           "fund": {
             "type": "integer",
             "title": "Fund"
@@ -4627,7 +4943,6 @@
         },
         "type": "object",
         "required": [
-          "tab",
           "fund"
         ],
         "title": "PinFundInTableTabBody"
@@ -5258,6 +5573,47 @@
         ],
         "title": "ResetForgotPasswordByOtpResponseApiModel"
       },
+      "SortFundTabBody": {
+        "properties": {
+          "columnKey": {
+            "type": "string",
+            "title": "Columnkey"
+          },
+          "direction": {
+            "$ref": "#/components/schemas/FundTableTabColumnSort"
+          }
+        },
+        "type": "object",
+        "required": [
+          "columnKey",
+          "direction"
+        ],
+        "title": "SortFundTabBody"
+      },
+      "SortFundTabResponseApiModel": {
+        "properties": {
+          "funds": {
+            "items": {
+              "$ref": "#/components/schemas/FundsTableItemApiModel"
+            },
+            "type": "array",
+            "title": "Funds"
+          },
+          "columns": {
+            "items": {
+              "$ref": "#/components/schemas/FundTableTabColumnDto"
+            },
+            "type": "array",
+            "title": "Columns"
+          }
+        },
+        "type": "object",
+        "required": [
+          "funds",
+          "columns"
+        ],
+        "title": "SortFundTabResponseApiModel"
+      },
       "TokenApiModel": {
         "properties": {
           "access_token": {
@@ -5276,6 +5632,19 @@
         ],
         "title": "TokenApiModel"
       },
+      "UnmarkFundInTableTabBody": {
+        "properties": {
+          "fund": {
+            "type": "integer",
+            "title": "Fund"
+          }
+        },
+        "type": "object",
+        "required": [
+          "fund"
+        ],
+        "title": "UnmarkFundInTableTabBody"
+      },
       "UnmarkFundInTableTabResponseApiModel": {
         "properties": {
           "success": {
@@ -5291,10 +5660,6 @@
       },
       "UnpinFundInTableTabBody": {
         "properties": {
-          "tab": {
-            "type": "integer",
-            "title": "Tab"
-          },
           "fund": {
             "type": "integer",
             "title": "Fund"
@@ -5302,7 +5667,6 @@
         },
         "type": "object",
         "required": [
-          "tab",
           "fund"
         ],
         "title": "UnpinFundInTableTabBody"
@@ -5319,6 +5683,80 @@
           "success"
         ],
         "title": "UnpinFundInTableTabResponseApiModel"
+      },
+      "UpdateFundTabColumnsResponseApiModel": {
+        "properties": {
+          "funds": {
+            "items": {
+              "$ref": "#/components/schemas/FundsTableItemApiModel"
+            },
+            "type": "array",
+            "title": "Funds"
+          },
+          "columns": {
+            "items": {
+              "$ref": "#/components/schemas/FundTableTabColumnDto"
+            },
+            "type": "array",
+            "title": "Columns"
+          }
+        },
+        "type": "object",
+        "required": [
+          "funds",
+          "columns"
+        ],
+        "title": "UpdateFundTabColumnsResponseApiModel"
+      },
+      "UpdateFundTableTabColumnItem": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "sortDirection": {
+            "$ref": "#/components/schemas/FundTableTabColumnSort"
+          },
+          "visible": {
+            "type": "boolean",
+            "title": "Visible"
+          },
+          "selectedFilter": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selectedfilter"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "sortDirection",
+          "visible",
+          "selectedFilter"
+        ],
+        "title": "UpdateFundTableTabColumnItem"
+      },
+      "UpdateFundTableTabColumnsBody": {
+        "properties": {
+          "columns": {
+            "items": {
+              "$ref": "#/components/schemas/UpdateFundTableTabColumnItem"
+            },
+            "type": "array",
+            "title": "Columns"
+          }
+        },
+        "type": "object",
+        "required": [
+          "columns"
+        ],
+        "title": "UpdateFundTableTabColumnsBody"
       },
       "UserReportFavoriteStatus": {
         "properties": {

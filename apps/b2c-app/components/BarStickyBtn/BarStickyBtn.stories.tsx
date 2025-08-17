@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/nextjs';
 import { BarStickyBtn } from './BarStickyBtn';
 const meta: Meta<typeof BarStickyBtn> = {
+  title: 'Components/BarStickyBtn',
   component: BarStickyBtn,
 };
 

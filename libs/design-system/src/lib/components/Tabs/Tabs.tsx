@@ -35,16 +35,28 @@ export const Tabs: React.FC<Props> = ({
   const [sliderStyle, setSliderStyle] = useState({ left: 0, width: 0 });
 
   useEffect(() => {
-    if (
-      variant === 'sliding' &&
-      typeof activeTab === 'number' &&
-      tabRefs.current[activeTab]
-    ) {
-      const activeEl = tabRefs.current[activeTab]!;
-      const { offsetLeft, offsetWidth } = activeEl;
-      setSliderStyle({ left: offsetLeft, width: offsetWidth });
-    }
+    if (variant !== 'sliding') return;
+
+    const updateSlider = () => {
+      const el = tabRefs.current[activeTab];
+      if (el) {
+        const { offsetLeft, offsetWidth } = el;
+        setSliderStyle({ left: offsetLeft, width: offsetWidth });
+      }
+    };
+
+    const raf = requestAnimationFrame(updateSlider);
+
+    const observer = new ResizeObserver(updateSlider);
+    const el = tabRefs.current[activeTab];
+    if (el) observer.observe(el);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      if (el) observer.unobserve(el);
+    };
   }, [activeTab, variant]);
+
   return (
     <TabGroup
       selectedIndex={activeTab}

@@ -38,7 +38,7 @@ export const baseOptions: Highcharts.Options = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     formatter: function (this: any) {
       return `
-        <div dir="rtl" style="font-family: vazirmatn, sans-serif; margin-bottom: 0.25rem; border-radius: 10px; background-color: #171717; padding: 0.5rem 1rem; text-align: right; font-size: 0.875rem; font-weight: 500; line-height: 1.5rem; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); backdrop-filter: blur(6px); z-index: 1000;">
+        <div dir="rtl" style="font-family: vazirmatn, sans-serif; margin-bottom: 0.25rem; border-radius: 10px; background-color: rgba(6, 8, 15,0.85); padding: 0.5rem 1rem; text-align: right; font-size: 0.875rem; font-weight: 500; line-height: 1.5rem; color: var(--color-text-neutral-oninverse); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); backdrop-filter: blur(6px); z-index: 1000;">
           <div style="font-weight: 500;">${this.key}</div>
           ${this.points
             ?.map(
@@ -51,7 +51,7 @@ export const baseOptions: Highcharts.Options = {
               <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; width: 100%;">
                 <span style="font-size: 0.875rem; font-weight: 400;">${p.series.name}:</span>
                 <span style="unicode-bidi: plaintext;">
-                  ${p.y < 0 ? '-' + Math.abs(p.y) : p.y}${p.point?.unit ? ' ' + p.point.unit : ''}
+                  ${p.y < 0 ? Math.abs(p.y.toFixed(2)) + '-' : p.y.toFixed(2)}${p.series.userOptions.unit ? ' ' + p.series.userOptions.unit : ''}
                 </span>
               </div>
             </div>

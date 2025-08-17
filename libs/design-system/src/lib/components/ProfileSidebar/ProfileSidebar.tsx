@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { ProfileSidebarOption } from './ProfileSidebarOption';
 import { ReactComponent as UserSVG } from '../../../assets/icons/profile-vector-large.svg';
