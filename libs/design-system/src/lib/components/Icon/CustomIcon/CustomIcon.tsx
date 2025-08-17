@@ -111,6 +111,8 @@ export const CustomIcon: React.FC<IconProps> = ({ name, size = 'md' }) => {
         'hover:-rotate-6': name === 'CustomBadge' || name === 'CustomBeta',
       },
       { 'hover:rotate-90': name === 'CustomClock' },
+      { 'bg-bg-brand-primary-600': name === 'CustomCirlcleX' },
+
       {
         'hover:scale-105': name === 'CustomCircleSlice',
       },
