@@ -5,3 +5,4 @@ export * from './ToggleTheme';
 export * from './useSmartTableScroll';
 export * from './validationUtils';
 export * from './Components';
+export * from './datepicker/useDatePicker'

@@ -14,8 +14,8 @@ type Story = StoryObj<typeof DateInput>;
 
 export const ControlledDateInput: Story = {
   args: {
-    min: '1400-12-10',
-    max: '1500-12-10',
+    min: '1400-12-25',
+    max: '1500-12-25',
     clearDate: () => console.log('clearDate'),
     focus: true,
     active: true,

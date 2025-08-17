@@ -1,4 +1,4 @@
-'use client';
+'use client'
 import moment from 'moment';
 import { cn } from '../../../utils';
 import { useEffect, useRef, useState } from 'react';
@@ -58,31 +58,39 @@ export const DateInput: React.FC<DatePickerProps> = ({
   const yearRef = useRef<HTMLInputElement | null>(null);
   const [isArrowKeyPressed, setIsArrowKeyPressed] = useState(false);
   const [activeInput, setActiveInput] = useState(active || false);
-  const [focusInput, setFocusInput] = useState(focus || false);
+  const [focusInput, setFocusInput] = useState(focus || false);  
 
   useEffect(() => {
     if (defaultValue) {
-      if (typeof defaultValue?.trim() === 'string') {
-        setDay(+defaultValue.slice(8, 10));
-        setMonth(+defaultValue.slice(5, 7));
-        setYear(+defaultValue.slice(0, 4));
-        if (day && month && year) {
-          if (max && defaultValue.replace(/-/g, '') > max?.replace(/-/g, '')) {
-            errorHandler({ minError: false, maxError: true });
-          }
-          if (min && defaultValue.replace(/-/g, '') < min?.replace(/-/g, '')) {
-            errorHandler({ minError: true, maxError: false });
-          }
+      if (typeof defaultValue?.trim() === 'string') {          
+          setDay(+defaultValue.slice(8, 10));
+          setMonth(+defaultValue.slice(5, 7));
+          setYear(+defaultValue.slice(0, 4));
+          if (day && month && year) {
+            if (
+              max &&
+              defaultValue.replace(/-/g, '') > max?.replace(/-/g, '')
+            ) {
+              errorHandler({ minError: false, maxError: true });
+            }
+            if (
+              min &&
+              defaultValue.replace(/-/g, '') < min?.replace(/-/g, '')
+            ) {
+              errorHandler({ minError: true, maxError: false });
+            }
 
-          onChange(defaultValue);
-        }
-        dayRef.current?.blur();
+            onChange(defaultValue);
+          }
+          dayRef.current?.blur();
       }
     } else {
       setDay(0);
       setMonth(0);
       setYear(0);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValue]);
 
   useEffect(() => {
@@ -90,13 +98,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
   }, [active]);
 
   useEffect(() => {
-    if (!focus) {
-      setActiveIndex(null);
-      dayRef?.current?.blur();
-      yearRef.current?.setAttribute('disabled', 'disabled');
-    } else {
-      yearRef.current?.removeAttribute('disabled');
-    }
+    if (!focus) setActiveIndex(null);
     setFocusInput(focus);
   }, [focus]);
 
@@ -106,7 +108,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
       dayRef?.current?.focus();
       setActiveIndex(1);
     }
-  }, [day, focus]);
+  }, [day]);
 
   // set min date
   useEffect(() => {
@@ -223,7 +225,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
       onChange(
         `${String(year).length === 4 && year}-${
           month < 10 ? `0${month}` : month
-        }-${e < 10 ? `0${e}` : e}`,
+        }-${e < 10 ? `0${e}` : e}`
       );
     }
     if (!e) {
@@ -278,7 +280,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
       onChange(
         `${String(year).length === 4 && year}-${e < 10 ? `0${e}` : e}-${
           day < 10 ? `0${day}` : day
-        }`,
+        }`
       );
     }
 
@@ -354,7 +356,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
       onChange(
         `${String(e).length === 4 && e}-${month < 10 ? `0${month}` : month}-${
           day < 10 ? `0${day}` : day
-        }`,
+        }`
       );
     }
 
@@ -396,6 +398,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
       setDay(29);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const keydownHandler = (e: KeyboardEvent) => {
     if (activeIndex && activeIndex) {
       if (e.key === 'ArrowLeft') {
@@ -434,7 +437,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
         }
         if (activeIndex === 2) {
           changeMonthInput(
-            month ? (month >= 1 && month < 12 ? month + 1 : month) : 1,
+            month ? (month >= 1 && month < 12 ? month + 1 : month) : 1
           );
         }
         if (activeIndex === 1) {
@@ -454,13 +457,14 @@ export const DateInput: React.FC<DatePickerProps> = ({
         }
         if (activeIndex === 2) {
           changeMonthInput(
-            month ? (month >= 1 && month <= 12 ? month - 1 : 0) : 0,
+            month ? (month >= 1 && month <= 12 ? month - 1 : 0) : 0
           );
           setIsArrowKeyPressed(false);
         }
       }
     }
   };
+  
 
   useEffect(() => {
     if (isArrowKeyPressed) {
@@ -494,28 +498,28 @@ export const DateInput: React.FC<DatePickerProps> = ({
           }
         }}
         className={cn(
-          'bg-surface-neutral-primary border-surface-neutral-primary flex w-40 select-none items-center gap-1 rounded-md border px-4 py-2',
+          'w-40 rounded-md bg-white border-white select-none border-2 flex items-center gap-1 py-2 px-4',
           {
-            'border-border-message-error-primary-600':
-              day &&
-              month &&
-              year &&
-              focusInput &&
-              (errors.minError || equalInput || errors?.maxError),
-            'border-border-brand-primary-600':
+            'border-red-600':
+              (day && month && year) && focusInput && (
+                errors.minError ||
+                equalInput ||
+                errors?.maxError
+              ),
+            'border-brand-600':
               focusInput &&
               !errors?.maxError &&
-              !errors?.minError &&
+              !errors?.minError && 
               !equalInput,
-            'border-border-neutral-secondary':
+            'border-gray-500':
               year &&
               day &&
               month &&
               !focusInput &&
               !errors.maxError &&
               !errors.minError &&
-              !equalInput,
-          },
+              !equalInput
+          }
         )}
       >
         {activeInput ? (
@@ -531,8 +535,8 @@ export const DateInput: React.FC<DatePickerProps> = ({
               onChange={(e) => changeDayInput(+e.target.value, true)}
               placeholder="روز"
               className={cn(
-                'placeholder:text-text-neutral-primary bg-surface-neutral-primary -mx-1 block w-5 border-none pb-0.5 outline-none',
-                activeIndex === 1 && focusInput && 'bg-surface-accent-blue-600',
+                'w-5 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
+                activeIndex === 1 && focusInput && 'bg-blue-200'
               )}
             />
             /
@@ -547,8 +551,8 @@ export const DateInput: React.FC<DatePickerProps> = ({
               onChange={(e) => changeMonthInput(+e.target.value, true)}
               placeholder="ماه"
               className={cn(
-                'placeholder:text-text-neutral-primary bg-surface-neutral-primary -mx-1 block w-5 border-none pb-0.5 outline-none',
-                activeIndex === 2 && focusInput && 'bg-surface-accent-blue-600',
+                'w-5 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
+                activeIndex === 2 && focusInput && 'bg-blue-200'
               )}
             />
             /
@@ -558,7 +562,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
                 setActiveIndex(3);
                 yearRef?.current?.setSelectionRange(
                   yearRef?.current?.value.length,
-                  yearRef?.current?.value.length,
+                  yearRef?.current?.value.length
                 );
               }}
               ref={yearRef}
@@ -566,8 +570,8 @@ export const DateInput: React.FC<DatePickerProps> = ({
               onChange={(e) => changeYearInput(+e.target.value, true)}
               placeholder="سال"
               className={cn(
-                'placeholder:text-text-neutral-primary bg-surface-neutral-primary -mx-1 w-10 border-none pb-0.5 outline-none',
-                activeIndex === 3 && focusInput && 'bg-surface-accent-blue-600',
+                'w-10 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
+                activeIndex === 3 && focusInput && 'bg-blue-200'
               )}
             />
             {day && month && year ? (
@@ -575,7 +579,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
                 onClick={() => {
                   clearInputDate();
                 }}
-                className="text-text-neutral-primary mr-4 cursor-pointer"
+                className="cursor-pointer mr-4"
               >
                 <Icon name="x" size="lg" />
               </div>
@@ -592,18 +596,16 @@ export const DateInput: React.FC<DatePickerProps> = ({
                 setActiveIndex(1);
               }
             }}
-            className="text-md select-none py-0.5 text-gray-700"
+            className="text-md text-gray-700 py-0.5 select-none"
           >
             {placeholder}
           </span>
         )}
       </div>
-      <div
-        className={cn('invisible h-[22px]', {
-          visible: day && month && year && focusInput,
-        })}
-      >
-        <div className="absolute my-1 text-xs text-red-600">{errorText}</div>
+      <div className={cn('invisible h-[22px]', {
+        'visible': day && month && year && focusInput
+      })}>
+          <div className="text-red-600 my-1 absolute text-xs">{errorText}</div>
       </div>
     </div>
   );
