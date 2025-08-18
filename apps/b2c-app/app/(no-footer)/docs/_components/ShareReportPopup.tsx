@@ -59,7 +59,12 @@ export const ShareReportPopup: React.FC<SharePopUpProps> = ({
       <div className="flex w-full flex-col gap-6">
         <div className="flex w-full flex-col items-center justify-center">
           <span className="text-icon-brand-primary-600">
-            <Iconify icon="lucide:calculator" width={40} height={40} />
+            <Iconify
+              icon="lucide:calculator"
+              width={48}
+              height={48}
+              strokeWidth={3}
+            />
           </span>
           <span className="mt-4 text-lg font-semibold">
             گزارش{' '}
@@ -157,7 +162,7 @@ export const ShareReportPopup: React.FC<SharePopUpProps> = ({
         )}
         <Button mode="primary" theme="brand" size="md" className="mt-6">
           <div className="flex items-center gap-2">
-            <Icon name="download" size="lg" />
+            {reportExtension === 'CSV' && <Icon name="download" size="lg" />}
             <span className="font-medium">
               {reportExtension === 'CSV' ? 'دانلود' : 'باز کردن'}
             </span>
