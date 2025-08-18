@@ -11,7 +11,7 @@ export function Badge({ title, theme, icon }: BadgeProps) {
   return (
     <div
       className={cn(
-        'flex w-fit items-center gap-1 rounded-sm border px-1.5 text-xs font-medium',
+        'flex h-6 w-fit items-center gap-1 rounded-sm border px-1.5 text-xs font-medium',
         {
           'border-border-accent-gray-400 text-text-neutral-secondary bg-surface-accent-gray-100':
             theme === 'disabled',
