@@ -21,7 +21,7 @@ export const RequestReportPopup = ({
   const [reportType, setReportType] = useState<
     'accounting' | 'performance' | null
   >(null);
-  const [reportExtension, setReportExtension] = useState<fileExportType>('PDF');
+  const [reportExtension, setReportExtension] = useState<fileExportType>(null);
   const [dateRange] = useState<{
     startDate: string;
     endDate: string;
@@ -33,7 +33,7 @@ export const RequestReportPopup = ({
     setReportType(type);
   };
 
-  const handleReportExtensionChange = (extension: 'PDF' | 'CSV') => {
+  const handleReportExtensionChange = (extension: fileExportType) => {
     setReportExtension(extension);
   };
 

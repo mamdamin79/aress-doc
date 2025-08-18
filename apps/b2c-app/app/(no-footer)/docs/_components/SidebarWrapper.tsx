@@ -11,7 +11,7 @@ export const SidebarWrapper: React.FC = () => {
   const [requestReportPopupOpen, setRequestReportPopupOpen] = useState(false);
   const [shareReportPopupOpen, setShareReportPopupOpen] = useState(false);
   const [reportType, setReportType] = useState<string>('');
-  const [reportExtension, setReportExtension] = useState<fileExportType>('CSV');
+  const [reportExtension, setReportExtension] = useState<fileExportType>(null);
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
   return (

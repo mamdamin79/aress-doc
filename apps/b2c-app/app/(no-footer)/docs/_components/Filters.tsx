@@ -1,13 +1,11 @@
 'use client';
 import { Button, Icon, SelectionChips, Accordion } from 'design-system';
 import React, { useState, forwardRef, useImperativeHandle } from 'react';
-import {
-  FilterAccordionItem,
-  createFilterSections,
-} from './FilterAccordionItems';
+import { FilterAccordionItem } from './FilterAccordionItems';
 import { RequestReportPopup } from './RequestReportPopup';
 import { ShareReportPopup } from './ShareReportPopup';
 import { fileExportType } from './types';
+import { createFilterSections } from './utils';
 
 export interface FiltersRef {
   clearAllFilters: () => void;
@@ -30,7 +28,7 @@ export const Filters = forwardRef<FiltersRef>(
     const [shareReportPopupOpen, setShareReportPopupOpen] = useState(false);
     const [reportType, setReportType] = useState<string | null>(null);
     const [reportExtension, setReportExtension] =
-      useState<fileExportType>('PDF');
+      useState<fileExportType>(null);
     const [startDate, setStartDate] = useState<string | null>(null);
     const [endDate, setEndDate] = useState<string | null>(null);
     const handleItemClick = (itemId: string) => {
@@ -183,7 +181,7 @@ export const Filters = forwardRef<FiltersRef>(
             'Email',
           ]}
           reportType={reportType ?? ''}
-          reportExtension={reportExtension ?? ''}
+          reportExtension={reportExtension}
           startDate={startDate ?? ''}
           endDate={endDate ?? ''}
         />

@@ -8,6 +8,7 @@ import {
   PlatformName,
 } from 'design-system';
 import { Icon as Iconify } from '@iconify/react';
+import { fileExportType } from './types';
 export interface SharePopUpProps {
   url: string;
   message: string;
@@ -16,7 +17,7 @@ export interface SharePopUpProps {
   onClose: () => void;
   image?: string | null;
   reportType: string;
-  reportExtension: 'PDF' | 'CSV';
+  reportExtension: fileExportType;
   startDate: string;
   endDate: string;
 }

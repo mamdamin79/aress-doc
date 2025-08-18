@@ -1,1 +1,1 @@
-export type fileExportType = 'PDF' | 'CSV';
+export type fileExportType = 'PDF' | 'CSV' | null;
