@@ -1,19 +1,28 @@
-import React, { useState } from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import { cn, Icon, Button } from 'design-system';
 
 export interface BarStickyBtnProps {
   fundLogo?: string;
   title?: string;
   sellAble?: boolean;
+  fundSelected?: boolean;
+  onBuyClick?: () => void;
+  onSellClick?: () => void;
 }
 
 export const BarStickyBtn: React.FC<BarStickyBtnProps> = ({
   fundLogo,
   sellAble,
+  fundSelected,
   title,
+  onBuyClick,
+  onSellClick,
 }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
+  useEffect(() => {
+    setIsDrawerOpen(false);
+  }, [fundSelected]);
   return (
     <div className="relative z-10">
       <div className="bg-surface-neutral-primary border-border-neutral-primary shadow-3xl flex w-[458px] flex-row items-center justify-between gap-6 rounded-xl border p-3">
@@ -28,7 +37,12 @@ export const BarStickyBtn: React.FC<BarStickyBtnProps> = ({
               />
             )}
           </div>
-          <div className="text-md max-w-[270px] truncate font-medium">
+          <div
+            className={cn(
+              'text-md text-text-neutral-primary max-w-[270px] truncate',
+              fundSelected && 'font-medium',
+            )}
+          >
             {title}
           </div>
         </div>
@@ -49,7 +63,8 @@ export const BarStickyBtn: React.FC<BarStickyBtnProps> = ({
               isLoading={false}
               mode="primary"
               size="md"
-              className="text-text-neutral-white h-[38px] w-24"
+              className="text-text-neutral-white hover:bg-surface-accent-green-600 active:bg-surface-accent-green-600 h-[38px] w-24"
+              onClick={onBuyClick}
             >
               خرید
             </Button>
@@ -60,7 +75,8 @@ export const BarStickyBtn: React.FC<BarStickyBtnProps> = ({
                 isLoading={false}
                 mode="primary"
                 size="md"
-                className="text-text-neutral-white h-[38px] w-24"
+                className="text-text-neutral-white hover:bg-surface-accent-red-600 active:bg-surface-accent-red-600 h-[38px] w-24"
+                onClick={onSellClick}
               >
                 فروش
               </Button>
@@ -73,8 +89,13 @@ export const BarStickyBtn: React.FC<BarStickyBtnProps> = ({
               'bg-button-brand-surface-default text-text-neutral-white hover:bg-button-brand-surface-hover flex h-[38px] w-24 items-center justify-center gap-2 rounded-md px-2 py-1 transition-all',
               isDrawerOpen &&
                 'border-button-brand-border-default text-button-brand-label-plain-default hover:bg-button-brand-surface-default hover:text-text-neutral-white border bg-transparent',
+              !fundSelected &&
+                'bg-button-brand-surface-disable hover:bg-button-brand-surface-disable cursor-not-allowed',
             )}
-            onClick={() => setIsDrawerOpen((prev) => !prev)}
+            disabled={!fundSelected}
+            onClick={() => {
+              if (fundSelected) setIsDrawerOpen((prev) => !prev);
+            }}
           >
             {!isDrawerOpen ? 'معامله' : <Icon name="x" size="md" />}
           </button>

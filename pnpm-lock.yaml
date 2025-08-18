@@ -381,6 +381,9 @@ importers:
       react-dom:
         specifier: 19.1.0
         version: 19.1.0(react@19.1.0)
+      react-flip-numbers:
+        specifier: ^3.0.9
+        version: 3.0.9(react-dom@19.1.0(react@19.1.0))(react-simple-animate@3.5.3(react-dom@19.1.0(react@19.1.0)))(react@19.1.0)
 
   apps/fe-app: {}
 
@@ -8812,6 +8815,13 @@ packages:
       react: '>=16.4.0'
       react-dom: '>=16.4.0'
 
+  react-flip-numbers@3.0.9:
+    resolution: {integrity: sha512-ZFpFIz5wxT00rPuMfmCfPOsnC09u9oxYV3zPlfG1X79N58a5bwFvZcfl6BIosowa2tI9t9KyJIYcJICFyr5Y5g==}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18 || ^19
+      react-dom: ^16.8.0 || ^17 || ^18 || ^19
+      react-simple-animate: ^3.0.1
+
   react-hook-form@7.60.0:
     resolution: {integrity: sha512-SBrYOvMbDB7cV8ZfNpaiLcgjH/a1c7aK0lK+aNigpf4xWLO8q+o4tcvVurv3c4EOyzn/3dCsYt4GKD42VvJ/+A==}
     engines: {node: '>=18.0.0'}
@@ -8869,6 +8879,11 @@ packages:
   react-refresh@0.17.0:
     resolution: {integrity: sha512-z6F7K9bV85EfseRCp2bzrpyQ0Gkw1uLoCel9XBVWPg/TjRj94SkJzUTGfOa4bs7iJvBWtQG0Wq7wnI0syw3EBQ==}
     engines: {node: '>=0.10.0'}
+
+  react-simple-animate@3.5.3:
+    resolution: {integrity: sha512-Ob+SmB5J1tXDEZyOe2Hf950K4M8VaWBBmQ3cS2BUnTORqHjhK0iKG8fB+bo47ZL15t8d3g/Y0roiqH05UBjG7A==}
+    peerDependencies:
+      react-dom: ^16.8.0 || ^17 || ^18 || ^19
 
   react-tooltip@5.29.1:
     resolution: {integrity: sha512-rmJmEb/p99xWhwmVT7F7riLG08wwKykjHiMGbDPloNJk3tdI73oHsVOwzZ4SRjqMdd5/xwb/4nmz0RcoMfY7Bw==}
@@ -21075,6 +21090,12 @@ snapshots:
       react-dom: 19.1.0(react@19.1.0)
       tslib: 2.8.1
 
+  react-flip-numbers@3.0.9(react-dom@19.1.0(react@19.1.0))(react-simple-animate@3.5.3(react-dom@19.1.0(react@19.1.0)))(react@19.1.0):
+    dependencies:
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
+      react-simple-animate: 3.5.3(react-dom@19.1.0(react@19.1.0))
+
   react-hook-form@7.60.0(react@19.1.0):
     dependencies:
       react: 19.1.0
@@ -21132,6 +21153,10 @@ snapshots:
   react-refresh@0.14.2: {}
 
   react-refresh@0.17.0: {}
+
+  react-simple-animate@3.5.3(react-dom@19.1.0(react@19.1.0)):
+    dependencies:
+      react-dom: 19.1.0(react@19.1.0)
 
   react-tooltip@5.29.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
