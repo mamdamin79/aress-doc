@@ -5,6 +5,9 @@ import {
   FilterAccordionItem,
   createFilterSections,
 } from './FilterAccordionItems';
+import { RequestReportPopup } from './RequestReportPopup';
+import { ShareReportPopup } from './ShareReportPopup';
+import { fileExportType } from './types';
 
 export interface FiltersRef {
   clearAllFilters: () => void;
@@ -23,7 +26,13 @@ export const Filters = forwardRef<FiltersRef>(
     const [selectedTimeFilters, setSelectedTimeFilters] = useState<string[]>(
       [],
     );
-
+    const [requestReportPopupOpen, setRequestReportPopupOpen] = useState(false);
+    const [shareReportPopupOpen, setShareReportPopupOpen] = useState(false);
+    const [reportType, setReportType] = useState<string | null>(null);
+    const [reportExtension, setReportExtension] =
+      useState<fileExportType>('PDF');
+    const [startDate, setStartDate] = useState<string | null>(null);
+    const [endDate, setEndDate] = useState<string | null>(null);
     const handleItemClick = (itemId: string) => {
       setSelectedItems((prev) =>
         prev.includes(itemId)
@@ -94,7 +103,13 @@ export const Filters = forwardRef<FiltersRef>(
       <>
         <div className="flex flex-col items-end gap-[27px]">
           <div className="hidden gap-3 lg:flex">
-            <Button mode="secondary" className="w-[170px]" size="sm">
+            <Button
+              theme="brand"
+              mode="secondary"
+              className="w-[170px]"
+              size="sm"
+              onClick={() => setRequestReportPopupOpen(true)}
+            >
               <div className="flex items-center gap-2 font-medium">
                 <span>درخواست گزارش</span>
                 <Icon name="file-plus-2" size="lg" />
@@ -116,7 +131,7 @@ export const Filters = forwardRef<FiltersRef>(
             </Button>
           </div>
         </div>
-        <div className="flex w-full flex-col px-2 pb-4">
+        <div className="text-text-neutral-primary flex w-full flex-col px-2 pb-4">
           <span className="text-md pb-4 font-semibold">فیلتر فوری</span>
           <SelectionChips
             variant="filter"
@@ -138,6 +153,40 @@ export const Filters = forwardRef<FiltersRef>(
             allowMultiple={true}
           />
         </div>
+        <RequestReportPopup
+          isOpen={requestReportPopupOpen}
+          onClose={() => setRequestReportPopupOpen(false)}
+          setShareReportPopupOpen={(
+            open: boolean,
+            reportType: string,
+            reportExtension: fileExportType,
+            startDate: string,
+            endDate: string,
+          ) => {
+            setReportType(reportType);
+            setReportExtension(reportExtension);
+            setStartDate(startDate);
+            setEndDate(endDate);
+            setShareReportPopupOpen(open);
+          }}
+        />
+        <ShareReportPopup
+          isOpen={shareReportPopupOpen}
+          onClose={() => setShareReportPopupOpen(false)}
+          url="https://www.google.com"
+          message="گزارش"
+          platformNames={[
+            'Instagram',
+            'Telegram',
+            'WhatsApp',
+            'Linkedin',
+            'Email',
+          ]}
+          reportType={reportType ?? ''}
+          reportExtension={reportExtension ?? ''}
+          startDate={startDate ?? ''}
+          endDate={endDate ?? ''}
+        />
       </>
     );
   },

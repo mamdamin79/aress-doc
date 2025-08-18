@@ -19,7 +19,7 @@ export interface FilterSection {
 export const FilterAccordionItem = (section: FilterSection): AccordionItem => {
   return {
     trigger: (isOpen: boolean) => (
-      <div className="flex h-16 items-center justify-between px-2">
+      <div className="text-text-neutral-primary flex h-16 items-center justify-between px-2">
         <span className="text-md font-semibold">{section.title}</span>
         <div className="flex items-center gap-4">
           {section.selectedValues.length > 0 && (
@@ -68,14 +68,15 @@ export const FilterAccordionItem = (section: FilterSection): AccordionItem => {
             )}
           </div>
         ))}
-        {section.id === 'time-filters' && (
-          <div className="flex items-center justify-center pb-4 pl-3 pr-10 pt-4">
-            <DatePickerTrigger
-              mode="range"
-              title={['تاریخ شروع', 'تاریخ پایان']}
-            />
-          </div>
-        )}
+        {section.id === 'time-filters' &&
+          section.selectedValues.includes('custom-range') && (
+            <div className="flex items-center justify-center pb-4 pl-3 pr-10 pt-4">
+              <DatePickerTrigger
+                mode="range"
+                title={['تاریخ شروع', 'تاریخ پایان']}
+              />
+            </div>
+          )}
       </div>
     ),
   };
