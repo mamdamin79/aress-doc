@@ -22,7 +22,7 @@ export const documentsData: DocumentSection[] = [
       {
         title: 'گزارش عملکرد ماهانه',
         subtitle: 'اردیبهشت ماه',
-        icon: 'trending-up',
+        icon: 'chart-no-axes-combined',
         downloadButtons: [
           {
             title: 'دانلود',
@@ -38,7 +38,7 @@ export const documentsData: DocumentSection[] = [
       {
         title: 'فیش بانکی',
         subtitle: 'بانک ملت',
-        icon: 'credit-card',
+        icon: 'CustomMellat',
         downloadButtons: [
           {
             title: 'دانلود',
