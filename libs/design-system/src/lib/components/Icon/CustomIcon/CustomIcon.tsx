@@ -33,6 +33,8 @@ const ICONS_WITH_NO_STROKE_CONTROL = [
   'CustomAyandeh',
   'CustomPng',
   'CustomPdf',
+  'CustomCaretUp',
+  'CustomCaretDown',
 ];
 
 const ICONS_WITH_VIEWBOX_ISSUE = [

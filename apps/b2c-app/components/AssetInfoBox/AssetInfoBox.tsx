@@ -81,7 +81,7 @@ export const AssetInfoBox: React.FC<AssetInfoBoxProps> = ({
             theme="green"
             title={`${percentageChange}%`}
             icon={{
-              name: 'arrow-up',
+              name: 'CustomCaretUp',
             }}
           />
           <span className="text-text-accent-green-primary-600 text-sm font-medium">
