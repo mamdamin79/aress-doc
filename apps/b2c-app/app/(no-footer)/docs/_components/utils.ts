@@ -36,7 +36,6 @@ export const createFilterSections = (
     id: 'other-documents',
     title: 'سایر',
     options: [
-      { id: 'fund-docs', label: 'مدارک صندوق', value: 'fund-docs' },
       { id: 'bank-receipts', label: 'فیش بانکی', value: 'bank-receipts' },
       { id: 'regulations', label: 'قوانین و مقررات', value: 'regulations' },
       { id: 'brochure', label: 'بروشور', value: 'brochure' },
