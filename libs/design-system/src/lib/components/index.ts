@@ -56,3 +56,4 @@ export * from './Badge';
 export * from './ToolTipInfo';
 export * from './FundsLogo';
 export * from './SummarycellCarousel';
+export * from './DataList';

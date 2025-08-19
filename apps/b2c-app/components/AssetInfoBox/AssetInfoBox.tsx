@@ -18,7 +18,9 @@ export const AssetInfoBox: React.FC<AssetInfoBoxProps> = ({
   percentageChange,
 }) => {
   const slidingNumberRef = useRef<HTMLDivElement>(null);
+  const valueChangeRef = useRef<HTMLDivElement>(null);
   const [slidingNumberWidth, setSlidingNumberWidth] = useState<number>(165);
+  const [valueChangeWidth, setValueChangeWidth] = useState(60);
 
   useEffect(() => {
     if (slidingNumberRef.current && !hiddenContent) {
@@ -26,6 +28,12 @@ export const AssetInfoBox: React.FC<AssetInfoBoxProps> = ({
       setSlidingNumberWidth(width);
     }
   }, [quantity, hiddenContent]);
+  useEffect(() => {
+    if (valueChangeRef.current && !hiddenContent) {
+      const width = valueChangeRef.current.offsetWidth;
+      setValueChangeWidth(width);
+    }
+  }, [hiddenContent]);
   return (
     <div className="flex w-fit flex-col">
       <div className="flex flex-row items-center gap-2">
@@ -33,61 +41,67 @@ export const AssetInfoBox: React.FC<AssetInfoBoxProps> = ({
           className="text-text-neutral-secondary cursor-pointer"
           onClick={onToggleHiddenContent}
         >
-          <Icon name={!hiddenContent ? 'eye-off' : 'eye'} />
+          <Icon name={!hiddenContent ? 'eye' : 'eye-off'} />
         </div>
-        <div
-          className="text-center"
-          style={{ direction: 'ltr', minWidth: '165px' }}
-        >
-          <div className="text-text-neutral-primary text-left text-[32px] font-medium">
-            {!hiddenContent ? (
-              <div ref={slidingNumberRef}>
-                <SlidingNumber quantity={quantity} />
-              </div>
-            ) : (
-              <div
-                className="flex items-end justify-start text-[40px]"
-                style={{
-                  width: `${slidingNumberWidth}px`,
-                  height: '47px',
-                }}
-              >
-                .....
-              </div>
-            )}
+        <div className="flex items-center gap-2" ref={slidingNumberRef}>
+          <div
+            className="text-center"
+            style={{ direction: 'ltr', minWidth: '165px' }}
+          >
+            <div className="text-text-neutral-primary text-left text-[32px] font-medium">
+              {!hiddenContent ? (
+                <div>
+                  <SlidingNumber quantity={quantity} />
+                </div>
+              ) : (
+                <div
+                  className="flex h-12 items-end justify-start text-[40px]"
+                  style={{
+                    width: `${slidingNumberWidth}px`,
+                  }}
+                >
+                  .....
+                </div>
+              )}
+            </div>
           </div>
+          <span
+            className={cn(
+              'text-text-neutral-secondary text-sm font-normal',
+              hiddenContent && 'hidden',
+            )}
+          >
+            ریال{' '}
+          </span>
         </div>
-        <span
-          className={cn(
-            'text-text-neutral-secondary text-sm font-normal',
-            hiddenContent && 'opacity-0',
-          )}
-        >
-          ریال{' '}
-        </span>
       </div>
       {quantity > 0 && (
-        <div className="flex w-full justify-between">
+        <div className="flex w-full justify-end gap-3">
           <Badge
             theme="green"
             title={`${percentageChange}%`}
             icon={{
-              name: 'arrow-up',
+              name: 'CustomCaretUp',
             }}
           />
           <span className="text-text-accent-green-primary-600 text-sm font-medium">
             {!hiddenContent ? (
-              <span>
+              <span ref={valueChangeRef}>
                 {formatNumber(valueChange, {
                   commaSeparated: true,
                 })}{' '}
                 ریال
               </span>
             ) : (
-              <span className="text-lg font-semibold">
-                <span>.....</span>
-                <span className="opacity-0">ریال</span>
-              </span>
+              <div
+                className="text-left text-lg font-semibold"
+                style={{
+                  width: `${valueChangeWidth}px`,
+                  height: '21.6px',
+                }}
+              >
+                .....
+              </div>
             )}
           </span>
         </div>
