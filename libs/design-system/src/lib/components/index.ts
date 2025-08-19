@@ -57,3 +57,5 @@ export * from './ToolTipInfo';
 export * from './FundsLogo';
 export * from './SummarycellCarousel';
 export * from './DataList';
+export * from "./AssetInfoBox"
+export * from "./SlidingNumber"
