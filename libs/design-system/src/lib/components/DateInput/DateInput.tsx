@@ -10,6 +10,7 @@ import {
   monthRegex,
   yearRegex,
 } from './DateInput.constants';
+import { Dialog } from '@headlessui/react';
 
 const isCustomDate = (value: unknown): value is CustomDate => {
   return (
@@ -42,7 +43,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
   const [day, setDay] = useState<number>(0);
   const [month, setMonth] = useState<number>(0);
   const [year, setYear] = useState<number>(0);
-const [inputValue, setInputValue] = useState(""); 
+  const [inputValue, setInputValue] = useState("");
   const [minDate, setMinDate] = useState({
     day: 0,
     month: 0,
@@ -60,15 +61,18 @@ const [inputValue, setInputValue] = useState("");
   const [isArrowKeyPressed, setIsArrowKeyPressed] = useState(false);
   const [activeInput, setActiveInput] = useState(active || false);
   const [toggleFlag, setToggleFlag] = useState(false);
+  const [yearFocus, setYearFocus] = useState(false);
+  const [dayFocus, setDayFocus] = useState(false);
+  const [monthFocus, setMonthFocus] = useState(false);
 
   useEffect(() => {
     if (defaultValue) {
       if (typeof defaultValue?.trim() === 'string') {
         if (isJalali(defaultValue).isValid()) {
           const dateJalali = isJalali(defaultValue);
-          changeDayInput(dateJalali.date());
-          changeMonthInput(dateJalali.month() + 1);
-          changeYearInput(dateJalali.year());
+          changeDayInput(dateJalali.date(), true);
+          changeMonthInput(dateJalali.month() + 1, true);
+          changeYearInput(dateJalali.year(), true);
           if (day && month && year) {
             if (
               max &&
@@ -84,14 +88,12 @@ const [inputValue, setInputValue] = useState("");
             }
 
             onChange(
-              `${dateJalali.year()}-${
-                dateJalali.month() + 1 < 10
-                  ? `0${dateJalali.month() + 1}`
-                  : dateJalali.month() + 1
-              }-${
-                dateJalali.date() < 10
-                  ? `0${dateJalali.date()}`
-                  : dateJalali.date()
+              `${dateJalali.year()}-${dateJalali.month() + 1 < 10
+                ? `0${dateJalali.month() + 1}`
+                : dateJalali.month() + 1
+              }-${dateJalali.date() < 10
+                ? `0${dateJalali.date()}`
+                : dateJalali.date()
               }`
             );
           }
@@ -166,84 +168,87 @@ const [inputValue, setInputValue] = useState("");
   let tempMaxError = false;
 
   // Function handler to change the input day value
-const changeDayInput = (e: number, arrowChange?: boolean) => {
-  const digits = e.toString().replace(/\D/g, "");
-const lastDigit = digits.slice(-1);
-let newInput = digits;
+  const changeDayInput = (e: number, arrowChange?: boolean) => {
+    const digits = e.toString().replace(/\D/g, ""); // Remove all non-digit characters
+    const lastDigit = digits.slice(-1); // Get the last digit
+    let newInput = digits;
 
-// --- اگر عدد قبلی دو رقمی بود و کاربر عدد جدید زده ---
-if (Number(inputValue) >= 10 && digits.length === 1) {
-  newInput = lastDigit; // عدد جدید جایگزین عدد قبلی می‌شود
-}
+    if (!arrowChange) {
+      if (!dayFocus) {
+        setDayFocus(true); // Set focus on day input
+        setDay(+e.toString().slice(-1)); // Set day to the last entered digit
+        if (+e.toString().slice(-1) > 3) {
+          dayRef.current?.blur(); // Blur day input
+          monthRef.current?.focus(); // Move focus to month input
+          setActiveIndex(2); // Update active input index
+        }
+      } else {
+        // --- If the previous value was two digits and user entered a new number ---
+        if (Number(inputValue) >= 10 && digits.length === 1) {
+          newInput = lastDigit; // Replace previous number with new one
+        }
 
-// اگر عدد جدید به شکل ۱۱، ۱۲، ... و غیره بود و نیاز به leading zero داریم
-if (newInput.length === 1) {
-  newInput = newInput.padStart(2, "0"); // مثلا 2 -> 02
-}
+        // Add leading zero if needed (e.g., 2 -> 02)
+        if (newInput.length === 1) {
+          newInput = newInput.padStart(2, "0");
+        }
 
-setInputValue(newInput);
+        setInputValue(newInput);
 
-const num = Number(newInput);
+        const num = Number(newInput);
 
-if (num >= 1 && num <= 30) {
-  if (!arrowChange && num > 3) {
-    dayRef.current?.blur();
-    monthRef.current?.focus();
-    setActiveIndex(2);
-  }
-  setDay(num);
-} else {
-  // fallback اگر کاربر عدد نامعتبر زد
-  const lastOne = lastDigit;
-  setInputValue(lastOne);
-  const n = Number(lastOne);
-  if (n >= 1 && n <= 9) {
-    setDay(n);
-    if (!arrowChange && n > 3) {
-      dayRef.current?.blur();
-      monthRef.current?.focus();
-      setActiveIndex(2);
+        if (num >= 1 && num <= 30) {
+          if (num > 3) {
+            dayRef.current?.blur();
+            monthRef.current?.focus();
+            setActiveIndex(2);
+          }
+          setDay(num);
+        } else {
+          // Fallback for invalid input
+          const lastOne = lastDigit;
+          setInputValue(lastOne);
+          const n = Number(lastOne);
+          if (n >= 1 && n <= 9) {
+            setDay(n);
+            if (n > 3) {
+              dayRef.current?.blur();
+              monthRef.current?.focus();
+              setActiveIndex(2);
+            }
+          } else {
+            setDay(0);
+          }
+        }
+      }
+    } else {
+      setDay(e); // Directly set day if arrowChange is true
     }
-  } else {
-    setDay(0);
-  }
-}
 
-
-
-    // Check for minimum date constraints
+    // Check minimum date constraint
     if (minDate.year && minDate.month && minDate.day) {
-      if (
-        year + String(month).padStart(2, '0') + String(e).padStart(2, '0') <
-        minDate.year +
+      if (+(year + String(month).padStart(2, '0') + String(e).padStart(2, '0')) <
+        +(minDate.year +
           String(minDate.month).padStart(2, '0') +
-          String(minDate.day).padStart(2, '0')
+          String(minDate.day).padStart(2, '0'))
       ) {
         tempMinError = true;
       } else tempMinError = false;
     }
-    // Check for maximum date constraints
+
+    // Check maximum date constraint
     if (maxDate.year && maxDate.month && maxDate.day) {
       if (
-        year + String(month).padStart(2, '0') + String(e).padStart(2, '0') >
-        maxDate.year +
+        +(year + String(month).padStart(2, '0') + String(e).padStart(2, '0')) >
+        +(maxDate.year +
           String(maxDate.month).padStart(2, '0') +
-          String(maxDate.day).padStart(2, '0')
+          String(maxDate.day).padStart(2, '0'))
       ) {
         tempMaxError = true;
       } else tempMaxError = false;
     }
 
-    // Handle specific day constraints for Jalali calendar
-    if (month) {
-      if (month > 6 && e === 31) setDay(30);
-      if (month > 6 && month <= 8 && e === 31) setDay(30);
-      if (dayRegex.test(String(e)) && day !== 31) {
-        setDay(e);
-      }
-    }
-
-    // Move focus to the next input field when day input is two digits and arrow change occurs
+    // Move focus to next input if day input has 2 digits and arrow change
     if (String(e).length === 2 && arrowChange) {
       if (!month) {
         setActiveIndex(2);
@@ -259,95 +264,108 @@ if (num >= 1 && num <= 30) {
       maxError: tempMaxError,
     });
 
-    // Format and pass the date if year, month, and day are provided
+    // Format and emit the full date if all fields are filled
     if (year && month && e) {
       onChange(
-        `${String(year).length === 4 && year}-${
-          month < 10 ? `0${month}` : month
-        }-${e < 10 ? `0${e}` : e}`
+        `${String(year).length === 4 && year}-${month < 10 ? `0${month}` : month}-${e < 10 ? `0${e}` : e}`
       );
     }
+
     if (!e) {
       setDay(0);
     }
 
-    // Handle day overflow (e.g., 31st in months with 30 days)
+    // Handle day overflow for months with less than 31 days
     if ((e === 31 || (e && isCustomDate(e) && e === 31)) && month > 6)
       setDay(30);
   };
 
+
   // Function handler to change the input month value
-  const changeMonthInput = (e: number, arrowChange?: boolean) => {    
+  const changeMonthInput = (e: number, arrowChange?: boolean) => {
 
-  const digits = e.toString().replace(/\D/g, "");
-  const lastDigit = digits.slice(-1);
-  let lastTwo = digits.slice(-2);
+    const digits = e.toString().replace(/\D/g, "");
+    const lastDigit = digits.slice(-1);
+    let lastTwo = digits.slice(-2);
 
-  if (inputValue === "11" && lastDigit === "1" && !toggleFlag) {
-    lastTwo = "01";
-    setToggleFlag(true);  // دفعه بعد toggle نده
-  } else {
-    setToggleFlag(false); // هر ورودی جدید reset toggle
-  }
-
-  setInputValue(lastTwo);
-
-  if (lastTwo.length === 0) {
-    setMonth(0);
-  } else {
-    const num = Number(lastTwo);
-    if (num >= 1 && num <= 12) {
-      setMonth(num);
-    } else {
-      const lastOne = digits.slice(-1);
-      setInputValue(lastOne);
-      const n = Number(lastOne);
-      if (n >= 1 && n <= 9) {
-        setMonth(n);
-      } else {
-        setMonth(0);
-      }
-    }
-  }
-
-  setInputValue(lastTwo);
-
-  if (lastTwo.length === 0) {
-    setMonth(0);
-  } else {
-    const num = Number(lastTwo);
-
-    if (num >= 1 && num <= 12) {
-        if (!arrowChange && num > 1) {
-          monthRef.current?.blur();
-          yearRef.current?.focus();
-          setActiveIndex(3);
-        }      setMonth(num);
-    } else {
-      const lastOne = digits.slice(-1);
-      setInputValue(lastOne);
-      const n = Number(lastOne);
-      console.log(n);
-      if (n >= 1 && n <= 9) {
-        setMonth(n);
-        if (!arrowChange && n > 1) {
+    if (!arrowChange) {
+      if (!monthFocus) {
+        setMonthFocus(true);
+        setMonth(+e.toString().slice(-1))
+        if (+e.toString().slice(-1) > 1) {
           monthRef.current?.blur();
           yearRef.current?.focus();
           setActiveIndex(3);
         }
       } else {
-        setMonth(0);
+
+        if (inputValue === "11" && lastDigit === "1" && !toggleFlag) {
+          lastTwo = "01";
+          setToggleFlag(true);  // دفعه بعد toggle نده
+        } else {
+          setToggleFlag(false); // هر ورودی جدید reset toggle
+        }
+
+        setInputValue(lastTwo);
+
+        if (lastTwo.length === 0) {
+          setMonth(0);
+        } else {
+          const num = Number(lastTwo);
+          if (num >= 1 && num <= 12) {
+            setMonth(num);
+          } else {
+            const lastOne = digits.slice(-1);
+            setInputValue(lastOne);
+            const n = Number(lastOne);
+            if (n >= 1 && n <= 9) {
+              setMonth(n);
+            } else {
+              setMonth(0);
+            }
+          }
+        }
+
+        setInputValue(lastTwo);
+
+        if (lastTwo.length === 0) {
+          setMonth(0);
+        } else {
+          const num = Number(lastTwo);
+
+          if (num >= 1 && num <= 12) {
+            if (!arrowChange && num > 1) {
+              monthRef.current?.blur();
+              yearRef.current?.focus();
+              setActiveIndex(3);
+            } setMonth(num);
+          } else {
+            const lastOne = digits.slice(-1);
+            setInputValue(lastOne);
+            const n = Number(lastOne);
+            console.log(n);
+            if (n >= 1 && n <= 9) {
+              setMonth(n);
+              if (!arrowChange && n > 1) {
+                monthRef.current?.blur();
+                yearRef.current?.focus();
+                setActiveIndex(3);
+              }
+            } else {
+              setMonth(0);
+            }
+          }
+        }
       }
-    }
-  }  
+    } else setMonth(e);
 
     // Check for minimum date constraints
     if (minDate.year && minDate.month && minDate.day) {
       if (
         year + String(e).padStart(2, '0') + String(day).padStart(2, '0') <
         minDate.year +
-          String(minDate.month).padStart(2, '0') +
-          String(minDate.day).padStart(2, '0')
+        String(minDate.month).padStart(2, '0') +
+        String(minDate.day).padStart(2, '0')
       ) {
         tempMinError = true;
       } else tempMinError = false;
@@ -357,8 +375,8 @@ if (num >= 1 && num <= 30) {
       if (
         year + String(e).padStart(2, '0') + String(day).padStart(2, '0') >
         maxDate.year +
-          String(maxDate.month).padStart(2, '0') +
-          String(maxDate.day).padStart(2, '0')
+        String(maxDate.month).padStart(2, '0') +
+        String(maxDate.day).padStart(2, '0')
       ) {
         tempMaxError = true;
       } else tempMaxError = false;
@@ -377,8 +395,7 @@ if (num >= 1 && num <= 30) {
     // Format and pass the date if year, month, and day are provided
     if (year && e && day) {
       onChange(
-        `${String(year).length === 4 && year}-${e < 10 ? `0${e}` : e}-${
-          day < 10 ? `0${day}` : day
+        `${String(year).length === 4 && year}-${e < 10 ? `0${e}` : e}-${day < 10 ? `0${day}` : day
         }`
       );
     }
@@ -413,30 +430,41 @@ if (num >= 1 && num <= 30) {
     if (e > 6 && e < 12 && day === 31) setDay(30);
   };
 
+
   // Function handler to change the input year value
   const changeYearInput = (e: number, arrowChangg?: boolean) => {
-const digits = e.toString().replace(/\D/g, "");
-const lastDigit = digits.slice(-1);
+    let dijital = e;
+    if (!arrowChangg) {
+      const str = e.toString();
 
-const currentYear = inputValue.padStart(4, "0"); // همیشه ۴ رقمی
+      const minYearStr = minDate.year.toString();
+      const maxYearStr = maxDate.year.toString();
 
-// shift کردن ارقام به چپ و قرار دادن رقم جدید در آخر
-const newYear = currentYear.slice(1) + lastDigit;
+      if (!yearFocus) {
+        setYearFocus(true);
+        setYear(parseInt(e.toString().slice(-1)));
+      } else {
+        if (str.length === 2) {
+          const firstTwo = parseInt(str);
+          if (firstTwo >= +minYearStr.slice(0, 2) && firstTwo <= +maxYearStr.slice(0, 2)) {
+            setYear(parseInt(str)); // فقط همین عدد 55
+          } else {
+            const newYear = parseInt(minYearStr.slice(0, 2) + str);
+            dijital = newYear;
+            setYear(newYear);
+          }
+        } else setYear(+str.slice(-4))
+      }
+    } else setYear(e);
 
-if (!arrowChangg){
 
-  setInputValue(newYear);
-  setYear(Number(newYear));
-} else {
-  setYear(e);
-}
     // Check for minimum date constraints
     if (minDate.year && minDate.month && minDate.day) {
       if (
-        e + String(month).padStart(2, '0') + String(day).padStart(2, '0') <
-        minDate.year +
+        +(dijital + String(month).padStart(2, '0') + String(day).padStart(2, '0')) <
+        +(minDate.year +
           String(minDate.month).padStart(2, '0') +
-          String(minDate.day).padStart(2, '0')
+          String(minDate.day).padStart(2, '0'))
       ) {
         tempMinError = true;
       } else tempMinError = false;
@@ -444,10 +472,10 @@ if (!arrowChangg){
     // Check for maximum date constraints
     if (maxDate.year && maxDate.month && maxDate.day) {
       if (
-        e + String(month).padStart(2, '0') + String(day).padStart(2, '0') >
-        maxDate.year +
+        +(dijital + String(month).padStart(2, '0') + String(day).padStart(2, '0')) >
+        +(maxDate.year +
           String(maxDate.month).padStart(2, '0') +
-          String(maxDate.day).padStart(2, '0')
+          String(maxDate.day).padStart(2, '0'))
       ) {
         tempMaxError = true;
       } else tempMaxError = false;
@@ -464,21 +492,20 @@ if (!arrowChangg){
     }
 
     // Format and pass the date if year, month, and day are provided
-    if (String(e).length === 4 && month && day) {
+    if (String(dijital).length === 4 && month && day) {
       onChange(
-        `${String(e).length === 4 && e}-${month < 10 ? `0${month}` : month}-${
-          day < 10 ? `0${day}` : day
+        `${String(e).length === 4 && dijital}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day
         }`
       );
     }
 
     // Move focus to the next input field (month or day) when year input reaches 4 digits
-    if (String(e).length === 4 && arrowChangg) {
+    if (String(dijital).length === 4 && arrowChangg) {
       if (
         minDate.year &&
         maxDate.year &&
-        e >= minDate.year + 1 &&
-        e <= maxDate.year + 1
+        dijital >= minDate.year + 1 &&
+        dijital <= maxDate.year + 1
       ) {
         if (!month) {
           setActiveIndex(2);
@@ -493,16 +520,16 @@ if (!arrowChangg){
     }
 
     // Handle leap year and specific month-day constraints for the Jalali calendar
-    if (String(e).length === 4 && day === 31 && month && month > 6) setDay(30);
+    if (String(dijital).length === 4 && day === 31 && month && month > 6) setDay(30);
     if (
-      String(e).length === 4 &&
+      String(Dialog).length === 4 &&
       !moment([year]).isLeapYear() &&
       month === 12 &&
       day === 31
     )
       setDay(30);
     if (
-      String(e).length === 4 &&
+      String(dijital).length === 4 &&
       moment([year]).isLeapYear() &&
       month === 12 &&
       (day === 31 || day === 30)
@@ -516,6 +543,7 @@ if (!arrowChangg){
       if (e.key === 'ArrowLeft') {
         setIsArrowKeyPressed(false);
         if (activeIndex === 1) {
+          setDayFocus(false);
           setActiveIndex(2);
           monthRef?.current?.focus();
           dayRef?.current?.blur();
@@ -534,6 +562,7 @@ if (!arrowChangg){
           monthRef?.current?.blur();
         }
         if (activeIndex === 3) {
+          setYearFocus(false);
           monthRef?.current?.focus();
           monthRef?.current?.setSelectionRange(0, 2);
           yearRef?.current?.blur();
@@ -550,7 +579,7 @@ if (!arrowChangg){
         if (activeIndex === 2) {
           changeMonthInput(
             month ? (month >= 1 && month < 12 ? month + 1 : month) : 1
-          , true);
+            , true);
         }
         if (activeIndex === 1) {
           changeDayInput(day + 1, true);
@@ -602,14 +631,17 @@ if (!arrowChangg){
     setActiveIndex(1);
   };
 
+  console.log(errors);
+
+
   return (
-    <div>
+    <div className='select-none'>
       <div
         className={cn(
           'w-40 rounded-md bg-white border-2 flex items-center gap-1 py-2 px-4',
           {
             'border-red-600':
-              (day && month && year && errors.minError) ||
+              (day && month && year && errors?.minError) ||
               errors?.maxError ||
               duplicateInputError,
             'border-brand-600':
@@ -634,6 +666,8 @@ if (!arrowChangg){
             <input
               disabled={!activeInput}
               onClick={() => {
+                setMonthFocus(false);
+                setYearFocus(false);
                 if (activeIndex) setActiveIndex(1);
                 dayRef?.current?.setSelectionRange(2, 2);
               }}
@@ -642,7 +676,7 @@ if (!arrowChangg){
               onChange={(e) => changeDayInput(+e.target.value)}
               placeholder="روز"
               className={cn(
-                'w-5 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
+                'w-5 select-none outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
                 activeIndex === 1 && activeIndex && 'bg-blue-200'
               )}
             />
@@ -650,6 +684,8 @@ if (!arrowChangg){
             <input
               disabled={!activeInput}
               onClick={() => {
+                setDayFocus(false);
+                setYearFocus(false);
                 setActiveIndex(2);
                 monthRef?.current?.setSelectionRange(2, 2);
               }}
@@ -658,7 +694,7 @@ if (!arrowChangg){
               onChange={(e) => changeMonthInput(+e.target.value, false)}
               placeholder="ماه"
               className={cn(
-                'w-5 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
+                'w-5 select-none outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
                 activeIndex === 2 && activeIndex && 'bg-blue-200'
               )}
             />
@@ -666,6 +702,8 @@ if (!arrowChangg){
             <input
               disabled={!activeInput}
               onClick={() => {
+                setDayFocus(false);
+                setMonthFocus(false);
                 setActiveIndex(3);
                 yearRef?.current?.setSelectionRange(
                   yearRef?.current?.value.length,
@@ -677,7 +715,7 @@ if (!arrowChangg){
               onChange={(e) => changeYearInput(+e.target.value)}
               placeholder="سال"
               className={cn(
-                'w-10 outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
+                'w-10 select-none outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
                 activeIndex === 3 && activeIndex && 'bg-blue-200'
               )}
             />
