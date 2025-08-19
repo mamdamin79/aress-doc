@@ -1,5 +1,6 @@
 'use client';
 import { Breadcrumb, Button, FundsLogo, Tabs } from 'design-system';
+import { Summary } from './_components/Summary';
 
 export default function FundPage() {
   return (
@@ -34,7 +35,7 @@ export default function FundPage() {
           variant="lined"
           fullWidthDivider={true}
           tabs={[
-            { title: 'خلاصه', id: '0', content: '' },
+            { title: 'خلاصه', id: '0', content: <Summary /> },
             { title: 'تحلیل بازدهی', id: '1', content: '' },
             { title: 'ارزیابی ریسک', id: '2', content: '' },
           ]}
