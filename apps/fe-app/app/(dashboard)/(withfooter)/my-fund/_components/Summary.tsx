@@ -10,22 +10,24 @@ import React, { useMemo, useState } from 'react';
 import { baseOptions } from 'apps/fe-app/app/components/Reports/Report.config.shared';
 
 export const Summary: React.FC = ({
-  data,
   defaultQuantity,
   defaultValueChange,
   defaultPercentageChange,
-  onHover,
-  hoveredData,
+  points,
 }) => {
-  const [dataState, setDataState] = useState(data);
   const [hiddenContent, setHiddenContent] = useState(false);
+  const [hoveredData, setHoveredData] = useState<HoverData | null>(null);
 
-  const handleToggleHiddenContent = () => {
-    setHiddenContent(!hiddenContent);
-  };
   const displayQuantity = hoveredData ? hoveredData.value : defaultQuantity;
   const displayValueChange = defaultValueChange;
   const displayPercentageChange = defaultPercentageChange;
+
+  const handleChartHover = (data: HoverData | null) => {
+    setHoveredData(data);
+  };
+  const handleToggleHiddenContent = () => {
+    setHiddenContent(!hiddenContent);
+  };
 
   const cells: SummaryCellProps[] = [
     {
@@ -58,7 +60,7 @@ export const Summary: React.FC = ({
     },
     {
       label: {
-        icon: 'CustomWallet',
+        icon: 'wallet',
         title: 'ارزش خالص دارایی',
       },
       value: '۴۰۸.۴ میلیارد ریال',
@@ -79,26 +81,125 @@ export const Summary: React.FC = ({
     },
   ];
 
-  const priceData = useMemo<[number, number][]>(() => {
-    if (!dataState.data[0].points.length) return [];
+  return (
+    <div className="mt-12">
+      <SummaryCellCarousel cells={cells} />
+      <div className="flex w-full items-start justify-between gap-8">
+        <div>
+          <div className="text-text-neutral-primary mb-6 text-lg font-medium">
+            خلاصه موردی
+          </div>
+          <DataList
+            data={[
+              {
+                key: 'بازده صندوق',
+                value: '۴.۳٪',
+              },
+              {
+                key: 'بتا صندوق',
+                value: '۱.۳ واحد',
+              },
+              {
+                key: 'واحد های ابطال شده',
+                value: '۳۵۶ واحد',
+              },
+              {
+                key: 'واحد های صادر شده',
+                value: '۶,۲۵۴ واحد',
+              },
+              {
+                key: 'رنج قیمتی',
+                value: '۳,۱۰۰-۳,۳۰۰ ریال',
+              },
+              {
+                key: 'گردش دارایی',
+                value: '۱۲٪',
+              },
+            ]}
+            className="h-[544px] w-[346px]"
+          />
+        </div>
+        <div className="flex-1">
+          <div className='flex w-full justify-end'>
+            <AssetInfoBox
+              hiddenContent={hiddenContent}
+              onToggleHiddenContent={handleToggleHiddenContent}
+              quantity={displayQuantity}
+              valueChange={displayValueChange}
+              percentageChange={displayPercentageChange}
+            />
+          </div>
+          <LineChart
+            hiddenContent={hiddenContent}
+            onHover={handleChartHover}
+            points={points}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
 
-    return dataState.data[0].points.map(({ date, value }) => {
+interface LineChartProps {
+  points: {
+    date: string;
+    value: number;
+  }[];
+  onHover?: (data: { date: string; value: number } | null) => void;
+  hiddenContent?: boolean;
+}
+const LineChart = ({
+  points,
+  onHover,
+  hiddenContent = false,
+}: LineChartProps) => {
+  const priceData = useMemo<[number, number][]>(() => {
+    if (!points.length) return [];
+
+    return points.map(({ date, value }) => {
       const [year, month, day] = date.split('-').map(Number);
       const timestamp = Date.UTC(year, month - 1, day);
       return [timestamp, parseFloat(value.toFixed(2))];
     });
-  }, [dataState]);
+  }, [points]);
+
+  // Calculate Y-axis range
+  const yAxisConfig = useMemo(() => {
+    if (!priceData.length) return { min: 0 };
+
+    const values = priceData.map(([, value]) => value);
+    const minValue = Math.min(...values);
+    const maxValue = Math.max(...values);
+
+    // If all values are the same (including all zeros)
+    if (minValue === maxValue) {
+      if (minValue === 0) {
+        // For all zeros, set a range that shows the line at the bottom
+        return { min: 0, max: 10 };
+      } else {
+        // For other constant values, add some padding
+        const padding = Math.abs(minValue) * 0.1;
+        return {
+          min: Math.max(0, minValue - padding),
+          max: maxValue + padding,
+        };
+      }
+    }
+
+    // For varying values, let Highcharts handle it but ensure min is 0
+    return { min: 0 };
+  }, [priceData]);
 
   const options: Highcharts.Options = {
     ...baseOptions,
     legend: { enabled: false },
     chart: {
-      backgroundColor: 'var(--color-surface-neutral-primary)',
+      backgroundColor: 'var(--color-surface-neutral-background)',
       type: 'line',
-      style:{
-        width:741,
-        height:510
-      }
+      style: {
+        width: 741,
+        height: 510,
+      },
     },
     credits: { enabled: false },
     navigator: { enabled: false },
@@ -140,26 +241,22 @@ export const Summary: React.FC = ({
     },
     title: { text: '' },
     yAxis: {
+      ...baseOptions.yAxis,
       gridLineInterpolation: 'polygon',
       gridLineColor: 'Var(--color-border-neutral-secondary)',
       title: { text: '' },
-      min: 0,
+      ...yAxisConfig,
       labels: {
+        formatter: function () {
+          return hiddenContent ? '.....' : `${this.value}`;
+        },
         style: {
-          fontSize: '12px',
-          color: 'var(--color-text-neutral-secondarycontrast)',
+          fontSize: '16px',
+          fontWeight: '400',
           fontFamily: 'Vazirmatn',
+          color: 'var(--color-text-neutral-secondarycontrast)',
         },
       },
-      plotLines: [
-        {
-          value: data.data[0].mean,
-          color: 'var(--color-border-accent-gray-600)',
-          dashStyle: 'Dash',
-          width: 1.5,
-          zIndex: 5,
-        },
-      ],
     },
     xAxis: {
       tickLength: 0,
@@ -182,7 +279,6 @@ export const Summary: React.FC = ({
         },
       },
     },
-
     series: [
       {
         type: 'area' as const,
@@ -195,7 +291,23 @@ export const Summary: React.FC = ({
             [1, 'var(--coloropacity-surface-accent-blue-600-0per)'],
           ],
         },
-        data: priceData,
+        data: priceData.map((point, index) => {
+          if (index === 0) {
+            return {
+              x: point[0],
+              y: point[1],
+              marker: {
+                enabled: true,
+                radius: 4,
+                fillColor: 'var(--color-border-accent-blue-600)',
+                lineWidth: 2,
+                lineColor: 'var(--color-border-accent-blue-600)',
+                symbol: 'circle',
+              },
+            };
+          }
+          return { x: point[0], y: point[1] };
+        }),
         marker: {
           enabled: false,
           states: {
@@ -215,55 +327,8 @@ export const Summary: React.FC = ({
   };
 
   return (
-    <div className="mt-12">
-      <SummaryCellCarousel cells={cells} />
-
-      <div className="flex w-full items-start justify-between gap-8">
-        <div>
-          <div className="text-text-neutral-primary mb-6 text-lg font-medium">
-            خلاصه موردی
-          </div>
-          <DataList
-            data={[
-              {
-                key: 'بازده صندوق',
-                value: '۴.۳٪',
-              },
-              {
-                key: 'بتا صندوق',
-                value: '۱.۳ واحد',
-              },
-              {
-                key: 'واحد های ابطال شده',
-                value: '۳۵۶ واحد',
-              },
-              {
-                key: 'واحد های صادر شده',
-                value: '۶,۲۵۴ واحد',
-              },
-              {
-                key: 'رنج قیمتی',
-                value: '۳,۱۰۰-۳,۳۰۰ ریال',
-              },
-              {
-                key: 'گردش دارایی',
-                value: '۱۲٪',
-              },
-            ]}
-            className="h-[544px] w-[346px]"
-          />
-        </div>
-        <div className="h-[510px] w-[741px] flex-1">
-          {/* <AssetInfoBox
-            hiddenContent={hiddenContent}
-            onToggleHiddenContent={handleToggleHiddenContent}
-            quantity={displayQuantity}
-            valueChange={displayValueChange}
-            percentageChange={displayPercentageChange}
-          /> */}
-          <HighchartsReact highcharts={Highcharts} options={options} />
-        </div>
-      </div>
+    <div className="w-full">
+      <HighchartsReact highcharts={Highcharts} options={options} />
     </div>
   );
 };

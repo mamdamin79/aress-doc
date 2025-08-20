@@ -117,7 +117,6 @@ export const SummaryCellCarousel: React.FC<SummaryCellCarouselProps> = ({
           key={index}
         >
           <SummaryCell {...cell} />
-          {/* Spacer for the last card */}
           {index === cells.length - 1 && (
             <div className="keen-slider__slide w-16" />
           )}
