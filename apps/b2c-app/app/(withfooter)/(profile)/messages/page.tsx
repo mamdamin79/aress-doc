@@ -1,5 +1,6 @@
 import { Notification, NotificationProps } from 'design-system';
 import { Fragment } from 'react';
+import { MessageSettings } from './_components/MessageSettings';
 
 const notificationsData: NotificationProps[] = [
   {
@@ -88,28 +89,34 @@ export default function Messages() {
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      {Object.entries(groupedNotifications).map(
-        ([date, notifications], index) => (
-          <Fragment key={index}>
-            <div className="text-text-neutral-secondary mt-4 text-right text-lg font-medium">
-              {date}
-            </div>
-            <div className="flex flex-col gap-2">
-              {notifications.map((notification, notifIndex) => (
-                <Notification
-                  key={notifIndex}
-                  title={notification.title}
-                  subtitle={notification.subtitle}
-                  isNew={notification.isNew}
-                  icon={notification.icon}
-                />
-              ))}
-            </div>
-            <div className="bg-surface-neutral-tertiary my-1 h-[1px] w-full"></div>
-          </Fragment>
-        ),
-      )}
-    </div>
+    <>
+      <div className="flex items-center justify-between">
+        <span className="text-xl font-semibold">پیام‌های اخیر</span>
+        <MessageSettings />
+      </div>
+      <div className="flex flex-col gap-2">
+        {Object.entries(groupedNotifications).map(
+          ([date, notifications], index) => (
+            <Fragment key={index}>
+              <div className="text-text-neutral-secondary mt-4 text-right text-lg font-medium">
+                {date}
+              </div>
+              <div className="flex flex-col gap-2">
+                {notifications.map((notification, notifIndex) => (
+                  <Notification
+                    key={notifIndex}
+                    title={notification.title}
+                    subtitle={notification.subtitle}
+                    isNew={notification.isNew}
+                    icon={notification.icon}
+                  />
+                ))}
+              </div>
+              <div className="bg-surface-neutral-tertiary my-1 h-[1px] w-full"></div>
+            </Fragment>
+          ),
+        )}
+      </div>
+    </>
   );
 }
