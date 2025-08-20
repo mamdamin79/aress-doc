@@ -88,7 +88,7 @@ export default function Messages() {
   };
 
   return (
-    <div className="flex max-w-[1032px] flex-grow flex-col gap-2 p-4">
+    <div className="flex flex-col gap-2">
       {Object.entries(groupedNotifications).map(
         ([date, notifications], index) => (
           <Fragment key={index}>
