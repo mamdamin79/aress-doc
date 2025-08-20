@@ -118,6 +118,7 @@
     "highcharts-react-official": "^3.2.2",
     "hls.js": "^1.6.7",
     "jalaali-js": "^1.2.8",
+    "jalali-moment": "^3.3.11",
     "keen-slider": "^6.8.6",
     "lucide-react": "^0.525.0",
     "moment": "^2.30.1",
