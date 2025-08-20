@@ -129,7 +129,7 @@ export const Filters = forwardRef<FiltersRef>(
             </Button>
           </div>
         </div>
-        <div className="text-text-neutral-primary flex w-full flex-col px-2 pb-4">
+        <div className="text-text-neutral-primary -mb-2 flex w-full flex-col px-2">
           <span className="text-md pb-4 font-semibold">فیلتر فوری</span>
           <SelectionChips
             variant="filter"
