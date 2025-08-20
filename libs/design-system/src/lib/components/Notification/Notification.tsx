@@ -17,8 +17,8 @@ export const Notification: React.FC<NotificationProps> = ({
 }) => {
   return (
     <div
-      className={cn('bg-surface-neutral-primary h-[84px] w-full p-3', {
-        'bg-surface-brand-100 rounded-md': isNew,
+      className={cn('h-[84px] w-full bg-transparent p-3', {
+        'bg-surface-brand-100 rounded-2xl': isNew,
       })}
     >
       <div className="flex items-center justify-between">
