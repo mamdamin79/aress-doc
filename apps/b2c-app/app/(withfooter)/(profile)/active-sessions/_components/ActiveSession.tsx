@@ -1,6 +1,6 @@
 'use client';
-import { Icon, IconProps } from 'design-system';
-import React from 'react';
+import { Icon, IconProps, LogoutModal } from 'design-system';
+import React, { useState } from 'react';
 
 export interface ActiveSessionProps {
   deviceType: string;
@@ -21,8 +21,8 @@ export const ActiveSession: React.FC<ActiveSessionProps> = ({
   loginDate,
   loginTime,
   browserIcon,
-  onTerminate,
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="flex min-h-[84px] items-center justify-between p-3">
       <div className="flex items-start gap-2">
@@ -49,12 +49,22 @@ export const ActiveSession: React.FC<ActiveSessionProps> = ({
         </div>
 
         {!isCurrent && (
-          <span
-            onClick={onTerminate}
-            className="text-text-message-error-primary-600"
-          >
-            <Icon name="x" size="lg" />
-          </span>
+          <>
+            <button
+              onClick={() => setIsOpen(true)}
+              className="text-text-message-error-primary-600"
+            >
+              <Icon name="x" size="lg" />
+            </button>
+            <LogoutModal
+              isOpen={isOpen}
+              onClose={() => setIsOpen(false)}
+              onLogout={() => alert(`در دست ساخت‌ !`)}
+              title="خروج از نشست"
+              subtitle="آیا مطمئن هستید که می‌خواهید از این نشست خارج شوید؟"
+              titleAlign="right"
+            />
+          </>
         )}
       </div>
     </div>

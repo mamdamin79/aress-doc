@@ -1,9 +1,10 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { ActiveSession, ActiveSessionProps } from './_components/ActiveSession'; // Assuming the component is in the same folder
-import { Button } from 'design-system';
+import { Button, LogoutModal } from 'design-system';
 
 export default function ActiveSessionsPage() {
+  const [isOpen, setIsOpen] = useState(false);
   const sessionsData: ActiveSessionProps[] = [
     {
       deviceType: 'Windows 10',
@@ -70,12 +71,21 @@ export default function ActiveSessionsPage() {
             سایر دستگاه‌های فعال
           </div>
           <Button
+            onClick={() => setIsOpen(true)}
             theme="error"
             mode="secondary"
             className="h-[34px] w-[148px] text-sm"
           >
             خروج از سایر دستگاه‌ها
           </Button>
+          <LogoutModal
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+            onLogout={() => alert('در دست ساخت !')}
+            title="خروج از حساب در سایر دستگاه‌ها"
+            subtitle="آیا مطمئن هستید که می‌خواهید از حساب کاربری خود در سایر دستگاه‌ها خارج شوید؟"
+            titleAlign="right"
+          />
         </div>
         {otherSessions.length > 0 ? (
           otherSessions.map((session, index) => (
