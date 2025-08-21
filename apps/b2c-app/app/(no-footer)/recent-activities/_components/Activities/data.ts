@@ -21,7 +21,7 @@ export const activitiesData: ActivitySection[] = [
         price: 15000000,
         status: 'success',
         type: 'BUY',
-        icon: 'CustomGold',
+        icon: 'rocket',
         description: 'کالایی',
       },
       {

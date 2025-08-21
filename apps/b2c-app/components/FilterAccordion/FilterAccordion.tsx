@@ -19,7 +19,7 @@ export interface FilterSection {
 export const FilterAccordion = (section: FilterSection): AccordionItem => {
   return {
     trigger: (isOpen: boolean) => (
-      <div className="text-text-neutral-primary flex h-16 items-center justify-between px-2">
+      <div className="text-text-neutral-primary bg-surface-neutral-background hover:bg-surface-brand-100 flex h-16 items-center justify-between rounded-2xl px-2 transition-colors">
         <span className="text-md font-semibold">{section.title}</span>
         <div className="flex items-center gap-4">
           {section.selectedValues.length > 0 && (

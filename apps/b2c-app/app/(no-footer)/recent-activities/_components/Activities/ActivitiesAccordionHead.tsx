@@ -24,7 +24,7 @@ export const ActivitiesAccordionHead: React.FC<
   ActivitiesAccordionHeadProps
 > = ({ title, type, description, price, status, isOpen, icon, image }) => {
   return (
-    <div className="text-text-neutral-primary bg-surface-neutral-background hover:bg-surface-neutral-tertiary flex w-full flex-row items-center justify-between p-3">
+    <div className="text-text-neutral-primary bg-surface-neutral-background hover:bg-surface-neutral-tertiary flex w-full flex-row items-center justify-between rounded-2xl p-3">
       <div className="flex flex-row gap-2">
         {icon && (
           <div className="bg-surface-neutral-primary border-border-neutral-secondary mt-1 flex h-8 w-8 items-center justify-center rounded-full border">
