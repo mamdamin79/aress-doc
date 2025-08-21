@@ -18,11 +18,11 @@ export function Checkbox(props: CheckboxProps) {
   const unikId = useId();
 
   return (
-    <Field className="flex items-center gap-2">
+    <Field className="flex w-full items-center gap-2">
       <CheckboxHeadlessUIProps
         aria-roledescription="checkbox"
         {...props}
-        className="group"
+        className="group focus:stroke-none focus:outline-none active:stroke-none active:outline-none"
         id={props.id ?? unikId}
       >
         <div className="group-data-[checked]:bg-icon-brand-primary-600 group-data-[checked]:border-icon-brand-primary-600 border-icon-neutral-secondary group-data-[disabled]:border-text-neutral-disable flex h-5 w-5 cursor-pointer items-center justify-center rounded-[3px] border-2 group-data-[disabled]:cursor-default">
@@ -34,6 +34,7 @@ export function Checkbox(props: CheckboxProps) {
       <Label
         htmlFor={props.id ?? unikId}
         className={cn(
+          'w-full',
           { 'text-text-neutral-disable cursor-default': props.disabled },
           {
             'text-text-neutral-secondary cursor-pointer':

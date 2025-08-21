@@ -29,7 +29,7 @@ export function Radio({
   const unikId = useId();
 
   return (
-    <Field className="flex items-center gap-2">
+    <Field className="flex w-full items-center gap-2">
       <div
         className="group cursor-pointer"
         onClick={!disabled ? onChange : undefined}
@@ -71,6 +71,7 @@ export function Radio({
       <Label
         htmlFor={id ?? unikId}
         className={cn(
+          'w-full',
           'text-sm',
           {
             'text-text-neutral-disable cursor-default': disabled,
