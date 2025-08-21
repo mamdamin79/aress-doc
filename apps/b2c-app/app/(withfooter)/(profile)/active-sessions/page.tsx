@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { ActiveSession, ActiveSessionProps } from './_components/ActiveSession'; // Assuming the component is in the same folder
 import { Button, LogoutModal } from 'design-system';
+import { OldSessionLogout } from './_components/OldSessionLogout';
 
 export default function ActiveSessionsPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -100,6 +101,8 @@ export default function ActiveSessionsPage() {
           <p>هیچ دستگاه فعال دیگری وجود ندارد.</p>
         )}
       </div>
+
+      <OldSessionLogout />
     </div>
   );
 }
