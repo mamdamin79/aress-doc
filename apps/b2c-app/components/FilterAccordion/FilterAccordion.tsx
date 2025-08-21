@@ -1,4 +1,4 @@
-import { DatePickerTrigger } from '../../../../components';
+import { DatePickerTrigger } from '../DatePicker';
 import { Checkbox, Radio, Icon, cn, AccordionItem } from 'design-system';
 import React from 'react';
 
@@ -16,7 +16,7 @@ export interface FilterSection {
   onValueChange: (value: string) => void;
 }
 
-export const FilterAccordionItem = (section: FilterSection): AccordionItem => {
+export const FilterAccordion = (section: FilterSection): AccordionItem => {
   return {
     trigger: (isOpen: boolean) => (
       <div className="text-text-neutral-primary flex h-16 items-center justify-between px-2">

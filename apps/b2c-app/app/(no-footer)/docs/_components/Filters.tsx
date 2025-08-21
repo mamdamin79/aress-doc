@@ -1,7 +1,7 @@
 'use client';
 import { Button, Icon, SelectionChips, Accordion } from 'design-system';
 import React, { useState, forwardRef, useImperativeHandle } from 'react';
-import { FilterAccordionItem } from './FilterAccordionItems';
+import { FilterAccordion } from '../../../../components/FilterAccordion';
 import { RequestReportPopup } from './RequestReportPopup';
 import { ShareReportPopup } from './ShareReportPopup';
 import { fileExportType } from './types';
@@ -94,7 +94,7 @@ export const Filters = forwardRef<FiltersRef>(
     );
 
     const accordionItems = filterSections.map((section) =>
-      FilterAccordionItem(section),
+      FilterAccordion(section),
     );
 
     return (

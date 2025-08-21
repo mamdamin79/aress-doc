@@ -2,7 +2,7 @@
 import { Button, SelectionChips, Accordion } from 'design-system';
 import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import { createFilterSections } from './utils';
-import { FilterAccordionItem } from '../../docs/_components/FilterAccordionItems';
+import { FilterAccordion } from '../../../../components/FilterAccordion';
 
 export interface FiltersRef {
   clearAllFilters: () => void;
@@ -96,7 +96,7 @@ export const Filters = forwardRef<FiltersRef>(
     );
 
     const accordionItems = filterSections.map((section) =>
-      FilterAccordionItem(section),
+      FilterAccordion(section),
     );
 
     return (

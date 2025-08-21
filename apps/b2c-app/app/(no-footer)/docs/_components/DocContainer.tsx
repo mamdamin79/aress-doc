@@ -20,7 +20,7 @@ export const DocContainer: React.FC<DocContainerProps> = ({
   downloadButtons,
 }) => {
   return (
-    <div className="border-border-neutral-secondary text-text-neutral-primary flex w-full flex-row items-center justify-between rounded-2xl border p-3">
+    <div className="border-border-neutral-secondary bg-surface-neutral-background hover:bg-surface-neutral-tertiary text-text-neutral-primary flex w-full flex-row items-center justify-between rounded-2xl border p-3 transition-colors">
       <div className="flex flex-row gap-2">
         {icon && (
           <div className="bg-surface-neutral-primary border-border-neutral-secondary mt-1 flex h-8 w-8 items-center justify-center rounded-full border">
