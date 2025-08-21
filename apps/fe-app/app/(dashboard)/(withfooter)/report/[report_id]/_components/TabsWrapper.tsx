@@ -28,7 +28,6 @@ export const TabsWrapper: React.FC = () => {
     >
       <Tabs
         variant="rounded-full"
-        colorMode="neutral"
         tabs={TABS}
         activeTab={currentSection ? Number(currentSection) : 0}
         onClickTab={(idTab) => scrollToSection(idTab)}

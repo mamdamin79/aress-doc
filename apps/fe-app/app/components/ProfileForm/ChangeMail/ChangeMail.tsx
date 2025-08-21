@@ -86,6 +86,7 @@ const NewMailForm = ({
         )}
       />
       <Button
+        theme="brand"
         align="center"
         mode="primary"
         isLoading={isSubmitting}

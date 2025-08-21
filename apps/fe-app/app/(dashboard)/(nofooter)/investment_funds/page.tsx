@@ -534,7 +534,6 @@ const Funds = () => {
                 setActiveIndexCategoryTab(query.data.tabs[e].identifier)
               }
               activeTab={activeIndexCategoryTab - 1}
-              colorMode="neutral"
               tabs={query.data.tabs?.map((tab) => ({
                 id: String(tab.identifier),
                 content: tab.title,

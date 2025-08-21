@@ -118,6 +118,7 @@ export const OTPForm: React.FC<OTPFormProps> = ({
         ) : (
           showResendButton && (
             <Button
+              theme="brand"
               align="center"
               isLoading={isLoading}
               mode="secondary"
@@ -131,6 +132,7 @@ export const OTPForm: React.FC<OTPFormProps> = ({
         )}
       </div>
       <Button
+        theme="brand"
         align="center"
         mode="primary"
         isLoading={isLoading}

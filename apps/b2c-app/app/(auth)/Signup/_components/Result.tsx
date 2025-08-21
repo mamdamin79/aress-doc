@@ -51,6 +51,7 @@ export const Result: React.FC<ResultProps> = ({ type }) => {
         {type === 'success' ? (
           <Link href={'/'} className="w-full">
             <Button
+              theme="brand"
               className="font-medium"
               align="center"
               isLoading={false}
@@ -63,12 +64,19 @@ export const Result: React.FC<ResultProps> = ({ type }) => {
           </Link>
         ) : (
           <div className="flex w-full flex-row justify-center gap-4">
-            <Button align="center" mode="primary" size="md" type="submit">
+            <Button
+              theme="brand"
+              align="center"
+              mode="primary"
+              size="md"
+              type="submit"
+            >
               ثبت‌نام سجام
             </Button>
 
             <Link href={'/AuthLanding'} className="w-full">
               <Button
+                theme="brand"
                 className="font-medium"
                 align="center"
                 isLoading={false}

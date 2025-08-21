@@ -8,6 +8,7 @@ export * from './ContextMenu';
 export * from './PercentageLabel';
 export * from './FileUpload';
 export * from './Checkbox';
+export * from './Radio';
 export * from './Accordion';
 export * from './AddReportButton';
 export * from './AutoRotateSwitch';
