@@ -35,7 +35,9 @@ const TradePopupWithState = (args: React.ComponentProps<typeof TradePopup>) => {
 
   return (
     <div>
-      <Button onClick={() => setIsOpen(true)}>Open Trade Popup</Button>
+      <Button mode="primary" theme="brand" onClick={() => setIsOpen(true)}>
+        Open Trade Popup
+      </Button>
       <TradePopup {...args} isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </div>
   );

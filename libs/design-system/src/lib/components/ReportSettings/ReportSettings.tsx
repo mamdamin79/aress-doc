@@ -72,6 +72,7 @@ export const ReportSettings: React.FC<ReportSettingsProps> = ({
       </div>
       <div className="flex w-full flex-row gap-1 text-nowrap pb-4 pl-4 pr-[175px] pt-2 text-xs font-semibold">
         <Button
+          theme="brand"
           align="center"
           isLoading={false}
           mode="secondary"
@@ -82,6 +83,7 @@ export const ReportSettings: React.FC<ReportSettingsProps> = ({
           انصراف
         </Button>
         <Button
+          theme="brand"
           align="center"
           isLoading={false}
           mode="primary"

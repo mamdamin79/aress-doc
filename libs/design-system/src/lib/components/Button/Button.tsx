@@ -8,9 +8,9 @@ export interface ButtonProps
   iconLeft?: IconProps;
   iconRight?: IconProps;
   size?: ButtonSize;
-  mode: ButtonMode;
+  mode?: ButtonMode;
   align?: 'center' | 'right';
-  theme: 'brand' | 'error' | 'success' | 'neutral';
+  theme?: 'brand' | 'error' | 'success' | 'neutral';
 }
 
 export const Button: React.FC<ButtonProps> = ({

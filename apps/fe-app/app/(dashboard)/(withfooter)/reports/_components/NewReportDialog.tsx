@@ -91,6 +91,7 @@ export const NewReportDialog = () => {
     >
       <Tooltip title="درخواست گزارش جدید" position="top">
         <Button
+          theme="brand"
           align="center"
           type="button"
           isLoading={false}
@@ -189,6 +190,7 @@ export const NewReportDialog = () => {
             />
           </div>
           <Button
+            theme="brand"
             align="center"
             type="submit"
             isLoading={isSubmitting}

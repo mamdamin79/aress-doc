@@ -1,4 +1,4 @@
-import { MenuItem } from './DesktopMenu/DesktopMenu.types';
+import { MenuItem } from '@shared';
 
 export const MenuData: MenuItem[] = [
   {

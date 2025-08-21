@@ -1,4 +1,4 @@
-import { FilterSection } from './FilterAccordionItems';
+import { FilterSection } from '../../../../components';
 
 export const createFilterSections = (
   selectedReportTypes: string[],

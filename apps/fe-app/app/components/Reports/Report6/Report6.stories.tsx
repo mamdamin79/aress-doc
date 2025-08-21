@@ -12,6 +12,8 @@ type Story = StoryObj<typeof Report6>;
 export const Default: Story = {
   args: {
     data: {
+      indexUnit: 'ریال',
+      netFlowUnit: 'ریال',
       data: [
         {
           dt: '2025-06-28',
