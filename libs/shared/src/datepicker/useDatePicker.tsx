@@ -35,7 +35,7 @@ type UsePersianDatePickerProps = {
 };
 
 // --- CONSTANTS ---
-const JALALI_DATE_FORMAT = 'jYYYY/jM/jD';
+const JALALI_DATE_FORMAT = 'jYYYY/jMM/jDD';
 const PERSIAN_MONTHS = [
   'فروردین',
   'اردیبهشت',
@@ -87,6 +87,11 @@ const usePersianDatePicker = ({
   initialSelection,
   onChange,
 }: UsePersianDatePickerProps) => {
+
+
+  const maxDateCopy = maxDate?.clone();
+  const minDateCopy = minDate?.clone();
+
   // --- STATE MANAGEMENT ---
   const [selection, setSelection] = useState<Selection>(initialSelection);
   const [hoveredDate, setHoveredDate] = useState<JalaliDate | null>(null);
@@ -136,21 +141,19 @@ const usePersianDatePicker = ({
    * @param date The date to check.
    * @returns True if the date is within range.
    */
-const isDateDisabled = useCallback(
-  (date: JalaliDate): boolean => {
-    // const current = momentjalali(date?.clone()?.format('YYYY/MM/DD'), 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD').replace(/[-/]/g, '')
-    // const min = momentjalali(minDate, 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD')
-    // const max = momentjalali(maxDate?.clone()?.format('YYYY/MM/DD'), 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD').replace(/[-/]/g, '')    
+  const isDateDisabled = useCallback(
+    (date: JalaliDate): boolean => {
+      const current = momentjalali(date?.clone()?.format('YYYY/MM/DD'), 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD').replace(/[-/]/g, '')
+      const min = momentjalali(minDateCopy?.clone()?.format('YYYY/MM/DD'), 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD').replace(/[-/]/g, '')
+      const max = momentjalali(maxDateCopy?.clone()?.format('YYYY/MM/DD'), 'YYYY/MM/DD').locale('fa').format('YYYY/MM/DD').replace(/[-/]/g, '')
 
-    console.log(maxDate, minDate, date);
-    
-    // if (min && +current < +min) return true;
-    // if (max && +current > +max) return true;
+      if (+min && +current < +min) return true;
+      if (+max && +current > +max) return true;
 
-    return false;
-  },
-  [minDate, maxDate],
-);
+      return false;
+    },
+    [minDate, maxDate],
+  );
 
   // --- DATE SELECTION LOGIC ---
 
@@ -200,7 +203,7 @@ const isDateDisabled = useCallback(
   // --- EXTERNAL SETTERS & INPUT HANDLERS ---
 
   const setStartDate = useCallback(
-    (date: JalaliDate | null) => {
+    (date: JalaliDate | null) => {      
       if (date && isDateDisabled(date)) return;
       if (!date) {
         setSelection({ start: null, end: null });
@@ -493,24 +496,21 @@ const CalendarView = ({
         const isInHoverRange = isDateInHoverRange(date);
         const tooltipText = getDayTooltip(date);
 
-        console.log(isDisabled);
-        
-
         const dayClasses = [
-          'relative w-10 h-10 flex items-center justify-center rounded-full font-semibold transition-colors duration-150',
-          isDisabled ? 'text-gray-300' : 'cursor-pointer',
-          isCurrentMonth ? 'text-gray-800' : 'text-transparent',
-          !isDisabled && (isStart || isEnd)
+          'relative w-10 h-10 flex shadow-xs items-center justify-center rounded-full font-semibold transition-colors duration-150',
+          isDisabled ? 'text-text-neutral-disable cursor-default' : 'cursor-pointer',
+          isCurrentMonth ? 'text-gray-800' : 'text-transparent cursor-default',
+          !isDisabled && isCurrentMonth && (isStart || isEnd)
             ? 'bg-surface-brand-600-primary text-text-onbrand-neutral-primary-on600'
             : '',
           !isDisabled && range && !(isStart || isEnd) && isInRange
             ? 'bg-blue-100'
             : '',
           !isDisabled &&
-          range &&
-          !(isStart || isEnd) &&
-          !isInRange &&
-          isInHoverRange
+            range &&
+            !(isStart || isEnd) &&
+            !isInRange &&
+            isInHoverRange
             ? 'bg-blue-50'
             : '',
           !isDisabled && !isStart && !isEnd
@@ -529,7 +529,7 @@ const CalendarView = ({
           >
             <button
               type="button"
-              onClick={() => onDayClick(date)}
+              onClick={() => isCurrentMonth && onDayClick(date)}
               onMouseEnter={() => onDayHover(date)}
               // disabled={isDisabled}
               className={dayClasses}
@@ -651,8 +651,6 @@ const PersianDatePicker = ({
 }: PersianDatePickerProps) => {
   const minDate = useMemo(() => parseJalaliDate(min), [min]);
   const maxDate = useMemo(() => parseJalaliDate(max), [max]);
-  console.log(minDate?.format('jYYYY/jMM/jDD'), min);
-  
   const [errors, setErrors] = useState({
     minError: false,
     maxError: false,
@@ -748,12 +746,12 @@ const PersianDatePicker = ({
             {mode === 'single' ? 'تاریخ واریز' : 'تاریخ پایان'}
           </p>
           <DateInput
-            min={min}
+            min='1380-01-01'
+            max='1404-05-31'
             errors={errors}
             errorHandler={(e) =>
               setErrors({ minError: e.minError, maxError: e.maxError })
             }
-            max={max}
             ref={endInputRef}
             equalInput={false}
             defaultValue={
@@ -763,7 +761,9 @@ const PersianDatePicker = ({
             }
             onChange={
               mode === 'single'
-                ? (v) => hook.setStartDate(parseJalaliDate(v))
+                ? (v) => {                  
+                  hook.setStartDate(parseJalaliDate(v));
+                }
                 : handleEndDateChange
             }
             clearDate={() => hook.setStartDate(null)}
@@ -865,7 +865,7 @@ export function App() {
     <div className="flex min-h-screen flex-col items-center gap-12 bg-gray-100 p-8">
       <div className="flex flex-wrap items-start justify-center gap-8">
         <div>
-          <PersianDatePicker mode="single" min="1403/05/29" max="1404/05/29" />
+          <PersianDatePicker mode="single" min="1380/01/01" max="1404/05/31" />
         </div>
       </div>
     </div>

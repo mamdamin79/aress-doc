@@ -6,7 +6,7 @@ import { CustomDate, DatePickerProps } from './DateInput.types';
 import { Icon } from '../Icon';
 import { formatDay, formatMonth, formatYear } from './DateInput.utils';
 import {
-  isJalali,
+  isJalali, isMiladi,
 } from './DateInput.constants';
 import { Dialog } from '@headlessui/react';
 
@@ -35,7 +35,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
   min,
   max,
   active,
-}) => {
+}) => {  
   const [activeIndex, setActiveIndex] = useState<number | null>(1);
   const [day, setDay] = useState<number>(0);
   const [month, setMonth] = useState<number>(0);
@@ -66,33 +66,32 @@ export const DateInput: React.FC<DatePickerProps> = ({
     if (defaultValue) {
       if (typeof defaultValue?.trim() === 'string') {
         if (isJalali(defaultValue).isValid()) {
-          const dateJalali = isJalali(defaultValue);
-          console.log(defaultValue.replace(/[-/]/g, ''));
-          
+          const dateJalali = isJalali(defaultValue);    
+          const dateMiladi = isMiladi(defaultValue);   
           changeDayInput(dateJalali.date(), true);
           changeMonthInput(dateJalali.month() + 1, true);
           changeYearInput(dateJalali.year(), true);
           if (day && month && year) {
             if (
               max &&
-              defaultValue.replace(/[-/]/g, '') > max?.replace(/[-/]/g, '')
+              +defaultValue.replace(/[-/]/g, '') > +max?.replace(/[-/]/g, '')
             ) {
               errorHandler({ minError: false, maxError: true });
             }
             if (
               min &&
-              defaultValue.replace(/[-/]/g, '') < min?.replace(/[-/]/g, '')
+              +defaultValue.replace(/[-/]/g, '') < +min?.replace(/[-/]/g, '')
             ) {
               errorHandler({ minError: true, maxError: false });
             }
 
             onChange(
-              `${dateJalali.year()}-${dateJalali.month() + 1 < 10
-                ? `0${dateJalali.month() + 1}`
-                : dateJalali.month() + 1
-              }-${dateJalali.date() < 10
-                ? `0${dateJalali.date()}`
-                : dateJalali.date()
+              `${dateMiladi.year()}/${dateMiladi.month() + 1 < 10
+                ? `0${dateMiladi.month() + 1}`
+                : dateMiladi.month() + 1
+              }/${dateMiladi.date() < 10
+                ? `0${dateMiladi.date()}`
+                : dateMiladi.date()
               }`
             );
           }
@@ -185,6 +184,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
     const lastDigit = digits.slice(-1); // Get the last digit
     let newInput = digits;
 
+
     if (!arrowChange) {
       if (!dayFocus) {
         setDayFocus(true); // Set focus on day input
@@ -194,6 +194,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
           monthRef.current?.focus(); // Move focus to month input
           setActiveIndex(2); // Update active input index
         }
+        
       } else {
         // --- If the previous value was two digits and user entered a new number ---
         if (Number(inputValue) >= 10 && digits.length === 1) {
@@ -234,7 +235,9 @@ export const DateInput: React.FC<DatePickerProps> = ({
         }
       }
     } else {
-      setDay(e); // Directly set day if arrowChange is true
+      if (e <= 31) {
+        setDay(e); // Directly set day if arrowChange is true
+      }
     }
 
     // Check minimum date constraint
@@ -276,11 +279,21 @@ export const DateInput: React.FC<DatePickerProps> = ({
       maxError: tempMaxError,
     });
 
+    const num = Number(newInput);
+
     // Format and emit the full date if all fields are filled
     if (year && month && e) {
-      onChange(
-        `${String(year).length === 4 && year}-${month < 10 ? `0${month}` : month}-${e < 10 ? `0${e}` : e}`
-      );
+      if (!arrowChange) {
+        onChange(
+          `${String(year).length === 4 && year}/${month < 10 ? `0${month}` : month}/${
+            !dayFocus ? 
+            +e.toString().slice(-1) < 10 ? `0${+e.toString().slice(-1)}` : +e.toString().slice(-1) : 
+            (num > 0 && num <= 31) ? (+e < 10 ? `0${e}` : e) : (+lastDigit >= 1 && +lastDigit <= 9) && (+lastDigit < 10 ? `0${lastDigit}` : lastDigit)
+          }`);
+        } else {
+          onChange(
+            `${String(year).length === 4 && year}/${month < 10 ? `0${month}` : month}/${+e < 10 ? `0${e}` : e }`);
+        }
     }
 
     if (!e) {
@@ -288,8 +301,9 @@ export const DateInput: React.FC<DatePickerProps> = ({
     }
 
     // Handle day overflow for months with less than 31 days
-    if ((e === 31 || (e && isCustomDate(e) && e === 31)) && month > 6)
+    if ((e === 31 || (e && isCustomDate(e) && e === 31)) && month > 6) {
       setDay(30);
+    }
   };
 
 
@@ -355,7 +369,6 @@ export const DateInput: React.FC<DatePickerProps> = ({
             const lastOne = digits.slice(-1);
             setInputValue(lastOne);
             const n = Number(lastOne);
-            console.log(n);
             if (n >= 1 && n <= 9) {
               setMonth(n);
               if (!arrowChange && n > 1) {
@@ -407,7 +420,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
     // Format and pass the date if year, month, and day are provided
     if (year && e && day) {
       onChange(
-        `${String(year).length === 4 && year}-${e < 10 ? `0${e}` : e}-${day < 10 ? `0${day}` : day
+        `${String(year).length === 4 && year}/${e < 10 ? `0${e}` : e}/${day < 10 ? `0${day}` : day
         }`
       );
     }
@@ -506,7 +519,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
     // Format and pass the date if year, month, and day are provided
     if (String(dijital).length === 4 && month && day) {
       onChange(
-        `${String(e).length === 4 && dijital}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day
+        `${String(e).length === 4 && dijital}/${month < 10 ? `0${month}` : month}/${day < 10 ? `0${day}` : day
         }`
       );
     }
