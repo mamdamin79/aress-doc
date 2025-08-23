@@ -1,13 +1,11 @@
-'use client'
+'use client';
 import moment from 'moment';
 import { cn } from '../../../utils';
 import { useEffect, useRef, useState } from 'react';
 import { CustomDate, DatePickerProps } from './DateInput.types';
 import { Icon } from '../Icon';
 import { formatDay, formatMonth, formatYear } from './DateInput.utils';
-import {
-  isJalali, isMiladi,
-} from './DateInput.constants';
+import { isJalali, isMiladi } from './DateInput.constants';
 import { Dialog } from '@headlessui/react';
 
 const isCustomDate = (value: unknown): value is CustomDate => {
@@ -35,12 +33,12 @@ export const DateInput: React.FC<DatePickerProps> = ({
   min,
   max,
   active,
-}) => {  
+}) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(1);
   const [day, setDay] = useState<number>(0);
   const [month, setMonth] = useState<number>(0);
   const [year, setYear] = useState<number>(0);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
   const [minDate, setMinDate] = useState({
     day: 0,
     month: 0,
@@ -56,7 +54,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
   const yearRef = useRef<HTMLInputElement | null>(null);
   const [isArrowKeyPressed, setIsArrowKeyPressed] = useState(false);
   const [activeInput, setActiveInput] = useState(active || false);
-  const [focusInput, setFocusInput] = useState(focus || false);  
+  const [focusInput, setFocusInput] = useState(focus || false);
   const [toggleFlag, setToggleFlag] = useState(false);
   const [yearFocus, setYearFocus] = useState(false);
   const [dayFocus, setDayFocus] = useState(false);
@@ -66,8 +64,8 @@ export const DateInput: React.FC<DatePickerProps> = ({
     if (defaultValue) {
       if (typeof defaultValue?.trim() === 'string') {
         if (isJalali(defaultValue).isValid()) {
-          const dateJalali = isJalali(defaultValue);    
-          const dateMiladi = isMiladi(defaultValue);   
+          const dateJalali = isJalali(defaultValue);
+          const dateMiladi = isMiladi(defaultValue);
           changeDayInput(dateJalali.date(), true);
           changeMonthInput(dateJalali.month() + 1, true);
           changeYearInput(dateJalali.year(), true);
@@ -86,23 +84,25 @@ export const DateInput: React.FC<DatePickerProps> = ({
             }
 
             onChange(
-              `${dateMiladi.year()}/${dateMiladi.month() + 1 < 10
-                ? `0${dateMiladi.month() + 1}`
-                : dateMiladi.month() + 1
-              }/${dateMiladi.date() < 10
-                ? `0${dateMiladi.date()}`
-                : dateMiladi.date()
-              }`
+              `${dateMiladi.year()}/${
+                dateMiladi.month() + 1 < 10
+                  ? `0${dateMiladi.month() + 1}`
+                  : dateMiladi.month() + 1
+              }/${
+                dateMiladi.date() < 10
+                  ? `0${dateMiladi.date()}`
+                  : dateMiladi.date()
+              }`,
             );
           }
           dayRef.current?.blur();
+        }
+      } else {
+        setDay(0);
+        setMonth(0);
+        setYear(0);
       }
-    } else {
-      setDay(0);
-      setMonth(0);
-      setYear(0);
     }
-  }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValue]);
 
@@ -180,10 +180,9 @@ export const DateInput: React.FC<DatePickerProps> = ({
 
   // Function handler to change the input day value
   const changeDayInput = (e: number, arrowChange?: boolean) => {
-    const digits = e.toString().replace(/\D/g, ""); // Remove all non-digit characters
+    const digits = e.toString().replace(/\D/g, ''); // Remove all non-digit characters
     const lastDigit = digits.slice(-1); // Get the last digit
     let newInput = digits;
-
 
     if (!arrowChange) {
       if (!dayFocus) {
@@ -194,7 +193,6 @@ export const DateInput: React.FC<DatePickerProps> = ({
           monthRef.current?.focus(); // Move focus to month input
           setActiveIndex(2); // Update active input index
         }
-        
       } else {
         // --- If the previous value was two digits and user entered a new number ---
         if (Number(inputValue) >= 10 && digits.length === 1) {
@@ -203,7 +201,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
 
         // Add leading zero if needed (e.g., 2 -> 02)
         if (newInput.length === 1) {
-          newInput = newInput.padStart(2, "0");
+          newInput = newInput.padStart(2, '0');
         }
 
         setInputValue(newInput);
@@ -242,10 +240,13 @@ export const DateInput: React.FC<DatePickerProps> = ({
 
     // Check minimum date constraint
     if (minDate.year && minDate.month && minDate.day) {
-      if (+(year + String(month).padStart(2, '0') + String(e).padStart(2, '0')) <
-        +(minDate.year +
+      if (
+        +(year + String(month).padStart(2, '0') + String(e).padStart(2, '0')) <
+        +(
+          minDate.year +
           String(minDate.month).padStart(2, '0') +
-          String(minDate.day).padStart(2, '0'))
+          String(minDate.day).padStart(2, '0')
+        )
       ) {
         tempMinError = true;
       } else tempMinError = false;
@@ -255,9 +256,11 @@ export const DateInput: React.FC<DatePickerProps> = ({
     if (maxDate.year && maxDate.month && maxDate.day) {
       if (
         +(year + String(month).padStart(2, '0') + String(e).padStart(2, '0')) >
-        +(maxDate.year +
+        +(
+          maxDate.year +
           String(maxDate.month).padStart(2, '0') +
-          String(maxDate.day).padStart(2, '0'))
+          String(maxDate.day).padStart(2, '0')
+        )
       ) {
         tempMaxError = true;
       } else tempMaxError = false;
@@ -281,19 +284,31 @@ export const DateInput: React.FC<DatePickerProps> = ({
 
     const num = Number(newInput);
 
+    
+
     // Format and emit the full date if all fields are filled
     if (year && month && e) {
       if (!arrowChange) {
         onChange(
           `${String(year).length === 4 && year}/${month < 10 ? `0${month}` : month}/${
-            !dayFocus ? 
-            +e.toString().slice(-1) < 10 ? `0${+e.toString().slice(-1)}` : +e.toString().slice(-1) : 
-            (num > 0 && num <= 31) ? (+e < 10 ? `0${e}` : e) : (+lastDigit >= 1 && +lastDigit <= 9) && (+lastDigit < 10 ? `0${lastDigit}` : lastDigit)
-          }`);
-        } else {
-          onChange(
-            `${String(year).length === 4 && year}/${month < 10 ? `0${month}` : month}/${+e < 10 ? `0${e}` : e }`);
-        }
+            !dayFocus
+              ? +e.toString().slice(-1) < 10
+                ? `0${+e.toString().slice(-1)}`
+                : +e.toString().slice(-1)
+              : num > 0 && num <= 31
+                ? +e < 10
+                  ? `0${e}`
+                  : e
+                : +lastDigit >= 1 &&
+                  +lastDigit <= 9 &&
+                  (+lastDigit < 10 ? `0${lastDigit}` : lastDigit)
+          }`,
+        );
+      } else {
+        onChange(
+          `${String(year).length === 4 && year}/${month < 10 ? `0${month}` : month}/${+e < 10 ? `0${e}` : e}`,
+        );
+      }
     }
 
     if (!e) {
@@ -306,28 +321,25 @@ export const DateInput: React.FC<DatePickerProps> = ({
     }
   };
 
-
   // Function handler to change the input month value
   const changeMonthInput = (e: number, arrowChange?: boolean) => {
-
-    const digits = e.toString().replace(/\D/g, "");
+    const digits = e.toString().replace(/\D/g, '');
     const lastDigit = digits.slice(-1);
     let lastTwo = digits.slice(-2);
 
     if (!arrowChange) {
       if (!monthFocus) {
         setMonthFocus(true);
-        setMonth(+e.toString().slice(-1))
+        setMonth(+e.toString().slice(-1));
         if (+e.toString().slice(-1) > 1) {
           monthRef.current?.blur();
           yearRef.current?.focus();
           setActiveIndex(3);
         }
       } else {
-
-        if (inputValue === "11" && lastDigit === "1" && !toggleFlag) {
-          lastTwo = "01";
-          setToggleFlag(true);  // دفعه بعد toggle نده
+        if (inputValue === '11' && lastDigit === '1' && !toggleFlag) {
+          lastTwo = '01';
+          setToggleFlag(true); // دفعه بعد toggle نده
         } else {
           setToggleFlag(false); // هر ورودی جدید reset toggle
         }
@@ -364,7 +376,8 @@ export const DateInput: React.FC<DatePickerProps> = ({
               monthRef.current?.blur();
               yearRef.current?.focus();
               setActiveIndex(3);
-            } setMonth(num);
+            }
+            setMonth(num);
           } else {
             const lastOne = digits.slice(-1);
             setInputValue(lastOne);
@@ -389,8 +402,8 @@ export const DateInput: React.FC<DatePickerProps> = ({
       if (
         year + String(e).padStart(2, '0') + String(day).padStart(2, '0') <
         minDate.year +
-        String(minDate.month).padStart(2, '0') +
-        String(minDate.day).padStart(2, '0')
+          String(minDate.month).padStart(2, '0') +
+          String(minDate.day).padStart(2, '0')
       ) {
         tempMinError = true;
       } else tempMinError = false;
@@ -400,8 +413,8 @@ export const DateInput: React.FC<DatePickerProps> = ({
       if (
         year + String(e).padStart(2, '0') + String(day).padStart(2, '0') >
         maxDate.year +
-        String(maxDate.month).padStart(2, '0') +
-        String(maxDate.day).padStart(2, '0')
+          String(maxDate.month).padStart(2, '0') +
+          String(maxDate.day).padStart(2, '0')
       ) {
         tempMaxError = true;
       } else tempMaxError = false;
@@ -417,12 +430,33 @@ export const DateInput: React.FC<DatePickerProps> = ({
       maxError: tempMaxError,
     });
 
+    const num = +digits;
+
     // Format and pass the date if year, month, and day are provided
     if (year && e && day) {
-      onChange(
-        `${String(year).length === 4 && year}/${e < 10 ? `0${e}` : e}/${day < 10 ? `0${day}` : day
-        }`
-      );
+      if (arrowChange) {
+        onChange(
+          `${String(year).length === 4 && year}/${e < 10 ? `0${e}` : e}/${
+            day < 10 ? `0${day}` : day
+          }`,
+        );
+      } else {
+        onChange(
+          `${String(year).length === 4 && year}/${
+            !monthFocus
+              ? +e.toString().slice(-1) < 10
+                ? `0${e.toString().slice(-1)}`
+                : e.toString().slice(-1)
+              : num > 0 && num <= 12
+                ? e < 10
+                  ? `0${e}`
+                  : e
+                : +lastDigit >= 1 && +lastDigit <= 12 && +lastDigit < 10
+                  ? `0${lastDigit}`
+                  : lastDigit
+          }/${day < 10 ? `0${day}` : day}`,
+        );
+      }
     }
 
     // Move focus to next input field if two-digit month input is entered
@@ -455,7 +489,6 @@ export const DateInput: React.FC<DatePickerProps> = ({
     if (e > 6 && e < 12 && day === 31) setDay(30);
   };
 
-
   // Function handler to change the input year value
   const changeYearInput = (e: number, arrowChangg?: boolean) => {
     let dijital = e;
@@ -471,25 +504,33 @@ export const DateInput: React.FC<DatePickerProps> = ({
       } else {
         if (str.length === 2) {
           const firstTwo = parseInt(str);
-          if (firstTwo >= +minYearStr.slice(0, 2) && firstTwo <= +maxYearStr.slice(0, 2)) {
+          if (
+            firstTwo >= +minYearStr.slice(0, 2) &&
+            firstTwo <= +maxYearStr.slice(0, 2)
+          ) {
             setYear(parseInt(str)); // فقط همین عدد 55
           } else {
             const newYear = parseInt(minYearStr.slice(0, 2) + str);
             dijital = newYear;
             setYear(newYear);
           }
-        } else setYear(+str.slice(-4))
+        } else setYear(+str.slice(-4));
       }
     } else setYear(e);
-
 
     // Check for minimum date constraints
     if (minDate.year && minDate.month && minDate.day) {
       if (
-        +(dijital + String(month).padStart(2, '0') + String(day).padStart(2, '0')) <
-        +(minDate.year +
+        +(
+          dijital +
+          String(month).padStart(2, '0') +
+          String(day).padStart(2, '0')
+        ) <
+        +(
+          minDate.year +
           String(minDate.month).padStart(2, '0') +
-          String(minDate.day).padStart(2, '0'))
+          String(minDate.day).padStart(2, '0')
+        )
       ) {
         tempMinError = true;
       } else tempMinError = false;
@@ -497,10 +538,16 @@ export const DateInput: React.FC<DatePickerProps> = ({
     // Check for maximum date constraints
     if (maxDate.year && maxDate.month && maxDate.day) {
       if (
-        +(dijital + String(month).padStart(2, '0') + String(day).padStart(2, '0')) >
-        +(maxDate.year +
+        +(
+          dijital +
+          String(month).padStart(2, '0') +
+          String(day).padStart(2, '0')
+        ) >
+        +(
+          maxDate.year +
           String(maxDate.month).padStart(2, '0') +
-          String(maxDate.day).padStart(2, '0'))
+          String(maxDate.day).padStart(2, '0')
+        )
       ) {
         tempMaxError = true;
       } else tempMaxError = false;
@@ -514,14 +561,23 @@ export const DateInput: React.FC<DatePickerProps> = ({
 
     if (!e) {
       setYear(0);
-    }
+    }    
 
     // Format and pass the date if year, month, and day are provided
-    if (String(dijital).length === 4 && month && day) {
-      onChange(
-        `${String(e).length === 4 && dijital}/${month < 10 ? `0${month}` : month}/${day < 10 ? `0${day}` : day
-        }`
-      );
+    if (String(dijital).length && month && day) {
+      if (arrowChangg) {
+        onChange(
+          `${String(e).length === 4 && dijital}/${month < 10 ? `0${month}` : month}/${
+            day < 10 ? `0${day}` : day
+          }`,
+        );
+      } else {
+        onChange(
+          `${String(e).length > 4 ? dijital.toString().slice(-4) : dijital.toString().length === 4 ? dijital : ''}/${month < 10 ? `0${month}` : month}/${
+            day < 10 ? `0${day}` : day
+          }`,
+        );
+      }
     }
 
     // Move focus to the next input field (month or day) when year input reaches 4 digits
@@ -545,7 +601,8 @@ export const DateInput: React.FC<DatePickerProps> = ({
     }
 
     // Handle leap year and specific month-day constraints for the Jalali calendar
-    if (String(dijital).length === 4 && day === 31 && month && month > 6) setDay(30);
+    if (String(dijital).length === 4 && day === 31 && month && month > 6)
+      setDay(30);
     if (
       String(Dialog).length === 4 &&
       !moment([year]).isLeapYear() &&
@@ -574,6 +631,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
           dayRef?.current?.blur();
         }
         if (activeIndex === 2) {
+          setMonthFocus(false);
           setActiveIndex(3);
           yearRef?.current?.focus();
           monthRef?.current?.blur();
@@ -582,6 +640,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
       if (e.key === 'ArrowRight') {
         setIsArrowKeyPressed(false);
         if (activeIndex === 2) {
+          setMonthFocus(false);
           dayRef?.current?.focus();
           dayRef?.current?.setSelectionRange(0, 2);
           monthRef?.current?.blur();
@@ -603,8 +662,9 @@ export const DateInput: React.FC<DatePickerProps> = ({
         }
         if (activeIndex === 2) {
           changeMonthInput(
-            month ? (month >= 1 && month < 12 ? month + 1 : month) : 1
-            , true);
+            month ? (month >= 1 && month < 12 ? month + 1 : month) : 1,
+            true,
+          );
         }
         if (activeIndex === 1) {
           changeDayInput(day + 1, true);
@@ -623,14 +683,14 @@ export const DateInput: React.FC<DatePickerProps> = ({
         }
         if (activeIndex === 2) {
           changeMonthInput(
-            month ? (month >= 1 && month <= 12 ? month - 1 : 0) : 0, true
+            month ? (month >= 1 && month <= 12 ? month - 1 : 0) : 0,
+            true,
           );
           setIsArrowKeyPressed(false);
         }
       }
     }
   };
-  
 
   useEffect(() => {
     if (isArrowKeyPressed) {
@@ -651,10 +711,10 @@ export const DateInput: React.FC<DatePickerProps> = ({
     setYear(0);
     clearDate();
     setActiveIndex(1);
-  };  
+  };
 
   return (
-    <div className='select-none'>
+    <div className="select-none">
       <div
         onClick={() => {
           if (active) {
@@ -664,25 +724,24 @@ export const DateInput: React.FC<DatePickerProps> = ({
           }
         }}
         className={cn(
-          'w-40 rounded-md bg-white border-brand-600 select-none border-2 flex items-center gap-1 py-2 px-4',
+          'border-brand-600 flex w-40 select-none items-center gap-1 rounded-md border-2 bg-surface-neutral-primary px-4 py-2',
           {
             'border-border-message-error-primary-600':
-              (day && month && year && errors?.minError) ||
-              errors?.maxError,
+              (day && month && year && errors?.minError) || errors?.maxError,
             'border-border-brand-primary-600':
               focusInput &&
               !errors?.maxError &&
-              !errors?.minError && 
+              !errors?.minError &&
               !equalInput,
-            'border-gray-500':
+            'border-border-neutral-secondary':
               year &&
               day &&
               month &&
               !focusInput &&
               !errors.maxError &&
               !errors.minError &&
-              !equalInput
-          }
+              !equalInput,
+          },
         )}
       >
         {activeInput ? (
@@ -700,8 +759,8 @@ export const DateInput: React.FC<DatePickerProps> = ({
               onChange={(e) => changeDayInput(+e.target.value)}
               placeholder="روز"
               className={cn(
-                'w-5 select-none outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
-                activeIndex === 1 && activeIndex && 'bg-blue-200'
+                '-mx-1 block w-5 select-none border-none pb-0.5 outline-none placeholder:text-text-neutral-primary',
+                activeIndex === 1 && activeIndex && 'bg-coloropacity-surface-accent-blue-600-20per',
               )}
             />
             /
@@ -718,8 +777,8 @@ export const DateInput: React.FC<DatePickerProps> = ({
               onChange={(e) => changeMonthInput(+e.target.value, false)}
               placeholder="ماه"
               className={cn(
-                'w-5 select-none outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
-                activeIndex === 2 && activeIndex && 'bg-blue-200'
+                '-mx-1 block w-5 select-none border-none pb-0.5 outline-none placeholder:text-text-neutral-primary',
+                activeIndex === 2 && activeIndex && 'bg-coloropacity-surface-accent-blue-600-20per',
               )}
             />
             /
@@ -731,7 +790,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
                 setActiveIndex(3);
                 yearRef?.current?.setSelectionRange(
                   yearRef?.current?.value.length,
-                  yearRef?.current?.value.length
+                  yearRef?.current?.value.length,
                 );
               }}
               ref={yearRef}
@@ -739,8 +798,8 @@ export const DateInput: React.FC<DatePickerProps> = ({
               onChange={(e) => changeYearInput(+e.target.value)}
               placeholder="سال"
               className={cn(
-                'w-10 select-none outline-none border-none pb-0.5 -mx-1 placeholder:text-black block',
-                activeIndex === 3 && activeIndex && 'bg-blue-200'
+                '-mx-1 block w-10 select-none border-none pb-0.5 outline-none placeholder:text-text-neutral-primary',
+                activeIndex === 3 && activeIndex && 'bg-coloropacity-surface-accent-blue-600-20per',
               )}
             />
             {day && month && year ? (
@@ -748,7 +807,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
                 onClick={() => {
                   clearInputDate();
                 }}
-                className="cursor-pointer mr-4"
+                className="mr-4 cursor-pointer"
               >
                 <Icon name="x" size="lg" />
               </div>
@@ -765,16 +824,18 @@ export const DateInput: React.FC<DatePickerProps> = ({
                 setActiveIndex(1);
               }
             }}
-            className="text-md text-gray-700 py-0.5 select-none"
+            className="text-md select-none py-0.5 text-gray-700"
           >
             {placeholder}
           </span>
         )}
       </div>
-      <div className={cn('invisible h-[22px]', {
-        'visible': day && month && year && focusInput
-      })}>
-          <div className="text-red-600 my-1 absolute text-xs">{errorText}</div>
+      <div
+        className={cn('invisible h-[22px]', {
+          visible: day && month && year && focusInput,
+        })}
+      >
+        <div className="absolute my-1 text-xs text-red-600">{errorText}</div>
       </div>
     </div>
   );
