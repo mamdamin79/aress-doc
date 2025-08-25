@@ -52,7 +52,7 @@ export type CustomIconName =
   | 'CustomCaretUp'
   | 'CustomCaretDown'
   | 'CustomPng'
-  | 'CustompdfLite'
+  | 'CustomPdfLite'
   | 'CustomCsvFile'
   | 'CustomToseeTaavon';
 

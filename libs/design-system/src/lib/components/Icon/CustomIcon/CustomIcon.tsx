@@ -3,8 +3,9 @@ import { IconProps } from '../Icon';
 import { SIZE_VALUES, STROKE_VALUES } from '../Icon.constants';
 import { CUSTOM_ICONS } from './CustomIcon.constants';
 import { cn } from '../../../../utils/classNames.utils';
+import { IconName } from '../Icon.types';
 
-const ICONS_WITH_NO_STROKE_CONTROL = [
+const ICONS_WITH_NO_STROKE_CONTROL: IconName[] = [
   'CustomDay',
   'CustomEghtesadNovin',
   'CustomGardeshgari',
@@ -32,7 +33,8 @@ const ICONS_WITH_NO_STROKE_CONTROL = [
   'CustomToseeTaavon',
   'CustomAyandeh',
   'CustomPng',
-  'CustomPdf',
+  'CustomPdfLite',
+  'CustomTelegram',
 ];
 
 const ICONS_WITH_VIEWBOX_ISSUE = [
