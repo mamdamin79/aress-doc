@@ -4,6 +4,7 @@ const { composePlugins, withNx } = require('@nx/next');
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
  **/
 const nextConfig = {
+  output: 'standalone',
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   webpack(config: any) {
     // Grab the existing rule that handles SVG imports

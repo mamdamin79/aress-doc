@@ -75,4 +75,8 @@ export const MenuData: MenuItem[] = [
     text: 'صندوق‌های سرمایه گذاری',
     link: '/investment_funds',
   },
+  {
+    text: 'صندوق من',
+    link: '/my-fund',
+  },
 ];
