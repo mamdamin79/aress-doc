@@ -52,6 +52,9 @@ import { ReactComponent as CustomPdf } from './src/icons/CustomPdf.svg';
 import { ReactComponent as CustomPng } from './src/icons/CustomPng.svg';
 import { ReactComponent as CustomPdfLite } from './src/icons/CustomPdfLite.svg';
 import { ReactComponent as CustomCsvFile } from './src/icons/CustomCsvFile.svg';
+import { ReactComponent as CustomFirefox } from './src/icons/CustomFirefox.svg';
+import { ReactComponent as CustomSafari } from './src/icons/CustomSafari.svg';
+import { ReactComponent as CustomEdge } from './src/icons/CustomEdge.svg';
 
 import { SVGProps } from 'react';
 
@@ -110,4 +113,7 @@ export const CUSTOM_ICONS: Record<string, React.FC<SVGProps<SVGSVGElement>>> = {
   CustomPng,
   CustomPdfLite,
   CustomCsvFile,
+  CustomFirefox,
+  CustomSafari,
+  CustomEdge,
 };
