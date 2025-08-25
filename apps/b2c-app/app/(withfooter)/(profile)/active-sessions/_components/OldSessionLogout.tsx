@@ -18,6 +18,7 @@ export const OldSessionLogout: React.FC = () => {
           </div>
         </div>
         <OptionsDropdown
+          className="w-20"
           dropDownList={[
             { text: '۱ هفته' },
             { text: '۳ ماه' },
