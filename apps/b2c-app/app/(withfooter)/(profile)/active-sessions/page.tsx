@@ -15,38 +15,41 @@ export default function ActiveSessionsPage() {
       isCurrent: true,
       loginDate: '۱۴۰۴/۴/۷',
       loginTime: '۱۳:۰۴',
-      onTerminate: () =>
-        console.log('Current session cannot be terminated from UI'),
+      gradientClass:
+        'bg-gradient-to-b from-surface-accent-blue-400 to-surface-accent-blue-700',
     },
     {
       deviceType: 'iOS 16',
-      browserIcon: { name: 'search-check', size: 'md' },
+      browserIcon: { name: 'CustomSafari', size: 'md' },
       browserName: 'Safari 16',
       location: 'مونترال، کانادا',
       isCurrent: false,
       loginDate: '۱۴۰۴/۴/۷',
       loginTime: '۱۳:۰۴',
-      onTerminate: () => console.log('Terminate iOS session'),
+      gradientClass:
+        'bg-gradient-to-b from-surface-accent-blue-300 to-surface-accent-blue-500',
     },
     {
       deviceType: 'Android 12',
-      browserIcon: { name: 'search-code', size: 'md' },
+      browserIcon: { name: 'globe', size: 'md' },
       browserName: 'Samsung Internet 25',
       location: 'مونترال، کانادا',
       isCurrent: false,
       loginDate: '۱۴۰۴/۴/۷',
       loginTime: '۱۳:۰۴',
-      onTerminate: () => console.log('Terminate Android session'),
+      gradientClass:
+        'bg-gradient-to-b from-surface-accent-green-300 to-surface-accent-green-500',
     },
     {
       deviceType: 'Mac 14 pro',
-      browserIcon: { name: 'search-slash', size: 'md' },
+      browserIcon: { name: 'CustomEdge', size: 'md' },
       browserName: 'Microsoft Edge 138',
       location: 'مونترال، کانادا',
       isCurrent: false,
       loginDate: '۱۴۰۴/۴/۷',
       loginTime: '۱۳:۰۴',
-      onTerminate: () => console.log('Terminate Mac session'),
+      gradientClass:
+        'bg-gradient-to-b from-surface-accent-gray-400 to-surface-accent-gray-700',
     },
   ];
 

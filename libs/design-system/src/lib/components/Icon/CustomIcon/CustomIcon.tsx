@@ -123,9 +123,9 @@ export const CustomIcon: React.FC<IconProps> = ({ name, size = 'md' }) => {
       {
         'stroke-white': name === 'CustomBookmark' || name === 'CustomArrow',
       },
-      {
-        'hover:text-text-brand-primary-600 cursor-pointer': !isHardcodedIcon,
-      },
+      // {
+      //   'hover:text-text-brand-primary-600 cursor-pointer': !isHardcodedIcon,
+      // },
     ),
   };
 

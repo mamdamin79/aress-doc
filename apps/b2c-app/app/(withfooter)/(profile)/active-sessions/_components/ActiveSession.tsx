@@ -1,5 +1,5 @@
 'use client';
-import { Icon, IconProps, LogoutModal } from 'design-system';
+import { cn, Icon, IconProps, LogoutModal } from 'design-system';
 import React, { useState } from 'react';
 
 export interface ActiveSessionProps {
@@ -10,7 +10,7 @@ export interface ActiveSessionProps {
   isCurrent: boolean;
   loginTime: string;
   loginDate: string;
-  onTerminate?: () => void;
+  gradientClass?: string;
 }
 
 export const ActiveSession: React.FC<ActiveSessionProps> = ({
@@ -21,12 +21,18 @@ export const ActiveSession: React.FC<ActiveSessionProps> = ({
   loginDate,
   loginTime,
   browserIcon,
+  gradientClass,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="flex min-h-[84px] items-center justify-between p-3">
       <div className="flex items-start gap-2">
-        <div className="border-border-neutral-secondary flex h-8 w-8 shrink-0 items-center justify-center rounded-full border">
+        <div
+          className={cn(
+            'border-border-neutral-secondary flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-white',
+            gradientClass,
+          )}
+        >
           <Icon name={browserIcon.name} size={browserIcon.size} />
         </div>
         <div>
