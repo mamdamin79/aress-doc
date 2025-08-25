@@ -284,8 +284,6 @@ export const DateInput: React.FC<DatePickerProps> = ({
 
     const num = Number(newInput);
 
-    
-
     // Format and emit the full date if all fields are filled
     if (year && month && e) {
       if (!arrowChange) {
@@ -561,7 +559,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
 
     if (!e) {
       setYear(0);
-    }    
+    }
 
     // Format and pass the date if year, month, and day are provided
     if (String(dijital).length && month && day) {
@@ -724,16 +722,18 @@ export const DateInput: React.FC<DatePickerProps> = ({
           }
         }}
         className={cn(
-          'border-brand-600 flex w-40 select-none items-center gap-1 rounded-md border-2 bg-surface-neutral-primary px-4 py-2',
+          'border-brand-600 bg-surface-neutral-primary flex h-[46px] w-40 select-none items-center gap-1 rounded-md border-2 px-4 py-2',
           {
             'border-border-message-error-primary-600':
               (day && month && year && errors?.minError) || errors?.maxError,
             'border-border-brand-primary-600':
               focusInput &&
+              activeIndex &&
               !errors?.maxError &&
               !errors?.minError &&
               !equalInput,
             'border-border-neutral-secondary':
+              activeInput &&
               year &&
               day &&
               month &&
@@ -759,8 +759,10 @@ export const DateInput: React.FC<DatePickerProps> = ({
               onChange={(e) => changeDayInput(+e.target.value)}
               placeholder="روز"
               className={cn(
-                '-mx-1 block w-5 select-none border-none pb-0.5 outline-none placeholder:text-text-neutral-primary',
-                activeIndex === 1 && activeIndex && 'bg-coloropacity-surface-accent-blue-600-20per',
+                'placeholder:text-text-neutral-primary -mx-1 block w-5 select-none border-none pb-0.5 outline-none',
+                activeIndex === 1 &&
+                  activeIndex &&
+                  'bg-coloropacity-surface-accent-blue-600-20per',
               )}
             />
             /
@@ -777,8 +779,10 @@ export const DateInput: React.FC<DatePickerProps> = ({
               onChange={(e) => changeMonthInput(+e.target.value, false)}
               placeholder="ماه"
               className={cn(
-                '-mx-1 block w-5 select-none border-none pb-0.5 outline-none placeholder:text-text-neutral-primary',
-                activeIndex === 2 && activeIndex && 'bg-coloropacity-surface-accent-blue-600-20per',
+                'placeholder:text-text-neutral-primary -mx-1 block w-5 select-none border-none pb-0.5 outline-none',
+                activeIndex === 2 &&
+                  activeIndex &&
+                  'bg-coloropacity-surface-accent-blue-600-20per',
               )}
             />
             /
@@ -798,8 +802,10 @@ export const DateInput: React.FC<DatePickerProps> = ({
               onChange={(e) => changeYearInput(+e.target.value)}
               placeholder="سال"
               className={cn(
-                '-mx-1 block w-10 select-none border-none pb-0.5 outline-none placeholder:text-text-neutral-primary',
-                activeIndex === 3 && activeIndex && 'bg-coloropacity-surface-accent-blue-600-20per',
+                'placeholder:text-text-neutral-primary -mx-1 block w-10 select-none border-none pb-0.5 outline-none',
+                activeIndex === 3 &&
+                  activeIndex &&
+                  'bg-coloropacity-surface-accent-blue-600-20per',
               )}
             />
             {day && month && year ? (

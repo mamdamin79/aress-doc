@@ -106,19 +106,25 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
         modal={false}
         anchor={dropDownStyles.anchor}
         className={cn(
-          'border-border-neutral-primary bg-surface-neutral-primary text-text-neutral-primary z-50 mt-1 max-h-[265px] gap-1 overflow-y-scroll rounded-lg border outline-none',
+          'border-border-neutral-primary bg-surface-neutral-primary text-text-neutral-primary z-50 mt-1 gap-1 rounded-lg border outline-none',
           dropDownStyles.shadow && 'shadow-7xl',
-          dropDownStyles.scrollable && 'scrollbar-sm',
           dropDownStyles.scrollable || 'hidescrollbar',
           !dropDownStyles.fixedWidth && 'w-fit',
           className,
         )}
-        style={
-          dropDownStyles.fixedWidth
-            ? { width: `${dropDownStyles.fixedWidth}px` }
-            : undefined
-        }
+        style={{
+          width: dropDownStyles.fixedWidth
+            ? `${dropDownStyles.fixedWidth}px`
+            : undefined,
+          height: dropDownStyles.maxHeight
+            ? `${dropDownStyles.maxHeight}px`
+            : undefined,
+        }}
       >
+        <div className={cn('my-2 max-h-[265px] overflow-y-scroll', {
+          'scrollbar-sm': dropDownStyles.scrollable,
+        })}>
+
         {dropDownList.map((item, index) => (
           <ListboxOption
             className="!z-50"
@@ -145,6 +151,8 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
             }
           </ListboxOption>
         ))}
+        </div>
+
       </ListboxOptions>
     </Listbox>
   );

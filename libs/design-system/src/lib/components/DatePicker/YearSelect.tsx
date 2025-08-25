@@ -1,27 +1,33 @@
-import { cn } from "../../../utils/classNames.utils";
-import { Icon } from "../Icon";
-import { OptionsDropdown } from "../OptionsDropdown";
+import { cn } from '../../../utils/classNames.utils';
+import { Icon } from '../Icon';
+import { OptionsDropdown } from '../OptionsDropdown';
 
 interface Props {
-    years: number[];
-    calendar: string;
-    setCurrentDate: (date: string) => void;
+  years: number[];
+  calendar: string;
+  setCurrentDate: (date: string) => void;
 }
 
-export function YearSelect ({years, calendar, setCurrentDate}: Props) {
+export function YearSelect({ years, calendar, setCurrentDate }: Props) {
   return (
     <OptionsDropdown
-      customTriggerRender={({isActive}) => (
+      customTriggerRender={({ isActive }) => (
         <div
           className={cn(
-            'hover:bg-brand-50 flex h-10 w-20 cursor-pointer border-2 border-white items-center justify-center gap-0.5 rounded-md bg-white text-center text-sm font-semibold',
+            'hover:bg-brand-50 flex h-10 w-[72px] cursor-pointer items-center justify-center gap-0.5 rounded-md border-2 border-transparent bg-surface-neutral-primary text-center text-sm font-semibold',
             {
-              'border-[#0C9292]': isActive
+              'border-border-brand-primary-600': isActive,
             },
           )}
         >
           {calendar.slice(0, 4)}
-          <Icon name="chevron-down" size="md" />
+          <div
+            className={cn('transition-transform duration-300', {
+              'rotate-180 text-icon-brand-primary-600': isActive,
+            })}
+          >
+            <Icon name="chevron-down" size="md" />
+          </div>{' '}
         </div>
       )}
       customOptionRender={(item) => (
@@ -41,19 +47,16 @@ export function YearSelect ({years, calendar, setCurrentDate}: Props) {
       )}
       onChange={(selectedItem) => {
         setCurrentDate(
-          `${selectedItem}-${calendar.slice(
-            5,
-            7,
-          )}-${calendar.slice(8, 9)}`,
+          `${selectedItem}/${calendar.slice(5, 7)}/${+calendar.slice(8, 9) < 10 ? `0${calendar.slice(8, 9)}` : calendar.slice(8, 9)}`,
         );
       }}
       dropDownStyles={{
-        anchor: 'bottom',
         checkSelected: true,
         size: 'lg',
         scrollable: true,
+        maxHeight: 248,
       }}
       dropDownList={years.map((year) => ({ text: String(year) }))}
     />
   );
-};
+}

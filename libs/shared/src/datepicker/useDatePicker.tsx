@@ -2,7 +2,15 @@
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import moment from 'moment-jalaali';
 import momentjalali from 'jalali-moment';
-import { Button, cn, DateInput, Icon, Tooltip } from 'design-system';
+import {
+  Button,
+  cn,
+  DateInput,
+  Icon,
+  MonthSelect,
+  Tooltip,
+  YearSelect,
+} from 'design-system';
 
 // --- TYPES ---
 // Defines the structure for a date object used internally.
@@ -140,7 +148,6 @@ const usePersianDatePicker = ({
     if (!minDate || !maxDate || view === 'single') return false;
     return !minDate.clone().add(1, 'jMonth').isAfter(maxDate);
   }, [minDate, maxDate, view]);
-
   // --- HELPER & VALIDATION FUNCTIONS ---
 
   /**
@@ -179,6 +186,14 @@ const usePersianDatePicker = ({
     },
     [minDate, maxDate],
   );
+
+  // --- DERIVED STATE: Selected days count ---
+  const selectedDaysCount = useMemo(() => {
+    if (mode === 'range' && selection.start && selection.end) {
+      return selection.end.diff(selection.start, 'days') + 1;
+    }
+    return 0;
+  }, [mode, selection.start, selection.end]);
 
   // --- DATE SELECTION LOGIC ---
 
@@ -454,11 +469,30 @@ const usePersianDatePicker = ({
    */
   const isDateInHoverRange = useCallback(
     (day: JalaliDate): boolean => {
-      if (mode !== 'range' || !selection.start || selection.end || !hoveredDate)
-        return false;
+      if (mode !== 'range' || !selection.start || !hoveredDate) return false;
+
       const start = selection.start;
-      if (hoveredDate.isBefore(start)) return false;
-      return day.isBetween(start, hoveredDate, 'day', '()');
+      const end = selection.end;
+
+      // Case 1: Only start is selected (no end yet)
+      if (!end) {
+        if (hoveredDate.isBefore(start)) return false;
+        // Highlight between start and hoveredDate (exclusive)
+        return day.isBetween(start, hoveredDate, 'day', '()');
+      }
+
+      // Case 2: Both start and end are selected
+      // If user hovers after end → highlight between end and hoveredDate
+      if (hoveredDate.isAfter(end)) {
+        return day.isBetween(end, hoveredDate, 'day', '()');
+      }
+
+      // If user hovers before start → highlight between hoveredDate and start
+      if (hoveredDate.isBefore(start)) {
+        return day.isBetween(hoveredDate, start, 'day', '()');
+      }
+
+      return false;
     },
     [selection, hoveredDate, mode],
   );
@@ -471,6 +505,7 @@ const usePersianDatePicker = ({
     focusedInput,
     isValid,
     isDualViewPossible,
+    selectedDaysCount,
     // Days for rendering
     leftCalendarDays,
     rightCalendarDays,
@@ -500,6 +535,7 @@ const usePersianDatePicker = ({
  * Renders a single calendar month view.
  */
 const CalendarView = ({
+  mode,
   calendarDays,
   onDayClick,
   onDayHover,
@@ -519,8 +555,8 @@ const CalendarView = ({
           {day}
         </div>
       ))}
-      <div className="bg-border-neutral-secondary col-span-7 h-[1px] w-full rounded-md" />
-      {calendarDays.map(({ date, isCurrentMonth, range }, index) => {
+      <div className="bg-border-neutral-secondary col-span-7 h-[1px] w-full gap-0 rounded-md" />
+      {calendarDays.map(({ date, isCurrentMonth }, index) => {
         const isDisabled = isDateDisabled(date);
         const isStart = selection.start?.isSame(date, 'day');
         const isEnd = selection.end?.isSame(date, 'day');
@@ -528,60 +564,95 @@ const CalendarView = ({
         const isInHoverRange = isDateInHoverRange(date);
         const tooltipText = getDayTooltip(date);
 
-        const isWeekStart = index % 7 === 0
+        const isWeekStart = index % 7 === 0;
         const isWeekEnd = index % 7 === 6;
         const dayClasses = [
-          'relative w-10 h-10 flex mx-auto items-center justify-center font-semibold transition-colors duration-150',
+          'relative w-10 h-10 flex absolute -top-0.5 rounded-full mx-auto items-center justify-center mb-0.5 font-semibold',
           isDisabled && 'text-text-neutral-disable cursor-default',
+          !isInRange &&
+            isCurrentMonth &&
+            !isDisabled &&
+            mode === 'range' &&
+            'hover:border-border-brand-primary-600 hover:border-2',
+          !isInRange &&
+            isCurrentMonth &&
+            !isDisabled &&
+            mode === 'single' &&
+            !isStart &&
+            'hover:border-buttton-neutral-border-default hover:border-2',
+          isInHoverRange && isCurrentMonth && !isDisabled && '!shadow-none',
           isCurrentMonth
             ? 'text-gray-800 shadow-xs'
             : 'text-transparent cursor-default',
+          isInRange && '!shadow-none',
           !isDisabled && isCurrentMonth && (isStart || isEnd)
-            ? 'bg-surface-brand-600-primary !w-10 rounded-full text-text-onbrand-neutral-primary-on600'
+            ? 'bg-surface-brand-600-primary rounded-full text-text-onbrand-neutral-primary-on600'
             : '',
           !isDisabled &&
-          range &&
-          !(isStart || isEnd) &&
-          !isInRange &&
-          !isDisabled && isCurrentMonth && !isStart && !isEnd
-            ? 'hover:border-2 hover:bg-border-button-neutral-border-default'
-            : '',
-          isInRange && isCurrentMonth &&
-            'text-text-onbrand-colored-primary-on200_100_50 bg-surface-brand-200 hover:border-none !hover:bg-surface-brand-300-disable',
-          isWeekStart && 'rounded-r-full',
-          isWeekEnd && 'rounded-l-full w-10',
-          !isWeekEnd && isInRange && 'w-12 rounded-none',
-          !isInRange && 'rounded-full',
-          isInHoverRange && isCurrentMonth && 'rounded-none border-t-2 border-b-2 border-border-brand-disable-300 w-11 shadow-none',
-          isInHoverRange && isWeekEnd && isCurrentMonth && 'border-l-2 border-border-brand-disable-300 w-10',
-          isInHoverRange && isWeekStart && isCurrentMonth && 'border-r-2 border-border-brand-disable-300 w-10',
-          isCurrentMonth && date.jDate() === 1 && 'rounded-r-full',
-          isCurrentMonth && isInHoverRange && date.jDate() === 1 && 'border-r-2',
-          
+            isInRange &&
+            isCurrentMonth &&
+            'text-text-onbrand-colored-primary-on200_100_50 bg-surface-brand-200 hover:bg-surface-brand-300-disable',
         ]
           .filter(Boolean)
           .join(' ');
 
         return (
-          <Tooltip
-            key={date.format('YYYY-MM-DD')}
-            title={getDayTooltip(date)}
-            className={`flex items-center justify-center`}
-          >
-            <button
-              type="button"
-              onClick={() => isCurrentMonth && onDayClick(date)}
-              onMouseEnter={() => onDayHover(date)}
-              disabled={isDisabled}
-              className={dayClasses}
-            >
-              {isCurrentMonth && date.jDate()}
-              {tooltipText && (
-                <span className="pointer-events-none absolute -top-8 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">
-                  {tooltipText}
-                </span>
+          <Tooltip key={date.format('YYYY-MM-DD')} title={getDayTooltip(date)}>
+            <div
+              className={cn(
+                'relative h-10 w-[45px] border-b-2 border-t-2 border-transparent',
+                {
+                  'rounded-r-full border-r-2 border-transparent':
+                    (isWeekStart && isCurrentMonth) || date.jDate() === 1,
+                  'w-10 rounded-l-full border-l-2 border-transparent':
+                    isWeekEnd && isCurrentMonth,
+                  'rounded-l-full': date.jDate() === 31,
+                  'border-border-brand-disable-300 border-b-2 border-t-2':
+                    isInHoverRange && isCurrentMonth,
+                  'border-border-brand-disable-300 box-border rounded-l-full border-l-2':
+                    isInHoverRange && isWeekEnd && isCurrentMonth,
+                  'border-border-brand-disable-300 rounded-r-full border-r-2':
+                    isInHoverRange && isWeekStart && isCurrentMonth,
+                  'text-text-onbrand-colored-primary-on200_100_50 bg-surface-brand-200':
+                    isInRange && isCurrentMonth,
+                },
               )}
-            </button>
+            >
+              {isStart && (
+                <div
+                  className={cn(
+                    'border-surface-brand-200 absolute -top-0.5 left-0 mb-1 h-10 w-5',
+                    {
+                      'bg-surface-brand-200': selection.start && selection.end,
+                    },
+                  )}
+                ></div>
+              )}
+              {isEnd && (
+                <div
+                  className={cn(
+                    'border-surface-brand-200 absolute -top-0.5 right-0 mb-1 h-10 w-5',
+                    {
+                      'bg-surface-brand-200': selection.end,
+                    },
+                  )}
+                ></div>
+              )}
+              <button
+                type="button"
+                onClick={() => isCurrentMonth && onDayClick(date)}
+                onMouseEnter={() => onDayHover(date)}
+                disabled={isDisabled}
+                className={dayClasses}
+              >
+                {isCurrentMonth && date.jDate()}
+                {tooltipText && (
+                  <span className="pointer-events-none absolute -top-8 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">
+                    {tooltipText}
+                  </span>
+                )}
+              </button>
+            </div>
           </Tooltip>
         );
       })}
@@ -617,12 +688,12 @@ const CalendarControls = ({
   }, [minDate, maxDate, currentYear]);
 
   const months = useMemo(() => {
-    return PERSIAN_MONTHS.map((name, index) => {
+    return PERSIAN_MONTHS.map((text, index) => {
       const monthDate = viewDate.clone().jMonth(index);
       const isDisabled =
         (minDate && monthDate.isBefore(minDate, 'jMonth')) ||
         (maxDate && monthDate.isAfter(maxDate, 'jMonth'));
-      return { name, index, isDisabled };
+      return { text, index, isDisabled };
     });
   }, [viewDate, minDate, maxDate]);
 
@@ -651,32 +722,23 @@ const CalendarControls = ({
         </button>
       )}
       <div className="flex items-center gap-1">
-        <select
-          value={currentMonth}
-          onChange={(e) => onMonthChange(parseInt(e.target.value))}
-          className="bg-surface-neutral-primary cursor-pointer rounded-sm border-none px-2 py-1 outline-none focus:ring-0"
-        >
-          {months.map((month) => (
-            <option
-              key={month.index}
-              value={month.index}
-              disabled={month.isDisabled}
-            >
-              {month.name}
-            </option>
-          ))}
-        </select>
-        <select
-          value={currentYear}
-          onChange={(e) => onYearChange(parseInt(e.target.value))}
-          className="bg-surface-neutral-primary cursor-pointer rounded-sm border-none px-2 py-1 outline-none focus:ring-0"
-        >
-          {years.map((year) => (
-            <option key={year} value={year}>
-              {year}
-            </option>
-          ))}
-        </select>
+        <div className={cn("absolute top-[138px] z-50", {
+          'right-[172px]': isLeft,
+          'left-[96px]': mode === 'range' && !isLeft,
+        })}>
+          <MonthSelect
+            calendar="1403-12-10"
+            months={months}
+            type="start"
+            setCurrentDate={(e) => console.log(e)}
+          />
+        </div>
+        <div className={cn("absolute top-[138px] z-50", {
+          'right-[96px]': isLeft,
+          'right-[430px]': mode === 'range' && !isLeft,
+        })}>
+        <YearSelect calendar='1403-12-10' years={years} setCurrentDate={(e) => console.log(e)} />
+        </div>
       </div>
       {isLeft && (
         <button
@@ -703,7 +765,6 @@ export const PersianDatePicker = ({
 }: PersianDatePickerProps) => {
   const minDate = useMemo(() => parseJalaliDate(min), [min]);
   const maxDate = useMemo(() => parseJalaliDate(max), [max]);
-  const [focusInput, setFocusInput] = useState<'start' | 'end'>('start');
   const [errors, setErrors] = useState({
     minError: false,
     maxError: false,
@@ -770,7 +831,7 @@ export const PersianDatePicker = ({
 
   return (
     <div
-      className="bg-surface-neutral-secondary min-w-[356px] max-w-[704px] rounded-lg border px-6 py-4 font-sans shadow-lg"
+      className="bg-surface-neutral-secondary relative h-[570px] min-w-[350px] max-w-[704px] rounded-lg border px-6 py-4 font-sans shadow-lg"
       onMouseLeave={() => hook.setHoveredDate(null)}
     >
       {/* --- Inputs Header --- */}
@@ -781,6 +842,7 @@ export const PersianDatePicker = ({
               تاریخ شروع
             </p>
             <DateInput
+              placeholder="تاریخ شروع"
               min={min}
               max={max}
               errors={errors}
@@ -792,7 +854,7 @@ export const PersianDatePicker = ({
                 hook.setEndDate(null);
               }}
               active={true}
-              focus={focusInput === 'end'}
+              focus={hook.selection.start ? true : false}
               ref={startInputRef}
               value={formatJalaliDate(hook.selection.start) || ''}
               onChange={handleStartDateChange}
@@ -809,13 +871,17 @@ export const PersianDatePicker = ({
             'flex-1': mode === 'single',
           })}
         >
-          <p className="text-text-neutral-primary mb-1 text-right text-sm font-medium">
-            {mode === 'single' ? 'تاریخ واریز' : 'تاریخ پایان'}
+          <p className="text-text-neutral-primary mb-1 h-[26px] text-right text-sm font-medium">
+            {hook.selection.start &&
+              (mode === 'range' ? 'تاریخ پایان' : 'تاریخ انتخاب')}
           </p>
           <DateInput
+            placeholder="تاریخ پایان"
             min={min}
-            focus={focusInput === 'start'}
             max={max}
+            focus={
+              mode === 'range' ? (hook.selection.start ? true : false) : true
+            }
             errors={errors}
             errorHandler={(e) =>
               setErrors({ minError: e.minError, maxError: e.maxError })
@@ -843,7 +909,9 @@ export const PersianDatePicker = ({
                 ? 'تاریخ انتخاب شده مجاز نمیباشد.'
                 : ''
             }
-            active={true}
+            active={
+              mode === 'range' ? (hook.selection.start ? true : false) : true
+            }
           />
         </div>
       </div>
@@ -865,6 +933,7 @@ export const PersianDatePicker = ({
               mode={mode}
             />
             <CalendarView
+              mode={mode}
               calendarDays={hook.leftCalendarDays}
               onDayClick={hook.handleDayClick}
               onDayHover={hook.setHoveredDate}
@@ -907,6 +976,7 @@ export const PersianDatePicker = ({
             isLeft={true}
           />
           <CalendarView
+            mode={mode}
             calendarDays={
               hook.isDualViewPossible && mode === 'range'
                 ? hook.rightCalendarDays
@@ -924,10 +994,27 @@ export const PersianDatePicker = ({
       </div>
 
       {/* --- Footer --- */}
-      <div className="mt-4 flex justify-end">
-        <Button size="sm" className="w-fit" disabled={!hook.isValid}>
-          {mode === 'range' ? 'اعمال بازه' : 'اعمال'}
-        </Button>
+      <div className="absolute bottom-6 left-0 mt-4 flex w-full px-6">
+        <div
+          className={cn('flex w-full items-center', {
+            'justify-end': mode === 'single' || !hook.selectedDaysCount,
+            'justify-between': mode === 'range' && hook.selectedDaysCount,
+          })}
+        >
+          {mode === 'range' && hook.selectedDaysCount > 0 && (
+            <div className="bg-surface-neutral-primary text-text-neutral-primary rounded-sm px-2 py-1.5 text-sm">
+              <span>
+                بازه دلخواه:{' '}
+                <span className="mr-1 font-medium">
+                  {hook.selectedDaysCount > 0 ? hook.selectedDaysCount : ''} روز
+                </span>
+              </span>
+            </div>
+          )}
+          <Button size="sm" className="w-fit" disabled={!hook.isValid}>
+            {mode === 'range' ? 'اعمال بازه' : 'اعمال'}
+          </Button>
+        </div>
       </div>
     </div>
   );
