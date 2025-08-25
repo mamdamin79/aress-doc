@@ -11,6 +11,7 @@ build
 # Next.js
 .next
 out
+.cursor
 
 storybook-static
 .vercel

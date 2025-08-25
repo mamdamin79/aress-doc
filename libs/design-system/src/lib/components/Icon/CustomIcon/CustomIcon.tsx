@@ -35,6 +35,8 @@ const ICONS_WITH_NO_STROKE_CONTROL: IconName[] = [
   'CustomPng',
   'CustomPdfLite',
   'CustomTelegram',
+  'CustomCaretUp',
+  'CustomCaretDown',
 ];
 
 const ICONS_WITH_VIEWBOX_ISSUE = [
