@@ -6,11 +6,13 @@ interface Props {
   years: number[];
   calendar: string;
   setCurrentDate: (date: string) => void;
+  value: number;
 }
 
-export function YearSelect({ years, calendar, setCurrentDate }: Props) {
+export function YearSelect({ years, calendar, setCurrentDate, value }: Props) {  
   return (
     <OptionsDropdown
+      className='overflow-y-hidden'
       customTriggerRender={({ isActive }) => (
         <div
           className={cn(
@@ -20,7 +22,7 @@ export function YearSelect({ years, calendar, setCurrentDate }: Props) {
             },
           )}
         >
-          {calendar.slice(0, 4)}
+          {value}
           <div
             className={cn('transition-transform duration-300', {
               'rotate-180 text-icon-brand-primary-600': isActive,
@@ -33,14 +35,14 @@ export function YearSelect({ years, calendar, setCurrentDate }: Props) {
       customOptionRender={(item) => (
         <div
           className={cn(
-            'hover:bg-brand-50 flex w-20 cursor-pointer justify-center gap-0.5 bg-white py-2 text-center text-sm font-normal',
+            'hover:bg-surface-brand-50 flex w-20 cursor-pointer justify-center gap-0.5 bg-surface-neutral-primary overflow-y-hidden py-2 text-center text-sm font-normal',
             {
-              'bg-brand-100': item.text.includes(calendar.slice(0, 4)),
+              'bg-surface-brand-100': +item.text === value,
             },
           )}
         >
           <div className="text-brand-700">
-            {+item.text === +calendar.slice(0, 4) && <Icon name="check" />}
+            {+item.text === value && <Icon name="check" />}
           </div>
           {item.text}
         </div>
@@ -54,7 +56,6 @@ export function YearSelect({ years, calendar, setCurrentDate }: Props) {
         checkSelected: true,
         size: 'lg',
         scrollable: true,
-        maxHeight: 248,
       }}
       dropDownList={years.map((year) => ({ text: String(year) }))}
     />

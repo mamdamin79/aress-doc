@@ -7,25 +7,26 @@ interface Props {
   calendar: string;
   setCurrentDate: (date: string) => void;
   type: 'start' | 'end';
+  value: number;
 }
 
-export function MonthSelect({ months, calendar, type, setCurrentDate }: Props) {
+export function MonthSelect({ months, calendar, type, setCurrentDate, value }: Props) {    
   return (
     <OptionsDropdown
       initialSelectedIndex={+calendar.slice(5, 7) - 1}
-      customOptionRender={({ isActive, text }) => (
+      customOptionRender={(item) => (
         <div
           className={cn(
             'hover:bg-surface-brand-50 flex cursor-pointer items-center px-1 py-2 font-normal',
             {
-              'bg-surface-brand-100': isActive,
+              'bg-surface-brand-100': item.text === months[value].text,
             },
           )}
         >
           <div className="text-brand-700 w-6">
-            {isActive && <Icon name="check" size="md" />}
+            {item.text === months[value].text && <Icon name="check" size="md" />}
           </div>
-          {text}
+          {item.text}
         </div>
       )}
       customTriggerRender={({ isActive }) => (
@@ -37,7 +38,7 @@ export function MonthSelect({ months, calendar, type, setCurrentDate }: Props) {
             },
           )}
         >
-          {months[parseInt(calendar.slice(5, 7), 10) - 1].text}
+          {months[value].text}
           <div
             className={cn('transition-transform duration-300', {
               'rotate-180 text-icon-brand-primary-600': isActive,
@@ -48,11 +49,7 @@ export function MonthSelect({ months, calendar, type, setCurrentDate }: Props) {
         </div>
       )}
       onChange={(_, id) => {
-        setCurrentDate(
-          `${calendar.slice(0, 4)}/${
-            id && id < 10 ? `0${id}` : id
-          }/${+calendar.slice(8, 9) < 10 ? `0${calendar.slice(8, 9)}` : calendar.slice(8, 9)}`,
-        );
+          setCurrentDate(String(id && id - 1));
       }}
       dropDownStyles={{
         checkSelected: true,

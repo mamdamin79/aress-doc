@@ -116,12 +116,41 @@ const usePersianDatePicker = ({
   });
 
   useEffect(() => {
-    if (selection.start) {
-      const newLeft = selection.start.clone();
-      const newRight =
-        view === 'dual' ? newLeft.clone().add(1, 'jMonth') : null;
-      setViewDates({ left: newLeft, right: newRight });
-    }
+    // If there is no start date selected, do nothing
+    if (!selection.start) return;
+
+    setViewDates((curr) => {
+      const { left, right } = curr;
+
+      // --- Dual calendar mode ---
+      if (view === 'dual' && right) {
+        // If the selected start date is before the left calendar month
+        if (selection.start?.isBefore(left)) {
+          const newLeft = selection.start.clone();
+          const newRight = newLeft.clone().add(1, 'jMonth');
+          return { left: newLeft, right: newRight };
+        }
+
+        // If the selected start date is after the right calendar month
+        if (selection.start?.isAfter(right)) {
+          const newRight = selection.start.clone();
+          const newLeft = newRight.clone().subtract(1, 'jMonth');
+          return { left: newLeft, right: newRight };
+        }
+
+        // If the start date is within the current left/right range → do not change view
+        return curr;
+      }
+
+      // --- Single calendar mode ---
+      // If the selected start date's month is different from the currently visible one
+      if (!selection.start?.isSame(left)) {
+        return { left: selection.start?.clone(), right: null };
+      }
+
+      // Otherwise, keep the current view unchanged
+      return curr;
+    });
   }, [selection.start, view]);
 
   // Effect to handle external changes and notify parent component.
@@ -233,7 +262,7 @@ const usePersianDatePicker = ({
           // Set new end
           setSelection({ start, end: day });
           // Optional: focus start again after a full range is selected
-          // setFocusedInput('start');
+          setFocusedInput('start');
         }
       }
     },
@@ -432,12 +461,15 @@ const usePersianDatePicker = ({
       const { start, end } = selection;
       if (mode === 'range') {
         if (!start && !end) return 'تاریخ شروع';
-        if (start && !end) {
+        if (start && !end && focusedInput === 'end') {
           return date.isBefore(start) ? 'تاریخ شروع' : 'تاریخ پایان';
+        }
+        if (start && !end && focusedInput === 'start') {
+          return 'تاریخ شروع';
         }
         if (start && end) {
           if (focusedInput === 'start') {
-            return date.isAfter(end) ? 'تاریخ پایان' : 'تاریخ شروع';
+            return 'تاریخ شروع';
           }
           if (focusedInput === 'end') {
             return date.isBefore(start) ? 'تاریخ شروع' : 'تاریخ پایان';
@@ -474,27 +506,36 @@ const usePersianDatePicker = ({
       const start = selection.start;
       const end = selection.end;
 
-      // Case 1: Only start is selected (no end yet)
+      // فقط start انتخاب شده
       if (!end) {
         if (hoveredDate.isBefore(start)) return false;
-        // Highlight between start and hoveredDate (exclusive)
         return day.isBetween(start, hoveredDate, 'day', '()');
       }
 
-      // Case 2: Both start and end are selected
-      // If user hovers after end → highlight between end and hoveredDate
+      // --- قوانین جدید بر اساس فوکوس ---
+      // اگر فوکوس روی شروع باشد و هاور بعد از end → صفر
+      if (focusedInput === 'start' && hoveredDate.isAfter(end)) {
+        return false;
+      }
+      // اگر فوکوس روی پایان باشد و هاور قبل از start → صفر
+      if (focusedInput === 'end' && hoveredDate.isBefore(start)) {
+        return false;
+      }
+      // --- پایان قوانین جدید ---
+
+      // هاور بعد از end → پیش‌نمایش end..hovered
       if (hoveredDate.isAfter(end)) {
         return day.isBetween(end, hoveredDate, 'day', '()');
       }
 
-      // If user hovers before start → highlight between hoveredDate and start
+      // هاور قبل از start → پیش‌نمایش hovered..start
       if (hoveredDate.isBefore(start)) {
         return day.isBetween(hoveredDate, start, 'day', '()');
       }
 
       return false;
     },
-    [selection, hoveredDate, mode],
+    [selection, hoveredDate, mode, focusedInput],
   );
 
   return {
@@ -537,6 +578,7 @@ const usePersianDatePicker = ({
 const CalendarView = ({
   mode,
   calendarDays,
+  focusInput,
   onDayClick,
   onDayHover,
   selection,
@@ -545,6 +587,8 @@ const CalendarView = ({
   isDateInHoverRange,
   getDayTooltip,
 }) => {
+  console.log(selection);
+
   return (
     <div className="grid grid-cols-7 gap-1 text-center">
       {PERSIAN_WEEKDAYS_SHORT.map((day) => (
@@ -563,9 +607,12 @@ const CalendarView = ({
         const isInRange = isDateInRange(date);
         const isInHoverRange = isDateInHoverRange(date);
         const tooltipText = getDayTooltip(date);
-
         const isWeekStart = index % 7 === 0;
         const isWeekEnd = index % 7 === 6;
+        const daysInThisJMonth = date.clone().endOf('jMonth').jDate();
+        const isLastDayOfThisJMonth =
+          isCurrentMonth && date.jDate() === daysInThisJMonth;
+
         const dayClasses = [
           'relative w-10 h-10 flex absolute -top-0.5 rounded-full mx-auto items-center justify-center mb-0.5 font-semibold',
           isDisabled && 'text-text-neutral-disable cursor-default',
@@ -582,11 +629,12 @@ const CalendarView = ({
             'hover:border-buttton-neutral-border-default hover:border-2',
           isInHoverRange && isCurrentMonth && !isDisabled && '!shadow-none',
           isCurrentMonth
-            ? 'text-gray-800 shadow-xs'
+            ? 'text-gray-800 shadow-xs bg-surface-neutral-primary'
             : 'text-transparent cursor-default',
-          isInRange && '!shadow-none',
+          isInRange && !isStart && !isEnd && '!shadow-none bg-transparent',
+          isInHoverRange && 'bg-transparent',
           !isDisabled && isCurrentMonth && (isStart || isEnd)
-            ? 'bg-surface-brand-600-primary rounded-full text-text-onbrand-neutral-primary-on600'
+            ? '!bg-surface-brand-600-primary rounded-full text-text-onbrand-neutral-primary-on600'
             : '',
           !isDisabled &&
             isInRange &&
@@ -597,7 +645,10 @@ const CalendarView = ({
           .join(' ');
 
         return (
-          <Tooltip key={date.format('YYYY-MM-DD')} title={getDayTooltip(date)}>
+          <Tooltip
+            key={date.format('YYYY-MM-DD')}
+            title={isCurrentMonth && getDayTooltip(date)}
+          >
             <div
               className={cn(
                 'relative h-10 w-[45px] border-b-2 border-t-2 border-transparent',
@@ -607,7 +658,7 @@ const CalendarView = ({
                   'w-10 rounded-l-full border-l-2 border-transparent':
                     isWeekEnd && isCurrentMonth,
                   'rounded-l-full': date.jDate() === 31,
-                  'border-border-brand-disable-300 border-b-2 border-t-2':
+                  'border-border-brand-disable-300 bg-surface-neutral-primary border-b-2 border-t-2':
                     isInHoverRange && isCurrentMonth,
                   'border-border-brand-disable-300 box-border rounded-l-full border-l-2':
                     isInHoverRange && isWeekEnd && isCurrentMonth,
@@ -615,10 +666,11 @@ const CalendarView = ({
                     isInHoverRange && isWeekStart && isCurrentMonth,
                   'text-text-onbrand-colored-primary-on200_100_50 bg-surface-brand-200':
                     isInRange && isCurrentMonth,
+                  '!rounded-l-full border-l-2': isLastDayOfThisJMonth,
                 },
               )}
             >
-              {isStart && (
+              {isStart && isCurrentMonth && (
                 <div
                   className={cn(
                     'border-surface-brand-200 absolute -top-0.5 left-0 mb-1 h-10 w-5',
@@ -626,9 +678,9 @@ const CalendarView = ({
                       'bg-surface-brand-200': selection.start && selection.end,
                     },
                   )}
-                ></div>
+                />
               )}
-              {isEnd && (
+              {isEnd && isCurrentMonth && (
                 <div
                   className={cn(
                     'border-surface-brand-200 absolute -top-0.5 right-0 mb-1 h-10 w-5',
@@ -636,7 +688,7 @@ const CalendarView = ({
                       'bg-surface-brand-200': selection.end,
                     },
                   )}
-                ></div>
+                />
               )}
               <button
                 type="button"
@@ -693,7 +745,7 @@ const CalendarControls = ({
       const isDisabled =
         (minDate && monthDate.isBefore(minDate, 'jMonth')) ||
         (maxDate && monthDate.isAfter(maxDate, 'jMonth'));
-      return { text, index, isDisabled };
+      return { text, id: index, isDisabled };
     });
   }, [viewDate, minDate, maxDate]);
 
@@ -722,22 +774,32 @@ const CalendarControls = ({
         </button>
       )}
       <div className="flex items-center gap-1">
-        <div className={cn("absolute top-[138px] z-50", {
-          'right-[172px]': isLeft,
-          'left-[96px]': mode === 'range' && !isLeft,
-        })}>
+        <div
+          className={cn('absolute top-[138px] z-50', {
+            'right-[172px]': isLeft,
+            'left-[96px]': mode === 'range' && !isLeft,
+          })}
+        >
           <MonthSelect
             calendar="1403-12-10"
             months={months}
+            value={currentMonth}
             type="start"
-            setCurrentDate={(e) => console.log(e)}
+            setCurrentDate={(e) => onMonthChange(parseInt(e))}
           />
         </div>
-        <div className={cn("absolute top-[138px] z-50", {
-          'right-[96px]': isLeft,
-          'right-[430px]': mode === 'range' && !isLeft,
-        })}>
-        <YearSelect calendar='1403-12-10' years={years} setCurrentDate={(e) => console.log(e)} />
+        <div
+          className={cn('absolute top-[138px] z-50', {
+            'right-[96px]': isLeft,
+            'right-[430px]': mode === 'range' && !isLeft,
+          })}
+        >
+          <YearSelect
+            value={currentYear}
+            calendar="1403-12-10"
+            years={years}
+            setCurrentDate={(e) => onYearChange(parseInt(e))}
+          />
         </div>
       </div>
       {isLeft && (
@@ -820,7 +882,6 @@ export const PersianDatePicker = ({
         hook.selection.start &&
         parsed.isBefore(hook.selection.start)
       ) {
-        hook.setStartDate(parsed);
         hook.setEndDate(null);
         hook.setFocusedInput('end');
       } else {
@@ -828,12 +889,8 @@ export const PersianDatePicker = ({
       }
     }
   };
-
   return (
-    <div
-      className="bg-surface-neutral-secondary relative h-[570px] min-w-[350px] max-w-[704px] rounded-lg border px-6 py-4 font-sans shadow-lg"
-      onMouseLeave={() => hook.setHoveredDate(null)}
-    >
+    <div className="bg-surface-neutral-secondary relative h-[570px] min-w-[350px] max-w-[704px] rounded-lg border px-6 py-4 font-sans shadow-lg">
       {/* --- Inputs Header --- */}
       <div className={`mb-4 flex items-center justify-center gap-2`}>
         {mode === 'range' && (
@@ -842,6 +899,7 @@ export const PersianDatePicker = ({
               تاریخ شروع
             </p>
             <DateInput
+              onClick={() => hook.setFocusedInput('start')}
               placeholder="تاریخ شروع"
               min={min}
               max={max}
@@ -854,7 +912,7 @@ export const PersianDatePicker = ({
                 hook.setEndDate(null);
               }}
               active={true}
-              focus={hook.selection.start ? true : false}
+              focus={hook.focusedInput === 'start' ? true : false}
               ref={startInputRef}
               value={formatJalaliDate(hook.selection.start) || ''}
               onChange={handleStartDateChange}
@@ -872,15 +930,24 @@ export const PersianDatePicker = ({
           })}
         >
           <p className="text-text-neutral-primary mb-1 h-[26px] text-right text-sm font-medium">
-            {hook.selection.start &&
-              (mode === 'range' ? 'تاریخ پایان' : 'تاریخ انتخاب')}
+            {mode === 'single'
+              ? 'انتخاب واریز'
+              : (hook.focusedInput === 'end' || hook.selection.end) &&
+                'تاریخ پایان'}
           </p>
           <DateInput
+            onClick={() => {
+              if (hook.selection.start) hook.setFocusedInput('end');
+            }}
             placeholder="تاریخ پایان"
             min={min}
             max={max}
             focus={
-              mode === 'range' ? (hook.selection.start ? true : false) : true
+              mode === 'range'
+                ? hook.focusedInput === 'end'
+                  ? true
+                  : false
+                : true
             }
             errors={errors}
             errorHandler={(e) =>
@@ -903,7 +970,6 @@ export const PersianDatePicker = ({
                   }
                 : handleEndDateChange
             }
-            clearDate={() => hook.setStartDate(null)}
             errorText={
               errors.minError || errors.maxError
                 ? 'تاریخ انتخاب شده مجاز نمیباشد.'
@@ -917,7 +983,10 @@ export const PersianDatePicker = ({
       </div>
 
       {/* --- Calendar Views --- */}
-      <div className="flex justify-center gap-5">
+      <div
+        className="flex justify-center gap-5"
+        onMouseLeave={() => hook.setHoveredDate(null)}
+      >
         {/* Left Calendar */}
         {hook.isDualViewPossible && mode === 'range' && (
           <div className="flex-1">
@@ -933,6 +1002,7 @@ export const PersianDatePicker = ({
               mode={mode}
             />
             <CalendarView
+              focusInput={hook.focusedInput}
               mode={mode}
               calendarDays={hook.leftCalendarDays}
               onDayClick={hook.handleDayClick}
@@ -976,6 +1046,7 @@ export const PersianDatePicker = ({
             isLeft={true}
           />
           <CalendarView
+            focusInput={hook.focusedInput}
             mode={mode}
             calendarDays={
               hook.isDualViewPossible && mode === 'range'

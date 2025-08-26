@@ -20,7 +20,6 @@ export interface DropdownCell {
 }
 
 export interface DropDownStyle {
-  maxHeight?: number;
   scrollable?: boolean;
   shadow?: boolean;
   size?: DropdownSize;

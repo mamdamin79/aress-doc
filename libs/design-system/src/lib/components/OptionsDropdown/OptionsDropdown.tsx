@@ -116,9 +116,7 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
           width: dropDownStyles.fixedWidth
             ? `${dropDownStyles.fixedWidth}px`
             : undefined,
-          height: dropDownStyles.maxHeight
-            ? `${dropDownStyles.maxHeight}px`
-            : undefined,
+
         }}
       >
         <div className={cn('my-2 max-h-[265px] overflow-y-scroll', {

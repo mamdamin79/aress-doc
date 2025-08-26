@@ -24,7 +24,7 @@ export const DateInput: React.FC<DatePickerProps> = ({
   defaultValue,
   errorHandler,
   focus,
-  equalInput,
+  onClick,
   placeholder,
   errorText,
   errors,
@@ -61,6 +61,12 @@ export const DateInput: React.FC<DatePickerProps> = ({
   const [monthFocus, setMonthFocus] = useState(false);
 
   useEffect(() => {
+    if (typeof defaultValue !== 'string' || defaultValue.trim() === '') {
+      setDay(0);
+      setMonth(0);
+      setYear(0);
+      return;
+    }
     if (defaultValue) {
       if (typeof defaultValue?.trim() === 'string') {
         if (isJalali(defaultValue).isValid()) {
@@ -111,7 +117,11 @@ export const DateInput: React.FC<DatePickerProps> = ({
   }, [active]);
 
   useEffect(() => {
-    if (!focus) setActiveIndex(null);
+    if (!focus) {
+      setActiveIndex(null);
+    } else {
+      setActiveIndex(1);
+    }
     setFocusInput(focus);
   }, [focus]);
 
@@ -712,26 +722,21 @@ export const DateInput: React.FC<DatePickerProps> = ({
   };
 
   return (
-    <div className="select-none">
+    <div className="select-none relative" onClick={onClick}>
+      {
+        !focus &&
+        <div 
+        onClick={onClick}
+        className='absolute right-0 top-0 w-[80%] h-[65%]'></div>
+      }
       <div
-        onClick={() => {
-          if (active) {
-            setFocusInput(true);
-            setFocusInput(true);
-            if (!activeIndex) setActiveIndex(1);
-          }
-        }}
         className={cn(
           'border-brand-600 bg-surface-neutral-primary flex h-[46px] w-40 select-none items-center gap-1 rounded-md border-2 px-4 py-2',
           {
             'border-border-message-error-primary-600':
               (day && month && year && errors?.minError) || errors?.maxError,
             'border-border-brand-primary-600':
-              focusInput &&
-              activeIndex &&
-              !errors?.maxError &&
-              !errors?.minError &&
-              !equalInput,
+              focus && active && !errors?.maxError && !errors?.minError,
             'border-border-neutral-secondary':
               activeInput &&
               year &&
@@ -739,47 +744,51 @@ export const DateInput: React.FC<DatePickerProps> = ({
               month &&
               !focusInput &&
               !errors.maxError &&
-              !errors.minError &&
-              !equalInput,
+              !errors.minError,
           },
         )}
       >
         {activeInput ? (
           <>
             <input
-              disabled={!activeInput}
+              disabled={!activeInput || !focus}
               onClick={() => {
-                setMonthFocus(false);
-                setYearFocus(false);
-                if (activeIndex) setActiveIndex(1);
-                dayRef?.current?.setSelectionRange(2, 2);
+                if (focus) {
+                  setMonthFocus(false);
+                  setYearFocus(false);
+                  if (activeIndex) setActiveIndex(1);
+                  dayRef?.current?.setSelectionRange(2, 2);
+                }
               }}
               ref={dayRef}
               value={formatDay(day)}
               onChange={(e) => changeDayInput(+e.target.value)}
               placeholder="روز"
               className={cn(
-                'placeholder:text-text-neutral-primary -mx-1 block w-5 select-none border-none pb-0.5 outline-none',
+                'placeholder:text-text-neutral-primary disabled:bg-surface-neutral-primary -mx-1 block w-5 select-none border-none pb-0.5 outline-none',
                 activeIndex === 1 &&
                   activeIndex &&
+                  focus &&
                   'bg-coloropacity-surface-accent-blue-600-20per',
               )}
             />
             /
             <input
-              disabled={!activeInput}
+              disabled={!activeInput || !focus}
               onClick={() => {
-                setDayFocus(false);
-                setYearFocus(false);
-                setActiveIndex(2);
-                monthRef?.current?.setSelectionRange(2, 2);
+                if (focus) {
+                  setDayFocus(false);
+                  setYearFocus(false);
+                  setActiveIndex(2);
+                  monthRef?.current?.setSelectionRange(2, 2);
+                }
               }}
               ref={monthRef}
               value={formatMonth(month)}
               onChange={(e) => changeMonthInput(+e.target.value, false)}
               placeholder="ماه"
               className={cn(
-                'placeholder:text-text-neutral-primary -mx-1 block w-5 select-none border-none pb-0.5 outline-none',
+                'placeholder:text-text-neutral-primary disabled:bg-surface-neutral-primary -mx-1 block w-5 select-none border-none pb-0.5 outline-none',
                 activeIndex === 2 &&
                   activeIndex &&
                   'bg-coloropacity-surface-accent-blue-600-20per',
@@ -787,22 +796,24 @@ export const DateInput: React.FC<DatePickerProps> = ({
             />
             /
             <input
-              disabled={!activeInput}
+              disabled={!activeInput || !focus}
               onClick={() => {
-                setDayFocus(false);
-                setMonthFocus(false);
-                setActiveIndex(3);
-                yearRef?.current?.setSelectionRange(
-                  yearRef?.current?.value.length,
-                  yearRef?.current?.value.length,
-                );
+                if (focus) {
+                  setDayFocus(false);
+                  setMonthFocus(false);
+                  setActiveIndex(3);
+                  yearRef?.current?.setSelectionRange(
+                    yearRef?.current?.value.length,
+                    yearRef?.current?.value.length,
+                  );
+                }
               }}
               ref={yearRef}
               value={formatYear(year)}
               onChange={(e) => changeYearInput(+e.target.value)}
               placeholder="سال"
               className={cn(
-                'placeholder:text-text-neutral-primary -mx-1 block w-10 select-none border-none pb-0.5 outline-none',
+                'placeholder:text-text-neutral-primary disabled:bg-surface-neutral-primary -mx-1 block w-10 select-none border-none pb-0.5 outline-none',
                 activeIndex === 3 &&
                   activeIndex &&
                   'bg-coloropacity-surface-accent-blue-600-20per',
