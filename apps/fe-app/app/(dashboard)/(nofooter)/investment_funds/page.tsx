@@ -330,6 +330,8 @@ const Funds = () => {
   // request to get funds table data
   const query = useFundsServiceGetFundsTable({ tab: activeIndexCategoryTab });
 
+  const { data: tabs } = useFundsServiceGetFundsTable({ tab: 1 });
+
   useEffect(() => {
     table.setPageSize(10);
   }, [activeIndexCategoryTab]);
@@ -613,6 +615,8 @@ const Funds = () => {
     });
   };
 
+  if (query.isLoading) document.body.style.overflow = 'hidden';
+
   return (
     <>
       <div
@@ -621,19 +625,19 @@ const Funds = () => {
           isHeaderVisible ? 'translate-y-0' : '-translate-y-full',
         )}
       >
-        {!query.data ? (
+        {!tabs ? (
           <div className="-mt-2">
-            <TabsSkeleton />
+            <TabsSkeleton />/
           </div>
         ) : (
-          query.data.tabs && (
+          tabs.tabs && (
             <Tabs
               variant="shaped-color"
               onClickTab={(e) =>
-                setActiveIndexCategoryTab(query.data.tabs[e].identifier)
+                setActiveIndexCategoryTab(tabs.tabs[e].identifier)
               }
               activeTab={activeIndexCategoryTab - 1}
-              tabs={query.data.tabs?.map((tab) => ({
+              tabs={tabs.tabs?.map((tab) => ({
                 id: String(tab.identifier),
                 title: tab.title,
                 tag: tab.color as FundsTagProps['color'],
@@ -658,7 +662,12 @@ const Funds = () => {
         <div className="bg-border-brand-soft-200 absolute right-2 top-[75px] z-50 h-0.5 w-full" />
         <div
           ref={tableRef}
-          className="table-scroll group/table bg-surface-neutral-primary scrollbar-lg h-[calc(100vh-172px)] w-screen overflow-auto scroll-smooth"
+          className={cn(
+            'table-scroll group/table bg-surface-neutral-primary scrollbar-lg w-screen overflow-auto scroll-smooth',
+            {
+              'h-[calc(100vh-172px)]': isHeaderVisible,
+            },
+          )}
         >
           <table
             dir="rtl"
@@ -1002,7 +1011,7 @@ const Funds = () => {
                 activeIndexCategoryTab={activeIndexCategoryTab}
               />
             ) : (
-              <tbody>
+              <tbody className="overflow-y-hidden">
                 {Array.from({ length: 10 }).map((_, i) => (
                   <RowSkeleton key={i} />
                 ))}
