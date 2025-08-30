@@ -46,20 +46,6 @@ const meta: Meta<typeof BottomSheet> = {
       control: 'boolean',
       description: 'Whether the bottom sheet should be expandable',
     },
-    maxHeight: {
-      control: { type: 'range', min: 0.1, max: 1, step: 0.05 },
-      description:
-        'Maximum height of the bottom sheet as a percentage of viewport height',
-    },
-    defaultSnap: {
-      control: { type: 'range', min: 0.1, max: 1, step: 0.05 },
-      description:
-        'Default height of the bottom sheet as a percentage of viewport height',
-    },
-    showCloseButton: {
-      control: 'boolean',
-      description: 'Whether to show a close button in the header',
-    },
   },
 };
 

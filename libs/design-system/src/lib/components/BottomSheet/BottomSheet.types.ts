@@ -37,22 +37,4 @@ export interface BottomSheetProps {
    * @default false
    */
   expandOnContentDrag?: boolean;
-
-  /**
-   * Maximum height of the bottom sheet as a percentage of viewport height
-   * @default 0.95
-   */
-  maxHeight?: number;
-
-  /**
-   * Default height of the bottom sheet as a percentage of viewport height
-   * @default 0.6
-   */
-  defaultSnap?: number;
-
-  /**
-   * Whether to show a close button in the header
-   * @default true
-   */
-  showCloseButton?: boolean;
 }
