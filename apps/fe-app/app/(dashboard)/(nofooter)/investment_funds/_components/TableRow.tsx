@@ -1,61 +1,26 @@
 import React, { useCallback, useState } from 'react';
-import type { Row } from '@tanstack/react-table';
-import { Bookmark } from 'design-system';
-import { useCustomToast } from 'design-system';
 import {
+  FundsLogo,
   Icon,
   OptionsDropdown,
   Tooltip,
   cn,
-  formatNumber,
+  Bookmark,
+  useCustomToast,
 } from 'design-system';
-
-export interface FundRow {
-  nameFund: string;
-  isEtf: boolean;
-  logo?: string;
-  isTradable: boolean;
-}
-
-interface TableRowProps<T extends FundRow> {
-  row: Row<T>;
-  logo: string;
-  isMainTab: boolean;
-  activeIndexCategoryTab: number;
-  rowMarks: Record<number, Record<string, string>>;
-  handleColorChange: (id: string, color: string) => void;
-  toggleWatchList: (args: { id: string }) => void;
-  setPineWatchList: React.Dispatch<React.SetStateAction<string[]>>;
-  pineWatchLis: string[];
-  watchList: string[];
-  isScrollAtStart: boolean;
-}
-
-interface FundsInfoCellProps {
-  name: string;
-  logo?: string;
-  pined: boolean;
-  selected: boolean;
-  isScrolled: boolean;
-  className?: string;
-  isEtf: boolean;
-  pinedFunction: () => void;
-  category: 'stocks' | 'watchlist';
-  unPinedFunction: () => void;
-  toggleWatchList: () => void;
-  canPin: boolean;
-  tag: boolean;
-  isRowHovered: boolean;
-  isTradable: boolean;
-}
+import {
+  useFundsServicePostFundsTableTabByTabPin,
+  useFundsServicePostFundsTableTabByTabUnpin,
+  useFundsServicePostFundsTableTabByTabMark,
+  useFundsServicePostFundsTableTabByTabUnmark,
+} from '@openapi';
+import { FundRow, FundsInfoCellProps, TableRowProps } from '../types';
 
 function FundsInfoCell({
   name,
   isEtf,
   tag,
-  toggleWatchList,
   unPinedFunction,
-  category,
   pinedFunction,
   logo,
   canPin,
@@ -65,7 +30,7 @@ function FundsInfoCell({
   className,
   isTradable,
 }: FundsInfoCellProps) {
-  const { showProgressToast, showToast } = useCustomToast();
+  const { showProgressToast } = useCustomToast();
   const [isShowDropDown, setIsShowDropDown] = useState(false);
 
   return (
@@ -104,26 +69,19 @@ function FundsInfoCell({
           قابل خرید
         </span>
         <div
-          className={cn(
-            'bg-vividGreen-600 invisible box-content h-2.5 w-2.5 rounded-full border-2 border-white',
-            {
-              visible: tag,
-            },
-          )}
+          className={cn('invisible box-content h-2.5 w-2.5 rounded-full', {
+            visible: tag,
+          })}
         ></div>
         <div className="group/img relative">
-          <div className="h-8 w-8 overflow-hidden rounded-full">
-            <img src={logo} alt="logo fund" />
-          </div>
-          {pined && (
-            <div className="absolute -right-1 top-5">
-              <div className="flex items-center justify-center text-black">
-                <Icon name="CustomPin" size="sm" />
-              </div>
-            </div>
-          )}
+          <FundsLogo
+            hasTag={false}
+            isPin={pined}
+            color="green"
+            src={`http://185.236.36.153:8000${logo}`}
+          />
         </div>
-        {name.length > 13 ? (
+        {name.length > 21 ? (
           <Tooltip offset={2} position="left" title={name}>
             <p className="text-gray-1000 hover:text-text-brand-contrast-700 w-[130px] truncate text-right text-sm font-medium">
               {name}
@@ -162,21 +120,21 @@ function FundsInfoCell({
             dropDownList={[
               { text: 'مشاهده صندوق', icon: { name: 'eye', size: 'md' } },
               { text: 'مشاهده ویدیو', icon: { name: 'video', size: 'md' } },
-              { text: 'نشان‌دار کردن', icon: { name: 'target', size: 'md' } },
               {
                 text: pined ? 'برداشتن پین' : 'پین کردن',
                 icon: { name: pined ? 'pin-off' : 'pin', size: 'md' },
               },
-              {
-                text:
-                  category === 'stocks'
-                    ? 'افزودن به دیده‌بان'
-                    : 'حذف از دیده‌بان',
-                icon: {
-                  name: category === 'stocks' ? 'plus' : 'minus',
-                  size: 'md',
-                },
-              },
+              // {
+              //   text:
+              //     category === 'stocks'
+              //       ? 'افزودن به دیده‌بان'
+              //       : 'حذف از دیده‌بان',
+              //   icon: {
+              //     name: category === 'stocks' ? 'plus' : 'minus',
+              //     size: 'md',
+              //   },
+              // },
+              { text: 'افزودن به دیده بان' },
             ]}
             customTriggerRender={(prop) => {
               return (
@@ -201,34 +159,9 @@ function FundsInfoCell({
               return (
                 <div
                   onClick={() => {
-                    if (!canPin && prop.text === 'پین کردن') {
-                      showToast({
-                        message:
-                          'حداکثر میتوانید ۳ صندوق را در هر دسته بندی پین کنید.',
-                        type: 'warning',
-                      });
-                    }
-                    if (prop.text === 'پین کردن' && canPin) {
-                      pinedFunction();
-                      showProgressToast({
-                        timeout: 5000,
-                        title: 'صندوق مورد نظر پین شد.',
-                      });
-                    }
-                    if (prop.text === 'برداشتن پین') {
-                      unPinedFunction();
-                      showProgressToast({
-                        title: 'صندوق از لیست پین شده‌ها خارج شد.',
-                        timeout: 3000,
-                        leadingAction: {
-                          iconProps: { name: 'undo-2', size: 'sm' },
-                          onClick: () => pinedFunction(),
-                        },
-                      });
-                    }
-
+                    if (prop.text === 'پین کردن' && canPin) pinedFunction();
+                    if (prop.text === 'برداشتن پین') unPinedFunction();
                     if (prop.text === 'افزودن به دیده‌بان') {
-                      toggleWatchList();
                       showProgressToast({
                         title: 'صندوق مورد نظر به دیده بان اضافه شد.',
                         timeout: 3000,
@@ -240,10 +173,9 @@ function FundsInfoCell({
                         timeout: 3000,
                         leadingAction: {
                           iconProps: { name: 'undo-2', size: 'sm' },
-                          onClick: () => toggleWatchList(),
+                          onClick: () => void 0,
                         },
                       });
-                      toggleWatchList();
                     }
                   }}
                   className={cn(
@@ -280,69 +212,136 @@ function TableRowInner<T extends FundRow>({
   row,
   isMainTab,
   activeIndexCategoryTab,
-  rowMarks,
-  handleColorChange,
-  toggleWatchList,
-  setPineWatchList,
-  pineWatchLis,
-  watchList,
   isScrollAtStart,
+  handlerPinned,
+  handlerUnPinned,
+  handlerMarkFund,
+  rowMarks,
 }: TableRowProps<T>) {
-  const handleToggleWatchList = useCallback(
-    () => toggleWatchList({ id: row.id }),
-    [row.id, toggleWatchList],
-  );
+  const { showProgressToast, showToast } = useCustomToast();
+
+  const [showMark, setShowMark] = useState(false);
+  const pinFundMutation = useFundsServicePostFundsTableTabByTabPin();
+  const unPinFundMutation = useFundsServicePostFundsTableTabByTabUnpin();
+  const markFundMutation = useFundsServicePostFundsTableTabByTabMark();
+  const unMarkFundMutation = useFundsServicePostFundsTableTabByTabUnmark();
+
+  const handlePinFund = async (fundId: number, isShowToast: boolean) => {
+    try {
+      await pinFundMutation.mutateAsync({
+        tab: activeIndexCategoryTab,
+        requestBody: {
+          fund: fundId,
+        },
+      });
+      handlerPinned(fundId);
+      if (isShowToast) {
+        showProgressToast({
+          timeout: 5000,
+          title: 'صندوق مورد نظر پین شد.',
+        });
+      }
+    } catch {
+      showToast({
+        message: 'حداکثر میتوانید ۳ صندوق را در هر دسته بندی پین کنید.',
+        type: 'warning',
+      });
+    }
+  };
+
+  const handleUnPinFund = async (fundId: number) => {
+    try {
+      await unPinFundMutation.mutateAsync({
+        tab: activeIndexCategoryTab,
+        requestBody: {
+          fund: fundId,
+        },
+      });
+      handlerUnPinned(fundId);
+      showProgressToast({
+        title: 'صندوق از لیست پین شده‌ها خارج شد.',
+        timeout: 3000,
+        leadingAction: {
+          iconProps: { name: 'undo-2', size: 'sm' },
+          onClick: () => handlePinFund(fundId, false),
+        },
+      });
+    } catch (err) {
+      alert('خطا در unPin کردن صندوق');
+      console.error(err);
+    }
+  };
 
   const handlePin = useCallback(
-    () =>
-      isMainTab
-        ? row.pin?.('top', true)
-        : setPineWatchList([...pineWatchLis, row.id]),
-    [isMainTab, pineWatchLis, row.id, setPineWatchList],
+    () => handlePinFund(row.original.id, true),
+    [isMainTab, row.original.id],
   );
 
-  const handleUnPin = useCallback(
-    () =>
-      isMainTab
-        ? row.pin?.(false)
-        : setPineWatchList((prev) => prev.filter((id) => id !== row.id)),
-    [isMainTab, row.id, setPineWatchList],
-  );
+  const handleUnPin = () => {
+    if (row.original.pinned) {
+      handleUnPinFund(row.original.id);
+    }
+  };
+
+  const markFund = async (fundId: number, color: string) => {
+    const existingMark = rowMarks.find((mark) => mark.id === fundId);
+    try {
+      if (existingMark && existingMark.color === color) {
+        // Call unmark API
+        await unMarkFundMutation.mutateAsync({
+          tab: activeIndexCategoryTab,
+          requestBody: { fund: fundId },
+        });
+        // Update local state
+        handlerMarkFund(fundId, color); // This will remove the mark as per your handler
+      } else {
+        // Call mark API
+        await markFundMutation.mutateAsync({
+          tab: activeIndexCategoryTab,
+          requestBody: { fund: fundId, color },
+        });
+        // Update local state
+        handlerMarkFund(fundId, color);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <tr
+      onMouseEnter={() => setShowMark(true)}
       key={row.id}
       className="border-border-neutral-secondary group h-[46px] border-b"
     >
       <td className="sticky right-0 top-0 z-40 m-0 flex items-center py-0">
         <div className="absolute z-50 pr-0">
-          <Bookmark
-            selectedColor={rowMarks[activeIndexCategoryTab]?.[row.id] || ''}
-            onColorChange={(color) => handleColorChange(row.id, color)}
-          />
+          {(showMark ||
+            rowMarks.find((item) => item.id === row.original.id)) && (
+            <Bookmark
+              selectedColor={
+                rowMarks.find((item) => item.id === row.original.id)?.color ??
+                ''
+              }
+              onColorChange={(color) => markFund(row.original.id, color)}
+            />
+          )}
         </div>
         <div>
           <FundsInfoCell
-            isRowHovered
+            isRowHovered={true}
             tag={!isMainTab}
-            category={
-              isMainTab
-                ? watchList.includes(row.id)
-                  ? 'watchlist'
-                  : 'stocks'
-                : 'watchlist'
-            }
-            canPin={false}
-            toggleWatchList={handleToggleWatchList}
+            canPin={true}
             pinedFunction={handlePin}
             unPinedFunction={handleUnPin}
             isScrolled={isScrollAtStart}
             isEtf={!!row.original?.isEtf}
-            isTradable={row.original.isTradable}
+            isTradable={row.original?.isTradable}
             name={row.original?.nameFund}
-            pined={false}
+            pined={row.original.pinned}
             selected={false}
             logo={row.original?.logo}
+            investmentMethod={row.original?.investmentMethod}
           />
         </div>
       </td>
@@ -355,16 +354,17 @@ function TableRowInner<T extends FundRow>({
             {
               'text-text-accent-red-contrast-700':
                 (item.getValue() as number) < 0,
+              'bg-surface-accent-blue-50 group-hover:surface-accent-blue-100':
+                row.original.pinned,
             },
           )}
           key={item.id}
         >
-          {typeof item.getValue() !== 'undefined'
-            ? formatNumber(item.getValue() as string, {
-                decimals: 2,
-                commaSeparated: false,
-              })
-            : '-'}
+          {/* {formatNumber(item.getValue() as string, {
+            decimals: 2,
+            commaSeparated: false,
+          })} */}
+          {item.getValue() as string}
         </td>
       ))}
     </tr>

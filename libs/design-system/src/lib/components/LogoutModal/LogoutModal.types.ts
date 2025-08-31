@@ -5,4 +5,5 @@ export interface LogoutModalProps {
   titleAlign?: 'right' | 'center';
   subtitle?: string;
   onLogout: () => void;
+  variant?: 'b2b' | 'b2c';
 }

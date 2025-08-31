@@ -46,22 +46,36 @@ export const FilterAccordion = (section: FilterSection): AccordionItem => {
         {section.options.map((option) => (
           <div
             key={option.id}
-            className="flex items-center justify-start px-2 py-3"
+            className="bg-surface-neutral-background hover:bg-surface-brand-100 w-full rounded-lg pr-2 transition-colors"
           >
             {section.id === 'time-filters' ? (
               <Radio
                 id={`${section.id}-${option.id}`}
                 name={section.id}
                 value={option.value}
-                content={option.label}
+                reactcontent={
+                  <div
+                    key={option.id}
+                    className="flex w-full items-center justify-start px-2 py-3"
+                  >
+                    {option.label}
+                  </div>
+                }
                 checked={section.selectedValues.includes(option.value)}
                 onChange={() => section.onValueChange(option.value)}
                 className="text-text-neutral-primary"
               />
             ) : (
               <Checkbox
-                className="text-text-neutral-primary"
-                content={option.label}
+                className="text-text-neutral-primary w-full"
+                reactcontent={
+                  <div
+                    key={option.id}
+                    className="flex w-full items-center justify-start px-2 py-3"
+                  >
+                    {option.label}
+                  </div>
+                }
                 checked={section.selectedValues.includes(option.value)}
                 onChange={() => section.onValueChange(option.value)}
               />

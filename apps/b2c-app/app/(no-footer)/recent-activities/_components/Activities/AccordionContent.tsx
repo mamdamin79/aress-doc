@@ -16,10 +16,10 @@ const AccordionContentContainer: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => (
   <>
-    <div className="flex h-8 w-full items-center">
+    <div className="bg-surface-neutral-tertiary flex h-8 w-full items-center">
       <div className="border-border-neutral-secondary w-full border-b"></div>
     </div>
-    <div className="text-text-neutral-primary flex flex-col gap-5 px-4">
+    <div className="text-text-neutral-primary bg-surface-neutral-tertiary flex flex-col gap-5 rounded-b-2xl px-7 pb-4">
       {children}
     </div>
   </>

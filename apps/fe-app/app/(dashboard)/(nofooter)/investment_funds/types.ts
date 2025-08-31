@@ -1,3 +1,6 @@
+import { Row } from '@tanstack/react-table';
+import type { RefObject } from 'react';
+
 export type DragPosition = 'left' | 'right';
 export type Person = {
   nameFund: string;
@@ -18,8 +21,8 @@ export type Person = {
   dailyReturn: number;
   weeklyReturn: number;
   startDate: number;
-  //   logo: string;
   investmentMethod: 'T' | 'I&C';
+  pinned: boolean;
 };
 
 export interface VirtualItem {
@@ -29,4 +32,57 @@ export interface VirtualItem {
   size: number;
   key: string | number | bigint;
   measureRef?: (el: HTMLElement | null) => void;
+}
+
+export interface FundRow {
+  isEtf: boolean;
+  isTradable: boolean;
+  nameFund: string;
+  investmentMethod: 'T' | 'I&C';
+  logo: string;
+  pinned: boolean;
+  id: number;
+  mark: string;
+}
+
+export interface TableBodyProps {
+  allRows: number;
+  rows: Row<FundRow>[];
+  tableRef: RefObject<HTMLDivElement | null>;
+  isScrollAtStart: boolean;
+  activeIndexCategoryTab: number;
+  handlerPinned: (id: number) => void;
+  handlerUnPinned: (id: number) => void;
+  handlerMarkFund: (id: number, color: string) => void;
+  rowMarks: { id: number; color: string }[];
+}
+
+export interface TableRowProps<T extends FundRow> {
+  row: Row<T>;
+  logo: string;
+  handlerMarkFund: (id: number, color: string) => void;
+  isMainTab: boolean;
+  handlerPinned: (e: number) => void;
+  handlerUnPinned: (e: number) => void;
+  activeIndexCategoryTab: number;
+  rowMarks: { id: number; color: string }[];
+  handleColorChange: (id: string, color: string) => void;
+  isScrollAtStart: boolean;
+}
+
+export interface FundsInfoCellProps {
+  isEtf: boolean;
+  name: string;
+  logo: string;
+  pined: boolean;
+  selected: boolean;
+  isTradable: boolean;
+  isScrolled: boolean;
+  className?: string;
+  investmentMethod: 'T' | 'I&C';
+  pinedFunction: () => void;
+  unPinedFunction: () => void;
+  canPin: boolean;
+  tag: boolean;
+  isRowHovered: boolean;
 }
