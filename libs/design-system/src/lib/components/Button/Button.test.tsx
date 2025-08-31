@@ -8,6 +8,7 @@ describe('Button component', () => {
   test('renders disabled button, no click or hover effect', () => {
     render(
       <Button
+        theme="brand"
         mode="primary"
         size="md"
         align="center"
@@ -37,6 +38,7 @@ describe('Button component', () => {
   test('renders loading spinner when isLoading is true, no click or hover effect', () => {
     const { container } = render(
       <Button
+        theme="brand"
         mode="primary"
         size="md"
         align="center"
@@ -67,6 +69,7 @@ describe('Button component', () => {
   test('renders button with correct size classes', () => {
     const { container: mdContainer } = render(
       <Button
+        theme="brand"
         mode="primary"
         size="md"
         align="center"
@@ -114,6 +117,7 @@ describe('Button component', () => {
 
     const { container: rightContainer } = render(
       <Button
+        theme="brand"
         mode="primary"
         size="md"
         align="right"
@@ -133,6 +137,7 @@ describe('Button component', () => {
 
     render(
       <Button
+        theme="brand"
         mode="primary"
         size="md"
         align="center"

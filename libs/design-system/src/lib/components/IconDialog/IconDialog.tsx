@@ -77,6 +77,7 @@ export function IconDialog({
         </div>
 
         <Button
+          theme="brand"
           align="center"
           isLoading={false}
           mode="primary"

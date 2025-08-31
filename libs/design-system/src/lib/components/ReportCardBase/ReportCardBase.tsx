@@ -180,6 +180,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
               {loadingStatus === 'rejected' && (
                 <div className="w-fit">
                   <Button
+                    theme="brand"
                     align="center"
                     isLoading={false}
                     mode="primary"
@@ -192,6 +193,7 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
               )}
               <div className="w-fit">
                 <Button
+                  theme="brand"
                   align="center"
                   isLoading={false}
                   mode="secondary"

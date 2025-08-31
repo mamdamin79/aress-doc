@@ -35,7 +35,13 @@ export const ReportOverview: React.FC<ReportOverviewProps> = ({
             onClick={() => console.log('liked')}
             size="lg"
           />
-          <Button align="center" isLoading={false} mode="primary" size="sm">
+          <Button
+            align="center"
+            isLoading={false}
+            mode="primary"
+            size="sm"
+            theme="brand"
+          >
             <div className="flex w-fit flex-row gap-2">
               <Icon name="plus" size="lg" />
               <div> افزودن به داشبورد</div>

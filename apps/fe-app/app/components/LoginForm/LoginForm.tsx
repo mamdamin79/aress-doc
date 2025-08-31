@@ -159,6 +159,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             />
           </div>
           <Button
+            theme="brand"
             align="center"
             mode="primary"
             isLoading={isSubmitting}
@@ -169,6 +170,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             ورود به ترمینال
           </Button>
           <Button
+            theme="brand"
             className="font-medium"
             align="center"
             isLoading={false}

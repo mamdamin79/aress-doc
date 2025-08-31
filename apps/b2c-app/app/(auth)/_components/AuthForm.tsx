@@ -127,6 +127,7 @@ const NationalIdForm = ({
       />
       <div className="flex flex-row justify-center gap-4">
         <Button
+          theme="brand"
           align="center"
           mode="primary"
           isLoading={isSubmitting}
@@ -139,6 +140,7 @@ const NationalIdForm = ({
 
         <Link href={'/AuthLanding'} className="w-full">
           <Button
+            theme="brand"
             className="font-medium"
             align="center"
             isLoading={false}

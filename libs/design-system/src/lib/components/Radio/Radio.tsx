@@ -5,6 +5,7 @@ import React, { ReactNode, useId } from 'react';
 
 interface RadioProps {
   onChange: () => void;
+  // TODO: remove reactcontent in next major release
   reactcontent?: string | ReactNode;
   content?: string;
   className?: string;
@@ -26,7 +27,7 @@ export function Radio({
   name,
   id,
 }: RadioProps) {
-  const unikId = useId();
+  const uniqueId = useId();
 
   return (
     <Field className="flex items-center gap-2">
@@ -36,7 +37,7 @@ export function Radio({
       >
         <input
           type="radio"
-          id={id ?? unikId}
+          id={id ?? uniqueId}
           name={name}
           value={value}
           checked={checked}
@@ -69,7 +70,7 @@ export function Radio({
         </div>
       </div>
       <Label
-        htmlFor={id ?? unikId}
+        htmlFor={id ?? uniqueId}
         className={cn(
           'text-sm',
           {

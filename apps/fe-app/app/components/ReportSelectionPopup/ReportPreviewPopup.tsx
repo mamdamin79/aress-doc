@@ -99,12 +99,19 @@ export const ReportPreviewPopup: React.FC<ReportSelectionPopupProps> = ({
         {/* Footer section (does not scroll) */}
         <div className="mt-4 flex w-full flex-row justify-end gap-2 px-6 pb-4">
           <div className="w-fit">
-            <Button align="center" isLoading={false} mode="secondary" size="sm">
+            <Button
+              align="center"
+              theme="brand"
+              isLoading={false}
+              mode="secondary"
+              size="sm"
+            >
               اطلاعات بیشتر
             </Button>
           </div>
           <div className="w-fit">
             <Button
+              theme="brand"
               align="center"
               isLoading={false}
               mode="primary"

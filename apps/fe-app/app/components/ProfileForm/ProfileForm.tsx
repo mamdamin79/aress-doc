@@ -211,6 +211,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
       <div className="flex w-full justify-start">
         <div className="w-full max-w-[160px]">
           <Button
+            theme="brand"
             onClick={() => setEditDialog('password')}
             align="center"
             isLoading={false}

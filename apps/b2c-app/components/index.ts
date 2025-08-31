@@ -6,4 +6,5 @@ export * from './Charts';
 export * from './FundCard';
 export * from './TradePopup';
 export * from './AssetInfoBox';
+export * from './FilterAccordion';
 export * from './SearchField';
