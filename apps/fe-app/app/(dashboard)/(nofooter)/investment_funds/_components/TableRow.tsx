@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { Bookmark } from 'libs/design-system/src/lib/components/Bookmark';
 import { useCustomToast } from 'libs/design-system/src/hooks/CustomToast/CustomToast';
 import {
+  FundsLogo,
   Icon,
   OptionsDropdown,
   Tooltip,
@@ -74,16 +75,12 @@ function FundsInfoCell({
           })}
         ></div>
         <div className="group/img relative">
-          <div className="h-8 w-8 overflow-hidden rounded-full">
-            <img src={`http://185.236.36.153:8000${logo}`} alt="logo fund" />
-          </div>
-          {pined && (
-            <div className="absolute -right-1 top-5">
-              <div className="flex items-center justify-center text-black">
-                <Icon name="CustomPin" size="sm" />
-              </div>
-            </div>
-          )}
+          <FundsLogo
+            hasTag={false}
+            isPin={pined}
+            color="green"
+            src={`http://185.236.36.153:8000${logo}`}
+          />
         </div>
         {name.length > 21 ? (
           <Tooltip offset={2} position="left" title={name}>
@@ -321,7 +318,8 @@ function TableRowInner<T extends FundRow>({
     >
       <td className="sticky right-0 top-0 z-40 m-0 flex items-center py-0">
         <div className="absolute z-50 pr-0">
-          {(showMark || rowMarks.find((item) => item.id === row.original.id)) && (
+          {(showMark ||
+            rowMarks.find((item) => item.id === row.original.id)) && (
             <Bookmark
               selectedColor={
                 rowMarks.find((item) => item.id === row.original.id)?.color ??

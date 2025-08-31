@@ -365,6 +365,7 @@ const Funds = () => {
     const funds = query.data.selectedTabFunds.map(({ fund }) => {
       const id = fund.identifier;
       return {
+        // colorMode: fund.
         logo: fund.logoMedium,
         id,
         pinned: pinnedList.includes(id),
@@ -614,7 +615,9 @@ const Funds = () => {
     });
   };
 
-  if (query.isLoading) document.documentElement.style.overflow = 'hidden';
+  if (query.isLoading && document) {
+    document.documentElement.style.overflow = 'hidden';
+  }
 
   return (
     <>
