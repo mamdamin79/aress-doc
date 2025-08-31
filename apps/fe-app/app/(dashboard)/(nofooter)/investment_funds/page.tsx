@@ -40,7 +40,6 @@ import {
 import {
   ColumnDef,
   Header,
-  Row,
   SortingState,
   flexRender,
   getCoreRowModel,
@@ -55,7 +54,7 @@ import { columnVisibility, filterList } from './FundsTable.constants';
 import { ExportExel } from './_components/ExportExel';
 import { useSmartTableScroll } from '@shared';
 import { TableBody } from './_components/TableBody';
-import { FundRow, Person } from './types';
+import { Person } from './types';
 import {
   useDragIndicator,
   useTableDragSensors,
@@ -1015,7 +1014,8 @@ const Funds = () => {
                 isScrollAtStart={isScrollAtStart}
                 handlerPinned={handlerPinned}
                 handlerUnPinned={handlerUnPinned}
-                rows={rows as Row<FundRow>[]}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                rows={rows as any}
                 activeIndexCategoryTab={activeIndexCategoryTab}
               />
             ) : (
