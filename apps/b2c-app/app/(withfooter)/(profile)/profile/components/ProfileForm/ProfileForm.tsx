@@ -44,6 +44,7 @@ export const ProfileForm: React.FC = () => {
         <div className="flex w-full items-center justify-between">
           <div className="text-xl font-semibold">اطلاعات حساب کاربری</div>
           <Button
+            theme="brand"
             iconRight={{ name: 'refresh-cw', size: 'md' }}
             size="sm"
             className="w-[180px]"

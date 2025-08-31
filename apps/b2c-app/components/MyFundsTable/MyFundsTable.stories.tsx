@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import { MyFundsTable } from './MyFundsTable';
-import type { FundData } from './MyFundsTable';
+import { FundData } from './MyFundsTable.types';
 
 // Sample data matching the image
 const sampleData: FundData[] = [

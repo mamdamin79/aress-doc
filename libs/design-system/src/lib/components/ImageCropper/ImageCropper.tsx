@@ -41,8 +41,12 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
         id="crop-image-title"
       >
         <div className="flex w-full flex-col gap-6">
-          <h2 className="text-md text-center text-text-neutral-primary font-medium">{TITLE}</h2>
-          <p className="text-right text-sm text-text-neutral-primary font-normal">{SUBTITLE}</p>
+          <h2 className="text-md text-text-neutral-primary text-center font-medium">
+            {TITLE}
+          </h2>
+          <p className="text-text-neutral-primary text-right text-sm font-normal">
+            {SUBTITLE}
+          </p>
         </div>
       </div>
       <div className="relative mb-4 h-64 w-full">
@@ -61,24 +65,24 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({
       <div className="flex w-full flex-row justify-end gap-2">
         <div className="w-20">
           <Button
+            theme="brand"
             align="center"
             isLoading={false}
             mode="secondary"
             size="sm"
             onClick={() => onClose?.()}
-            theme="brand"
           >
             انصراف
           </Button>
         </div>
         <div className="w-20">
           <Button
+            theme="brand"
             onClick={handleSave}
             align="center"
             isLoading={isLoading}
             mode="primary"
             size="sm"
-            theme="brand"
           >
             ذخیره
           </Button>

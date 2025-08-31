@@ -20,6 +20,7 @@ export const Default: Story = {
       return (
         <>
           <Button
+            theme="brand"
             align="center"
             mode="primary"
             size="md"

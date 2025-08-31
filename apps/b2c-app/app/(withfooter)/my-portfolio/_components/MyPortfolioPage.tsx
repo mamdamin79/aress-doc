@@ -3,6 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import {
   BarStickyBtn,
+  FundData,
   MyFundsTable,
   Piechart,
   TradePopup,
@@ -11,11 +12,7 @@ import { cn, Icon, OptionsDropdown, Tabs } from 'design-system';
 import { LineChart } from '../../../../components/Charts/LineChart';
 import { AssetInfoBox } from '../../../../components/AssetInfoBox';
 import { EmptyPortfolioModal } from './EmptyPortfolioModal';
-import {
-  categoryFundsData,
-  detailedFundsData,
-  type FundData,
-} from './data/fundsData';
+import { categoryFundsData, detailedFundsData } from './data/fundsData';
 
 interface HoverData {
   date: string;
