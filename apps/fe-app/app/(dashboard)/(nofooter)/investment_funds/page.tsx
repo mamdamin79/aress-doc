@@ -51,7 +51,7 @@ import {
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useSortable } from '@dnd-kit/sortable';
 import { columnVisibility, filterList } from './FundsTable.constants';
-import { ExportExel } from './_components/ExportExel';
+import { ExportExcel } from './_components/ExportExcel';
 import { useSmartTableScroll } from '@shared';
 import { TableBody } from './_components/TableBody';
 import { Person } from './types';
@@ -63,6 +63,7 @@ import { useFundsServiceGetFundsTable } from '@openapi';
 import { TabsSkeleton } from './_components/skeletons/TabsSkeleton';
 import { RowSkeleton } from './_components/skeletons/RowSkeleton';
 import { HeaderTableSkeleton } from './_components/skeletons/HeaderTableSkeleton';
+import { ExcelSkeleton } from './_components/skeletons/ExcelSkeleton';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
   const [activeIndexCategoryTab, setActiveIndexCategoryTab] = useState(1);
@@ -618,14 +619,6 @@ const Funds = () => {
     });
   };
 
-  if (
-    query.isLoading &&
-    typeof document !== 'undefined' &&
-    document.documentElement
-  ) {
-    document.documentElement.style.overflow = 'hidden';
-  }
-
   return (
     <>
       <div
@@ -654,11 +647,15 @@ const Funds = () => {
             />
           )
         )}
-        <Tooltip title="خروجی اکسل">
-          <div className="border-button-border-default cursor-pointer rounded-md border p-1.5">
-            <ExportExel />
-          </div>
-        </Tooltip>
+        {rows.length ? (
+          <Tooltip title="خروجی اکسل">
+            <div className="border-button-border-default cursor-pointer rounded-md border p-1.5">
+              <ExportExcel />
+            </div>
+          </Tooltip>
+        ) : (
+          <ExcelSkeleton />
+        )}
       </div>
 
       <div
@@ -674,7 +671,8 @@ const Funds = () => {
           className={cn(
             'table-scroll group/table bg-surface-neutral-primary scrollbar-lg w-screen overflow-auto scroll-smooth',
             {
-              'h-[calc(100vh-172px)]': isHeaderVisible,
+              'h-[calc(100vh-180px)]': isHeaderVisible,
+              'overflow-hidden': !rows.length,
             },
           )}
         >
@@ -1029,118 +1027,122 @@ const Funds = () => {
         </div>
       </div>
 
-      <div className="fixed bottom-6 right-0 z-50 mt-6 flex w-full justify-between px-8">
-        <div className="bg-coloropacity-surface-accent-gray-400-55per rounded-md backdrop-blur-[30px]">
-          <OptionsDropdown
-            className="-mt-2"
-            onChange={(e) => {
-              startTransition(() => {
-                table.setPageSize(Number(e));
-              });
-            }}
-            dropDownStyles={{
-              bg: 'primary',
-              emphasize: 'medium',
-              size: 'md',
-              anchor: 'top end',
-              checkSelected: true,
-            }}
-            customTriggerRender={({ isActive }) => {
-              return (
-                <div className="text-text-onaccent-neutral-primary-onbelow600 flex h-[40px] items-center gap-2 pl-2 pr-3 text-xs font-medium">
-                  <div className="flex gap-1">
-                    <span>تعداد سطر در جدول: </span>
-                    {formatNumber(
-                      table.getState().pagination.pageSize *
-                        (table.getState().pagination.pageIndex + 1),
-                      { commaSeparated: true },
-                    )}
+      {rows.length ? (
+        <div className="fixed bottom-6 right-0 z-50 mt-6 flex w-full justify-between px-8">
+          <div className="bg-coloropacity-surface-accent-gray-400-55per rounded-md backdrop-blur-[30px]">
+            <OptionsDropdown
+              className="-mt-2"
+              onChange={(e) => {
+                startTransition(() => {
+                  table.setPageSize(Number(e));
+                });
+              }}
+              dropDownStyles={{
+                bg: 'primary',
+                emphasize: 'medium',
+                size: 'md',
+                anchor: 'top end',
+                checkSelected: true,
+              }}
+              customTriggerRender={({ isActive }) => {
+                return (
+                  <div className="text-text-onaccent-neutral-primary-onbelow600 flex h-[40px] items-center gap-2 pl-2 pr-3 text-xs font-medium">
+                    <div className="flex gap-1">
+                      <span>تعداد سطر در جدول: </span>
+                      {formatNumber(
+                        table.getState().pagination.pageSize *
+                          (table.getState().pagination.pageIndex + 1),
+                        { commaSeparated: true },
+                      )}
+                    </div>
+                    <div
+                      className={cn('transition-transform duration-300', {
+                        'rotate-180': isActive,
+                        'rotate-0': !isActive,
+                      })}
+                    >
+                      <Icon size="lg" name="chevron-down" />
+                    </div>
                   </div>
-                  <div
-                    className={cn('transition-transform duration-300', {
-                      'rotate-180': isActive,
-                      'rotate-0': !isActive,
-                    })}
-                  >
-                    <Icon size="lg" name="chevron-down" />
-                  </div>
+                );
+              }}
+              customOptionRender={(prop) => (
+                <div
+                  className={cn(
+                    'bg-coloropacity-surface-accent-gray-400-55per text-text-onaccent-neutral-primary-onbelow600 w-full cursor-pointer px-3 pt-2 text-center text-xs font-medium',
+                    {
+                      'pb-2':
+                        table.getState().pagination.pageSize *
+                          (table.getState().pagination.pageIndex + 1) *
+                          table.getPageCount() ===
+                        +prop.text,
+                    },
+                  )}
+                >
+                  <span>{totalCount === +prop.text ? 'همه' : prop.text}</span>
                 </div>
-              );
-            }}
-            customOptionRender={(prop) => (
-              <div
-                className={cn(
-                  'bg-coloropacity-surface-accent-gray-400-55per text-text-onaccent-neutral-primary-onbelow600 w-full cursor-pointer px-3 pt-2 text-center text-xs font-medium',
-                  {
-                    'pb-2':
-                      table.getState().pagination.pageSize *
-                        (table.getState().pagination.pageIndex + 1) *
-                        table.getPageCount() ===
-                      +prop.text,
-                  },
-                )}
-              >
-                <span>{totalCount === +prop.text ? 'همه' : prop.text}</span>
-              </div>
-            )}
-            dropDownList={options}
-          />
-        </div>
+              )}
+              dropDownList={options}
+            />
+          </div>
 
-        <span className="text-text-onaccent-neutral-primary-onbelow600 bg-coloropacity-surface-accent-gray-400-55per flex h-[40px] gap-2 rounded-md px-3 py-2 text-xs font-medium backdrop-blur-[30px]">
-          مجموعه ارزش خالص دارایی‌ها:
-          <span className="border-text-onaccent-neutral-primary-onbelow600 border-b text-sm">
-            10,986,249.09
+          <span className="text-text-onaccent-neutral-primary-onbelow600 bg-coloropacity-surface-accent-gray-400-55per flex h-[40px] gap-2 rounded-md px-3 py-2 text-xs font-medium backdrop-blur-[30px]">
+            مجموعه ارزش خالص دارایی‌ها:
+            <span className="border-text-onaccent-neutral-primary-onbelow600 border-b text-sm">
+              10,986,249.09
+            </span>
           </span>
-        </span>
-        <div className="bg-coloropacity-surface-accent-gray-400-55per flex h-[40px] items-center gap-2 rounded-md px-3 py-2 backdrop-blur-[30px]">
-          <span className="text-text-onaccent-neutral-primary-onbelow600 flex items-center gap-1 text-xs font-medium">
-            <div>
+          <div className="bg-coloropacity-surface-accent-gray-400-55per flex h-[40px] items-center gap-2 rounded-md px-3 py-2 backdrop-blur-[30px]">
+            <span className="text-text-onaccent-neutral-primary-onbelow600 flex items-center gap-1 text-xs font-medium">
+              <div>
+                {formatNumber(
+                  table.getState().pagination.pageSize *
+                    (table.getState().pagination.pageIndex + 1),
+                  { commaSeparated: true },
+                )}
+                -
+                {table.getState().pagination.pageSize *
+                  table.getState().pagination.pageIndex +
+                  1}
+              </div>
+              از
               {formatNumber(
-                table.getState().pagination.pageSize *
-                  (table.getState().pagination.pageIndex + 1),
+                table.getPageCount() * table.getState().pagination.pageSize,
                 { commaSeparated: true },
               )}
-              -
-              {table.getState().pagination.pageSize *
-                table.getState().pagination.pageIndex +
-                1}
-            </div>
-            از
-            {formatNumber(
-              table.getPageCount() * table.getState().pagination.pageSize,
-              { commaSeparated: true },
-            )}
-            <span className="px-[1px]">صندوق</span>
-          </span>
-          <button
-            className={cn(
-              'text-icon-onaccent-neutral-onbelow600 cursor-pointer rounded',
-              {
-                'text-icon-neutral-disable cursor-default':
-                  table.getState().pagination.pageIndex + 1 === 1,
-              },
-            )}
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            <Icon size="lg" name="chevron-right" />
-          </button>
-          <button
-            className={cn(
-              'text-icon-onaccent-neutral-onbelow600 cursor-pointer rounded',
-              {
-                'text-text-icon-neutral-disable cursor-default':
-                  !table.getCanNextPage(),
-              },
-            )}
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            <Icon size="lg" name="chevron-left" />
-          </button>
+              <span className="px-[1px]">صندوق</span>
+            </span>
+            <button
+              className={cn(
+                'text-icon-onaccent-neutral-onbelow600 cursor-pointer rounded',
+                {
+                  'text-icon-neutral-disable cursor-default':
+                    table.getState().pagination.pageIndex + 1 === 1,
+                },
+              )}
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              <Icon size="lg" name="chevron-right" />
+            </button>
+            <button
+              className={cn(
+                'text-icon-onaccent-neutral-onbelow600 cursor-pointer rounded',
+                {
+                  'text-text-icon-neutral-disable cursor-default':
+                    !table.getCanNextPage(),
+                },
+              )}
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              <Icon size="lg" name="chevron-left" />
+            </button>
+          </div>
         </div>
-      </div>
+      ) : (
+        ''
+      )}
 
       <Dialog
         className="min-w-[570px] p-0"
