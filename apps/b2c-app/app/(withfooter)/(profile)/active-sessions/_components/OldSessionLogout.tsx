@@ -12,12 +12,10 @@ export const OldSessionLogout: React.FC = () => {
           <div className="text-md text-text-neutral-primary mb-5 font-normal">
             خروج خودکار در صورت عدم فعالیت بعد از ...
           </div>
-          <div className="text-text-neutral-secondary text-sm font-medium">
-            اگر در این بازه زمانی، حداقل یک‌بار از یک نشست خاص آنلاین نشوید، از
-            آن نشست به صورت خودکار خارج می شوید.
-          </div>
         </div>
         <OptionsDropdown
+          optionClassName="font-medium"
+          triggerClassName="font-medium text-nowrap"
           className="w-20"
           dropDownList={[
             { text: '۱ هفته' },
@@ -26,6 +24,10 @@ export const OldSessionLogout: React.FC = () => {
             { text: '۱ سال' },
           ]}
         />
+      </div>
+      <div className="text-text-neutral-secondary pr-3 text-sm font-medium">
+        اگر در این بازه زمانی، حداقل یک‌بار از یک نشست خاص آنلاین نشوید، از آن
+        نشست به صورت خودکار خارج می شوید.
       </div>
     </div>
   );

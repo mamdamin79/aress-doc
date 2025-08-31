@@ -63,6 +63,7 @@ export const ActiveSession: React.FC<ActiveSessionProps> = ({
               <Icon name="x" size="lg" />
             </button>
             <LogoutModal
+              variant="b2c"
               isOpen={isOpen}
               onClose={() => setIsOpen(false)}
               onLogout={() => alert(`در دست ساخت‌ !`)}

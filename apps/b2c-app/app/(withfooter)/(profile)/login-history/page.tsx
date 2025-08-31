@@ -79,7 +79,7 @@ export default function LoginHistory() {
               type={item.type as 'ورود' | 'خروج'}
             />
           ))}
-          <div className="bg-surface-neutral-tertiary mb-7 mt-1 h-[1px] w-full"></div>
+          <div className="border-border-neutral-tertiary mb-7 mt-1 h-[1px] w-full border"></div>
         </div>
       ))}
     </div>

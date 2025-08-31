@@ -67,7 +67,7 @@ export default function ActiveSessionsPage() {
         </div>
       )}
 
-      <div className="bg-surface-neutral-tertiary mb-7 h-[1px] w-full"></div>
+      <div className="border-border-neutral-tertiary mb-7 h-[1px] w-full border"></div>
 
       <div>
         <div className="flex items-start justify-between">
@@ -83,6 +83,7 @@ export default function ActiveSessionsPage() {
             خروج از سایر دستگاه‌ها
           </Button>
           <LogoutModal
+            variant="b2c"
             isOpen={isOpen}
             onClose={() => setIsOpen(false)}
             onLogout={() => alert('در دست ساخت !')}
@@ -93,11 +94,8 @@ export default function ActiveSessionsPage() {
         </div>
         {otherSessions.length > 0 ? (
           otherSessions.map((session, index) => (
-            <div className="mb-2">
-              <ActiveSession
-                key={index} // Using index is okay for static lists
-                {...session}
-              />
+            <div className="mb-2" key={`session-${index}`}>
+              <ActiveSession {...session} />
             </div>
           ))
         ) : (
