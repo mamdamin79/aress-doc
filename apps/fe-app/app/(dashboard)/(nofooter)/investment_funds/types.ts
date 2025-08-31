@@ -34,6 +34,8 @@ export interface VirtualItem {
 }
 
 export interface FundRow {
+  isEtf: boolean;
+  isTradable: boolean;
   nameFund: string;
   investmentMethod: 'T' | 'I&C';
   logo: string;
@@ -68,10 +70,12 @@ export interface TableRowProps<T extends FundRow> {
 }
 
 export interface FundsInfoCellProps {
+  isEtf: boolean;
   name: string;
   logo: string;
   pined: boolean;
   selected: boolean;
+  isTradable: boolean;
   isScrolled: boolean;
   className?: string;
   investmentMethod: 'T' | 'I&C';

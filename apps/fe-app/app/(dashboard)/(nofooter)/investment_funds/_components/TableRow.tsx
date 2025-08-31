@@ -331,14 +331,14 @@ function TableRowInner<T extends FundRow>({
         </div>
         <div>
           <FundsInfoCell
-            isRowHovered
+            isRowHovered={true}
             tag={!isMainTab}
             canPin={true}
             pinedFunction={handlePin}
             unPinedFunction={handleUnPin}
             isScrolled={isScrollAtStart}
             isEtf={!!row.original?.isEtf}
-            isTradable={row.original.isTradable}
+            isTradable={row.original?.isTradable}
             name={row.original?.nameFund}
             pined={row.original.pinned}
             selected={false}
