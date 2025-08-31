@@ -65,7 +65,7 @@ export const Accordion: React.FC<Props> = ({
   const renderDefaultTrigger = (item: AccordionItem, open: boolean) => (
     <div
       className={cn('group flex w-full items-center justify-between', {
-        'py-4': mode === 'b2c',
+        'py-z4': mode === 'b2c',
       })}
     >
       <span

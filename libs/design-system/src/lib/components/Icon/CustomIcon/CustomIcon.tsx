@@ -33,6 +33,7 @@ const ICONS_WITH_NO_STROKE_CONTROL: IconName[] = [
   'CustomToseeTaavon',
   'CustomAyandeh',
   'CustomPng',
+  'CustomPdf',
   'CustomPdfLite',
   'CustomTelegram',
   'CustomCaretUp',

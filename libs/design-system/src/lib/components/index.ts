@@ -56,5 +56,7 @@ export * from './SelectionChips';
 export * from './Badge';
 export * from './ToolTipInfo';
 export * from './FundsLogo';
+export * from './Notification';
+export * from './Switch';
 export * from './BottomSheet';
 export * from './CommentSection';
