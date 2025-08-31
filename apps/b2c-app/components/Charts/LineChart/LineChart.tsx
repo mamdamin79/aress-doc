@@ -1,3 +1,5 @@
+'use client';
+
 import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 import { useMemo } from 'react';
@@ -8,23 +10,56 @@ export interface LineChartProps {
     date: string;
     value: number;
   }[];
+  onHover?: (data: { date: string; value: number } | null) => void;
+  hiddenContent?: boolean;
 }
-export const LineChart: React.FC<LineChartProps> = ({ points }) => {
+export const LineChart = ({
+  points,
+  onHover,
+  hiddenContent = false,
+}: LineChartProps) => {
   const priceData = useMemo<[number, number][]>(() => {
     if (!points.length) return [];
 
     return points.map(({ date, value }) => {
       const [year, month, day] = date.split('-').map(Number);
       const timestamp = Date.UTC(year, month - 1, day);
-      return [timestamp, parseFloat((value / 10000000000000).toFixed(2))];
+      return [timestamp, parseFloat((value / 1000000).toFixed(2))];
     });
   }, [points]);
+
+  // Calculate Y-axis range
+  const yAxisConfig = useMemo(() => {
+    if (!priceData.length) return { min: 0 };
+
+    const values = priceData.map(([, value]) => value);
+    const minValue = Math.min(...values);
+    const maxValue = Math.max(...values);
+
+    // If all values are the same (including all zeros)
+    if (minValue === maxValue) {
+      if (minValue === 0) {
+        // For all zeros, set a range that shows the line at the bottom
+        return { min: 0, max: 10 };
+      } else {
+        // For other constant values, add some padding
+        const padding = Math.abs(minValue) * 0.1;
+        return {
+          min: Math.max(0, minValue - padding),
+          max: maxValue + padding,
+        };
+      }
+    }
+
+    // For varying values, let Highcharts handle it but ensure min is 0
+    return { min: 0 };
+  }, [priceData]);
 
   const options: Highcharts.Options = {
     ...baseOptions,
     legend: { enabled: false },
     chart: {
-      backgroundColor: 'var(--color-surface-neutral-primary)',
+      backgroundColor: 'var(--color-surface-neutral-background)',
       type: 'spline',
     },
     credits: { enabled: false },
@@ -32,7 +67,38 @@ export const LineChart: React.FC<LineChartProps> = ({ points }) => {
     rangeSelector: { enabled: false },
     scrollbar: { enabled: false },
     tooltip: {
-      enabled: false,
+      enabled: true,
+      backgroundColor: 'transparent',
+      borderWidth: 0,
+      shadow: false,
+      useHTML: true,
+      formatter: function () {
+        return '';
+      },
+    },
+    plotOptions: {
+      series: {
+        point: {
+          events: {
+            mouseOver: function () {
+              if (onHover) {
+                const point = this as Highcharts.Point;
+                const date = new Date(point.x as number);
+                const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+                onHover({
+                  date: formattedDate,
+                  value: (point.y as number) * 1000000,
+                });
+              }
+            },
+            mouseOut: function () {
+              if (onHover) {
+                onHover(null);
+              }
+            },
+          },
+        },
+      },
     },
     title: { text: '' },
     yAxis: {
@@ -40,10 +106,10 @@ export const LineChart: React.FC<LineChartProps> = ({ points }) => {
       gridLineInterpolation: 'polygon',
       gridLineColor: 'Var(--color-border-neutral-secondary)',
       title: { text: '' },
-      min: 0,
+      ...yAxisConfig,
       labels: {
         formatter: function () {
-          return `${this.value}`;
+          return hiddenContent ? '.....' : `${this.value}`;
         },
         style: {
           fontSize: '16px',
@@ -54,9 +120,14 @@ export const LineChart: React.FC<LineChartProps> = ({ points }) => {
       },
     },
     xAxis: {
-      reversed: true,
+      tickLength: 0,
       type: 'datetime',
       tickInterval: 1000 * 60 * 60 * 24 * 2,
+      crosshair: {
+        width: 1,
+        color: 'var(--color-border-accent-blue-600)',
+        dashStyle: 'Solid',
+      },
       labels: {
         formatter: function () {
           const d = new Date(this.value as number);
@@ -98,7 +169,19 @@ export const LineChart: React.FC<LineChartProps> = ({ points }) => {
           }
           return { x: point[0], y: point[1] };
         }),
-        marker: { enabled: false },
+        marker: {
+          enabled: false,
+          states: {
+            hover: {
+              enabled: true,
+              radius: 6,
+              fillColor: 'var(--color-border-accent-blue-600)',
+              lineWidth: 2,
+              lineColor: 'var(--color-surface-neutral-primary)',
+            },
+          },
+        },
+        enableMouseTracking: true,
         lineWidth: 2,
       },
     ],

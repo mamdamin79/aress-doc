@@ -20,6 +20,42 @@ import { ReactComponent as CustomBookmark } from './src/icons/CustomBookmark.svg
 import { ReactComponent as CustomArrow } from './src/icons/CustomArrow.svg';
 import { ReactComponent as CustomPin } from './src/icons/CustomPin.svg';
 import { ReactComponent as CustomTelegram } from './src/icons/CustomTelegram.svg';
+import { ReactComponent as CustomDay } from './src/icons/day.svg';
+import { ReactComponent as CustomEghtesadNovin } from './src/icons/eghtesadNovin.svg';
+import { ReactComponent as CustomGardeshgari } from './src/icons/gardeshgari.svg';
+import { ReactComponent as CustomGharzolhasaneMehrIran } from './src/icons/gharzolhasaneMehrIran.svg';
+import { ReactComponent as CustomHakmatIranian } from './src/icons/hakmatIranian.svg';
+import { ReactComponent as CustomIranzamin } from './src/icons/iranzamin.svg';
+import { ReactComponent as CustomKeshavarzi } from './src/icons/keshavarzi.svg';
+import { ReactComponent as CustomKhavarmianeh } from './src/icons/khavarmianeh.svg';
+import { ReactComponent as CustomMaskan } from './src/icons/maskan.svg';
+import { ReactComponent as CustomMehrEghtesad } from './src/icons/mehrEghtesad.svg';
+import { ReactComponent as CustomMellat } from './src/icons/mellat.svg';
+import { ReactComponent as CustomMelliIran } from './src/icons/melliIran.svg';
+import { ReactComponent as CustomParsian } from './src/icons/parsian.svg';
+import { ReactComponent as CustomPasargad } from './src/icons/pasargad.svg';
+import { ReactComponent as CustomPostBankIran } from './src/icons/postBankIran.svg';
+import { ReactComponent as CustomRefah } from './src/icons/refah.svg';
+import { ReactComponent as CustomSaderat } from './src/icons/saderat.svg';
+import { ReactComponent as CustomSaman } from './src/icons/saman.svg';
+import { ReactComponent as CustomSanatMadn } from './src/icons/sanatMadan.svg';
+import { ReactComponent as CustomSarmayeh } from './src/icons/sarmayeh.svg';
+import { ReactComponent as CustomSepah } from './src/icons/Sepah.svg';
+import { ReactComponent as CustomShahr } from './src/icons/shahr.svg';
+import { ReactComponent as CustomSina } from './src/icons/sina.svg';
+import { ReactComponent as CustomTejarat } from './src/icons/tejarat.svg';
+import { ReactComponent as CustomToseeTaavon } from './src/icons/toseeTaavon.svg';
+import { ReactComponent as CustomAyandeh } from './src/icons/ayandeh.svg';
+import { ReactComponent as CustomCaretDown } from './src/icons/CustomCaretDown.svg';
+import { ReactComponent as CustomCaretUp } from './src/icons/CustomCaretUp.svg';
+import { ReactComponent as CustomPdf } from './src/icons/CustomPdf.svg';
+import { ReactComponent as CustomPng } from './src/icons/CustomPng.svg';
+import { ReactComponent as CustomPdfLite } from './src/icons/CustomPdfLite.svg';
+import { ReactComponent as CustomCsvFile } from './src/icons/CustomCsvFile.svg';
+import { ReactComponent as CustomFirefox } from './src/icons/CustomFirefox.svg';
+import { ReactComponent as CustomSafari } from './src/icons/CustomSafari.svg';
+import { ReactComponent as CustomEdge } from './src/icons/CustomEdge.svg';
+
 import { SVGProps } from 'react';
 
 export const CUSTOM_ICONS: Record<string, React.FC<SVGProps<SVGSVGElement>>> = {
@@ -45,4 +81,39 @@ export const CUSTOM_ICONS: Record<string, React.FC<SVGProps<SVGSVGElement>>> = {
   CustomArrow,
   CustomPin,
   CustomTelegram,
+  CustomDay,
+  CustomEghtesadNovin,
+  CustomGardeshgari,
+  CustomGharzolhasaneMehrIran,
+  CustomHakmatIranian,
+  CustomIranzamin,
+  CustomKeshavarzi,
+  CustomKhavarmianeh,
+  CustomMaskan,
+  CustomMehrEghtesad,
+  CustomMellat,
+  CustomMelliIran,
+  CustomParsian,
+  CustomPasargad,
+  CustomPostBankIran,
+  CustomRefah,
+  CustomSaderat,
+  CustomSaman,
+  CustomSanatMadn,
+  CustomSarmayeh,
+  CustomSepah,
+  CustomShahr,
+  CustomSina,
+  CustomTejarat,
+  CustomToseeTaavon,
+  CustomAyandeh,
+  CustomCaretDown,
+  CustomCaretUp,
+  CustomPdf,
+  CustomPng,
+  CustomPdfLite,
+  CustomCsvFile,
+  CustomFirefox,
+  CustomSafari,
+  CustomEdge,
 };

@@ -1,5 +1,3 @@
-export function VideoPlayerSkeleton () {
-    return (
-        <div className="w-[818px] h-[450px] rounded-lg skeleton-shimmer" />
-    )
+export function VideoPlayerSkeleton() {
+  return <div className="skeleton-shimmer h-[450px] w-[818px] rounded-lg" />;
 }

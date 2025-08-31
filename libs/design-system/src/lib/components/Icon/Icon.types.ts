@@ -23,10 +23,41 @@ export type CustomIconName =
   | 'CustomBookmark'
   | 'CustomArrow'
   | 'CustomTelegram'
-  | 'CustomGold';
+  | 'CustomGold'
+  | 'CustomDay'
+  | 'CustomEghtesadNovin'
+  | 'CustomGardeshgari'
+  | 'CustomGharzolhasaneMehrIran'
+  | 'CustomHakmatIranian'
+  | 'CustomIranzamin'
+  | 'CustomKeshavarzi'
+  | 'CustomKhavarmianeh'
+  | 'CustomMaskan'
+  | 'CustomMehrEghtesad'
+  | 'CustomMellat'
+  | 'CustomMelliIran'
+  | 'CustomParsian'
+  | 'CustomPasargad'
+  | 'CustomPostBankIran'
+  | 'CustomRefah'
+  | 'CustomSaderat'
+  | 'CustomSaman'
+  | 'CustomSanatMadn'
+  | 'CustomSarmayeh'
+  | 'CustomSepah'
+  | 'CustomShahr'
+  | 'CustomSina'
+  | 'CustomTejarat'
+  | 'CustomAyandeh'
+  | 'CustomCaretUp'
+  | 'CustomCaretDown'
+  | 'CustomPng'
+  | 'CustomPdfLite'
+  | 'CustomCsvFile'
+  | 'CustomToseeTaavon';
 
 // this is a type of all valid icon names from lucide
 export type IconName = keyof typeof dynamicIconImports | CustomIconName;
 
 // valid icon size you can pass to IconComponent
-export type IconSize = 'sm' | 'md' | 'lg' | 'lg_plus' | 'xl';
+export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'lg_plus' | 'xl';

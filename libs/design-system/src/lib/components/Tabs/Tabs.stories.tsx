@@ -61,13 +61,11 @@ export const Default: Story = {
       {
         id: '2',
         title: 'تحلیل بازدهی',
-        tag: 'blue',
         content: 'تحلیل بازدهی',
       },
       {
         id: '4',
         title: 'تحلیل بازدهی',
-        tag: 'purple',
         content: 'تحلیل بازدهی',
       },
       {

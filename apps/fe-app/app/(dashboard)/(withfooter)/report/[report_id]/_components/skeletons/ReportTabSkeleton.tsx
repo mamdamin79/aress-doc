@@ -1,9 +1,9 @@
-export function ReportTabSkeleton () {
-    return (
-        <div className="flex items-center gap-2 w-full justify-center">
-            <div className="rounded-full skeleton-shimmer w-32 h-[42px]" />
-            <div className="rounded-full skeleton-shimmer w-32 h-[42px]" />
-            <div className="rounded-full skeleton-shimmer w-32 h-[42px]" />
-        </div>
-    )
+export function ReportTabSkeleton() {
+  return (
+    <div className="flex w-full items-center justify-center gap-2">
+      <div className="skeleton-shimmer h-[42px] w-32 rounded-full" />
+      <div className="skeleton-shimmer h-[42px] w-32 rounded-full" />
+      <div className="skeleton-shimmer h-[42px] w-32 rounded-full" />
+    </div>
+  );
 }
