@@ -94,7 +94,7 @@ const Funds = () => {
     tableRef as RefObject<HTMLDivElement>,
   );
 
-  const columns = React.useMemo<ColumnDef<Person>[]>(
+  const columns = React.useMemo<ColumnDef<(typeof sortedFunds)[0]>[]>(
     () => [
       {
         accessorKey: 'nameFund',
@@ -301,7 +301,7 @@ const Funds = () => {
         {isDraggingOver && position && (
           <div
             className={`bg-border-brand-contrast-700 absolute bottom-0 top-1 z-10 h-[90%] w-0.5 ${
-              position === 'left' ? 'right-0' : 'left-0'
+              position === 'right' ? 'left-0' : 'right-0'
             }`}
           >
             <div className="bg-border-brand-contrast-700 absolute top-0 flex h-2.5 w-2.5 translate-x-1 items-center justify-center rounded-full">
@@ -350,7 +350,7 @@ const Funds = () => {
       .map((fund) => {
         return {
           id: fund.fund.identifier,
-          color: fund.mark,
+          color: fund.mark || '',
         };
       });
 
@@ -365,7 +365,7 @@ const Funds = () => {
     const funds = query.data.selectedTabFunds.map(({ fund }) => {
       const id = fund.identifier;
       return {
-        logo: fund.logoMedium,
+        logo: fund.logoMedium || '',
         id,
         pinned: pinnedList.includes(id),
         investemntFundsMethod: 'T',
@@ -385,6 +385,8 @@ const Funds = () => {
         unitCount: fund.numberOfUnits,
         startDate: fund.initiationDate,
         fundType: fund.fundType?.title,
+        investmentMethod: 'T' as const,
+        mark: '',
       };
     });
 
@@ -404,8 +406,8 @@ const Funds = () => {
     const [{ id, desc }] = sorting;
 
     const sortedUnpinned = [...unpinned].sort((a, b) => {
-      const aVal = a[id];
-      const bVal = b[id];
+      const aVal = a[id as keyof typeof a];
+      const bVal = b[id as keyof typeof b];
 
       const aStr = String(aVal ?? '');
       const bStr = String(bVal ?? '');

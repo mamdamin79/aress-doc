@@ -22,6 +22,7 @@ export type Person = {
   weeklyReturn: number;
   startDate: number;
   investmentMethod: 'T' | 'I&C';
+  pinned: boolean;
 };
 
 export interface VirtualItem {
