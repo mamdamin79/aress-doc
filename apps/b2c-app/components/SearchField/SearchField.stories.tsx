@@ -16,17 +16,3 @@ type Story = StoryObj<typeof SearchField>;
 export const Default: Story = {
   render: () => <SearchField placeholder="جستجو" />,
 };
-
-export const WithCustomPlaceholder: Story = {
-  render: () => <SearchField placeholder="جستجو در میان گزینه‌ها..." />,
-};
-
-export const Interactive: Story = {
-  render: () => (
-    <SearchField
-      placeholder="جستجو"
-      onChange={(value: string) => console.log('Search value:', value)}
-      onClear={() => console.log('Search cleared')}
-    />
-  ),
-};
