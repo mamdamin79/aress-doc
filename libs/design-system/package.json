@@ -10,7 +10,5 @@
       "require": "./index.js"
     }
   },
-  "dependencies": {
-    "react-spring-bottom-sheet": "^3.4.1"
-  }
+  "dependencies": {}
 }
