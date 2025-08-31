@@ -75,6 +75,7 @@ function FundsInfoCell({
         ></div>
         <div className="group/img relative">
           <FundsLogo
+            size="sm"
             hasTag={false}
             isPin={pined}
             color="green"
@@ -360,10 +361,6 @@ function TableRowInner<T extends FundRow>({
           )}
           key={item.id}
         >
-          {/* {formatNumber(item.getValue() as string, {
-            decimals: 2,
-            commaSeparated: false,
-          })} */}
           {item.getValue() as string}
         </td>
       ))}
