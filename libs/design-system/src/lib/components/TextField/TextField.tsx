@@ -303,7 +303,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
               >
                 <Icon
                   size={icon.size}
-                  name={visibleCharacter ? 'eye-off' : icon.name}
+                  name={visibleCharacter ? icon.name : 'eye-off'}
                 />
               </button>
             );

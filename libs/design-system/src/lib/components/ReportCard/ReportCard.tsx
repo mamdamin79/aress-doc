@@ -129,6 +129,7 @@ export const ReportCard: React.FC<ReportCardProps> = ({
                 <div className="flex h-[38px] origin-left scale-x-[0.3] transform items-center overflow-hidden rounded-[100px] text-xs opacity-0 transition-all duration-300 ease-in-out group-hover:scale-x-100 group-hover:opacity-100">
                   <Link href={link ?? '/'}>
                     <Button
+                      theme="brand"
                       align="center"
                       isLoading={false}
                       mode="primary"

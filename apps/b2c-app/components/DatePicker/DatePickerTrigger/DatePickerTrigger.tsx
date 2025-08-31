@@ -1,3 +1,4 @@
+import { cn } from 'design-system';
 import { DatePickerState } from '../DatePickerState';
 import { DatePickerText } from '../DatePickerText';
 import { dateType } from './DatePicker.types';
@@ -8,6 +9,7 @@ interface DatePickerTriggerProps {
   endDate?: dateType;
   mode: 'single' | 'range';
   onClick?: () => void;
+  className?: string;
 }
 
 export function DatePickerTrigger({
@@ -16,9 +18,10 @@ export function DatePickerTrigger({
   startDate,
   onClick,
   mode,
+  className,
 }: DatePickerTriggerProps) {
   return (
-    <div className="flex items-end gap-16">
+    <div className={cn('flex items-end gap-16', className)}>
       {mode === 'range' ? (
         <div className="flex gap-8">
           <DatePickerText title={title[0]} date={startDate} />

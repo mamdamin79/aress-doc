@@ -52,6 +52,7 @@ export const FilterReportClient = () => {
     <Popover className="text-text-neutral-primary">
       <PopoverButton className="outline-none">
         <Button
+          theme="brand"
           align="center"
           isLoading={false}
           mode="secondary"

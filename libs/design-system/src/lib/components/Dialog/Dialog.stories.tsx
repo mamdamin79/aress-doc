@@ -36,6 +36,7 @@ export const Default: Story = {
     return (
       <>
         <Button
+          theme="brand"
           align="center"
           isLoading={false}
           mode="primary"
@@ -89,6 +90,7 @@ export const WithForm: Story = {
     return (
       <>
         <Button
+          theme="brand"
           align="center"
           isLoading={false}
           mode="primary"
@@ -160,6 +162,7 @@ export const CustomStyling: Story = {
     return (
       <>
         <Button
+          theme="brand"
           align="center"
           isLoading={false}
           mode="primary"
@@ -179,6 +182,7 @@ export const CustomStyling: Story = {
               This dialog has custom background and text colors.
             </p>
             <Button
+              theme="brand"
               align="center"
               isLoading={false}
               mode="primary"

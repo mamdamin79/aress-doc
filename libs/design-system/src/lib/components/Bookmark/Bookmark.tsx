@@ -14,7 +14,9 @@ export function Bookmark({
   const colors = ['pink', 'yellow', 'green', 'blue', 'purple'];
   const toggleHandler = () => {
     setIsOpen((prev) => !prev);
-    onColorChange('');
+    if (selectedColor) {
+      onColorChange(selectedColor);
+    }
   };
 
   return (
@@ -29,7 +31,7 @@ export function Bookmark({
           if (selectedColor) setIsOpen(true);
         }}
         className={cn(
-          'fill-surface-neutral-secondary absolute top-[13px] z-10 h-fit w-fit cursor-pointer border-none',
+          'fill-surface-neutral-secondarycontrast absolute -right-[5px] top-[13px] z-10 h-fit w-fit cursor-pointer border-none',
           {
             'fill-surface-accent-pink-600': selectedColor === 'pink',
             'fill-surface-accent-blue-600': selectedColor === 'blue',
@@ -52,53 +54,45 @@ export function Bookmark({
         </div>
         {colors.map((color) => (
           <div
-            key={color}
             className={cn(
-              'flex h-2.5 w-2.5 items-center justify-center rounded-full',
+              'bg-icon-neutral-oninverse h-[18px] w-[18px] rounded-full',
               {
-                'h-4 w-4': color === selectedColor,
-                hover: color !== selectedColor,
-                'bg-surface-accent-pink-600': color === 'pink',
-                'bg-surface-accent-blue-600': color === 'blue',
-                'bg-surface-accent-vividgreen-600': color === 'green',
-                'bg-surface-accent-yellow-600': color === 'yellow',
-                'bg-surface-accent-purple-600': color === 'purple',
+                'h-3 w-3': color !== selectedColor,
               },
             )}
           >
             <div
+              onClick={() => {
+                onColorChange(color);
+                setIsOpen(false);
+              }}
+              key={color}
               className={cn(
-                'bg-surface-neutral-primary flex items-center justify-center rounded-full',
+                'group/color flex h-2.5 w-2.5 cursor-pointer items-center justify-center rounded-full',
                 {
-                  'h-3.5 w-3.5': color === selectedColor,
+                  'mr-0.5 mt-1 ring-2 ring-offset-2': color === selectedColor,
+                  hover: color !== selectedColor,
+                  'bg-surface-accent-pink-600 ring-surface-accent-pink-600':
+                    color === 'pink',
+                  'bg-surface-accent-blue-600 ring-surface-accent-blue-600':
+                    color === 'blue',
+                  'bg-surface-accent-vividgreen-600 ring-surface-accent-vividgreen-600':
+                    color === 'green',
+                  'bg-surface-accent-yellow-600 ring-surface-accent-yellow-600':
+                    color === 'yellow',
+                  'bg-surface-accent-purple-600 ring-surface-accent-purple-600':
+                    color === 'purple',
                 },
               )}
             >
               <div
-                onClick={() => {
-                  onColorChange(color);
-                  setIsOpen(false);
-                }}
                 className={cn(
-                  'group/color flex h-2.5 w-2.5 cursor-pointer items-center justify-center rounded-full',
+                  'bg-surface-neutral-primary invisible h-1.5 w-1.5 rounded-full opacity-50',
                   {
-                    'bg-surface-accent-pink-600': color === 'pink',
-                    'bg-surface-accent-blue-600': color === 'blue',
-                    'bg-surface-accent-vividgreen-600': color === 'green',
-                    'bg-surface-accent-yellow-600': color === 'yellow',
-                    'bg-surface-accent-purple-600': color === 'purple',
+                    'group-hover/color:visible': color !== selectedColor,
                   },
                 )}
-              >
-                <div
-                  className={cn(
-                    'bg-surface-neutral-primary invisible h-1.5 w-1.5 rounded-full opacity-50',
-                    {
-                      'group-hover/color:visible': color !== selectedColor,
-                    },
-                  )}
-                />
-              </div>
+              />
             </div>
           </div>
         ))}

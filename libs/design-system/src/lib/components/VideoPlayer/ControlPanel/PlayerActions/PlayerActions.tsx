@@ -82,6 +82,7 @@ export const PlayerActions: React.FC<Props> = React.memo(
               size="sm"
               isLoading={false}
               align="center"
+              theme="brand"
             >
               <span className="hidden sm:block">
                 <Icon name="pause" />
@@ -104,6 +105,7 @@ export const PlayerActions: React.FC<Props> = React.memo(
               size="sm"
               isLoading={false}
               align="center"
+              theme="brand"
             >
               <span className="hidden sm:block">
                 <Icon name="play" />
