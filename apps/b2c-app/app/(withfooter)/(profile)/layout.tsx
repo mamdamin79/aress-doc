@@ -35,7 +35,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       <div className="text-text-neutral-primary mx-auto flex w-full max-w-[1680px] justify-center">
         <div className="flex w-full flex-row gap-8 px-8 pb-28 pt-12 md:px-8 xl:gap-14 xl:px-20">
-          <div className="flex w-[264px] justify-center">
+          <div className="flex min-w-[264px] justify-center">
             <ProfileSidebar
               items={[
                 { key: 'profile', text: 'حساب کاربری', icon: { name: 'user' } },
