@@ -21,7 +21,7 @@ const CommentExpandButton: React.FC<CommentExpandButtonProps> = ({
         'hover:border-button-brand-border-hover border border-transparent',
         'text-button-brand-label-plain-default hover:text-button-brand-label-plain-hover',
         'text-md flex w-fit items-center gap-1 font-medium',
-        'transition-colors',
+        'transition-colors duration-300',
       )}
       onClick={onToggle}
     >
@@ -29,7 +29,7 @@ const CommentExpandButton: React.FC<CommentExpandButtonProps> = ({
       <span className="relative inline-block min-w-[7ch]">
         <span
           className={cn(
-            'absolute inset-0 transition-opacity duration-200',
+            'absolute inset-0 transition-opacity duration-300',
             isOpen ? 'opacity-100' : 'opacity-0',
           )}
         >
@@ -37,7 +37,7 @@ const CommentExpandButton: React.FC<CommentExpandButtonProps> = ({
         </span>
         <span
           className={cn(
-            'absolute inset-0 transition-opacity duration-200',
+            'absolute inset-0 transition-opacity duration-300',
             isOpen ? 'opacity-0' : 'opacity-100',
           )}
         >
@@ -137,7 +137,7 @@ const BaseComment: React.FC<BaseCommentProps> = ({
       'bg-surface-neutral-tertiary border-border-neutral-secondary rounded-3xl border p-8',
   );
 
-  const hasLineBreaksOrLong = content.includes('\n') || content.length > 150;
+  const hasLineBreaksOrLong = content.includes('\n') || content.length > 300;
   const shouldShowExpandButton = hasLineBreaksOrLong;
 
   return (
@@ -160,7 +160,7 @@ const BaseComment: React.FC<BaseCommentProps> = ({
             )}
           >
             <span
-              className={cn('block w-full truncate text-sm font-normal')}
+              className={cn('line-clamp-2 block w-full text-sm font-normal')}
               dir="auto"
               title={content}
             >
@@ -217,7 +217,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
 }) => {
   return (
     <div className={cn('relative flex w-full flex-col gap-6 px-6', className)}>
-      <div className="bg-button-brand-label-plain-default absolute right-0 top-0 h-full w-1"></div>
+      <div className="bg-button-brand-label-plain-default absolute right-0 top-0 h-full w-1 rounded-lg" />
       <div className="flex flex-col gap-10">
         {comments.length > 0 &&
           comments.map((comment) => (
