@@ -1,6 +1,7 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
 import TableRow from './TableRow';
 import { TableBodyProps, VirtualItem } from '../types';
+import React from 'react';
 
 export function TableBody({
   rows,
@@ -29,7 +30,7 @@ export function TableBody({
         const row = rows[virtualRow.index];
         const isMainTab = activeIndexCategoryTab === 0;
         return (
-          <>
+          <React.Fragment key={row.id}>
             <TableRow
               row={row}
               handlerMarkFund={handlerMarkFund}
@@ -40,7 +41,6 @@ export function TableBody({
               isScrollAtStart={false}
               handlerUnPinned={handlerUnPinned}
               handlerPinned={handlerPinned}
-              key={row.id}
               logo={row.original.logo}
             />
             {allRows === virtualRow.index + 1 && (
@@ -48,7 +48,7 @@ export function TableBody({
                 پایان لیست صندوق ها.
               </div>
             )}
-          </>
+          </React.Fragment>
         );
       })}
       <tr className="h-[64px] w-full">

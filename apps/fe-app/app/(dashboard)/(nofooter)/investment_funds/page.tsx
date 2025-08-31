@@ -40,6 +40,7 @@ import {
 import {
   ColumnDef,
   Header,
+  Row,
   SortingState,
   flexRender,
   getCoreRowModel,
@@ -54,7 +55,7 @@ import { columnVisibility, filterList } from './FundsTable.constants';
 import { ExportExel } from './_components/ExportExel';
 import { useSmartTableScroll } from '@shared';
 import { TableBody } from './_components/TableBody';
-import { Person } from './types';
+import { FundRow, Person } from './types';
 import {
   useDragIndicator,
   useTableDragSensors,
@@ -618,7 +619,11 @@ const Funds = () => {
     });
   };
 
-  if (query.isLoading && document) {
+  if (
+    query.isLoading &&
+    typeof document !== 'undefined' &&
+    document.documentElement
+  ) {
     document.documentElement.style.overflow = 'hidden';
   }
 
@@ -1010,7 +1015,7 @@ const Funds = () => {
                 isScrollAtStart={isScrollAtStart}
                 handlerPinned={handlerPinned}
                 handlerUnPinned={handlerUnPinned}
-                rows={rows}
+                rows={rows as Row<FundRow>[]}
                 activeIndexCategoryTab={activeIndexCategoryTab}
               />
             ) : (
