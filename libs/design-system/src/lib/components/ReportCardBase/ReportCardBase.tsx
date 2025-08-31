@@ -58,6 +58,10 @@ export const ReportCardBase: React.FC<ReportCardBaseProps> = ({
       }
     } catch {
       setLoadingStatus('rejected');
+    } finally {
+      setTimeout(() => {
+        setLoadingStatus(null);
+      }, 1000);
     }
   };
 
