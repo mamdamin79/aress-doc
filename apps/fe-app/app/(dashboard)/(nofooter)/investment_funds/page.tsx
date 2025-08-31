@@ -387,6 +387,8 @@ const Funds = () => {
         fundType: fund.fundType?.title,
         investmentMethod: 'T' as const,
         mark: '',
+        isEtf: false,
+        isTradable: true,
       };
     });
 
@@ -469,7 +471,6 @@ const Funds = () => {
   }, [isScrollAtStart, activeSortIndex, table]);
 
   useEffect(() => {
-    document.documentElement.style.overflow = 'hidden';
     return () => {
       document.documentElement.style.overflow = 'auto';
     };
@@ -617,7 +618,9 @@ const Funds = () => {
     });
   };
 
-  if (query.isLoading) document.body.style.overflow = 'hidden';
+  if (query.isLoading && document) {
+    document.documentElement.style.overflow = 'hidden';
+  }
 
   return (
     <>
@@ -629,7 +632,7 @@ const Funds = () => {
       >
         {!tabs ? (
           <div className="-mt-2">
-            <TabsSkeleton />/
+            <TabsSkeleton />
           </div>
         ) : (
           tabs.tabs && (
@@ -675,9 +678,7 @@ const Funds = () => {
             dir="rtl"
             className="w-full table-fixed rounded-xl text-center"
           >
-            {query.isLoading ||
-            query.isFetching ||
-            query.status === 'pending' ? (
+            {!rows.length ? (
               <thead>
                 <tr>
                   <HeaderTableSkeleton />

@@ -1,5 +1,5 @@
 import { Row } from '@tanstack/react-table';
-import type { MutableRefObject } from 'react';
+import type { RefObject } from 'react';
 
 export type DragPosition = 'left' | 'right';
 export type Person = {
@@ -35,6 +35,8 @@ export interface VirtualItem {
 }
 
 export interface FundRow {
+  isEtf: boolean;
+  isTradable: boolean;
   nameFund: string;
   investmentMethod: 'T' | 'I&C';
   logo: string;
@@ -46,7 +48,7 @@ export interface FundRow {
 export interface TableBodyProps {
   allRows: number;
   rows: Row<FundRow>[];
-  tableRef: MutableRefObject<HTMLDivElement | null>;
+  tableRef: RefObject<HTMLDivElement | null>;
   isScrollAtStart: boolean;
   activeIndexCategoryTab: number;
   handlerPinned: (id: number) => void;
@@ -69,10 +71,12 @@ export interface TableRowProps<T extends FundRow> {
 }
 
 export interface FundsInfoCellProps {
+  isEtf: boolean;
   name: string;
   logo: string;
   pined: boolean;
   selected: boolean;
+  isTradable: boolean;
   isScrolled: boolean;
   className?: string;
   investmentMethod: 'T' | 'I&C';
