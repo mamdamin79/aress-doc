@@ -4,12 +4,17 @@ import { Button, NewBadge, Icon, LikeBadge } from 'design-system';
 // import { TextWithIcon } from 'compositions';
 import { Category } from '../_types/api.types';
 import { TextWithIcon } from '../../../../../../compositions/TextWithIcon';
+import {
+  useReportsServiceDeleteReportsByReportIdFavorite,
+  useReportsServicePostReportsByReportIdFavorite,
+} from '@openapi';
 export interface ReportOverviewProps {
   title?: string;
   category?: Category;
   summary?: string;
   userFavorite?: boolean;
   isNew?: boolean;
+  reportId?: string;
 }
 export const ReportOverview: React.FC<ReportOverviewProps> = ({
   title,
@@ -17,7 +22,19 @@ export const ReportOverview: React.FC<ReportOverviewProps> = ({
   summary,
   userFavorite,
   isNew,
+  reportId,
 }) => {
+  const addFavoriteMutation = useReportsServicePostReportsByReportIdFavorite();
+  const deleteFavoriteMutation =
+    useReportsServiceDeleteReportsByReportIdFavorite();
+
+  const handleLike = async (reportId: string, isFavorite: boolean) => {
+    if (isFavorite) {
+      deleteFavoriteMutation.mutate({ reportId });
+    } else {
+      addFavoriteMutation.mutate({ reportId: String(reportId) });
+    }
+  };
   return (
     <div className="flex w-full flex-col gap-4">
       <h3 className="text-right text-2xl font-medium">{title}</h3>
@@ -32,7 +49,7 @@ export const ReportOverview: React.FC<ReportOverviewProps> = ({
         <div className="flex flex-row items-center gap-3">
           <LikeBadge
             isLiked={userFavorite ?? false}
-            onClick={() => console.log('liked')}
+            onClick={() => handleLike(reportId ?? '', userFavorite ?? false)}
             size="lg"
           />
           <Button

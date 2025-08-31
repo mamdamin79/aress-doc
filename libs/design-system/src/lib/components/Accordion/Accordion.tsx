@@ -22,7 +22,7 @@ type Props = {
 export const Accordion: React.FC<Props> = ({
   items,
   singleOpen = false,
-  mode = 'b2c',
+  mode = 'b2b',
   className,
   allowMultiple = false,
   defaultOpenItems = [],
@@ -133,7 +133,7 @@ export const Accordion: React.FC<Props> = ({
                   className={cn(
                     'text-sm duration-300 data-[closed]:-translate-y-6 data-[closed]:opacity-0',
                     {
-                      'border-bordimary text-text-neutral-secondary duration-30 mt-4 border-t pt-40':
+                      'border-border-neutral-primary text-text-neutral-secondary duration-30 mt-4 border-t pt-4':
                         mode === 'b2b' && !isCustomMode,
                       'text-text-neutral-secondarycontrast pt-1':
                         mode === 'b2c' && !isCustomMode,
