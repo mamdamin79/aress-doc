@@ -17,7 +17,7 @@ export const Notification: React.FC<NotificationProps> = ({
 }) => {
   return (
     <div
-      className={cn('min-h-[84px] w-full bg-transparent p-3', {
+      className={cn('min-h-[84px] w-full bg-transparent p-3 pl-5', {
         'bg-surface-brand-100 rounded-2xl': isNew,
       })}
     >

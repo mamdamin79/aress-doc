@@ -98,7 +98,7 @@ export default function Messages() {
         {Object.entries(groupedNotifications).map(
           ([date, notifications], index) => (
             <Fragment key={index}>
-              <div className="text-text-neutral-secondary mt-4 text-right text-lg font-medium">
+              <div className="text-text-neutral-secondary mt-4 text-right text-lg font-semibold">
                 {date}
               </div>
               <div className="flex flex-col gap-2">
@@ -112,7 +112,9 @@ export default function Messages() {
                   />
                 ))}
               </div>
-              <div className="bg-surface-neutral-tertiary my-1 h-[1px] w-full"></div>
+              {index !== Object.entries(groupedNotifications).length - 1 && (
+                <div className="border-border-neutral-tertiary my-1 h-[1px] w-full border"></div>
+              )}
             </Fragment>
           ),
         )}
