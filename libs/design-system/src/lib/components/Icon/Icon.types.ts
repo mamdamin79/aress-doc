@@ -57,7 +57,8 @@ export type CustomIconName =
   | 'CustomFirefox'
   | 'CustomSafari'
   | 'CustomEdge'
-  | 'CustomToseeTaavon';
+  | 'CustomToseeTaavon'
+  | 'CustomPdf';
 
 // this is a type of all valid icon names from lucide
 export type IconName = keyof typeof dynamicIconImports | CustomIconName;
