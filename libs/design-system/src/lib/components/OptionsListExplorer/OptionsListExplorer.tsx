@@ -132,7 +132,6 @@ export function OptionsListExplorer({
               title: category.title,
               id: String(category.id),
             }))}
-            colorMode="neutral"
             variant="rounded"
             activeTab={activeTab}
             onClickTab={(id) => handleTabChange(id)}

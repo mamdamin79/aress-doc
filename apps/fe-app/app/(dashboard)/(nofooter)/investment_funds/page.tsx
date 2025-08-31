@@ -7,6 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { Toaster } from 'react-hot-toast';
 import { useHeaderVisibility } from '@shared';
 // needed for table body level scope DnD setup
 import {
@@ -71,6 +72,8 @@ const Funds = () => {
   const [isScrollAtEnd, setIsScrollAtEnd] = useState<boolean>(true);
   const [fundSearchQuery, setFundSearchQuery] = useState<string>('');
   const tableRef = useRef<HTMLDivElement>(null);
+  const [pinnedList, setPinnedList] = useState<number[]>([]);
+  const [rowsMark, setRowsMark] = useState<{ color: string; id: number }[]>([]);
   const [sorting, setSorting] = useState<SortingState>([
     {
       id: 'nameFund',
@@ -90,14 +93,26 @@ const Funds = () => {
     headerRefs,
     tableRef as RefObject<HTMLDivElement>,
   );
-  const columns = React.useMemo<ColumnDef<Person>[]>(
+
+  const columns = React.useMemo<ColumnDef<(typeof sortedFunds)[0]>[]>(
     () => [
       {
         accessorKey: 'nameFund',
         header: 'Fund Name',
         id: 'nameFund',
-        size: 200,
-        enableSorting: true,
+        sortingFn: (rowA, rowB, columnId) => {
+          const pinnedA = rowA.original.pinned;
+          const pinnedB = rowB.original.pinned;
+
+          if (pinnedA !== pinnedB) {
+            return pinnedA ? -1 : 1;
+          }
+          const a = rowA.getValue(columnId);
+          const b = rowB.getValue(columnId);
+          return String(a).localeCompare(String(b), 'fa', {
+            sensitivity: 'base',
+          });
+        },
       },
       {
         accessorKey: 'unitCount',
@@ -255,7 +270,7 @@ const Funds = () => {
 
     const dragIndicator = useDragIndicator();
     const isDraggingOver = dragIndicator.columnId === header.column.id;
-    const position = dragIndicator.position;
+    const position = 'right';
 
     return (
       <th
@@ -286,7 +301,7 @@ const Funds = () => {
         {isDraggingOver && position && (
           <div
             className={`bg-border-brand-contrast-700 absolute bottom-0 top-1 z-10 h-[90%] w-0.5 ${
-              position === 'left' ? 'right-0' : 'left-0'
+              position === 'right' ? 'left-0' : 'right-0'
             }`}
           >
             <div className="bg-border-brand-contrast-700 absolute top-0 flex h-2.5 w-2.5 translate-x-1 items-center justify-center rounded-full">
@@ -312,53 +327,108 @@ const Funds = () => {
     }
   }
 
-  const query = useFundsServiceGetFundsTable(
-    { tab: activeIndexCategoryTab },
-    undefined,
-    {
-      enabled: true,
-    },
-  );
+  // request to get funds table data
+  const query = useFundsServiceGetFundsTable({ tab: activeIndexCategoryTab });
 
-  const fetchDataTable = async () => {
-    await query.refetch();
-  };
+  const { data: tabs } = useFundsServiceGetFundsTable({ tab: 1 });
 
   useEffect(() => {
-    fetchDataTable();
+    table.setPageSize(10);
   }, [activeIndexCategoryTab]);
 
+  // set pinned list fund
+  useEffect(() => {
+    if (query.isLoading || query.isFetching || !query.data?.selectedTabFunds)
+      return;
+
+    const initialPinnedList = query.data.selectedTabFunds
+      .filter((fund) => fund.pinned)
+      .map((fund) => fund.fund.identifier);
+
+    const initialMarkedList = query.data.selectedTabFunds
+      .filter((fund) => fund.mark)
+      .map((fund) => {
+        return {
+          id: fund.fund.identifier,
+          color: fund.mark || '',
+        };
+      });
+
+    setRowsMark(initialMarkedList);
+
+    setPinnedList(initialPinnedList);
+  }, [query.isLoading, query.isFetching, query.data?.selectedTabFunds]);
+
   const simplifiedFunds = useMemo(() => {
-    return query.data?.selectedTabFunds.map(({ fund, pinned }) => ({
-      pinned: pinned,
-      isEtf: fund.isEtf,
-      isTradable: fund.isCharity,
-      nameFund: fund.name || fund.abbreviatedName,
-      dailyAlpha: fund.alphaLastDay,
-      weeklyAlpha: fund.alphaLastWeek,
-      monthlyAlpha: fund.alphaLastMonth,
-      quarterlyAlpha: fund.alphaLast3Months,
-      weeklyReturn: fund.returnLastWeekPercent,
-      monthlyReturn: fund.returnLastMonthPercent,
-      quarterlyReturn: fund.returnLast3MonthsPercent,
-      yearlyReturn: fund.returnLastYearPercent,
-      profitPerUnit: fund.redeemNavRials,
-      issuancePrice: fund.issueNavRials,
-      cancellationPrice: fund.redeemNavRials,
-      netAssetValue: fund.statisticalNavRials,
-      unitCount: fund.numberOfUnits,
-      startDate: fund.initiationDate,
-      fundType: fund.fundType?.title,
-    }));
-  }, [query.data?.selectedTabFunds]);
+    if (!query.data?.selectedTabFunds) return [];
+
+    const funds = query.data.selectedTabFunds.map(({ fund }) => {
+      const id = fund.identifier;
+      return {
+        logo: fund.logoMedium || '',
+        id,
+        pinned: pinnedList.includes(id),
+        investemntFundsMethod: 'T',
+        nameFund: fund.name || fund.abbreviatedName,
+        dailyAlpha: fund.alphaLastDay,
+        weeklyAlpha: fund.alphaLastWeek,
+        monthlyAlpha: fund.alphaLastMonth,
+        quarterlyAlpha: fund.alphaLast3Months,
+        weeklyReturn: fund.returnLastWeekPercent,
+        monthlyReturn: fund.returnLastMonthPercent,
+        quarterlyReturn: fund.returnLast3MonthsPercent,
+        yearlyReturn: fund.returnLastYearPercent,
+        profitPerUnit: fund.redeemNavRials,
+        issuancePrice: fund.issueNavRials,
+        cancellationPrice: fund.redeemNavRials,
+        netAssetValue: fund.statisticalNavRials,
+        unitCount: fund.numberOfUnits,
+        startDate: fund.initiationDate,
+        fundType: fund.fundType?.title,
+        investmentMethod: 'T' as const,
+        mark: '',
+        isEtf: false,
+        isTradable: true,
+      };
+    });
+
+    return funds.sort((a, b) => Number(b.pinned) - Number(a.pinned));
+  }, [query.data?.selectedTabFunds, pinnedList]);
+
+  const sortedFunds = useMemo(() => {
+    if (!simplifiedFunds) return [];
+
+    const pinned = simplifiedFunds.filter((f) => f.pinned);
+    const unpinned = simplifiedFunds.filter((f) => !f.pinned);
+
+    if (sorting.length === 0) {
+      return [...pinned, ...unpinned];
+    }
+
+    const [{ id, desc }] = sorting;
+
+    const sortedUnpinned = [...unpinned].sort((a, b) => {
+      const aVal = a[id as keyof typeof a];
+      const bVal = b[id as keyof typeof b];
+
+      const aStr = String(aVal ?? '');
+      const bStr = String(bVal ?? '');
+
+      const compare = aStr.localeCompare(bStr, 'fa', { sensitivity: 'base' });
+
+      return desc ? -compare : compare;
+    });
+
+    return [...pinned, ...sortedUnpinned];
+  }, [simplifiedFunds, sorting]);
 
   const table = useReactTable({
-    data: simplifiedFunds ?? [],
-    columns: columns as ColumnDef<NonNullable<typeof simplifiedFunds>[0]>[],
+    data: sortedFunds,
+    columns,
     state: { columnOrder, sorting },
     initialState: {
       columnVisibility,
-      sorting: sorting,
+      sorting,
     },
     onSortingChange: (updater) => {
       const newSorting =
@@ -370,7 +440,7 @@ const Funds = () => {
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    debugAll: true,
+    manualSorting: true,
   });
 
   const isChanged = useMemo(() => {
@@ -401,7 +471,6 @@ const Funds = () => {
   }, [isScrollAtStart, activeSortIndex, table]);
 
   useEffect(() => {
-    document.documentElement.style.overflow = 'hidden';
     return () => {
       document.documentElement.style.overflow = 'auto';
     };
@@ -513,6 +582,49 @@ const Funds = () => {
   );
 
   const sensors = useTableDragSensors();
+  const totalCount = query.data?.selectedTabFunds.length;
+  const staticOptions = [10, 25, 50, 100].filter(
+    (size) => totalCount && size < totalCount,
+  );
+
+  const pageSizeOptions = [...staticOptions, totalCount];
+  const options = pageSizeOptions.map((size) => ({
+    text: String(size),
+  }));
+
+  const handlerPinned = (e: number) => {
+    setPinnedList((prev) => [...prev, e]);
+  };
+
+  const handlerUnPinned = (e: number) => {
+    setPinnedList((prev) => {
+      const updated = prev.filter((id) => id !== e);
+      return updated;
+    });
+  };
+
+  const handlerMarkFund = (id: number, color: string) => {
+    setRowsMark((prev) => {
+      const existingMark = prev.find((mark) => mark.id === id);
+
+      // If exists and color is same, remove the mark (unmark)
+      if (existingMark && existingMark.color === color) {
+        return prev.filter((mark) => mark.id !== id);
+      }
+
+      // Else, update the color or add new mark
+      const updatedMarks = prev.filter((mark) => mark.id !== id);
+      return [...updatedMarks, { id, color }];
+    });
+  };
+
+  if (
+    query.isLoading &&
+    typeof document !== 'undefined' &&
+    document.documentElement
+  ) {
+    document.documentElement.style.overflow = 'hidden';
+  }
 
   return (
     <>
@@ -522,22 +634,21 @@ const Funds = () => {
           isHeaderVisible ? 'translate-y-0' : '-translate-y-full',
         )}
       >
-        {!query.data ? (
+        {!tabs ? (
           <div className="-mt-2">
             <TabsSkeleton />
           </div>
         ) : (
-          query.data.tabs && (
+          tabs.tabs && (
             <Tabs
               variant="shaped-color"
               onClickTab={(e) =>
-                setActiveIndexCategoryTab(query.data.tabs[e].identifier)
+                setActiveIndexCategoryTab(tabs.tabs[e].identifier)
               }
               activeTab={activeIndexCategoryTab - 1}
-              colorMode="neutral"
-              tabs={query.data.tabs?.map((tab) => ({
+              tabs={tabs.tabs?.map((tab) => ({
                 id: String(tab.identifier),
-                content: tab.title,
+                title: tab.title,
                 tag: tab.color as FundsTagProps['color'],
               }))}
             />
@@ -557,19 +668,26 @@ const Funds = () => {
             rows.length,
         })}
       >
-        <div className="bg-border-brand-soft-200 absolute right-0 top-[75px] z-50 h-0.5 w-full" />
+        <div className="bg-border-brand-soft-200 absolute right-2 top-[75px] z-50 h-0.5 w-full" />
         <div
           ref={tableRef}
-          className="table-scroll group/table bg-surface-neutral-primary scrollbar-lg h-[calc(100vh-172px)] w-screen overflow-auto scroll-smooth"
+          className={cn(
+            'table-scroll group/table bg-surface-neutral-primary scrollbar-lg w-screen overflow-auto scroll-smooth',
+            {
+              'h-[calc(100vh-172px)]': isHeaderVisible,
+            },
+          )}
         >
           <table
             dir="rtl"
             className="w-full table-fixed rounded-xl text-center"
           >
-            {query.isLoading ||
-            query.isFetching ||
-            query.status === 'pending' ? (
-              <HeaderTableSkeleton />
+            {!rows.length ? (
+              <thead>
+                <tr>
+                  <HeaderTableSkeleton />
+                </tr>
+              </thead>
             ) : (
               <thead
                 className={cn(
@@ -609,6 +727,7 @@ const Funds = () => {
                           activeSortIndex === 0,
                         'top-[157px]':
                           activeSortIndex === 0 && !isHeaderVisible,
+                        '': sorting[0].id === 'nameFund',
                       })}
                     >
                       <div className="bg-surface-brand-600-primary mx-auto h-1.5 w-16 rounded-t-[10px]"></div>
@@ -638,7 +757,7 @@ const Funds = () => {
                         .getHeaderGroups()[0]
                         .headers.map((header, index) => {
                           return (
-                            <>
+                            <React.Fragment key={index}>
                               {index === 0 && (
                                 <th
                                   key={index}
@@ -826,7 +945,7 @@ const Funds = () => {
                                   </div>
                                 </DraggableTableHeader>
                               )}
-                            </>
+                            </React.Fragment>
                           );
                         })}
                       <DragOverlay
@@ -888,25 +1007,23 @@ const Funds = () => {
             )}
             {rows.length ? (
               <TableBody
+                handlerMarkFund={handlerMarkFund}
+                allRows={sortedFunds.length}
+                rowMarks={rowsMark}
                 tableRef={tableRef as RefObject<HTMLDivElement>}
                 isScrollAtStart={isScrollAtStart}
+                handlerPinned={handlerPinned}
+                handlerUnPinned={handlerUnPinned}
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 rows={rows as any}
                 activeIndexCategoryTab={activeIndexCategoryTab}
               />
             ) : (
-              <>
-                <RowSkeleton />
-                <RowSkeleton />
-                <RowSkeleton />
-                <RowSkeleton />
-                <RowSkeleton />
-                <RowSkeleton />
-                <RowSkeleton />
-                <RowSkeleton />
-                <RowSkeleton />
-                <RowSkeleton />
-              </>
+              <tbody className="overflow-y-hidden">
+                {Array.from({ length: 10 }).map((_, i) => (
+                  <RowSkeleton key={i} />
+                ))}
+              </tbody>
             )}
           </table>
         </div>
@@ -963,29 +1080,10 @@ const Funds = () => {
                   },
                 )}
               >
-                <span>
-                  {table.getState().pagination.pageSize *
-                    (table.getState().pagination.pageIndex + 1) *
-                    table.getPageCount() ===
-                  +prop.text
-                    ? 'همه'
-                    : prop.text}
-                </span>
+                <span>{totalCount === +prop.text ? 'همه' : prop.text}</span>
               </div>
             )}
-            dropDownList={[
-              { text: '10' },
-              { text: '25' },
-              { text: '50' },
-              { text: '100' },
-              {
-                text: String(
-                  table.getState().pagination.pageSize *
-                    (table.getState().pagination.pageIndex + 1) *
-                    table.getPageCount(),
-                ),
-              },
-            ]}
+            dropDownList={options}
           />
         </div>
 
@@ -1175,6 +1273,7 @@ const Funds = () => {
           }}
         ></DatePicker>
       </Dialog>
+      <Toaster position="bottom-center" />
     </>
   );
 };

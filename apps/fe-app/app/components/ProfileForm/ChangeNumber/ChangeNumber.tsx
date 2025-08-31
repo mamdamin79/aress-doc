@@ -91,6 +91,7 @@ export const InputPasswordForm = ({
         )}
       />
       <Button
+        theme="brand"
         align="center"
         mode="primary"
         isLoading={isSubmitting || isPending}
@@ -187,6 +188,7 @@ const NewNumber = ({
         )}
       />
       <Button
+        theme="brand"
         align="center"
         mode="primary"
         isLoading={isSubmitting || isPending}

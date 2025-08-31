@@ -2,7 +2,12 @@
 import { ProgressBar } from 'design-system';
 import React, { useState } from 'react';
 import { AuthForm } from '../_components/AuthForm';
-const PROGRESS_BAR_ITEMS = ['کد ملی', 'رمز یک‌‌بار مصرف', 'ورود'];
+import { ProgressBarItemType } from 'design-system';
+const PROGRESS_BAR_ITEMS: ProgressBarItemType[] = [
+  { text: 'کد ملی', status: 'success' },
+  { text: 'رمز یک‌‌بار مصرف', status: 'success' },
+  { text: 'ورود', status: 'success' },
+];
 const Page = () => {
   const [currentStep, setCurrentStep] = useState(0);
 

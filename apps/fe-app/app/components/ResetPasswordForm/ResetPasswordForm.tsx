@@ -146,6 +146,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
         </div>
         <div className="flex flex-col justify-center gap-4">
           <Button
+            theme="brand"
             align="center"
             mode="primary"
             isLoading={isLoading}
@@ -155,6 +156,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
             ادامه
           </Button>
           <Button
+            theme="brand"
             className="font-medium"
             align="center"
             isLoading={false}

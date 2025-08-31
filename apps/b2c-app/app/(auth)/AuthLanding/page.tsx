@@ -112,6 +112,7 @@ const Page = () => {
           <div className="flex w-[313px] flex-col gap-3">
             <Link href={'/Signin'}>
               <Button
+                theme="brand"
                 align="center"
                 mode="primary"
                 size="md"
@@ -123,6 +124,7 @@ const Page = () => {
 
             <Link href={'/Signup'}>
               <Button
+                theme="brand"
                 align="center"
                 mode="secondary"
                 size="md"
@@ -136,7 +138,13 @@ const Page = () => {
             <span className="whitespace-nowrap text-nowrap">
               مدیر صندوق هستید؟
             </span>
-            <Button align="center" mode="underline" size="sm">
+            <Button
+              theme="brand"
+              align="center"
+              mode="underline"
+              size="sm"
+              className="font-medium"
+            >
               از آرسس ترمینال وارد شوید
             </Button>
           </div>

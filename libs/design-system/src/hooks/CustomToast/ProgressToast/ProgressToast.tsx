@@ -17,7 +17,7 @@ export const ProgressToast = ({
 
   return (
     <div
-      className={`animate-toast bg-surface-neutral-inverse relative flex h-[50px] w-fit transform-gpu items-center justify-center overflow-hidden rounded-lg transition-all duration-500 ease-in-out`}
+      className={`animate-toast relative flex h-[50px] w-fit transform-gpu items-center justify-center overflow-hidden rounded-lg bg-black transition-all duration-500 ease-in-out`}
     >
       <div className="flex w-full items-center gap-2 px-2">
         {leadingAction && (

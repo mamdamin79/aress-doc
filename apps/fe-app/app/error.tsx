@@ -46,6 +46,7 @@ export default function GlobalError({
           </h2>
         </div>
         <Button
+          theme="brand"
           align="center"
           isLoading={false}
           mode="primary"

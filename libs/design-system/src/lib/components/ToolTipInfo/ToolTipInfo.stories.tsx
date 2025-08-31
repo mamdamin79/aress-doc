@@ -33,7 +33,9 @@ export const Default: Story = {
   render: (args) => (
     <div className="p-20">
       <ToolTipInfo {...args}>
-        <Button mode="primary">نمایش تولتیپ</Button>
+        <Button mode="primary" theme="brand">
+          نمایش تولتیپ
+        </Button>
       </ToolTipInfo>
     </div>
   ),
@@ -50,7 +52,9 @@ export const ClickToOpen: Story = {
   render: (args) => (
     <div className="p-20">
       <ToolTipInfo {...args}>
-        <Button mode="secondary">کلیک کنید</Button>
+        <Button mode="secondary" theme="brand">
+          کلیک کنید
+        </Button>
       </ToolTipInfo>
     </div>
   ),

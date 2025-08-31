@@ -87,7 +87,7 @@ export const HeaderClient: React.FC = () => {
 
     const updatedMenuData = [...MenuData];
     const dashboardSection = updatedMenuData[0]?.dropdown?.find(
-      (group: { id: string }) => group.id === 'userDashboards',
+      (group: { id?: string }) => group.id === 'userDashboards',
     );
     if (dashboardSection) {
       dashboardSection.children = query.data.map((dashboard) => {

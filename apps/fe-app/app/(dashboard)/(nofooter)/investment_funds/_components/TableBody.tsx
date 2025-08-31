@@ -1,22 +1,18 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
-import TableRow, { FundRow } from './TableRow';
-import { VirtualItem } from '../types';
-import { Row } from '@tanstack/react-table';
-import { RefObject } from 'react';
+import TableRow from './TableRow';
+import { TableBodyProps, VirtualItem } from '../types';
+import React from 'react';
 
-export interface TableBodyProps<T> {
-  rows: Row<T>[];
-  tableRef: RefObject<HTMLDivElement>;
-  activeIndexCategoryTab: number;
-  isScrollAtStart: boolean;
-}
-
-export const TableBody: React.FC<TableBodyProps<FundRow>> = ({
+export function TableBody({
   rows,
   tableRef,
   activeIndexCategoryTab,
-  isScrollAtStart,
-}) => {
+  handlerPinned,
+  handlerUnPinned,
+  handlerMarkFund,
+  rowMarks,
+  allRows,
+}: TableBodyProps) {
   const virtualizer = useVirtualizer({
     count: rows?.length,
     getScrollElement: () => tableRef.current,
@@ -30,36 +26,34 @@ export const TableBody: React.FC<TableBodyProps<FundRow>> = ({
         <td />
       </tr>
 
-      {virtualizer.getVirtualItems().map((virtualRow: VirtualItem, index) => {
+      {virtualizer.getVirtualItems().map((virtualRow: VirtualItem) => {
         const row = rows[virtualRow.index];
-        const isMainTab = activeIndexCategoryTab === 1;
-
-        console.log(index);
-
+        const isMainTab = activeIndexCategoryTab === 0;
         return (
-          <>
+          <React.Fragment key={row.id}>
             <TableRow
-              logo=""
-              key={row.id}
               row={row}
+              handlerMarkFund={handlerMarkFund}
               isMainTab={isMainTab}
               activeIndexCategoryTab={activeIndexCategoryTab}
-              rowMarks={[]}
+              rowMarks={rowMarks}
               handleColorChange={() => void 0}
-              toggleWatchList={() => void 0}
-              setPineWatchList={() => void 0}
-              pineWatchLis={[]}
-              watchList={[]}
-              isScrollAtStart={isScrollAtStart}
+              isScrollAtStart={false}
+              handlerUnPinned={handlerUnPinned}
+              handlerPinned={handlerPinned}
+              logo={row.original.logo}
             />
-            {virtualizer.getVirtualItems().length === index + 1 && (
-              <tr className="text-text-neutral-secondary absolute mx-auto my-5 flex w-screen justify-center text-nowrap text-center">
-                پایان لیست صندوق‌ها.
-              </tr>
+            {allRows === virtualRow.index + 1 && (
+              <div className="sticky right-0 mb-2 mt-5 w-screen whitespace-nowrap text-sm text-gray-600">
+                پایان لیست صندوق ها.
+              </div>
             )}
-          </>
+          </React.Fragment>
         );
       })}
+      <tr className="h-[64px] w-full">
+        <td className="h-full"></td>
+      </tr>
       <tr
         style={{
           height:
@@ -73,4 +67,4 @@ export const TableBody: React.FC<TableBodyProps<FundRow>> = ({
       </tr>
     </tbody>
   );
-};
+}

@@ -54,6 +54,9 @@ export type CustomIconName =
   | 'CustomPng'
   | 'CustomPdfLite'
   | 'CustomCsvFile'
+  | 'CustomFirefox'
+  | 'CustomSafari'
+  | 'CustomEdge'
   | 'CustomToseeTaavon';
 
 // this is a type of all valid icon names from lucide

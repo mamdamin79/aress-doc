@@ -174,6 +174,7 @@ export const NewPasswordForm: React.FC<NewPasswordFormProps> = ({
         </div>
         <div className="flex flex-col justify-center gap-4">
           <Button
+            theme="brand"
             align="center"
             mode="primary"
             isLoading={isSubmitting}
@@ -184,6 +185,7 @@ export const NewPasswordForm: React.FC<NewPasswordFormProps> = ({
           </Button>
           {isStandAlone && (
             <Button
+              theme="brand"
               className="font-medium"
               align="center"
               isLoading={false}
