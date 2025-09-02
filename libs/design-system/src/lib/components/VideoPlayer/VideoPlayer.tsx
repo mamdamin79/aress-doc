@@ -9,6 +9,7 @@ import { cn } from '../../../utils/classNames.utils';
 import { PlayerProgressBar } from './ControlPanel/PlayerProgressBar';
 import { PlayList } from '../PlayList';
 import { Video, VideoQuality } from './VideoPlayer.types';
+import { ReactComponent as Logo } from '../../../assets/icons/fullLogo.svg';
 
 type Props = {
   qualities: VideoQuality[];
@@ -180,14 +181,7 @@ export const VideoPlayer: React.FC<Props> = ({
             { 'opacity-20': !showControlPanel && isPlaying },
           )}
         >
-          {
-            <img
-              src={'../../../assets/icons/logo.svg'}
-              width={100}
-              height={100}
-              alt="logo"
-            />
-          }
+          {<Logo width={32} height={32} />}
         </span>
       )}
       <div className="aspect-video w-full">
