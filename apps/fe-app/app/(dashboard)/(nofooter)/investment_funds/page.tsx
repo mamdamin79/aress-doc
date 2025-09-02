@@ -59,11 +59,16 @@ import {
   useDragIndicator,
   useTableDragSensors,
 } from './utils/investmentFunds.utils';
-import { useFundsServiceGetFundsTable } from '@openapi';
+import {
+  FundsService,
+  useFundsServiceGetFundsTable,
+  useFundsServiceGetFundsTableTabByTabCsv,
+} from '@openapi';
 import { TabsSkeleton } from './_components/skeletons/TabsSkeleton';
 import { RowSkeleton } from './_components/skeletons/RowSkeleton';
 import { HeaderTableSkeleton } from './_components/skeletons/HeaderTableSkeleton';
 import { ExcelSkeleton } from './_components/skeletons/ExcelSkeleton';
+import { useMutation } from '@tanstack/react-query';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
   const [activeIndexCategoryTab, setActiveIndexCategoryTab] = useState(1);
@@ -619,7 +624,42 @@ const Funds = () => {
     });
   };
 
-  console.log(activeIndexCategoryTab, tabs?.tabs);
+  const { data } = useFundsServiceGetFundsTableTabByTabCsv({
+    tab: activeIndexCategoryTab,
+  });
+
+  useEffect(() => {
+    if (data) {
+      // اینجا می‌تونی فایل CSV رو هندل کنی یا دانلود بزنی
+      console.log('CSV data:', data);
+    }
+  }, [data]);
+
+  const mutation = useMutation({
+    mutationFn: async () =>
+      FundsService.getFundsTableTabByTabCsv({
+        tab: activeIndexCategoryTab,
+      }),
+    onSuccess: (csvData: string) => {
+      // ساخت Blob از متن CSV
+      const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+      const url = window.URL.createObjectURL(blob);
+
+      // ایجاد لینک دانلود
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `funds_tab_${activeIndexCategoryTab}.csv`);
+      document.body.appendChild(link);
+      link.click();
+
+      // تمیزکاری
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    },
+    onError: (err) => {
+      console.error('Download failed', err);
+    },
+  });
 
   return (
     <>
@@ -651,7 +691,10 @@ const Funds = () => {
         )}
         {rows.length ? (
           <Tooltip title="خروجی اکسل">
-            <div className="border-button-border-default cursor-pointer rounded-md border p-1.5">
+            <div
+              onClick={mutation.mutate}
+              className="border-button-border-default cursor-pointer rounded-md border p-1.5"
+            >
               <ExportExcel />
             </div>
           </Tooltip>
