@@ -249,6 +249,23 @@ export const UseFundsServiceGetFundsTableKeyFn = (
   } = {},
   queryKey?: Array<unknown>,
 ) => [useFundsServiceGetFundsTableKey, ...(queryKey ?? [{ tab }])];
+export type FundsServiceGetFundsTableTabByTabCsvDefaultResponse = Awaited<
+  ReturnType<typeof FundsService.getFundsTableTabByTabCsv>
+>;
+export type FundsServiceGetFundsTableTabByTabCsvQueryResult<
+  TData = FundsServiceGetFundsTableTabByTabCsvDefaultResponse,
+  TError = unknown,
+> = UseQueryResult<TData, TError>;
+export const useFundsServiceGetFundsTableTabByTabCsvKey =
+  'FundsServiceGetFundsTableTabByTabCsv';
+export const UseFundsServiceGetFundsTableTabByTabCsvKeyFn = (
+  {
+    tab,
+  }: {
+    tab: number;
+  },
+  queryKey?: Array<unknown>,
+) => [useFundsServiceGetFundsTableTabByTabCsvKey, ...(queryKey ?? [{ tab }])];
 export type UsersServicePostUsersLoginMutationResult = Awaited<
   ReturnType<typeof UsersService.postUsersLogin>
 >;
@@ -352,6 +369,9 @@ export type DashboardsServicePutDashboardsMutationResult = Awaited<
 export type DashboardsServicePutDashboardsByDashboardIdMutationResult = Awaited<
   ReturnType<typeof DashboardsService.putDashboardsByDashboardId>
 >;
+export type FundsServicePutFundsByFundIdWatchlistMutationResult = Awaited<
+  ReturnType<typeof FundsService.putFundsByFundIdWatchlist>
+>;
 export type ReportsServiceDeleteReportsByReportIdFavoriteMutationResult =
   Awaited<ReturnType<typeof ReportsService.deleteReportsByReportIdFavorite>>;
 export type DashboardsServiceDeleteDashboardsByDashboardIdMutationResult =
@@ -362,3 +382,6 @@ export type DashboardsServiceDeleteDashboardsByDashboardIdItemsByDashboardItemId
       typeof DashboardsService.deleteDashboardsByDashboardIdItemsByDashboardItemId
     >
   >;
+export type FundsServiceDeleteFundsByFundIdWatchlistMutationResult = Awaited<
+  ReturnType<typeof FundsService.deleteFundsByFundIdWatchlist>
+>;

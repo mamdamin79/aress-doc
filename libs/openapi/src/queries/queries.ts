@@ -327,6 +327,27 @@ export const useFundsServiceGetFundsTable = <
     queryFn: () => FundsService.getFundsTable({ tab }) as TData,
     ...options,
   });
+export const useFundsServiceGetFundsTableTabByTabCsv = <
+  TData = Common.FundsServiceGetFundsTableTabByTabCsvDefaultResponse,
+  TError = unknown,
+  TQueryKey extends Array<unknown> = unknown[],
+>(
+  {
+    tab,
+  }: {
+    tab: number;
+  },
+  queryKey?: TQueryKey,
+  options?: Omit<UseQueryOptions<TData, TError>, 'queryKey' | 'queryFn'>,
+) =>
+  useQuery<TData, TError>({
+    queryKey: Common.UseFundsServiceGetFundsTableTabByTabCsvKeyFn(
+      { tab },
+      queryKey,
+    ),
+    queryFn: () => FundsService.getFundsTableTabByTabCsv({ tab }) as TData,
+    ...options,
+  });
 export const useUsersServicePostUsersLogin = <
   TData = Common.UsersServicePostUsersLoginMutationResult,
   TError = unknown,
@@ -1329,6 +1350,37 @@ export const useDashboardsServicePutDashboardsByDashboardId = <
       }) as unknown as Promise<TData>,
     ...options,
   });
+export const useFundsServicePutFundsByFundIdWatchlist = <
+  TData = Common.FundsServicePutFundsByFundIdWatchlistMutationResult,
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: Omit<
+    UseMutationOptions<
+      TData,
+      TError,
+      {
+        fundId: number;
+      },
+      TContext
+    >,
+    'mutationFn'
+  >,
+) =>
+  useMutation<
+    TData,
+    TError,
+    {
+      fundId: number;
+    },
+    TContext
+  >({
+    mutationFn: ({ fundId }) =>
+      FundsService.putFundsByFundIdWatchlist({
+        fundId,
+      }) as unknown as Promise<TData>,
+    ...options,
+  });
 export const useReportsServiceDeleteReportsByReportIdFavorite = <
   TData = Common.ReportsServiceDeleteReportsByReportIdFavoriteMutationResult,
   TError = unknown,
@@ -1426,3 +1478,34 @@ export const useDashboardsServiceDeleteDashboardsByDashboardIdItemsByDashboardIt
         }) as unknown as Promise<TData>,
       ...options,
     });
+export const useFundsServiceDeleteFundsByFundIdWatchlist = <
+  TData = Common.FundsServiceDeleteFundsByFundIdWatchlistMutationResult,
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: Omit<
+    UseMutationOptions<
+      TData,
+      TError,
+      {
+        fundId: number;
+      },
+      TContext
+    >,
+    'mutationFn'
+  >,
+) =>
+  useMutation<
+    TData,
+    TError,
+    {
+      fundId: number;
+    },
+    TContext
+  >({
+    mutationFn: ({ fundId }) =>
+      FundsService.deleteFundsByFundIdWatchlist({
+        fundId,
+      }) as unknown as Promise<TData>,
+    ...options,
+  });

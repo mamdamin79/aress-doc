@@ -17,10 +17,22 @@ export enum FundTableTabColumnSort {
   DESC = 'DESC',
 }
 
+/** FundTableTabColumnColorFormat */
+export enum FundTableTabColumnColorFormat {
+  NOT_COLORED = 'NOT_COLORED',
+  COLORED = 'COLORED',
+}
+
 /** CaptchaType */
 export enum CaptchaType {
   Image = 'image',
   Audio = 'audio',
+}
+
+/** AddFundToWatchListResponseApiModel */
+export interface AddFundToWatchListResponseApiModel {
+  /** Success */
+  success: boolean;
 }
 
 /** AddReportToDashboardForUserBody */
@@ -35,6 +47,16 @@ export interface AddReportToDashboardForUserBody {
 
 /** AnonymousApiUser */
 export type AnonymousApiUser = object;
+
+/** ApiExceptionResponse */
+export interface ApiExceptionResponse {
+  /** Code */
+  code: number;
+  /** Domain */
+  domain: number;
+  /** Message */
+  message: string;
+}
 
 /** AressApiUser */
 export interface AressApiUser {
@@ -621,6 +643,107 @@ export interface FundListItemApiModel {
    * تاریخ آغاز فعالیت
    */
   initiationJdate: string;
+}
+
+/** FundTableItemInfoApiModel */
+export interface FundTableItemInfoApiModel {
+  /**
+   * Identifier
+   * شناسه صندوق
+   */
+  identifier: number;
+  /**
+   * Registrationnumber
+   * شماره ثبت نزد سازمان بورس
+   */
+  registrationNumber: number;
+  /**
+   * Name
+   * نام کامل صندوق
+   */
+  name: string;
+  /**
+   * Abbreviatedname
+   * نام صندوق
+   */
+  abbreviatedName: string;
+  /** نوع صندوق */
+  fundType: FundTypeApiModel;
+  /**
+   * Logomedium
+   * آدرس لوگوی صندوق - سایز متوسط
+   */
+  logoMedium: string | null;
+  /**
+   * Logothumbnail
+   * آدرس لوگوی صندوق - سایز کوچک
+   */
+  logoThumbnail: string | null;
+  /**
+   * Website
+   * وبسایت صندوق
+   */
+  website: string | null;
+  /**
+   * Statuteurl
+   * اساسنامه صندوق
+   */
+  statuteUrl: string;
+  /**
+   * Prospectusurl
+   * امیدنامه صندوق
+   */
+  prospectusUrl: string;
+  /**
+   * Isetf
+   * آیا صندوق etf است
+   */
+  isEtf: boolean;
+  /**
+   * Ischarity
+   * آیا صندوق نیکوکاری است
+   */
+  isCharity: boolean;
+  /**
+   * Hasvideo
+   * دارای ویدیو بررسی
+   */
+  hasVideo: boolean;
+  /**
+   * Manager
+   * مدیر صنودق
+   */
+  manager: string | null;
+  /**
+   * Custodian
+   * متولی صندوق
+   */
+  custodian: string | null;
+  /**
+   * Auditor
+   * حسابرس صندوق
+   */
+  auditor: string | null;
+  /**
+   * Liquidityguarantor
+   * ضامن نقد شوندگی صندوق
+   */
+  liquidityGuarantor: string | null;
+  /**
+   * Marketmaker
+   * بازارگردان
+   */
+  marketMaker: string | null;
+  /**
+   * Initiationdate
+   * تاریخ آغاز فعالیت میلادی
+   */
+  initiationDate: string;
+  /**
+   * Initiationjdate
+   * تاریخ آغاز فعالیت
+   */
+  initiationJdate: string;
   /**
    * Issuenavrials
    * قیمت صدور (ریال)
@@ -667,25 +790,35 @@ export interface FundListItemApiModel {
    */
   returnLastYearPercent: number | null;
   /**
-   * Returnlastweekvstedpixpercent
-   * بازدهی هفته اخیر به شاخص
+   * Returncustomperiodpercent
+   * بازدهی بازه دلخواه
    */
-  returnLastWeekVsTedpixPercent: number | null;
+  returnCustomPeriodPercent: number | null;
   /**
-   * Returnlastmonthvstedpixpercent
-   * بازدهی ماه اخیر به شاخص
+   * Returnvstedpixlastweekpercent
+   * بازدهی به شاخص هفته اخیر
    */
-  returnLastMonthVsTedpixPercent: number | null;
+  returnVsTedpixLastWeekPercent: number | null;
   /**
-   * Returnlast3Monthsvstedpixpercent
-   * بازدهی سه ماه اخیر به شاخص
+   * Returnvstedpixlastmonthpercent
+   * بازدهی به شاخص ماه اخیر
    */
-  returnLast3MonthsVsTedpixPercent: number | null;
+  returnVsTedpixLastMonthPercent: number | null;
   /**
-   * Returnlastyearvstedpixpercent
-   * بازدهی سال اخیر به شاخص
+   * Returnvstedpixlast3Monthspercent
+   * بازدهی به شاخص سه ماه اخیر
    */
-  returnLastYearVsTedpixPercent: number | null;
+  returnVsTedpixLast3MonthsPercent: number | null;
+  /**
+   * Returnvstedpixlastyearpercent
+   * بازدهی به شاخص سال اخیر
+   */
+  returnVsTedpixLastYearPercent: number | null;
+  /**
+   * Returnvstedpixcustomperiodpercent
+   * بازدهی به شاخص بازه دلخواه
+   */
+  returnVsTedpixCustomPeriodPercent: number | null;
   /**
    * Assetallocationbondpercent
    * سهم اوراق از پورتفوی
@@ -747,6 +880,11 @@ export interface FundListItemApiModel {
    */
   averageLeverageLastYear: number | null;
   /**
+   * Averageleveragecustomperiod
+   * میانگین اهرم بازه دلخواه
+   */
+  averageLeverageCustomPeriod: number | null;
+  /**
    * Standarddeviationlastweek
    * انحراف از میانگین هفته اخیر
    */
@@ -766,6 +904,11 @@ export interface FundListItemApiModel {
    * انحراف از میانگین سال اخیر
    */
   standardDeviationLastYear: number | null;
+  /**
+   * Standarddeviationcustomperiod
+   * انحراف از میانگین بازه دلخواه
+   */
+  standardDeviationCustomPeriod: number | null;
   /**
    * Sharperatiolastweek
    * نسبت شارپی هفته اخیر
@@ -787,6 +930,11 @@ export interface FundListItemApiModel {
    */
   sharpeRatioLastYear: number | null;
   /**
+   * Sharperatiocustomperiod
+   * نسبت شارپی بازه دلخواه
+   */
+  sharpeRatioCustomPeriod: number | null;
+  /**
    * Informationratiolastweek
    * نسبت اصلاعاتی هفته اخیر
    */
@@ -806,6 +954,11 @@ export interface FundListItemApiModel {
    * نسبت اصلاعاتی سال اخیر
    */
   informationRatioLastYear: number | null;
+  /**
+   * Informationratiocustomperiod
+   * نسبت اصلاعاتی بازه دلخواه
+   */
+  informationRatioCustomPeriod: number | null;
   /**
    * Alphalastday
    * آلفا روز اخیر
@@ -832,6 +985,11 @@ export interface FundListItemApiModel {
    */
   alphaLastYear: number | null;
   /**
+   * Alphacustomperiod
+   * آلفا بازه دلخواه
+   */
+  alphaCustomPeriod: number | null;
+  /**
    * Betalastday
    * بتا روز اخیر
    */
@@ -857,30 +1015,35 @@ export interface FundListItemApiModel {
    */
   betaLastYear: number | null;
   /**
+   * Betacustomperiod
+   * بتا بازه دلخواه
+   */
+  betaCustomPeriod: number | null;
+  /**
    * Maxdrawdownweek
-   * ماکزیمم افت هفته اخیر
+   * بیشترین ریزش هفتگی
    */
   maxDrawdownWeek: number | null;
   /**
    * Maxdrawdownmonth
-   * ماکزیمم افت ماه اخیر
+   * بیشترین ریزش ماهانه
    */
   maxDrawdownMonth: number | null;
   /**
    * Maxdrawdown3Month
-   * ماکزیمم افت سه ماه اخیر
+   * بیشترین ریزش سه‌ماهه
    */
   maxDrawdown3Month: number | null;
   /**
    * Maxdrawdownyear
-   * ماکزیمم افت سال اخیر
+   * بیشترین ریزش یک‌ساله
    */
   maxDrawdownYear: number | null;
   /**
-   * Dailyredeemnavmonth
-   * قیمت ابطال روزانه ماه اخیر
+   * Maxdrawdowncustomperiod
+   * بیشترین ریزش بازه دلخواه
    */
-  dailyRedeemNavMonth: number[] | null;
+  maxDrawdownCustomPeriod: number | null;
 }
 
 /** FundTableResponseApiModel */
@@ -893,6 +1056,8 @@ export interface FundTableResponseApiModel {
   selectedTabFunds: FundsTableItemApiModel[];
   /** Columns */
   columns: FundTableTabColumnDto[];
+  /** Columngroups */
+  columnGroups: FundTableTabColumnGroupDto[];
 }
 
 /** FundTableTabApiModel */
@@ -909,16 +1074,27 @@ export interface FundTableTabApiModel {
 export interface FundTableTabColumnDto {
   /** Label */
   label: string;
+  /** Uppertitle */
+  upperTitle: string;
+  /** Lowertitle */
+  lowerTitle: string | null;
   /** Key */
   key: string;
   /** Visible */
   visible: boolean;
   sort: FundTableTabColumnSort;
+  colorFormat: FundTableTabColumnColorFormat;
   /** Columnfilter */
   columnFilter:
     | FundTableTabColumnFilterTextDto
     | FundTableTabColumnFilterOptionsDto
     | null;
+  /** Columngroupid */
+  columnGroupId: number | null;
+  /** Customperiodstartjdate */
+  customPeriodStartJdate: string | null;
+  /** Customperiodendjdate */
+  customPeriodEndJdate: string | null;
 }
 
 /** FundTableTabColumnFilterOptionDto */
@@ -943,6 +1119,14 @@ export interface FundTableTabColumnFilterTextDto {
   filter_text: string | null;
 }
 
+/** FundTableTabColumnGroupDto */
+export interface FundTableTabColumnGroupDto {
+  /** Identifier */
+  identifier: number;
+  /** Label */
+  label: string;
+}
+
 /** FundTypeApiModel */
 export interface FundTypeApiModel {
   /** Identifier */
@@ -953,7 +1137,7 @@ export interface FundTypeApiModel {
 
 /** FundsTableItemApiModel */
 export interface FundsTableItemApiModel {
-  fund: FundListItemApiModel;
+  info: FundTableItemInfoApiModel;
   /** Pinned */
   pinned: boolean;
   /** Mark */
@@ -1004,12 +1188,6 @@ export interface GetReportCalculationsBody {
   selectedFilters: Record<string, any> | null;
 }
 
-/** HTTPValidationError */
-export interface HTTPValidationError {
-  /** Detail */
-  detail?: ValidationError[];
-}
-
 /** HealthApiModel */
 export interface HealthApiModel {
   /** Status */
@@ -1044,6 +1222,12 @@ export interface PinFundInTableTabBody {
 
 /** PinFundInTableTabResponseApiModel */
 export interface PinFundInTableTabResponseApiModel {
+  /** Success */
+  success: boolean;
+}
+
+/** RemoveFundFromWatchListResponseApiModel */
+export interface RemoveFundFromWatchListResponseApiModel {
   /** Success */
   success: boolean;
 }
@@ -1358,6 +1542,10 @@ export interface UpdateFundTableTabColumnItem {
   visible: boolean;
   /** Selectedfilter */
   selectedFilter: string | null;
+  /** Customperiodstartjdate */
+  customPeriodStartJdate: string | null;
+  /** Customperiodendjdate */
+  customPeriodEndJdate: string | null;
 }
 
 /** UpdateFundTableTabColumnsBody */
@@ -1388,16 +1576,6 @@ export interface ValidatePasswordForUserResponseApiModel {
   passwordVerificationToken: string;
   /** Success */
   success: boolean;
-}
-
-/** ValidationError */
-export interface ValidationError {
-  /** Location */
-  loc: (string | number)[];
-  /** Message */
-  msg: string;
-  /** Error Type */
-  type: string;
 }
 
 /** VideoApiModel */
@@ -1747,7 +1925,7 @@ export class HttpClient<SecurityDataType = unknown> {
             : payloadFormatter(body),
       },
     ).then(async (response) => {
-      const r = response.clone() as HttpResponse<T, E>;
+      const r = response as HttpResponse<T, E>;
       r.data = null as unknown as T;
       r.error = null as unknown as E;
 
@@ -1801,7 +1979,7 @@ export class Api<
      * @request GET:/health
      */
     healthHealthGet: (params: RequestParams = {}) =>
-      this.request<HealthApiModel, any>({
+      this.request<HealthApiModel, ApiExceptionResponse>({
         path: `/health`,
         method: 'GET',
         format: 'json',
@@ -1839,7 +2017,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<CaptchaApiModel, HTTPValidationError>({
+      this.request<CaptchaApiModel, ApiExceptionResponse>({
         path: `/users/login/captcha`,
         method: 'GET',
         query: query,
@@ -1866,7 +2044,7 @@ export class Api<
       data: BodyLoginForAccessTokenUsersLoginPost,
       params: RequestParams = {},
     ) =>
-      this.request<TokenApiModel, HTTPValidationError>({
+      this.request<TokenApiModel, ApiExceptionResponse>({
         path: `/users/login`,
         method: 'POST',
         query: query,
@@ -1888,7 +2066,7 @@ export class Api<
       data: BodyTestUserAccessTokenUsersTokenPost,
       params: RequestParams = {},
     ) =>
-      this.request<TokenApiModel, HTTPValidationError>({
+      this.request<TokenApiModel, ApiExceptionResponse>({
         path: `/users/token`,
         method: 'POST',
         body: data,
@@ -1907,7 +2085,7 @@ export class Api<
      * @secure
      */
     getCurrentUserUsersMeGet: (params: RequestParams = {}) =>
-      this.request<AressApiUser | AnonymousApiUser, any>({
+      this.request<AressApiUser | AnonymousApiUser, ApiExceptionResponse>({
         path: `/users/me`,
         method: 'GET',
         secure: true,
@@ -1945,7 +2123,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<CaptchaApiModel, HTTPValidationError>({
+      this.request<CaptchaApiModel, ApiExceptionResponse>({
         path: `/users/password/forgot/captcha`,
         method: 'GET',
         query: query,
@@ -1968,7 +2146,7 @@ export class Api<
     ) =>
       this.request<
         GetOtpForForgotPasswordResponseApiModel,
-        HTTPValidationError
+        ApiExceptionResponse
       >({
         path: `/users/password/forgot/otp`,
         method: 'POST',
@@ -1992,7 +2170,7 @@ export class Api<
     ) =>
       this.request<
         ResetForgotPasswordByOtpResponseApiModel,
-        HTTPValidationError
+        ApiExceptionResponse
       >({
         path: `/users/password/forgot/reset`,
         method: 'POST',
@@ -2016,7 +2194,7 @@ export class Api<
     ) =>
       this.request<
         GetOtpForChangePasswordResponseApiModel,
-        HTTPValidationError
+        ApiExceptionResponse
       >({
         path: `/users/profile/password/change/otp`,
         method: 'GET',
@@ -2038,7 +2216,7 @@ export class Api<
       data: ChangePasswordByOtpBody,
       params: RequestParams = {},
     ) =>
-      this.request<ChangePasswordByOtpApiModel, HTTPValidationError>({
+      this.request<ChangePasswordByOtpApiModel, ApiExceptionResponse>({
         path: `/users/profile/password/change`,
         method: 'POST',
         body: data,
@@ -2063,7 +2241,7 @@ export class Api<
     ) =>
       this.request<
         ValidatePasswordForUserResponseApiModel,
-        HTTPValidationError
+        ApiExceptionResponse
       >({
         path: `/users/profile/password/validate`,
         method: 'POST',
@@ -2087,7 +2265,7 @@ export class Api<
       data: ChangePhoneGetOtpBody,
       params: RequestParams = {},
     ) =>
-      this.request<ChangePhoneGetOtpResponseApiModel, HTTPValidationError>({
+      this.request<ChangePhoneGetOtpResponseApiModel, ApiExceptionResponse>({
         path: `/users/profile/phone/change/otp`,
         method: 'POST',
         body: data,
@@ -2110,7 +2288,7 @@ export class Api<
       data: ChangePhoneByOtpBody,
       params: RequestParams = {},
     ) =>
-      this.request<ChangePhoneByOtpResponseApiModel, HTTPValidationError>({
+      this.request<ChangePhoneByOtpResponseApiModel, ApiExceptionResponse>({
         path: `/users/profile/phone/change`,
         method: 'POST',
         body: data,
@@ -2133,7 +2311,7 @@ export class Api<
       data: ChangeEmailGetOtpBody,
       params: RequestParams = {},
     ) =>
-      this.request<ChangeEmailGetOtpResponseApiModel, HTTPValidationError>({
+      this.request<ChangeEmailGetOtpResponseApiModel, ApiExceptionResponse>({
         path: `/users/profile/email/change/otp`,
         method: 'POST',
         body: data,
@@ -2156,7 +2334,7 @@ export class Api<
       data: ChangeEmailByOtpBody,
       params: RequestParams = {},
     ) =>
-      this.request<ChangeEmailByOtpResponseApiModel, HTTPValidationError>({
+      this.request<ChangeEmailByOtpResponseApiModel, ApiExceptionResponse>({
         path: `/users/profile/email/change`,
         method: 'POST',
         body: data,
@@ -2179,7 +2357,7 @@ export class Api<
       data: ChangeUsernameBody,
       params: RequestParams = {},
     ) =>
-      this.request<ChangeUsernameResponseApiModel, HTTPValidationError>({
+      this.request<ChangeUsernameResponseApiModel, ApiExceptionResponse>({
         path: `/users/profile/username/change`,
         method: 'POST',
         body: data,
@@ -2202,7 +2380,7 @@ export class Api<
       data: BodyChangeProfilePictureUsersProfilePictureChangePost,
       params: RequestParams = {},
     ) =>
-      this.request<ChangeProfilePictureResponseApiModel, HTTPValidationError>({
+      this.request<ChangeProfilePictureResponseApiModel, ApiExceptionResponse>({
         path: `/users/profile/picture/change`,
         method: 'POST',
         body: data,
@@ -2222,7 +2400,7 @@ export class Api<
      * @secure
      */
     logoutUserUsersLogoutPost: (params: RequestParams = {}) =>
-      this.request<LogoutResponseApiModel, any>({
+      this.request<LogoutResponseApiModel, ApiExceptionResponse>({
         path: `/users/logout`,
         method: 'POST',
         secure: true,
@@ -2251,7 +2429,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<FinancialReportListItemApiModel[], HTTPValidationError>({
+      this.request<FinancialReportListItemApiModel[], ApiExceptionResponse>({
         path: `/reports`,
         method: 'GET',
         query: query,
@@ -2269,7 +2447,7 @@ export class Api<
      * @request GET:/reports/categories
      */
     reportCategoriesReportsCategoriesGet: (params: RequestParams = {}) =>
-      this.request<FinancialReportCategoryApiModel[], any>({
+      this.request<FinancialReportCategoryApiModel[], ApiExceptionResponse>({
         path: `/reports/categories`,
         method: 'GET',
         format: 'json',
@@ -2289,7 +2467,7 @@ export class Api<
       data: BodyRequestNewReportReportsRequestPost,
       params: RequestParams = {},
     ) =>
-      this.request<RequestReportResponseApiModel, HTTPValidationError>({
+      this.request<RequestReportResponseApiModel, ApiExceptionResponse>({
         path: `/reports/request`,
         method: 'POST',
         body: data,
@@ -2316,7 +2494,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<FinancialReportDetailsApiModel, HTTPValidationError>({
+      this.request<FinancialReportDetailsApiModel, ApiExceptionResponse>({
         path: `/reports/${reportId}`,
         method: 'GET',
         query: query,
@@ -2339,7 +2517,7 @@ export class Api<
       data: GetReportCalculationsBody,
       params: RequestParams = {},
     ) =>
-      this.request<FinancialReportCalculationApiModel, HTTPValidationError>({
+      this.request<FinancialReportCalculationApiModel, ApiExceptionResponse>({
         path: `/reports/${reportId}`,
         method: 'POST',
         body: data,
@@ -2362,7 +2540,7 @@ export class Api<
       reportId: string,
       params: RequestParams = {},
     ) =>
-      this.request<UserReportFavoriteStatus, HTTPValidationError>({
+      this.request<UserReportFavoriteStatus, ApiExceptionResponse>({
         path: `/reports/${reportId}/favorite`,
         method: 'POST',
         secure: true,
@@ -2383,7 +2561,7 @@ export class Api<
       reportId: string,
       params: RequestParams = {},
     ) =>
-      this.request<UserReportFavoriteStatus, HTTPValidationError>({
+      this.request<UserReportFavoriteStatus, ApiExceptionResponse>({
         path: `/reports/${reportId}/favorite`,
         method: 'DELETE',
         secure: true,
@@ -2405,7 +2583,7 @@ export class Api<
       data: BodySaveScreenshotReportsReportIdScreenshotPost,
       params: RequestParams = {},
     ) =>
-      this.request<ReportScreenshotResponseApiModel, HTTPValidationError>({
+      this.request<ReportScreenshotResponseApiModel, ApiExceptionResponse>({
         path: `/reports/${reportId}/screenshot`,
         method: 'POST',
         body: data,
@@ -2426,7 +2604,7 @@ export class Api<
      * @secure
      */
     userDashboardsDashboardsGet: (params: RequestParams = {}) =>
-      this.request<DashboardListItemApiModel[], any>({
+      this.request<DashboardListItemApiModel[], ApiExceptionResponse>({
         path: `/dashboards`,
         method: 'GET',
         secure: true,
@@ -2447,7 +2625,7 @@ export class Api<
       data: CreateDashboardForUserBody,
       params: RequestParams = {},
     ) =>
-      this.request<CreateDashboardResponseApiModel, HTTPValidationError>({
+      this.request<CreateDashboardResponseApiModel, ApiExceptionResponse>({
         path: `/dashboards`,
         method: 'PUT',
         body: data,
@@ -2470,7 +2648,7 @@ export class Api<
       dashboardId: number,
       params: RequestParams = {},
     ) =>
-      this.request<DashboardDetailsApiModel, HTTPValidationError>({
+      this.request<DashboardDetailsApiModel, ApiExceptionResponse>({
         path: `/dashboards/${dashboardId}`,
         method: 'GET',
         secure: true,
@@ -2492,7 +2670,7 @@ export class Api<
       data: RenameDashboardForUserBody,
       params: RequestParams = {},
     ) =>
-      this.request<DashboardListItemApiModel, HTTPValidationError>({
+      this.request<DashboardListItemApiModel, ApiExceptionResponse>({
         path: `/dashboards/${dashboardId}`,
         method: 'POST',
         body: data,
@@ -2515,7 +2693,7 @@ export class Api<
       dashboardId: number,
       params: RequestParams = {},
     ) =>
-      this.request<DashboardListItemApiModel[], HTTPValidationError>({
+      this.request<DashboardListItemApiModel[], ApiExceptionResponse>({
         path: `/dashboards/${dashboardId}`,
         method: 'DELETE',
         secure: true,
@@ -2537,7 +2715,7 @@ export class Api<
       data: AddReportToDashboardForUserBody,
       params: RequestParams = {},
     ) =>
-      this.request<DashboardItemApiModel, HTTPValidationError>({
+      this.request<DashboardItemApiModel, ApiExceptionResponse>({
         path: `/dashboards/${dashboardId}`,
         method: 'PUT',
         body: data,
@@ -2561,7 +2739,7 @@ export class Api<
       data: DuplicateDashboardForUserBody,
       params: RequestParams = {},
     ) =>
-      this.request<DashboardDetailsApiModel, HTTPValidationError>({
+      this.request<DashboardDetailsApiModel, ApiExceptionResponse>({
         path: `/dashboards/${dashboardId}/duplicate`,
         method: 'POST',
         body: data,
@@ -2584,7 +2762,7 @@ export class Api<
       dashboardId: number,
       params: RequestParams = {},
     ) =>
-      this.request<DashboardItemPreviewApiModel[], HTTPValidationError>({
+      this.request<DashboardItemPreviewApiModel[], ApiExceptionResponse>({
         path: `/dashboards/${dashboardId}/preview`,
         method: 'GET',
         secure: true,
@@ -2606,7 +2784,7 @@ export class Api<
       dashboardItemId: number,
       params: RequestParams = {},
     ) =>
-      this.request<DeleteDashboardItemResponseApiModel, HTTPValidationError>({
+      this.request<DeleteDashboardItemResponseApiModel, ApiExceptionResponse>({
         path: `/dashboards/${dashboardId}/items/${dashboardItemId}`,
         method: 'DELETE',
         secure: true,
@@ -2629,7 +2807,7 @@ export class Api<
       data: ReplaceDashboardItemCalculationsBody,
       params: RequestParams = {},
     ) =>
-      this.request<DashboardItemApiModel, HTTPValidationError>({
+      this.request<DashboardItemApiModel, ApiExceptionResponse>({
         path: `/dashboards/${dashboardId}/items/${dashboardItemId}/replace`,
         method: 'POST',
         body: data,
@@ -2657,7 +2835,7 @@ export class Api<
       ) =>
         this.request<
           DashboardItemScreenshotResponseApiModel,
-          HTTPValidationError
+          ApiExceptionResponse
         >({
           path: `/dashboards/${dashboardId}/items/${dashboardItemId}/screenshot`,
           method: 'POST',
@@ -2684,7 +2862,7 @@ export class Api<
         data: GetDashboardItemCalculationsBody,
         params: RequestParams = {},
       ) =>
-        this.request<DashboardItemApiModel, HTTPValidationError>({
+        this.request<DashboardItemApiModel, ApiExceptionResponse>({
           path: `/dashboards/${dashboardId}/items/${dashboardItemId}/calculations`,
           method: 'POST',
           body: data,
@@ -2710,7 +2888,7 @@ export class Api<
         data: ChangeDashboardReportItemSortOrderBody,
         params: RequestParams = {},
       ) =>
-        this.request<any, HTTPValidationError>({
+        this.request<any, ApiExceptionResponse>({
           path: `/dashboards/${dashboardId}/items/${dashboardItemId}/reorder`,
           method: 'POST',
           body: data,
@@ -2730,7 +2908,7 @@ export class Api<
      * @request GET:/funds
      */
     allFundsFundsGet: (params: RequestParams = {}) =>
-      this.request<FundListItemApiModel[], any>({
+      this.request<FundListItemApiModel[], ApiExceptionResponse>({
         path: `/funds`,
         method: 'GET',
         format: 'json',
@@ -2749,9 +2927,54 @@ export class Api<
       fundType: number,
       params: RequestParams = {},
     ) =>
-      this.request<FundListItemApiModel[], HTTPValidationError>({
+      this.request<FundListItemApiModel[], ApiExceptionResponse>({
         path: `/funds/type/${fundType}`,
         method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Add fund to watchlist
+     *
+     * @tags Funds
+     * @name AddFundToWatchlistFundsFundIdWatchlistPut
+     * @summary Add Fund To Watchlist
+     * @request PUT:/funds/{fund_id}/watchlist
+     * @secure
+     */
+    addFundToWatchlistFundsFundIdWatchlistPut: (
+      fundId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<AddFundToWatchListResponseApiModel, ApiExceptionResponse>({
+        path: `/funds/${fundId}/watchlist`,
+        method: 'PUT',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Remove fund from watchlist
+     *
+     * @tags Funds
+     * @name RemoveFundFromWatchlistFundsFundIdWatchlistDelete
+     * @summary Remove Fund From Watchlist
+     * @request DELETE:/funds/{fund_id}/watchlist
+     * @secure
+     */
+    removeFundFromWatchlistFundsFundIdWatchlistDelete: (
+      fundId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        RemoveFundFromWatchListResponseApiModel,
+        ApiExceptionResponse
+      >({
+        path: `/funds/${fundId}/watchlist`,
+        method: 'DELETE',
+        secure: true,
         format: 'json',
         ...params,
       }),
@@ -2775,10 +2998,31 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<FundTableResponseApiModel, HTTPValidationError>({
+      this.request<FundTableResponseApiModel, ApiExceptionResponse>({
         path: `/funds/table`,
         method: 'GET',
         query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Get excel output of fund table tab
+     *
+     * @tags Funds
+     * @name FundTableTabExcelFundsTableTabTabCsvGet
+     * @summary Fund Table Tab Excel
+     * @request GET:/funds/table/tab/{tab}/csv
+     * @secure
+     */
+    fundTableTabExcelFundsTableTabTabCsvGet: (
+      tab: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<any, ApiExceptionResponse>({
+        path: `/funds/table/tab/${tab}/csv`,
+        method: 'GET',
         secure: true,
         format: 'json',
         ...params,
@@ -2798,7 +3042,7 @@ export class Api<
       data: PinFundInTableTabBody,
       params: RequestParams = {},
     ) =>
-      this.request<PinFundInTableTabResponseApiModel, HTTPValidationError>({
+      this.request<PinFundInTableTabResponseApiModel, ApiExceptionResponse>({
         path: `/funds/table/tab/${tab}/pin`,
         method: 'POST',
         body: data,
@@ -2822,7 +3066,7 @@ export class Api<
       data: UnpinFundInTableTabBody,
       params: RequestParams = {},
     ) =>
-      this.request<UnpinFundInTableTabResponseApiModel, HTTPValidationError>({
+      this.request<UnpinFundInTableTabResponseApiModel, ApiExceptionResponse>({
         path: `/funds/table/tab/${tab}/unpin`,
         method: 'POST',
         body: data,
@@ -2846,7 +3090,7 @@ export class Api<
       data: MarkFundInTableTabBody,
       params: RequestParams = {},
     ) =>
-      this.request<MarkFundInTableTabResponseApiModel, HTTPValidationError>({
+      this.request<MarkFundInTableTabResponseApiModel, ApiExceptionResponse>({
         path: `/funds/table/tab/${tab}/mark`,
         method: 'POST',
         body: data,
@@ -2870,7 +3114,7 @@ export class Api<
       data: UnmarkFundInTableTabBody,
       params: RequestParams = {},
     ) =>
-      this.request<UnmarkFundInTableTabResponseApiModel, HTTPValidationError>({
+      this.request<UnmarkFundInTableTabResponseApiModel, ApiExceptionResponse>({
         path: `/funds/table/tab/${tab}/unmark`,
         method: 'POST',
         body: data,
@@ -2894,7 +3138,7 @@ export class Api<
       data: SortFundTabBody,
       params: RequestParams = {},
     ) =>
-      this.request<SortFundTabResponseApiModel, HTTPValidationError>({
+      this.request<SortFundTabResponseApiModel, ApiExceptionResponse>({
         path: `/funds/table/tab/${tab}/sort`,
         method: 'POST',
         body: data,
@@ -2918,7 +3162,7 @@ export class Api<
       data: UpdateFundTableTabColumnsBody,
       params: RequestParams = {},
     ) =>
-      this.request<UpdateFundTabColumnsResponseApiModel, HTTPValidationError>({
+      this.request<UpdateFundTabColumnsResponseApiModel, ApiExceptionResponse>({
         path: `/funds/table/tab/${tab}/columns`,
         method: 'POST',
         body: data,

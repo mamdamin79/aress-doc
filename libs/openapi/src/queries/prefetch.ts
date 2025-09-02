@@ -189,3 +189,15 @@ export const prefetchUseFundsServiceGetFundsTable = (
     queryKey: Common.UseFundsServiceGetFundsTableKeyFn({ tab }),
     queryFn: () => FundsService.getFundsTable({ tab }),
   });
+export const prefetchUseFundsServiceGetFundsTableTabByTabCsv = (
+  queryClient: QueryClient,
+  {
+    tab,
+  }: {
+    tab: number;
+  },
+) =>
+  queryClient.prefetchQuery({
+    queryKey: Common.UseFundsServiceGetFundsTableTabByTabCsvKeyFn({ tab }),
+    queryFn: () => FundsService.getFundsTableTabByTabCsv({ tab }),
+  });
