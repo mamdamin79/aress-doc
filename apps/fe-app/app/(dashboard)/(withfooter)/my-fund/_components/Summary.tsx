@@ -90,28 +90,53 @@ export const Summary: React.FC = ({
   const videos: Video[] = [
     {
       qualities: [
-        { src: 'https://www.w3schools.com/html/mov_bbb.mp4', label: '1080' },
-        { src: 'https://www.w3schools.com/html/movie.mp4', label: '720' },
-        { src: 'https://www.w3schools.com/html/mov_bbb.mp4', label: '360' },
+        {
+          src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+          label: '1080',
+        },
+        {
+          src: 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4',
+          label: '720',
+        },
+        {
+          src: 'https://www.rmp-streaming.com/media/big-buck-bunny-360p.mp4',
+          label: '360',
+        },
       ],
       title: 'Big Buck Bunny',
+      jobTitle: 'فیلمساز انیمیشن',
+      avatarUrl: 'https://i.pravatar.cc/80?img=1',
+      name: 'محمد باقر خادمی',
       poster:
         'https://peach.blender.org/wp-content/uploads/title_anouncement.jpg?x11217',
-      src: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
       date: '1403/09/22',
     },
     {
       qualities: [
-        { src: 'https://samplelib.com/mp4/sample-5s.mp4', label: '1080' },
-        { src: 'https://samplelib.com/mp4/sample-10s.mp4', label: '720' },
-        { src: 'https://samplelib.com/mp4/sample-20s.mp4', label: '360' },
+        {
+          src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+          label: '1080',
+        },
+        {
+          src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+          label: '720',
+        },
+        {
+          src: 'https://www.rmp-streaming.com/media/big-buck-bunny-360p.mp4',
+          label: '360',
+        },
       ],
-      title: 'Sample Video',
-      poster: 'https://dummyimage.com/600x400/000/fff.jpg&text=Sample+Video',
-      src: 'https://samplelib.com/mp4/sample-5s.mp4',
+      title: 'Elephants Dream',
+      jobTitle: 'برنامه‌نویس فرانت‌اند',
+      avatarUrl: 'https://i.pravatar.cc/80?img=2',
+      name: 'علی رضایی',
+      poster: 'https://dummyimage.com/600x400/000/fff.jpg&text=Elephants+Dream',
+      src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
       date: '1403/11/22',
     },
   ];
+
   const [selectedVideo, setSelectedVideo] = useState<Video>(videos[0]);
 
   return (
@@ -192,21 +217,27 @@ export const Summary: React.FC = ({
           />
         </div>
         {/* Video player with playlist */}
-        <div className="container mx-auto flex max-w-7xl flex-row-reverse gap-6">
-          <VideoPlayer
-            videos={videos}
-            setSelectedVideo={setSelectedVideo}
-            {...selectedVideo}
-            className="h-[459px] w-full"
-            selectedVideo={selectedVideo}
-          />
-          <PlayList
-            playListTitle="لیست ویدیوها"
-            isFullscreen={false}
-            videos={videos}
-            setSelectedVideo={setSelectedVideo}
-            selectedVideo={selectedVideo}
-          />
+        <div className="mx-auto mb-40 flex w-full items-center justify-center">
+          <div className="w-full max-w-[816px] gap-6 2xl:flex 2xl:max-w-full 2xl:flex-row-reverse 2xl:justify-between">
+            <div>
+              <VideoPlayer
+                videos={videos}
+                setSelectedVideo={setSelectedVideo}
+                {...selectedVideo}
+                className="mb-6 h-[396px] min-w-[704px] xl:w-[816px] 2xl:h-[459px] 2xl:w-[816px]"
+                selectedVideo={selectedVideo}
+              />
+            </div>
+            <div className="h-[459px] 2xl:min-w-[536px] 2xl:flex-1">
+              <PlayList
+                playListTitle="لیست مصاحبه ها"
+                isFullscreen={false}
+                videos={videos}
+                setSelectedVideo={setSelectedVideo}
+                selectedVideo={selectedVideo}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

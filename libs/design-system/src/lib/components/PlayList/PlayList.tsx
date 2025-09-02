@@ -57,7 +57,7 @@ export const PlayList: React.FC<PlayListPropsType> = ({
           </div>
         </div>
       ) : (
-        <div className="text-text-neutral-primary border-1.5 border-border-neutral-primary h-[459px] w-[520px] overflow-auto rounded-3xl text-lg font-medium">
+        <div className="text-text-neutral-primary border-1.5 border-border-neutral-primary h-[459px] w-full overflow-auto rounded-3xl text-lg font-medium">
           <div className="border-b-1.5 border-border-neutral-primary p-6">
             {playListTitle}
           </div>
@@ -159,7 +159,7 @@ const PlayListCell: React.FC<
       <div className="relative flex items-center justify-between gap-3">
         <video
           poster={poster ? poster : ''}
-          className="rounded-sm"
+          className="h-[56px] w-[100px] rounded-sm object-cover"
           width={100}
           height={56}
           src={src}
