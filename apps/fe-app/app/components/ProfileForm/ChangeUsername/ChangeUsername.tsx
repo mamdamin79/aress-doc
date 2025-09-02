@@ -105,6 +105,7 @@ const NewUsernameForm = ({
         )}
       />
       <Button
+        theme="brand"
         align="center"
         mode="primary"
         isLoading={isSubmitting || isPending}

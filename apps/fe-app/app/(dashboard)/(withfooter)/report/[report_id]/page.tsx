@@ -145,6 +145,7 @@ export default async function ReportPage({
             summary={REPORT?.summary}
             userFavorite={REPORT?.userFavorite}
             isNew={REPORT?.isNew}
+            reportId={REPORT?.identifier}
           />
         </section>
 

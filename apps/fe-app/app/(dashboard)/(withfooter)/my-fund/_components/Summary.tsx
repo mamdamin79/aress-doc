@@ -13,12 +13,6 @@ import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 import React, { useMemo, useState } from 'react';
 import { baseOptions } from 'apps/fe-app/app/components/Reports/Report.config.shared';
-import CinematicForest360 from '@aress-assets';
-import CinematicForest720 from '@aress-assets';
-import CinematicForest1080 from '@aress-assets';
-import Nature360 from '@aress-assets';
-import Nature720 from 'design-system/src/assets/videos/The Breathtaking Beauty of Nature720p.mp4';
-import Nature1080 from 'design-system/src/assets/videos/The Breathtaking Beauty of Nature1080p.mp4';
 
 export const Summary: React.FC = ({
   defaultQuantity,
@@ -92,28 +86,29 @@ export const Summary: React.FC = ({
     },
   ];
 
-  // Example videos array (replace with your real data)
+  // Online videos array
   const videos: Video[] = [
     {
       qualities: [
-        { src: CinematicForest1080, label: '1080' },
-        { src: CinematicForest720, label: '720' },
-        { src: CinematicForest360, label: '360' },
+        { src: 'https://www.w3schools.com/html/mov_bbb.mp4', label: '1080' },
+        { src: 'https://www.w3schools.com/html/movie.mp4', label: '720' },
+        { src: 'https://www.w3schools.com/html/mov_bbb.mp4', label: '360' },
       ],
-      title: 'Cinematic Forest',
-      poster: 'https://api.classbon.com/api/picture/20219',
-      src: CinematicForest1080,
+      title: 'Big Buck Bunny',
+      poster:
+        'https://peach.blender.org/wp-content/uploads/title_anouncement.jpg?x11217',
+      src: 'https://www.w3schools.com/html/mov_bbb.mp4',
       date: '1403/09/22',
     },
     {
       qualities: [
-        { src: Nature1080, label: '1080' },
-        { src: Nature720, label: '720' },
-        { src: Nature360, label: '360' },
+        { src: 'https://samplelib.com/mp4/sample-5s.mp4', label: '1080' },
+        { src: 'https://samplelib.com/mp4/sample-10s.mp4', label: '720' },
+        { src: 'https://samplelib.com/mp4/sample-20s.mp4', label: '360' },
       ],
-      title: 'The Breathtaking Beauty of Nature',
-      poster: 'https://api.classbon.com/api/picture/20219',
-      src: Nature1080,
+      title: 'Sample Video',
+      poster: 'https://dummyimage.com/600x400/000/fff.jpg&text=Sample+Video',
+      src: 'https://samplelib.com/mp4/sample-5s.mp4',
       date: '1403/11/22',
     },
   ];

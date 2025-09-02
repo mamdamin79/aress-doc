@@ -52,9 +52,13 @@ export type CustomIconName =
   | 'CustomCaretUp'
   | 'CustomCaretDown'
   | 'CustomPng'
-  | 'CustompdfLite'
+  | 'CustomPdfLite'
   | 'CustomCsvFile'
-  | 'CustomToseeTaavon';
+  | 'CustomFirefox'
+  | 'CustomSafari'
+  | 'CustomEdge'
+  | 'CustomToseeTaavon'
+  | 'CustomPdf';
 
 // this is a type of all valid icon names from lucide
 export type IconName = keyof typeof dynamicIconImports | CustomIconName;

@@ -3,8 +3,9 @@ import { IconProps } from '../Icon';
 import { SIZE_VALUES, STROKE_VALUES } from '../Icon.constants';
 import { CUSTOM_ICONS } from './CustomIcon.constants';
 import { cn } from '../../../../utils/classNames.utils';
+import { IconName } from '../Icon.types';
 
-const ICONS_WITH_NO_STROKE_CONTROL = [
+const ICONS_WITH_NO_STROKE_CONTROL: IconName[] = [
   'CustomDay',
   'CustomEghtesadNovin',
   'CustomGardeshgari',
@@ -33,6 +34,8 @@ const ICONS_WITH_NO_STROKE_CONTROL = [
   'CustomAyandeh',
   'CustomPng',
   'CustomPdf',
+  'CustomPdfLite',
+  'CustomTelegram',
   'CustomCaretUp',
   'CustomCaretDown',
 ];
@@ -121,9 +124,9 @@ export const CustomIcon: React.FC<IconProps> = ({ name, size = 'md' }) => {
       {
         'stroke-white': name === 'CustomBookmark' || name === 'CustomArrow',
       },
-      {
-        'hover:text-text-brand-primary-600 cursor-pointer': !isHardcodedIcon,
-      },
+      // {
+      //   'hover:text-text-brand-primary-600 cursor-pointer': !isHardcodedIcon,
+      // },
     ),
   };
 

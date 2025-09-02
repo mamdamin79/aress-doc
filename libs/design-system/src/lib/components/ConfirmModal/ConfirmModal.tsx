@@ -86,6 +86,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
           >
             <div className="min-w-14">
               <Button
+                theme="brand"
                 align="center"
                 isLoading={false}
                 size={narrow ? 'md' : 'sm'}
@@ -99,6 +100,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
             </div>
             <div className="min-w-14">
               <Button
+                theme="brand"
                 align="center"
                 isLoading={false}
                 mode="primary"

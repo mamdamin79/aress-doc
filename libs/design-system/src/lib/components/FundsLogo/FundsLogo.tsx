@@ -1,4 +1,5 @@
-import React from 'react';
+'use client';
+import React, { useMemo, useState } from 'react';
 import FundLogoFallback from '../../../assets/images/FundLogoFallback.png';
 import { FundsTag } from '../FundsTag';
 import { ReactComponent as VerifiedSVG } from '../../../assets/icons/ic_round-verified.svg';
@@ -22,11 +23,16 @@ export const FundsLogo: React.FC<FundsLogoProps> = ({
   color = 'green',
   src,
 }) => {
-  const sizeClasses = {
-    sm: 'h-8 w-8',
-    md: 'h-[38px] w-[38px]',
-    lg: 'h-12 w-12',
-  };
+  const [imgSrc, setImgSrc] = useState<string>(src || FundLogoFallback.src);
+
+  const sizeClasses = useMemo(
+    () => ({
+      sm: 'h-8 w-8',
+      md: 'h-[38px] w-[38px]',
+      lg: 'h-12 w-12',
+    }),
+    [],
+  );
 
   const verifySizes: Record<'sm' | 'md' | 'lg', { w: number; h: number }> = {
     sm: { w: 14, h: 14 },
@@ -37,11 +43,11 @@ export const FundsLogo: React.FC<FundsLogoProps> = ({
   return (
     <div className="relative">
       <img
-        // eslint-disable-next-line
-        // @ts-ignore
-        src={src ? src : FundLogoFallback.src}
+        src={imgSrc}
         alt="Fund Logo"
-        className={`rounded-full ${sizeClasses[size]}`}
+        className={`rounded-full object-cover ${sizeClasses[size]}`}
+        onError={() => setImgSrc(FundLogoFallback?.src)}
+        referrerPolicy="no-referrer"
       />
       {(isPin || hasTag) && (
         <div

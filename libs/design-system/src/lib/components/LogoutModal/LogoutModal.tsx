@@ -4,6 +4,7 @@ import { Dialog } from '../Dialog';
 
 import React from 'react';
 import { LogoutModalProps } from './LogoutModal.types';
+import { cn } from '../../../utils';
 
 export const LogoutModal: React.FC<LogoutModalProps> = ({
   isOpen,
@@ -12,6 +13,7 @@ export const LogoutModal: React.FC<LogoutModalProps> = ({
   titleAlign = 'center',
   subtitle,
   onLogout,
+  variant = 'b2b',
 }) => {
   return (
     <Dialog
@@ -21,27 +23,43 @@ export const LogoutModal: React.FC<LogoutModalProps> = ({
     >
       {/* Title */}
       <div
-        className={`text-text-neutral-secondarycontrast text-xl font-bold ${
-          titleAlign === 'center' ? 'text-center' : 'text-right'
-        }`}
+        className={cn(
+          `text-text-neutral-secondarycontrast text-xl font-bold ${
+            titleAlign === 'center' ? 'text-center' : 'text-right'
+          }`,
+          {
+            'text-text-neutral-primary font-medium': variant === 'b2c',
+          },
+        )}
       >
         {title}
       </div>
 
       {/* Subtitle */}
       {subtitle && (
-        <div className="text-text-neutral-secondary text-right text-sm font-normal">
+        <div
+          className={cn(
+            'text-text-neutral-secondary text-right text-sm font-normal',
+            {
+              'text-text-neutral-secondarycontrast': variant === 'b2c',
+            },
+          )}
+        >
           {subtitle}
         </div>
       )}
 
       {/* Buttons */}
-      <div className="mt-4 flex w-full flex-row justify-between gap-4">
+      <div
+        className={cn('mt-4 flex w-full flex-row justify-between gap-4', {
+          'gap-2': variant === 'b2c',
+        })}
+      >
         <Button
           align="center"
           isLoading={false}
           mode="secondary"
-          size="md"
+          size={variant === 'b2b' ? 'md' : 'sm'}
           theme="neutral"
           onClick={onClose}
         >
@@ -51,7 +69,7 @@ export const LogoutModal: React.FC<LogoutModalProps> = ({
           align="center"
           isLoading={false}
           mode="primary"
-          size="md"
+          size={variant === 'b2b' ? 'md' : 'sm'}
           theme="error"
           onClick={onLogout}
         >

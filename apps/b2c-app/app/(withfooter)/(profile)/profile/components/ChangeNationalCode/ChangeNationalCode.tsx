@@ -10,6 +10,7 @@ export const ChangeNationalCode = () => {
         برای تغییر کد ملی از طریق سایت سجام اقدام نمایید.
       </div>
       <Button
+        theme="brand"
         className="mb-2"
         align="center"
         mode="primary"
@@ -22,7 +23,13 @@ export const ChangeNationalCode = () => {
       >
         ورود به سجام
       </Button>
-      <Button align="center" mode="secondary" isLoading={false} size="sm">
+      <Button
+        theme="brand"
+        align="center"
+        mode="secondary"
+        isLoading={false}
+        size="sm"
+      >
         بازگشت
       </Button>
     </div>

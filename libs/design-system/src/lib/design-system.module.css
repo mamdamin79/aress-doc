@@ -5,3 +5,9 @@
  * .container {
  * }
 */
+
+/* Override react-spring-bottom-sheet default border between header and body */
+/* :global([data-rsbs-header]) {
+  box-shadow: none !important;
+  border-bottom: none !important;
+} */

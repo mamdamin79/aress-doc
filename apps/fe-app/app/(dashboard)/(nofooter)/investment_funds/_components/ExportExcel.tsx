@@ -1,4 +1,4 @@
-export function ExportExel() {
+export function ExportExcel() {
   return (
     <svg
       width="24"

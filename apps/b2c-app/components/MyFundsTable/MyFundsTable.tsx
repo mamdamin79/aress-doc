@@ -2,7 +2,7 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { Button, cn, Icon, Tooltip } from 'design-system';
 import { ReactComponent as FundIcon } from './FundIcon.svg';
-import { type FundData } from '../../app/(withfooter)/my-portfolio/_components/data/fundsData';
+import { FundData } from './MyFundsTable.types';
 const fundTypeMaps: Record<number, { title: string; color: string }> = {
   0: {
     title: 'سهامی',

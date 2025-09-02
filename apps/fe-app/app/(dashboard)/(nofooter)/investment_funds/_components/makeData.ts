@@ -35,6 +35,7 @@ const newPerson = (): Person => {
     cancellationPrice: faker.number.int(40),
     issuancePrice: faker.number.int(1000),
     progress: faker.number.int(100),
+    pinned: false,
   };
 };
 
