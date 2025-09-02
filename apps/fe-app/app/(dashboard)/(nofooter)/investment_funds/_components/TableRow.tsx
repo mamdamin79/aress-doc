@@ -13,6 +13,7 @@ import {
   useFundsServicePostFundsTableTabByTabUnpin,
   useFundsServicePostFundsTableTabByTabMark,
   useFundsServicePostFundsTableTabByTabUnmark,
+  useFundsServicePutFundsByFundIdWatchlist,
 } from '@openapi';
 import { FundRow, FundsInfoCellProps, TableRowProps } from '../types';
 
@@ -22,6 +23,7 @@ function FundsInfoCell({
   tag,
   unPinedFunction,
   pinedFunction,
+  addToWatchlist,
   logo,
   canPin,
   pined,
@@ -125,17 +127,10 @@ function FundsInfoCell({
                 text: pined ? 'برداشتن پین' : 'پین کردن',
                 icon: { name: pined ? 'pin-off' : 'pin', size: 'md' },
               },
-              // {
-              //   text:
-              //     category === 'stocks'
-              //       ? 'افزودن به دیده‌بان'
-              //       : 'حذف از دیده‌بان',
-              //   icon: {
-              //     name: category === 'stocks' ? 'plus' : 'minus',
-              //     size: 'md',
-              //   },
-              // },
-              { text: 'افزودن به دیده بان' },
+              {
+                text: 'افزودن به دیده‌بان',
+                icon: { name: 'plus' },
+              },
             ]}
             customTriggerRender={(prop) => {
               return (
@@ -162,12 +157,8 @@ function FundsInfoCell({
                   onClick={() => {
                     if (prop.text === 'پین کردن' && canPin) pinedFunction();
                     if (prop.text === 'برداشتن پین') unPinedFunction();
-                    if (prop.text === 'افزودن به دیده‌بان') {
-                      showProgressToast({
-                        title: 'صندوق مورد نظر به دیده بان اضافه شد.',
-                        timeout: 3000,
-                      });
-                    }
+                    if (prop.text === 'افزودن به دیده‌بان') addToWatchlist();
+
                     if (prop.text === 'حذف از دیده‌بان') {
                       showProgressToast({
                         title: 'صندوق مورد نظر از دیده بان حذف شد.',
@@ -226,6 +217,7 @@ function TableRowInner<T extends FundRow>({
   const unPinFundMutation = useFundsServicePostFundsTableTabByTabUnpin();
   const markFundMutation = useFundsServicePostFundsTableTabByTabMark();
   const unMarkFundMutation = useFundsServicePostFundsTableTabByTabUnmark();
+  const addToWathcList = useFundsServicePutFundsByFundIdWatchlist();
 
   const handlePinFund = async (fundId: number, isShowToast: boolean) => {
     try {
@@ -309,6 +301,20 @@ function TableRowInner<T extends FundRow>({
     }
   };
 
+  const handlerAddWatchList = async () => {
+    try {
+      await addToWathcList.mutateAsync({
+        fundId: row.original.id,
+      });
+      showProgressToast({
+        timeout: 5000,
+        title: 'صندوق مورد نظر به دیده‌بان اضافه شد.',
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <tr
       onMouseEnter={() => setShowMark(true)}
@@ -341,6 +347,7 @@ function TableRowInner<T extends FundRow>({
             name={row.original?.nameFund}
             pined={row.original.pinned}
             selected={false}
+            addToWatchlist={handlerAddWatchList}
             logo={row.original?.logo}
             investmentMethod={row.original?.investmentMethod}
           />

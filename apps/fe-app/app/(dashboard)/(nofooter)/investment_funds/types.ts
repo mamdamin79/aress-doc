@@ -82,6 +82,7 @@ export interface FundsInfoCellProps {
   investmentMethod: 'T' | 'I&C';
   pinedFunction: () => void;
   unPinedFunction: () => void;
+  addToWatchlist: () => void;
   canPin: boolean;
   tag: boolean;
   isRowHovered: boolean;

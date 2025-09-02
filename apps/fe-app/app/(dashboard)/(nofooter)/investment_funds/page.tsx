@@ -59,11 +59,7 @@ import {
   useDragIndicator,
   useTableDragSensors,
 } from './utils/investmentFunds.utils';
-import {
-  FundsService,
-  useFundsServiceGetFundsTable,
-  useFundsServiceGetFundsTableTabByTabCsv,
-} from '@openapi';
+import { FundsService, useFundsServiceGetFundsTable } from '@openapi';
 import { TabsSkeleton } from './_components/skeletons/TabsSkeleton';
 import { RowSkeleton } from './_components/skeletons/RowSkeleton';
 import { HeaderTableSkeleton } from './_components/skeletons/HeaderTableSkeleton';
@@ -624,40 +620,27 @@ const Funds = () => {
     });
   };
 
-  const { data } = useFundsServiceGetFundsTableTabByTabCsv({
-    tab: activeIndexCategoryTab,
-  });
-
-  useEffect(() => {
-    if (data) {
-      // اینجا می‌تونی فایل CSV رو هندل کنی یا دانلود بزنی
-      console.log('CSV data:', data);
-    }
-  }, [data]);
-
-  const mutation = useMutation({
-    mutationFn: async () =>
-      FundsService.getFundsTableTabByTabCsv({
+  // Mutation to handle CSV export for the selected funds tab
+  // - Calls the FundsService to get CSV data
+  // - Converts the CSV string into a Blob
+  // - Creates a temporary download link and triggers the file download
+  // - Cleans up the temporary link and object URL after download
+  const mutation = useMutation<string, Error>({
+    mutationFn: async (): Promise<string> => {
+      return FundsService.getFundsTableTabByTabCsv({
         tab: activeIndexCategoryTab,
-      }),
-    onSuccess: (csvData: string) => {
-      // ساخت Blob از متن CSV
+      }) as Promise<string>;
+    },
+    onSuccess: (csvData) => {
       const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
       const url = window.URL.createObjectURL(blob);
-
-      // ایجاد لینک دانلود
       const link = document.createElement('a');
       link.href = url;
       link.setAttribute('download', `funds_tab_${activeIndexCategoryTab}.csv`);
       document.body.appendChild(link);
       link.click();
-
-      // تمیزکاری
       link.remove();
       window.URL.revokeObjectURL(url);
-    },
-    onError: (err) => {
-      console.error('Download failed', err);
     },
   });
 
@@ -692,7 +675,7 @@ const Funds = () => {
         {rows.length ? (
           <Tooltip title="خروجی اکسل">
             <div
-              onClick={mutation.mutate}
+              onClick={() => mutation.mutate()}
               className="border-button-border-default cursor-pointer rounded-md border p-1.5"
             >
               <ExportExcel />
