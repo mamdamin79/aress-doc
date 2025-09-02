@@ -19,6 +19,9 @@ export const Default: StoryFn = () => {
       poster: 'https://api.classbon.com/api/picture/20219',
       src: video1080,
       date: '1403/09/22',
+      avatarUrl: 'https://randomuser.me/api/portraits/men/33.jpg',
+      jobTitle: 'مدیر صندوق',
+      name: 'محمد باقر خادمی',
     },
     {
       qualities: [],
@@ -27,6 +30,20 @@ export const Default: StoryFn = () => {
       poster: 'https://api.classbon.com/api/picture/20219',
       src: video1080forest,
       date: '1403/11/22',
+      avatarUrl: 'https://randomuser.me/api/portraits/men/32.jpg',
+      jobTitle: 'مدیر عامل',
+      name: 'ناظر زمانی',
+    },
+    {
+      qualities: [],
+      title:
+        'بررسی داده‌های مالی و بازار بورس | با تحلیل‌های پیشرفته و ابزارهای نوین، فرصت‌های سرمایه‌گذاری را شناسایی کنید و استراتژی‌های هوشمندانه برای موفقیت در بازار سرمایه بیاموزید!',
+      poster: 'https://api.classbon.com/api/picture/20219',
+      src: video1080forest,
+      date: '1403/11/22',
+      avatarUrl: 'https://randomuser.me/api/portraits/men/32.jpg',
+      jobTitle: 'مدیر عامل',
+      name: 'ناظر زمانی',
     },
   ];
   const [selectedVideo, setSelectedVideo] = useState<Video>(videos[0]);
