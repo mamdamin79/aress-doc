@@ -354,9 +354,11 @@ export const useVideo = (
     video.addEventListener('loadedmetadata', () => {
       video.currentTime = state.currentTime;
     });
-    if (state.isPlaying) play();
-    else pause();
-
+    if (state.isPlaying) {
+      play();
+    } else {
+      pause();
+    }
     const updateProgress = () => {
       // first of all we should calculate progress form duration and current time - it used in handle time update and handle durationchange
       const { currentTime, duration } = videoRef.current!;
@@ -441,7 +443,14 @@ export const useVideo = (
 
   const router = useRouter();
 
-  const play = useCallback(() => videoRef.current?.play(), []);
+  const play = useCallback(() => {
+    if (state.isVideoLoaded) {
+      videoRef.current?.play();
+    } else {
+      console.log('ویدیو هنوز لود نشده ⏳');
+    }
+  }, [state.isVideoLoaded]);
+
   const pause = useCallback(() => videoRef.current?.pause(), []);
   const changeQuality = useCallback((quality: VideoQuality) => {
     dispatch({ type: 'SET_QUALITY', quality });
@@ -485,16 +494,6 @@ export const useVideo = (
       dispatch({ type: 'SET_VOLUME', volume: clampedVolume });
     }
   }, []);
-
-  // const handleVolumeChange = useCallback(
-  //   (e: MouseEvent, progressBar: HTMLElement) => {
-  //     const rect = progressBar.getBoundingClientRect();
-  //     const clickPosition = e.clientX - rect.left;
-  //     const newVolume = Math.min(Math.max(clickPosition / rect.width, 0), 1);
-  //     setVolume(newVolume);
-  //   },
-  //   [setVolume],
-  // );
 
   const toggleMute = useCallback(() => {
     if (videoRef.current) {
