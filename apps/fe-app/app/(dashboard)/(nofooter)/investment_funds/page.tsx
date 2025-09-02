@@ -344,13 +344,13 @@ const Funds = () => {
 
     const initialPinnedList = query.data.selectedTabFunds
       .filter((fund) => fund.pinned)
-      .map((fund) => fund.fund.identifier);
+      .map((fund) => fund.info.identifier);
 
     const initialMarkedList = query.data.selectedTabFunds
       .filter((fund) => fund.mark)
       .map((fund) => {
         return {
-          id: fund.fund.identifier,
+          id: fund.info.identifier,
           color: fund.mark || '',
         };
       });
@@ -363,29 +363,29 @@ const Funds = () => {
   const simplifiedFunds = useMemo(() => {
     if (!query.data?.selectedTabFunds) return [];
 
-    const funds = query.data.selectedTabFunds.map(({ fund }) => {
-      const id = fund.identifier;
+    const funds = query.data.selectedTabFunds.map(({ info }) => {
+      const id = info.identifier;
       return {
-        logo: fund.logoMedium || '',
+        logo: info.logoMedium || '',
         id,
         pinned: pinnedList.includes(id),
         investemntFundsMethod: 'T',
-        nameFund: fund.name || fund.abbreviatedName,
-        dailyAlpha: fund.alphaLastDay,
-        weeklyAlpha: fund.alphaLastWeek,
-        monthlyAlpha: fund.alphaLastMonth,
-        quarterlyAlpha: fund.alphaLast3Months,
-        weeklyReturn: fund.returnLastWeekPercent,
-        monthlyReturn: fund.returnLastMonthPercent,
-        quarterlyReturn: fund.returnLast3MonthsPercent,
-        yearlyReturn: fund.returnLastYearPercent,
-        profitPerUnit: fund.redeemNavRials,
-        issuancePrice: fund.issueNavRials,
-        cancellationPrice: fund.redeemNavRials,
-        netAssetValue: fund.statisticalNavRials,
-        unitCount: fund.numberOfUnits,
-        startDate: fund.initiationDate,
-        fundType: fund.fundType?.title,
+        nameFund: info.name || info.abbreviatedName,
+        dailyAlpha: info.alphaLastDay,
+        weeklyAlpha: info.alphaLastWeek,
+        monthlyAlpha: info.alphaLastMonth,
+        quarterlyAlpha: info.alphaLast3Months,
+        weeklyReturn: info.returnLastWeekPercent,
+        monthlyReturn: info.returnLastMonthPercent,
+        quarterlyReturn: info.returnLast3MonthsPercent,
+        yearlyReturn: info.returnLastYearPercent,
+        profitPerUnit: info.redeemNavRials,
+        issuancePrice: info.issueNavRials,
+        cancellationPrice: info.redeemNavRials,
+        netAssetValue: info.statisticalNavRials,
+        unitCount: info.numberOfUnits,
+        startDate: info.initiationDate,
+        fundType: info.fundType?.title,
         investmentMethod: 'T' as const,
         mark: '',
         isEtf: false,
@@ -619,6 +619,8 @@ const Funds = () => {
     });
   };
 
+  console.log(activeIndexCategoryTab, tabs?.tabs);
+
   return (
     <>
       <div
@@ -638,7 +640,7 @@ const Funds = () => {
               onClickTab={(e) =>
                 setActiveIndexCategoryTab(tabs.tabs[e].identifier)
               }
-              activeTab={activeIndexCategoryTab - 1}
+              activeTab={activeIndexCategoryTab}
               tabs={tabs.tabs?.map((tab) => ({
                 id: String(tab.identifier),
                 title: tab.title,
@@ -665,13 +667,13 @@ const Funds = () => {
             rows.length,
         })}
       >
-        <div className="bg-border-brand-soft-200 absolute right-2 top-[75px] z-50 h-0.5 w-full" />
+        <div className="bg-border-brand-soft-200 absolute top-[75px] z-50 h-0.5 w-full" />
         <div
           ref={tableRef}
           className={cn(
             'table-scroll group/table bg-surface-neutral-primary scrollbar-lg w-screen overflow-auto scroll-smooth',
             {
-              'h-[calc(100vh-180px)]': isHeaderVisible,
+              'h-[calc(100vh-173px)]': isHeaderVisible,
               'overflow-hidden': !rows.length,
             },
           )}

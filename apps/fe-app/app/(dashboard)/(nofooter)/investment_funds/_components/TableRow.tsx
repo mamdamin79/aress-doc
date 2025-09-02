@@ -72,7 +72,7 @@ function FundsInfoCell({
           className={cn('invisible box-content h-2.5 w-2.5 rounded-full', {
             visible: tag,
           })}
-        ></div>
+        />
         <div className="group/img relative">
           <FundsLogo
             size="sm"
@@ -82,7 +82,7 @@ function FundsInfoCell({
             src={`http://185.236.36.153:8000${logo}`}
           />
         </div>
-        {name.length > 21 ? (
+        {name.length > 19 ? (
           <Tooltip offset={2} position="left" title={name}>
             <p className="text-gray-1000 hover:text-text-brand-contrast-700 w-[130px] truncate text-right text-sm font-medium">
               {name}
