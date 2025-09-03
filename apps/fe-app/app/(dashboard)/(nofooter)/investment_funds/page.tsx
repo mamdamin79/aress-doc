@@ -1269,58 +1269,31 @@ const Funds = () => {
           )}
         </div>
 
-        <div className="bg-border-neutral-primary h-[2px] w-full"></div>
+        <div className="bg-border-neutral-primary h-[2px] w-full" />
         <div
           dir="rtl"
           className="scrollbar-md mb-6 h-[550px] overflow-x-hidden overflow-y-scroll"
         >
-          {table.getAllColumns().map((item, index) => {
-            if (index === 0) return null;
+          {query.data?.columnGroups.map((col) => {
             return (
-              <div className="my-6 text-right" key={index}>
-                <span className="mb-4 mr-4 text-right text-base font-semibold">
-                  {/* {item.columnDef.meta?.group} */}
+              <div className="border-border-neutral-secondary border-b px-4 py-6 text-right">
+                <span className="text-text-neutral-primary text-base font-semibold">
+                  {col.label}
                 </span>
-                <div className="grid grid-cols-2 px-4 pb-6">
-                  <div
-                    className="hover:bg-brand-100 rounded-md p-3"
-                    key={index}
-                  >
-                    {item && (
-                      <Checkbox
-                        onChange={() => {
-                          if (
-                            item.columnDef.header?.toString() === 'بازه دلخواه'
-                          ) {
-                            setCustomColl({ active: true, date: '' });
-                          }
-                          if (
-                            table
-                              .getAllLeafColumns()
-                              .filter((col) => col.getIsVisible()).length === 25
-                          ) {
-                            if (item.getIsVisible())
-                              item.toggleVisibility(!item.getIsVisible());
-                          } else if (
-                            table
-                              .getAllLeafColumns()
-                              .filter((col) => col.getIsVisible()).length === 7
-                          ) {
-                            if (!item.getIsVisible())
-                              item.toggleVisibility(!item.getIsVisible());
-                          } else {
-                            item.toggleVisibility(!item.getIsVisible());
-                          }
-                        }}
-                        content={item.columnDef.header?.toString()}
-                        checked={item.getIsVisible()}
-                      />
-                    )}
-                  </div>
+                <div className="mt-4 grid grid-cols-2 gap-y-3">
+                  {query.data.columns.map(
+                    (column) =>
+                      column.columnGroupId === col.identifier && (
+                        <div>
+                          <Checkbox
+                            checked={column.visible}
+                            onChange={() => {}}
+                            reactcontent={column.label}
+                          />
+                        </div>
+                      ),
+                  )}
                 </div>
-                {index + 1 < table.getAllColumns().length && (
-                  <hr className="border-border-neutral-primary" />
-                )}
               </div>
             );
           })}
