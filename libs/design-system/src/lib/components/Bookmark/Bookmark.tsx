@@ -52,8 +52,9 @@ export function Bookmark({
         <div className="fill-surface-neutral-primary absolute -right-3 top-1 w-fit">
           <Icon name="CustomArrow" />
         </div>
-        {colors.map((color) => (
+        {colors.map((color, index) => (
           <div
+            key={color ?? index}
             className={cn(
               'bg-icon-neutral-oninverse h-[18px] w-[18px] rounded-full',
               {
@@ -66,7 +67,6 @@ export function Bookmark({
                 onColorChange(color);
                 setIsOpen(false);
               }}
-              key={color}
               className={cn(
                 'group/color flex h-2.5 w-2.5 cursor-pointer items-center justify-center rounded-full',
                 {
