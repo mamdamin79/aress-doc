@@ -1,4 +1,4 @@
-import { FundTableResponseApiModel } from '@openapi';
+import { FundTableItemInfoApiModel, FundTableResponseApiModel } from '@openapi';
 import { Row } from '@tanstack/react-table';
 import type { RefObject } from 'react';
 
@@ -100,3 +100,15 @@ export interface FundsInfoCellProps {
   isRowHovered: boolean;
   tabs: tabs;
 }
+export type ApiColumn = {
+  label: string;
+  upperTitle: string | null;
+  lowerTitle: string | null;
+  key: keyof FundTableItemInfoApiModel;
+  visible: boolean;
+  sort: 'ASC' | 'DESC' | 'NO';
+  colorFormat?: 'COLORED' | 'NONE';
+  columnGroupId?: number;
+  customPeriodStartJdate?: string | null;
+  customPeriodEndJdate?: string | null;
+};

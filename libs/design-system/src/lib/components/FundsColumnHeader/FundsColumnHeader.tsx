@@ -17,7 +17,7 @@ interface Props {
   defaultSort?: () => void;
   activePlaceholder?: boolean;
   activeStyle?: boolean;
-  activeSorticon?: boolean;
+  activeSortIcon?: boolean;
 }
 
 export function FundsColumnHeader({
@@ -29,7 +29,7 @@ export function FundsColumnHeader({
   sortType,
   filterable,
   type,
-  activeSorticon = false,
+  activeSortIcon = false,
   clickFilterd,
   defaultSort,
   active,
@@ -44,7 +44,7 @@ export function FundsColumnHeader({
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
-    if (activeSorticon) {
+    if (activeSortIcon) {
       timeout = setTimeout(() => {
         setShowLine(true);
       }, 200);
@@ -53,7 +53,7 @@ export function FundsColumnHeader({
     }
 
     return () => clearTimeout(timeout);
-  }, [activeSorticon]);
+  }, [activeSortIcon]);
 
   const tooltipTitle = useMemo(() => {
     if (!active) return '';
@@ -123,7 +123,7 @@ export function FundsColumnHeader({
           <Icon name="filter" />
         </div>
 
-        {activeSorticon && showLine && (
+        {activeSortIcon && showLine && (
           <div className="bg-surface-brand-600-primary absolute bottom-0 h-1.5 w-16 rounded-t-md"></div>
         )}
         <div className="flex flex-col text-sm">

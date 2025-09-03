@@ -62,7 +62,9 @@ import {
 import {
   FundsService,
   FundsTableItemApiModel,
+  FundTableItemInfoApiModel,
   useFundsServiceGetFundsTable,
+  useFundsServicePostFundsTableTabByTabSort,
 } from '@openapi';
 import { TabsSkeleton } from './_components/skeletons/TabsSkeleton';
 import { RowSkeleton } from './_components/skeletons/RowSkeleton';
@@ -81,13 +83,7 @@ const Funds = () => {
   const [pinnedList, setPinnedList] = useState<number[]>([]);
   const [rowsMark, setRowsMark] = useState<{ color: string; id: number }[]>([]);
   const [watchList, setWatchList] = useState<FundsTableItemApiModel[]>([]);
-  const [sorting, setSorting] = useState<SortingState>([
-    {
-      id: 'nameFund',
-      desc: false,
-    },
-  ]);
-
+  const [sorting, setSorting] = useState<SortingState>([]);
   const [activeSortIndex, setActiveSortIndex] = useState(0);
   const headerRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [sortIndicatorPosition, setSortIndicatorPosition] = useState({
@@ -101,164 +97,10 @@ const Funds = () => {
     tableRef as RefObject<HTMLDivElement>,
   );
 
-  const columns = React.useMemo<ColumnDef<(typeof sortedFunds)[0]>[]>(
-    () => [
-      {
-        accessorKey: 'nameFund',
-        header: 'Fund Name',
-        id: 'nameFund',
-        sortingFn: (rowA, rowB, columnId) => {
-          const pinnedA = rowA.original.pinned;
-          const pinnedB = rowB.original.pinned;
-
-          if (pinnedA !== pinnedB) {
-            return pinnedA ? -1 : 1;
-          }
-          const a = rowA.getValue(columnId);
-          const b = rowB.getValue(columnId);
-          return String(a).localeCompare(String(b), 'fa', {
-            sensitivity: 'base',
-          });
-        },
-      },
-      {
-        accessorKey: 'unitCount',
-        header: 'Unit Count',
-        id: 'unitCount',
-        size: 100,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'profitPerUnit',
-        header: 'Profit/Unit',
-        id: 'profitPerUnit',
-        size: 130,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'netAssetValue',
-        header: 'Net Asset Value',
-        id: 'netAssetValue',
-        size: 160,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'monstatisticalPriceth',
-        header: 'Statistical Price',
-        id: 'monstatisticalPriceth',
-        size: 160,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'cancellationPrice',
-        header: 'Cancellation Price',
-        id: 'cancellationPrice',
-        size: 150,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'issuancePrice',
-        header: 'Issuance Price',
-        id: 'issuancePrice',
-        size: 130,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'dailyAlpha',
-        header: 'Daily Alpha',
-        id: 'dailyAlpha',
-        size: 120,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'weeklyAlpha',
-        header: 'Weekly Alpha',
-        id: 'weeklyAlpha',
-        size: 120,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'monthlyAlpha',
-        header: 'Monthly Alpha',
-        id: 'monthlyAlpha',
-        size: 130,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'quarterlyAlpha',
-        header: 'Quarterly Alpha',
-        id: 'quarterlyAlpha',
-        size: 140,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'dailyReturn',
-        header: 'Daily Return',
-        id: 'dailyReturn',
-        size: 120,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'weeklyReturn',
-        header: 'Weekly Return',
-        id: 'weeklyReturn',
-        size: 130,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'monthlyReturn',
-        header: 'Monthly Return',
-        id: 'monthlyReturn',
-        size: 130,
-        enableSorting: true,
-        meta: { group: '' },
-      },
-      {
-        accessorKey: 'quarterlyReturn',
-        header: 'Quarterly Return',
-        id: 'quarterlyReturn',
-        size: 140,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'yearlyReturn',
-        header: 'Yearly Return',
-        id: 'yearlyReturn',
-        size: 130,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'progress',
-        header: 'Progress',
-        id: 'progress',
-        size: 120,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'startDate',
-        header: 'Start Date',
-        id: 'startDate',
-        size: 160,
-        enableSorting: true,
-        cell: (info) => new Date(info.getValue<number>()).toLocaleDateString(),
-      },
-      {
-        accessorKey: 'investmentMethod',
-        header: 'Investment Method',
-        id: 'investmentMethod',
-        size: 150,
-        enableSorting: true,
-      },
-    ],
-    [],
-  );
-
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string[]>
   >({});
-  const [columnOrder, setColumnOrder] = React.useState<string[]>(() =>
-    columns.map((c) => c.id!),
-  );
+
   const [customColl, setCustomColl] = useState<{
     active: boolean;
     date: string;
@@ -290,19 +132,7 @@ const Funds = () => {
           whiteSpace: 'nowrap',
         }}
         className={cn(
-          'bg-surface-brand-100 relative m-0 h-[64px] p-0 text-sm font-medium',
-          {
-            'w-[144px]': !(
-              String(
-                flexRender(header.column.columnDef.header, header.getContext()),
-              ).length > 10
-            ),
-            'w-[200px]':
-              String(
-                flexRender(header.column.columnDef.header, header.getContext()),
-              ).length > 10,
-          },
-          '6xl:w-full',
+          'bg-surface-brand-100 relative m-0 h-[64px] w-full min-w-[200px] p-0 text-sm font-medium',
         )}
       >
         {isDraggingOver && position && (
@@ -336,6 +166,76 @@ const Funds = () => {
 
   // request to get funds table data
   const query = useFundsServiceGetFundsTable({ tab: activeIndexCategoryTab });
+
+  useEffect(() => {
+    if (!query.data?.columns) return;
+
+    const serverSorting: SortingState = query.data.columns
+      // only include columns that have sorting enabled
+      .filter((col) => col.sort !== 'NO')
+      .map((col) => ({
+        // column key for react-table
+        id: col.key as keyof FundTableItemInfoApiModel,
+        // convert API sort direction to boolean
+        desc: col.sort === 'DESC',
+      }));
+
+    // set initial sorting state
+    setSorting(serverSorting);
+  }, [query.data?.columns]);
+
+  const columns = React.useMemo<ColumnDef<FundTableItemInfoApiModel>[]>(() => {
+    if (!query.data?.columns) return [];
+
+    return query.data.columns
+      .filter((col) => col.visible)
+      .map((col) => {
+        const key = col.key as keyof FundTableItemInfoApiModel;
+
+        return {
+          accessorKey: key,
+          id: key,
+          header: col.upperTitle,
+          enableSorting: true,
+          meta: {
+            sort: col.sort,
+            visible: col.visible,
+            group: col.lowerTitle || null,
+            colorFormat: col.colorFormat,
+          },
+          cell: (info) => {
+            const value = info.getValue();
+            if (col.colorFormat === 'COLORED') {
+              return (
+                <span
+                  style={{
+                    color:
+                      typeof value === 'number' && value < 0 ? 'red' : 'green',
+                  }}
+                ></span>
+              );
+            }
+            return value as React.ReactNode;
+          },
+        };
+      });
+  }, [query.data?.columns]);
+
+  const [columnOrder, setColumnOrder] = React.useState<string[]>(() =>
+    columns.map((c) => c.id!),
+  );
+
+  useEffect(() => {
+    if (!columns || !columns.length) return;
+
+    const visibleColumns = columns.filter((col) => col.meta.visible);
+
+    if (visibleColumns.length) {
+      visibleColumns.find((col, index) => {
+        if (col.meta.sort !== 'NO') setActiveSortIndex(index);
+      });
+    }
+  }, [columns]);
 
   const { data: tabs } = useFundsServiceGetFundsTable({ tab: 1 });
 
@@ -423,6 +323,8 @@ const Funds = () => {
       return [...pinned, ...unpinned];
     }
 
+    console.log(activeSortIndex);
+
     const [{ id, desc }] = sorting;
 
     const sortedUnpinned = [...unpinned].sort((a, b) => {
@@ -440,17 +342,34 @@ const Funds = () => {
     return [...pinned, ...sortedUnpinned];
   }, [simplifiedFunds, sorting]);
 
+  const fundSortFromApi = useFundsServicePostFundsTableTabByTabSort();
+
   const table = useReactTable({
-    data: sortedFunds,
+    data: sortedFunds as FundTableItemInfoApiModel[],
     columns,
     state: { columnOrder, sorting },
     initialState: {
       columnVisibility,
       sorting,
     },
-    onSortingChange: (updater) => {
+    onSortingChange: async (updater) => {
       const newSorting =
         typeof updater === 'function' ? updater(sorting) : updater;
+      try {
+        await Promise.all(
+          newSorting.map((sortItem) =>
+            fundSortFromApi.mutateAsync({
+              requestBody: {
+                columnKey: sortItem.id,
+                direction: sortItem.desc ? 'DESC' : 'ASC',
+              },
+              tab: activeIndexCategoryTab,
+            }),
+          ),
+        );
+      } catch (error) {
+        console.log(error);
+      }
       setSorting(newSorting);
     },
     onColumnOrderChange: setColumnOrder,
@@ -550,20 +469,6 @@ const Funds = () => {
       window.removeEventListener('mouseup', handleGlobalMouseUp);
     };
   }, []);
-
-  useEffect(() => {
-    columnOrder.findIndex((id, index) => {
-      if (id === sorting[0]?.id && activeSortIndex !== 0) {
-        setTimeout(() => {
-          if (index === 1) {
-            setActiveSortIndex(1);
-          } else {
-            setActiveSortIndex(index - 1);
-          }
-        }, 300);
-      }
-    });
-  }, [activeSortIndex, columnOrder, sorting]);
 
   const { rows } = table.getRowModel();
 
@@ -776,7 +681,7 @@ const Funds = () => {
                   onDragOver={() => setIsRotating(true)}
                   onDragCancel={() => setIsRotating(false)}
                 >
-                  <tr>
+                  <tr className="w-full bg-blue-400">
                     <th
                       style={{
                         transform:
@@ -797,10 +702,9 @@ const Funds = () => {
                           activeSortIndex === 0,
                         'top-[157px]':
                           activeSortIndex === 0 && !isHeaderVisible,
-                        '': sorting[0].id === 'nameFund',
                       })}
                     >
-                      <div className="bg-surface-brand-600-primary mx-auto h-1.5 w-16 rounded-t-[10px]"></div>
+                      <div className="bg-surface-brand-600-primary mx-auto h-1.5 w-16 rounded-t-[10px]" />
                     </th>
                     <th className="sticky right-[340px] z-30 mt-5 p-0">
                       {isScrollAtStart && (
@@ -844,8 +748,9 @@ const Funds = () => {
                                     <div className="bg-surface-brand-100 mr-[75px] flex">
                                       <div className="mr-24">
                                         <FundsColumnHeader
-                                          activeSorticon={
-                                            sorting[0]?.id === 'nameFund'
+                                          activeSortIcon={
+                                            sorting[0]?.id ===
+                                            'abbreviated_name'
                                           }
                                           active={!isRotating}
                                           clickFilterd={() => {
@@ -932,15 +837,7 @@ const Funds = () => {
                                     }}
                                     key={index}
                                     className={cn(
-                                      'bg-surface-brand-100 m-0 h-full w-full text-nowrap p-0 text-sm font-medium',
-                                      String(
-                                        flexRender(
-                                          header.column.columnDef.header,
-                                          header.getContext(),
-                                        ),
-                                      ).length > 10
-                                        ? 'w-[200px]'
-                                        : 'w-[144px]',
+                                      'm-0 h-full w-full min-w-[200px] text-nowrap p-0 text-sm font-medium',
                                     )}
                                   >
                                     {index >= 2 &&
@@ -962,7 +859,7 @@ const Funds = () => {
                                             setActiveSortIndex(0);
                                             setSorting([
                                               {
-                                                id: 'nameFund',
+                                                id: 'abbreviated_name',
                                                 desc: false,
                                               },
                                             ]);
@@ -973,16 +870,7 @@ const Funds = () => {
                                               new Event('click'),
                                             );
                                           }}
-                                          size={
-                                            String(
-                                              flexRender(
-                                                header.column.columnDef.header,
-                                                header.getContext(),
-                                              ),
-                                            ).length > 10
-                                              ? 'large'
-                                              : 'medium'
-                                          }
+                                          size={'large'}
                                           type={
                                             header.column.getIsSorted() ===
                                             'asc'
@@ -993,7 +881,10 @@ const Funds = () => {
                                                 : 'inactive'
                                           }
                                           filterable={false}
-                                          subTitle={header.column.parent?.id}
+                                          subTitle={
+                                            header.column.columnDef.meta
+                                              ?.group as string
+                                          }
                                           title={String(
                                             flexRender(
                                               header.column.columnDef.header,
