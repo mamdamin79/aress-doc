@@ -4,11 +4,52 @@ import { Summary } from './_components/Summary';
 import { ReturnAnalysis } from './_components/ReturnAnalysis';
 import { RiskAssessment } from './_components/RiskAssessment';
 import { useState } from 'react';
+import {
+  useFundsServiceGetFundsTable,
+  useFundsServicePutFundsByFundIdWatchlist,
+  useFundsServiceDeleteFundsByFundIdWatchlist,
+} from '@openapi';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function FundPage() {
   const [activeTab, setActiveTab] = useState(0);
-  const [isInWatchList, setIsInWatchList] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
+  const fundId = 283;
+  const queryClient = useQueryClient();
+
+  // get list of dideban
+  const { data } = useFundsServiceGetFundsTable({ tab: 1000 });
+  const selectedFunds = data?.selectedTabFunds ?? [];
+
+  // is this fund in it
+  const isInWatchList = selectedFunds.some(
+    (f: { info: { identifier: number } }) => f.info.identifier === fundId,
+  );
+
+  // mutation
+  const addToWatchlist = useFundsServicePutFundsByFundIdWatchlist({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['FundsServiceGetFundsTable', { tab: 1000 }],
+      });
+    },
+  });
+
+  const removeFromWatchlist = useFundsServiceDeleteFundsByFundIdWatchlist({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['FundsServiceGetFundsTable', { tab: 1000 }],
+      });
+    },
+  });
+
+  const handleToggleWatchlist = () => {
+    if (isInWatchList) {
+      removeFromWatchlist.mutate({ fundId });
+    } else {
+      addToWatchlist.mutate({ fundId });
+    }
+  };
 
   return (
     <div>
@@ -32,7 +73,7 @@ export default function FundPage() {
           <Button
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
-            onClick={() => setIsInWatchList(!isInWatchList)}
+            onClick={() => handleToggleWatchlist()}
             className={cn('w-[183px]', { 'w-[150px]': isInWatchList })}
             mode={isInWatchList ? 'secondary' : 'primary'}
             iconRight={
