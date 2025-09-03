@@ -189,3 +189,15 @@ export const ensureUseFundsServiceGetFundsTableData = (
     queryKey: Common.UseFundsServiceGetFundsTableKeyFn({ tab }),
     queryFn: () => FundsService.getFundsTable({ tab }),
   });
+export const ensureUseFundsServiceGetFundsTableTabByTabCsvData = (
+  queryClient: QueryClient,
+  {
+    tab,
+  }: {
+    tab: number;
+  },
+) =>
+  queryClient.ensureQueryData({
+    queryKey: Common.UseFundsServiceGetFundsTableTabByTabCsvKeyFn({ tab }),
+    queryFn: () => FundsService.getFundsTableTabByTabCsv({ tab }),
+  });

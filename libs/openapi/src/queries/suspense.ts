@@ -291,3 +291,24 @@ export const useFundsServiceGetFundsTableSuspense = <
     queryFn: () => FundsService.getFundsTable({ tab }) as TData,
     ...options,
   });
+export const useFundsServiceGetFundsTableTabByTabCsvSuspense = <
+  TData = Common.FundsServiceGetFundsTableTabByTabCsvDefaultResponse,
+  TError = unknown,
+  TQueryKey extends Array<unknown> = unknown[],
+>(
+  {
+    tab,
+  }: {
+    tab: number;
+  },
+  queryKey?: TQueryKey,
+  options?: Omit<UseQueryOptions<TData, TError>, 'queryKey' | 'queryFn'>,
+) =>
+  useSuspenseQuery<TData, TError>({
+    queryKey: Common.UseFundsServiceGetFundsTableTabByTabCsvKeyFn(
+      { tab },
+      queryKey,
+    ),
+    queryFn: () => FundsService.getFundsTableTabByTabCsv({ tab }) as TData,
+    ...options,
+  });

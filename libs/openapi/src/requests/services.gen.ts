@@ -79,8 +79,14 @@ import type {
   GetFundsResponse,
   GetFundsTypeByFundTypeData,
   GetFundsTypeByFundTypeResponse,
+  PutFundsByFundIdWatchlistData,
+  PutFundsByFundIdWatchlistResponse,
+  DeleteFundsByFundIdWatchlistData,
+  DeleteFundsByFundIdWatchlistResponse,
   GetFundsTableData,
   GetFundsTableResponse,
+  GetFundsTableTabByTabCsvData,
+  GetFundsTableTabByTabCsvResponse,
   PostFundsTableTabByTabPinData,
   PostFundsTableTabByTabPinResponse,
   PostFundsTableTabByTabUnpinData,
@@ -106,6 +112,13 @@ export class HealthService {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/health',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
     });
   }
 }
@@ -133,7 +146,11 @@ export class UsersService {
         captchaType: data.captchaType,
       },
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -161,7 +178,11 @@ export class UsersService {
       formData: data.formData,
       mediaType: 'application/x-www-form-urlencoded',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -183,7 +204,11 @@ export class UsersService {
       formData: data.formData,
       mediaType: 'application/x-www-form-urlencoded',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -198,6 +223,13 @@ export class UsersService {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/users/me',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
     });
   }
 
@@ -223,7 +255,11 @@ export class UsersService {
         captchaType: data.captchaType,
       },
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -245,7 +281,11 @@ export class UsersService {
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -267,7 +307,11 @@ export class UsersService {
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -283,7 +327,11 @@ export class UsersService {
       method: 'GET',
       url: '/users/profile/password/change/otp',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -305,7 +353,11 @@ export class UsersService {
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -327,7 +379,11 @@ export class UsersService {
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -349,7 +405,11 @@ export class UsersService {
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -371,7 +431,11 @@ export class UsersService {
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -393,7 +457,11 @@ export class UsersService {
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -415,7 +483,11 @@ export class UsersService {
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -437,7 +509,11 @@ export class UsersService {
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -459,7 +535,11 @@ export class UsersService {
       formData: data.formData,
       mediaType: 'multipart/form-data',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -474,6 +554,13 @@ export class UsersService {
     return __request(OpenAPI, {
       method: 'POST',
       url: '/users/logout',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
     });
   }
 }
@@ -501,7 +588,11 @@ export class ReportsService {
         onlyHavingVideo: data.onlyHavingVideo,
       },
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -516,6 +607,13 @@ export class ReportsService {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/reports/categories',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
     });
   }
 
@@ -536,7 +634,11 @@ export class ReportsService {
       formData: data.formData,
       mediaType: 'multipart/form-data',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -563,7 +665,11 @@ export class ReportsService {
         screenshotQueryId: data.screenshotQueryId,
       },
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -589,7 +695,11 @@ export class ReportsService {
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -612,7 +722,11 @@ export class ReportsService {
         report_id: data.reportId,
       },
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -635,7 +749,11 @@ export class ReportsService {
         report_id: data.reportId,
       },
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -661,7 +779,11 @@ export class ReportsService {
       formData: data.formData,
       mediaType: 'multipart/form-data',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -678,6 +800,13 @@ export class DashboardsService {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/dashboards',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
     });
   }
 
@@ -698,7 +827,11 @@ export class DashboardsService {
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -721,7 +854,11 @@ export class DashboardsService {
         dashboard_id: data.dashboardId,
       },
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -747,7 +884,11 @@ export class DashboardsService {
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -770,7 +911,11 @@ export class DashboardsService {
         dashboard_id: data.dashboardId,
       },
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -796,7 +941,11 @@ export class DashboardsService {
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -822,7 +971,11 @@ export class DashboardsService {
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -845,7 +998,11 @@ export class DashboardsService {
         dashboard_id: data.dashboardId,
       },
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -870,7 +1027,11 @@ export class DashboardsService {
         dashboard_item_id: data.dashboardItemId,
       },
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -898,7 +1059,11 @@ export class DashboardsService {
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -926,7 +1091,11 @@ export class DashboardsService {
       formData: data.formData,
       mediaType: 'multipart/form-data',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -954,7 +1123,11 @@ export class DashboardsService {
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -982,7 +1155,11 @@ export class DashboardsService {
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -999,6 +1176,13 @@ export class FundsService {
     return __request(OpenAPI, {
       method: 'GET',
       url: '/funds',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
     });
   }
 
@@ -1020,7 +1204,65 @@ export class FundsService {
         fund_type: data.fundType,
       },
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Add Fund To Watchlist
+   * Add fund to watchlist
+   * @param data The data for the request.
+   * @param data.fundId
+   * @returns AddFundToWatchListResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static putFundsByFundIdWatchlist(
+    data: PutFundsByFundIdWatchlistData,
+  ): CancelablePromise<PutFundsByFundIdWatchlistResponse> {
+    return __request(OpenAPI, {
+      method: 'PUT',
+      url: '/funds/{fund_id}/watchlist',
+      path: {
+        fund_id: data.fundId,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Remove Fund From Watchlist
+   * Remove fund from watchlist
+   * @param data The data for the request.
+   * @param data.fundId
+   * @returns RemoveFundFromWatchListResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static deleteFundsByFundIdWatchlist(
+    data: DeleteFundsByFundIdWatchlistData,
+  ): CancelablePromise<DeleteFundsByFundIdWatchlistResponse> {
+    return __request(OpenAPI, {
+      method: 'DELETE',
+      url: '/funds/{fund_id}/watchlist',
+      path: {
+        fund_id: data.fundId,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -1043,7 +1285,38 @@ export class FundsService {
         tab: data.tab,
       },
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Fund Table Tab Excel
+   * Get excel output of fund table tab
+   * @param data The data for the request.
+   * @param data.tab
+   * @returns unknown Successful Response
+   * @throws ApiError
+   */
+  public static getFundsTableTabByTabCsv(
+    data: GetFundsTableTabByTabCsvData,
+  ): CancelablePromise<GetFundsTableTabByTabCsvResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/funds/table/tab/{tab}/csv',
+      path: {
+        tab: data.tab,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -1069,7 +1342,11 @@ export class FundsService {
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -1095,7 +1372,11 @@ export class FundsService {
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -1121,7 +1402,11 @@ export class FundsService {
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -1147,7 +1432,11 @@ export class FundsService {
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -1173,7 +1462,11 @@ export class FundsService {
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
@@ -1199,7 +1492,11 @@ export class FundsService {
       body: data.requestBody,
       mediaType: 'application/json',
       errors: {
-        422: 'Validation Error',
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
       },
     });
   }
