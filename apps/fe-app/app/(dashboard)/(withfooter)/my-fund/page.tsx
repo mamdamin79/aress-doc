@@ -1,5 +1,5 @@
 'use client';
-import { Breadcrumb, Button, FundsLogo, Tabs } from 'design-system';
+import { Breadcrumb, Button, cn, FundsLogo, Tabs } from 'design-system';
 import { Summary } from './_components/Summary';
 import { ReturnAnalysis } from './_components/ReturnAnalysis';
 import { RiskAssessment } from './_components/RiskAssessment';
@@ -7,6 +7,9 @@ import { useState } from 'react';
 
 export default function FundPage() {
   const [activeTab, setActiveTab] = useState(0);
+  const [isInWatchList, setIsInWatchList] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
+
   return (
     <div>
       <div className="mb-7 mr-8 mt-3">
@@ -27,10 +30,20 @@ export default function FundPage() {
             </div>
           </div>
           <Button
-            className="w-[183px]"
-            iconRight={{ name: 'plus', size: 'lg' }}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+            onClick={() => setIsInWatchList(!isInWatchList)}
+            className={cn('w-[183px]', { 'w-[150px]': isInWatchList })}
+            mode={isInWatchList ? 'secondary' : 'primary'}
+            iconRight={
+              isInWatchList
+                ? isHovering
+                  ? { name: 'minus', size: 'lg' }
+                  : { name: 'check', size: 'lg' }
+                : { name: 'plus', size: 'lg' }
+            }
           >
-            افزودن به دیده بان
+            در دیده بان
           </Button>
         </div>
         <Tabs
