@@ -13,12 +13,15 @@ type Story = StoryObj<typeof DataList>;
 
 export const Default: Story = {
   args: {
-    className: 'w-[250px] h-[578px]',
+    mode: 'vertical',
+    className: ' h-[300px]',
     data: [
-      { key: 'شاخص کل', value: '2,345' },
-      { key: 'شاخص هم‌وزن', value: '1,230' },
-      { key: 'بازار اول', value: '780' },
-      { key: 'بازار دوم', value: '560' },
+      { key: 'بازده صندوق', value: '۴.۳٪' },
+      { key: 'بتا صندوق', value: '۱.۴ واحد' },
+      { key: 'واحد های ابطال شده', value: '۳۵۶ واحد' },
+      { key: 'واحد های صادر شده', value: '۶,۲۵۴ واحد' },
+      { key: 'رنج قیمتی', value: '۳,۱۰۰-۳,۲۰۰ ریال' },
+      { key: 'گردش دارایی (بر مبنای آخرین صورت مالی)', value: '۱۲٪' },
     ],
   },
 };
