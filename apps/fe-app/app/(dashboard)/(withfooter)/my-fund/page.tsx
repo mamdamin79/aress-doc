@@ -1,8 +1,12 @@
 'use client';
 import { Breadcrumb, Button, FundsLogo, Tabs } from 'design-system';
 import { Summary } from './_components/Summary';
+import { ReturnAnalysis } from './_components/ReturnAnalysis';
+import { RiskAssessment } from './_components/RiskAssessment';
+import { useState } from 'react';
 
 export default function FundPage() {
+  const [activeTab, setActiveTab] = useState(0);
   return (
     <div>
       <div className="mb-7 mr-8 mt-3">
@@ -14,8 +18,8 @@ export default function FundPage() {
           ]}
         />
       </div>
-      <div className="px-20">
-        <div className="mb-6 flex items-center justify-between">
+      <div className="px-8 lg:px-20">
+        <div className="mb-6 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-0">
           <div className="flex items-center justify-start gap-2">
             <FundsLogo color="green" src="" hasTag={true} size="md" />
             <div className="text-text-neutral-primary text-xl font-semibold">
@@ -30,8 +34,11 @@ export default function FundPage() {
           </Button>
         </div>
         <Tabs
-          activeTab={0}
-          onClickTab={() => console.log('')}
+          activeTab={activeTab}
+          onClickTab={(newTabId) => {
+            setActiveTab(newTabId);
+            console.log('clicked tab id:', newTabId);
+          }}
           variant="lined"
           fullWidthDivider={true}
           tabs={[
@@ -58,8 +65,8 @@ export default function FundPage() {
                 />
               ),
             },
-            { title: 'تحلیل بازدهی', id: '1', content: '' },
-            { title: 'ارزیابی ریسک', id: '2', content: '' },
+            { title: 'تحلیل بازدهی', id: '1', content: <ReturnAnalysis /> },
+            { title: 'ارزیابی ریسک', id: '2', content: <RiskAssessment /> },
           ]}
         />
       </div>
