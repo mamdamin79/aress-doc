@@ -7,6 +7,7 @@ import {
   cn,
   Bookmark,
   useCustomToast,
+  FundsTag,
 } from 'design-system';
 import {
   useFundsServicePostFundsTableTabByTabPin,
@@ -14,16 +15,27 @@ import {
   useFundsServicePostFundsTableTabByTabMark,
   useFundsServicePostFundsTableTabByTabUnmark,
   useFundsServicePutFundsByFundIdWatchlist,
+  useFundsServiceDeleteFundsByFundIdWatchlist,
 } from '@openapi';
 import { FundRow, FundsInfoCellProps, TableRowProps } from '../types';
 
+// Define the allowed colors as a type for easier use
+type FundsTagColor =
+  | 'purple'
+  | 'blue'
+  | 'green'
+  | 'yellow'
+  | 'pink'
+  | 'neutral';
+
 function FundsInfoCell({
+  tabs,
   name,
   isEtf,
-  tag,
   unPinedFunction,
   pinedFunction,
   addToWatchlist,
+  deleteToWatchlist,
   logo,
   canPin,
   pined,
@@ -31,8 +43,9 @@ function FundsInfoCell({
   isScrolled,
   className,
   isTradable,
+  isWatchList,
+  fundType,
 }: FundsInfoCellProps) {
-  const { showProgressToast } = useCustomToast();
   const [isShowDropDown, setIsShowDropDown] = useState(false);
 
   return (
@@ -70,11 +83,16 @@ function FundsInfoCell({
         >
           قابل خرید
         </span>
-        <div
-          className={cn('invisible box-content h-2.5 w-2.5 rounded-full', {
-            visible: tag,
-          })}
-        />
+        {isWatchList ? (
+          <FundsTag
+            color={
+              tabs?.find((tab) => tab.identifier === fundType)
+                ?.color as FundsTagColor
+            }
+          />
+        ) : (
+          <div className="h-2.5 w-2.5" />
+        )}
         <div className="group/img relative">
           <FundsLogo
             size="sm"
@@ -128,8 +146,8 @@ function FundsInfoCell({
                 icon: { name: pined ? 'pin-off' : 'pin', size: 'md' },
               },
               {
-                text: 'افزودن به دیده‌بان',
-                icon: { name: 'plus' },
+                text: isWatchList ? 'حذف از دیده‌بان' : 'افزودن به دیده‌بان',
+                icon: { name: isWatchList ? 'minus' : 'plus' },
               },
             ]}
             customTriggerRender={(prop) => {
@@ -158,17 +176,7 @@ function FundsInfoCell({
                     if (prop.text === 'پین کردن' && canPin) pinedFunction();
                     if (prop.text === 'برداشتن پین') unPinedFunction();
                     if (prop.text === 'افزودن به دیده‌بان') addToWatchlist();
-
-                    if (prop.text === 'حذف از دیده‌بان') {
-                      showProgressToast({
-                        title: 'صندوق مورد نظر از دیده بان حذف شد.',
-                        timeout: 3000,
-                        leadingAction: {
-                          iconProps: { name: 'undo-2', size: 'sm' },
-                          onClick: () => void 0,
-                        },
-                      });
-                    }
+                    if (prop.text === 'حذف از دیده‌بان') deleteToWatchlist();
                   }}
                   className={cn(
                     'text-text-neutral-primary hover:text-text-brand-contrast-700 bg-surface-neutral-primary flex w-[168px] cursor-pointer items-center gap-2 py-2 pr-2 text-sm font-medium',
@@ -209,6 +217,9 @@ function TableRowInner<T extends FundRow>({
   handlerUnPinned,
   handlerMarkFund,
   rowMarks,
+  handlerDeleteWatchList,
+  handlerAddToWatchList,
+  tabs,
 }: TableRowProps<T>) {
   const { showProgressToast, showToast } = useCustomToast();
 
@@ -218,6 +229,7 @@ function TableRowInner<T extends FundRow>({
   const markFundMutation = useFundsServicePostFundsTableTabByTabMark();
   const unMarkFundMutation = useFundsServicePostFundsTableTabByTabUnmark();
   const addToWathcList = useFundsServicePutFundsByFundIdWatchlist();
+  const deleteToWatchList = useFundsServiceDeleteFundsByFundIdWatchlist();
 
   const handlePinFund = async (fundId: number, isShowToast: boolean) => {
     try {
@@ -301,20 +313,53 @@ function TableRowInner<T extends FundRow>({
     }
   };
 
-  const handlerAddWatchList = async () => {
+  const handlerAddWatchList = async (showToast?: boolean) => {
     try {
       await addToWathcList.mutateAsync({
         fundId: row.original.id,
       });
-      showProgressToast({
-        timeout: 5000,
-        title: 'صندوق مورد نظر به دیده‌بان اضافه شد.',
-      });
-    } catch (err) {
-      console.log(err);
+      handlerAddToWatchList(row.original.id);
+      if (showToast) {
+        showProgressToast({
+          timeout: 5000,
+          title: 'صندوق مورد نظر به دیده‌بان اضافه شد.',
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
+  const handlerDeleteInWatchList = async () => {
+    try {
+      await deleteToWatchList.mutateAsync({
+        fundId: row.original.id,
+      });
+      handlerDeleteWatchList(row.original.id);
+
+      // A flag to ensure undo is only called once
+      let hasBeenUndone = false;
+
+      showProgressToast({
+        timeout: 5000,
+        title: 'صندوق مورد نظر از دیده‌بان حذف شد.',
+        leadingAction: {
+          iconProps: { name: 'undo-2', size: 'sm' },
+          onClick: () => {
+            // If it has already been undone, do nothing.
+            if (hasBeenUndone) {
+              return;
+            }
+            // Set the flag to true and then add the item back.
+            hasBeenUndone = true;
+            handlerAddWatchList(false);
+          },
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <tr
       onMouseEnter={() => setShowMark(true)}
@@ -336,6 +381,7 @@ function TableRowInner<T extends FundRow>({
         </div>
         <div>
           <FundsInfoCell
+            tabs={tabs}
             isRowHovered={true}
             tag={!isMainTab}
             canPin={true}
@@ -345,9 +391,12 @@ function TableRowInner<T extends FundRow>({
             isEtf={!!row.original?.isEtf}
             isTradable={row.original?.isTradable}
             name={row.original?.nameFund}
+            isWatchList={activeIndexCategoryTab === 1000 ? true : false}
             pined={row.original.pinned}
+            fundType={row.original.fundType}
             selected={false}
-            addToWatchlist={handlerAddWatchList}
+            addToWatchlist={() => handlerAddWatchList(true)}
+            deleteToWatchlist={handlerDeleteInWatchList}
             logo={row.original?.logo}
             investmentMethod={row.original?.investmentMethod}
           />

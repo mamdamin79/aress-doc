@@ -59,7 +59,11 @@ import {
   useDragIndicator,
   useTableDragSensors,
 } from './utils/investmentFunds.utils';
-import { FundsService, useFundsServiceGetFundsTable } from '@openapi';
+import {
+  FundsService,
+  FundsTableItemApiModel,
+  useFundsServiceGetFundsTable,
+} from '@openapi';
 import { TabsSkeleton } from './_components/skeletons/TabsSkeleton';
 import { RowSkeleton } from './_components/skeletons/RowSkeleton';
 import { HeaderTableSkeleton } from './_components/skeletons/HeaderTableSkeleton';
@@ -76,6 +80,7 @@ const Funds = () => {
   const tableRef = useRef<HTMLDivElement>(null);
   const [pinnedList, setPinnedList] = useState<number[]>([]);
   const [rowsMark, setRowsMark] = useState<{ color: string; id: number }[]>([]);
+  const [watchList, setWatchList] = useState<FundsTableItemApiModel[]>([]);
   const [sorting, setSorting] = useState<SortingState>([
     {
       id: 'nameFund',
@@ -356,6 +361,12 @@ const Funds = () => {
         };
       });
 
+    if (activeIndexCategoryTab === 1000) {
+      setWatchList(query.data.selectedTabFunds);
+    } else {
+      setWatchList([]);
+    }
+
     setRowsMark(initialMarkedList);
 
     setPinnedList(initialPinnedList);
@@ -364,13 +375,19 @@ const Funds = () => {
   const simplifiedFunds = useMemo(() => {
     if (!query.data?.selectedTabFunds) return [];
 
-    const funds = query.data.selectedTabFunds.map(({ info }) => {
+    const sourceFunds = query.data.selectedTabFunds;
+    const listToMap = activeIndexCategoryTab === 1000 ? watchList : sourceFunds;
+
+    const funds = listToMap.map((item) => {
+      const info = 'info' in item ? item.info : item;
       const id = info.identifier;
+
       return {
+        fundType: info.fundType.identifier,
         logo: info.logoMedium || '',
         id,
         pinned: pinnedList.includes(id),
-        investemntFundsMethod: 'T',
+        investmentFundsMethod: 'T',
         nameFund: info.name || info.abbreviatedName,
         dailyAlpha: info.alphaLastDay,
         weeklyAlpha: info.alphaLastWeek,
@@ -386,16 +403,15 @@ const Funds = () => {
         netAssetValue: info.statisticalNavRials,
         unitCount: info.numberOfUnits,
         startDate: info.initiationDate,
-        fundType: info.fundType?.title,
         investmentMethod: 'T' as const,
-        mark: '',
+        mark: 'mark' in item ? item.mark || '' : '',
         isEtf: false,
         isTradable: true,
       };
     });
 
     return funds.sort((a, b) => Number(b.pinned) - Number(a.pinned));
-  }, [query.data?.selectedTabFunds, pinnedList]);
+  }, [query.data?.selectedTabFunds, pinnedList, watchList]);
 
   const sortedFunds = useMemo(() => {
     if (!simplifiedFunds) return [];
@@ -604,6 +620,34 @@ const Funds = () => {
       return updated;
     });
   };
+  const handlerDeleteWatchList = (id: number) => {
+    setWatchList((prev) => prev.filter((item) => item.info.identifier !== id));
+  };
+
+  const handlerAddToWatchList = (fundId: number) => {
+    if (activeIndexCategoryTab !== 1000) return;
+
+    const itemToAdd = query.data?.selectedTabFunds.find(
+      (item) => item.info.identifier === fundId,
+    );
+
+    if (!itemToAdd) return; // Make sure the item was found
+
+    setWatchList((currentWatchList) => {
+      // Check for duplicates against the MOST RECENT state
+      const isAlreadyInList = currentWatchList.some(
+        (item) => item.info.identifier === fundId,
+      );
+
+      if (isAlreadyInList) {
+        // If it's already there, return the current state without changes
+        return currentWatchList;
+      } else {
+        // Otherwise, return the new state with the added item
+        return [...currentWatchList, itemToAdd];
+      }
+    });
+  };
 
   const handlerMarkFund = (id: number, color: string) => {
     setRowsMark((prev) => {
@@ -672,7 +716,7 @@ const Funds = () => {
             />
           )
         )}
-        {rows.length ? (
+        {!query.isLoading ? (
           <Tooltip title="خروجی اکسل">
             <div
               onClick={() => mutation.mutate()}
@@ -708,7 +752,7 @@ const Funds = () => {
             dir="rtl"
             className="w-full table-fixed rounded-xl text-center"
           >
-            {!rows.length ? (
+            {query.isLoading ? (
               <thead>
                 <tr>
                   <HeaderTableSkeleton />
@@ -1031,15 +1075,18 @@ const Funds = () => {
                 </DndContext>
               </thead>
             )}
-            {rows.length ? (
+            {!query.isLoading ? (
               <TableBody
                 handlerMarkFund={handlerMarkFund}
                 allRows={sortedFunds.length}
                 rowMarks={rowsMark}
                 tableRef={tableRef as RefObject<HTMLDivElement>}
+                tabs={tabs?.tabs || []}
                 isScrollAtStart={isScrollAtStart}
                 handlerPinned={handlerPinned}
                 handlerUnPinned={handlerUnPinned}
+                handlerDeleteWatchList={handlerDeleteWatchList}
+                handlerAddToWatchList={handlerAddToWatchList}
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 rows={rows as any}
                 activeIndexCategoryTab={activeIndexCategoryTab}
@@ -1050,6 +1097,11 @@ const Funds = () => {
                   <RowSkeleton key={i} />
                 ))}
               </tbody>
+            )}
+            {!rows.length && !query.isLoading && (
+              <div className="sticky right-0 -mt-10 w-screen whitespace-nowrap text-sm text-gray-600">
+                صندوقی در دیده‌بان وجود ندارد.
+              </div>
             )}
           </table>
         </div>

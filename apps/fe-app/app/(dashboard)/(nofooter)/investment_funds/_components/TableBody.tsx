@@ -12,6 +12,9 @@ export function TableBody({
   handlerMarkFund,
   rowMarks,
   allRows,
+  handlerDeleteWatchList,
+  handlerAddToWatchList,
+  tabs,
 }: TableBodyProps) {
   const virtualizer = useVirtualizer({
     count: rows?.length,
@@ -32,6 +35,9 @@ export function TableBody({
         return (
           <React.Fragment key={row.id}>
             <TableRow
+              tabs={tabs}
+              handlerDeleteWatchList={handlerDeleteWatchList}
+              handlerAddToWatchList={handlerAddToWatchList}
               row={row}
               handlerMarkFund={handlerMarkFund}
               isMainTab={isMainTab}
