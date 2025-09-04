@@ -62,6 +62,8 @@ import type {
   DeleteDashboardsByDashboardIdResponse,
   PutDashboardsByDashboardIdData,
   PutDashboardsByDashboardIdResponse,
+  PostDashboardsByDashboardIdFundsData,
+  PostDashboardsByDashboardIdFundsResponse,
   PostDashboardsByDashboardIdDuplicateData,
   PostDashboardsByDashboardIdDuplicateResponse,
   GetDashboardsByDashboardIdPreviewData,
@@ -91,14 +93,16 @@ import type {
   PostFundsTableTabByTabPinResponse,
   PostFundsTableTabByTabUnpinData,
   PostFundsTableTabByTabUnpinResponse,
-  PostFundsTableTabByTabMarkData,
-  PostFundsTableTabByTabMarkResponse,
-  PostFundsTableTabByTabUnmarkData,
-  PostFundsTableTabByTabUnmarkResponse,
+  PostFundsByFundIdMarkData,
+  PostFundsByFundIdMarkResponse,
+  PostFundsByFundIdUnmarkData,
+  PostFundsByFundIdUnmarkResponse,
   PostFundsTableTabByTabSortData,
   PostFundsTableTabByTabSortResponse,
   PostFundsTableTabByTabColumnsData,
   PostFundsTableTabByTabColumnsResponse,
+  PostFundsTableTabByTabColumnData,
+  PostFundsTableTabByTabColumnResponse,
 } from './types.gen';
 
 export class HealthService {
@@ -951,6 +955,36 @@ export class DashboardsService {
   }
 
   /**
+   * Update Dashboard Funds
+   * Update dashboard funds list.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @param data.requestBody
+   * @returns UpdateDashboardFundsResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postDashboardsByDashboardIdFunds(
+    data: PostDashboardsByDashboardIdFundsData,
+  ): CancelablePromise<PostDashboardsByDashboardIdFundsResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/dashboards/{dashboard_id}/funds',
+      path: {
+        dashboard_id: data.dashboardId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
    * Duplicate Dashboard
    * Duplicate dashboard
    * @param data The data for the request.
@@ -1382,22 +1416,22 @@ export class FundsService {
   }
 
   /**
-   * Mark Fund In Table Tab
+   * Mark Fund In
    * Mark fund in table tab
    * @param data The data for the request.
-   * @param data.tab
+   * @param data.fundId
    * @param data.requestBody
-   * @returns MarkFundInTableTabResponseApiModel Successful Response
+   * @returns MarkFundResponseApiModel Successful Response
    * @throws ApiError
    */
-  public static postFundsTableTabByTabMark(
-    data: PostFundsTableTabByTabMarkData,
-  ): CancelablePromise<PostFundsTableTabByTabMarkResponse> {
+  public static postFundsByFundIdMark(
+    data: PostFundsByFundIdMarkData,
+  ): CancelablePromise<PostFundsByFundIdMarkResponse> {
     return __request(OpenAPI, {
       method: 'POST',
-      url: '/funds/table/tab/{tab}/mark',
+      url: '/funds/{fund_id}/mark',
       path: {
-        tab: data.tab,
+        fund_id: data.fundId,
       },
       body: data.requestBody,
       mediaType: 'application/json',
@@ -1415,22 +1449,19 @@ export class FundsService {
    * Unmark Fund In Table Tab
    * Unmark fund in table tab
    * @param data The data for the request.
-   * @param data.tab
-   * @param data.requestBody
-   * @returns UnmarkFundInTableTabResponseApiModel Successful Response
+   * @param data.fundId
+   * @returns UnmarkFundResponseApiModel Successful Response
    * @throws ApiError
    */
-  public static postFundsTableTabByTabUnmark(
-    data: PostFundsTableTabByTabUnmarkData,
-  ): CancelablePromise<PostFundsTableTabByTabUnmarkResponse> {
+  public static postFundsByFundIdUnmark(
+    data: PostFundsByFundIdUnmarkData,
+  ): CancelablePromise<PostFundsByFundIdUnmarkResponse> {
     return __request(OpenAPI, {
       method: 'POST',
-      url: '/funds/table/tab/{tab}/unmark',
+      url: '/funds/{fund_id}/unmark',
       path: {
-        tab: data.tab,
+        fund_id: data.fundId,
       },
-      body: data.requestBody,
-      mediaType: 'application/json',
       errors: {
         400: 'Bad Request',
         401: 'Unauthorized',
@@ -1443,7 +1474,7 @@ export class FundsService {
 
   /**
    * Sort Fund Tab
-   * Update columns of a fund tab
+   * Sort rows of a fund tab
    * @param data The data for the request.
    * @param data.tab
    * @param data.requestBody
@@ -1486,6 +1517,36 @@ export class FundsService {
     return __request(OpenAPI, {
       method: 'POST',
       url: '/funds/table/tab/{tab}/columns',
+      path: {
+        tab: data.tab,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Update Fund Tab Column
+   * Update a single columns of a fund tab
+   * @param data The data for the request.
+   * @param data.tab
+   * @param data.requestBody
+   * @returns UpdateFundTabSingleColumnResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsTableTabByTabColumn(
+    data: PostFundsTableTabByTabColumnData,
+  ): CancelablePromise<PostFundsTableTabByTabColumnResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/table/tab/{tab}/column',
       path: {
         tab: data.tab,
       },

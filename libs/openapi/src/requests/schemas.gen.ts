@@ -642,16 +642,60 @@ export const $DashboardDetailsApiModel = {
       type: 'array',
       title: 'Items',
     },
-    fundsByCategory: {
+    funds: {
       items: {
-        $ref: '#/components/schemas/DashboardFundCategoryApiModel',
+        $ref: '#/components/schemas/DashboardFundApiModel',
       },
       type: 'array',
-      title: 'Fundsbycategory',
+      title: 'Funds',
+    },
+    fundTypes: {
+      items: {
+        $ref: '#/components/schemas/DashboardFundTypeApiModel',
+      },
+      type: 'array',
+      title: 'Fundtypes',
+    },
+    fundSortParameters: {
+      items: {
+        $ref: '#/components/schemas/DashboardFundSortParameterApiModel',
+      },
+      type: 'array',
+      title: 'Fundsortparameters',
+    },
+    fundSortPeriods: {
+      items: {
+        $ref: '#/components/schemas/DashboardFundSortPeriodApiModel',
+      },
+      type: 'array',
+      title: 'Fundsortperiods',
+    },
+    selectedFundTypeId: {
+      type: 'integer',
+      title: 'Selectedfundtypeid',
+    },
+    selectedFundSortParameterId: {
+      type: 'integer',
+      title: 'Selectedfundsortparameterid',
+    },
+    selectedFundSortPeriodId: {
+      type: 'integer',
+      title: 'Selectedfundsortperiodid',
     },
   },
   type: 'object',
-  required: ['identifier', 'name', 'items', 'fundsByCategory'],
+  required: [
+    'identifier',
+    'name',
+    'items',
+    'funds',
+    'fundTypes',
+    'fundSortParameters',
+    'fundSortPeriods',
+    'selectedFundTypeId',
+    'selectedFundSortParameterId',
+    'selectedFundSortPeriodId',
+  ],
   title: 'DashboardDetailsApiModel',
 } as const;
 
@@ -673,7 +717,7 @@ export const $DashboardFundApiModel = {
       type: 'string',
       title: 'Abbreviatedname',
     },
-    returnLastWeekPercent: {
+    parameterValue: {
       anyOf: [
         {
           type: 'number',
@@ -682,42 +726,9 @@ export const $DashboardFundApiModel = {
           type: 'null',
         },
       ],
-      title: 'Returnlastweekpercent',
+      title: 'Parametervalue',
     },
-    returnLastMonthPercent: {
-      anyOf: [
-        {
-          type: 'number',
-        },
-        {
-          type: 'null',
-        },
-      ],
-      title: 'Returnlastmonthpercent',
-    },
-    returnLast3MonthsPercent: {
-      anyOf: [
-        {
-          type: 'number',
-        },
-        {
-          type: 'null',
-        },
-      ],
-      title: 'Returnlast3Monthspercent',
-    },
-    returnLastYearPercent: {
-      anyOf: [
-        {
-          type: 'number',
-        },
-        {
-          type: 'null',
-        },
-      ],
-      title: 'Returnlastyearpercent',
-    },
-    dailyRedeemNavMonth: {
+    sparklineValues: {
       anyOf: [
         {
           items: {
@@ -729,7 +740,7 @@ export const $DashboardFundApiModel = {
           type: 'null',
         },
       ],
-      title: 'Dailyredeemnavmonth',
+      title: 'Sparklinevalues',
     },
   },
   type: 'object',
@@ -738,37 +749,58 @@ export const $DashboardFundApiModel = {
     'registrationNumber',
     'name',
     'abbreviatedName',
-    'returnLastWeekPercent',
-    'returnLastMonthPercent',
-    'returnLast3MonthsPercent',
-    'returnLastYearPercent',
-    'dailyRedeemNavMonth',
+    'parameterValue',
+    'sparklineValues',
   ],
   title: 'DashboardFundApiModel',
 } as const;
 
-export const $DashboardFundCategoryApiModel = {
+export const $DashboardFundSortParameterApiModel = {
   properties: {
+    identifier: {
+      type: 'integer',
+      title: 'Identifier',
+    },
     title: {
       type: 'string',
       title: 'Title',
     },
+  },
+  type: 'object',
+  required: ['identifier', 'title'],
+  title: 'DashboardFundSortParameterApiModel',
+} as const;
+
+export const $DashboardFundSortPeriodApiModel = {
+  properties: {
     identifier: {
       type: 'integer',
       title: 'Identifier',
-      description: 'Unique identifier of report category',
     },
-    funds: {
-      items: {
-        $ref: '#/components/schemas/DashboardFundApiModel',
-      },
-      type: 'array',
-      title: 'Funds',
+    title: {
+      type: 'string',
+      title: 'Title',
     },
   },
   type: 'object',
-  required: ['title', 'identifier', 'funds'],
-  title: 'DashboardFundCategoryApiModel',
+  required: ['identifier', 'title'],
+  title: 'DashboardFundSortPeriodApiModel',
+} as const;
+
+export const $DashboardFundTypeApiModel = {
+  properties: {
+    identifier: {
+      type: 'integer',
+      title: 'Identifier',
+    },
+    title: {
+      type: 'string',
+      title: 'Title',
+    },
+  },
+  type: 'object',
+  required: ['identifier', 'title'],
+  title: 'DashboardFundTypeApiModel',
 } as const;
 
 export const $DashboardItemApiModel = {
@@ -1580,12 +1612,24 @@ export const $FundTableItemInfoApiModel = {
     assetUnderManagementRials: {
       type: 'integer',
       title: 'Assetundermanagementrials',
-      description: 'دارایی تحت مدیریت (ریال)',
+      description: 'کل ارزش خالص دارایی‌ها (ریال)',
     },
     numberOfUnits: {
       type: 'integer',
       title: 'Numberofunits',
       description: 'تعداد واحد',
+    },
+    returnLastDayPercent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Returnlastdaypercent',
+      description: 'بازده روزانه',
     },
     returnLastWeekPercent: {
       anyOf: [
@@ -1597,7 +1641,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Returnlastweekpercent',
-      description: 'بازدهی هفته اخیر',
+      description: 'بازده هفتگی',
     },
     returnLastMonthPercent: {
       anyOf: [
@@ -1609,7 +1653,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Returnlastmonthpercent',
-      description: 'بازدهی ماه اخیر',
+      description: 'بازده ماهانه',
     },
     returnLast3MonthsPercent: {
       anyOf: [
@@ -1621,7 +1665,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Returnlast3Monthspercent',
-      description: 'بازدهی سه ماه اخیر',
+      description: 'بازده سه‌ماهه',
     },
     returnLastYearPercent: {
       anyOf: [
@@ -1633,7 +1677,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Returnlastyearpercent',
-      description: 'بازدهی سال اخیر',
+      description: 'بازده یک‌ساله',
     },
     returnCustomPeriodPercent: {
       anyOf: [
@@ -1645,7 +1689,19 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Returncustomperiodpercent',
-      description: 'بازدهی بازه دلخواه',
+      description: 'بازده بازه دلخواه',
+    },
+    returnVsTedpixLastDayPercent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Returnvstedpixlastdaypercent',
+      description: 'بازده نسبت به شاخص روزانه',
     },
     returnVsTedpixLastWeekPercent: {
       anyOf: [
@@ -1657,7 +1713,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Returnvstedpixlastweekpercent',
-      description: 'بازدهی به شاخص هفته اخیر',
+      description: 'بازده نسبت به شاخص هفتگی',
     },
     returnVsTedpixLastMonthPercent: {
       anyOf: [
@@ -1669,7 +1725,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Returnvstedpixlastmonthpercent',
-      description: 'بازدهی به شاخص ماه اخیر',
+      description: 'بازده نسبت به شاخص ماهانه',
     },
     returnVsTedpixLast3MonthsPercent: {
       anyOf: [
@@ -1681,7 +1737,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Returnvstedpixlast3Monthspercent',
-      description: 'بازدهی به شاخص سه ماه اخیر',
+      description: 'بازده نسبت به شاخص سه‌ماهه',
     },
     returnVsTedpixLastYearPercent: {
       anyOf: [
@@ -1693,7 +1749,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Returnvstedpixlastyearpercent',
-      description: 'بازدهی به شاخص سال اخیر',
+      description: 'بازده نسبت به شاخص یک‌ساله',
     },
     returnVsTedpixCustomPeriodPercent: {
       anyOf: [
@@ -1705,7 +1761,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Returnvstedpixcustomperiodpercent',
-      description: 'بازدهی به شاخص بازه دلخواه',
+      description: 'بازده نسبت به شاخص بازه دلخواه',
     },
     assetAllocationBondPercent: {
       type: 'number',
@@ -1757,7 +1813,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Averageleveragelastweek',
-      description: 'میانگین اهرم هفته اخیر',
+      description: 'میانگین اهرم هتگی',
     },
     averageLeverageLastMonth: {
       anyOf: [
@@ -1769,7 +1825,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Averageleveragelastmonth',
-      description: 'میانگین اهرم ماه اخیر',
+      description: 'میانگین اهرم ماهانه',
     },
     averageLeverageLast3Months: {
       anyOf: [
@@ -1781,7 +1837,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Averageleveragelast3Months',
-      description: 'میانگین اهرم سه ماه اخیر',
+      description: 'میانگین اهرم سه‌ماهه',
     },
     averageLeverageLastYear: {
       anyOf: [
@@ -1793,7 +1849,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Averageleveragelastyear',
-      description: 'میانگین اهرم سال اخیر',
+      description: 'میانگین اهرم یک‌ساله',
     },
     averageLeverageCustomPeriod: {
       anyOf: [
@@ -1817,7 +1873,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Standarddeviationlastweek',
-      description: 'انحراف از میانگین هفته اخیر',
+      description: 'انحراف از میانگین هتگی',
     },
     standardDeviationLastMonth: {
       anyOf: [
@@ -1829,7 +1885,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Standarddeviationlastmonth',
-      description: 'انحراف از میانگین ماه اخیر',
+      description: 'انحراف از میانگین ماهانه',
     },
     standardDeviationLast3Month: {
       anyOf: [
@@ -1841,7 +1897,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Standarddeviationlast3Month',
-      description: 'انحراف از میانگین سه ماه اخیر',
+      description: 'انحراف از میانگین سه‌ماهه',
     },
     standardDeviationLastYear: {
       anyOf: [
@@ -1853,7 +1909,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Standarddeviationlastyear',
-      description: 'انحراف از میانگین سال اخیر',
+      description: 'انحراف از میانگین یک‌ساله',
     },
     standardDeviationCustomPeriod: {
       anyOf: [
@@ -1877,7 +1933,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Sharperatiolastweek',
-      description: 'نسبت شارپی هفته اخیر',
+      description: 'نسبت شارپی هفتگی',
     },
     sharpeRatioLastMonth: {
       anyOf: [
@@ -1889,7 +1945,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Sharperatiolastmonth',
-      description: 'نسبت شارپی ماه اخیر',
+      description: 'نسبت شارپی ماهانه',
     },
     sharpeRatioLast3Months: {
       anyOf: [
@@ -1901,7 +1957,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Sharperatiolast3Months',
-      description: 'نسبت شارپی سه ماه اخیر',
+      description: 'نسبت شارپی سه‌ماهه',
     },
     sharpeRatioLastYear: {
       anyOf: [
@@ -1913,7 +1969,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Sharperatiolastyear',
-      description: 'نسبت شارپی سال اخیر',
+      description: 'نسبت شارپی یک‌ساله',
     },
     sharpeRatioCustomPeriod: {
       anyOf: [
@@ -1937,7 +1993,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Informationratiolastweek',
-      description: 'نسبت اصلاعاتی هفته اخیر',
+      description: 'نسبت اصلاعاتی هفتگی',
     },
     informationRatioLastMonth: {
       anyOf: [
@@ -1949,7 +2005,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Informationratiolastmonth',
-      description: 'نسبت اصلاعاتی ماه اخیر',
+      description: 'نسبت اصلاعاتی ماهانه',
     },
     informationRatioLast3Months: {
       anyOf: [
@@ -1961,7 +2017,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Informationratiolast3Months',
-      description: 'نسبت اصلاعاتی سه ماه اخیر',
+      description: 'نسبت اصلاعاتی سه‌ماهه',
     },
     informationRatioLastYear: {
       anyOf: [
@@ -1973,7 +2029,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Informationratiolastyear',
-      description: 'نسبت اصلاعاتی سال اخیر',
+      description: 'نسبت اصلاعاتی یک‌ساله',
     },
     informationRatioCustomPeriod: {
       anyOf: [
@@ -1997,7 +2053,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Alphalastday',
-      description: 'آلفا روز اخیر',
+      description: 'آلفا روزانه',
     },
     alphaLastWeek: {
       anyOf: [
@@ -2009,7 +2065,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Alphalastweek',
-      description: 'آلفا هفته اخیر',
+      description: 'آلفا هفتگی',
     },
     alphaLastMonth: {
       anyOf: [
@@ -2021,7 +2077,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Alphalastmonth',
-      description: 'آلفا ماه اخیر',
+      description: 'آلفا ماهانه',
     },
     alphaLast3Months: {
       anyOf: [
@@ -2033,7 +2089,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Alphalast3Months',
-      description: 'آلفا سه ماه اخیر',
+      description: 'آلفا سه‌ماهه',
     },
     alphaLastYear: {
       anyOf: [
@@ -2045,7 +2101,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Alphalastyear',
-      description: 'آلفا سال اخیر',
+      description: 'آلفا یک‌ساله',
     },
     alphaCustomPeriod: {
       anyOf: [
@@ -2069,7 +2125,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Betalastday',
-      description: 'بتا روز اخیر',
+      description: 'بتا روزانه',
     },
     betaLastWeek: {
       anyOf: [
@@ -2081,7 +2137,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Betalastweek',
-      description: 'بتا هفته اخیر',
+      description: 'بتا هفتگی',
     },
     betaLastMonth: {
       anyOf: [
@@ -2093,7 +2149,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Betalastmonth',
-      description: 'بتا ماه اخیر',
+      description: 'بتا ماهانه',
     },
     betaLast3Months: {
       anyOf: [
@@ -2105,7 +2161,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Betalast3Months',
-      description: 'بتا سه ماه اخیر',
+      description: 'بتا سه‌ماهه',
     },
     betaLastYear: {
       anyOf: [
@@ -2117,7 +2173,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Betalastyear',
-      description: 'بتا سال اخیر',
+      description: 'بتا یک‌سساله',
     },
     betaCustomPeriod: {
       anyOf: [
@@ -2219,11 +2275,13 @@ export const $FundTableItemInfoApiModel = {
     'statisticalNavRials',
     'assetUnderManagementRials',
     'numberOfUnits',
+    'returnLastDayPercent',
     'returnLastWeekPercent',
     'returnLastMonthPercent',
     'returnLast3MonthsPercent',
     'returnLastYearPercent',
     'returnCustomPeriodPercent',
+    'returnVsTedpixLastDayPercent',
     'returnVsTedpixLastWeekPercent',
     'returnVsTedpixLastMonthPercent',
     'returnVsTedpixLast3MonthsPercent',
@@ -2449,7 +2507,6 @@ export const $FundTableTabColumnDto = {
     'visible',
     'sort',
     'colorFormat',
-    'columnFilter',
     'columnGroupId',
     'customPeriodStartJdate',
     'customPeriodEndJdate',
@@ -2702,23 +2759,19 @@ export const $LogoutResponseApiModel = {
   title: 'LogoutResponseApiModel',
 } as const;
 
-export const $MarkFundInTableTabBody = {
+export const $MarkFundBody = {
   properties: {
-    fund: {
-      type: 'integer',
-      title: 'Fund',
-    },
     color: {
       type: 'string',
       title: 'Color',
     },
   },
   type: 'object',
-  required: ['fund', 'color'],
-  title: 'MarkFundInTableTabBody',
+  required: ['color'],
+  title: 'MarkFundBody',
 } as const;
 
-export const $MarkFundInTableTabResponseApiModel = {
+export const $MarkFundResponseApiModel = {
   properties: {
     success: {
       type: 'boolean',
@@ -2727,7 +2780,7 @@ export const $MarkFundInTableTabResponseApiModel = {
   },
   type: 'object',
   required: ['success'],
-  title: 'MarkFundInTableTabResponseApiModel',
+  title: 'MarkFundResponseApiModel',
 } as const;
 
 export const $PinFundInTableTabBody = {
@@ -3395,19 +3448,7 @@ export const $TokenApiModel = {
   title: 'TokenApiModel',
 } as const;
 
-export const $UnmarkFundInTableTabBody = {
-  properties: {
-    fund: {
-      type: 'integer',
-      title: 'Fund',
-    },
-  },
-  type: 'object',
-  required: ['fund'],
-  title: 'UnmarkFundInTableTabBody',
-} as const;
-
-export const $UnmarkFundInTableTabResponseApiModel = {
+export const $UnmarkFundResponseApiModel = {
   properties: {
     success: {
       type: 'boolean',
@@ -3416,7 +3457,7 @@ export const $UnmarkFundInTableTabResponseApiModel = {
   },
   type: 'object',
   required: ['success'],
-  title: 'UnmarkFundInTableTabResponseApiModel',
+  title: 'UnmarkFundResponseApiModel',
 } as const;
 
 export const $UnpinFundInTableTabBody = {
@@ -3443,6 +3484,41 @@ export const $UnpinFundInTableTabResponseApiModel = {
   title: 'UnpinFundInTableTabResponseApiModel',
 } as const;
 
+export const $UpdateDashboardFundsBody = {
+  properties: {
+    fundType: {
+      type: 'integer',
+      title: 'Fundtype',
+    },
+    sortParameter: {
+      type: 'integer',
+      title: 'Sortparameter',
+    },
+    sortPeriod: {
+      type: 'integer',
+      title: 'Sortperiod',
+    },
+  },
+  type: 'object',
+  required: ['fundType', 'sortParameter', 'sortPeriod'],
+  title: 'UpdateDashboardFundsBody',
+} as const;
+
+export const $UpdateDashboardFundsResponseApiModel = {
+  properties: {
+    funds: {
+      items: {
+        $ref: '#/components/schemas/DashboardFundApiModel',
+      },
+      type: 'array',
+      title: 'Funds',
+    },
+  },
+  type: 'object',
+  required: ['funds'],
+  title: 'UpdateDashboardFundsResponseApiModel',
+} as const;
+
 export const $UpdateFundTabColumnsResponseApiModel = {
   properties: {
     funds: {
@@ -3463,6 +3539,28 @@ export const $UpdateFundTabColumnsResponseApiModel = {
   type: 'object',
   required: ['funds', 'columns'],
   title: 'UpdateFundTabColumnsResponseApiModel',
+} as const;
+
+export const $UpdateFundTabSingleColumnResponseApiModel = {
+  properties: {
+    funds: {
+      items: {
+        $ref: '#/components/schemas/FundsTableItemApiModel',
+      },
+      type: 'array',
+      title: 'Funds',
+    },
+    columns: {
+      items: {
+        $ref: '#/components/schemas/FundTableTabColumnDto',
+      },
+      type: 'array',
+      title: 'Columns',
+    },
+  },
+  type: 'object',
+  required: ['funds', 'columns'],
+  title: 'UpdateFundTabSingleColumnResponseApiModel',
 } as const;
 
 export const $UpdateFundTableTabColumnItem = {
@@ -3517,7 +3615,6 @@ export const $UpdateFundTableTabColumnItem = {
     'key',
     'sortDirection',
     'visible',
-    'selectedFilter',
     'customPeriodStartJdate',
     'customPeriodEndJdate',
   ],
@@ -3537,6 +3634,17 @@ export const $UpdateFundTableTabColumnsBody = {
   type: 'object',
   required: ['columns'],
   title: 'UpdateFundTableTabColumnsBody',
+} as const;
+
+export const $UpdateFundTableTabSingleColumnBody = {
+  properties: {
+    column: {
+      $ref: '#/components/schemas/UpdateFundTableTabColumnItem',
+    },
+  },
+  type: 'object',
+  required: ['column'],
+  title: 'UpdateFundTableTabSingleColumnBody',
 } as const;
 
 export const $UserReportFavoriteStatus = {

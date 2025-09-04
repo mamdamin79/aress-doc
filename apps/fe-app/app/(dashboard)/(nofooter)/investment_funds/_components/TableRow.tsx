@@ -12,8 +12,8 @@ import {
 import {
   useFundsServicePostFundsTableTabByTabPin,
   useFundsServicePostFundsTableTabByTabUnpin,
-  useFundsServicePostFundsTableTabByTabMark,
-  useFundsServicePostFundsTableTabByTabUnmark,
+  useFundsServicePostFundsByFundIdUnmark,
+  useFundsServicePostFundsByFundIdMark,
   useFundsServicePutFundsByFundIdWatchlist,
   useFundsServiceDeleteFundsByFundIdWatchlist,
 } from '@openapi';
@@ -226,8 +226,8 @@ function TableRowInner<T extends FundRow>({
   const [showMark, setShowMark] = useState(false);
   const pinFundMutation = useFundsServicePostFundsTableTabByTabPin();
   const unPinFundMutation = useFundsServicePostFundsTableTabByTabUnpin();
-  const markFundMutation = useFundsServicePostFundsTableTabByTabMark();
-  const unMarkFundMutation = useFundsServicePostFundsTableTabByTabUnmark();
+  const markFundMutation = useFundsServicePostFundsByFundIdMark();
+  const unMarkFundMutation = useFundsServicePostFundsByFundIdUnmark();
   const addToWathcList = useFundsServicePutFundsByFundIdWatchlist();
   const deleteToWatchList = useFundsServiceDeleteFundsByFundIdWatchlist();
 
@@ -294,16 +294,17 @@ function TableRowInner<T extends FundRow>({
       if (existingMark && existingMark.color === color) {
         // Call unmark API
         await unMarkFundMutation.mutateAsync({
-          tab: activeIndexCategoryTab,
-          requestBody: { fund: fundId },
+          fundId: fundId,
         });
         // Update local state
         handlerMarkFund(fundId, color); // This will remove the mark as per your handler
       } else {
         // Call mark API
         await markFundMutation.mutateAsync({
-          tab: activeIndexCategoryTab,
-          requestBody: { fund: fundId, color },
+          fundId: fundId,
+          requestBody: {
+            color: color,
+          },
         });
         // Update local state
         handlerMarkFund(fundId, color);
@@ -314,11 +315,11 @@ function TableRowInner<T extends FundRow>({
   };
 
   const handlerAddWatchList = async (showToast?: boolean) => {
+    handlerAddToWatchList(row.original.id);
     try {
       await addToWathcList.mutateAsync({
         fundId: row.original.id,
       });
-      handlerAddToWatchList(row.original.id);
       if (showToast) {
         showProgressToast({
           timeout: 5000,

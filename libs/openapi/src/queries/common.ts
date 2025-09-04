@@ -317,6 +317,10 @@ export type ReportsServicePostReportsByReportIdScreenshotMutationResult =
   Awaited<ReturnType<typeof ReportsService.postReportsByReportIdScreenshot>>;
 export type DashboardsServicePostDashboardsByDashboardIdMutationResult =
   Awaited<ReturnType<typeof DashboardsService.postDashboardsByDashboardId>>;
+export type DashboardsServicePostDashboardsByDashboardIdFundsMutationResult =
+  Awaited<
+    ReturnType<typeof DashboardsService.postDashboardsByDashboardIdFunds>
+  >;
 export type DashboardsServicePostDashboardsByDashboardIdDuplicateMutationResult =
   Awaited<
     ReturnType<typeof DashboardsService.postDashboardsByDashboardIdDuplicate>
@@ -351,17 +355,20 @@ export type FundsServicePostFundsTableTabByTabPinMutationResult = Awaited<
 export type FundsServicePostFundsTableTabByTabUnpinMutationResult = Awaited<
   ReturnType<typeof FundsService.postFundsTableTabByTabUnpin>
 >;
-export type FundsServicePostFundsTableTabByTabMarkMutationResult = Awaited<
-  ReturnType<typeof FundsService.postFundsTableTabByTabMark>
+export type FundsServicePostFundsByFundIdMarkMutationResult = Awaited<
+  ReturnType<typeof FundsService.postFundsByFundIdMark>
 >;
-export type FundsServicePostFundsTableTabByTabUnmarkMutationResult = Awaited<
-  ReturnType<typeof FundsService.postFundsTableTabByTabUnmark>
+export type FundsServicePostFundsByFundIdUnmarkMutationResult = Awaited<
+  ReturnType<typeof FundsService.postFundsByFundIdUnmark>
 >;
 export type FundsServicePostFundsTableTabByTabSortMutationResult = Awaited<
   ReturnType<typeof FundsService.postFundsTableTabByTabSort>
 >;
 export type FundsServicePostFundsTableTabByTabColumnsMutationResult = Awaited<
   ReturnType<typeof FundsService.postFundsTableTabByTabColumns>
+>;
+export type FundsServicePostFundsTableTabByTabColumnMutationResult = Awaited<
+  ReturnType<typeof FundsService.postFundsTableTabByTabColumn>
 >;
 export type DashboardsServicePutDashboardsMutationResult = Awaited<
   ReturnType<typeof DashboardsService.putDashboards>

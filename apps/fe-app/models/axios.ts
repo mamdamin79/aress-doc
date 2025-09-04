@@ -312,8 +312,20 @@ export interface DashboardDetailsApiModel {
   name: string;
   /** Items */
   items: DashboardItemApiModel[];
-  /** Fundsbycategory */
-  fundsByCategory: DashboardFundCategoryApiModel[];
+  /** Funds */
+  funds: DashboardFundApiModel[];
+  /** Fundtypes */
+  fundTypes: DashboardFundTypeApiModel[];
+  /** Fundsortparameters */
+  fundSortParameters: DashboardFundSortParameterApiModel[];
+  /** Fundsortperiods */
+  fundSortPeriods: DashboardFundSortPeriodApiModel[];
+  /** Selectedfundtypeid */
+  selectedFundTypeId: number;
+  /** Selectedfundsortparameterid */
+  selectedFundSortParameterId: number;
+  /** Selectedfundsortperiodid */
+  selectedFundSortPeriodId: number;
 }
 
 /** DashboardFundApiModel */
@@ -326,29 +338,34 @@ export interface DashboardFundApiModel {
   name: string;
   /** Abbreviatedname */
   abbreviatedName: string;
-  /** Returnlastweekpercent */
-  returnLastWeekPercent: number | null;
-  /** Returnlastmonthpercent */
-  returnLastMonthPercent: number | null;
-  /** Returnlast3Monthspercent */
-  returnLast3MonthsPercent: number | null;
-  /** Returnlastyearpercent */
-  returnLastYearPercent: number | null;
-  /** Dailyredeemnavmonth */
-  dailyRedeemNavMonth: number[] | null;
+  /** Parametervalue */
+  parameterValue: number | null;
+  /** Sparklinevalues */
+  sparklineValues: number[] | null;
 }
 
-/** DashboardFundCategoryApiModel */
-export interface DashboardFundCategoryApiModel {
+/** DashboardFundSortParameterApiModel */
+export interface DashboardFundSortParameterApiModel {
+  /** Identifier */
+  identifier: number;
   /** Title */
   title: string;
-  /**
-   * Identifier
-   * Unique identifier of report category
-   */
+}
+
+/** DashboardFundSortPeriodApiModel */
+export interface DashboardFundSortPeriodApiModel {
+  /** Identifier */
   identifier: number;
-  /** Funds */
-  funds: DashboardFundApiModel[];
+  /** Title */
+  title: string;
+}
+
+/** DashboardFundTypeApiModel */
+export interface DashboardFundTypeApiModel {
+  /** Identifier */
+  identifier: number;
+  /** Title */
+  title: string;
 }
 
 /** DashboardItemApiModel */
@@ -761,7 +778,7 @@ export interface FundTableItemInfoApiModel {
   statisticalNavRials: number;
   /**
    * Assetundermanagementrials
-   * دارایی تحت مدیریت (ریال)
+   * کل ارزش خالص دارایی‌ها (ریال)
    */
   assetUnderManagementRials: number;
   /**
@@ -770,53 +787,63 @@ export interface FundTableItemInfoApiModel {
    */
   numberOfUnits: number;
   /**
+   * Returnlastdaypercent
+   * بازده روزانه
+   */
+  returnLastDayPercent: number | null;
+  /**
    * Returnlastweekpercent
-   * بازدهی هفته اخیر
+   * بازده هفتگی
    */
   returnLastWeekPercent: number | null;
   /**
    * Returnlastmonthpercent
-   * بازدهی ماه اخیر
+   * بازده ماهانه
    */
   returnLastMonthPercent: number | null;
   /**
    * Returnlast3Monthspercent
-   * بازدهی سه ماه اخیر
+   * بازده سه‌ماهه
    */
   returnLast3MonthsPercent: number | null;
   /**
    * Returnlastyearpercent
-   * بازدهی سال اخیر
+   * بازده یک‌ساله
    */
   returnLastYearPercent: number | null;
   /**
    * Returncustomperiodpercent
-   * بازدهی بازه دلخواه
+   * بازده بازه دلخواه
    */
   returnCustomPeriodPercent: number | null;
   /**
+   * Returnvstedpixlastdaypercent
+   * بازده نسبت به شاخص روزانه
+   */
+  returnVsTedpixLastDayPercent: number | null;
+  /**
    * Returnvstedpixlastweekpercent
-   * بازدهی به شاخص هفته اخیر
+   * بازده نسبت به شاخص هفتگی
    */
   returnVsTedpixLastWeekPercent: number | null;
   /**
    * Returnvstedpixlastmonthpercent
-   * بازدهی به شاخص ماه اخیر
+   * بازده نسبت به شاخص ماهانه
    */
   returnVsTedpixLastMonthPercent: number | null;
   /**
    * Returnvstedpixlast3Monthspercent
-   * بازدهی به شاخص سه ماه اخیر
+   * بازده نسبت به شاخص سه‌ماهه
    */
   returnVsTedpixLast3MonthsPercent: number | null;
   /**
    * Returnvstedpixlastyearpercent
-   * بازدهی به شاخص سال اخیر
+   * بازده نسبت به شاخص یک‌ساله
    */
   returnVsTedpixLastYearPercent: number | null;
   /**
    * Returnvstedpixcustomperiodpercent
-   * بازدهی به شاخص بازه دلخواه
+   * بازده نسبت به شاخص بازه دلخواه
    */
   returnVsTedpixCustomPeriodPercent: number | null;
   /**
@@ -861,22 +888,22 @@ export interface FundTableItemInfoApiModel {
   assetAllocationTop5StocksPercent: number;
   /**
    * Averageleveragelastweek
-   * میانگین اهرم هفته اخیر
+   * میانگین اهرم هتگی
    */
   averageLeverageLastWeek: number | null;
   /**
    * Averageleveragelastmonth
-   * میانگین اهرم ماه اخیر
+   * میانگین اهرم ماهانه
    */
   averageLeverageLastMonth: number | null;
   /**
    * Averageleveragelast3Months
-   * میانگین اهرم سه ماه اخیر
+   * میانگین اهرم سه‌ماهه
    */
   averageLeverageLast3Months: number | null;
   /**
    * Averageleveragelastyear
-   * میانگین اهرم سال اخیر
+   * میانگین اهرم یک‌ساله
    */
   averageLeverageLastYear: number | null;
   /**
@@ -886,22 +913,22 @@ export interface FundTableItemInfoApiModel {
   averageLeverageCustomPeriod: number | null;
   /**
    * Standarddeviationlastweek
-   * انحراف از میانگین هفته اخیر
+   * انحراف از میانگین هتگی
    */
   standardDeviationLastWeek: number | null;
   /**
    * Standarddeviationlastmonth
-   * انحراف از میانگین ماه اخیر
+   * انحراف از میانگین ماهانه
    */
   standardDeviationLastMonth: number | null;
   /**
    * Standarddeviationlast3Month
-   * انحراف از میانگین سه ماه اخیر
+   * انحراف از میانگین سه‌ماهه
    */
   standardDeviationLast3Month: number | null;
   /**
    * Standarddeviationlastyear
-   * انحراف از میانگین سال اخیر
+   * انحراف از میانگین یک‌ساله
    */
   standardDeviationLastYear: number | null;
   /**
@@ -911,22 +938,22 @@ export interface FundTableItemInfoApiModel {
   standardDeviationCustomPeriod: number | null;
   /**
    * Sharperatiolastweek
-   * نسبت شارپی هفته اخیر
+   * نسبت شارپی هفتگی
    */
   sharpeRatioLastWeek: number | null;
   /**
    * Sharperatiolastmonth
-   * نسبت شارپی ماه اخیر
+   * نسبت شارپی ماهانه
    */
   sharpeRatioLastMonth: number | null;
   /**
    * Sharperatiolast3Months
-   * نسبت شارپی سه ماه اخیر
+   * نسبت شارپی سه‌ماهه
    */
   sharpeRatioLast3Months: number | null;
   /**
    * Sharperatiolastyear
-   * نسبت شارپی سال اخیر
+   * نسبت شارپی یک‌ساله
    */
   sharpeRatioLastYear: number | null;
   /**
@@ -936,22 +963,22 @@ export interface FundTableItemInfoApiModel {
   sharpeRatioCustomPeriod: number | null;
   /**
    * Informationratiolastweek
-   * نسبت اصلاعاتی هفته اخیر
+   * نسبت اصلاعاتی هفتگی
    */
   informationRatioLastWeek: number | null;
   /**
    * Informationratiolastmonth
-   * نسبت اصلاعاتی ماه اخیر
+   * نسبت اصلاعاتی ماهانه
    */
   informationRatioLastMonth: number | null;
   /**
    * Informationratiolast3Months
-   * نسبت اصلاعاتی سه ماه اخیر
+   * نسبت اصلاعاتی سه‌ماهه
    */
   informationRatioLast3Months: number | null;
   /**
    * Informationratiolastyear
-   * نسبت اصلاعاتی سال اخیر
+   * نسبت اصلاعاتی یک‌ساله
    */
   informationRatioLastYear: number | null;
   /**
@@ -961,27 +988,27 @@ export interface FundTableItemInfoApiModel {
   informationRatioCustomPeriod: number | null;
   /**
    * Alphalastday
-   * آلفا روز اخیر
+   * آلفا روزانه
    */
   alphaLastDay: number | null;
   /**
    * Alphalastweek
-   * آلفا هفته اخیر
+   * آلفا هفتگی
    */
   alphaLastWeek: number | null;
   /**
    * Alphalastmonth
-   * آلفا ماه اخیر
+   * آلفا ماهانه
    */
   alphaLastMonth: number | null;
   /**
    * Alphalast3Months
-   * آلفا سه ماه اخیر
+   * آلفا سه‌ماهه
    */
   alphaLast3Months: number | null;
   /**
    * Alphalastyear
-   * آلفا سال اخیر
+   * آلفا یک‌ساله
    */
   alphaLastYear: number | null;
   /**
@@ -991,27 +1018,27 @@ export interface FundTableItemInfoApiModel {
   alphaCustomPeriod: number | null;
   /**
    * Betalastday
-   * بتا روز اخیر
+   * بتا روزانه
    */
   betaLastDay: number | null;
   /**
    * Betalastweek
-   * بتا هفته اخیر
+   * بتا هفتگی
    */
   betaLastWeek: number | null;
   /**
    * Betalastmonth
-   * بتا ماه اخیر
+   * بتا ماهانه
    */
   betaLastMonth: number | null;
   /**
    * Betalast3Months
-   * بتا سه ماه اخیر
+   * بتا سه‌ماهه
    */
   betaLast3Months: number | null;
   /**
    * Betalastyear
-   * بتا سال اخیر
+   * بتا یک‌سساله
    */
   betaLastYear: number | null;
   /**
@@ -1085,7 +1112,7 @@ export interface FundTableTabColumnDto {
   sort: FundTableTabColumnSort;
   colorFormat: FundTableTabColumnColorFormat;
   /** Columnfilter */
-  columnFilter:
+  columnFilter?:
     | FundTableTabColumnFilterTextDto
     | FundTableTabColumnFilterOptionsDto
     | null;
@@ -1200,16 +1227,14 @@ export interface LogoutResponseApiModel {
   success: boolean;
 }
 
-/** MarkFundInTableTabBody */
-export interface MarkFundInTableTabBody {
-  /** Fund */
-  fund: number;
+/** MarkFundBody */
+export interface MarkFundBody {
   /** Color */
   color: string;
 }
 
-/** MarkFundInTableTabResponseApiModel */
-export interface MarkFundInTableTabResponseApiModel {
+/** MarkFundResponseApiModel */
+export interface MarkFundResponseApiModel {
   /** Success */
   success: boolean;
 }
@@ -1501,14 +1526,8 @@ export interface TokenApiModel {
   token_type: string;
 }
 
-/** UnmarkFundInTableTabBody */
-export interface UnmarkFundInTableTabBody {
-  /** Fund */
-  fund: number;
-}
-
-/** UnmarkFundInTableTabResponseApiModel */
-export interface UnmarkFundInTableTabResponseApiModel {
+/** UnmarkFundResponseApiModel */
+export interface UnmarkFundResponseApiModel {
   /** Success */
   success: boolean;
 }
@@ -1525,8 +1544,32 @@ export interface UnpinFundInTableTabResponseApiModel {
   success: boolean;
 }
 
+/** UpdateDashboardFundsBody */
+export interface UpdateDashboardFundsBody {
+  /** Fundtype */
+  fundType: number;
+  /** Sortparameter */
+  sortParameter: number;
+  /** Sortperiod */
+  sortPeriod: number;
+}
+
+/** UpdateDashboardFundsResponseApiModel */
+export interface UpdateDashboardFundsResponseApiModel {
+  /** Funds */
+  funds: DashboardFundApiModel[];
+}
+
 /** UpdateFundTabColumnsResponseApiModel */
 export interface UpdateFundTabColumnsResponseApiModel {
+  /** Funds */
+  funds: FundsTableItemApiModel[];
+  /** Columns */
+  columns: FundTableTabColumnDto[];
+}
+
+/** UpdateFundTabSingleColumnResponseApiModel */
+export interface UpdateFundTabSingleColumnResponseApiModel {
   /** Funds */
   funds: FundsTableItemApiModel[];
   /** Columns */
@@ -1541,7 +1584,7 @@ export interface UpdateFundTableTabColumnItem {
   /** Visible */
   visible: boolean;
   /** Selectedfilter */
-  selectedFilter: string | null;
+  selectedFilter?: string | null;
   /** Customperiodstartjdate */
   customPeriodStartJdate: string | null;
   /** Customperiodendjdate */
@@ -1552,6 +1595,11 @@ export interface UpdateFundTableTabColumnItem {
 export interface UpdateFundTableTabColumnsBody {
   /** Columns */
   columns: UpdateFundTableTabColumnItem[];
+}
+
+/** UpdateFundTableTabSingleColumnBody */
+export interface UpdateFundTableTabSingleColumnBody {
+  column: UpdateFundTableTabColumnItem;
 }
 
 /** UserReportFavoriteStatus */
@@ -2726,6 +2774,30 @@ export class Api<
       }),
 
     /**
+     * @description Update dashboard funds list.
+     *
+     * @tags Dashboards
+     * @name UpdateDashboardFundsDashboardsDashboardIdFundsPost
+     * @summary Update Dashboard Funds
+     * @request POST:/dashboards/{dashboard_id}/funds
+     * @secure
+     */
+    updateDashboardFundsDashboardsDashboardIdFundsPost: (
+      dashboardId: number,
+      data: UpdateDashboardFundsBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<UpdateDashboardFundsResponseApiModel, ApiExceptionResponse>({
+        path: `/dashboards/${dashboardId}/funds`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
      * @description Duplicate dashboard
      *
      * @tags Dashboards
@@ -3080,18 +3152,18 @@ export class Api<
      * @description Mark fund in table tab
      *
      * @tags Funds
-     * @name MarkFundInTableTabFundsTableTabTabMarkPost
-     * @summary Mark Fund In Table Tab
-     * @request POST:/funds/table/tab/{tab}/mark
+     * @name MarkFundInFundsFundIdMarkPost
+     * @summary Mark Fund In
+     * @request POST:/funds/{fund_id}/mark
      * @secure
      */
-    markFundInTableTabFundsTableTabTabMarkPost: (
-      tab: number,
-      data: MarkFundInTableTabBody,
+    markFundInFundsFundIdMarkPost: (
+      fundId: number,
+      data: MarkFundBody,
       params: RequestParams = {},
     ) =>
-      this.request<MarkFundInTableTabResponseApiModel, ApiExceptionResponse>({
-        path: `/funds/table/tab/${tab}/mark`,
+      this.request<MarkFundResponseApiModel, ApiExceptionResponse>({
+        path: `/funds/${fundId}/mark`,
         method: 'POST',
         body: data,
         secure: true,
@@ -3104,28 +3176,25 @@ export class Api<
      * @description Unmark fund in table tab
      *
      * @tags Funds
-     * @name UnmarkFundInTableTabFundsTableTabTabUnmarkPost
+     * @name UnmarkFundInTableTabFundsFundIdUnmarkPost
      * @summary Unmark Fund In Table Tab
-     * @request POST:/funds/table/tab/{tab}/unmark
+     * @request POST:/funds/{fund_id}/unmark
      * @secure
      */
-    unmarkFundInTableTabFundsTableTabTabUnmarkPost: (
-      tab: number,
-      data: UnmarkFundInTableTabBody,
+    unmarkFundInTableTabFundsFundIdUnmarkPost: (
+      fundId: number,
       params: RequestParams = {},
     ) =>
-      this.request<UnmarkFundInTableTabResponseApiModel, ApiExceptionResponse>({
-        path: `/funds/table/tab/${tab}/unmark`,
+      this.request<UnmarkFundResponseApiModel, ApiExceptionResponse>({
+        path: `/funds/${fundId}/unmark`,
         method: 'POST',
-        body: data,
         secure: true,
-        type: ContentType.Json,
         format: 'json',
         ...params,
       }),
 
     /**
-     * @description Update columns of a fund tab
+     * @description Sort rows of a fund tab
      *
      * @tags Funds
      * @name SortFundTabFundsTableTabTabSortPost
@@ -3164,6 +3233,33 @@ export class Api<
     ) =>
       this.request<UpdateFundTabColumnsResponseApiModel, ApiExceptionResponse>({
         path: `/funds/table/tab/${tab}/columns`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Update a single columns of a fund tab
+     *
+     * @tags Funds
+     * @name UpdateFundTabColumnFundsTableTabTabColumnPost
+     * @summary Update Fund Tab Column
+     * @request POST:/funds/table/tab/{tab}/column
+     * @secure
+     */
+    updateFundTabColumnFundsTableTabTabColumnPost: (
+      tab: number,
+      data: UpdateFundTableTabSingleColumnBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        UpdateFundTabSingleColumnResponseApiModel,
+        ApiExceptionResponse
+      >({
+        path: `/funds/table/tab/${tab}/column`,
         method: 'POST',
         body: data,
         secure: true,

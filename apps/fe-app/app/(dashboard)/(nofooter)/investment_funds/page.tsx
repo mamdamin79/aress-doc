@@ -64,6 +64,7 @@ import {
   FundsTableItemApiModel,
   FundTableItemInfoApiModel,
   useFundsServiceGetFundsTable,
+  useFundsServicePostFundsTableTabByTabColumn,
   useFundsServicePostFundsTableTabByTabSort,
 } from '@openapi';
 import { TabsSkeleton } from './_components/skeletons/TabsSkeleton';
@@ -78,6 +79,9 @@ const Funds = () => {
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [isScrollAtStart, setIsScrollAtStart] = useState<boolean>(false);
   const [isScrollAtEnd, setIsScrollAtEnd] = useState<boolean>(true);
+  const [localColumns, setLocalColumns] = useState<FundTableItemInfoApiModel[]>(
+    [],
+  );
   const [fundSearchQuery, setFundSearchQuery] = useState<string>('');
   const tableRef = useRef<HTMLDivElement>(null);
   const [pinnedList, setPinnedList] = useState<number[]>([]);
@@ -132,7 +136,7 @@ const Funds = () => {
           whiteSpace: 'nowrap',
         }}
         className={cn(
-          'bg-surface-brand-100 relative m-0 h-[64px] w-full min-w-[200px] p-0 text-sm font-medium',
+          'bg-surface-brand-100 relative m-0 h-[64px] w-[200px] p-0 text-sm font-medium',
         )}
       >
         {isDraggingOver && position && (
@@ -168,6 +172,12 @@ const Funds = () => {
   const query = useFundsServiceGetFundsTable({ tab: activeIndexCategoryTab });
 
   useEffect(() => {
+    if (query.data?.columns) {
+      setLocalColumns(query.data.columns);
+    }
+  }, [query.data?.columns]);
+
+  useEffect(() => {
     if (!query.data?.columns) return;
 
     const serverSorting: SortingState = query.data.columns
@@ -185,9 +195,7 @@ const Funds = () => {
   }, [query.data?.columns]);
 
   const columns = React.useMemo<ColumnDef<FundTableItemInfoApiModel>[]>(() => {
-    if (!query.data?.columns) return [];
-
-    return query.data.columns
+    return localColumns
       .filter((col) => col.visible)
       .map((col) => {
         const key = col.key as keyof FundTableItemInfoApiModel;
@@ -212,14 +220,16 @@ const Funds = () => {
                     color:
                       typeof value === 'number' && value < 0 ? 'red' : 'green',
                   }}
-                ></span>
+                >
+                  {value as React.ReactNode}
+                </span>
               );
             }
             return value as React.ReactNode;
           },
         };
       });
-  }, [query.data?.columns]);
+  }, [localColumns]);
 
   const [columnOrder, setColumnOrder] = React.useState<string[]>(() =>
     columns.map((c) => c.id!),
@@ -592,6 +602,47 @@ const Funds = () => {
       window.URL.revokeObjectURL(url);
     },
   });
+
+  // get function for change column visibility
+  const changeVisibilityColumns = useFundsServicePostFundsTableTabByTabColumn();
+
+  // request for change column visibility
+  const handlerChangeVisibilityColumns = async ({
+    columnKey,
+    visible,
+  }: {
+    columnKey: string;
+    visible: boolean;
+  }) => {
+    console.log(columnKey, visible);
+
+    setLocalColumns((prev) =>
+      prev.map((col) =>
+        col.key === columnKey ? { ...col, visible: !visible } : col,
+      ),
+    );
+    try {
+      await changeVisibilityColumns.mutateAsync({
+        tab: activeIndexCategoryTab,
+        requestBody: {
+          column: {
+            customPeriodEndJdate: null,
+            customPeriodStartJdate: null,
+            key: columnKey,
+            sortDirection: 'NO',
+            visible: !visible,
+            selectedFilter: null,
+          },
+        },
+      });
+    } catch (error) {
+      console.log(error);
+
+      setLocalColumns((prev) =>
+        prev.map((col) => (col.key === columnKey ? { ...col, visible } : col)),
+      );
+    }
+  };
 
   return (
     <>
@@ -1178,7 +1229,12 @@ const Funds = () => {
                         <div>
                           <Checkbox
                             checked={column.visible}
-                            onChange={() => {}}
+                            onChange={() =>
+                              handlerChangeVisibilityColumns({
+                                columnKey: column.key,
+                                visible: column.visible,
+                              })
+                            }
                             reactcontent={column.label}
                           />
                         </div>
