@@ -253,7 +253,7 @@ export const RiskAssessment = () => {
           />
         </div>
       </div>
-      <div className="flex h-[672px] w-full items-center justify-center bg-gray-200">
+      <div className="mb-40 flex h-[672px] w-full items-center justify-center bg-gray-200">
         Seasonal effect analysis-V2
       </div>
     </div>

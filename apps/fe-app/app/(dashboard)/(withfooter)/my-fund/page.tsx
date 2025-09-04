@@ -2,7 +2,7 @@
 import { Breadcrumb, Button, cn, FundsLogo, Tabs } from 'design-system';
 import { Summary } from './_components/Summary';
 import { ReturnAnalysis } from './_components/ReturnAnalysis';
-import { RiskAssessment } from './_components/RiskAssessment';
+import { RiskAssessment } from './_components/RiskAssesment';
 import { useState } from 'react';
 import {
   useFundsServiceGetFundsTable,
@@ -119,8 +119,8 @@ export default function FundPage() {
                 />
               ),
             },
-            { title: 'تحلیل بازدهی', id: '1', content: <ReturnAnalysis /> },
-            { title: 'ارزیابی ریسک', id: '2', content: <RiskAssessment /> },
+            { title: 'تحلیل بازدهی', id: '1', content: <RiskAssessment /> },
+            { title: 'ارزیابی ریسک', id: '2', content: <ReturnAnalysis /> },
           ]}
         />
       </div>
