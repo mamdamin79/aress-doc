@@ -62,7 +62,7 @@ export default function FundPage() {
           ]}
         />
       </div>
-      <div className="px-8 lg:px-20">
+      <div className="mx-auto max-w-[1680px] px-8 lg:px-20">
         <div className="mb-6 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-0">
           <div className="flex items-center justify-start gap-2">
             <FundsLogo color="green" src="" hasTag={true} size="md" />

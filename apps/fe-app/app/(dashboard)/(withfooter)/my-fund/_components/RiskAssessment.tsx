@@ -30,10 +30,44 @@ export const RiskAssessment = () => {
           />
         </div>
       </div>
-      <div className="mb-6 flex h-[600px] w-[704px] items-center justify-center bg-blue-100">
-        multiple line chart
+      <div className="flex items-start justify-center gap-8">
+        <div className="mb-6 flex h-[600px] min-w-[704px] flex-1 items-center justify-center bg-blue-100">
+          multiple line chart
+        </div>
+        <div className="hidden xl:block">
+          <DataList
+            className="h-[600px] w-[392px]"
+            mode="vertical"
+            data={[
+              {
+                key: 'بازده صندوق',
+                value: '۴.۳٪',
+              },
+              {
+                key: 'بتا صندوق',
+                value: '۱.۳ واحد',
+              },
+              {
+                key: 'واحد های ابطال شده',
+                value: '۳۵۶ واحد',
+              },
+              {
+                key: 'واحد های صادر شده',
+                value: '۶,۲۵۴ واحد',
+              },
+              {
+                key: 'رنج قیمتی',
+                value: '۳,۱۰۰-۳,۳۰۰ ریال',
+              },
+              {
+                key: 'گردش دارایی',
+                value: '۱۲٪',
+              },
+            ]}
+          />
+        </div>
       </div>
-      <div className="mb-6">
+      <div className="mb-6 xl:hidden">
         <DataList
           data={[
             {
