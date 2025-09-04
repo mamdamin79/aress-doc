@@ -2920,6 +2920,104 @@
         }
       }
     },
+    "/dashboards/{dashboard_id}/funds": {
+      "post": {
+        "tags": [
+          "Dashboards"
+        ],
+        "summary": "Update Dashboard Funds",
+        "description": "Update dashboard funds list.",
+        "operationId": "update_dashboard_funds_dashboards__dashboard_id__funds_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "dashboard_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dashboard Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDashboardFundsBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateDashboardFundsResponseApiModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiExceptionResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiExceptionResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiExceptionResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiExceptionResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiExceptionResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
     "/dashboards/{dashboard_id}/duplicate": {
       "post": {
         "tags": [
@@ -4341,14 +4439,14 @@
         }
       }
     },
-    "/funds/table/tab/{tab}/mark": {
+    "/funds/{fund_id}/mark": {
       "post": {
         "tags": [
           "Funds"
         ],
-        "summary": "Mark Fund In Table Tab",
+        "summary": "Mark Fund In",
         "description": "Mark fund in table tab",
-        "operationId": "mark_fund_in_table_tab_funds_table_tab__tab__mark_post",
+        "operationId": "mark_fund_in_funds__fund_id__mark_post",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -4356,12 +4454,12 @@
         ],
         "parameters": [
           {
-            "name": "tab",
+            "name": "fund_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "integer",
-              "title": "Tab"
+              "title": "Fund Id"
             }
           }
         ],
@@ -4370,7 +4468,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MarkFundInTableTabBody"
+                "$ref": "#/components/schemas/MarkFundBody"
               }
             }
           }
@@ -4381,7 +4479,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MarkFundInTableTabResponseApiModel"
+                  "$ref": "#/components/schemas/MarkFundResponseApiModel"
                 }
               }
             }
@@ -4439,14 +4537,14 @@
         }
       }
     },
-    "/funds/table/tab/{tab}/unmark": {
+    "/funds/{fund_id}/unmark": {
       "post": {
         "tags": [
           "Funds"
         ],
         "summary": "Unmark Fund In Table Tab",
         "description": "Unmark fund in table tab",
-        "operationId": "unmark_fund_in_table_tab_funds_table_tab__tab__unmark_post",
+        "operationId": "unmark_fund_in_table_tab_funds__fund_id__unmark_post",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -4454,32 +4552,22 @@
         ],
         "parameters": [
           {
-            "name": "tab",
+            "name": "fund_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "integer",
-              "title": "Tab"
+              "title": "Fund Id"
             }
           }
         ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UnmarkFundInTableTabBody"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UnmarkFundInTableTabResponseApiModel"
+                  "$ref": "#/components/schemas/UnmarkFundResponseApiModel"
                 }
               }
             }
@@ -4543,7 +4631,7 @@
           "Funds"
         ],
         "summary": "Sort Fund Tab",
-        "description": "Update columns of a fund tab",
+        "description": "Sort rows of a fund tab",
         "operationId": "sort_fund_tab_funds_table_tab__tab__sort_post",
         "security": [
           {
@@ -4676,6 +4764,104 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UpdateFundTabColumnsResponseApiModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiExceptionResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiExceptionResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiExceptionResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiExceptionResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiExceptionResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/funds/table/tab/{tab}/column": {
+      "post": {
+        "tags": [
+          "Funds"
+        ],
+        "summary": "Update Fund Tab Column",
+        "description": "Update a single columns of a fund tab",
+        "operationId": "update_fund_tab_column_funds_table_tab__tab__column_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tab",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Tab"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFundTableTabSingleColumnBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateFundTabSingleColumnResponseApiModel"
                 }
               }
             }
@@ -5417,12 +5603,45 @@
             "type": "array",
             "title": "Items"
           },
-          "fundsByCategory": {
+          "funds": {
             "items": {
-              "$ref": "#/components/schemas/DashboardFundCategoryApiModel"
+              "$ref": "#/components/schemas/DashboardFundApiModel"
             },
             "type": "array",
-            "title": "Fundsbycategory"
+            "title": "Funds"
+          },
+          "fundTypes": {
+            "items": {
+              "$ref": "#/components/schemas/DashboardFundTypeApiModel"
+            },
+            "type": "array",
+            "title": "Fundtypes"
+          },
+          "fundSortParameters": {
+            "items": {
+              "$ref": "#/components/schemas/DashboardFundSortParameterApiModel"
+            },
+            "type": "array",
+            "title": "Fundsortparameters"
+          },
+          "fundSortPeriods": {
+            "items": {
+              "$ref": "#/components/schemas/DashboardFundSortPeriodApiModel"
+            },
+            "type": "array",
+            "title": "Fundsortperiods"
+          },
+          "selectedFundTypeId": {
+            "type": "integer",
+            "title": "Selectedfundtypeid"
+          },
+          "selectedFundSortParameterId": {
+            "type": "integer",
+            "title": "Selectedfundsortparameterid"
+          },
+          "selectedFundSortPeriodId": {
+            "type": "integer",
+            "title": "Selectedfundsortperiodid"
           }
         },
         "type": "object",
@@ -5430,7 +5649,13 @@
           "identifier",
           "name",
           "items",
-          "fundsByCategory"
+          "funds",
+          "fundTypes",
+          "fundSortParameters",
+          "fundSortPeriods",
+          "selectedFundTypeId",
+          "selectedFundSortParameterId",
+          "selectedFundSortPeriodId"
         ],
         "title": "DashboardDetailsApiModel"
       },
@@ -5452,7 +5677,7 @@
             "type": "string",
             "title": "Abbreviatedname"
           },
-          "returnLastWeekPercent": {
+          "parameterValue": {
             "anyOf": [
               {
                 "type": "number"
@@ -5461,42 +5686,9 @@
                 "type": "null"
               }
             ],
-            "title": "Returnlastweekpercent"
+            "title": "Parametervalue"
           },
-          "returnLastMonthPercent": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Returnlastmonthpercent"
-          },
-          "returnLast3MonthsPercent": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Returnlast3Monthspercent"
-          },
-          "returnLastYearPercent": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Returnlastyearpercent"
-          },
-          "dailyRedeemNavMonth": {
+          "sparklineValues": {
             "anyOf": [
               {
                 "items": {
@@ -5508,7 +5700,7 @@
                 "type": "null"
               }
             ],
-            "title": "Dailyredeemnavmonth"
+            "title": "Sparklinevalues"
           }
         },
         "type": "object",
@@ -5517,40 +5709,64 @@
           "registrationNumber",
           "name",
           "abbreviatedName",
-          "returnLastWeekPercent",
-          "returnLastMonthPercent",
-          "returnLast3MonthsPercent",
-          "returnLastYearPercent",
-          "dailyRedeemNavMonth"
+          "parameterValue",
+          "sparklineValues"
         ],
         "title": "DashboardFundApiModel"
       },
-      "DashboardFundCategoryApiModel": {
+      "DashboardFundSortParameterApiModel": {
         "properties": {
+          "identifier": {
+            "type": "integer",
+            "title": "Identifier"
+          },
           "title": {
             "type": "string",
             "title": "Title"
-          },
-          "identifier": {
-            "type": "integer",
-            "title": "Identifier",
-            "description": "Unique identifier of report category"
-          },
-          "funds": {
-            "items": {
-              "$ref": "#/components/schemas/DashboardFundApiModel"
-            },
-            "type": "array",
-            "title": "Funds"
           }
         },
         "type": "object",
         "required": [
-          "title",
           "identifier",
-          "funds"
+          "title"
         ],
-        "title": "DashboardFundCategoryApiModel"
+        "title": "DashboardFundSortParameterApiModel"
+      },
+      "DashboardFundSortPeriodApiModel": {
+        "properties": {
+          "identifier": {
+            "type": "integer",
+            "title": "Identifier"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          }
+        },
+        "type": "object",
+        "required": [
+          "identifier",
+          "title"
+        ],
+        "title": "DashboardFundSortPeriodApiModel"
+      },
+      "DashboardFundTypeApiModel": {
+        "properties": {
+          "identifier": {
+            "type": "integer",
+            "title": "Identifier"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          }
+        },
+        "type": "object",
+        "required": [
+          "identifier",
+          "title"
+        ],
+        "title": "DashboardFundTypeApiModel"
       },
       "DashboardItemApiModel": {
         "properties": {
@@ -6390,12 +6606,24 @@
           "assetUnderManagementRials": {
             "type": "integer",
             "title": "Assetundermanagementrials",
-            "description": "دارایی تحت مدیریت (ریال)"
+            "description": "کل ارزش خالص دارایی‌ها (ریال)"
           },
           "numberOfUnits": {
             "type": "integer",
             "title": "Numberofunits",
             "description": "تعداد واحد"
+          },
+          "returnLastDayPercent": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Returnlastdaypercent",
+            "description": "بازده روزانه"
           },
           "returnLastWeekPercent": {
             "anyOf": [
@@ -6407,7 +6635,7 @@
               }
             ],
             "title": "Returnlastweekpercent",
-            "description": "بازدهی هفته اخیر"
+            "description": "بازده هفتگی"
           },
           "returnLastMonthPercent": {
             "anyOf": [
@@ -6419,7 +6647,7 @@
               }
             ],
             "title": "Returnlastmonthpercent",
-            "description": "بازدهی ماه اخیر"
+            "description": "بازده ماهانه"
           },
           "returnLast3MonthsPercent": {
             "anyOf": [
@@ -6431,7 +6659,7 @@
               }
             ],
             "title": "Returnlast3Monthspercent",
-            "description": "بازدهی سه ماه اخیر"
+            "description": "بازده سه‌ماهه"
           },
           "returnLastYearPercent": {
             "anyOf": [
@@ -6443,7 +6671,7 @@
               }
             ],
             "title": "Returnlastyearpercent",
-            "description": "بازدهی سال اخیر"
+            "description": "بازده یک‌ساله"
           },
           "returnCustomPeriodPercent": {
             "anyOf": [
@@ -6455,7 +6683,19 @@
               }
             ],
             "title": "Returncustomperiodpercent",
-            "description": "بازدهی بازه دلخواه"
+            "description": "بازده بازه دلخواه"
+          },
+          "returnVsTedpixLastDayPercent": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Returnvstedpixlastdaypercent",
+            "description": "بازده نسبت به شاخص روزانه"
           },
           "returnVsTedpixLastWeekPercent": {
             "anyOf": [
@@ -6467,7 +6707,7 @@
               }
             ],
             "title": "Returnvstedpixlastweekpercent",
-            "description": "بازدهی به شاخص هفته اخیر"
+            "description": "بازده نسبت به شاخص هفتگی"
           },
           "returnVsTedpixLastMonthPercent": {
             "anyOf": [
@@ -6479,7 +6719,7 @@
               }
             ],
             "title": "Returnvstedpixlastmonthpercent",
-            "description": "بازدهی به شاخص ماه اخیر"
+            "description": "بازده نسبت به شاخص ماهانه"
           },
           "returnVsTedpixLast3MonthsPercent": {
             "anyOf": [
@@ -6491,7 +6731,7 @@
               }
             ],
             "title": "Returnvstedpixlast3Monthspercent",
-            "description": "بازدهی به شاخص سه ماه اخیر"
+            "description": "بازده نسبت به شاخص سه‌ماهه"
           },
           "returnVsTedpixLastYearPercent": {
             "anyOf": [
@@ -6503,7 +6743,7 @@
               }
             ],
             "title": "Returnvstedpixlastyearpercent",
-            "description": "بازدهی به شاخص سال اخیر"
+            "description": "بازده نسبت به شاخص یک‌ساله"
           },
           "returnVsTedpixCustomPeriodPercent": {
             "anyOf": [
@@ -6515,7 +6755,7 @@
               }
             ],
             "title": "Returnvstedpixcustomperiodpercent",
-            "description": "بازدهی به شاخص بازه دلخواه"
+            "description": "بازده نسبت به شاخص بازه دلخواه"
           },
           "assetAllocationBondPercent": {
             "type": "number",
@@ -6567,7 +6807,7 @@
               }
             ],
             "title": "Averageleveragelastweek",
-            "description": "میانگین اهرم هفته اخیر"
+            "description": "میانگین اهرم هتگی"
           },
           "averageLeverageLastMonth": {
             "anyOf": [
@@ -6579,7 +6819,7 @@
               }
             ],
             "title": "Averageleveragelastmonth",
-            "description": "میانگین اهرم ماه اخیر"
+            "description": "میانگین اهرم ماهانه"
           },
           "averageLeverageLast3Months": {
             "anyOf": [
@@ -6591,7 +6831,7 @@
               }
             ],
             "title": "Averageleveragelast3Months",
-            "description": "میانگین اهرم سه ماه اخیر"
+            "description": "میانگین اهرم سه‌ماهه"
           },
           "averageLeverageLastYear": {
             "anyOf": [
@@ -6603,7 +6843,7 @@
               }
             ],
             "title": "Averageleveragelastyear",
-            "description": "میانگین اهرم سال اخیر"
+            "description": "میانگین اهرم یک‌ساله"
           },
           "averageLeverageCustomPeriod": {
             "anyOf": [
@@ -6627,7 +6867,7 @@
               }
             ],
             "title": "Standarddeviationlastweek",
-            "description": "انحراف از میانگین هفته اخیر"
+            "description": "انحراف از میانگین هتگی"
           },
           "standardDeviationLastMonth": {
             "anyOf": [
@@ -6639,7 +6879,7 @@
               }
             ],
             "title": "Standarddeviationlastmonth",
-            "description": "انحراف از میانگین ماه اخیر"
+            "description": "انحراف از میانگین ماهانه"
           },
           "standardDeviationLast3Month": {
             "anyOf": [
@@ -6651,7 +6891,7 @@
               }
             ],
             "title": "Standarddeviationlast3Month",
-            "description": "انحراف از میانگین سه ماه اخیر"
+            "description": "انحراف از میانگین سه‌ماهه"
           },
           "standardDeviationLastYear": {
             "anyOf": [
@@ -6663,7 +6903,7 @@
               }
             ],
             "title": "Standarddeviationlastyear",
-            "description": "انحراف از میانگین سال اخیر"
+            "description": "انحراف از میانگین یک‌ساله"
           },
           "standardDeviationCustomPeriod": {
             "anyOf": [
@@ -6687,7 +6927,7 @@
               }
             ],
             "title": "Sharperatiolastweek",
-            "description": "نسبت شارپی هفته اخیر"
+            "description": "نسبت شارپی هفتگی"
           },
           "sharpeRatioLastMonth": {
             "anyOf": [
@@ -6699,7 +6939,7 @@
               }
             ],
             "title": "Sharperatiolastmonth",
-            "description": "نسبت شارپی ماه اخیر"
+            "description": "نسبت شارپی ماهانه"
           },
           "sharpeRatioLast3Months": {
             "anyOf": [
@@ -6711,7 +6951,7 @@
               }
             ],
             "title": "Sharperatiolast3Months",
-            "description": "نسبت شارپی سه ماه اخیر"
+            "description": "نسبت شارپی سه‌ماهه"
           },
           "sharpeRatioLastYear": {
             "anyOf": [
@@ -6723,7 +6963,7 @@
               }
             ],
             "title": "Sharperatiolastyear",
-            "description": "نسبت شارپی سال اخیر"
+            "description": "نسبت شارپی یک‌ساله"
           },
           "sharpeRatioCustomPeriod": {
             "anyOf": [
@@ -6747,7 +6987,7 @@
               }
             ],
             "title": "Informationratiolastweek",
-            "description": "نسبت اصلاعاتی هفته اخیر"
+            "description": "نسبت اصلاعاتی هفتگی"
           },
           "informationRatioLastMonth": {
             "anyOf": [
@@ -6759,7 +6999,7 @@
               }
             ],
             "title": "Informationratiolastmonth",
-            "description": "نسبت اصلاعاتی ماه اخیر"
+            "description": "نسبت اصلاعاتی ماهانه"
           },
           "informationRatioLast3Months": {
             "anyOf": [
@@ -6771,7 +7011,7 @@
               }
             ],
             "title": "Informationratiolast3Months",
-            "description": "نسبت اصلاعاتی سه ماه اخیر"
+            "description": "نسبت اصلاعاتی سه‌ماهه"
           },
           "informationRatioLastYear": {
             "anyOf": [
@@ -6783,7 +7023,7 @@
               }
             ],
             "title": "Informationratiolastyear",
-            "description": "نسبت اصلاعاتی سال اخیر"
+            "description": "نسبت اصلاعاتی یک‌ساله"
           },
           "informationRatioCustomPeriod": {
             "anyOf": [
@@ -6807,7 +7047,7 @@
               }
             ],
             "title": "Alphalastday",
-            "description": "آلفا روز اخیر"
+            "description": "آلفا روزانه"
           },
           "alphaLastWeek": {
             "anyOf": [
@@ -6819,7 +7059,7 @@
               }
             ],
             "title": "Alphalastweek",
-            "description": "آلفا هفته اخیر"
+            "description": "آلفا هفتگی"
           },
           "alphaLastMonth": {
             "anyOf": [
@@ -6831,7 +7071,7 @@
               }
             ],
             "title": "Alphalastmonth",
-            "description": "آلفا ماه اخیر"
+            "description": "آلفا ماهانه"
           },
           "alphaLast3Months": {
             "anyOf": [
@@ -6843,7 +7083,7 @@
               }
             ],
             "title": "Alphalast3Months",
-            "description": "آلفا سه ماه اخیر"
+            "description": "آلفا سه‌ماهه"
           },
           "alphaLastYear": {
             "anyOf": [
@@ -6855,7 +7095,7 @@
               }
             ],
             "title": "Alphalastyear",
-            "description": "آلفا سال اخیر"
+            "description": "آلفا یک‌ساله"
           },
           "alphaCustomPeriod": {
             "anyOf": [
@@ -6879,7 +7119,7 @@
               }
             ],
             "title": "Betalastday",
-            "description": "بتا روز اخیر"
+            "description": "بتا روزانه"
           },
           "betaLastWeek": {
             "anyOf": [
@@ -6891,7 +7131,7 @@
               }
             ],
             "title": "Betalastweek",
-            "description": "بتا هفته اخیر"
+            "description": "بتا هفتگی"
           },
           "betaLastMonth": {
             "anyOf": [
@@ -6903,7 +7143,7 @@
               }
             ],
             "title": "Betalastmonth",
-            "description": "بتا ماه اخیر"
+            "description": "بتا ماهانه"
           },
           "betaLast3Months": {
             "anyOf": [
@@ -6915,7 +7155,7 @@
               }
             ],
             "title": "Betalast3Months",
-            "description": "بتا سه ماه اخیر"
+            "description": "بتا سه‌ماهه"
           },
           "betaLastYear": {
             "anyOf": [
@@ -6927,7 +7167,7 @@
               }
             ],
             "title": "Betalastyear",
-            "description": "بتا سال اخیر"
+            "description": "بتا یک‌سساله"
           },
           "betaCustomPeriod": {
             "anyOf": [
@@ -7029,11 +7269,13 @@
           "statisticalNavRials",
           "assetUnderManagementRials",
           "numberOfUnits",
+          "returnLastDayPercent",
           "returnLastWeekPercent",
           "returnLastMonthPercent",
           "returnLast3MonthsPercent",
           "returnLastYearPercent",
           "returnCustomPeriodPercent",
+          "returnVsTedpixLastDayPercent",
           "returnVsTedpixLastWeekPercent",
           "returnVsTedpixLastMonthPercent",
           "returnVsTedpixLast3MonthsPercent",
@@ -7262,7 +7504,6 @@
           "visible",
           "sort",
           "colorFormat",
-          "columnFilter",
           "columnGroupId",
           "customPeriodStartJdate",
           "customPeriodEndJdate"
@@ -7541,12 +7782,8 @@
         ],
         "title": "LogoutResponseApiModel"
       },
-      "MarkFundInTableTabBody": {
+      "MarkFundBody": {
         "properties": {
-          "fund": {
-            "type": "integer",
-            "title": "Fund"
-          },
           "color": {
             "type": "string",
             "title": "Color"
@@ -7554,12 +7791,11 @@
         },
         "type": "object",
         "required": [
-          "fund",
           "color"
         ],
-        "title": "MarkFundInTableTabBody"
+        "title": "MarkFundBody"
       },
-      "MarkFundInTableTabResponseApiModel": {
+      "MarkFundResponseApiModel": {
         "properties": {
           "success": {
             "type": "boolean",
@@ -7570,7 +7806,7 @@
         "required": [
           "success"
         ],
-        "title": "MarkFundInTableTabResponseApiModel"
+        "title": "MarkFundResponseApiModel"
       },
       "PinFundInTableTabBody": {
         "properties": {
@@ -8283,20 +8519,7 @@
         ],
         "title": "TokenApiModel"
       },
-      "UnmarkFundInTableTabBody": {
-        "properties": {
-          "fund": {
-            "type": "integer",
-            "title": "Fund"
-          }
-        },
-        "type": "object",
-        "required": [
-          "fund"
-        ],
-        "title": "UnmarkFundInTableTabBody"
-      },
-      "UnmarkFundInTableTabResponseApiModel": {
+      "UnmarkFundResponseApiModel": {
         "properties": {
           "success": {
             "type": "boolean",
@@ -8307,7 +8530,7 @@
         "required": [
           "success"
         ],
-        "title": "UnmarkFundInTableTabResponseApiModel"
+        "title": "UnmarkFundResponseApiModel"
       },
       "UnpinFundInTableTabBody": {
         "properties": {
@@ -8335,6 +8558,45 @@
         ],
         "title": "UnpinFundInTableTabResponseApiModel"
       },
+      "UpdateDashboardFundsBody": {
+        "properties": {
+          "fundType": {
+            "type": "integer",
+            "title": "Fundtype"
+          },
+          "sortParameter": {
+            "type": "integer",
+            "title": "Sortparameter"
+          },
+          "sortPeriod": {
+            "type": "integer",
+            "title": "Sortperiod"
+          }
+        },
+        "type": "object",
+        "required": [
+          "fundType",
+          "sortParameter",
+          "sortPeriod"
+        ],
+        "title": "UpdateDashboardFundsBody"
+      },
+      "UpdateDashboardFundsResponseApiModel": {
+        "properties": {
+          "funds": {
+            "items": {
+              "$ref": "#/components/schemas/DashboardFundApiModel"
+            },
+            "type": "array",
+            "title": "Funds"
+          }
+        },
+        "type": "object",
+        "required": [
+          "funds"
+        ],
+        "title": "UpdateDashboardFundsResponseApiModel"
+      },
       "UpdateFundTabColumnsResponseApiModel": {
         "properties": {
           "funds": {
@@ -8358,6 +8620,30 @@
           "columns"
         ],
         "title": "UpdateFundTabColumnsResponseApiModel"
+      },
+      "UpdateFundTabSingleColumnResponseApiModel": {
+        "properties": {
+          "funds": {
+            "items": {
+              "$ref": "#/components/schemas/FundsTableItemApiModel"
+            },
+            "type": "array",
+            "title": "Funds"
+          },
+          "columns": {
+            "items": {
+              "$ref": "#/components/schemas/FundTableTabColumnDto"
+            },
+            "type": "array",
+            "title": "Columns"
+          }
+        },
+        "type": "object",
+        "required": [
+          "funds",
+          "columns"
+        ],
+        "title": "UpdateFundTabSingleColumnResponseApiModel"
       },
       "UpdateFundTableTabColumnItem": {
         "properties": {
@@ -8411,7 +8697,6 @@
           "key",
           "sortDirection",
           "visible",
-          "selectedFilter",
           "customPeriodStartJdate",
           "customPeriodEndJdate"
         ],
@@ -8432,6 +8717,18 @@
           "columns"
         ],
         "title": "UpdateFundTableTabColumnsBody"
+      },
+      "UpdateFundTableTabSingleColumnBody": {
+        "properties": {
+          "column": {
+            "$ref": "#/components/schemas/UpdateFundTableTabColumnItem"
+          }
+        },
+        "type": "object",
+        "required": [
+          "column"
+        ],
+        "title": "UpdateFundTableTabSingleColumnBody"
       },
       "UserReportFavoriteStatus": {
         "properties": {
