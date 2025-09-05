@@ -37,6 +37,7 @@ export interface VirtualItem {
 }
 
 export interface FundRow {
+  linkWebsite: string;
   isEtf: boolean;
   isTradable: boolean;
   nameFund: string;
@@ -99,6 +100,7 @@ export interface FundsInfoCellProps {
   tag: boolean;
   isRowHovered: boolean;
   tabs: tabs;
+  linkWebsite: string;
 }
 export type ApiColumn = {
   label: string;

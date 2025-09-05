@@ -45,6 +45,7 @@ function FundsInfoCell({
   isTradable,
   isWatchList,
   fundType,
+  linkWebsite,
 }: FundsInfoCellProps) {
   const [isShowDropDown, setIsShowDropDown] = useState(false);
 
@@ -140,7 +141,6 @@ function FundsInfoCell({
             }}
             dropDownList={[
               { text: 'مشاهده صندوق', icon: { name: 'eye', size: 'md' } },
-              { text: 'مشاهده ویدیو', icon: { name: 'video', size: 'md' } },
               {
                 text: pined ? 'برداشتن پین' : 'پین کردن',
                 icon: { name: pined ? 'pin-off' : 'pin', size: 'md' },
@@ -177,6 +177,8 @@ function FundsInfoCell({
                     if (prop.text === 'برداشتن پین') unPinedFunction();
                     if (prop.text === 'افزودن به دیده‌بان') addToWatchlist();
                     if (prop.text === 'حذف از دیده‌بان') deleteToWatchlist();
+                    if (prop.text === 'مشاهده صندوق')
+                      window.open(linkWebsite, '_blank');
                   }}
                   className={cn(
                     'text-text-neutral-primary hover:text-text-brand-contrast-700 bg-surface-neutral-primary flex w-[168px] cursor-pointer items-center gap-2 py-2 pr-2 text-sm font-medium',
@@ -361,6 +363,7 @@ function TableRowInner<T extends FundRow>({
       console.log(error);
     }
   };
+
   return (
     <tr
       onMouseEnter={() => setShowMark(true)}
@@ -382,6 +385,7 @@ function TableRowInner<T extends FundRow>({
         </div>
         <div>
           <FundsInfoCell
+            linkWebsite={row.original.linkWebsite}
             tabs={tabs}
             isRowHovered={true}
             tag={!isMainTab}

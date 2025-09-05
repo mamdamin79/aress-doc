@@ -84,7 +84,7 @@ export function FundsColumnHeader({
         {
           'w-28': size === 'small',
           'w-36': size === 'medium',
-          'w-[200px]': size === 'large',
+          '': size === 'large',
           'w-[312px]': size === 'extraLarg',
           'shadow-4xl': shadow && size === 'extraLarg',
           'bg-surface-accent-pink-200':

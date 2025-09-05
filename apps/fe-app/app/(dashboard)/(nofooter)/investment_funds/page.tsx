@@ -63,6 +63,7 @@ import {
   FundsService,
   FundsTableItemApiModel,
   FundTableItemInfoApiModel,
+  FundTableTabColumnDto,
   useFundsServiceGetFundsTable,
   useFundsServicePostFundsTableTabByTabColumn,
   useFundsServicePostFundsTableTabByTabSort,
@@ -79,9 +80,7 @@ const Funds = () => {
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [isScrollAtStart, setIsScrollAtStart] = useState<boolean>(false);
   const [isScrollAtEnd, setIsScrollAtEnd] = useState<boolean>(true);
-  const [localColumns, setLocalColumns] = useState<FundTableItemInfoApiModel[]>(
-    [],
-  );
+  const [localColumns, setLocalColumns] = useState<FundTableTabColumnDto[]>([]);
   const [fundSearchQuery, setFundSearchQuery] = useState<string>('');
   const tableRef = useRef<HTMLDivElement>(null);
   const [pinnedList, setPinnedList] = useState<number[]>([]);
@@ -163,11 +162,31 @@ const Funds = () => {
       setColumnOrder((columnOrder) => {
         const oldIndex = columnOrder.indexOf(active.id as string);
         const newIndex = columnOrder.indexOf(over.id as string);
+        console.log(
+          'oldIndex',
+          oldIndex,
+          'newIndex',
+          newIndex,
+          'columnOrder',
+          columnOrder,
+        );
         return arrayMove(columnOrder, oldIndex, newIndex); //this is just a splice util
       });
     }
   }
 
+  type SimplifiedFund = {
+    fundType: number;
+    logo: string;
+    id: number;
+    pinned: boolean;
+    investmentFundsMethod: string;
+    nameFund: string;
+    dailyAlpha: number | null;
+    weeklyAlpha: number | null;
+    monthlyAlpha: number | null;
+    isTradable: boolean;
+  };
   // request to get funds table data
   const query = useFundsServiceGetFundsTable({ tab: activeIndexCategoryTab });
 
@@ -194,7 +213,7 @@ const Funds = () => {
     setSorting(serverSorting);
   }, [query.data?.columns]);
 
-  const columns = React.useMemo<ColumnDef<FundTableItemInfoApiModel>[]>(() => {
+  const columns = React.useMemo<ColumnDef<SimplifiedFund>[]>(() => {
     return localColumns
       .filter((col) => col.visible)
       .map((col) => {
@@ -282,7 +301,7 @@ const Funds = () => {
     setPinnedList(initialPinnedList);
   }, [query.isLoading, query.isFetching, query.data?.selectedTabFunds]);
 
-  const simplifiedFunds = useMemo(() => {
+  const simplifiedFunds: SimplifiedFund[] = useMemo(() => {
     if (!query.data?.selectedTabFunds) return [];
 
     const sourceFunds = query.data.selectedTabFunds;
@@ -293,6 +312,7 @@ const Funds = () => {
       const id = info.identifier;
 
       return {
+        linkWebsite: info.website,
         fundType: info.fundType.identifier,
         logo: info.logoMedium || '',
         id,
@@ -317,6 +337,12 @@ const Funds = () => {
         mark: 'mark' in item ? item.mark || '' : '',
         isEtf: false,
         isTradable: true,
+        identifier: info.identifier,
+        registrationNumber: info.registrationNumber || '',
+        name: info.name || '',
+        abbreviatedName: info.abbreviatedName || '',
+        someOtherField1: null,
+        someOtherField2: '',
       };
     });
 
@@ -332,8 +358,6 @@ const Funds = () => {
     if (sorting.length === 0) {
       return [...pinned, ...unpinned];
     }
-
-    console.log(activeSortIndex);
 
     const [{ id, desc }] = sorting;
 
@@ -354,8 +378,8 @@ const Funds = () => {
 
   const fundSortFromApi = useFundsServicePostFundsTableTabByTabSort();
 
-  const table = useReactTable({
-    data: sortedFunds as FundTableItemInfoApiModel[],
+  const table = useReactTable<SimplifiedFund>({
+    data: sortedFunds,
     columns,
     state: { columnOrder, sorting },
     initialState: {
@@ -644,6 +668,22 @@ const Funds = () => {
     }
   };
 
+  useEffect(() => {
+    setColumnOrder(
+      columns.map((col) => col.id).filter((id): id is string => !!id),
+    );
+  }, [columns]);
+
+  const columnMap = useMemo(() => {
+    const map: Record<string, string> = {};
+    columns.forEach((col) => {
+      if (col.id) {
+        map[col.id] = col.header as string;
+      }
+    });
+    return map;
+  }, [columns]);
+
   return (
     <>
       <div
@@ -732,7 +772,7 @@ const Funds = () => {
                   onDragOver={() => setIsRotating(true)}
                   onDragCancel={() => setIsRotating(false)}
                 >
-                  <tr className="w-full bg-blue-400">
+                  <tr className="w-full">
                     <th
                       style={{
                         transform:
@@ -888,7 +928,7 @@ const Funds = () => {
                                     }}
                                     key={index}
                                     className={cn(
-                                      'm-0 h-full w-full min-w-[200px] text-nowrap p-0 text-sm font-medium',
+                                      'm-0 h-full w-[200px] text-nowrap p-0 text-sm font-medium',
                                     )}
                                   >
                                     {index >= 2 &&
@@ -985,7 +1025,7 @@ const Funds = () => {
                           >
                             {activeId && (
                               <div className="text-text-neutral-primary bg-surface-brand-200 flex h-20 w-full items-center justify-center">
-                                {activeId}
+                                {columnMap[activeId] || activeId}
                               </div>
                             )}
                           </th>
@@ -1223,23 +1263,22 @@ const Funds = () => {
                   {col.label}
                 </span>
                 <div className="mt-4 grid grid-cols-2 gap-y-3">
-                  {query.data.columns.map(
-                    (column) =>
-                      column.columnGroupId === col.identifier && (
-                        <div>
-                          <Checkbox
-                            checked={column.visible}
-                            onChange={() =>
-                              handlerChangeVisibilityColumns({
-                                columnKey: column.key,
-                                visible: column.visible,
-                              })
-                            }
-                            reactcontent={column.label}
-                          />
-                        </div>
-                      ),
-                  )}
+                  {localColumns
+                    .filter((column) => column.columnGroupId === col.identifier)
+                    .map((column) => (
+                      <div key={column.key}>
+                        <Checkbox
+                          checked={column.visible}
+                          onChange={() =>
+                            handlerChangeVisibilityColumns({
+                              columnKey: column.key,
+                              visible: column.visible,
+                            })
+                          }
+                          reactcontent={column.label}
+                        />
+                      </div>
+                    ))}
                 </div>
               </div>
             );
