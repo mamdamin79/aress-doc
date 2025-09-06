@@ -5,7 +5,7 @@ export type TableCellFormat =
   | { type: 'percent'; precision: number; signed: boolean };
 
 export interface NumberCellProps {
-  value: number | null;
+  value: number | null | string;
   format: TableCellFormat;
   cellStyle: string;
   grayMode: boolean;
