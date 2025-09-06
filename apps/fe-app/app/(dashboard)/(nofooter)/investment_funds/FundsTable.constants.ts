@@ -38,7 +38,6 @@ export const columnVisibility: Record<string, boolean> = {
 };
 
 export const filterList = [
-  { title: 'ویدیو بررسی', options: ['دارد', 'ندارد'], singleSelect: true },
   {
     singleSelect: false,
     title: 'بازه اضافه یک ساله نسبت به شاخص کل',

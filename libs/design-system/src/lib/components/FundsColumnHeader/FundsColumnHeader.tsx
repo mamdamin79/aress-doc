@@ -11,7 +11,7 @@ interface Props {
   filterable: boolean;
   type: 'inactive' | 'active-desc' | 'active-asc';
   shadow?: boolean;
-  clickFilterd: () => void;
+  clickFiltered: () => void;
   active?: boolean;
   subTitle?: string;
   defaultSort?: () => void;
@@ -30,7 +30,7 @@ export function FundsColumnHeader({
   filterable,
   type,
   activeSortIcon = false,
-  clickFilterd,
+  clickFiltered,
   defaultSort,
   active,
 }: Props) {
@@ -84,7 +84,6 @@ export function FundsColumnHeader({
         {
           'w-28': size === 'small',
           'w-36': size === 'medium',
-          '': size === 'large',
           'w-[312px]': size === 'extraLarg',
           'shadow-4xl': shadow && size === 'extraLarg',
           'bg-surface-accent-pink-200':
@@ -142,8 +141,8 @@ export function FundsColumnHeader({
         >
           <div
             onClick={() => {
-              if (typeof clickFilterd === 'function') {
-                clickFilterd();
+              if (typeof clickFiltered === 'function') {
+                clickFiltered();
               }
               if (sortTypeValue === 'active-desc') {
                 if (defaultSort) {

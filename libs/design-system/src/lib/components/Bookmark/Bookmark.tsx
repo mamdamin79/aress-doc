@@ -70,7 +70,8 @@ export function Bookmark({
               className={cn(
                 'group/color flex h-2.5 w-2.5 cursor-pointer items-center justify-center rounded-full',
                 {
-                  'mr-0.5 mt-1 ring-2 ring-offset-2': color === selectedColor,
+                  'ring-offset-border-neutral-oninverse mr-0.5 mt-1 ring-2 ring-offset-2':
+                    color === selectedColor,
                   hover: color !== selectedColor,
                   'bg-surface-accent-pink-600 ring-surface-accent-pink-600':
                     color === 'pink',
@@ -84,16 +85,7 @@ export function Bookmark({
                     color === 'purple',
                 },
               )}
-            >
-              <div
-                className={cn(
-                  'bg-surface-neutral-primary invisible h-1.5 w-1.5 rounded-full opacity-50',
-                  {
-                    'group-hover/color:visible': color !== selectedColor,
-                  },
-                )}
-              />
-            </div>
+            ></div>
           </div>
         ))}
       </div>

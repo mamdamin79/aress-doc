@@ -66,6 +66,7 @@ import {
   FundTableTabColumnDto,
   useFundsServiceGetFundsTable,
   useFundsServicePostFundsTableTabByTabColumn,
+  useFundsServicePostFundsTableTabByTabColumns,
   useFundsServicePostFundsTableTabByTabSort,
 } from '@openapi';
 import { TabsSkeleton } from './_components/skeletons/TabsSkeleton';
@@ -99,6 +100,8 @@ const Funds = () => {
     headerRefs,
     tableRef as RefObject<HTMLDivElement>,
   );
+
+  const updateColumns = useFundsServicePostFundsTableTabByTabColumns();
 
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string[]>
@@ -135,7 +138,8 @@ const Funds = () => {
           whiteSpace: 'nowrap',
         }}
         className={cn(
-          'bg-surface-brand-100 relative m-0 h-[64px] w-[200px] p-0 text-sm font-medium',
+          'bg-surface-brand-100 relative m-0 h-[64px] p-0 text-sm font-medium',
+          columnClass,
         )}
       >
         {isDraggingOver && position && (
@@ -153,27 +157,6 @@ const Funds = () => {
       </th>
     );
   };
-
-  // reorder columns after drag & drop
-  function handleDragEnd(event: DragEndEvent) {
-    setIsRotating(false);
-    const { active, over } = event;
-    if (active && over && active.id !== over.id) {
-      setColumnOrder((columnOrder) => {
-        const oldIndex = columnOrder.indexOf(active.id as string);
-        const newIndex = columnOrder.indexOf(over.id as string);
-        console.log(
-          'oldIndex',
-          oldIndex,
-          'newIndex',
-          newIndex,
-          'columnOrder',
-          columnOrder,
-        );
-        return arrayMove(columnOrder, oldIndex, newIndex); //this is just a splice util
-      });
-    }
-  }
 
   type SimplifiedFund = {
     fundType: number;
@@ -254,6 +237,8 @@ const Funds = () => {
     columns.map((c) => c.id!),
   );
 
+  const [columnClass, setColumnClass] = useState('w-[200px]');
+
   useEffect(() => {
     if (!columns || !columns.length) return;
 
@@ -263,6 +248,14 @@ const Funds = () => {
       visibleColumns.find((col, index) => {
         if (col.meta.sort !== 'NO') setActiveSortIndex(index);
       });
+    }
+
+    const containerWidth = tableRef?.current?.clientWidth;
+    const neededWidth = columns.length * 200;
+    if (containerWidth && containerWidth >= neededWidth + 200) {
+      setColumnClass('w-full');
+    } else {
+      setColumnClass(`w-[220px]`);
     }
   }, [columns]);
 
@@ -300,6 +293,53 @@ const Funds = () => {
 
     setPinnedList(initialPinnedList);
   }, [query.isLoading, query.isFetching, query.data?.selectedTabFunds]);
+
+  // reorder columns after drag & drop
+  async function handleDragEnd(event: DragEndEvent) {
+    setIsRotating(false);
+
+    const { active, over } = event;
+    if (active && over && active.id !== over.id) {
+      setColumnOrder((prevOrder) => {
+        const oldIndex = prevOrder.indexOf(active.id as string);
+        const newIndex = prevOrder.indexOf(over.id as string);
+        const newOrder = arrayMove(prevOrder, oldIndex, newIndex);
+        if (activeSortIndex !== null && oldIndex === activeSortIndex) {
+          setActiveSortIndex(newIndex > 1 ? newIndex - 1 : newIndex);
+        }
+        updateColumns.mutateAsync({
+          tab: activeIndexCategoryTab,
+          requestBody: {
+            columns: [
+              ...newOrder.map((colId) => {
+                const col = localColumns.find((c) => c.key === colId);
+                return {
+                  customPeriodEndJdate: null,
+                  customPeriodStartJdate: null,
+                  key: colId,
+                  sortDirection: col?.sort ?? 'NO',
+                  visible: col?.visible ?? true,
+                  selectedFilter: null,
+                };
+              }),
+              ...localColumns
+                .filter((c) => !newOrder.includes(c.key))
+                .map((col) => ({
+                  customPeriodEndJdate: null,
+                  customPeriodStartJdate: null,
+                  key: col.key,
+                  sortDirection: col?.meta?.sort ?? 'NO',
+                  visible: false,
+                  selectedFilter: null,
+                })),
+            ],
+          },
+        });
+
+        return newOrder;
+      });
+    }
+  }
 
   const simplifiedFunds: SimplifiedFund[] = useMemo(() => {
     if (!query.data?.selectedTabFunds) return [];
@@ -638,8 +678,6 @@ const Funds = () => {
     columnKey: string;
     visible: boolean;
   }) => {
-    console.log(columnKey, visible);
-
     setLocalColumns((prev) =>
       prev.map((col) =>
         col.key === columnKey ? { ...col, visible: !visible } : col,
@@ -793,6 +831,7 @@ const Funds = () => {
                           activeSortIndex === 0,
                         'top-[157px]':
                           activeSortIndex === 0 && !isHeaderVisible,
+                        hidden: sorting[0]?.id === 'abbreviated_name',
                       })}
                     >
                       <div className="bg-surface-brand-600-primary mx-auto h-1.5 w-16 rounded-t-[10px]" />
@@ -826,14 +865,27 @@ const Funds = () => {
                               {index === 0 && (
                                 <th
                                   key={index}
-                                  className="bg-surface-brand-100 sticky right-0 top-0 z-20 m-0 h-[64px] w-[385px] py-0"
+                                  className={cn(
+                                    'bg-surface-brand-100 sticky right-0 top-0 z-20 m-0 h-[64px] w-[385px] py-0',
+                                    {
+                                      'w-full max-w-full':
+                                        table.getAllLeafColumns().length - 1 ===
+                                        0,
+                                    },
+                                  )}
                                 >
                                   <div
                                     className={cn({
-                                      'bg-surface-brand-100 h-[75px] w-[384px] select-none':
+                                      'bg-surface-brand-100 h-[75px] select-none':
                                         header.column.getCanSort(),
                                       'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]':
                                         isScrollAtStart,
+                                      'w-full min-w-[385px] max-w-full':
+                                        table.getAllLeafColumns().length - 1 ===
+                                        0,
+                                      'w-[384px]':
+                                        table.getAllLeafColumns().length - 1 >
+                                        0,
                                     })}
                                   >
                                     <div className="bg-surface-brand-100 mr-[75px] flex">
@@ -844,7 +896,7 @@ const Funds = () => {
                                             'abbreviated_name'
                                           }
                                           active={!isRotating}
-                                          clickFilterd={() => {
+                                          clickFiltered={() => {
                                             setActiveSortIndex(0);
                                             header.column.toggleSorting(
                                               header.column.getIsSorted() ===
@@ -928,7 +980,8 @@ const Funds = () => {
                                     }}
                                     key={index}
                                     className={cn(
-                                      'm-0 h-full w-[200px] text-nowrap p-0 text-sm font-medium',
+                                      'm-0 h-full text-nowrap p-0 text-sm font-medium',
+                                      columnClass,
                                     )}
                                   >
                                     {index >= 2 &&
@@ -955,7 +1008,7 @@ const Funds = () => {
                                               },
                                             ]);
                                           }}
-                                          clickFilterd={() => {
+                                          clickFiltered={() => {
                                             setActiveSortIndex(index);
                                             header.column.getToggleSortingHandler()?.(
                                               new Event('click'),
@@ -1213,31 +1266,15 @@ const Funds = () => {
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center justify-between">
-            <span
-              className={cn(
-                'text-text-neutral-primary p-6 text-xl font-medium',
-                {
-                  'text-red-600':
-                    table
-                      .getAllLeafColumns()
-                      .filter((col) => col.getIsVisible()).length === 25,
-                },
-              )}
-            >
-              انتخاب ستون‌ها (
-              {
-                table.getAllLeafColumns().filter((col) => col.getIsVisible())
-                  .length
-              }
+            <span className="text-text-neutral-primary p-6 text-xl font-medium">
+              انتخاب ستون‌ها
               <span
-                className={cn({
+                className={cn('mr-0.5', {
                   'text-text-message-error-primary-600':
-                    table
-                      .getAllLeafColumns()
-                      .filter((col) => col.getIsVisible()).length === 25,
+                    table.getAllLeafColumns().length - 1 === 25,
                 })}
               >
-                /25)
+                ({table.getAllLeafColumns().length - 1}/25)
               </span>
             </span>
           </div>
@@ -1256,25 +1293,46 @@ const Funds = () => {
           dir="rtl"
           className="scrollbar-md mb-6 h-[550px] overflow-x-hidden overflow-y-scroll"
         >
-          {query.data?.columnGroups.map((col) => {
+          {query.data?.columnGroups.map((col, index) => {
             return (
-              <div className="border-border-neutral-secondary border-b px-4 py-6 text-right">
+              <div
+                key={col.identifier}
+                className={cn(
+                  'border-border-neutral-secondary px-4 py-6 text-right',
+                  {
+                    'border-b': index !== query.data.columnGroups.length - 1,
+                  },
+                )}
+              >
                 <span className="text-text-neutral-primary text-base font-semibold">
                   {col.label}
                 </span>
-                <div className="mt-4 grid grid-cols-2 gap-y-3">
+                <div className="mt-4 grid grid-cols-2">
                   {localColumns
                     .filter((column) => column.columnGroupId === col.identifier)
                     .map((column) => (
-                      <div key={column.key}>
+                      <div
+                        className="hover:bg-surface-brand-100 w-full cursor-pointer rounded-lg px-2 py-3"
+                        key={column.key}
+                      >
                         <Checkbox
                           checked={column.visible}
-                          onChange={() =>
-                            handlerChangeVisibilityColumns({
-                              columnKey: column.key,
-                              visible: column.visible,
-                            })
-                          }
+                          onChange={() => {
+                            if (column.visible) {
+                              handlerChangeVisibilityColumns({
+                                columnKey: column.key,
+                                visible: column.visible,
+                              });
+                            } else if (
+                              table.getAllLeafColumns().length - 1 <
+                              25
+                            ) {
+                              handlerChangeVisibilityColumns({
+                                columnKey: column.key,
+                                visible: column.visible,
+                              });
+                            }
+                          }}
                           reactcontent={column.label}
                         />
                       </div>

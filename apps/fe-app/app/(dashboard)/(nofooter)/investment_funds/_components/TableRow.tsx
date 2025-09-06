@@ -52,7 +52,7 @@ function FundsInfoCell({
   return (
     <div
       className={cn(
-        'bg-surface-neutral-primary text-text-neutral-primary sticky right-0 top-0 m-0 flex h-[46px] w-[384px] items-center justify-between p-0 py-0',
+        'bg-surface-neutral-primary text-text-neutral-primary sticky right-0 top-0 m-0 flex h-[46px] w-max items-center justify-between p-0 py-0',
         className,
         {
           'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]': isScrolled,
@@ -370,7 +370,7 @@ function TableRowInner<T extends FundRow>({
       key={row.id}
       className="border-border-neutral-secondary group h-[46px] border-b"
     >
-      <td className="sticky right-0 top-0 z-40 m-0 flex items-center py-0">
+      <td className="sticky right-0 top-0 z-40 m-0 flex w-full items-center py-0">
         <div className="absolute z-50 pr-0">
           {(showMark ||
             rowMarks.find((item) => item.id === row.original.id)) && (
@@ -407,7 +407,13 @@ function TableRowInner<T extends FundRow>({
           />
         </div>
       </td>
-      <td></td>
+      <td
+        className={cn('w-full', {
+          'bg-surface-accent-blue-50 group-hover:surface-accent-blue-100':
+            row.original.pinned,
+          'group-hover:bg-surface-accent-blue-50': !row.original.pinned,
+        })}
+      ></td>
       {row?.getVisibleCells().map((item) => (
         <td
           dir="ltr"
@@ -422,7 +428,7 @@ function TableRowInner<T extends FundRow>({
           )}
           key={item.id}
         >
-          {item.getValue() as string}
+          {item.id}
         </td>
       ))}
     </tr>
