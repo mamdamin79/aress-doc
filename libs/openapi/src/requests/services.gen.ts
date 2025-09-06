@@ -62,6 +62,8 @@ import type {
   DeleteDashboardsByDashboardIdResponse,
   PutDashboardsByDashboardIdData,
   PutDashboardsByDashboardIdResponse,
+  PostDashboardsByDashboardIdFundsData,
+  PostDashboardsByDashboardIdFundsResponse,
   PostDashboardsByDashboardIdDuplicateData,
   PostDashboardsByDashboardIdDuplicateResponse,
   GetDashboardsByDashboardIdPreviewData,
@@ -91,14 +93,32 @@ import type {
   PostFundsTableTabByTabPinResponse,
   PostFundsTableTabByTabUnpinData,
   PostFundsTableTabByTabUnpinResponse,
-  PostFundsTableTabByTabMarkData,
-  PostFundsTableTabByTabMarkResponse,
-  PostFundsTableTabByTabUnmarkData,
-  PostFundsTableTabByTabUnmarkResponse,
+  PostFundsByFundIdMarkData,
+  PostFundsByFundIdMarkResponse,
+  PostFundsByFundIdUnmarkData,
+  PostFundsByFundIdUnmarkResponse,
   PostFundsTableTabByTabSortData,
   PostFundsTableTabByTabSortResponse,
   PostFundsTableTabByTabColumnsData,
   PostFundsTableTabByTabColumnsResponse,
+  PostFundsTableTabByTabColumnData,
+  PostFundsTableTabByTabColumnResponse,
+  GetFundsStockByFundIdSummaryData,
+  GetFundsStockByFundIdSummaryResponse,
+  PostFundsStockByFundIdSummaryCaseByCaseData,
+  PostFundsStockByFundIdSummaryCaseByCaseResponse,
+  GetFundsStockByFundIdReturnAnalysisData,
+  GetFundsStockByFundIdReturnAnalysisResponse,
+  PostFundsStockByFundIdReturnAnalysisReturnTrendData,
+  PostFundsStockByFundIdReturnAnalysisReturnTrendResponse,
+  PostFundsStockByFundIdReturnAnalysisReturnComparisonData,
+  PostFundsStockByFundIdReturnAnalysisReturnComparisonResponse,
+  PostFundsStockByFundIdReturnAnalysisReturnRankData,
+  PostFundsStockByFundIdReturnAnalysisReturnRankResponse,
+  PostFundsStockByFundIdReturnAnalysisRiskReturnAnalysisData,
+  PostFundsStockByFundIdReturnAnalysisRiskReturnAnalysisResponse,
+  PostFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysisData,
+  PostFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysisResponse,
 } from './types.gen';
 
 export class HealthService {
@@ -951,6 +971,36 @@ export class DashboardsService {
   }
 
   /**
+   * Update Dashboard Funds
+   * Update dashboard funds list.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @param data.requestBody
+   * @returns UpdateDashboardFundsResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postDashboardsByDashboardIdFunds(
+    data: PostDashboardsByDashboardIdFundsData,
+  ): CancelablePromise<PostDashboardsByDashboardIdFundsResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/dashboards/{dashboard_id}/funds',
+      path: {
+        dashboard_id: data.dashboardId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
    * Duplicate Dashboard
    * Duplicate dashboard
    * @param data The data for the request.
@@ -1382,22 +1432,22 @@ export class FundsService {
   }
 
   /**
-   * Mark Fund In Table Tab
+   * Mark Fund In
    * Mark fund in table tab
    * @param data The data for the request.
-   * @param data.tab
+   * @param data.fundId
    * @param data.requestBody
-   * @returns MarkFundInTableTabResponseApiModel Successful Response
+   * @returns MarkFundResponseApiModel Successful Response
    * @throws ApiError
    */
-  public static postFundsTableTabByTabMark(
-    data: PostFundsTableTabByTabMarkData,
-  ): CancelablePromise<PostFundsTableTabByTabMarkResponse> {
+  public static postFundsByFundIdMark(
+    data: PostFundsByFundIdMarkData,
+  ): CancelablePromise<PostFundsByFundIdMarkResponse> {
     return __request(OpenAPI, {
       method: 'POST',
-      url: '/funds/table/tab/{tab}/mark',
+      url: '/funds/{fund_id}/mark',
       path: {
-        tab: data.tab,
+        fund_id: data.fundId,
       },
       body: data.requestBody,
       mediaType: 'application/json',
@@ -1415,22 +1465,19 @@ export class FundsService {
    * Unmark Fund In Table Tab
    * Unmark fund in table tab
    * @param data The data for the request.
-   * @param data.tab
-   * @param data.requestBody
-   * @returns UnmarkFundInTableTabResponseApiModel Successful Response
+   * @param data.fundId
+   * @returns UnmarkFundResponseApiModel Successful Response
    * @throws ApiError
    */
-  public static postFundsTableTabByTabUnmark(
-    data: PostFundsTableTabByTabUnmarkData,
-  ): CancelablePromise<PostFundsTableTabByTabUnmarkResponse> {
+  public static postFundsByFundIdUnmark(
+    data: PostFundsByFundIdUnmarkData,
+  ): CancelablePromise<PostFundsByFundIdUnmarkResponse> {
     return __request(OpenAPI, {
       method: 'POST',
-      url: '/funds/table/tab/{tab}/unmark',
+      url: '/funds/{fund_id}/unmark',
       path: {
-        tab: data.tab,
+        fund_id: data.fundId,
       },
-      body: data.requestBody,
-      mediaType: 'application/json',
       errors: {
         400: 'Bad Request',
         401: 'Unauthorized',
@@ -1443,7 +1490,7 @@ export class FundsService {
 
   /**
    * Sort Fund Tab
-   * Update columns of a fund tab
+   * Sort rows of a fund tab
    * @param data The data for the request.
    * @param data.tab
    * @param data.requestBody
@@ -1488,6 +1535,270 @@ export class FundsService {
       url: '/funds/table/tab/{tab}/columns',
       path: {
         tab: data.tab,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Update Fund Tab Column
+   * Update a single columns of a fund tab
+   * @param data The data for the request.
+   * @param data.tab
+   * @param data.requestBody
+   * @returns UpdateFundTabSingleColumnResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsTableTabByTabColumn(
+    data: PostFundsTableTabByTabColumnData,
+  ): CancelablePromise<PostFundsTableTabByTabColumnResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/table/tab/{tab}/column',
+      path: {
+        tab: data.tab,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Fund Summary
+   * Fund Summary Page
+   * @param data The data for the request.
+   * @param data.fundId
+   * @returns FundSummaryResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getFundsStockByFundIdSummary(
+    data: GetFundsStockByFundIdSummaryData,
+  ): CancelablePromise<GetFundsStockByFundIdSummaryResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/funds/stock/{fund_id}/summary',
+      path: {
+        fund_id: data.fundId,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Fund Summary Case By Case
+   * Fund Summary Case By Case Section
+   * @param data The data for the request.
+   * @param data.fundId
+   * @param data.requestBody
+   * @returns FundSummaryCaseByCaseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsStockByFundIdSummaryCaseByCase(
+    data: PostFundsStockByFundIdSummaryCaseByCaseData,
+  ): CancelablePromise<PostFundsStockByFundIdSummaryCaseByCaseResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/stock/{fund_id}/summary/case_by_case',
+      path: {
+        fund_id: data.fundId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Fund Return Analysis
+   * Fund Return Analysis Page
+   * @param data The data for the request.
+   * @param data.fundId
+   * @returns FundReturnAnalysisResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getFundsStockByFundIdReturnAnalysis(
+    data: GetFundsStockByFundIdReturnAnalysisData,
+  ): CancelablePromise<GetFundsStockByFundIdReturnAnalysisResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/funds/stock/{fund_id}/return_analysis',
+      path: {
+        fund_id: data.fundId,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Fund Return Analysis Return Trend Section
+   * Fund Return Analysis Return Trend Section
+   * @param data The data for the request.
+   * @param data.fundId
+   * @param data.requestBody
+   * @returns FundReturnAnalysisReturnTrendApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsStockByFundIdReturnAnalysisReturnTrend(
+    data: PostFundsStockByFundIdReturnAnalysisReturnTrendData,
+  ): CancelablePromise<PostFundsStockByFundIdReturnAnalysisReturnTrendResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/stock/{fund_id}/return_analysis/return_trend',
+      path: {
+        fund_id: data.fundId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Fund Return Analysis Return Comparison Section
+   * Fund Return Analysis Return Comparison Section
+   * @param data The data for the request.
+   * @param data.fundId
+   * @param data.requestBody
+   * @returns FundReturnAnalysisReturnComparisonApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsStockByFundIdReturnAnalysisReturnComparison(
+    data: PostFundsStockByFundIdReturnAnalysisReturnComparisonData,
+  ): CancelablePromise<PostFundsStockByFundIdReturnAnalysisReturnComparisonResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/stock/{fund_id}/return_analysis/return_comparison',
+      path: {
+        fund_id: data.fundId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Fund Return Analysis Return Rank Section
+   * Fund Return Analysis Return Rank Section
+   * @param data The data for the request.
+   * @param data.fundId
+   * @param data.requestBody
+   * @returns FundReturnAnalysisReturnRankApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsStockByFundIdReturnAnalysisReturnRank(
+    data: PostFundsStockByFundIdReturnAnalysisReturnRankData,
+  ): CancelablePromise<PostFundsStockByFundIdReturnAnalysisReturnRankResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/stock/{fund_id}/return_analysis/return_rank',
+      path: {
+        fund_id: data.fundId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Fund Return Analysis Risk Return Analysis Section
+   * Fund Return Analysis Risk Return Analysis Section
+   * @param data The data for the request.
+   * @param data.fundId
+   * @param data.requestBody
+   * @returns FundReturnAnalysisRiskReturnAnalysisApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsStockByFundIdReturnAnalysisRiskReturnAnalysis(
+    data: PostFundsStockByFundIdReturnAnalysisRiskReturnAnalysisData,
+  ): CancelablePromise<PostFundsStockByFundIdReturnAnalysisRiskReturnAnalysisResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/stock/{fund_id}/return_analysis/risk_return_analysis',
+      path: {
+        fund_id: data.fundId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Fund Return Analysis Seasonality Effect Section
+   * Fund Return Analysis Seasonality Effect Analysis Section
+   * @param data The data for the request.
+   * @param data.fundId
+   * @param data.requestBody
+   * @returns FundReturnAnalysisSeasonalityEffectAnalysisApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysis(
+    data: PostFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysisData,
+  ): CancelablePromise<PostFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysisResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/stock/{fund_id}/return_analysis/seasonality_effect_analysis',
+      path: {
+        fund_id: data.fundId,
       },
       body: data.requestBody,
       mediaType: 'application/json',
