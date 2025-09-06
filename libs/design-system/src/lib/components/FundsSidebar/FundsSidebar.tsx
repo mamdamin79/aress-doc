@@ -16,9 +16,12 @@ export type FundsSidebarData = {
 };
 export interface FundsSidebarProps {
   data: FundsSidebarData[];
-  onCategoryChange?: (category: string) => void;
-  onSortOptionChange?: (selectedSort: string) => void;
-  onTimeframeChange?: (selectedTimeframe: string) => void;
+  onCategoryChange?: (categoryID: number) => void;
+  onSortOptionChange?: (selectedSortID: number) => void;
+  onTimeframeChange?: (selectedTimeframeID: number) => void;
+  selectedFundTypeId?: number;
+  selectedFundSortParameterId?: number;
+  selectedFundSortPeriodId?: number;
 }
 
 export const FundsSidebar: React.FC<FundsSidebarProps> = ({
@@ -26,6 +29,9 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
   onCategoryChange,
   onSortOptionChange,
   onTimeframeChange,
+  selectedFundSortParameterId = 0,
+  selectedFundSortPeriodId = 0,
+  selectedFundTypeId = 0,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState<number>(0);
@@ -66,7 +72,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
       >
         <div className="flex w-full justify-center px-4">
           <OptionsDropdown
-            onChange={onCategoryChange}
+            onChange={(_, selectedID) => onCategoryChange?.(selectedID ?? 0)}
             triggerClassName="text-md font-medium"
             dropDownList={[
               { text: 'سهامی', tag: { color: 'green' } },
@@ -85,7 +91,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
         </div>
         <div className="flex w-full flex-row items-center justify-between px-4 pb-3 pt-2">
           <OptionsDropdown
-            onChange={onSortOptionChange}
+            onChange={(_, selectedID) => onSortOptionChange?.(selectedID ?? 0)}
             dropDownList={[
               {
                 text: 'بیشترین بازدهی',
@@ -111,7 +117,7 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
           <div className="w-fit">
             <OptionsDropdown
               triggerClassName="text-sm font-medium"
-              onChange={onTimeframeChange}
+              onChange={(_, selectedID) => onTimeframeChange?.(selectedID ?? 0)}
               dropDownList={[
                 { text: 'روزانه' },
                 { text: 'هفتگی' },
