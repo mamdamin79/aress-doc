@@ -312,3 +312,47 @@ export const useFundsServiceGetFundsTableTabByTabCsvSuspense = <
     queryFn: () => FundsService.getFundsTableTabByTabCsv({ tab }) as TData,
     ...options,
   });
+export const useFundsServiceGetFundsStockByFundIdSummarySuspense = <
+  TData = Common.FundsServiceGetFundsStockByFundIdSummaryDefaultResponse,
+  TError = unknown,
+  TQueryKey extends Array<unknown> = unknown[],
+>(
+  {
+    fundId,
+  }: {
+    fundId: number;
+  },
+  queryKey?: TQueryKey,
+  options?: Omit<UseQueryOptions<TData, TError>, 'queryKey' | 'queryFn'>,
+) =>
+  useSuspenseQuery<TData, TError>({
+    queryKey: Common.UseFundsServiceGetFundsStockByFundIdSummaryKeyFn(
+      { fundId },
+      queryKey,
+    ),
+    queryFn: () =>
+      FundsService.getFundsStockByFundIdSummary({ fundId }) as TData,
+    ...options,
+  });
+export const useFundsServiceGetFundsStockByFundIdReturnAnalysisSuspense = <
+  TData = Common.FundsServiceGetFundsStockByFundIdReturnAnalysisDefaultResponse,
+  TError = unknown,
+  TQueryKey extends Array<unknown> = unknown[],
+>(
+  {
+    fundId,
+  }: {
+    fundId: number;
+  },
+  queryKey?: TQueryKey,
+  options?: Omit<UseQueryOptions<TData, TError>, 'queryKey' | 'queryFn'>,
+) =>
+  useSuspenseQuery<TData, TError>({
+    queryKey: Common.UseFundsServiceGetFundsStockByFundIdReturnAnalysisKeyFn(
+      { fundId },
+      queryKey,
+    ),
+    queryFn: () =>
+      FundsService.getFundsStockByFundIdReturnAnalysis({ fundId }) as TData,
+    ...options,
+  });

@@ -23,6 +23,41 @@ export enum FundTableTabColumnColorFormat {
   COLORED = 'COLORED',
 }
 
+/** FundCalculationTimeSeparation */
+export enum FundCalculationTimeSeparation {
+  Value1 = 1,
+  Value2 = 2,
+  Value3 = 3,
+}
+
+/** FundCalculationSeasonalityEffectTableCriteria */
+export enum FundCalculationSeasonalityEffectTableCriteria {
+  Value1 = 1,
+  Value2 = 2,
+}
+
+/** FundCalculationRiskCriteria */
+export enum FundCalculationRiskCriteria {
+  Value1 = 1,
+  Value2 = 2,
+}
+
+/** FundCalculationPeriod */
+export enum FundCalculationPeriod {
+  Value1 = 1,
+  Value2 = 2,
+  Value3 = 3,
+  Value4 = 4,
+  Value5 = 5,
+  Value6 = 6,
+}
+
+/** FundCalculationBaseCurrency */
+export enum FundCalculationBaseCurrency {
+  Value1 = 1,
+  Value2 = 2,
+}
+
 /** CaptchaType */
 export enum CaptchaType {
   Image = 'image',
@@ -561,6 +596,32 @@ export interface ForgotPasswordResetByOtpBody {
   userId: number;
 }
 
+/** FundBaseInfoApiModel */
+export interface FundBaseInfoApiModel {
+  /**
+   * Name
+   * نام کامل صندوق
+   */
+  name: string;
+  /**
+   * Abbreviatedname
+   * نام صندوق
+   */
+  abbreviatedName: string;
+  /** نوع صندوق */
+  fundType: FundTypeApiModel;
+  /**
+   * Logothumbnail
+   * آدرس لوگوی صندوق - سایز کوچک
+   */
+  logoThumbnail: string | null;
+  /**
+   * Iswatched
+   * افزده شده به دیده بان
+   */
+  isWatched: boolean;
+}
+
 /** FundListItemApiModel */
 export interface FundListItemApiModel {
   /**
@@ -660,6 +721,731 @@ export interface FundListItemApiModel {
    * تاریخ آغاز فعالیت
    */
   initiationJdate: string;
+}
+
+/** FundReturnAnalysisResponseApiModel */
+export interface FundReturnAnalysisResponseApiModel {
+  /** روند بازدهی */
+  returnTrend: FundReturnAnalysisReturnTrendApiModel | null;
+  /** مقایسه بازدهی */
+  returnComparison: FundReturnAnalysisReturnComparisonApiModel | null;
+  /** رتبه بازدهی */
+  returnRank: FundReturnAnalysisReturnRankApiModel | null;
+  /** رتبه بازدهی */
+  riskReturnAnalysis: FundReturnAnalysisRiskReturnAnalysisApiModel | null;
+  /** تحلیل اثر فصلی */
+  seasonalityEffectAnalysis: FundReturnAnalysisSeasonalityEffectAnalysisApiModel | null;
+}
+
+/** FundReturnAnalysisReturnChartApiModel */
+export interface FundReturnAnalysisReturnChartApiModel {
+  /**
+   * Title
+   * عنوان
+   */
+  title: string;
+  /**
+   * Relatedfundid
+   * شناسه صندوق مرتبط
+   */
+  relatedFundId: number | null;
+  /**
+   * Returninperiodpercent
+   * بازده
+   */
+  returnInPeriodPercent: number | null;
+  /**
+   * History
+   * روند بازده
+   */
+  history: FundReturnAnalysisReturnChartHistoryItemApiModel[];
+}
+
+/** FundReturnAnalysisReturnChartHistoryItemApiModel */
+export interface FundReturnAnalysisReturnChartHistoryItemApiModel {
+  /**
+   * Returnpercent
+   * بازده روز
+   */
+  returnPercent: number;
+  /**
+   * Jdtlabel
+   * لیبل تاریخ
+   */
+  jdtLabel: string;
+  /**
+   * Jdt
+   * تاریخ شمسی به فرمت YYYY-mm-dd
+   */
+  jdt: string;
+  /**
+   * Dt
+   * تاریخ میلادی به فرمت YYYY-mm-dd
+   */
+  dt: string;
+}
+
+/** FundReturnAnalysisReturnComparisonApiModel */
+export interface FundReturnAnalysisReturnComparisonApiModel {
+  /** تفکیک زمانی */
+  timeSeparation: FundCalculationTimeSeparation;
+  /**
+   * Tablecolumns
+   * ستون‌های جدول مقایسه بازدهی
+   */
+  tableColumns: FundReturnAnalysisReturnComparisonTableColumnApiModel[];
+  /**
+   * Fundaveragereturnpercent
+   * متوسط صندوق
+   */
+  fundAverageReturnPercent: number;
+  /**
+   * Stockfundsaveragereturnpercent
+   * متوسط صندوق‌های سهامی
+   */
+  stockFundsAverageReturnPercent: number;
+  /**
+   * Tedpixaveragereturnpercent
+   * متوسط شاخص کل
+   */
+  tedpixAverageReturnPercent: number;
+}
+
+/** FundReturnAnalysisReturnComparisonBody */
+export interface FundReturnAnalysisReturnComparisonBody {
+  /** تفکیک زمانی */
+  timeSeparation: FundCalculationTimeSeparation;
+}
+
+/** FundReturnAnalysisReturnComparisonTableColumnApiModel */
+export interface FundReturnAnalysisReturnComparisonTableColumnApiModel {
+  /**
+   * Columnlabel
+   * عنوان ستون
+   */
+  columnLabel: string;
+  /**
+   * Fundreturnpercent
+   * صندوق
+   */
+  fundReturnPercent: number;
+  /**
+   * Stockfundsreturnpercent
+   * صندوق‌های سهامی
+   */
+  stockFundsReturnPercent: number;
+  /**
+   * Tedpixreturnpercent
+   * شاخص کل
+   */
+  tedpixReturnPercent: number;
+}
+
+/** FundReturnAnalysisReturnRankApiModel */
+export interface FundReturnAnalysisReturnRankApiModel {
+  /** تفکیک زمانی */
+  timeSeparation: FundCalculationTimeSeparation;
+  /**
+   * Tablecolumns
+   * ستون‌های جدول رتبه بازدهی
+   */
+  tableColumns: FundReturnAnalysisReturnRankTableColumnApiModel[];
+  /**
+   * Quarteraveragereturnrank
+   * متوسط چارکی
+   */
+  quarterAverageReturnRank: number;
+  /**
+   * Percentaveragereturnrank
+   * متوسط درصدی
+   */
+  percentAverageReturnRank: number;
+  /**
+   * Relativeaveragereturnrank
+   * متوسط نسبی
+   */
+  relativeAverageReturnRank: string;
+}
+
+/** FundReturnAnalysisReturnRankBody */
+export interface FundReturnAnalysisReturnRankBody {
+  /** تفکیک زمانی */
+  timeSeparation: FundCalculationTimeSeparation;
+}
+
+/** FundReturnAnalysisReturnRankTableColumnApiModel */
+export interface FundReturnAnalysisReturnRankTableColumnApiModel {
+  /**
+   * Columnlabel
+   * عنوان ستون
+   */
+  columnLabel: string;
+  /**
+   * Quarterrank
+   * رتبه چارکی (۱ - ۴)
+   */
+  quarterRank: number;
+  /**
+   * Percentrank
+   * رتبه درصدی
+   */
+  percentRank: number;
+  /**
+   * Relativerank
+   * رتبه نسبی
+   */
+  relativeRank: string;
+}
+
+/** FundReturnAnalysisReturnTrendApiModel */
+export interface FundReturnAnalysisReturnTrendApiModel {
+  /** بازه زمانی */
+  calculationPeriod: FundCalculationPeriod;
+  /**
+   * Calculationcustomperiodstartjdate
+   * شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd
+   */
+  calculationCustomPeriodStartJdate: string | null;
+  /**
+   * Calculationcustomperiodendjdate
+   * پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd
+   */
+  calculationCustomPeriodEndJdate: string | null;
+  /** ارز مبنای بازده */
+  returnBaseCurrency: FundCalculationBaseCurrency;
+  /**
+   * Comparedfunds
+   * صندوق‌های مقایسه شده
+   */
+  comparedFunds: FundBaseInfoApiModel[];
+  /**
+   * Fundreturninperiodpercent
+   * بازده صندوق
+   */
+  fundReturnInPeriodPercent: number | null;
+  /**
+   * Stockfundsreturninperiodpercent
+   * بازده صندوق‌های سهامی
+   */
+  stockFundsReturnInPeriodPercent: number | null;
+  /**
+   * Tedpixreturninperiodpercent
+   * بازده شاخص کل
+   */
+  tedpixReturnInPeriodPercent: number | null;
+  /**
+   * Fundreturnvsstockfundsinperiodpercent
+   * بازده اضافه صندوق نسبت به صندوق‌های سهامی
+   */
+  fundReturnVsStockFundsInPeriodPercent: number | null;
+  /**
+   * Fundreturnvstedpixinperiodpercent
+   * بازده اضافه صندوق نسبت به شاخص کل
+   */
+  fundReturnVsTedpixInPeriodPercent: number | null;
+  /**
+   * Fundaverageleveragepercent
+   * میانگین اهرم
+   */
+  fundAverageLeveragePercent: number | null;
+  /**
+   * Stockfundsaverageleveragepercent
+   * میانگین اهرم صندوق‌های سهامی
+   */
+  stockFundsAverageLeveragePercent: number | null;
+  /**
+   * Returnchart
+   * نمودار روند بازدهی
+   */
+  returnChart: FundReturnAnalysisReturnChartApiModel[];
+}
+
+/** FundReturnAnalysisReturnTrendBody */
+export interface FundReturnAnalysisReturnTrendBody {
+  /** بازه زمانی */
+  calculationPeriod: FundCalculationPeriod;
+  /**
+   * Calculationcustomperiodstartjdate
+   * شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd
+   */
+  calculationCustomPeriodStartJdate: string | null;
+  /**
+   * Calculationcustomperiodendjdate
+   * پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd
+   */
+  calculationCustomPeriodEndJdate: string | null;
+  /** ارز مبنای بازده */
+  returnBaseCurrency: FundCalculationBaseCurrency;
+  /**
+   * Comparedfundids
+   * شناسه صندوق‌های مقایسه
+   */
+  comparedFundIds: number[];
+}
+
+/** FundReturnAnalysisRiskReturnAnalysisApiModel */
+export interface FundReturnAnalysisRiskReturnAnalysisApiModel {
+  /** معیار ریسک */
+  riskCriteria: FundCalculationRiskCriteria;
+  /** بازه زمانی */
+  calculationPeriod: FundCalculationPeriod;
+  /**
+   * Calculationcustomperiodstartjdate
+   * شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd
+   */
+  calculationCustomPeriodStartJdate: string | null;
+  /**
+   * Calculationcustomperiodendjdate
+   * پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd
+   */
+  calculationCustomPeriodEndJdate: string | null;
+  /**
+   * Chartitems
+   * نمودار تحلیل ریسک
+   */
+  chartItems: FundReturnAnalysisRiskReturnAnalysisChartItemApiModel[];
+}
+
+/** FundReturnAnalysisRiskReturnAnalysisBody */
+export interface FundReturnAnalysisRiskReturnAnalysisBody {
+  /** معیار ریسک */
+  riskCriteria: FundCalculationRiskCriteria;
+  /** بازه زمانی */
+  calculationPeriod: FundCalculationPeriod;
+  /**
+   * Calculationcustomperiodstartjdate
+   * شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd
+   */
+  calculationCustomPeriodStartJdate: string | null;
+  /**
+   * Calculationcustomperiodendjdate
+   * پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd
+   */
+  calculationCustomPeriodEndJdate: string | null;
+  /**
+   * Comparedfundids
+   * شناسه صندوق‌های مقایسه
+   */
+  comparedFundIds: number[];
+}
+
+/** FundReturnAnalysisRiskReturnAnalysisChartItemApiModel */
+export interface FundReturnAnalysisRiskReturnAnalysisChartItemApiModel {
+  /** Abbreviatedname */
+  abbreviatedName: string;
+  /** Risk */
+  risk: number;
+  /** Returnpercent */
+  returnPercent: number;
+  /** Netassetsrials */
+  netAssetsRials: number;
+  /** Colorhex */
+  colorHex: string;
+}
+
+/** FundReturnAnalysisSeasonalityEffectAnalysisApiModel */
+export interface FundReturnAnalysisSeasonalityEffectAnalysisApiModel {
+  /** جدول بر مبنای */
+  tableCriteria: FundCalculationSeasonalityEffectTableCriteria;
+  /**
+   * Rows
+   * سال‌ها
+   */
+  rows: FundReturnAnalysisSeasonalityEffectTableRowApiModel[];
+  /** میانگین */
+  averageRow: FundReturnAnalysisSeasonalityEffectTableAverageRowApiModel;
+  /** انحراف معیار */
+  standardDeviation: FundReturnAnalysisSeasonalityEffectTableStandardDeviationRowApiModel;
+}
+
+/** FundReturnAnalysisSeasonalityEffectAnalysisBody */
+export interface FundReturnAnalysisSeasonalityEffectAnalysisBody {
+  /** جدول بر مبنای */
+  tableCriteria: FundCalculationSeasonalityEffectTableCriteria;
+}
+
+/** FundReturnAnalysisSeasonalityEffectTableAverageRowApiModel */
+export interface FundReturnAnalysisSeasonalityEffectTableAverageRowApiModel {
+  /**
+   * Return1Percent
+   * فروردین
+   */
+  return1Percent: number | null;
+  /**
+   * Return2Percent
+   * اردیبهشت
+   */
+  return2Percent: number | null;
+  /**
+   * Return3Percent
+   * خرداد
+   */
+  return3Percent: number | null;
+  /**
+   * Return4Percent
+   * تیر
+   */
+  return4Percent: number | null;
+  /**
+   * Return5Percent
+   * مرداد
+   */
+  return5Percent: number | null;
+  /**
+   * Return6Percent
+   * شهریور
+   */
+  return6Percent: number | null;
+  /**
+   * Return7Percent
+   * مهر
+   */
+  return7Percent: number | null;
+  /**
+   * Return8Percent
+   * آبان
+   */
+  return8Percent: number | null;
+  /**
+   * Return9Percent
+   * آذر
+   */
+  return9Percent: number | null;
+  /**
+   * Return10Percent
+   * دی
+   */
+  return10Percent: number | null;
+  /**
+   * Return11Percent
+   * بهمن
+   */
+  return11Percent: number | null;
+  /**
+   * Return12Percent
+   * اسفند
+   */
+  return12Percent: number | null;
+}
+
+/** FundReturnAnalysisSeasonalityEffectTableRowApiModel */
+export interface FundReturnAnalysisSeasonalityEffectTableRowApiModel {
+  /** Year */
+  year: number;
+  /**
+   * Return1Percent
+   * فروردین
+   */
+  return1Percent: number | null;
+  /**
+   * Return2Percent
+   * اردیبهشت
+   */
+  return2Percent: number | null;
+  /**
+   * Return3Percent
+   * خرداد
+   */
+  return3Percent: number | null;
+  /**
+   * Return4Percent
+   * تیر
+   */
+  return4Percent: number | null;
+  /**
+   * Return5Percent
+   * مرداد
+   */
+  return5Percent: number | null;
+  /**
+   * Return6Percent
+   * شهریور
+   */
+  return6Percent: number | null;
+  /**
+   * Return7Percent
+   * مهر
+   */
+  return7Percent: number | null;
+  /**
+   * Return8Percent
+   * آبان
+   */
+  return8Percent: number | null;
+  /**
+   * Return9Percent
+   * آذر
+   */
+  return9Percent: number | null;
+  /**
+   * Return10Percent
+   * دی
+   */
+  return10Percent: number | null;
+  /**
+   * Return11Percent
+   * بهمن
+   */
+  return11Percent: number | null;
+  /**
+   * Return12Percent
+   * اسفند
+   */
+  return12Percent: number | null;
+}
+
+/** FundReturnAnalysisSeasonalityEffectTableStandardDeviationRowApiModel */
+export interface FundReturnAnalysisSeasonalityEffectTableStandardDeviationRowApiModel {
+  /**
+   * Std1Percent
+   * فروردین
+   */
+  std1Percent: number | null;
+  /**
+   * Std2Percent
+   * اردیبهشت
+   */
+  std2Percent: number | null;
+  /**
+   * Std3Percent
+   * خرداد
+   */
+  std3Percent: number | null;
+  /**
+   * Std4Percent
+   * تیر
+   */
+  std4Percent: number | null;
+  /**
+   * Std5Percent
+   * مرداد
+   */
+  std5Percent: number | null;
+  /**
+   * Std6Percent
+   * شهریور
+   */
+  std6Percent: number | null;
+  /**
+   * Std7Percent
+   * مهر
+   */
+  std7Percent: number | null;
+  /**
+   * Std8Percent
+   * آبان
+   */
+  std8Percent: number | null;
+  /**
+   * Std9Percent
+   * آذر
+   */
+  std9Percent: number | null;
+  /**
+   * Std10Percent
+   * دی
+   */
+  std10Percent: number | null;
+  /**
+   * Std11Percent
+   * بهمن
+   */
+  std11Percent: number | null;
+  /**
+   * Std12Percent
+   * اسفند
+   */
+  std12Percent: number | null;
+}
+
+/** FundSummaryBaseInfoApiModel */
+export interface FundSummaryBaseInfoApiModel {
+  /**
+   * Manager
+   * مدیر صنودق
+   */
+  manager: string;
+  /**
+   * Investmentstrategy
+   * سیاست سرمایه‌گذاری
+   */
+  investmentStrategy: string;
+  /**
+   * Assetundermanagementrials
+   * ارزش خالص دارایی
+   */
+  assetUnderManagementRials: number;
+  /**
+   * Alphasinceinitiationpercent
+   * بازده اضافه
+   */
+  alphaSinceInitiationPercent: number | null;
+  /**
+   * Betasinceinitiationpercent
+   * بتای صندوق
+   */
+  betaSinceInitiationPercent: number | null;
+  /**
+   * Leveragesinceinitiationpercent
+   * اهرم صندوق
+   */
+  leverageSinceInitiationPercent: number | null;
+  /**
+   * Investedunits
+   * تعداد واحد سرمایه‌گذاری
+   */
+  investedUnits: number;
+  /**
+   * Initiationdate
+   * تاریخ آغاز فعالیت میلادی
+   */
+  initiationDate: string;
+  /**
+   * Initiationjdate
+   * تاریخ آغاز فعالیت شمسی
+   */
+  initiationJdate: string;
+  /**
+   * Lastupdatedate
+   * تاریخ به روز رسانی میلادی
+   */
+  lastUpdateDate: string;
+  /**
+   * Lastupdatejdate
+   * تاریخ به روز رسانی شمسی
+   */
+  lastUpdateJdate: string;
+}
+
+/** FundSummaryCaseByCaseApiModel */
+export interface FundSummaryCaseByCaseApiModel {
+  /** بازه زمانی */
+  calculationPeriod: FundCalculationPeriod;
+  /**
+   * Calculationcustomperiodstartjdate
+   * شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd
+   */
+  calculationCustomPeriodStartJdate: string | null;
+  /**
+   * Calculationcustomperiodendjdate
+   * پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd
+   */
+  calculationCustomPeriodEndJdate: string | null;
+  /**
+   * Navendofperiodrials
+   * مقدار nav در آخرین روز بازه زمانی
+   */
+  navEndOfPeriodRials: number;
+  /**
+   * Returnendofperiodrials
+   * سود ریالی در آخرین روز بازه زمانی
+   */
+  returnEndOfPeriodRials: number;
+  /**
+   * Returnendofperiodpercent
+   * سود درصدی در آخرین روز بازه زمانی
+   */
+  returnEndOfPeriodPercent: number;
+  /**
+   * Returninperiodpercent
+   * بازده صندوق
+   */
+  returnInPeriodPercent: number;
+  /**
+   * Betainperiodpercent
+   * بتا صندوق
+   */
+  betaInPeriodPercent: number;
+  /**
+   * Revokedunitsinperiod
+   * واحدهای ابطال شده
+   */
+  revokedUnitsInPeriod: number;
+  /**
+   * Issuedunitsinperiod
+   * واحدهای صادر شده
+   */
+  issuedUnitsInPeriod: number;
+  /**
+   * Pricerangeminimumrials
+   * کمینه قیمت
+   */
+  priceRangeMinimumRials: number;
+  /**
+   * Pricerangemaximumrials
+   * بیشینه قیمت
+   */
+  priceRangeMaximumRials: number;
+  /**
+   * Assetturnoverratiopercent
+   * گردش دارایی
+   */
+  assetTurnoverRatioPercent: number;
+  /**
+   * Averagenavinperiod
+   * میانگین قیمت
+   */
+  averageNavInPeriod: number;
+  /**
+   * Navhistory
+   * نمودار تاریخچه قیمت
+   */
+  navHistory: FundSummaryCaseByCaseNavHistoryItemApiModel[];
+}
+
+/** FundSummaryCaseByCaseBody */
+export interface FundSummaryCaseByCaseBody {
+  /** بازه زمانی */
+  calculationPeriod: FundCalculationPeriod;
+  /**
+   * Calculationcustomperiodstartjdate
+   * شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd
+   */
+  calculationCustomPeriodStartJdate: string | null;
+  /**
+   * Calculationcustomperiodendjdate
+   * پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd
+   */
+  calculationCustomPeriodEndJdate: string | null;
+}
+
+/** FundSummaryCaseByCaseNavHistoryItemApiModel */
+export interface FundSummaryCaseByCaseNavHistoryItemApiModel {
+  /**
+   * Revokenavrials
+   * nav ابطال
+   */
+  revokeNavRials: number;
+  /**
+   * Jdtlabel
+   * لیبل تاریخ
+   */
+  jdtLabel: string;
+  /**
+   * Jdt
+   * تاریخ شمسی به فرمت YYYY-mm-dd
+   */
+  jdt: string;
+  /**
+   * Dt
+   * تاریخ میلادی به فرمت YYYY-mm-dd
+   */
+  dt: string;
+}
+
+/** FundSummaryResponseApiModel */
+export interface FundSummaryResponseApiModel {
+  /** بالای تب ها */
+  fundBasicInfo: FundBaseInfoApiModel;
+  /** ردیف ابتدای تب خلاصه */
+  fundSummaryBasicInfo: FundSummaryBaseInfoApiModel | null;
+  /** خلاصه موردی */
+  fundSummaryCaseByCase: FundSummaryCaseByCaseApiModel | null;
+  /**
+   * Fundvideoplaylist
+   * فهرست مصاحبه‌های ویدئویی
+   */
+  fundVideoPlaylist: FundVideoPlaylistItemApiModel[];
 }
 
 /** FundTableItemInfoApiModel */
@@ -888,7 +1674,7 @@ export interface FundTableItemInfoApiModel {
   assetAllocationTop5StocksPercent: number;
   /**
    * Averageleveragelastweek
-   * میانگین اهرم هتگی
+   * میانگین اهرم هفتگی
    */
   averageLeverageLastWeek: number | null;
   /**
@@ -913,7 +1699,7 @@ export interface FundTableItemInfoApiModel {
   averageLeverageCustomPeriod: number | null;
   /**
    * Standarddeviationlastweek
-   * انحراف از میانگین هتگی
+   * انحراف از میانگین هفتگی
    */
   standardDeviationLastWeek: number | null;
   /**
@@ -1038,7 +1824,7 @@ export interface FundTableItemInfoApiModel {
   betaLast3Months: number | null;
   /**
    * Betalastyear
-   * بتا یک‌سساله
+   * بتا یک‌ساله
    */
   betaLastYear: number | null;
   /**
@@ -1160,6 +1946,31 @@ export interface FundTypeApiModel {
   identifier: number;
   /** Title */
   title: string;
+}
+
+/** FundVideoPlaylistItemApiModel */
+export interface FundVideoPlaylistItemApiModel {
+  /**
+   * Recordjdate
+   * تاریخ رکورد ویدئو به فرمت YYYY-mm-dd
+   */
+  recordJdate: string;
+  /**
+   * Intervieweeimagethumbnail
+   * آدرس عکس مصاحبه شونده
+   */
+  intervieweeImageThumbnail: string | null;
+  /**
+   * Intervieweename
+   * نام مصاحبه شونده
+   */
+  intervieweeName: string;
+  /**
+   * Intervieweerole
+   * سمت مصاحبه شونده
+   */
+  intervieweeRole: string;
+  video: VideoApiModel;
 }
 
 /** FundsTableItemApiModel */
@@ -1586,9 +2397,9 @@ export interface UpdateFundTableTabColumnItem {
   /** Selectedfilter */
   selectedFilter?: string | null;
   /** Customperiodstartjdate */
-  customPeriodStartJdate: string | null;
+  customPeriodStartJdate?: string | null;
   /** Customperiodendjdate */
-  customPeriodEndJdate: string | null;
+  customPeriodEndJdate?: string | null;
 }
 
 /** UpdateFundTableTabColumnsBody */
@@ -3267,5 +4078,211 @@ export class Api<
         format: 'json',
         ...params,
       }),
+
+    /**
+     * @description Fund Summary Page
+     *
+     * @tags Funds
+     * @name FundSummaryFundsStockFundIdSummaryGet
+     * @summary Fund Summary
+     * @request GET:/funds/stock/{fund_id}/summary
+     * @secure
+     */
+    fundSummaryFundsStockFundIdSummaryGet: (
+      fundId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<FundSummaryResponseApiModel, ApiExceptionResponse>({
+        path: `/funds/stock/${fundId}/summary`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Fund Summary Case By Case Section
+     *
+     * @tags Funds
+     * @name FundSummaryCaseByCaseFundsStockFundIdSummaryCaseByCasePost
+     * @summary Fund Summary Case By Case
+     * @request POST:/funds/stock/{fund_id}/summary/case_by_case
+     * @secure
+     */
+    fundSummaryCaseByCaseFundsStockFundIdSummaryCaseByCasePost: (
+      fundId: number,
+      data: FundSummaryCaseByCaseBody,
+      params: RequestParams = {},
+    ) =>
+      this.request<FundSummaryCaseByCaseApiModel, ApiExceptionResponse>({
+        path: `/funds/stock/${fundId}/summary/case_by_case`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Fund Return Analysis Page
+     *
+     * @tags Funds
+     * @name FundReturnAnalysisFundsStockFundIdReturnAnalysisGet
+     * @summary Fund Return Analysis
+     * @request GET:/funds/stock/{fund_id}/return_analysis
+     * @secure
+     */
+    fundReturnAnalysisFundsStockFundIdReturnAnalysisGet: (
+      fundId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<FundReturnAnalysisResponseApiModel, ApiExceptionResponse>({
+        path: `/funds/stock/${fundId}/return_analysis`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Fund Return Analysis Return Trend Section
+     *
+     * @tags Funds
+     * @name FundReturnAnalysisReturnTrendSectionFundsStockFundIdReturnAnalysisReturnTrendPost
+     * @summary Fund Return Analysis Return Trend Section
+     * @request POST:/funds/stock/{fund_id}/return_analysis/return_trend
+     * @secure
+     */
+    fundReturnAnalysisReturnTrendSectionFundsStockFundIdReturnAnalysisReturnTrendPost:
+      (
+        fundId: number,
+        data: FundReturnAnalysisReturnTrendBody,
+        params: RequestParams = {},
+      ) =>
+        this.request<
+          FundReturnAnalysisReturnTrendApiModel,
+          ApiExceptionResponse
+        >({
+          path: `/funds/stock/${fundId}/return_analysis/return_trend`,
+          method: 'POST',
+          body: data,
+          secure: true,
+          type: ContentType.Json,
+          format: 'json',
+          ...params,
+        }),
+
+    /**
+     * @description Fund Return Analysis Return Comparison Section
+     *
+     * @tags Funds
+     * @name FundReturnAnalysisReturnComparisonSectionFundsStockFundIdReturnAnalysisReturnComparisonPost
+     * @summary Fund Return Analysis Return Comparison Section
+     * @request POST:/funds/stock/{fund_id}/return_analysis/return_comparison
+     * @secure
+     */
+    fundReturnAnalysisReturnComparisonSectionFundsStockFundIdReturnAnalysisReturnComparisonPost:
+      (
+        fundId: number,
+        data: FundReturnAnalysisReturnComparisonBody,
+        params: RequestParams = {},
+      ) =>
+        this.request<
+          FundReturnAnalysisReturnComparisonApiModel,
+          ApiExceptionResponse
+        >({
+          path: `/funds/stock/${fundId}/return_analysis/return_comparison`,
+          method: 'POST',
+          body: data,
+          secure: true,
+          type: ContentType.Json,
+          format: 'json',
+          ...params,
+        }),
+
+    /**
+     * @description Fund Return Analysis Return Rank Section
+     *
+     * @tags Funds
+     * @name FundReturnAnalysisReturnRankSectionFundsStockFundIdReturnAnalysisReturnRankPost
+     * @summary Fund Return Analysis Return Rank Section
+     * @request POST:/funds/stock/{fund_id}/return_analysis/return_rank
+     * @secure
+     */
+    fundReturnAnalysisReturnRankSectionFundsStockFundIdReturnAnalysisReturnRankPost:
+      (
+        fundId: number,
+        data: FundReturnAnalysisReturnRankBody,
+        params: RequestParams = {},
+      ) =>
+        this.request<
+          FundReturnAnalysisReturnRankApiModel,
+          ApiExceptionResponse
+        >({
+          path: `/funds/stock/${fundId}/return_analysis/return_rank`,
+          method: 'POST',
+          body: data,
+          secure: true,
+          type: ContentType.Json,
+          format: 'json',
+          ...params,
+        }),
+
+    /**
+     * @description Fund Return Analysis Risk Return Analysis Section
+     *
+     * @tags Funds
+     * @name FundReturnAnalysisRiskReturnAnalysisSectionFundsStockFundIdReturnAnalysisRiskReturnAnalysisPost
+     * @summary Fund Return Analysis Risk Return Analysis Section
+     * @request POST:/funds/stock/{fund_id}/return_analysis/risk_return_analysis
+     * @secure
+     */
+    fundReturnAnalysisRiskReturnAnalysisSectionFundsStockFundIdReturnAnalysisRiskReturnAnalysisPost:
+      (
+        fundId: number,
+        data: FundReturnAnalysisRiskReturnAnalysisBody,
+        params: RequestParams = {},
+      ) =>
+        this.request<
+          FundReturnAnalysisRiskReturnAnalysisApiModel,
+          ApiExceptionResponse
+        >({
+          path: `/funds/stock/${fundId}/return_analysis/risk_return_analysis`,
+          method: 'POST',
+          body: data,
+          secure: true,
+          type: ContentType.Json,
+          format: 'json',
+          ...params,
+        }),
+
+    /**
+     * @description Fund Return Analysis Seasonality Effect Analysis Section
+     *
+     * @tags Funds
+     * @name FundReturnAnalysisSeasonalityEffectSectionFundsStockFundIdReturnAnalysisSeasonalityEffectAnalysisPost
+     * @summary Fund Return Analysis Seasonality Effect Section
+     * @request POST:/funds/stock/{fund_id}/return_analysis/seasonality_effect_analysis
+     * @secure
+     */
+    fundReturnAnalysisSeasonalityEffectSectionFundsStockFundIdReturnAnalysisSeasonalityEffectAnalysisPost:
+      (
+        fundId: number,
+        data: FundReturnAnalysisSeasonalityEffectAnalysisBody,
+        params: RequestParams = {},
+      ) =>
+        this.request<
+          FundReturnAnalysisSeasonalityEffectAnalysisApiModel,
+          ApiExceptionResponse
+        >({
+          path: `/funds/stock/${fundId}/return_analysis/seasonality_effect_analysis`,
+          method: 'POST',
+          body: data,
+          secure: true,
+          type: ContentType.Json,
+          format: 'json',
+          ...params,
+        }),
   };
 }

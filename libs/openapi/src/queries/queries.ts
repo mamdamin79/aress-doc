@@ -32,6 +32,12 @@ import {
   CreateDashboardForUserBody,
   DuplicateDashboardForUserBody,
   ForgotPasswordResetByOtpBody,
+  FundReturnAnalysisReturnComparisonBody,
+  FundReturnAnalysisReturnRankBody,
+  FundReturnAnalysisReturnTrendBody,
+  FundReturnAnalysisRiskReturnAnalysisBody,
+  FundReturnAnalysisSeasonalityEffectAnalysisBody,
+  FundSummaryCaseByCaseBody,
   GetDashboardItemCalculationsBody,
   GetForgotPasswordOtpBody,
   GetReportCalculationsBody,
@@ -347,6 +353,50 @@ export const useFundsServiceGetFundsTableTabByTabCsv = <
       queryKey,
     ),
     queryFn: () => FundsService.getFundsTableTabByTabCsv({ tab }) as TData,
+    ...options,
+  });
+export const useFundsServiceGetFundsStockByFundIdSummary = <
+  TData = Common.FundsServiceGetFundsStockByFundIdSummaryDefaultResponse,
+  TError = unknown,
+  TQueryKey extends Array<unknown> = unknown[],
+>(
+  {
+    fundId,
+  }: {
+    fundId: number;
+  },
+  queryKey?: TQueryKey,
+  options?: Omit<UseQueryOptions<TData, TError>, 'queryKey' | 'queryFn'>,
+) =>
+  useQuery<TData, TError>({
+    queryKey: Common.UseFundsServiceGetFundsStockByFundIdSummaryKeyFn(
+      { fundId },
+      queryKey,
+    ),
+    queryFn: () =>
+      FundsService.getFundsStockByFundIdSummary({ fundId }) as TData,
+    ...options,
+  });
+export const useFundsServiceGetFundsStockByFundIdReturnAnalysis = <
+  TData = Common.FundsServiceGetFundsStockByFundIdReturnAnalysisDefaultResponse,
+  TError = unknown,
+  TQueryKey extends Array<unknown> = unknown[],
+>(
+  {
+    fundId,
+  }: {
+    fundId: number;
+  },
+  queryKey?: TQueryKey,
+  options?: Omit<UseQueryOptions<TData, TError>, 'queryKey' | 'queryFn'>,
+) =>
+  useQuery<TData, TError>({
+    queryKey: Common.UseFundsServiceGetFundsStockByFundIdReturnAnalysisKeyFn(
+      { fundId },
+      queryKey,
+    ),
+    queryFn: () =>
+      FundsService.getFundsStockByFundIdReturnAnalysis({ fundId }) as TData,
     ...options,
   });
 export const useUsersServicePostUsersLogin = <
@@ -1351,6 +1401,212 @@ export const useFundsServicePostFundsTableTabByTabColumn = <
       }) as unknown as Promise<TData>,
     ...options,
   });
+export const useFundsServicePostFundsStockByFundIdSummaryCaseByCase = <
+  TData = Common.FundsServicePostFundsStockByFundIdSummaryCaseByCaseMutationResult,
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: Omit<
+    UseMutationOptions<
+      TData,
+      TError,
+      {
+        fundId: number;
+        requestBody: FundSummaryCaseByCaseBody;
+      },
+      TContext
+    >,
+    'mutationFn'
+  >,
+) =>
+  useMutation<
+    TData,
+    TError,
+    {
+      fundId: number;
+      requestBody: FundSummaryCaseByCaseBody;
+    },
+    TContext
+  >({
+    mutationFn: ({ fundId, requestBody }) =>
+      FundsService.postFundsStockByFundIdSummaryCaseByCase({
+        fundId,
+        requestBody,
+      }) as unknown as Promise<TData>,
+    ...options,
+  });
+export const useFundsServicePostFundsStockByFundIdReturnAnalysisReturnTrend = <
+  TData = Common.FundsServicePostFundsStockByFundIdReturnAnalysisReturnTrendMutationResult,
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: Omit<
+    UseMutationOptions<
+      TData,
+      TError,
+      {
+        fundId: number;
+        requestBody: FundReturnAnalysisReturnTrendBody;
+      },
+      TContext
+    >,
+    'mutationFn'
+  >,
+) =>
+  useMutation<
+    TData,
+    TError,
+    {
+      fundId: number;
+      requestBody: FundReturnAnalysisReturnTrendBody;
+    },
+    TContext
+  >({
+    mutationFn: ({ fundId, requestBody }) =>
+      FundsService.postFundsStockByFundIdReturnAnalysisReturnTrend({
+        fundId,
+        requestBody,
+      }) as unknown as Promise<TData>,
+    ...options,
+  });
+export const useFundsServicePostFundsStockByFundIdReturnAnalysisReturnComparison =
+  <
+    TData = Common.FundsServicePostFundsStockByFundIdReturnAnalysisReturnComparisonMutationResult,
+    TError = unknown,
+    TContext = unknown,
+  >(
+    options?: Omit<
+      UseMutationOptions<
+        TData,
+        TError,
+        {
+          fundId: number;
+          requestBody: FundReturnAnalysisReturnComparisonBody;
+        },
+        TContext
+      >,
+      'mutationFn'
+    >,
+  ) =>
+    useMutation<
+      TData,
+      TError,
+      {
+        fundId: number;
+        requestBody: FundReturnAnalysisReturnComparisonBody;
+      },
+      TContext
+    >({
+      mutationFn: ({ fundId, requestBody }) =>
+        FundsService.postFundsStockByFundIdReturnAnalysisReturnComparison({
+          fundId,
+          requestBody,
+        }) as unknown as Promise<TData>,
+      ...options,
+    });
+export const useFundsServicePostFundsStockByFundIdReturnAnalysisReturnRank = <
+  TData = Common.FundsServicePostFundsStockByFundIdReturnAnalysisReturnRankMutationResult,
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: Omit<
+    UseMutationOptions<
+      TData,
+      TError,
+      {
+        fundId: number;
+        requestBody: FundReturnAnalysisReturnRankBody;
+      },
+      TContext
+    >,
+    'mutationFn'
+  >,
+) =>
+  useMutation<
+    TData,
+    TError,
+    {
+      fundId: number;
+      requestBody: FundReturnAnalysisReturnRankBody;
+    },
+    TContext
+  >({
+    mutationFn: ({ fundId, requestBody }) =>
+      FundsService.postFundsStockByFundIdReturnAnalysisReturnRank({
+        fundId,
+        requestBody,
+      }) as unknown as Promise<TData>,
+    ...options,
+  });
+export const useFundsServicePostFundsStockByFundIdReturnAnalysisRiskReturnAnalysis =
+  <
+    TData = Common.FundsServicePostFundsStockByFundIdReturnAnalysisRiskReturnAnalysisMutationResult,
+    TError = unknown,
+    TContext = unknown,
+  >(
+    options?: Omit<
+      UseMutationOptions<
+        TData,
+        TError,
+        {
+          fundId: number;
+          requestBody: FundReturnAnalysisRiskReturnAnalysisBody;
+        },
+        TContext
+      >,
+      'mutationFn'
+    >,
+  ) =>
+    useMutation<
+      TData,
+      TError,
+      {
+        fundId: number;
+        requestBody: FundReturnAnalysisRiskReturnAnalysisBody;
+      },
+      TContext
+    >({
+      mutationFn: ({ fundId, requestBody }) =>
+        FundsService.postFundsStockByFundIdReturnAnalysisRiskReturnAnalysis({
+          fundId,
+          requestBody,
+        }) as unknown as Promise<TData>,
+      ...options,
+    });
+export const useFundsServicePostFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysis =
+  <
+    TData = Common.FundsServicePostFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysisMutationResult,
+    TError = unknown,
+    TContext = unknown,
+  >(
+    options?: Omit<
+      UseMutationOptions<
+        TData,
+        TError,
+        {
+          fundId: number;
+          requestBody: FundReturnAnalysisSeasonalityEffectAnalysisBody;
+        },
+        TContext
+      >,
+      'mutationFn'
+    >,
+  ) =>
+    useMutation<
+      TData,
+      TError,
+      {
+        fundId: number;
+        requestBody: FundReturnAnalysisSeasonalityEffectAnalysisBody;
+      },
+      TContext
+    >({
+      mutationFn: ({ fundId, requestBody }) =>
+        FundsService.postFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysis(
+          { fundId, requestBody },
+        ) as unknown as Promise<TData>,
+      ...options,
+    });
 export const useDashboardsServicePutDashboards = <
   TData = Common.DashboardsServicePutDashboardsMutationResult,
   TError = unknown,

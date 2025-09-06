@@ -1253,6 +1253,81 @@ export const $ForgotPasswordResetByOtpBody = {
   title: 'ForgotPasswordResetByOtpBody',
 } as const;
 
+export const $FundBaseInfoApiModel = {
+  properties: {
+    name: {
+      type: 'string',
+      title: 'Name',
+      description: 'نام کامل صندوق',
+    },
+    abbreviatedName: {
+      type: 'string',
+      title: 'Abbreviatedname',
+      description: 'نام صندوق',
+    },
+    fundType: {
+      $ref: '#/components/schemas/FundTypeApiModel',
+      description: 'نوع صندوق',
+    },
+    logoThumbnail: {
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Logothumbnail',
+      description: 'آدرس لوگوی صندوق - سایز کوچک',
+    },
+    isWatched: {
+      type: 'boolean',
+      title: 'Iswatched',
+      description: 'افزده شده به دیده بان',
+    },
+  },
+  type: 'object',
+  required: [
+    'name',
+    'abbreviatedName',
+    'fundType',
+    'logoThumbnail',
+    'isWatched',
+  ],
+  title: 'FundBaseInfoApiModel',
+} as const;
+
+export const $FundCalculationBaseCurrency = {
+  type: 'integer',
+  enum: [1, 2],
+  title: 'FundCalculationBaseCurrency',
+} as const;
+
+export const $FundCalculationPeriod = {
+  type: 'integer',
+  enum: [1, 2, 3, 4, 5, 6],
+  title: 'FundCalculationPeriod',
+} as const;
+
+export const $FundCalculationRiskCriteria = {
+  type: 'integer',
+  enum: [1, 2],
+  title: 'FundCalculationRiskCriteria',
+} as const;
+
+export const $FundCalculationSeasonalityEffectTableCriteria = {
+  type: 'integer',
+  enum: [1, 2],
+  title: 'FundCalculationSeasonalityEffectTableCriteria',
+} as const;
+
+export const $FundCalculationTimeSeparation = {
+  type: 'integer',
+  enum: [1, 2, 3],
+  title: 'FundCalculationTimeSeparation',
+} as const;
+
 export const $FundListItemApiModel = {
   properties: {
     identifier: {
@@ -1435,6 +1510,1533 @@ export const $FundListItemApiModel = {
     'initiationJdate',
   ],
   title: 'FundListItemApiModel',
+} as const;
+
+export const $FundReturnAnalysisResponseApiModel = {
+  properties: {
+    returnTrend: {
+      anyOf: [
+        {
+          $ref: '#/components/schemas/FundReturnAnalysisReturnTrendApiModel',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      description: 'روند بازدهی',
+    },
+    returnComparison: {
+      anyOf: [
+        {
+          $ref: '#/components/schemas/FundReturnAnalysisReturnComparisonApiModel',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      description: 'مقایسه بازدهی',
+    },
+    returnRank: {
+      anyOf: [
+        {
+          $ref: '#/components/schemas/FundReturnAnalysisReturnRankApiModel',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      description: 'رتبه بازدهی',
+    },
+    riskReturnAnalysis: {
+      anyOf: [
+        {
+          $ref: '#/components/schemas/FundReturnAnalysisRiskReturnAnalysisApiModel',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      description: 'رتبه بازدهی',
+    },
+    seasonalityEffectAnalysis: {
+      anyOf: [
+        {
+          $ref: '#/components/schemas/FundReturnAnalysisSeasonalityEffectAnalysisApiModel',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      description: 'تحلیل اثر فصلی',
+    },
+  },
+  type: 'object',
+  required: [
+    'returnTrend',
+    'returnComparison',
+    'returnRank',
+    'riskReturnAnalysis',
+    'seasonalityEffectAnalysis',
+  ],
+  title: 'FundReturnAnalysisResponseApiModel',
+} as const;
+
+export const $FundReturnAnalysisReturnChartApiModel = {
+  properties: {
+    title: {
+      type: 'string',
+      title: 'Title',
+      description: 'عنوان',
+    },
+    relatedFundId: {
+      anyOf: [
+        {
+          type: 'integer',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Relatedfundid',
+      description: 'شناسه صندوق مرتبط',
+    },
+    returnInPeriodPercent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Returninperiodpercent',
+      description: 'بازده',
+    },
+    history: {
+      items: {
+        $ref: '#/components/schemas/FundReturnAnalysisReturnChartHistoryItemApiModel',
+      },
+      type: 'array',
+      title: 'History',
+      description: 'روند بازده',
+    },
+  },
+  type: 'object',
+  required: ['title', 'relatedFundId', 'returnInPeriodPercent', 'history'],
+  title: 'FundReturnAnalysisReturnChartApiModel',
+} as const;
+
+export const $FundReturnAnalysisReturnChartHistoryItemApiModel = {
+  properties: {
+    returnPercent: {
+      type: 'number',
+      title: 'Returnpercent',
+      description: 'بازده روز',
+    },
+    jdtLabel: {
+      type: 'string',
+      title: 'Jdtlabel',
+      description: 'لیبل تاریخ',
+    },
+    jdt: {
+      type: 'string',
+      title: 'Jdt',
+      description: 'تاریخ شمسی به فرمت YYYY-mm-dd',
+    },
+    dt: {
+      type: 'string',
+      title: 'Dt',
+      description: 'تاریخ میلادی به فرمت YYYY-mm-dd',
+    },
+  },
+  type: 'object',
+  required: ['returnPercent', 'jdtLabel', 'jdt', 'dt'],
+  title: 'FundReturnAnalysisReturnChartHistoryItemApiModel',
+} as const;
+
+export const $FundReturnAnalysisReturnComparisonApiModel = {
+  properties: {
+    timeSeparation: {
+      $ref: '#/components/schemas/FundCalculationTimeSeparation',
+      description: 'تفکیک زمانی',
+    },
+    tableColumns: {
+      items: {
+        $ref: '#/components/schemas/FundReturnAnalysisReturnComparisonTableColumnApiModel',
+      },
+      type: 'array',
+      title: 'Tablecolumns',
+      description: 'ستون‌های جدول مقایسه بازدهی',
+    },
+    fundAverageReturnPercent: {
+      type: 'number',
+      title: 'Fundaveragereturnpercent',
+      description: 'متوسط صندوق',
+    },
+    stockFundsAverageReturnPercent: {
+      type: 'number',
+      title: 'Stockfundsaveragereturnpercent',
+      description: 'متوسط صندوق‌های سهامی',
+    },
+    tedpixAverageReturnPercent: {
+      type: 'number',
+      title: 'Tedpixaveragereturnpercent',
+      description: 'متوسط شاخص کل',
+    },
+  },
+  type: 'object',
+  required: [
+    'timeSeparation',
+    'tableColumns',
+    'fundAverageReturnPercent',
+    'stockFundsAverageReturnPercent',
+    'tedpixAverageReturnPercent',
+  ],
+  title: 'FundReturnAnalysisReturnComparisonApiModel',
+} as const;
+
+export const $FundReturnAnalysisReturnComparisonBody = {
+  properties: {
+    timeSeparation: {
+      $ref: '#/components/schemas/FundCalculationTimeSeparation',
+      description: 'تفکیک زمانی',
+    },
+  },
+  type: 'object',
+  required: ['timeSeparation'],
+  title: 'FundReturnAnalysisReturnComparisonBody',
+} as const;
+
+export const $FundReturnAnalysisReturnComparisonTableColumnApiModel = {
+  properties: {
+    columnLabel: {
+      type: 'string',
+      title: 'Columnlabel',
+      description: 'عنوان ستون',
+    },
+    fundReturnPercent: {
+      type: 'number',
+      title: 'Fundreturnpercent',
+      description: 'صندوق',
+    },
+    stockFundsReturnPercent: {
+      type: 'number',
+      title: 'Stockfundsreturnpercent',
+      description: 'صندوق‌های سهامی',
+    },
+    tedpixReturnPercent: {
+      type: 'number',
+      title: 'Tedpixreturnpercent',
+      description: 'شاخص کل',
+    },
+  },
+  type: 'object',
+  required: [
+    'columnLabel',
+    'fundReturnPercent',
+    'stockFundsReturnPercent',
+    'tedpixReturnPercent',
+  ],
+  title: 'FundReturnAnalysisReturnComparisonTableColumnApiModel',
+} as const;
+
+export const $FundReturnAnalysisReturnRankApiModel = {
+  properties: {
+    timeSeparation: {
+      $ref: '#/components/schemas/FundCalculationTimeSeparation',
+      description: 'تفکیک زمانی',
+    },
+    tableColumns: {
+      items: {
+        $ref: '#/components/schemas/FundReturnAnalysisReturnRankTableColumnApiModel',
+      },
+      type: 'array',
+      title: 'Tablecolumns',
+      description: 'ستون‌های جدول رتبه بازدهی',
+    },
+    quarterAverageReturnRank: {
+      type: 'integer',
+      title: 'Quarteraveragereturnrank',
+      description: 'متوسط چارکی',
+    },
+    percentAverageReturnRank: {
+      type: 'number',
+      title: 'Percentaveragereturnrank',
+      description: 'متوسط درصدی',
+    },
+    relativeAverageReturnRank: {
+      type: 'string',
+      title: 'Relativeaveragereturnrank',
+      description: 'متوسط نسبی',
+    },
+  },
+  type: 'object',
+  required: [
+    'timeSeparation',
+    'tableColumns',
+    'quarterAverageReturnRank',
+    'percentAverageReturnRank',
+    'relativeAverageReturnRank',
+  ],
+  title: 'FundReturnAnalysisReturnRankApiModel',
+} as const;
+
+export const $FundReturnAnalysisReturnRankBody = {
+  properties: {
+    timeSeparation: {
+      $ref: '#/components/schemas/FundCalculationTimeSeparation',
+      description: 'تفکیک زمانی',
+    },
+  },
+  type: 'object',
+  required: ['timeSeparation'],
+  title: 'FundReturnAnalysisReturnRankBody',
+} as const;
+
+export const $FundReturnAnalysisReturnRankTableColumnApiModel = {
+  properties: {
+    columnLabel: {
+      type: 'string',
+      title: 'Columnlabel',
+      description: 'عنوان ستون',
+    },
+    quarterRank: {
+      type: 'integer',
+      title: 'Quarterrank',
+      description: 'رتبه چارکی (۱ - ۴)',
+    },
+    percentRank: {
+      type: 'number',
+      title: 'Percentrank',
+      description: 'رتبه درصدی',
+    },
+    relativeRank: {
+      type: 'string',
+      title: 'Relativerank',
+      description: 'رتبه نسبی',
+    },
+  },
+  type: 'object',
+  required: ['columnLabel', 'quarterRank', 'percentRank', 'relativeRank'],
+  title: 'FundReturnAnalysisReturnRankTableColumnApiModel',
+} as const;
+
+export const $FundReturnAnalysisReturnTrendApiModel = {
+  properties: {
+    calculationPeriod: {
+      $ref: '#/components/schemas/FundCalculationPeriod',
+      description: 'بازه زمانی',
+    },
+    calculationCustomPeriodStartJdate: {
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Calculationcustomperiodstartjdate',
+      description: 'شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd',
+    },
+    calculationCustomPeriodEndJdate: {
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Calculationcustomperiodendjdate',
+      description: 'پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd',
+    },
+    returnBaseCurrency: {
+      $ref: '#/components/schemas/FundCalculationBaseCurrency',
+      description: 'ارز مبنای بازده',
+    },
+    comparedFunds: {
+      items: {
+        $ref: '#/components/schemas/FundBaseInfoApiModel',
+      },
+      type: 'array',
+      title: 'Comparedfunds',
+      description: 'صندوق‌های مقایسه شده',
+    },
+    fundReturnInPeriodPercent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Fundreturninperiodpercent',
+      description: 'بازده صندوق',
+    },
+    stockFundsReturnInPeriodPercent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Stockfundsreturninperiodpercent',
+      description: 'بازده صندوق‌های سهامی',
+    },
+    tedpixReturnInPeriodPercent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Tedpixreturninperiodpercent',
+      description: 'بازده شاخص کل',
+    },
+    fundReturnVsStockFundsInPeriodPercent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Fundreturnvsstockfundsinperiodpercent',
+      description: 'بازده اضافه صندوق نسبت به صندوق‌های سهامی',
+    },
+    fundReturnVsTedpixInPeriodPercent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Fundreturnvstedpixinperiodpercent',
+      description: 'بازده اضافه صندوق نسبت به شاخص کل',
+    },
+    fundAverageLeveragePercent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Fundaverageleveragepercent',
+      description: 'میانگین اهرم',
+    },
+    stockFundsAverageLeveragePercent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Stockfundsaverageleveragepercent',
+      description: 'میانگین اهرم صندوق‌های سهامی',
+    },
+    returnChart: {
+      items: {
+        $ref: '#/components/schemas/FundReturnAnalysisReturnChartApiModel',
+      },
+      type: 'array',
+      title: 'Returnchart',
+      description: 'نمودار روند بازدهی',
+    },
+  },
+  type: 'object',
+  required: [
+    'calculationPeriod',
+    'calculationCustomPeriodStartJdate',
+    'calculationCustomPeriodEndJdate',
+    'returnBaseCurrency',
+    'comparedFunds',
+    'fundReturnInPeriodPercent',
+    'stockFundsReturnInPeriodPercent',
+    'tedpixReturnInPeriodPercent',
+    'fundReturnVsStockFundsInPeriodPercent',
+    'fundReturnVsTedpixInPeriodPercent',
+    'fundAverageLeveragePercent',
+    'stockFundsAverageLeveragePercent',
+    'returnChart',
+  ],
+  title: 'FundReturnAnalysisReturnTrendApiModel',
+} as const;
+
+export const $FundReturnAnalysisReturnTrendBody = {
+  properties: {
+    calculationPeriod: {
+      $ref: '#/components/schemas/FundCalculationPeriod',
+      description: 'بازه زمانی',
+    },
+    calculationCustomPeriodStartJdate: {
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Calculationcustomperiodstartjdate',
+      description: 'شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd',
+    },
+    calculationCustomPeriodEndJdate: {
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Calculationcustomperiodendjdate',
+      description: 'پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd',
+    },
+    returnBaseCurrency: {
+      $ref: '#/components/schemas/FundCalculationBaseCurrency',
+      description: 'ارز مبنای بازده',
+    },
+    comparedFundIds: {
+      items: {
+        type: 'integer',
+      },
+      type: 'array',
+      title: 'Comparedfundids',
+      description: 'شناسه صندوق‌های مقایسه',
+    },
+  },
+  type: 'object',
+  required: [
+    'calculationPeriod',
+    'calculationCustomPeriodStartJdate',
+    'calculationCustomPeriodEndJdate',
+    'returnBaseCurrency',
+    'comparedFundIds',
+  ],
+  title: 'FundReturnAnalysisReturnTrendBody',
+} as const;
+
+export const $FundReturnAnalysisRiskReturnAnalysisApiModel = {
+  properties: {
+    riskCriteria: {
+      $ref: '#/components/schemas/FundCalculationRiskCriteria',
+      description: 'معیار ریسک',
+    },
+    calculationPeriod: {
+      $ref: '#/components/schemas/FundCalculationPeriod',
+      description: 'بازه زمانی',
+    },
+    calculationCustomPeriodStartJdate: {
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Calculationcustomperiodstartjdate',
+      description: 'شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd',
+    },
+    calculationCustomPeriodEndJdate: {
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Calculationcustomperiodendjdate',
+      description: 'پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd',
+    },
+    chartItems: {
+      items: {
+        $ref: '#/components/schemas/FundReturnAnalysisRiskReturnAnalysisChartItemApiModel',
+      },
+      type: 'array',
+      title: 'Chartitems',
+      description: 'نمودار تحلیل ریسک',
+    },
+  },
+  type: 'object',
+  required: [
+    'riskCriteria',
+    'calculationPeriod',
+    'calculationCustomPeriodStartJdate',
+    'calculationCustomPeriodEndJdate',
+    'chartItems',
+  ],
+  title: 'FundReturnAnalysisRiskReturnAnalysisApiModel',
+} as const;
+
+export const $FundReturnAnalysisRiskReturnAnalysisBody = {
+  properties: {
+    riskCriteria: {
+      $ref: '#/components/schemas/FundCalculationRiskCriteria',
+      description: 'معیار ریسک',
+    },
+    calculationPeriod: {
+      $ref: '#/components/schemas/FundCalculationPeriod',
+      description: 'بازه زمانی',
+    },
+    calculationCustomPeriodStartJdate: {
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Calculationcustomperiodstartjdate',
+      description: 'شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd',
+    },
+    calculationCustomPeriodEndJdate: {
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Calculationcustomperiodendjdate',
+      description: 'پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd',
+    },
+    comparedFundIds: {
+      items: {
+        type: 'integer',
+      },
+      type: 'array',
+      title: 'Comparedfundids',
+      description: 'شناسه صندوق‌های مقایسه',
+    },
+  },
+  type: 'object',
+  required: [
+    'riskCriteria',
+    'calculationPeriod',
+    'calculationCustomPeriodStartJdate',
+    'calculationCustomPeriodEndJdate',
+    'comparedFundIds',
+  ],
+  title: 'FundReturnAnalysisRiskReturnAnalysisBody',
+} as const;
+
+export const $FundReturnAnalysisRiskReturnAnalysisChartItemApiModel = {
+  properties: {
+    abbreviatedName: {
+      type: 'string',
+      title: 'Abbreviatedname',
+    },
+    risk: {
+      type: 'number',
+      title: 'Risk',
+    },
+    returnPercent: {
+      type: 'number',
+      title: 'Returnpercent',
+    },
+    netAssetsRials: {
+      type: 'integer',
+      title: 'Netassetsrials',
+    },
+    colorHex: {
+      type: 'string',
+      title: 'Colorhex',
+    },
+  },
+  type: 'object',
+  required: [
+    'abbreviatedName',
+    'risk',
+    'returnPercent',
+    'netAssetsRials',
+    'colorHex',
+  ],
+  title: 'FundReturnAnalysisRiskReturnAnalysisChartItemApiModel',
+} as const;
+
+export const $FundReturnAnalysisSeasonalityEffectAnalysisApiModel = {
+  properties: {
+    tableCriteria: {
+      $ref: '#/components/schemas/FundCalculationSeasonalityEffectTableCriteria',
+      description: 'جدول بر مبنای',
+    },
+    rows: {
+      items: {
+        $ref: '#/components/schemas/FundReturnAnalysisSeasonalityEffectTableRowApiModel',
+      },
+      type: 'array',
+      title: 'Rows',
+      description: 'سال‌ها',
+    },
+    averageRow: {
+      $ref: '#/components/schemas/FundReturnAnalysisSeasonalityEffectTableAverageRowApiModel',
+      description: 'میانگین',
+    },
+    standardDeviation: {
+      $ref: '#/components/schemas/FundReturnAnalysisSeasonalityEffectTableStandardDeviationRowApiModel',
+      description: 'انحراف معیار',
+    },
+  },
+  type: 'object',
+  required: ['tableCriteria', 'rows', 'averageRow', 'standardDeviation'],
+  title: 'FundReturnAnalysisSeasonalityEffectAnalysisApiModel',
+} as const;
+
+export const $FundReturnAnalysisSeasonalityEffectAnalysisBody = {
+  properties: {
+    tableCriteria: {
+      $ref: '#/components/schemas/FundCalculationSeasonalityEffectTableCriteria',
+      description: 'جدول بر مبنای',
+    },
+  },
+  type: 'object',
+  required: ['tableCriteria'],
+  title: 'FundReturnAnalysisSeasonalityEffectAnalysisBody',
+} as const;
+
+export const $FundReturnAnalysisSeasonalityEffectTableAverageRowApiModel = {
+  properties: {
+    return1Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return1Percent',
+      description: 'فروردین',
+    },
+    return2Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return2Percent',
+      description: 'اردیبهشت',
+    },
+    return3Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return3Percent',
+      description: 'خرداد',
+    },
+    return4Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return4Percent',
+      description: 'تیر',
+    },
+    return5Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return5Percent',
+      description: 'مرداد',
+    },
+    return6Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return6Percent',
+      description: 'شهریور',
+    },
+    return7Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return7Percent',
+      description: 'مهر',
+    },
+    return8Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return8Percent',
+      description: 'آبان',
+    },
+    return9Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return9Percent',
+      description: 'آذر',
+    },
+    return10Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return10Percent',
+      description: 'دی',
+    },
+    return11Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return11Percent',
+      description: 'بهمن',
+    },
+    return12Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return12Percent',
+      description: 'اسفند',
+    },
+  },
+  type: 'object',
+  required: [
+    'return1Percent',
+    'return2Percent',
+    'return3Percent',
+    'return4Percent',
+    'return5Percent',
+    'return6Percent',
+    'return7Percent',
+    'return8Percent',
+    'return9Percent',
+    'return10Percent',
+    'return11Percent',
+    'return12Percent',
+  ],
+  title: 'FundReturnAnalysisSeasonalityEffectTableAverageRowApiModel',
+} as const;
+
+export const $FundReturnAnalysisSeasonalityEffectTableRowApiModel = {
+  properties: {
+    year: {
+      type: 'integer',
+      title: 'Year',
+    },
+    return1Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return1Percent',
+      description: 'فروردین',
+    },
+    return2Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return2Percent',
+      description: 'اردیبهشت',
+    },
+    return3Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return3Percent',
+      description: 'خرداد',
+    },
+    return4Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return4Percent',
+      description: 'تیر',
+    },
+    return5Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return5Percent',
+      description: 'مرداد',
+    },
+    return6Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return6Percent',
+      description: 'شهریور',
+    },
+    return7Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return7Percent',
+      description: 'مهر',
+    },
+    return8Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return8Percent',
+      description: 'آبان',
+    },
+    return9Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return9Percent',
+      description: 'آذر',
+    },
+    return10Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return10Percent',
+      description: 'دی',
+    },
+    return11Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return11Percent',
+      description: 'بهمن',
+    },
+    return12Percent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Return12Percent',
+      description: 'اسفند',
+    },
+  },
+  type: 'object',
+  required: [
+    'year',
+    'return1Percent',
+    'return2Percent',
+    'return3Percent',
+    'return4Percent',
+    'return5Percent',
+    'return6Percent',
+    'return7Percent',
+    'return8Percent',
+    'return9Percent',
+    'return10Percent',
+    'return11Percent',
+    'return12Percent',
+  ],
+  title: 'FundReturnAnalysisSeasonalityEffectTableRowApiModel',
+} as const;
+
+export const $FundReturnAnalysisSeasonalityEffectTableStandardDeviationRowApiModel =
+  {
+    properties: {
+      std1Percent: {
+        anyOf: [
+          {
+            type: 'number',
+          },
+          {
+            type: 'null',
+          },
+        ],
+        title: 'Std1Percent',
+        description: 'فروردین',
+      },
+      std2Percent: {
+        anyOf: [
+          {
+            type: 'number',
+          },
+          {
+            type: 'null',
+          },
+        ],
+        title: 'Std2Percent',
+        description: 'اردیبهشت',
+      },
+      std3Percent: {
+        anyOf: [
+          {
+            type: 'number',
+          },
+          {
+            type: 'null',
+          },
+        ],
+        title: 'Std3Percent',
+        description: 'خرداد',
+      },
+      std4Percent: {
+        anyOf: [
+          {
+            type: 'number',
+          },
+          {
+            type: 'null',
+          },
+        ],
+        title: 'Std4Percent',
+        description: 'تیر',
+      },
+      std5Percent: {
+        anyOf: [
+          {
+            type: 'number',
+          },
+          {
+            type: 'null',
+          },
+        ],
+        title: 'Std5Percent',
+        description: 'مرداد',
+      },
+      std6Percent: {
+        anyOf: [
+          {
+            type: 'number',
+          },
+          {
+            type: 'null',
+          },
+        ],
+        title: 'Std6Percent',
+        description: 'شهریور',
+      },
+      std7Percent: {
+        anyOf: [
+          {
+            type: 'number',
+          },
+          {
+            type: 'null',
+          },
+        ],
+        title: 'Std7Percent',
+        description: 'مهر',
+      },
+      std8Percent: {
+        anyOf: [
+          {
+            type: 'number',
+          },
+          {
+            type: 'null',
+          },
+        ],
+        title: 'Std8Percent',
+        description: 'آبان',
+      },
+      std9Percent: {
+        anyOf: [
+          {
+            type: 'number',
+          },
+          {
+            type: 'null',
+          },
+        ],
+        title: 'Std9Percent',
+        description: 'آذر',
+      },
+      std10Percent: {
+        anyOf: [
+          {
+            type: 'number',
+          },
+          {
+            type: 'null',
+          },
+        ],
+        title: 'Std10Percent',
+        description: 'دی',
+      },
+      std11Percent: {
+        anyOf: [
+          {
+            type: 'number',
+          },
+          {
+            type: 'null',
+          },
+        ],
+        title: 'Std11Percent',
+        description: 'بهمن',
+      },
+      std12Percent: {
+        anyOf: [
+          {
+            type: 'number',
+          },
+          {
+            type: 'null',
+          },
+        ],
+        title: 'Std12Percent',
+        description: 'اسفند',
+      },
+    },
+    type: 'object',
+    required: [
+      'std1Percent',
+      'std2Percent',
+      'std3Percent',
+      'std4Percent',
+      'std5Percent',
+      'std6Percent',
+      'std7Percent',
+      'std8Percent',
+      'std9Percent',
+      'std10Percent',
+      'std11Percent',
+      'std12Percent',
+    ],
+    title:
+      'FundReturnAnalysisSeasonalityEffectTableStandardDeviationRowApiModel',
+  } as const;
+
+export const $FundSummaryBaseInfoApiModel = {
+  properties: {
+    manager: {
+      type: 'string',
+      title: 'Manager',
+      description: 'مدیر صنودق',
+    },
+    investmentStrategy: {
+      type: 'string',
+      title: 'Investmentstrategy',
+      description: 'سیاست سرمایه‌گذاری',
+    },
+    assetUnderManagementRials: {
+      type: 'integer',
+      title: 'Assetundermanagementrials',
+      description: 'ارزش خالص دارایی',
+    },
+    alphaSinceInitiationPercent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Alphasinceinitiationpercent',
+      description: 'بازده اضافه',
+    },
+    betaSinceInitiationPercent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Betasinceinitiationpercent',
+      description: 'بتای صندوق',
+    },
+    leverageSinceInitiationPercent: {
+      anyOf: [
+        {
+          type: 'number',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Leveragesinceinitiationpercent',
+      description: 'اهرم صندوق',
+    },
+    investedUnits: {
+      type: 'integer',
+      title: 'Investedunits',
+      description: 'تعداد واحد سرمایه‌گذاری',
+    },
+    initiationDate: {
+      type: 'string',
+      title: 'Initiationdate',
+      description: 'تاریخ آغاز فعالیت میلادی',
+    },
+    initiationJdate: {
+      type: 'string',
+      title: 'Initiationjdate',
+      description: 'تاریخ آغاز فعالیت شمسی',
+    },
+    lastUpdateDate: {
+      type: 'string',
+      title: 'Lastupdatedate',
+      description: 'تاریخ به روز رسانی میلادی',
+    },
+    lastUpdateJdate: {
+      type: 'string',
+      title: 'Lastupdatejdate',
+      description: 'تاریخ به روز رسانی شمسی',
+    },
+  },
+  type: 'object',
+  required: [
+    'manager',
+    'investmentStrategy',
+    'assetUnderManagementRials',
+    'alphaSinceInitiationPercent',
+    'betaSinceInitiationPercent',
+    'leverageSinceInitiationPercent',
+    'investedUnits',
+    'initiationDate',
+    'initiationJdate',
+    'lastUpdateDate',
+    'lastUpdateJdate',
+  ],
+  title: 'FundSummaryBaseInfoApiModel',
+} as const;
+
+export const $FundSummaryCaseByCaseApiModel = {
+  properties: {
+    calculationPeriod: {
+      $ref: '#/components/schemas/FundCalculationPeriod',
+      description: 'بازه زمانی',
+    },
+    calculationCustomPeriodStartJdate: {
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Calculationcustomperiodstartjdate',
+      description: 'شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd',
+    },
+    calculationCustomPeriodEndJdate: {
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Calculationcustomperiodendjdate',
+      description: 'پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd',
+    },
+    navEndOfPeriodRials: {
+      type: 'integer',
+      title: 'Navendofperiodrials',
+      description: 'مقدار nav در آخرین روز بازه زمانی',
+    },
+    returnEndOfPeriodRials: {
+      type: 'integer',
+      title: 'Returnendofperiodrials',
+      description: 'سود ریالی در آخرین روز بازه زمانی',
+    },
+    returnEndOfPeriodPercent: {
+      type: 'number',
+      title: 'Returnendofperiodpercent',
+      description: 'سود درصدی در آخرین روز بازه زمانی',
+    },
+    returnInPeriodPercent: {
+      type: 'number',
+      title: 'Returninperiodpercent',
+      description: 'بازده صندوق',
+    },
+    betaInPeriodPercent: {
+      type: 'number',
+      title: 'Betainperiodpercent',
+      description: 'بتا صندوق',
+    },
+    revokedUnitsInPeriod: {
+      type: 'integer',
+      title: 'Revokedunitsinperiod',
+      description: 'واحدهای ابطال شده',
+    },
+    issuedUnitsInPeriod: {
+      type: 'integer',
+      title: 'Issuedunitsinperiod',
+      description: 'واحدهای صادر شده',
+    },
+    priceRangeMinimumRials: {
+      type: 'integer',
+      title: 'Pricerangeminimumrials',
+      description: 'کمینه قیمت',
+    },
+    priceRangeMaximumRials: {
+      type: 'integer',
+      title: 'Pricerangemaximumrials',
+      description: 'بیشینه قیمت',
+    },
+    assetTurnoverRatioPercent: {
+      type: 'number',
+      title: 'Assetturnoverratiopercent',
+      description: 'گردش دارایی',
+    },
+    averageNavInPeriod: {
+      type: 'number',
+      title: 'Averagenavinperiod',
+      description: 'میانگین قیمت',
+    },
+    navHistory: {
+      items: {
+        $ref: '#/components/schemas/FundSummaryCaseByCaseNavHistoryItemApiModel',
+      },
+      type: 'array',
+      title: 'Navhistory',
+      description: 'نمودار تاریخچه قیمت',
+    },
+  },
+  type: 'object',
+  required: [
+    'calculationPeriod',
+    'calculationCustomPeriodStartJdate',
+    'calculationCustomPeriodEndJdate',
+    'navEndOfPeriodRials',
+    'returnEndOfPeriodRials',
+    'returnEndOfPeriodPercent',
+    'returnInPeriodPercent',
+    'betaInPeriodPercent',
+    'revokedUnitsInPeriod',
+    'issuedUnitsInPeriod',
+    'priceRangeMinimumRials',
+    'priceRangeMaximumRials',
+    'assetTurnoverRatioPercent',
+    'averageNavInPeriod',
+    'navHistory',
+  ],
+  title: 'FundSummaryCaseByCaseApiModel',
+} as const;
+
+export const $FundSummaryCaseByCaseBody = {
+  properties: {
+    calculationPeriod: {
+      $ref: '#/components/schemas/FundCalculationPeriod',
+      description: 'بازه زمانی',
+    },
+    calculationCustomPeriodStartJdate: {
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Calculationcustomperiodstartjdate',
+      description: 'شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd',
+    },
+    calculationCustomPeriodEndJdate: {
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Calculationcustomperiodendjdate',
+      description: 'پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd',
+    },
+  },
+  type: 'object',
+  required: [
+    'calculationPeriod',
+    'calculationCustomPeriodStartJdate',
+    'calculationCustomPeriodEndJdate',
+  ],
+  title: 'FundSummaryCaseByCaseBody',
+} as const;
+
+export const $FundSummaryCaseByCaseNavHistoryItemApiModel = {
+  properties: {
+    revokeNavRials: {
+      type: 'integer',
+      title: 'Revokenavrials',
+      description: 'nav ابطال',
+    },
+    jdtLabel: {
+      type: 'string',
+      title: 'Jdtlabel',
+      description: 'لیبل تاریخ',
+    },
+    jdt: {
+      type: 'string',
+      title: 'Jdt',
+      description: 'تاریخ شمسی به فرمت YYYY-mm-dd',
+    },
+    dt: {
+      type: 'string',
+      title: 'Dt',
+      description: 'تاریخ میلادی به فرمت YYYY-mm-dd',
+    },
+  },
+  type: 'object',
+  required: ['revokeNavRials', 'jdtLabel', 'jdt', 'dt'],
+  title: 'FundSummaryCaseByCaseNavHistoryItemApiModel',
+} as const;
+
+export const $FundSummaryResponseApiModel = {
+  properties: {
+    fundBasicInfo: {
+      $ref: '#/components/schemas/FundBaseInfoApiModel',
+      description: 'بالای تب ها',
+    },
+    fundSummaryBasicInfo: {
+      anyOf: [
+        {
+          $ref: '#/components/schemas/FundSummaryBaseInfoApiModel',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      description: 'ردیف ابتدای تب خلاصه',
+    },
+    fundSummaryCaseByCase: {
+      anyOf: [
+        {
+          $ref: '#/components/schemas/FundSummaryCaseByCaseApiModel',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      description: 'خلاصه موردی',
+    },
+    fundVideoPlaylist: {
+      items: {
+        $ref: '#/components/schemas/FundVideoPlaylistItemApiModel',
+      },
+      type: 'array',
+      title: 'Fundvideoplaylist',
+      description: 'فهرست مصاحبه‌های ویدئویی',
+    },
+  },
+  type: 'object',
+  required: [
+    'fundBasicInfo',
+    'fundSummaryBasicInfo',
+    'fundSummaryCaseByCase',
+    'fundVideoPlaylist',
+  ],
+  title: 'FundSummaryResponseApiModel',
 } as const;
 
 export const $FundTableItemInfoApiModel = {
@@ -1813,7 +3415,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Averageleveragelastweek',
-      description: 'میانگین اهرم هتگی',
+      description: 'میانگین اهرم هفتگی',
     },
     averageLeverageLastMonth: {
       anyOf: [
@@ -1873,7 +3475,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Standarddeviationlastweek',
-      description: 'انحراف از میانگین هتگی',
+      description: 'انحراف از میانگین هفتگی',
     },
     standardDeviationLastMonth: {
       anyOf: [
@@ -2173,7 +3775,7 @@ export const $FundTableItemInfoApiModel = {
         },
       ],
       title: 'Betalastyear',
-      description: 'بتا یک‌سساله',
+      description: 'بتا یک‌ساله',
     },
     betaCustomPeriod: {
       anyOf: [
@@ -2604,6 +4206,50 @@ export const $FundTypeApiModel = {
   type: 'object',
   required: ['identifier', 'title'],
   title: 'FundTypeApiModel',
+} as const;
+
+export const $FundVideoPlaylistItemApiModel = {
+  properties: {
+    recordJdate: {
+      type: 'string',
+      title: 'Recordjdate',
+      description: 'تاریخ رکورد ویدئو به فرمت YYYY-mm-dd',
+    },
+    intervieweeImageThumbnail: {
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Intervieweeimagethumbnail',
+      description: 'آدرس عکس مصاحبه شونده',
+    },
+    intervieweeName: {
+      type: 'string',
+      title: 'Intervieweename',
+      description: 'نام مصاحبه شونده',
+    },
+    intervieweeRole: {
+      type: 'string',
+      title: 'Intervieweerole',
+      description: 'سمت مصاحبه شونده',
+    },
+    video: {
+      $ref: '#/components/schemas/VideoApiModel',
+    },
+  },
+  type: 'object',
+  required: [
+    'recordJdate',
+    'intervieweeImageThumbnail',
+    'intervieweeName',
+    'intervieweeRole',
+    'video',
+  ],
+  title: 'FundVideoPlaylistItemApiModel',
 } as const;
 
 export const $FundsTableItemApiModel = {
@@ -3611,13 +5257,7 @@ export const $UpdateFundTableTabColumnItem = {
     },
   },
   type: 'object',
-  required: [
-    'key',
-    'sortDirection',
-    'visible',
-    'customPeriodStartJdate',
-    'customPeriodEndJdate',
-  ],
+  required: ['key', 'sortDirection', 'visible'],
   title: 'UpdateFundTableTabColumnItem',
 } as const;
 

@@ -201,3 +201,31 @@ export const ensureUseFundsServiceGetFundsTableTabByTabCsvData = (
     queryKey: Common.UseFundsServiceGetFundsTableTabByTabCsvKeyFn({ tab }),
     queryFn: () => FundsService.getFundsTableTabByTabCsv({ tab }),
   });
+export const ensureUseFundsServiceGetFundsStockByFundIdSummaryData = (
+  queryClient: QueryClient,
+  {
+    fundId,
+  }: {
+    fundId: number;
+  },
+) =>
+  queryClient.ensureQueryData({
+    queryKey: Common.UseFundsServiceGetFundsStockByFundIdSummaryKeyFn({
+      fundId,
+    }),
+    queryFn: () => FundsService.getFundsStockByFundIdSummary({ fundId }),
+  });
+export const ensureUseFundsServiceGetFundsStockByFundIdReturnAnalysisData = (
+  queryClient: QueryClient,
+  {
+    fundId,
+  }: {
+    fundId: number;
+  },
+) =>
+  queryClient.ensureQueryData({
+    queryKey: Common.UseFundsServiceGetFundsStockByFundIdReturnAnalysisKeyFn({
+      fundId,
+    }),
+    queryFn: () => FundsService.getFundsStockByFundIdReturnAnalysis({ fundId }),
+  });
