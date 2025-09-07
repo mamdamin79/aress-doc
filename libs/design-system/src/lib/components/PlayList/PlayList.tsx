@@ -205,8 +205,7 @@ const PlayListCell: React.FC<
                 },
               )}
             >
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum,
-              assumenda.
+              {title}
             </div>
           </div>
           <div
