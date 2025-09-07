@@ -84,7 +84,7 @@ export const Summary: React.FC<SummaryProps> = ({
     {
       label: {
         icon: 'CustomCalendar',
-        title: 'تاریخ ورود به صندوق',
+        title: 'تاریخ به‌روزرسانی صندوق',
       },
       value: fundSummaryBasicInfo.initiationJdate,
     },
