@@ -156,7 +156,7 @@ const PlayListCell: React.FC<
           </span>
         )}
       </span>
-      <div className="relative flex items-center justify-between gap-3">
+      <div className="relative flex w-full items-center justify-between gap-3">
         <video
           poster={poster ? poster : ''}
           className="h-[56px] w-[100px] rounded-sm object-cover"
@@ -173,12 +173,12 @@ const PlayListCell: React.FC<
             {durations[index]}
           </span>
         )}
-        <div>
+        <div className="w-full bg-yellow-100">
           <div
             className={cn(
               'text-text-neutral-primary relative w-[306px] overflow-hidden text-ellipsis whitespace-nowrap p-2 pr-1 text-sm font-medium',
               {
-                'text-text-neutral-white': isFullscreen,
+                'text-text-neutral-white max-w-[233px]': isFullscreen,
               },
 
               {
@@ -205,12 +205,13 @@ const PlayListCell: React.FC<
                 },
               )}
             >
-              {title}
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum,
+              assumenda.
             </div>
           </div>
-          <span
+          <div
             className={cn(
-              'text-text-neutral-secondary flex items-start justify-between gap-1 text-xs font-medium',
+              'text-text-neutral-secondary flex w-full items-start justify-between gap-1 text-xs font-medium',
               { 'text-text-neutral-white': isFullscreen },
               {
                 'text-text-neutral-white': selectedVideo.src === src,
@@ -221,18 +222,20 @@ const PlayListCell: React.FC<
             )}
           >
             <div className="flex items-start gap-2">
-              <img
-                className="relative -top-1.5 rounded-xl"
-                src={avatarUrl}
-                width={32}
-                height={26}
-              />
+              {!isFullscreen && (
+                <img
+                  className="relative -top-1.5 rounded-xl"
+                  src={avatarUrl}
+                  width={32}
+                  height={26}
+                />
+              )}
               <div>
                 <span>{name}</span> - <span>{jobTitle}</span>
               </div>
             </div>
-            {date}
-          </span>
+            <span>{date}</span>
+          </div>
         </div>
       </div>
     </div>

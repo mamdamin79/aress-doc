@@ -181,7 +181,7 @@ export const Summary: React.FC<SummaryProps> = ({
         if (!qualities.length) return null;
 
         return {
-          src: qualities[0].src, // اولین کیفیت موجود
+          src: qualities[0].src,
           title: videoApi.video.title,
           date: videoApi.recordJdate,
           poster: videoApi.video.poster
@@ -197,7 +197,7 @@ export const Summary: React.FC<SummaryProps> = ({
             : undefined,
           name: videoApi.intervieweeName || undefined,
           jobTitle: videoApi.intervieweeRole || undefined,
-          spriteBaseUrl: undefined,
+          spriteBaseUrl: `${baseURL}${videoApi.video.thumbnailImages[0].image}`,
         };
       })
       .filter(Boolean) as Video[];

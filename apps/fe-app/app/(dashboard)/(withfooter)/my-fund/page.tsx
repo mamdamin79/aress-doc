@@ -19,7 +19,7 @@ export default async function FundPage() {
   });
   const baseURL = process.env.NEXT_PUBLIC_API_URL ?? '';
 
-  console.log(fundVideoPlaylist);
+  console.log(fundVideoPlaylist[0].video.thumbnailImages);
 
   return (
     <div>
