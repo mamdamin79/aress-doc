@@ -9,13 +9,17 @@ export default async function FundPage() {
   const cookieStore = await cookies();
 
   OpenAPI.TOKEN = cookieStore.get('access_token')?.value;
-  const { fundBasicInfo, fundSummaryBasicInfo, fundSummaryCaseByCase } =
-    await FundsService.getFundsStockByFundIdSummary({
-      fundId,
-    });
+  const {
+    fundBasicInfo,
+    fundSummaryBasicInfo,
+    fundSummaryCaseByCase,
+    fundVideoPlaylist,
+  } = await FundsService.getFundsStockByFundIdSummary({
+    fundId,
+  });
   const baseURL = process.env.NEXT_PUBLIC_API_URL ?? '';
 
-  console.log(fundSummaryCaseByCase);
+  console.log(fundVideoPlaylist);
 
   return (
     <div>
@@ -98,6 +102,7 @@ export default async function FundPage() {
               fundSummaryCaseByCase!.returnEndOfPeriodPercent,
             fundSummaryBasicInfo: fundSummaryBasicInfo!,
             fundSummaryCaseByCase: fundSummaryCaseByCase!,
+            fundVideoPlaylist: fundVideoPlaylist!,
           }}
         />
       </div>

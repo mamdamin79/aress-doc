@@ -9,12 +9,14 @@ import {
   PlayList,
   Video,
   Icon,
+  VideoQuality,
 } from 'design-system';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { LineChart } from './LineChart';
 import {
   FundSummaryBaseInfoApiModel,
   FundSummaryCaseByCaseApiModel,
+  FundVideoPlaylistItemApiModel,
 } from '@openapi';
 
 interface SummaryProps {
@@ -27,6 +29,7 @@ interface SummaryProps {
   defaultPercentageChange: number;
   fundSummaryBasicInfo: FundSummaryBaseInfoApiModel;
   fundSummaryCaseByCase: FundSummaryCaseByCaseApiModel;
+  fundVideoPlaylist: Array<FundVideoPlaylistItemApiModel>;
 }
 
 interface HoverData {
@@ -41,6 +44,7 @@ export const Summary: React.FC<SummaryProps> = ({
   points,
   fundSummaryBasicInfo,
   fundSummaryCaseByCase,
+  fundVideoPlaylist,
 }) => {
   const [hiddenContent, setHiddenContent] = useState(false);
   const [hoveredData, setHoveredData] = useState<HoverData | null>(null);
@@ -128,56 +132,76 @@ export const Summary: React.FC<SummaryProps> = ({
     },
   ];
 
-  // Online videos array
-  const videos: Video[] = [
+  const dataListData = [
     {
-      qualities: [
-        {
-          src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-          label: '1080',
-        },
-        {
-          src: 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4',
-          label: '720',
-        },
-        {
-          src: 'https://www.rmp-streaming.com/media/big-buck-bunny-360p.mp4',
-          label: '360',
-        },
-      ],
-      title: 'Big Buck Bunny',
-      jobTitle: 'فیلمساز انیمیشن',
-      avatarUrl: 'https://i.pravatar.cc/80?img=1',
-      name: 'محمد باقر خادمی',
-      poster:
-        'https://peach.blender.org/wp-content/uploads/title_anouncement.jpg?x11217',
-      src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-      date: '1403/09/22',
+      key: 'بازده صندوق',
+      value: `${fundSummaryCaseByCase.returnInPeriodPercent}٪`,
     },
     {
-      qualities: [
-        {
-          src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-          label: '1080',
-        },
-        {
-          src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-          label: '720',
-        },
-        {
-          src: 'https://www.rmp-streaming.com/media/big-buck-bunny-360p.mp4',
-          label: '360',
-        },
-      ],
-      title: 'Elephants Dream',
-      jobTitle: 'برنامه‌نویس فرانت‌اند',
-      avatarUrl: 'https://i.pravatar.cc/80?img=2',
-      name: 'علی رضایی',
-      poster: 'https://dummyimage.com/600x400/000/fff.jpg&text=Elephants+Dream',
-      src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-      date: '1403/11/22',
+      key: 'بتا صندوق',
+      value: `${fundSummaryCaseByCase.betaInPeriodPercent} واحد`,
+    },
+    {
+      key: 'واحد های ابطال شده',
+      value: `${fundSummaryCaseByCase.revokedUnitsInPeriod.toLocaleString()} واحد`,
+    },
+    {
+      key: 'واحد های صادر شده',
+      value: `${fundSummaryCaseByCase.issuedUnitsInPeriod.toLocaleString()} واحد`,
+    },
+    {
+      key: 'رنج قیمتی',
+      value: `${fundSummaryCaseByCase.priceRangeMinimumRials.toLocaleString()} - ${fundSummaryCaseByCase.priceRangeMaximumRials.toLocaleString()} ریال`,
+    },
+    {
+      key: 'گردش دارایی',
+      value: `${fundSummaryCaseByCase.assetTurnoverRatioPercent}٪`,
     },
   ];
+
+  // Online videos array
+  const baseURL = process.env.NEXT_PUBLIC_API_URL ?? '';
+
+  const videos: Video[] = useMemo(() => {
+    return fundVideoPlaylist
+      .map((videoApi) => {
+        const qualities: VideoQuality[] = [
+          { src: videoApi.video.mp4Video1080P, label: '1080' },
+          { src: videoApi.video.mp4Video720P, label: '720' },
+          { src: videoApi.video.mp4Video480P, label: '480' },
+          { src: videoApi.video.mp4Video360P, label: '360' },
+          { src: videoApi.video.mp4Video240P, label: '240' },
+        ]
+          .filter((q) => !!q.src)
+          .map((q) => ({
+            ...q,
+            src: q.src!.startsWith('http') ? q.src! : `${baseURL}${q.src}`,
+          }));
+
+        if (!qualities.length) return null;
+
+        return {
+          src: qualities[0].src, // اولین کیفیت موجود
+          title: videoApi.video.title,
+          date: videoApi.recordJdate,
+          poster: videoApi.video.poster
+            ? videoApi.video.poster.startsWith('http')
+              ? videoApi.video.poster
+              : `${baseURL}${videoApi.video.poster}`
+            : undefined,
+          qualities,
+          avatarUrl: videoApi.intervieweeImageThumbnail
+            ? videoApi.intervieweeImageThumbnail.startsWith('http')
+              ? videoApi.intervieweeImageThumbnail
+              : `${baseURL}${videoApi.intervieweeImageThumbnail}`
+            : undefined,
+          name: videoApi.intervieweeName || undefined,
+          jobTitle: videoApi.intervieweeRole || undefined,
+          spriteBaseUrl: undefined,
+        };
+      })
+      .filter(Boolean) as Video[];
+  }, [fundVideoPlaylist, baseURL]);
 
   const [selectedVideo, setSelectedVideo] = useState<Video>(videos[0]);
 
@@ -197,32 +221,7 @@ export const Summary: React.FC<SummaryProps> = ({
           <div>
             <DataList
               mode="vertical"
-              data={[
-                {
-                  key: 'بازده صندوق',
-                  value: `${fundSummaryCaseByCase.returnInPeriodPercent}٪`,
-                },
-                {
-                  key: 'بتا صندوق',
-                  value: `${fundSummaryCaseByCase.betaInPeriodPercent} واحد`,
-                },
-                {
-                  key: 'واحد های ابطال شده',
-                  value: `${fundSummaryCaseByCase.revokedUnitsInPeriod.toLocaleString()} واحد`,
-                },
-                {
-                  key: 'واحد های صادر شده',
-                  value: `${fundSummaryCaseByCase.issuedUnitsInPeriod.toLocaleString()} واحد`,
-                },
-                {
-                  key: 'رنج قیمتی',
-                  value: `${fundSummaryCaseByCase.priceRangeMinimumRials.toLocaleString()} - ${fundSummaryCaseByCase.priceRangeMaximumRials.toLocaleString()} ریال`,
-                },
-                {
-                  key: 'گردش دارایی',
-                  value: `${fundSummaryCaseByCase.assetTurnoverRatioPercent}٪`,
-                },
-              ]}
+              data={dataListData}
               className="h-[544px] w-[346px]"
             />
           </div>
@@ -251,35 +250,7 @@ export const Summary: React.FC<SummaryProps> = ({
         </div>
       </div>
       <div className="mt-8 block lg:hidden">
-        <DataList
-          mode="carousel"
-          data={[
-            {
-              key: 'بازده صندوق',
-              value: '۴.۳٪',
-            },
-            {
-              key: 'بتا صندوق',
-              value: '۱.۳ واحد',
-            },
-            {
-              key: 'واحد های ابطال شده',
-              value: '۳۵۶ واحد',
-            },
-            {
-              key: 'واحد های صادر شده',
-              value: '۶,۲۵۴ واحد',
-            },
-            {
-              key: 'رنج قیمتی',
-              value: '۳,۱۰۰-۳,۳۰۰ ریال',
-            },
-            {
-              key: 'گردش دارایی',
-              value: '۱۲٪',
-            },
-          ]}
-        />
+        <DataList mode="carousel" data={dataListData} />
       </div>
       <div className="mb-14 mt-6 flex items-center justify-center">
         <Tabs

@@ -8,6 +8,7 @@ import { RiskAssessment } from './RiskAssesment';
 import {
   FundSummaryBaseInfoApiModel,
   FundSummaryCaseByCaseApiModel,
+  FundVideoPlaylistItemApiModel,
 } from '@openapi';
 
 type FundTabsProps = {
@@ -18,6 +19,7 @@ type FundTabsProps = {
     defaultPercentageChange: number;
     fundSummaryBasicInfo: FundSummaryBaseInfoApiModel;
     fundSummaryCaseByCase: FundSummaryCaseByCaseApiModel;
+    fundVideoPlaylist: Array<FundVideoPlaylistItemApiModel>;
   };
 };
 
@@ -44,6 +46,7 @@ export function FundTabs({ summary }: FundTabsProps) {
               defaultPercentageChange={summary.defaultPercentageChange}
               fundSummaryBasicInfo={summary.fundSummaryBasicInfo}
               fundSummaryCaseByCase={summary.fundSummaryCaseByCase}
+              fundVideoPlaylist={summary.fundVideoPlaylist}
             />
           ),
         },
