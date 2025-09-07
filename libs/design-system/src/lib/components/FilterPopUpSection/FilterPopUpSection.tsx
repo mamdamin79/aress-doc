@@ -204,7 +204,7 @@ export function FilterPopUpSection({
               ?.options.map((option, index) => (
                 <div key={index} className="flex items-center gap-2 py-3 pr-6">
                   <Checkbox
-                    content={option}
+                    reactContent={option}
                     disabled={false}
                     checked={
                       tempSelectedFilters[activeFilter]?.includes(option) ||
