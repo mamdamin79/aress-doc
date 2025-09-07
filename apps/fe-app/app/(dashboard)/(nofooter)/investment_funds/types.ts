@@ -112,3 +112,16 @@ export type ApiColumn = {
   customPeriodStartJdate?: string | null;
   customPeriodEndJdate?: string | null;
 };
+
+export type SimplifiedFund = {
+  fundType: number;
+  logo: string;
+  id: number;
+  pinned: boolean;
+  investmentFundsMethod: string;
+  nameFund: string;
+  dailyAlpha: number | null;
+  weeklyAlpha: number | null;
+  monthlyAlpha: number | null;
+  isTradable: boolean;
+};

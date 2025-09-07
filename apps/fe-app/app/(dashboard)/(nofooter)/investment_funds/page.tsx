@@ -54,7 +54,7 @@ import { columnVisibility, filterList } from './FundsTable.constants';
 import { ExportExcel } from './_components/ExportExcel';
 import { useSmartTableScroll } from '@shared';
 import { TableBody } from './_components/TableBody';
-import { Person } from './types';
+import { Person, SimplifiedFund } from './types';
 import {
   useDragIndicator,
   useTableDragSensors,
@@ -158,18 +158,6 @@ const Funds = () => {
     );
   };
 
-  type SimplifiedFund = {
-    fundType: number;
-    logo: string;
-    id: number;
-    pinned: boolean;
-    investmentFundsMethod: string;
-    nameFund: string;
-    dailyAlpha: number | null;
-    weeklyAlpha: number | null;
-    monthlyAlpha: number | null;
-    isTradable: boolean;
-  };
   // request to get funds table data
   const query = useFundsServiceGetFundsTable({ tab: activeIndexCategoryTab });
 
