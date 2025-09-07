@@ -89,7 +89,7 @@ export const LineChart = ({
                 const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
                 onHover({
                   date: formattedDate,
-                  value: (point.y as number) * 1000000,
+                  value: point.y as number,
                 });
               }
             },

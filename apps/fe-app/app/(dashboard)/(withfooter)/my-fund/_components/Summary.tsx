@@ -12,6 +12,10 @@ import {
 } from 'design-system';
 import React, { useState } from 'react';
 import { LineChart } from './LineChart';
+import {
+  FundSummaryBaseInfoApiModel,
+  FundSummaryCaseByCaseApiModel,
+} from '@openapi';
 
 interface SummaryProps {
   defaultQuantity: number;
@@ -21,6 +25,8 @@ interface SummaryProps {
   }[];
   defaultValueChange: number;
   defaultPercentageChange: number;
+  fundSummaryBasicInfo: FundSummaryBaseInfoApiModel;
+  fundSummaryCaseByCase: FundSummaryCaseByCaseApiModel;
 }
 
 interface HoverData {
@@ -33,6 +39,8 @@ export const Summary: React.FC<SummaryProps> = ({
   defaultValueChange,
   defaultPercentageChange,
   points,
+  fundSummaryBasicInfo,
+  fundSummaryCaseByCase,
 }) => {
   const [hiddenContent, setHiddenContent] = useState(false);
   const [hoveredData, setHoveredData] = useState<HoverData | null>(null);
@@ -41,6 +49,25 @@ export const Summary: React.FC<SummaryProps> = ({
   const displayQuantity = hoveredData ? hoveredData.value : defaultQuantity;
   const displayValueChange = defaultValueChange;
   const displayPercentageChange = defaultPercentageChange;
+
+  function calculateFundAge(isoDate: string): string {
+    if (!isoDate) return '-';
+    const start = new Date(isoDate);
+    const now = new Date();
+    const diffMonths =
+      (now.getFullYear() - start.getFullYear()) * 12 +
+      (now.getMonth() - start.getMonth());
+
+    const years = Math.floor(diffMonths / 12);
+    const months = diffMonths % 12;
+
+    return `${years} سال و ${months} ماه`;
+  }
+
+  function formatRial(value: number): string {
+    if (!value) return '-';
+    return `${(value / 1_000_000_000).toFixed(1)} میلیارد ریال`;
+  }
 
   const handleChartHover = (data: HoverData | null) => {
     setHoveredData(data);
@@ -55,49 +82,49 @@ export const Summary: React.FC<SummaryProps> = ({
         icon: 'CustomCalendar',
         title: 'تاریخ ورود به صندوق',
       },
-      value: '۱۴۰۲/۰۶/۰۸',
+      value: fundSummaryBasicInfo.initiationJdate,
     },
     {
       label: {
         icon: 'CustomClock',
         title: 'سابقه صندوق',
       },
-      value: '۷ سال و ۳ ماه',
+      value: calculateFundAge(fundSummaryBasicInfo.initiationDate),
     },
     {
       label: {
         icon: 'user',
         title: 'مدیر صندوق',
       },
-      value: 'سبدگردان سهم آشنا',
+      value: fundSummaryBasicInfo.manager,
     },
     {
       label: {
         icon: 'CustomBag',
         title: 'سیاست سرمایه‌گذاری',
       },
-      value: 'مخاطره آمیز',
+      value: fundSummaryBasicInfo.investmentStrategy,
     },
     {
       label: {
         icon: 'wallet',
         title: 'ارزش خالص دارایی',
       },
-      value: '۴۰۸.۴ میلیارد ریال',
+      value: formatRial(fundSummaryBasicInfo.assetUnderManagementRials),
     },
     {
       label: {
         icon: 'CustomAlpha',
         title: 'بازده اضافی',
       },
-      value: '۴.۱٪',
+      value: `${fundSummaryBasicInfo.alphaSinceInitiationPercent}٪`,
     },
     {
       label: {
         icon: 'CustomBeta',
-        title: 'بای صندوق',
+        title: 'بتای صندوق',
       },
-      value: '۳.۸۴',
+      value: `${fundSummaryBasicInfo.betaSinceInitiationPercent}٪`,
     },
   ];
 
@@ -173,27 +200,27 @@ export const Summary: React.FC<SummaryProps> = ({
               data={[
                 {
                   key: 'بازده صندوق',
-                  value: '۴.۳٪',
+                  value: `${fundSummaryCaseByCase.returnInPeriodPercent}٪`,
                 },
                 {
                   key: 'بتا صندوق',
-                  value: '۱.۳ واحد',
+                  value: `${fundSummaryCaseByCase.betaInPeriodPercent} واحد`,
                 },
                 {
                   key: 'واحد های ابطال شده',
-                  value: '۳۵۶ واحد',
+                  value: `${fundSummaryCaseByCase.revokedUnitsInPeriod.toLocaleString()} واحد`,
                 },
                 {
                   key: 'واحد های صادر شده',
-                  value: '۶,۲۵۴ واحد',
+                  value: `${fundSummaryCaseByCase.issuedUnitsInPeriod.toLocaleString()} واحد`,
                 },
                 {
                   key: 'رنج قیمتی',
-                  value: '۳,۱۰۰-۳,۳۰۰ ریال',
+                  value: `${fundSummaryCaseByCase.priceRangeMinimumRials.toLocaleString()} - ${fundSummaryCaseByCase.priceRangeMaximumRials.toLocaleString()} ریال`,
                 },
                 {
                   key: 'گردش دارایی',
-                  value: '۱۲٪',
+                  value: `${fundSummaryCaseByCase.assetTurnoverRatioPercent}٪`,
                 },
               ]}
               className="h-[544px] w-[346px]"

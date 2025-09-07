@@ -1,55 +1,21 @@
-'use client';
-import { Breadcrumb, Button, cn, FundsLogo, Tabs } from 'design-system';
-import { Summary } from './_components/Summary';
-import { ReturnAnalysis } from './_components/ReturnAnalysis';
-import { RiskAssessment } from './_components/RiskAssesment';
-import { useState } from 'react';
-import {
-  useFundsServiceGetFundsTable,
-  useFundsServicePutFundsByFundIdWatchlist,
-  useFundsServiceDeleteFundsByFundIdWatchlist,
-} from '@openapi';
-import { useQueryClient } from '@tanstack/react-query';
+import { Breadcrumb, FundsLogo } from 'design-system';
+import { AddRemoveToWatchList } from './_components/AddRemoveToWatchList';
+import { FundsService, OpenAPI } from '@openapi';
+import { cookies } from 'next/headers';
+import { FundTabs } from './_components/FundsTab';
 
-export default function FundPage() {
-  const [activeTab, setActiveTab] = useState(0);
-  const [isHovering, setIsHovering] = useState(false);
+export default async function FundPage() {
   const fundId = 283;
-  const queryClient = useQueryClient();
+  const cookieStore = await cookies();
 
-  // get list of dideban
-  const { data } = useFundsServiceGetFundsTable({ tab: 1000 });
-  const selectedFunds = data?.selectedTabFunds ?? [];
+  OpenAPI.TOKEN = cookieStore.get('access_token')?.value;
+  const { fundBasicInfo, fundSummaryBasicInfo, fundSummaryCaseByCase } =
+    await FundsService.getFundsStockByFundIdSummary({
+      fundId,
+    });
+  const baseURL = process.env.NEXT_PUBLIC_API_URL ?? '';
 
-  // is this fund in it
-  const isInWatchList = selectedFunds.some(
-    (f: { info: { identifier: number } }) => f.info.identifier === fundId,
-  );
-
-  // mutation
-  const addToWatchlist = useFundsServicePutFundsByFundIdWatchlist({
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['FundsServiceGetFundsTable', { tab: 1000 }],
-      });
-    },
-  });
-
-  const removeFromWatchlist = useFundsServiceDeleteFundsByFundIdWatchlist({
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['FundsServiceGetFundsTable', { tab: 1000 }],
-      });
-    },
-  });
-
-  const handleToggleWatchlist = () => {
-    if (isInWatchList) {
-      removeFromWatchlist.mutate({ fundId });
-    } else {
-      addToWatchlist.mutate({ fundId });
-    }
-  };
+  console.log(fundSummaryCaseByCase);
 
   return (
     <div>
@@ -58,36 +24,33 @@ export default function FundPage() {
           items={[
             { icon: 'home' },
             { title: 'صندوق من' },
-            { title: 'صندوق سرمایه گذاری سهم اشنا' },
+            { title: `${fundBasicInfo.name}` },
           ]}
         />
       </div>
       <div className="mx-auto max-w-[1680px] px-8 lg:px-20">
         <div className="mb-6 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-0">
           <div className="flex items-center justify-start gap-2">
-            <FundsLogo color="green" src="" hasTag={true} size="md" />
+            <FundsLogo
+              color="green"
+              src={
+                fundBasicInfo.logoThumbnail
+                  ? baseURL + fundBasicInfo.logoThumbnail
+                  : ''
+              }
+              hasTag={true}
+              size="md"
+            />
             <div className="text-text-neutral-primary text-xl font-semibold">
-              صندوق سرمایه گذاری سهم آشنا (در سهام)
+              {fundBasicInfo.name}
             </div>
           </div>
-          <Button
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
-            onClick={() => handleToggleWatchlist()}
-            className={cn('w-[183px]', { 'w-[150px]': isInWatchList })}
-            mode={isInWatchList ? 'secondary' : 'primary'}
-            iconRight={
-              isInWatchList
-                ? isHovering
-                  ? { name: 'minus', size: 'lg' }
-                  : { name: 'check', size: 'lg' }
-                : { name: 'plus', size: 'lg' }
-            }
-          >
-            در دیده بان
-          </Button>
+          <AddRemoveToWatchList
+            fundId={fundId}
+            isInWatchListInitialValue={fundBasicInfo.isWatched}
+          />
         </div>
-        <Tabs
+        {/* <Tabs
           activeTab={activeTab}
           onClickTab={(newTabId) => {
             setActiveTab(newTabId);
@@ -122,6 +85,20 @@ export default function FundPage() {
             { title: 'تحلیل بازدهی', id: '1', content: <RiskAssessment /> },
             { title: 'ارزیابی ریسک', id: '2', content: <ReturnAnalysis /> },
           ]}
+        /> */}
+        <FundTabs
+          summary={{
+            points: fundSummaryCaseByCase!.navHistory.map((item) => ({
+              date: item.jdt,
+              value: item.revokeNavRials,
+            })),
+            defaultQuantity: fundSummaryCaseByCase!.navEndOfPeriodRials,
+            defaultValueChange: fundSummaryCaseByCase!.returnEndOfPeriodRials,
+            defaultPercentageChange:
+              fundSummaryCaseByCase!.returnEndOfPeriodPercent,
+            fundSummaryBasicInfo: fundSummaryBasicInfo!,
+            fundSummaryCaseByCase: fundSummaryCaseByCase!,
+          }}
         />
       </div>
     </div>
