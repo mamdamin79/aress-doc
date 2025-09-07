@@ -18,7 +18,7 @@ export function Checkbox(props: CheckboxProps) {
   const unikId = useId();
 
   return (
-    <Field className="flex w-full items-center gap-2">
+    <Field className={cn('flex w-full items-center gap-2', props.className)}>
       <CheckboxHeadlessUIProps
         aria-roledescription="checkbox"
         {...props}
@@ -45,10 +45,9 @@ export function Checkbox(props: CheckboxProps) {
               props.checked && !props.disabled,
           },
           'text-sm',
-          props.className,
         )}
       >
-        {props.reactContent ? props.reactContent : props.reactContent}
+        {props.reactContent ?? ''}
       </Label>
     </Field>
   );
