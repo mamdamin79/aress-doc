@@ -87,6 +87,7 @@ const Funds = () => {
   const [pinnedList, setPinnedList] = useState<number[]>([]);
   const [rowsMark, setRowsMark] = useState<{ color: string; id: number }[]>([]);
   const [watchList, setWatchList] = useState<FundsTableItemApiModel[]>([]);
+  const [hasVerticalScroll, setHasVerticalScroll] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [activeSortIndex, setActiveSortIndex] = useState(0);
   const headerRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -458,6 +459,22 @@ const Funds = () => {
     manualSorting: true,
   });
 
+  useEffect(() => {
+    const el = tableRef.current;
+    if (!el) return;
+
+    const checkScroll = () => {
+      setHasVerticalScroll(el.scrollHeight > el.clientHeight);
+    };
+
+    checkScroll();
+
+    const observer = new ResizeObserver(checkScroll);
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, [table?.getState().pagination.pageSize]);
+
   const isChanged = useMemo(() => {
     return !Object.entries(table.getState().columnVisibility).every(
       ([key, value]) => columnVisibility[key] === value,
@@ -775,7 +792,14 @@ const Funds = () => {
             rows.length,
         })}
       >
-        <div className="bg-border-brand-soft-200 absolute top-[75px] z-50 h-0.5 w-full" />
+        <div
+          className={cn(
+            'bg-border-brand-soft-200 absolute top-[75px] z-50 h-0.5 w-full',
+            {
+              'right-2': hasVerticalScroll,
+            },
+          )}
+        />
         <div
           ref={tableRef}
           className={cn(
