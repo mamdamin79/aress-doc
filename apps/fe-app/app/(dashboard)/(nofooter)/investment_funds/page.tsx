@@ -253,7 +253,7 @@ const Funds = () => {
     if (visibleColumns.length) {
       visibleColumns.find((col, index) => {
         if ((col.meta as FundColumnMeta).sort !== 'NO')
-          setActiveSortIndex(index);
+          setActiveSortIndex(index - 1);
       });
     }
 
@@ -750,6 +750,28 @@ const Funds = () => {
     });
   }, [activeIndexCategoryTab, localColumns]);
 
+const filterOptions = localColumns
+  .filter(
+    (col) =>
+      col.visible &&
+      col.columnFilter &&
+      Array.isArray(col.columnFilter.options) &&
+      col.columnFilter.options.length > 0
+  )
+  .map((col) => ({
+    title: col.label,
+    singleOpen: false,
+    options: col.columnFilter.options.map((opt, index) => ({
+      label: opt.label,
+      select: index === 0,
+      min_amount: opt.min_amount ?? null,
+      max_amount: opt.max_amount ?? null,
+    })),
+  }));
+    
+    
+  console.log(filterOptions);
+  
   return (
     <>
       <div
@@ -858,7 +880,7 @@ const Funds = () => {
                             : '',
                       }}
                       className={cn('z-[9999] duration-300', {
-                        'absolute bottom-0 z-20 transition-transform':
+                        'absolute bottom-[2px] z-20 transition-transform':
                           activeSortIndex !== 0,
                         'group-hover/table:-right-0':
                           activeSortIndex !== 0 && isScrollAtStart,
@@ -1026,11 +1048,10 @@ const Funds = () => {
                                     {index >= 2 &&
                                     header.isPlaceholder ? null : (
                                       <div
-                                        {...{
-                                          className: header.column.getCanSort()
-                                            ? 'cursor-pointer h-[75px] select-none'
-                                            : '',
-                                        }}
+                                        className={cn('w-full', {
+                                          'h-[75px] cursor-pointer select-none':
+                                            header.column.getIsSorted(),
+                                        })}
                                       >
                                         <FundsColumnHeader
                                           active={!isRotating}
@@ -1377,7 +1398,7 @@ const Funds = () => {
                               });
                             }
                           }}
-                          reactContent={column.label}
+                          reactContent={column.lowerTitle ?? column.upperTitle}
                         />
                       </div>
                     ))}
@@ -1396,7 +1417,7 @@ const Funds = () => {
           <FilterPopUpSection
             searchValue={fundSearchQuery}
             onSearchChange={setFundSearchQuery}
-            filterOptions={filterList}
+            filterOptions={filterOptions}
             selectedFilters={selectedFilters}
             onFilterChange={setSelectedFilters}
           />
