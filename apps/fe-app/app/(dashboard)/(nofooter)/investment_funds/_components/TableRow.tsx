@@ -28,7 +28,7 @@ type FundsTagColor =
   | 'green'
   | 'yellow'
   | 'pink'
-  | 'neutral';
+  | 'disabled';
 
 function FundsInfoCell({
   tabs,
@@ -53,7 +53,7 @@ function FundsInfoCell({
   return (
     <div
       className={cn(
-        'bg-surface-neutral-primary text-text-neutral-primary sticky right-0 top-0 m-0 flex h-[46px] w-max items-center justify-between p-0 py-0',
+        'bg-surface-neutral-primary text-text-neutral-primary sticky right-0 top-0 m-0 flex h-[46px] w-[384px] items-center justify-between p-0 py-0',
         className,
         {
           'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]': isScrolled,

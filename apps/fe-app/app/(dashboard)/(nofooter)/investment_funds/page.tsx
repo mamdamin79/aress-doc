@@ -466,7 +466,6 @@ const Funds = () => {
     const checkScroll = () => {
       setHasVerticalScroll(el.scrollHeight > el.clientHeight);
     };
-
     checkScroll();
 
     const observer = new ResizeObserver(checkScroll);
@@ -742,6 +741,16 @@ const Funds = () => {
     });
     return map;
   }, [columns]);
+
+  useEffect(() => {
+    const visibleColumns = localColumns.filter((col) => col.visible);
+    console.log(visibleColumns);
+
+    setActiveSortIndex((prev) => {
+      if (prev === null) return null;
+      return prev >= visibleColumns.length ? visibleColumns.length - 1 : prev;
+    });
+  }, [activeIndexCategoryTab, localColumns]);
 
   return (
     <>

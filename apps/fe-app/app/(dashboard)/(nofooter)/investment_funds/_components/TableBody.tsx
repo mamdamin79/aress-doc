@@ -15,6 +15,7 @@ export function TableBody({
   handlerDeleteWatchList,
   handlerAddToWatchList,
   tabs,
+  isScrollAtStart,
 }: TableBodyProps) {
   const virtualizer = useVirtualizer({
     count: rows?.length,
@@ -44,7 +45,7 @@ export function TableBody({
               activeIndexCategoryTab={activeIndexCategoryTab}
               rowMarks={rowMarks}
               handleColorChange={() => void 0}
-              isScrollAtStart={false}
+              isScrollAtStart={isScrollAtStart}
               handlerUnPinned={handlerUnPinned}
               handlerPinned={handlerPinned}
               logo={row.original.logo}
