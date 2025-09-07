@@ -23,6 +23,7 @@ export const FundsLogo: React.FC<FundsLogoProps> = ({
   color = 'green',
   src,
 }) => {
+  // @ts-expect-error: it does not get is FundLogoFallback object
   const [imgSrc, setImgSrc] = useState<string>(src || FundLogoFallback.src);
 
   const sizeClasses = useMemo(
@@ -46,6 +47,7 @@ export const FundsLogo: React.FC<FundsLogoProps> = ({
         src={imgSrc}
         alt="Fund Logo"
         className={`rounded-full object-cover ${sizeClasses[size]}`}
+        // @ts-expect-error: it does not get is FundLogoFallback object
         onError={() => setImgSrc(FundLogoFallback?.src)}
         referrerPolicy="no-referrer"
       />

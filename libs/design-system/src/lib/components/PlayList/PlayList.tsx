@@ -4,6 +4,7 @@ import { Icon } from '../Icon';
 import { secondsToHHMMSS } from '../../../utils/time';
 import { cn } from '../../../utils/classNames.utils';
 import { Video } from '../VideoPlayer/VideoPlayer.types';
+import FundLogoFallback from '../../../assets/images/FundLogoFallback.png';
 
 type PlayListPropsType = {
   videos: Video[];
@@ -111,6 +112,7 @@ const PlayListCell: React.FC<
   selectedVideo,
   poster,
 }) => {
+  console.log(avatarUrl);
   const [durations, setDurations] = useState<Record<number, string>>({});
   const titleContainer = useRef<HTMLDivElement>(null);
   const handleLoadedMetadata = (
@@ -224,7 +226,8 @@ const PlayListCell: React.FC<
               {!isFullscreen && (
                 <img
                   className="relative -top-1.5 rounded-xl"
-                  src={avatarUrl}
+                  // @ts-expect-error: it does not get is FundLogoFallback object
+                  src={avatarUrl ? avatarUrl : FundLogoFallback.src}
                   width={32}
                   height={26}
                 />
