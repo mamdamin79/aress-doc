@@ -750,7 +750,9 @@ const Funds = () => {
             />
           )
         )}
-        {!query.isLoading ? (
+        {query.isLoading || query.error ? (
+          <ExcelSkeleton />
+        ) : (
           <Tooltip title="خروجی اکسل">
             <div
               onClick={() => mutation.mutate()}
@@ -759,8 +761,6 @@ const Funds = () => {
               <ExportExcel />
             </div>
           </Tooltip>
-        ) : (
-          <ExcelSkeleton />
         )}
       </div>
 
@@ -786,7 +786,7 @@ const Funds = () => {
             dir="rtl"
             className="w-full table-fixed rounded-xl text-center"
           >
-            {query.isLoading ? (
+            {query.isLoading || query.error ? (
               <thead>
                 <tr>
                   <HeaderTableSkeleton />
@@ -831,7 +831,7 @@ const Funds = () => {
                           activeSortIndex === 0,
                         'top-[157px]':
                           activeSortIndex === 0 && !isHeaderVisible,
-                        hidden: sorting[0]?.id === 'abbreviated_name',
+                        hidden: !query.data,
                       })}
                     >
                       <div className="bg-surface-brand-600-primary mx-auto h-1.5 w-16 rounded-t-[10px]" />
@@ -1110,7 +1110,13 @@ const Funds = () => {
                 </DndContext>
               </thead>
             )}
-            {!query.isLoading ? (
+            {query.isLoading || query.error ? (
+              <tbody className="overflow-y-hidden">
+                {Array.from({ length: 10 }).map((_, i) => (
+                  <RowSkeleton key={i} />
+                ))}
+              </tbody>
+            ) : (
               <TableBody
                 handlerMarkFund={handlerMarkFund}
                 allRows={sortedFunds.length}
@@ -1126,16 +1132,12 @@ const Funds = () => {
                 rows={rows as any}
                 activeIndexCategoryTab={activeIndexCategoryTab}
               />
-            ) : (
-              <tbody className="overflow-y-hidden">
-                {Array.from({ length: 10 }).map((_, i) => (
-                  <RowSkeleton key={i} />
-                ))}
-              </tbody>
             )}
-            {!rows.length && !query.isLoading && (
+            {!rows.length && !query.isLoading && !query.error && (
               <div className="sticky right-0 -mt-10 w-screen whitespace-nowrap text-sm text-gray-600">
-                صندوقی در دیده‌بان وجود ندارد.
+                {activeIndexCategoryTab !== 1000
+                  ? 'صندوقی وجود ندارد.'
+                  : 'صندوقی در دیده‌بان وجود ندارد.'}
               </div>
             )}
           </table>
