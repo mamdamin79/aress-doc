@@ -173,7 +173,7 @@ const PlayListCell: React.FC<
             {durations[index]}
           </span>
         )}
-        <div className="w-full bg-yellow-100">
+        <div className="w-full">
           <div
             className={cn(
               'text-text-neutral-primary relative w-[306px] overflow-hidden text-ellipsis whitespace-nowrap p-2 pr-1 text-sm font-medium',
