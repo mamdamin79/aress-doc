@@ -125,3 +125,10 @@ export type SimplifiedFund = {
   monthlyAlpha: number | null;
   isTradable: boolean;
 };
+
+export type FundColumnMeta = {
+  sort: string;
+  visible: boolean;
+  group: string | null;
+  colorFormat: string;
+};

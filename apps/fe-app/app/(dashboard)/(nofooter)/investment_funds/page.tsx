@@ -54,7 +54,7 @@ import { columnVisibility, filterList } from './FundsTable.constants';
 import { ExportExcel } from './_components/ExportExcel';
 import { useSmartTableScroll } from '@shared';
 import { TableBody } from './_components/TableBody';
-import { Person, SimplifiedFund } from './types';
+import { FundColumnMeta, Person, SimplifiedFund } from './types';
 import {
   useDragIndicator,
   useTableDragSensors,
@@ -89,7 +89,7 @@ const Funds = () => {
   const [watchList, setWatchList] = useState<FundsTableItemApiModel[]>([]);
   const [hasVerticalScroll, setHasVerticalScroll] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [activeSortIndex, setActiveSortIndex] = useState(0);
+  const [activeSortIndex, setActiveSortIndex] = useState<number>(0);
   const headerRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [sortIndicatorPosition, setSortIndicatorPosition] = useState({
     right: headerRefs.current[0]?.offsetLeft,
@@ -190,7 +190,6 @@ const Funds = () => {
       .filter((col) => col.visible)
       .map((col) => {
         const key = col.key as keyof FundTableItemInfoApiModel;
-
         return {
           accessorKey: key,
           id: key,
@@ -216,6 +215,7 @@ const Funds = () => {
                 sensitivity: 'base',
               });
             }
+            return 0;
           },
           cell: (info) => {
             const value = info.getValue();
@@ -246,11 +246,14 @@ const Funds = () => {
   useEffect(() => {
     if (!columns || !columns.length) return;
 
-    const visibleColumns = columns.filter((col) => col.meta.visible);
+    const visibleColumns = columns.filter(
+      (col) => (col.meta as FundColumnMeta)?.visible,
+    );
 
     if (visibleColumns.length) {
       visibleColumns.find((col, index) => {
-        if (col.meta.sort !== 'NO') setActiveSortIndex(index);
+        if ((col.meta as FundColumnMeta).sort !== 'NO')
+          setActiveSortIndex(index);
       });
     }
 
@@ -308,8 +311,6 @@ const Funds = () => {
         const oldIndex = prevOrder.indexOf(active.id as string);
         const newIndex = prevOrder.indexOf(over.id as string);
         const newOrder = arrayMove(prevOrder, oldIndex, newIndex);
-        console.log(oldIndex, newIndex, activeSortIndex);
-
         if (activeSortIndex !== null && oldIndex === activeSortIndex) {
           setActiveSortIndex(newIndex > 1 ? newIndex : newIndex);
         }
@@ -334,7 +335,7 @@ const Funds = () => {
                   customPeriodEndJdate: null,
                   customPeriodStartJdate: null,
                   key: col.key,
-                  sortDirection: col?.meta?.sort ?? 'NO',
+                  sortDirection: col?.sort ?? 'NO',
                   visible: false,
                   selectedFilter: null,
                 })),
@@ -744,10 +745,7 @@ const Funds = () => {
 
   useEffect(() => {
     const visibleColumns = localColumns.filter((col) => col.visible);
-    console.log(visibleColumns);
-
     setActiveSortIndex((prev) => {
-      if (prev === null) return null;
       return prev >= visibleColumns.length ? visibleColumns.length - 1 : prev;
     });
   }, [activeIndexCategoryTab, localColumns]);
@@ -1067,8 +1065,10 @@ const Funds = () => {
                                           }
                                           filterable={false}
                                           subTitle={
-                                            header.column.columnDef.meta
-                                              ?.group as string
+                                            (
+                                              header.column.columnDef
+                                                .meta as FundColumnMeta
+                                            )?.group ?? ''
                                           }
                                           title={String(
                                             flexRender(
