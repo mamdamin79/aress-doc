@@ -8,6 +8,7 @@ import {
   Bookmark,
   useCustomToast,
   FundsTag,
+  Badge,
 } from 'design-system';
 import {
   useFundsServicePostFundsTableTabByTabPin,
@@ -18,6 +19,7 @@ import {
   useFundsServiceDeleteFundsByFundIdWatchlist,
 } from '@openapi';
 import { FundRow, FundsInfoCellProps, TableRowProps } from '../types';
+import Link from 'next/link';
 
 // Define the allowed colors as a type for easier use
 type FundsTagColor =
@@ -45,7 +47,6 @@ function FundsInfoCell({
   isTradable,
   isWatchList,
   fundType,
-  linkWebsite,
 }: FundsInfoCellProps) {
   const [isShowDropDown, setIsShowDropDown] = useState(false);
 
@@ -64,26 +65,24 @@ function FundsInfoCell({
       )}
     >
       <div className="relative flex h-full items-center gap-2 pl-2 pr-6">
-        <span
-          className={cn(
-            'border-border-accent-vividgreen-200 text-text-onaccent-colored-onvividgreen-on200_100_50 bg-surface-accent-vividgreen-100 h-[25px] w-fit select-none rounded-sm border px-2 pt-0.5 text-xs font-medium',
-            {
-              'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]': !isEtf,
-            },
-          )}
-        >
-          ETF
-        </span>
-        <span
-          className={cn(
-            'border-border-accent-vividgreen-200 text-text-onaccent-colored-onvividgreen-on200_100_50 bg-surface-accent-vividgreen-100 h-[25px] w-fit select-none whitespace-nowrap rounded-sm border px-2 text-xs font-medium',
-            {
-              'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]': !isTradable,
-            },
-          )}
-        >
-          قابل خرید
-        </span>
+        <Badge
+          theme={
+            isEtf
+              ? (tabs?.find((tab) => tab.identifier === fundType)
+                  ?.color as FundsTagColor)
+              : 'disabled'
+          }
+          title="ETF"
+        />
+        <Badge
+          theme={
+            isTradable
+              ? (tabs?.find((tab) => tab.identifier === fundType)
+                  ?.color as FundsTagColor)
+              : 'disabled'
+          }
+          title="قابل خرید"
+        />
         {isWatchList ? (
           <FundsTag
             color={
@@ -105,14 +104,20 @@ function FundsInfoCell({
         </div>
         {name.length > 19 ? (
           <Tooltip offset={2} position="left" title={name}>
-            <p className="text-gray-1000 hover:text-text-brand-contrast-700 w-[130px] truncate text-right text-sm font-medium">
+            <Link
+              href={`/my-fund`}
+              className="text-gray-1000 hover:text-text-brand-contrast-700 w-[130px] cursor-pointer truncate text-right text-sm font-medium"
+            >
               {name}
-            </p>
+            </Link>
           </Tooltip>
         ) : (
-          <p className="text-gray-1000 hover:text-text-brand-contrast-700 w-[130px] truncate text-right text-sm font-medium">
+          <Link
+            href={`/my-fund`}
+            className="text-gray-1000 hover:text-text-brand-contrast-700 w-[130px] cursor-pointer truncate text-right text-sm font-medium"
+          >
             {name}
-          </p>
+          </Link>
         )}
         {!isShowDropDown && (
           <div
@@ -178,7 +183,7 @@ function FundsInfoCell({
                     if (prop.text === 'افزودن به دیده‌بان') addToWatchlist();
                     if (prop.text === 'حذف از دیده‌بان') deleteToWatchlist();
                     if (prop.text === 'مشاهده صندوق')
-                      window.open(linkWebsite, '_blank');
+                      window.location.href = '/my-fund';
                   }}
                   className={cn(
                     'text-text-neutral-primary hover:text-text-brand-contrast-700 bg-surface-neutral-primary flex w-[168px] cursor-pointer items-center gap-2 py-2 pr-2 text-sm font-medium',
@@ -385,7 +390,6 @@ function TableRowInner<T extends FundRow>({
         </div>
         <div>
           <FundsInfoCell
-            linkWebsite={row.original.linkWebsite}
             tabs={tabs}
             isRowHovered={true}
             tag={!isMainTab}
@@ -427,9 +431,7 @@ function TableRowInner<T extends FundRow>({
             },
           )}
           key={item.id}
-        >
-          {item.id}
-        </td>
+        ></td>
       ))}
     </tr>
   );

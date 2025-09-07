@@ -213,6 +213,21 @@ const Funds = () => {
             group: col.lowerTitle || null,
             colorFormat: col.colorFormat,
           },
+          sortingFn: (rowA, rowB, columnId) => {
+            if (columnId === 'abbreviated_name') {
+              const pinnedA = rowA.original.pinned;
+              const pinnedB = rowB.original.pinned;
+
+              if (pinnedA !== pinnedB) {
+                return pinnedA ? -1 : 1;
+              }
+              const a = rowA.getValue(columnId);
+              const b = rowB.getValue(columnId);
+              return String(a).localeCompare(String(b), 'fa', {
+                sensitivity: 'base',
+              });
+            }
+          },
           cell: (info) => {
             const value = info.getValue();
             if (col.colorFormat === 'COLORED') {
@@ -304,8 +319,10 @@ const Funds = () => {
         const oldIndex = prevOrder.indexOf(active.id as string);
         const newIndex = prevOrder.indexOf(over.id as string);
         const newOrder = arrayMove(prevOrder, oldIndex, newIndex);
+        console.log(oldIndex, newIndex, activeSortIndex);
+
         if (activeSortIndex !== null && oldIndex === activeSortIndex) {
-          setActiveSortIndex(newIndex > 1 ? newIndex - 1 : newIndex);
+          setActiveSortIndex(newIndex > 1 ? newIndex : newIndex);
         }
         updateColumns.mutateAsync({
           tab: activeIndexCategoryTab,
@@ -352,7 +369,6 @@ const Funds = () => {
       const id = info.identifier;
 
       return {
-        linkWebsite: info.website,
         fundType: info.fundType.identifier,
         logo: info.logoMedium || '',
         id,
@@ -898,6 +914,10 @@ const Funds = () => {
                                           active={!isRotating}
                                           clickFiltered={() => {
                                             setActiveSortIndex(0);
+                                            console.log(
+                                              header.column.getIsSorted(),
+                                            );
+
                                             header.column.toggleSorting(
                                               header.column.getIsSorted() ===
                                                 'desc'
@@ -1314,10 +1334,11 @@ const Funds = () => {
                     .filter((column) => column.columnGroupId === col.identifier)
                     .map((column) => (
                       <div
-                        className="hover:bg-surface-brand-100 w-full cursor-pointer rounded-lg px-2 py-3"
+                        className="hover:bg-surface-brand-100 w-full cursor-pointer rounded-lg"
                         key={column.key}
                       >
                         <Checkbox
+                          className="px-2 py-3"
                           checked={column.visible}
                           onChange={() => {
                             if (column.visible) {
@@ -1335,7 +1356,7 @@ const Funds = () => {
                               });
                             }
                           }}
-                          reactcontent={column.label}
+                          reactContent={column.label}
                         />
                       </div>
                     ))}

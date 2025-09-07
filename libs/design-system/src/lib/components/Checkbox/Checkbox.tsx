@@ -10,7 +10,7 @@ import { Check } from 'lucide-react';
 
 interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onChange: () => void;
-  reactcontent?: string | ReactNode;
+  reactContent?: string | ReactNode;
   className?: string;
 }
 
@@ -48,7 +48,7 @@ export function Checkbox(props: CheckboxProps) {
           props.className,
         )}
       >
-        {props.reactcontent ? props.reactcontent : props.content}
+        {props.reactContent ? props.reactContent : props.reactContent}
       </Label>
     </Field>
   );
