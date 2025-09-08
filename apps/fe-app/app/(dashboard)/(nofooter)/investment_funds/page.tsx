@@ -50,7 +50,7 @@ import {
 } from '@tanstack/react-table';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useSortable } from '@dnd-kit/sortable';
-import { columnVisibility, filterList } from './FundsTable.constants';
+import { columnVisibility } from './FundsTable.constants';
 import { ExportExcel } from './_components/ExportExcel';
 import { useSmartTableScroll } from '@shared';
 import { TableBody } from './_components/TableBody';
@@ -249,11 +249,12 @@ const Funds = () => {
     const visibleColumns = columns.filter(
       (col) => (col.meta as FundColumnMeta)?.visible,
     );
+    console.log('im heare two');
 
     if (visibleColumns.length) {
       visibleColumns.find((col, index) => {
         if ((col.meta as FundColumnMeta).sort !== 'NO')
-          setActiveSortIndex(index - 1);
+          setActiveSortIndex(index);
       });
     }
 
@@ -311,9 +312,12 @@ const Funds = () => {
         const oldIndex = prevOrder.indexOf(active.id as string);
         const newIndex = prevOrder.indexOf(over.id as string);
         const newOrder = arrayMove(prevOrder, oldIndex, newIndex);
-        if (activeSortIndex !== null && oldIndex === activeSortIndex) {
-          setActiveSortIndex(newIndex > 1 ? newIndex : newIndex);
-        }
+
+        newOrder.find((order, index) => {
+          if (order === sorting[0].id) {
+            setActiveSortIndex(index);
+          }
+        });
         updateColumns.mutateAsync({
           tab: activeIndexCategoryTab,
           requestBody: {
@@ -415,6 +419,7 @@ const Funds = () => {
       const bStr = String(bVal ?? '');
 
       const compare = aStr.localeCompare(bStr, 'fa', { sensitivity: 'base' });
+      console.log(aStr);
 
       return desc ? -compare : compare;
     });
@@ -435,6 +440,7 @@ const Funds = () => {
     onSortingChange: async (updater) => {
       const newSorting =
         typeof updater === 'function' ? updater(sorting) : updater;
+      setSorting(newSorting);
       try {
         await Promise.all(
           newSorting.map((sortItem) =>
@@ -450,14 +456,13 @@ const Funds = () => {
       } catch (error) {
         console.log(error);
       }
-      setSorting(newSorting);
     },
     onColumnOrderChange: setColumnOrder,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    manualSorting: true,
+    enableMultiSort: true,
   });
 
   useEffect(() => {
@@ -743,35 +748,25 @@ const Funds = () => {
     return map;
   }, [columns]);
 
-  useEffect(() => {
-    const visibleColumns = localColumns.filter((col) => col.visible);
-    setActiveSortIndex((prev) => {
-      return prev >= visibleColumns.length ? visibleColumns.length - 1 : prev;
-    });
-  }, [activeIndexCategoryTab, localColumns]);
+  const filterOptions = localColumns
+    .filter(
+      (col) =>
+        col.visible &&
+        col.columnFilter &&
+        Array.isArray(col.columnFilter.options) &&
+        col.columnFilter.options.length > 0,
+    )
+    .map((col) => ({
+      title: col.label,
+      singleOpen: false,
+      options: col.columnFilter.options.map((opt, index) => ({
+        label: opt.label,
+        select: index === 0,
+        min_amount: opt.min_amount ?? null,
+        max_amount: opt.max_amount ?? null,
+      })),
+    }));
 
-const filterOptions = localColumns
-  .filter(
-    (col) =>
-      col.visible &&
-      col.columnFilter &&
-      Array.isArray(col.columnFilter.options) &&
-      col.columnFilter.options.length > 0
-  )
-  .map((col) => ({
-    title: col.label,
-    singleOpen: false,
-    options: col.columnFilter.options.map((opt, index) => ({
-      label: opt.label,
-      select: index === 0,
-      min_amount: opt.min_amount ?? null,
-      max_amount: opt.max_amount ?? null,
-    })),
-  }));
-    
-    
-  console.log(filterOptions);
-  
   return (
     <>
       <div
@@ -880,11 +875,11 @@ const filterOptions = localColumns
                             : '',
                       }}
                       className={cn('z-[9999] duration-300', {
-                        'absolute bottom-[2px] z-20 transition-transform':
+                        'absolute bottom-0 z-20 transition-transform':
                           activeSortIndex !== 0,
                         'group-hover/table:-right-0':
                           activeSortIndex !== 0 && isScrollAtStart,
-                        'fixed right-[208px] top-[240px] z-10 w-fit':
+                        'fixed right-[203px] top-[240px] z-10 w-fit':
                           activeSortIndex === 0,
                         'top-[157px]':
                           activeSortIndex === 0 && !isHeaderVisible,
