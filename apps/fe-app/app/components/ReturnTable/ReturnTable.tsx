@@ -1,7 +1,10 @@
 import { Button, Cell, cn, Icon } from 'design-system';
 import React, { useEffect, useRef, useState } from 'react';
 
-export type TableRow = Record<string, string | number | null>;
+export type TableRow = {
+  type: 'indicator' | 'text';
+  data: Record<string, string | number | null>;
+};
 
 export interface TableData {
   columns: string[];
@@ -107,7 +110,7 @@ export const ReturnTable: React.FC<GenericTableProps> = ({ data }) => {
             {columns.map((col, colIndex) => (
               <div
                 key={col}
-                className={cn('h-[42px] font-medium', {
+                className={cn('relative h-[42px] font-medium', {
                   'text-md text-text-neutral-primary text-right':
                     colIndex === 0,
                   'text-center': colIndex !== 0,
@@ -117,6 +120,9 @@ export const ReturnTable: React.FC<GenericTableProps> = ({ data }) => {
                 }}
               >
                 {col}
+                {(colIndex === 0 || colIndex === columns.length - 2) && (
+                  <div className="bg-border-neutral-contrast absolute left-0 top-0 h-6 w-[1px] rounded-[100px]"></div>
+                )}
               </div>
             ))}
           </div>
@@ -125,7 +131,8 @@ export const ReturnTable: React.FC<GenericTableProps> = ({ data }) => {
           <div className="max-h-[500px] overflow-y-auto">
             {/* Changed to overflow-y-auto for clarity */}
             {rows.map((row, rowIndex) => {
-              const key = idKey && row[idKey] ? String(row[idKey]) : rowIndex;
+              const key =
+                idKey && row.data[idKey] ? String(row.data[idKey]) : rowIndex;
               return (
                 <div
                   key={key}
@@ -154,16 +161,20 @@ export const ReturnTable: React.FC<GenericTableProps> = ({ data }) => {
                       )}
                     >
                       {colIndex === 0 ? (
-                        row[col]
+                        row.data[col]
                       ) : (
                         <Cell
-                          value={row[col]}
+                          value={row.data[col]}
                           cellStyle="h-16 w-full flex items-center justify-center"
-                          format={{
-                            type: 'percent',
-                            precision: 1,
-                            signed: true,
-                          }}
+                          format={
+                            row.type === 'indicator'
+                              ? 'quarterSymbol'
+                              : {
+                                  type: 'percent',
+                                  precision: 1,
+                                  signed: true,
+                                }
+                          }
                           grayMode={false}
                           valueBasedBg=""
                         />
