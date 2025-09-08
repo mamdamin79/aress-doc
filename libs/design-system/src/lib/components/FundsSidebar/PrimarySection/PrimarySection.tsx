@@ -25,26 +25,19 @@ export const PrimarySection: React.FC<PrimarySectionProps> = ({
   const textRef = useRef<HTMLDivElement>(null);
   const [isTruncated, setIsTruncated] = useState(false);
 
-  // Check if the element is overflowing
-  const checkOverflow = () => {
+  const checkWidth = () => {
     const el = textRef.current;
-    if (el) {
-      setIsTruncated(el.scrollWidth > el.clientWidth);
-    }
+    if (!el) return;
+    setIsTruncated(el.scrollWidth > 120);
   };
 
-  // On mount and when text changes
   useEffect(() => {
-    const handle = requestAnimationFrame(checkOverflow);
-    return () => cancelAnimationFrame(handle);
-  }, [primaryText.text]);
+    checkWidth();
 
-  // Re-check on resize (e.g., responsive containers)
-  useEffect(() => {
     const el = textRef.current;
     if (!el) return;
 
-    const resizeObserver = new ResizeObserver(() => checkOverflow());
+    const resizeObserver = new ResizeObserver(() => checkWidth());
     resizeObserver.observe(el);
 
     return () => resizeObserver.disconnect();
@@ -70,7 +63,8 @@ export const PrimarySection: React.FC<PrimarySectionProps> = ({
   const textContent = (
     <div
       ref={textRef}
-      className="block w-full overflow-hidden truncate whitespace-nowrap"
+      className="truncate"
+      style={{ maxWidth: '120px' }} // enforce truncation visually
     >
       {primaryText.text}
     </div>
@@ -82,7 +76,7 @@ export const PrimarySection: React.FC<PrimarySectionProps> = ({
         <div
           dir="rtl"
           className={cn(
-            'text-text-neutral-primary overflow-hidden whitespace-nowrap',
+            'text-text-neutral-primary min-w-0 flex-1',
             getTextClass(primaryText.mode),
           )}
         >

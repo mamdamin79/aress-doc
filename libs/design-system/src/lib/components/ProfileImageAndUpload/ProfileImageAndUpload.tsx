@@ -55,7 +55,12 @@ export const ProfileImageAndUpload: React.FC<FileUploadProps> = ({
       <FileUploader handleChange={handleFileChange} name="file" types={types}>
         <div className="bg-surface-neutral-primary border-border-neutral-tertiary relative h-32 w-32 rounded-full border-2 p-1 outline-none">
           <div className="flex h-full w-full items-end justify-center overflow-hidden rounded-full">
-            <div className={cn('object-cover', `h-[120px] w-[120px]`)}>
+            <div
+              className={cn(
+                'flex items-center justify-center object-cover',
+                `h-[120px] w-[120px]`,
+              )}
+            >
               {image ? (
                 <img
                   alt="profile image"
@@ -65,7 +70,11 @@ export const ProfileImageAndUpload: React.FC<FileUploadProps> = ({
                   className={cn('object-cover', image && `h-[120px] w-[120px]`)}
                 />
               ) : (
-                <USER_SVG width={120} height={120} />
+                <USER_SVG
+                  width={80}
+                  height={80}
+                  className="-mb-8 h-[90px] w-[90px] object-contain"
+                />
               )}
             </div>
           </div>
