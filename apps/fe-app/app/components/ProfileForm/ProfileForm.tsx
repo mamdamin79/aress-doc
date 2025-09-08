@@ -153,6 +153,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             )}
             {editDialog === 'email' && (
               <ChangeMail
+                currentMail={email ?? ''}
                 onClose={(success) => setEditDialog(success ? 'success' : null)}
               />
             )}
