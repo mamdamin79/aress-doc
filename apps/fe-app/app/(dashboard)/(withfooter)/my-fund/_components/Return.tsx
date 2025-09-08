@@ -8,7 +8,7 @@ type ReturnAnalysisProps = {
 };
 
 export const Return: React.FC<ReturnAnalysisProps> = ({ data }) => {
-  console.log(data);
+  console.log(data.returnTrend);
 
   const riskReturnAnalysis = {
     riskCriteria: 1,
@@ -62,6 +62,37 @@ export const Return: React.FC<ReturnAnalysisProps> = ({ data }) => {
     nav: (item.netAssetsRials / 1e9).toFixed(0),
   }));
 
+  const dataList = [
+    {
+      key: 'بازده صندوق',
+      value: `${data?.returnTrend?.fundReturnInPeriodPercent ?? '-'} ٪`,
+    },
+    {
+      key: 'بازده صندوق‌های سهامی',
+      value: `${data?.returnTrend?.stockFundsReturnInPeriodPercent ?? '-'} ٪`,
+    },
+    {
+      key: 'بازده شاخص کل',
+      value: `${data?.returnTrend?.tedpixReturnInPeriodPercent ?? '-'} ٪`,
+    },
+    {
+      key: 'بازده اضافه صندوق نسبت به صندوق‌های سهامی',
+      value: `${data?.returnTrend?.fundReturnVsStockFundsInPeriodPercent ?? '-'} ٪`,
+    },
+    {
+      key: 'بازده اضافه صندوق نسبت به شاخص کل',
+      value: `${data?.returnTrend?.fundReturnVsTedpixInPeriodPercent ?? '-'} ٪`,
+    },
+    {
+      key: 'میانگین اهرم صندوق',
+      value: `${data?.returnTrend?.fundAverageLeveragePercent ?? '-'} ٪`,
+    },
+    {
+      key: 'میانگین اهرم صندوق‌های سهامی',
+      value: `${data.returnTrend?.stockFundsAverageLeveragePercent ?? '-'} ٪`,
+    },
+  ];
+
   const [activeTab, setActiveTab] = useState(0);
   return (
     <div className="mt-12">
@@ -98,65 +129,12 @@ export const Return: React.FC<ReturnAnalysisProps> = ({ data }) => {
           <DataList
             className="h-[600px] w-[392px]"
             mode="vertical"
-            data={[
-              {
-                key: 'بازده صندوق',
-                value: '۴.۳٪',
-              },
-              {
-                key: 'بتا صندوق',
-                value: '۱.۳ واحد',
-              },
-              {
-                key: 'واحد های ابطال شده',
-                value: '۳۵۶ واحد',
-              },
-              {
-                key: 'واحد های صادر شده',
-                value: '۶,۲۵۴ واحد',
-              },
-              {
-                key: 'رنج قیمتی',
-                value: '۳,۱۰۰-۳,۳۰۰ ریال',
-              },
-              {
-                key: 'گردش دارایی',
-                value: '۱۲٪',
-              },
-            ]}
+            data={dataList}
           />
         </div>
       </div>
       <div className="mb-6 xl:hidden">
-        <DataList
-          data={[
-            {
-              key: 'بازده صندوق',
-              value: '۴.۳٪',
-            },
-            {
-              key: 'بتا صندوق',
-              value: '۱.۳ واحد',
-            },
-            {
-              key: 'واحد های ابطال شده',
-              value: '۳۵۶ واحد',
-            },
-            {
-              key: 'واحد های صادر شده',
-              value: '۶,۲۵۴ واحد',
-            },
-            {
-              key: 'رنج قیمتی',
-              value: '۳,۱۰۰-۳,۳۰۰ ریال',
-            },
-            {
-              key: 'گردش دارایی',
-              value: '۱۲٪',
-            },
-          ]}
-          mode="carousel"
-        />
+        <DataList data={dataList} mode="carousel" />
       </div>
       <div className="mb-11 flex items-start justify-center gap-3">
         <div className="text-md mt-2 font-normal">بازه زمانی:</div>
