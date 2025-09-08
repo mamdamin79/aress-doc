@@ -197,7 +197,10 @@ export const Summary: React.FC<SummaryProps> = ({
             : undefined,
           name: videoApi.intervieweeName || undefined,
           jobTitle: videoApi.intervieweeRole || undefined,
-          spriteBaseUrl: `${baseURL}${videoApi.video.thumbnailImages[0].image}`,
+          spriteBaseUrl: {
+            image: `${baseURL}${videoApi.video.thumbnailImages[0].image}`,
+            intervalSeconds: videoApi.video.thumbnailImages[0].intervalSeconds,
+          },
         };
       })
       .filter(Boolean) as Video[];

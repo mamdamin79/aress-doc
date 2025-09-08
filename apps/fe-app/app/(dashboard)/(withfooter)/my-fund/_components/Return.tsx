@@ -10,7 +10,51 @@ type ReturnAnalysisProps = {
 export const Return: React.FC<ReturnAnalysisProps> = ({ data }) => {
   console.log(data);
 
-  const bubbleData = data.riskReturnAnalysis?.chartItems?.map((item) => ({
+  const riskReturnAnalysis = {
+    riskCriteria: 1,
+    calculationPeriod: 1,
+    calculationCustomPeriodStartJdate: null,
+    calculationCustomPeriodEndJdate: null,
+    chartItems: [
+      {
+        abbreviatedName: 'سهم آشنا',
+        risk: 0.9,
+        returnPercent: 2800,
+        netAssetsRials: 4800000000000,
+        colorHex: '#0000ff',
+      },
+      {
+        abbreviatedName: 'در اوراق بهادار مبتنی بر طلای زرین آگاه',
+        risk: 0.47163758405947215,
+        returnPercent: 1547.5736207303942,
+        netAssetsRials: 3721760384157,
+        colorHex: '#00ff00',
+      },
+      {
+        abbreviatedName: 'آسمان امید',
+        risk: 0.8079829322925767,
+        returnPercent: 3111.419257010967,
+        netAssetsRials: 9951428931732,
+        colorHex: '#00ff00',
+      },
+      {
+        abbreviatedName: 'بانک اقتصاد نوین',
+        risk: 0.7690066859730045,
+        returnPercent: 3014.172150639745,
+        netAssetsRials: 4907296887956,
+        colorHex: '#00ff00',
+      },
+      {
+        abbreviatedName: 'گنجینه رفاه',
+        risk: 0.585077757097346,
+        returnPercent: 2529.583233161694,
+        netAssetsRials: 7146046676895,
+        colorHex: '#00ff00',
+      },
+    ],
+  };
+
+  const bubbleData = riskReturnAnalysis?.chartItems?.map((item) => ({
     x: item.risk,
     y: item.returnPercent,
     z: item.netAssetsRials / 1e9,

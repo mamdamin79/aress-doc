@@ -10,7 +10,10 @@ interface PlayerProgressBarProps {
   currentTime: number;
   videoRef: React.RefObject<HTMLVideoElement | null>;
   bufferedTime: number;
-  spriteBaseUrl?: string;
+  spriteBaseUrl?: {
+    image: string;
+    intervalSeconds: number;
+  };
 }
 
 const DraggableHandle = ({
@@ -154,12 +157,14 @@ export const PlayerProgressBar: React.FC<PlayerProgressBarProps> = ({
         onMouseLeave={handleMouseLeave}
       />
 
-      <PlayerThumbnail
-        duration={duration}
-        hoverTime={hoverTime}
-        videoRef={videoRef}
-        spriteBaseUrl={spriteBaseUrl}
-      />
+      {spriteBaseUrl && (
+        <PlayerThumbnail
+          duration={duration}
+          hoverTime={hoverTime}
+          videoRef={videoRef}
+          spriteBaseUrl={spriteBaseUrl}
+        />
+      )}
 
       <progress
         dir="ltr"
