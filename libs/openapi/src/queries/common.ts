@@ -406,6 +406,8 @@ export type FundsServicePostFundsTableTabByTabSortMutationResult = Awaited<
 export type FundsServicePostFundsTableTabByTabColumnsMutationResult = Awaited<
   ReturnType<typeof FundsService.postFundsTableTabByTabColumns>
 >;
+export type FundsServicePostFundsTableTabByTabColumnsResetMutationResult =
+  Awaited<ReturnType<typeof FundsService.postFundsTableTabByTabColumnsReset>>;
 export type FundsServicePostFundsTableTabByTabColumnMutationResult = Awaited<
   ReturnType<typeof FundsService.postFundsTableTabByTabColumn>
 >;
