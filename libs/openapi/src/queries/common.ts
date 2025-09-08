@@ -266,6 +266,45 @@ export const UseFundsServiceGetFundsTableTabByTabCsvKeyFn = (
   },
   queryKey?: Array<unknown>,
 ) => [useFundsServiceGetFundsTableTabByTabCsvKey, ...(queryKey ?? [{ tab }])];
+export type FundsServiceGetFundsStockByFundIdSummaryDefaultResponse = Awaited<
+  ReturnType<typeof FundsService.getFundsStockByFundIdSummary>
+>;
+export type FundsServiceGetFundsStockByFundIdSummaryQueryResult<
+  TData = FundsServiceGetFundsStockByFundIdSummaryDefaultResponse,
+  TError = unknown,
+> = UseQueryResult<TData, TError>;
+export const useFundsServiceGetFundsStockByFundIdSummaryKey =
+  'FundsServiceGetFundsStockByFundIdSummary';
+export const UseFundsServiceGetFundsStockByFundIdSummaryKeyFn = (
+  {
+    fundId,
+  }: {
+    fundId: number;
+  },
+  queryKey?: Array<unknown>,
+) => [
+  useFundsServiceGetFundsStockByFundIdSummaryKey,
+  ...(queryKey ?? [{ fundId }]),
+];
+export type FundsServiceGetFundsStockByFundIdReturnAnalysisDefaultResponse =
+  Awaited<ReturnType<typeof FundsService.getFundsStockByFundIdReturnAnalysis>>;
+export type FundsServiceGetFundsStockByFundIdReturnAnalysisQueryResult<
+  TData = FundsServiceGetFundsStockByFundIdReturnAnalysisDefaultResponse,
+  TError = unknown,
+> = UseQueryResult<TData, TError>;
+export const useFundsServiceGetFundsStockByFundIdReturnAnalysisKey =
+  'FundsServiceGetFundsStockByFundIdReturnAnalysis';
+export const UseFundsServiceGetFundsStockByFundIdReturnAnalysisKeyFn = (
+  {
+    fundId,
+  }: {
+    fundId: number;
+  },
+  queryKey?: Array<unknown>,
+) => [
+  useFundsServiceGetFundsStockByFundIdReturnAnalysisKey,
+  ...(queryKey ?? [{ fundId }]),
+];
 export type UsersServicePostUsersLoginMutationResult = Awaited<
   ReturnType<typeof UsersService.postUsersLogin>
 >;
@@ -367,9 +406,45 @@ export type FundsServicePostFundsTableTabByTabSortMutationResult = Awaited<
 export type FundsServicePostFundsTableTabByTabColumnsMutationResult = Awaited<
   ReturnType<typeof FundsService.postFundsTableTabByTabColumns>
 >;
+export type FundsServicePostFundsTableTabByTabColumnsResetMutationResult =
+  Awaited<ReturnType<typeof FundsService.postFundsTableTabByTabColumnsReset>>;
 export type FundsServicePostFundsTableTabByTabColumnMutationResult = Awaited<
   ReturnType<typeof FundsService.postFundsTableTabByTabColumn>
 >;
+export type FundsServicePostFundsStockByFundIdSummaryCaseByCaseMutationResult =
+  Awaited<
+    ReturnType<typeof FundsService.postFundsStockByFundIdSummaryCaseByCase>
+  >;
+export type FundsServicePostFundsStockByFundIdReturnAnalysisReturnTrendMutationResult =
+  Awaited<
+    ReturnType<
+      typeof FundsService.postFundsStockByFundIdReturnAnalysisReturnTrend
+    >
+  >;
+export type FundsServicePostFundsStockByFundIdReturnAnalysisReturnComparisonMutationResult =
+  Awaited<
+    ReturnType<
+      typeof FundsService.postFundsStockByFundIdReturnAnalysisReturnComparison
+    >
+  >;
+export type FundsServicePostFundsStockByFundIdReturnAnalysisReturnRankMutationResult =
+  Awaited<
+    ReturnType<
+      typeof FundsService.postFundsStockByFundIdReturnAnalysisReturnRank
+    >
+  >;
+export type FundsServicePostFundsStockByFundIdReturnAnalysisRiskReturnAnalysisMutationResult =
+  Awaited<
+    ReturnType<
+      typeof FundsService.postFundsStockByFundIdReturnAnalysisRiskReturnAnalysis
+    >
+  >;
+export type FundsServicePostFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysisMutationResult =
+  Awaited<
+    ReturnType<
+      typeof FundsService.postFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysis
+    >
+  >;
 export type DashboardsServicePutDashboardsMutationResult = Awaited<
   ReturnType<typeof DashboardsService.putDashboards>
 >;

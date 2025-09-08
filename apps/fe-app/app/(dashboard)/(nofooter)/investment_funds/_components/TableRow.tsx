@@ -20,6 +20,7 @@ import {
 } from '@openapi';
 import { FundRow, FundsInfoCellProps, TableRowProps } from '../types';
 import Link from 'next/link';
+import { flexRender } from '@tanstack/react-table';
 
 // Define the allowed colors as a type for easier use
 type FundsTagColor =
@@ -418,21 +419,27 @@ function TableRowInner<T extends FundRow>({
           'group-hover:bg-surface-accent-blue-50': !row.original.pinned,
         })}
       ></td>
-      {row?.getVisibleCells().map((item) => (
-        <td
-          dir="ltr"
-          className={cn(
-            'bg-surface-neutral-primary text-text-neutral-primary group-hover:bg-surface-accent-blue-50',
-            {
-              'text-text-accent-red-contrast-700':
-                (item.getValue() as number) < 0,
-              'bg-surface-accent-blue-50 group-hover:surface-accent-blue-100':
-                row.original.pinned,
-            },
-          )}
-          key={item.id}
-        ></td>
-      ))}
+      {row?.getVisibleCells().map((item) => {
+        console.log(item.row.original);
+
+        return (
+          <td
+            dir="ltr"
+            className={cn(
+              'bg-surface-neutral-primary text-text-neutral-primary group-hover:bg-surface-accent-blue-50',
+              {
+                'text-text-accent-red-contrast-700':
+                  (item.getValue() as number) < 0,
+                'bg-surface-accent-blue-50 group-hover:surface-accent-blue-100':
+                  row.original.pinned,
+              },
+            )}
+            key={item.id}
+          >
+            {flexRender(item.column.columnDef.cell, item.getContext())}{' '}
+          </td>
+        );
+      })}
     </tr>
   );
 }

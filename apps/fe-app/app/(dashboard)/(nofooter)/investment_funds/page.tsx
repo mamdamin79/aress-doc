@@ -205,7 +205,6 @@ const Funds = () => {
             if (columnId === 'abbreviated_name') {
               const pinnedA = rowA.original.pinned;
               const pinnedB = rowB.original.pinned;
-
               if (pinnedA !== pinnedB) {
                 return pinnedA ? -1 : 1;
               }
@@ -236,6 +235,8 @@ const Funds = () => {
         };
       });
   }, [localColumns]);
+
+  console.log(columns);
 
   const [columnOrder, setColumnOrder] = React.useState<string[]>(() =>
     columns.map((c) => c.id!),
@@ -719,13 +720,12 @@ const Funds = () => {
             key: columnKey,
             sortDirection: 'NO',
             visible: !visible,
-            selectedFilter: null,
+            selectedColumnFilters: null,
           },
         },
       });
     } catch (error) {
       console.log(error);
-
       setLocalColumns((prev) =>
         prev.map((col) => (col.key === columnKey ? { ...col, visible } : col)),
       );
@@ -1371,7 +1371,12 @@ const Funds = () => {
                     .filter((column) => column.columnGroupId === col.identifier)
                     .map((column) => (
                       <div
-                        className="hover:bg-surface-brand-100 w-full cursor-pointer rounded-lg"
+                        className={cn(
+                          'hover:bg-surface-brand-100 w-full cursor-pointer rounded-lg',
+                          {
+                            'col-span-2': column.nameInGroup === 'بازه دلخواه',
+                          },
+                        )}
                         key={column.key}
                       >
                         <Checkbox
@@ -1393,7 +1398,7 @@ const Funds = () => {
                               });
                             }
                           }}
-                          reactContent={column.lowerTitle ?? column.upperTitle}
+                          reactContent={column.nameInGroup ?? column.upperTitle}
                         />
                       </div>
                     ))}

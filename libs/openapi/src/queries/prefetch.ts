@@ -201,3 +201,31 @@ export const prefetchUseFundsServiceGetFundsTableTabByTabCsv = (
     queryKey: Common.UseFundsServiceGetFundsTableTabByTabCsvKeyFn({ tab }),
     queryFn: () => FundsService.getFundsTableTabByTabCsv({ tab }),
   });
+export const prefetchUseFundsServiceGetFundsStockByFundIdSummary = (
+  queryClient: QueryClient,
+  {
+    fundId,
+  }: {
+    fundId: number;
+  },
+) =>
+  queryClient.prefetchQuery({
+    queryKey: Common.UseFundsServiceGetFundsStockByFundIdSummaryKeyFn({
+      fundId,
+    }),
+    queryFn: () => FundsService.getFundsStockByFundIdSummary({ fundId }),
+  });
+export const prefetchUseFundsServiceGetFundsStockByFundIdReturnAnalysis = (
+  queryClient: QueryClient,
+  {
+    fundId,
+  }: {
+    fundId: number;
+  },
+) =>
+  queryClient.prefetchQuery({
+    queryKey: Common.UseFundsServiceGetFundsStockByFundIdReturnAnalysisKeyFn({
+      fundId,
+    }),
+    queryFn: () => FundsService.getFundsStockByFundIdReturnAnalysis({ fundId }),
+  });
