@@ -8,7 +8,7 @@ import React, {
   useState,
 } from 'react';
 import { Toaster } from 'react-hot-toast';
-import { useHeaderVisibility } from '@shared';
+import { PersianDatePicker, useHeaderVisibility } from '@shared';
 // needed for table body level scope DnD setup
 import {
   DndContext,
@@ -77,6 +77,7 @@ import { useMutation } from '@tanstack/react-query';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
   const [activeIndexCategoryTab, setActiveIndexCategoryTab] = useState(1);
+  const [isShowDatePicker, setIsShowDatePicker] = useState(false);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [isScrollAtStart, setIsScrollAtStart] = useState<boolean>(false);
@@ -145,9 +146,8 @@ const Funds = () => {
       >
         {isDraggingOver && position && (
           <div
-            className={`bg-border-brand-contrast-700 absolute bottom-0 top-1 z-10 h-[90%] w-0.5 ${
-              position === 'right' ? 'left-0' : 'right-0'
-            }`}
+            className={`bg-border-brand-contrast-700 absolute bottom-0 top-1 z-10 h-[90%] w-0.5 ${position === 'right' ? 'left-0' : 'right-0'
+              }`}
           >
             <div className="bg-border-brand-contrast-700 absolute top-0 flex h-2.5 w-2.5 translate-x-1 items-center justify-center rounded-full">
               <div className="bg-surface-neutral-primary h-1.5 w-1.5 rounded-full" />
@@ -236,8 +236,6 @@ const Funds = () => {
       });
   }, [localColumns]);
 
-  console.log(columns);
-
   const [columnOrder, setColumnOrder] = React.useState<string[]>(() =>
     columns.map((c) => c.id!),
   );
@@ -250,8 +248,6 @@ const Funds = () => {
     const visibleColumns = columns.filter(
       (col) => (col.meta as FundColumnMeta)?.visible,
     );
-    console.log('im heare two');
-
     if (visibleColumns.length) {
       visibleColumns.find((col, index) => {
         if ((col.meta as FundColumnMeta).sort !== 'NO')
@@ -420,7 +416,6 @@ const Funds = () => {
       const bStr = String(bVal ?? '');
 
       const compare = aStr.localeCompare(bStr, 'fa', { sensitivity: 'base' });
-      console.log(aStr);
 
       return desc ? -compare : compare;
     });
@@ -950,10 +945,6 @@ const Funds = () => {
                                           active={!isRotating}
                                           clickFiltered={() => {
                                             setActiveSortIndex(0);
-                                            console.log(
-                                              header.column.getIsSorted(),
-                                            );
-
                                             header.column.toggleSorting(
                                               header.column.getIsSorted() ===
                                                 'desc'
@@ -965,10 +956,10 @@ const Funds = () => {
                                           shadow={false}
                                           type={
                                             header.column.getIsSorted() ===
-                                            'asc'
+                                              'asc'
                                               ? 'active-asc'
                                               : header.column.getIsSorted() ===
-                                                  'desc'
+                                                'desc'
                                                 ? 'inactive'
                                                 : 'inactive'
                                           }
@@ -1010,10 +1001,10 @@ const Funds = () => {
                                           {(Object.entries(selectedFilters)
                                             .length > 0 ||
                                             fundSearchQuery) && (
-                                            <div className="absolute -right-1 -top-1 z-30">
-                                              <FundsTag color="pink" />
-                                            </div>
-                                          )}
+                                              <div className="absolute -right-1 -top-1 z-30">
+                                                <FundsTag color="pink" />
+                                              </div>
+                                            )}
                                           <Icon size="lg" name="filter" />
                                         </div>
                                       </Tooltip>
@@ -1041,7 +1032,7 @@ const Funds = () => {
                                     )}
                                   >
                                     {index >= 2 &&
-                                    header.isPlaceholder ? null : (
+                                      header.isPlaceholder ? null : (
                                       <div
                                         className={cn('w-full', {
                                           'h-[75px] cursor-pointer select-none':
@@ -1072,10 +1063,10 @@ const Funds = () => {
                                           size={'large'}
                                           type={
                                             header.column.getIsSorted() ===
-                                            'asc'
+                                              'asc'
                                               ? 'active-desc'
                                               : header.column.getIsSorted() ===
-                                                  'desc'
+                                                'desc'
                                                 ? 'active-asc'
                                                 : 'inactive'
                                           }
@@ -1225,7 +1216,7 @@ const Funds = () => {
                       <span>تعداد سطر در جدول: </span>
                       {formatNumber(
                         table.getState().pagination.pageSize *
-                          (table.getState().pagination.pageIndex + 1),
+                        (table.getState().pagination.pageIndex + 1),
                         { commaSeparated: true },
                       )}
                     </div>
@@ -1247,8 +1238,8 @@ const Funds = () => {
                     {
                       'pb-2':
                         table.getState().pagination.pageSize *
-                          (table.getState().pagination.pageIndex + 1) *
-                          table.getPageCount() ===
+                        (table.getState().pagination.pageIndex + 1) *
+                        table.getPageCount() ===
                         +prop.text,
                     },
                   )}
@@ -1271,7 +1262,7 @@ const Funds = () => {
               <div>
                 {formatNumber(
                   table.getState().pagination.pageSize *
-                    (table.getState().pagination.pageIndex + 1),
+                  (table.getState().pagination.pageIndex + 1),
                   { commaSeparated: true },
                 )}
                 -
@@ -1383,6 +1374,9 @@ const Funds = () => {
                           className="px-2 py-3"
                           checked={column.visible}
                           onChange={() => {
+                            if (column.nameInGroup === 'بازه دلخواه') {
+                              setIsShowDatePicker(true);
+                            }
                             if (column.visible) {
                               handlerChangeVisibilityColumns({
                                 columnKey: column.key,
@@ -1438,6 +1432,17 @@ const Funds = () => {
         ></DatePicker>
       </Dialog>
       <Toaster position="bottom-center" />
+      {
+        isShowDatePicker &&
+        <Dialog onClose={() => setIsShowDatePicker(false)}
+          isOpen={isShowDatePicker}
+        >
+          <PersianDatePicker
+            onClose={() => setIsShowDatePicker(false)}
+            onChange={(e) => console.log(e.end, e.start)}
+            mode="range" min="1380/01/01" max="1404/06/03" />
+        </Dialog>
+      }
     </>
   );
 };

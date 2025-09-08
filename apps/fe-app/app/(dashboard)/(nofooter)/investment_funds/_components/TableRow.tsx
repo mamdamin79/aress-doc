@@ -420,8 +420,6 @@ function TableRowInner<T extends FundRow>({
         })}
       ></td>
       {row?.getVisibleCells().map((item) => {
-        console.log(item.row.original);
-
         return (
           <td
             dir="ltr"
