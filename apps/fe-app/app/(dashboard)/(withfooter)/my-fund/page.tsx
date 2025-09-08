@@ -9,14 +9,24 @@ export default async function FundPage() {
   const cookieStore = await cookies();
 
   OpenAPI.TOKEN = cookieStore.get('access_token')?.value;
-  const {
-    fundBasicInfo,
-    fundSummaryBasicInfo,
-    fundSummaryCaseByCase,
-    fundVideoPlaylist,
-  } = await FundsService.getFundsStockByFundIdSummary({
-    fundId,
-  });
+  const [
+    {
+      fundBasicInfo,
+      fundSummaryBasicInfo,
+      fundSummaryCaseByCase,
+      fundVideoPlaylist,
+    },
+    {
+      returnComparison,
+      returnRank,
+      returnTrend,
+      riskReturnAnalysis,
+      seasonalityEffectAnalysis,
+    },
+  ] = await Promise.all([
+    FundsService.getFundsStockByFundIdSummary({ fundId }),
+    FundsService.getFundsStockByFundIdReturnAnalysis({ fundId }),
+  ]);
   const baseURL = process.env.NEXT_PUBLIC_API_URL ?? '';
 
   console.log(fundVideoPlaylist[0].video.thumbnailImages);
@@ -103,6 +113,13 @@ export default async function FundPage() {
             fundSummaryBasicInfo: fundSummaryBasicInfo!,
             fundSummaryCaseByCase: fundSummaryCaseByCase!,
             fundVideoPlaylist: fundVideoPlaylist!,
+          }}
+          returnAnalysis={{
+            returnComparison,
+            returnRank,
+            returnTrend,
+            riskReturnAnalysis,
+            seasonalityEffectAnalysis,
           }}
         />
       </div>

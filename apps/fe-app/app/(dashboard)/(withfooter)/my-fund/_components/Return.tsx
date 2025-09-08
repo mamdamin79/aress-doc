@@ -1,8 +1,23 @@
 import { DataList, Icon, Tabs } from 'design-system';
 import React, { useState } from 'react';
 import { BubbleChart } from './BubbleChart';
+import { FundReturnAnalysisResponseApiModel } from '@openapi';
 
-export const RiskAssessment = () => {
+type ReturnAnalysisProps = {
+  data: FundReturnAnalysisResponseApiModel;
+};
+
+export const Return: React.FC<ReturnAnalysisProps> = ({ data }) => {
+  console.log(data);
+
+  const bubbleData = data.riskReturnAnalysis?.chartItems?.map((item) => ({
+    x: item.risk,
+    y: item.returnPercent,
+    z: item.netAssetsRials / 1e9,
+    name: item.abbreviatedName,
+    nav: (item.netAssetsRials / 1e9).toFixed(0),
+  }));
+
   const [activeTab, setActiveTab] = useState(0);
   return (
     <div className="mt-12">
@@ -207,87 +222,7 @@ export const RiskAssessment = () => {
         </div>
       </div>
       <div className="mb-8 h-[600px] w-full bg-green-100">
-        <BubbleChart
-          bubbleData={[
-            {
-              x: 0.45,
-              y: 1300,
-              z: 40,
-              name: 'قابل معامله ثروت آفرین پاسارگاد',
-              nav: '22.7',
-            },
-            {
-              x: 0.55,
-              y: 2600,
-              z: 50,
-              name: 'مشترک یکم سامان',
-              nav: '45.7',
-            },
-            {
-              x: 0.7,
-              y: 1850,
-              z: 45,
-              name: 'شاخص سی شرکت بزرگ فیروزه',
-              nav: '32.7',
-            },
-            {
-              x: 0.7,
-              y: 2000,
-              z: 55,
-              name: 'قابل معامله هستی بخش آگاه',
-              nav: '12.7',
-            },
-            {
-              x: 0.85,
-              y: 1500,
-              z: 30,
-              name: 'تجارت شاخصی کاردان',
-              nav: '17.7',
-            },
-            {
-              x: 0.85,
-              y: 2100,
-              z: 60,
-              name: 'مشترک توسعه ملی',
-              nav: '27.7',
-            },
-            {
-              x: 1.0,
-              y: 2600,
-              z: 80,
-              name: 'ارزش کاوان آینده',
-              nav: '20.7',
-            },
-            {
-              x: 1.0,
-              y: 2400,
-              z: 65,
-              name: 'صندوق سهم آشنا',
-              nav: '70.1',
-            },
-            {
-              x: 1.05,
-              y: 2200,
-              z: 70,
-              name: 'مشترک بانک خاورمیانه',
-              nav: '52',
-            },
-            {
-              x: 1.15,
-              y: 1400,
-              z: 35,
-              name: 'شاخصی کارآفرین',
-              nav: '21.2',
-            },
-            {
-              x: 1.15,
-              y: 2500,
-              z: 50,
-              name: 'مشترک دماوند',
-              nav: '26',
-            },
-          ]}
-        />
+        <BubbleChart bubbleData={bubbleData} />
       </div>
       <div className="mb-11 flex items-start justify-center gap-3">
         <div className="text-md mt-2 font-normal">بازه زمانی:</div>

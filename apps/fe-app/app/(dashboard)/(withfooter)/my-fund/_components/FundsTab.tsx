@@ -3,9 +3,10 @@
 import { Tabs } from 'design-system';
 import { useState } from 'react';
 import { Summary } from './Summary';
-import { ReturnAnalysis } from './ReturnAnalysis';
-import { RiskAssessment } from './RiskAssesment';
+import { Risk } from './Risk';
+import { Return } from './Return';
 import {
+  FundReturnAnalysisResponseApiModel,
   FundSummaryBaseInfoApiModel,
   FundSummaryCaseByCaseApiModel,
   FundVideoPlaylistItemApiModel,
@@ -21,9 +22,10 @@ type FundTabsProps = {
     fundSummaryCaseByCase: FundSummaryCaseByCaseApiModel;
     fundVideoPlaylist: Array<FundVideoPlaylistItemApiModel>;
   };
+  returnAnalysis: FundReturnAnalysisResponseApiModel;
 };
 
-export function FundTabs({ summary }: FundTabsProps) {
+export function FundTabs({ summary, returnAnalysis }: FundTabsProps) {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
@@ -50,8 +52,16 @@ export function FundTabs({ summary }: FundTabsProps) {
             />
           ),
         },
-        { title: 'تحلیل بازدهی', id: '1', content: <RiskAssessment /> },
-        { title: 'ارزیابی ریسک', id: '2', content: <ReturnAnalysis /> },
+        {
+          title: 'تحلیل بازدهی',
+          id: '1',
+          content: <Return data={returnAnalysis} />,
+        },
+        {
+          title: 'ارزیابی ریسک',
+          id: '2',
+          content: <Risk />,
+        },
       ]}
     />
   );

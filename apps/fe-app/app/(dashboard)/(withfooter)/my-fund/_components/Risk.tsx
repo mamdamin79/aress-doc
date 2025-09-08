@@ -1,7 +1,7 @@
 import { DataList, Icon, OptionsDropdown, Tabs } from 'design-system';
 import React, { useState } from 'react';
 
-export const ReturnAnalysis = () => {
+export const Risk: React.FC = () => {
   const [activeTab, setActiveTab] = useState(0);
 
   return (

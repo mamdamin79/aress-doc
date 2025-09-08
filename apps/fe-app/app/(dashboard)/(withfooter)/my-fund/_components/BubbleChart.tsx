@@ -177,10 +177,8 @@ export const BubbleChart = ({
     },
     plotOptions: {
       bubble: {
-        minSize: 10,
-        maxSize: 60,
-        zMin: 12, // Updated to match your new NAV data
-        zMax: 70, // Updated to match your new NAV data
+        minSize: 100,
+        maxSize: 160,
         cursor: 'pointer',
         marker: {
           fillOpacity: 0.6,
