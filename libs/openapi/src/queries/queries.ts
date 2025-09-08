@@ -1367,6 +1367,37 @@ export const useFundsServicePostFundsTableTabByTabColumns = <
       }) as unknown as Promise<TData>,
     ...options,
   });
+export const useFundsServicePostFundsTableTabByTabColumnsReset = <
+  TData = Common.FundsServicePostFundsTableTabByTabColumnsResetMutationResult,
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: Omit<
+    UseMutationOptions<
+      TData,
+      TError,
+      {
+        tab: number;
+      },
+      TContext
+    >,
+    'mutationFn'
+  >,
+) =>
+  useMutation<
+    TData,
+    TError,
+    {
+      tab: number;
+    },
+    TContext
+  >({
+    mutationFn: ({ tab }) =>
+      FundsService.postFundsTableTabByTabColumnsReset({
+        tab,
+      }) as unknown as Promise<TData>,
+    ...options,
+  });
 export const useFundsServicePostFundsTableTabByTabColumn = <
   TData = Common.FundsServicePostFundsTableTabByTabColumnMutationResult,
   TError = unknown,
