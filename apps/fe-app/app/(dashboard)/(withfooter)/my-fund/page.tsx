@@ -6,6 +6,7 @@ import { FundTabs } from './_components/FundsTab';
 
 export default async function FundPage() {
   const fundId = 283;
+
   const cookieStore = await cookies();
 
   OpenAPI.TOKEN = cookieStore.get('access_token')?.value;

@@ -101,6 +101,8 @@ import type {
   PostFundsTableTabByTabSortResponse,
   PostFundsTableTabByTabColumnsData,
   PostFundsTableTabByTabColumnsResponse,
+  PostFundsTableTabByTabColumnsResetData,
+  PostFundsTableTabByTabColumnsResetResponse,
   PostFundsTableTabByTabColumnData,
   PostFundsTableTabByTabColumnResponse,
   GetFundsStockByFundIdSummaryData,
@@ -1538,6 +1540,33 @@ export class FundsService {
       },
       body: data.requestBody,
       mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Reset Fund Tab Columns
+   * Update columns of a fund tab
+   * @param data The data for the request.
+   * @param data.tab
+   * @returns ResetFundTabColumnsResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsTableTabByTabColumnsReset(
+    data: PostFundsTableTabByTabColumnsResetData,
+  ): CancelablePromise<PostFundsTableTabByTabColumnsResetResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/table/tab/{tab}/columns/reset',
+      path: {
+        tab: data.tab,
+      },
       errors: {
         400: 'Bad Request',
         401: 'Unauthorized',

@@ -218,6 +218,7 @@ export type DashboardFundTypeApiModel = {
 export type DashboardItemApiModel = {
   identifier: number;
   order: number;
+  displayName: string;
   report: DashboardItemReportApiModel;
   selectedFilters: {
     [key: string]: unknown;
@@ -424,7 +425,7 @@ export type FundListItemApiModel = {
    */
   hasVideo: boolean;
   /**
-   * مدیر صنودق
+   * مدیر صندوق
    */
   manager: string | null;
   /**
@@ -737,6 +738,7 @@ export type FundReturnAnalysisRiskReturnAnalysisBody = {
 };
 
 export type FundReturnAnalysisRiskReturnAnalysisChartItemApiModel = {
+  fundId: number;
   abbreviatedName: string;
   risk: number;
   returnPercent: number;
@@ -927,7 +929,7 @@ export type FundReturnAnalysisSeasonalityEffectTableStandardDeviationRowApiModel
 
 export type FundSummaryBaseInfoApiModel = {
   /**
-   * مدیر صنودق
+   * مدیر صندوق
    */
   manager: string;
   /**
@@ -970,6 +972,10 @@ export type FundSummaryBaseInfoApiModel = {
    * تاریخ به روز رسانی شمسی
    */
   lastUpdateJdate: string;
+  /**
+   * سابقه صندوق
+   */
+  timeSinceInitiation: string;
 };
 
 export type FundSummaryCaseByCaseApiModel = {
@@ -1088,6 +1094,8 @@ export type FundSummaryResponseApiModel = {
   fundVideoPlaylist: Array<FundVideoPlaylistItemApiModel>;
 };
 
+export type FundTableColumnFilterType = 'SINGLE' | 'MULTIPLE';
+
 export type FundTableItemInfoApiModel = {
   /**
    * شناسه صندوق
@@ -1105,6 +1113,10 @@ export type FundTableItemInfoApiModel = {
    * نام صندوق
    */
   abbreviatedName: string;
+  /**
+   * سیاست سرمایه‌گذاری
+   */
+  investmentStrategy: string;
   /**
    * نوع صندوق
    */
@@ -1142,7 +1154,7 @@ export type FundTableItemInfoApiModel = {
    */
   hasVideo: boolean;
   /**
-   * مدیر صنودق
+   * مدیر صندوق
    */
   manager: string | null;
   /**
@@ -1206,6 +1218,10 @@ export type FundTableItemInfoApiModel = {
    */
   returnLast3MonthsPercent: number | null;
   /**
+   * بازده شش‌ماهه
+   */
+  returnLast6MonthsPercent: number | null;
+  /**
    * بازده یک‌ساله
    */
   returnLastYearPercent: number | null;
@@ -1230,6 +1246,10 @@ export type FundTableItemInfoApiModel = {
    */
   returnVsTedpixLast3MonthsPercent: number | null;
   /**
+   * بازده نسبت به شاخص شش‌ماهه
+   */
+  returnVsTedpixLast6MonthsPercent: number | null;
+  /**
    * بازده نسبت به شاخص یک‌ساله
    */
   returnVsTedpixLastYearPercent: number | null;
@@ -1238,7 +1258,7 @@ export type FundTableItemInfoApiModel = {
    */
   returnVsTedpixCustomPeriodPercent: number | null;
   /**
-   * سهم اوراق از پورتفوی
+   * سهم اوراق مشارکت از پورتفوی
    */
   assetAllocationBondPercent: number;
   /**
@@ -1282,6 +1302,10 @@ export type FundTableItemInfoApiModel = {
    */
   averageLeverageLast3Months: number | null;
   /**
+   * میانگین اهرم شش‌ماهه
+   */
+  averageLeverageLast6Months: number | null;
+  /**
    * میانگین اهرم یک‌ساله
    */
   averageLeverageLastYear: number | null;
@@ -1300,7 +1324,11 @@ export type FundTableItemInfoApiModel = {
   /**
    * انحراف از میانگین سه‌ماهه
    */
-  standardDeviationLast3Month: number | null;
+  standardDeviationLast3Months: number | null;
+  /**
+   * انحراف از میانگین شش‌ماهه
+   */
+  standardDeviationLast6Months: number | null;
   /**
    * انحراف از میانگین یک‌ساله
    */
@@ -1322,6 +1350,10 @@ export type FundTableItemInfoApiModel = {
    */
   sharpeRatioLast3Months: number | null;
   /**
+   * نسبت شارپی شش‌ماهه
+   */
+  sharpeRatioLast6Months: number | null;
+  /**
    * نسبت شارپی یک‌ساله
    */
   sharpeRatioLastYear: number | null;
@@ -1330,23 +1362,27 @@ export type FundTableItemInfoApiModel = {
    */
   sharpeRatioCustomPeriod: number | null;
   /**
-   * نسبت اصلاعاتی هفتگی
+   * نسبت اطلاعاتی هفتگی
    */
   informationRatioLastWeek: number | null;
   /**
-   * نسبت اصلاعاتی ماهانه
+   * نسبت اطلاعاتی ماهانه
    */
   informationRatioLastMonth: number | null;
   /**
-   * نسبت اصلاعاتی سه‌ماهه
+   * نسبت اطلاعاتی سه‌ماهه
    */
   informationRatioLast3Months: number | null;
   /**
-   * نسبت اصلاعاتی یک‌ساله
+   * نسبت اطلاعاتی شش‌ماهه
+   */
+  informationRatioLast6Months: number | null;
+  /**
+   * نسبت اطلاعاتی یک‌ساله
    */
   informationRatioLastYear: number | null;
   /**
-   * نسبت اصلاعاتی بازه دلخواه
+   * نسبت اطلاعاتی بازه دلخواه
    */
   informationRatioCustomPeriod: number | null;
   /**
@@ -1365,6 +1401,10 @@ export type FundTableItemInfoApiModel = {
    * آلفا سه‌ماهه
    */
   alphaLast3Months: number | null;
+  /**
+   * آلفا شش‌ماهه
+   */
+  alphaLast6Months: number | null;
   /**
    * آلفا یک‌ساله
    */
@@ -1390,6 +1430,10 @@ export type FundTableItemInfoApiModel = {
    */
   betaLast3Months: number | null;
   /**
+   * بتا شش‌ماهه
+   */
+  betaLast6Months: number | null;
+  /**
    * بتا یک‌ساله
    */
   betaLastYear: number | null;
@@ -1408,7 +1452,11 @@ export type FundTableItemInfoApiModel = {
   /**
    * بیشترین ریزش سه‌ماهه
    */
-  maxDrawdown3Month: number | null;
+  maxDrawdown3Months: number | null;
+  /**
+   * بیشترین ریزش شش‌ماهه
+   */
+  maxDrawdown6Months: number | null;
   /**
    * بیشترین ریزش یک‌ساله
    */
@@ -1425,6 +1473,7 @@ export type FundTableResponseApiModel = {
   selectedTabFunds: Array<FundsTableItemApiModel>;
   columns: Array<FundTableTabColumnDto>;
   columnGroups: Array<FundTableTabColumnGroupDto>;
+  defaultColumns: Array<FundTableTabColumnDto>;
 };
 
 export type FundTableTabApiModel = {
@@ -1443,23 +1492,47 @@ export type FundTableTabColumnDto = {
   visible: boolean;
   sort: FundTableTabColumnSort;
   colorFormat: FundTableTabColumnColorFormat;
+  columnFilterType?: FundTableColumnFilterType | null;
   columnFilter?:
     | FundTableTabColumnFilterTextDto
     | FundTableTabColumnFilterOptionsDto
     | null;
   columnGroupId: number | null;
+  nameInGroup: string | null;
   customPeriodStartJdate: string | null;
   customPeriodEndJdate: string | null;
 };
 
-export type FundTableTabColumnFilterOptionDto = {
+export type FundTableTabColumnFilterDateAmountOptionDto = {
   identifier: string;
   label: string;
   selected: boolean;
+  min_date: string | null;
+  max_date: string | null;
+};
+
+export type FundTableTabColumnFilterFloatAmountOptionDto = {
+  identifier: string;
+  label: string;
+  selected: boolean;
+  min_amount: number | null;
+  max_amount: number | null;
+};
+
+export type FundTableTabColumnFilterIntAmountOptionDto = {
+  identifier: string;
+  label: string;
+  selected: boolean;
+  min_amount: number | null;
+  max_amount: number | null;
 };
 
 export type FundTableTabColumnFilterOptionsDto = {
-  options: Array<FundTableTabColumnFilterOptionDto>;
+  options: Array<
+    | FundTableTabColumnFilterIntAmountOptionDto
+    | FundTableTabColumnFilterFloatAmountOptionDto
+    | FundTableTabColumnFilterDateAmountOptionDto
+  >;
 };
 
 export type FundTableTabColumnFilterTextDto = {
@@ -1502,6 +1575,7 @@ export type FundsTableItemApiModel = {
   info: FundTableItemInfoApiModel;
   pinned: boolean;
   mark: string | null;
+  isInWatchlist: boolean;
 };
 
 export type GetDashboardItemCalculationsBody = {
@@ -1715,6 +1789,11 @@ export type ResetForgotPasswordByOtpResponseApiModel = {
   success: boolean;
 };
 
+export type ResetFundTabColumnsResponseApiModel = {
+  funds: Array<FundsTableItemApiModel>;
+  columns: Array<FundTableTabColumnDto>;
+};
+
 export type SortFundTabBody = {
   columnKey: string;
   direction: FundTableTabColumnSort;
@@ -1766,7 +1845,7 @@ export type UpdateFundTableTabColumnItem = {
   key: string;
   sortDirection: FundTableTabColumnSort;
   visible: boolean;
-  selectedFilter?: string | null;
+  selectedColumnFilters?: Array<string> | null;
   customPeriodStartJdate?: string | null;
   customPeriodEndJdate?: string | null;
 };
@@ -1890,6 +1969,10 @@ export type VideoThumbnailApiModel = {
    * Number of thumbnails per line
    */
   columns: number;
+  /**
+   * Total frames in thumbnail
+   */
+  totalFrames: number;
 };
 
 export type GetHealthResponse = HealthApiModel;
@@ -2232,6 +2315,13 @@ export type PostFundsTableTabByTabColumnsData = {
 
 export type PostFundsTableTabByTabColumnsResponse =
   UpdateFundTabColumnsResponseApiModel;
+
+export type PostFundsTableTabByTabColumnsResetData = {
+  tab: number;
+};
+
+export type PostFundsTableTabByTabColumnsResetResponse =
+  ResetFundTabColumnsResponseApiModel;
 
 export type PostFundsTableTabByTabColumnData = {
   requestBody: UpdateFundTableTabSingleColumnBody;
@@ -3872,6 +3962,37 @@ export type $OpenApiTs = {
          * Successful Response
          */
         200: UpdateFundTabColumnsResponseApiModel;
+        /**
+         * Bad Request
+         */
+        400: ApiExceptionResponse;
+        /**
+         * Unauthorized
+         */
+        401: ApiExceptionResponse;
+        /**
+         * Forbidden
+         */
+        403: ApiExceptionResponse;
+        /**
+         * Not Found
+         */
+        404: ApiExceptionResponse;
+        /**
+         * Unprocessable Entity
+         */
+        422: ApiExceptionResponse;
+      };
+    };
+  };
+  '/funds/table/tab/{tab}/columns/reset': {
+    post: {
+      req: PostFundsTableTabByTabColumnsResetData;
+      res: {
+        /**
+         * Successful Response
+         */
+        200: ResetFundTabColumnsResponseApiModel;
         /**
          * Bad Request
          */

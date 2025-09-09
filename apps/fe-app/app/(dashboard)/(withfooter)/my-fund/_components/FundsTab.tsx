@@ -26,7 +26,7 @@ type FundTabsProps = {
 };
 
 export function FundTabs({ summary, returnAnalysis }: FundTabsProps) {
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(1);
 
   return (
     <Tabs
