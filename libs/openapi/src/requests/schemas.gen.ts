@@ -817,6 +817,10 @@ export const $DashboardItemApiModel = {
       type: 'integer',
       title: 'Order',
     },
+    displayName: {
+      type: 'string',
+      title: 'Displayname',
+    },
     report: {
       $ref: '#/components/schemas/DashboardItemReportApiModel',
     },
@@ -834,7 +838,7 @@ export const $DashboardItemApiModel = {
     },
   },
   type: 'object',
-  required: ['identifier', 'order', 'report', 'selectedFilters'],
+  required: ['identifier', 'order', 'displayName', 'report', 'selectedFilters'],
   title: 'DashboardItemApiModel',
 } as const;
 
@@ -2143,6 +2147,10 @@ export const $FundReturnAnalysisRiskReturnAnalysisBody = {
 
 export const $FundReturnAnalysisRiskReturnAnalysisChartItemApiModel = {
   properties: {
+    fundId: {
+      type: 'integer',
+      title: 'Fundid',
+    },
     abbreviatedName: {
       type: 'string',
       title: 'Abbreviatedname',
@@ -2166,6 +2174,7 @@ export const $FundReturnAnalysisRiskReturnAnalysisChartItemApiModel = {
   },
   type: 'object',
   required: [
+    'fundId',
     'abbreviatedName',
     'risk',
     'returnPercent',
@@ -4111,6 +4120,13 @@ export const $FundTableResponseApiModel = {
       type: 'array',
       title: 'Columngroups',
     },
+    defaultColumns: {
+      items: {
+        $ref: '#/components/schemas/FundTableTabColumnDto',
+      },
+      type: 'array',
+      title: 'Defaultcolumns',
+    },
   },
   type: 'object',
   required: [
@@ -4119,6 +4135,7 @@ export const $FundTableResponseApiModel = {
     'selectedTabFunds',
     'columns',
     'columnGroups',
+    'defaultColumns',
   ],
   title: 'FundTableResponseApiModel',
 } as const;
@@ -5852,6 +5869,11 @@ export const $VideoThumbnailApiModel = {
       title: 'Columns',
       description: 'Number of thumbnails per line',
     },
+    totalFrames: {
+      type: 'integer',
+      title: 'Totalframes',
+      description: 'Total frames in thumbnail',
+    },
   },
   type: 'object',
   required: [
@@ -5862,6 +5884,7 @@ export const $VideoThumbnailApiModel = {
     'widthPixels',
     'heightPixels',
     'columns',
+    'totalFrames',
   ],
   title: 'VideoThumbnailApiModel',
 } as const;

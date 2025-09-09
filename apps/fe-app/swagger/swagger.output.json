@@ -6634,6 +6634,10 @@
             "type": "integer",
             "title": "Order"
           },
+          "displayName": {
+            "type": "string",
+            "title": "Displayname"
+          },
           "report": {
             "$ref": "#/components/schemas/DashboardItemReportApiModel"
           },
@@ -6654,6 +6658,7 @@
         "required": [
           "identifier",
           "order",
+          "displayName",
           "report",
           "selectedFilters"
         ],
@@ -8009,6 +8014,10 @@
       },
       "FundReturnAnalysisRiskReturnAnalysisChartItemApiModel": {
         "properties": {
+          "fundId": {
+            "type": "integer",
+            "title": "Fundid"
+          },
           "abbreviatedName": {
             "type": "string",
             "title": "Abbreviatedname"
@@ -8032,6 +8041,7 @@
         },
         "type": "object",
         "required": [
+          "fundId",
           "abbreviatedName",
           "risk",
           "returnPercent",
@@ -9976,6 +9986,13 @@
             },
             "type": "array",
             "title": "Columngroups"
+          },
+          "defaultColumns": {
+            "items": {
+              "$ref": "#/components/schemas/FundTableTabColumnDto"
+            },
+            "type": "array",
+            "title": "Defaultcolumns"
           }
         },
         "type": "object",
@@ -9984,7 +10001,8 @@
           "selectedTabIdentifier",
           "selectedTabFunds",
           "columns",
-          "columnGroups"
+          "columnGroups",
+          "defaultColumns"
         ],
         "title": "FundTableResponseApiModel"
       },
@@ -11829,6 +11847,11 @@
             "type": "integer",
             "title": "Columns",
             "description": "Number of thumbnails per line"
+          },
+          "totalFrames": {
+            "type": "integer",
+            "title": "Totalframes",
+            "description": "Total frames in thumbnail"
           }
         },
         "type": "object",
@@ -11839,7 +11862,8 @@
           "intervalSeconds",
           "widthPixels",
           "heightPixels",
-          "columns"
+          "columns",
+          "totalFrames"
         ],
         "title": "VideoThumbnailApiModel"
       }
