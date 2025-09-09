@@ -159,9 +159,6 @@ export const ChangeComparisonFunds: React.FC<ChangeComparisonFundsProps> = ({
                     message: 'حداکثر ۱۰ صندوق می‌توانید انتخاب کنید',
                     type: 'error',
                   });
-
-                  // ⚡ جلوشو بگیر: به جای رها کردن همون selected از OptionListExplorer،
-                  // state قبلی (selectedChips) رو دوباره ست کن
                   setSelectedChips((prev) => [...prev]);
                   return;
                 }
