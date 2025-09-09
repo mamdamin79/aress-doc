@@ -67,6 +67,7 @@ import {
   useFundsServiceGetFundsTable,
   useFundsServicePostFundsTableTabByTabColumn,
   useFundsServicePostFundsTableTabByTabColumns,
+  useFundsServicePostFundsTableTabByTabColumnsReset,
   useFundsServicePostFundsTableTabByTabSort,
 } from '@openapi';
 import { TabsSkeleton } from './_components/skeletons/TabsSkeleton';
@@ -488,24 +489,23 @@ const Funds = () => {
     return () => observer.disconnect();
   }, [table?.getState().pagination.pageSize]);
 
-const isChanged = useMemo(() => {
-  if (!table) return false;
+  const isChanged = useMemo(() => {
+    if (!table) return false;
 
-  const defaultVisibleKeys = query.data?.defaultColumns
-    .filter((col) => col.visible)
-    .map((col) => col.key);    
+    const defaultVisibleKeys = query.data?.defaultColumns
+      .filter((col) => col.visible)
+      .map((col) => col.key);
 
-  const currentVisibleKeys = Object.entries(table.getState().columnVisibility)
-    .filter(([_, value]) => value)
-    .map(([key]) => key);
+    const currentVisibleKeys = Object.entries(table.getState().columnVisibility)
+      .filter(([_, value]) => value)
+      .map(([key]) => key);
 
-  if (defaultVisibleKeys?.length !== currentVisibleKeys.length) {
-    return true;
-  }
+    if (defaultVisibleKeys?.length !== currentVisibleKeys.length) {
+      return true;
+    }
 
-  return !defaultVisibleKeys.every((key) => currentVisibleKeys.includes(key));
-}, [table]);
-
+    return !defaultVisibleKeys.every((key) => currentVisibleKeys.includes(key));
+  }, [table]);
 
   useEffect(() => {
     const node = headerRefs?.current[activeSortIndex];
@@ -796,6 +796,22 @@ const isChanged = useMemo(() => {
         max_amount: opt.max_amount ?? null,
       })),
     }));
+
+  const resetColumns = useFundsServicePostFundsTableTabByTabColumnsReset();
+
+  const handlerResetColumns = async () => {
+    try {
+      await resetColumns.mutateAsync({
+        tab: activeIndexCategoryTab,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    query.refetch();
+    if (query.data?.columns) {
+      setLocalColumns(query.data?.columns);
+    }
+  };
 
   return (
     <>
@@ -1369,7 +1385,7 @@ const isChanged = useMemo(() => {
           {isChanged && (
             <span
               className="text-button-error-label-plain-default m-6 cursor-pointer text-base font-medium"
-              onClick={() => table.resetColumnVisibility()}
+              onClick={handlerResetColumns}
             >
               بازنشانی به پیشفرض
             </span>
