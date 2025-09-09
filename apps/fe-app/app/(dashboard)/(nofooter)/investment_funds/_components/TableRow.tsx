@@ -70,7 +70,7 @@ function FundsInfoCell({
         <Badge
           theme={
             isEtf
-              ? (tabs?.find((tab) => tab.identifier === fundType)
+              ? (tabs?.find((tab) => tab.identifier === fundType.identifier)
                   ?.color as FundsTagColor)
               : 'disabled'
           }
@@ -79,7 +79,7 @@ function FundsInfoCell({
         <Badge
           theme={
             isTradable
-              ? (tabs?.find((tab) => tab.identifier === fundType)
+              ? (tabs?.find((tab) => tab.identifier === fundType.identifier)
                   ?.color as FundsTagColor)
               : 'disabled'
           }
@@ -88,7 +88,7 @@ function FundsInfoCell({
         {isWatchList ? (
           <FundsTag
             color={
-              tabs?.find((tab) => tab.identifier === fundType)
+              tabs?.find((tab) => tab.identifier === fundType.identifier)
                 ?.color as FundsTagColor
             }
           />
@@ -438,7 +438,10 @@ function TableRowInner<T extends FundRow>({
           >
             {item.getValue() !== null
               ? typeof item.getValue() === 'number'
-                ? formatNumber(item.getValue(), {commaSeparated: true, decimals: 2})
+                ? formatNumber(item.getValue(), {
+                    commaSeparated: true,
+                    decimals: 2,
+                  })
                 : flexRender(item.column.columnDef.cell, item.getContext())
               : '-'}
           </td>

@@ -377,7 +377,6 @@ const Funds = () => {
       const id = info.identifier;
 
       return {
-        fundType: info.fundType.identifier,
         logo: info.logoMedium || '',
         id,
         pinned: pinnedList.includes(id),
@@ -497,7 +496,7 @@ const Funds = () => {
       .map((col) => col.key);
 
     const currentVisibleKeys = Object.entries(table.getState().columnVisibility)
-      .filter(([_, value]) => value)
+      .filter(([value]) => value)
       .map(([key]) => key);
 
     if (defaultVisibleKeys?.length !== currentVisibleKeys.length) {
@@ -1417,9 +1416,9 @@ const Funds = () => {
                     .map((column) => (
                       <div
                         className={cn('w-full rounded-lg', {
-                          'col-span-2': column.nameInGroup === 'بازه دلخواه',
+                          'col-span-2 w-1/2':
+                            column.nameInGroup === 'بازه دلخواه',
                           'hover:bg-surface-brand-100 cursor-pointer':
-                            column.nameInGroup !== 'بازه دلخواه' &&
                             !customColumnDate.start,
                         })}
                         key={column.key}

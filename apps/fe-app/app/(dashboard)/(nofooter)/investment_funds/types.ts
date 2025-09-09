@@ -45,7 +45,10 @@ export interface FundRow {
   pinned: boolean;
   id: number;
   mark: string;
-  fundType: number;
+  fundType: {
+    title: string;
+    identifier: number;
+  };
 }
 
 export interface TableBodyProps {
@@ -80,7 +83,10 @@ export interface TableRowProps<T extends FundRow> {
 }
 
 export interface FundsInfoCellProps {
-  fundType: number;
+  fundType: {
+    identifier: number;
+    title: string;
+  };
   isEtf: boolean;
   name: string;
   logo: string;
@@ -114,7 +120,10 @@ export type ApiColumn = {
 };
 
 export type SimplifiedFund = {
-  fundType: number;
+  fundType: {
+    title: string;
+    identifier: number;
+  };
   logo: string;
   id: number;
   pinned: boolean;
