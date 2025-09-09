@@ -124,8 +124,6 @@ const Funds = () => {
     date: string;
   }>({ active: false, date: '' });
 
-  console.log(hasVerticalScroll);
-
   const DraggableTableHeader = ({
     header,
     children,
@@ -490,11 +488,24 @@ const Funds = () => {
     return () => observer.disconnect();
   }, [table?.getState().pagination.pageSize]);
 
-  const isChanged = useMemo(() => {
-    return !Object.entries(table.getState().columnVisibility).every(
-      ([key, value]) => columnVisibility[key] === value,
-    );
-  }, [table]);
+const isChanged = useMemo(() => {
+  if (!table) return false;
+
+  const defaultVisibleKeys = query.data?.defaultColumns
+    .filter((col) => col.visible)
+    .map((col) => col.key);    
+
+  const currentVisibleKeys = Object.entries(table.getState().columnVisibility)
+    .filter(([_, value]) => value)
+    .map(([key]) => key);
+
+  if (defaultVisibleKeys?.length !== currentVisibleKeys.length) {
+    return true;
+  }
+
+  return !defaultVisibleKeys.every((key) => currentVisibleKeys.includes(key));
+}, [table]);
+
 
   useEffect(() => {
     const node = headerRefs?.current[activeSortIndex];

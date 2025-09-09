@@ -9,6 +9,7 @@ import {
   useCustomToast,
   FundsTag,
   Badge,
+  formatNumber,
 } from 'design-system';
 import {
   useFundsServicePostFundsTableTabByTabPin,
@@ -371,8 +372,6 @@ function TableRowInner<T extends FundRow>({
     }
   };
 
-  console.log(row.getVisibleCells()[7].getValue());
-
   return (
     <tr
       onMouseEnter={() => setShowMark(true)}
@@ -438,7 +437,9 @@ function TableRowInner<T extends FundRow>({
             key={item.id}
           >
             {item.getValue() !== null
-              ? flexRender(item.column.columnDef.cell, item.getContext())
+              ? typeof item.getValue() === 'number'
+                ? formatNumber(item.getValue(), {commaSeparated: true, decimals: 2})
+                : flexRender(item.column.columnDef.cell, item.getContext())
               : '-'}
           </td>
         );

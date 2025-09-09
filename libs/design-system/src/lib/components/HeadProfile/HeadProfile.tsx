@@ -1,6 +1,7 @@
 import { cn } from '../../../utils/classNames.utils';
 import React from 'react';
 import { ReactComponent as USER_SVG } from '../../../assets/icons/profile vector-large.svg';
+import { Icon } from '../Icon';
 interface HeadProfileProps {
   profileImage?: string | null;
 }
@@ -22,8 +23,8 @@ export const HeadProfile: React.FC<HeadProfileProps> = ({ profileImage }) => {
             height={32}
           />
         ) : (
-          <div className="h-8 w-8 rounded-lg object-contain shadow-sm">
-            <USER_SVG width={32} height={32} />
+          <div className="bg bg-surface-brand-600-primary text-text-onbrand-neutral-primary-on600 flex h-8 w-8 items-center justify-center rounded-md object-contain shadow-sm">
+            <Icon size="lg" name="user-round" />
           </div>
         )}
       </div>

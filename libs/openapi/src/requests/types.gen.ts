@@ -218,6 +218,7 @@ export type DashboardFundTypeApiModel = {
 export type DashboardItemApiModel = {
   identifier: number;
   order: number;
+  displayName: string;
   report: DashboardItemReportApiModel;
   selectedFilters: {
     [key: string]: unknown;
@@ -737,6 +738,7 @@ export type FundReturnAnalysisRiskReturnAnalysisBody = {
 };
 
 export type FundReturnAnalysisRiskReturnAnalysisChartItemApiModel = {
+  fundId: number;
   abbreviatedName: string;
   risk: number;
   returnPercent: number;
@@ -1471,6 +1473,7 @@ export type FundTableResponseApiModel = {
   selectedTabFunds: Array<FundsTableItemApiModel>;
   columns: Array<FundTableTabColumnDto>;
   columnGroups: Array<FundTableTabColumnGroupDto>;
+  defaultColumns: Array<FundTableTabColumnDto>;
 };
 
 export type FundTableTabApiModel = {
@@ -1966,6 +1969,10 @@ export type VideoThumbnailApiModel = {
    * Number of thumbnails per line
    */
   columns: number;
+  /**
+   * Total frames in thumbnail
+   */
+  totalFrames: number;
 };
 
 export type GetHealthResponse = HealthApiModel;

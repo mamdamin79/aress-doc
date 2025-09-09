@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { ProfileSidebarOption } from './ProfileSidebarOption';
-import { ReactComponent as UserSVG } from '../../../assets/icons/profile-vector-large.svg';
+import { ReactComponent as UserSVG } from '../../../assets/icons/profile vector-large.svg';
 import { ProfileSidebarItem } from './ProfileSidebar.types';
 export interface ProfileSidebarProps {
   image?: string | null;
@@ -35,7 +35,7 @@ export const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
                   className="h-12 w-12 object-contain"
                 />
               ) : (
-                <UserSVG width={48} height={48} />
+                <UserSVG width={48} height={48} className="-mb-4" />
               )}
             </div>
           </div>

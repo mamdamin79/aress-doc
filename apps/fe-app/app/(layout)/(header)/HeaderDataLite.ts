@@ -72,7 +72,7 @@ export const MenuData: MenuItem[] = [
     link: '/reports',
   },
   {
-    text: 'صندوق‌های سرمایه گذاری',
+    text: 'صندوق‌های سرمایه‌گذاری',
     link: '/investment_funds',
   },
   {

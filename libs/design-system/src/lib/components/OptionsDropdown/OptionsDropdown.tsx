@@ -53,8 +53,14 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
     }
   };
 
+  // Ensure initialSelectedIndex is valid
+  const getSafeIndex = (idx: number | undefined, arr: DropdownCell[]) => {
+    if (typeof idx !== 'number' || idx < 0 || idx >= arr.length) return 0;
+    return idx;
+  };
+  const safeInitialIndex = getSafeIndex(initialSelectedIndex, dropDownList);
   const [selectedItem, setSelectedItem] = useState<DropdownCell>(
-    dropDownList[initialSelectedIndex],
+    dropDownList[safeInitialIndex],
   );
 
   // Handle selection change
@@ -69,8 +75,10 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
     }
   };
   useEffect(() => {
-    setSelectedItem(dropDownList[initialSelectedIndex]);
-  }, [initialSelectedIndex]);
+    setSelectedItem(
+      dropDownList[getSafeIndex(initialSelectedIndex, dropDownList)],
+    );
+  }, [initialSelectedIndex, dropDownList]);
   return (
     <Listbox value={selectedItem} onChange={handleSelectionChange}>
       <ListboxButton

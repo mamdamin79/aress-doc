@@ -427,6 +427,8 @@ export interface DashboardItemApiModel {
   identifier: number;
   /** Order */
   order: number;
+  /** Displayname */
+  displayName: string;
   report: DashboardItemReportApiModel;
   /** Selectedfilters */
   selectedFilters: Record<string, any> | null;
@@ -1049,6 +1051,8 @@ export interface FundReturnAnalysisRiskReturnAnalysisBody {
 
 /** FundReturnAnalysisRiskReturnAnalysisChartItemApiModel */
 export interface FundReturnAnalysisRiskReturnAnalysisChartItemApiModel {
+  /** Fundid */
+  fundId: number;
   /** Abbreviatedname */
   abbreviatedName: string;
   /** Risk */
@@ -1944,6 +1948,8 @@ export interface FundTableResponseApiModel {
   columns: FundTableTabColumnDto[];
   /** Columngroups */
   columnGroups: FundTableTabColumnGroupDto[];
+  /** Defaultcolumns */
+  defaultColumns: FundTableTabColumnDto[];
 }
 
 /** FundTableTabApiModel */
@@ -2680,6 +2686,11 @@ export interface VideoThumbnailApiModel {
    * Number of thumbnails per line
    */
   columns: number;
+  /**
+   * Totalframes
+   * Total frames in thumbnail
+   */
+  totalFrames: number;
 }
 
 export type QueryParamsType = Record<string | number, any>;
