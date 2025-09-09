@@ -98,6 +98,7 @@ const Funds = () => {
   const [rowsMark, setRowsMark] = useState<{ color: string; id: number }[]>([]);
   const [watchList, setWatchList] = useState<FundsTableItemApiModel[]>([]);
   const [hasVerticalScroll, setHasVerticalScroll] = useState(false);
+  const [hasHorizontalScroll, setHasHorizontalScroll] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [activeSortIndex, setActiveSortIndex] = useState<number>(0);
   const headerRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -122,6 +123,8 @@ const Funds = () => {
     active: boolean;
     date: string;
   }>({ active: false, date: '' });
+
+  console.log(hasVerticalScroll);
 
   const DraggableTableHeader = ({
     header,
@@ -370,7 +373,8 @@ const Funds = () => {
     const listToMap = activeIndexCategoryTab === 1000 ? watchList : sourceFunds;
 
     const funds = listToMap.map((item) => {
-      const info = 'info' in item ? item.info : item;
+      const info: FundsTableItemApiModel['info'] =
+        'info' in item ? item.info : item;
       const id = info.identifier;
 
       return {
@@ -396,14 +400,10 @@ const Funds = () => {
         startDate: info.initiationDate,
         investmentMethod: 'T' as const,
         mark: 'mark' in item ? item.mark || '' : '',
-        isEtf: false,
         isTradable: true,
-        identifier: info.identifier,
-        registrationNumber: info.registrationNumber || '',
-        name: info.name || '',
-        abbreviatedName: info.abbreviatedName || '',
         someOtherField1: null,
         someOtherField2: '',
+        ...info,
       };
     });
 
@@ -714,6 +714,11 @@ const Funds = () => {
     columnKey: string;
     visible: boolean;
   }) => {
+    if (tableRef.current) {
+      setHasHorizontalScroll(
+        tableRef.current.scrollWidth > tableRef.current.clientWidth,
+      );
+    }
     setLocalColumns((prev) =>
       prev.map((col) =>
         col.key === columnKey ? { ...col, visible: !visible } : col,
@@ -745,6 +750,11 @@ const Funds = () => {
     setColumnOrder(
       columns.map((col) => col.id).filter((id): id is string => !!id),
     );
+    if (tableRef.current) {
+      setHasHorizontalScroll(
+        tableRef.current.scrollWidth > tableRef.current.clientWidth,
+      );
+    }
   }, [columns]);
 
   const columnMap = useMemo(() => {
@@ -953,8 +963,7 @@ const Funds = () => {
                                       <div className="mr-24">
                                         <FundsColumnHeader
                                           activeSortIcon={
-                                            sorting[0]?.id ===
-                                            'abbreviated_name'
+                                            sorting[0]?.id === 'abbreviatedName'
                                           }
                                           active={!isRotating}
                                           clickFiltered={() => {
@@ -1154,7 +1163,9 @@ const Funds = () => {
                         <div
                           onMouseDown={startScrollRight}
                           onMouseLeave={stopScroll}
-                          className={cn('hidden group-hover:block')}
+                          className={cn('hidden', {
+                            'group-hover:block': hasHorizontalScroll,
+                          })}
                         >
                           <Tooltip title="پیمایش به چپ (A)">
                             <button
@@ -1297,6 +1308,7 @@ const Funds = () => {
                 {
                   'text-icon-neutral-disable cursor-default':
                     table.getState().pagination.pageIndex + 1 === 1,
+                  hidden: hasHorizontalScroll,
                 },
               )}
               onClick={() => table.previousPage()}
@@ -1310,6 +1322,7 @@ const Funds = () => {
                 {
                   'text-text-icon-neutral-disable cursor-default':
                     !table.getCanNextPage(),
+                  hidden: hasHorizontalScroll,
                 },
               )}
               onClick={() => table.nextPage()}

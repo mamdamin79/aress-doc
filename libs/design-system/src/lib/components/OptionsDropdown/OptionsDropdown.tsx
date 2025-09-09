@@ -116,41 +116,40 @@ export const OptionsDropdown: React.FC<OptionsDropdownProps> = ({
           width: dropDownStyles.fixedWidth
             ? `${dropDownStyles.fixedWidth}px`
             : undefined,
-
         }}
       >
-        <div className={cn('my-2 max-h-[265px] overflow-y-scroll', {
-          'scrollbar-sm': dropDownStyles.scrollable,
-        })}>
-
-        {dropDownList.map((item, index) => (
-          <ListboxOption
-            className="!z-50"
-            value={item}
-            key={`listBox option-${index}`}
-          >
-            {({ selected }) =>
-              customOptionRender ? (
-                (customOptionRender({
-                  text: item.text,
-                  icon: item.icon,
-                  isActive: selected,
-                  tag: item.tag,
-                  withCheck: dropDownStyles.checkSelected ? selected : false,
-                }) as React.ReactElement)
-              ) : (
-                <OptionsDropdownOption
-                  className={optionClassName}
-                  {...item}
-                  withCheck={dropDownStyles.checkSelected ? selected : false}
-                  isActive={selected}
-                />
-              )
-            }
-          </ListboxOption>
-        ))}
+        <div
+          className={cn('max-h-[265px] overflow-y-auto', {
+            'scrollbar-sm': dropDownStyles.scrollable,
+          })}
+        >
+          {dropDownList.map((item, index) => (
+            <ListboxOption
+              className="!z-50"
+              value={item}
+              key={`listBox option-${index}`}
+            >
+              {({ selected }) =>
+                customOptionRender ? (
+                  (customOptionRender({
+                    text: item.text,
+                    icon: item.icon,
+                    isActive: selected,
+                    tag: item.tag,
+                    withCheck: dropDownStyles.checkSelected ? selected : false,
+                  }) as React.ReactElement)
+                ) : (
+                  <OptionsDropdownOption
+                    className={optionClassName}
+                    {...item}
+                    withCheck={dropDownStyles.checkSelected ? selected : false}
+                    isActive={selected}
+                  />
+                )
+              }
+            </ListboxOption>
+          ))}
         </div>
-
       </ListboxOptions>
     </Listbox>
   );

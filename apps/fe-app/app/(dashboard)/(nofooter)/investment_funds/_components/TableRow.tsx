@@ -138,8 +138,9 @@ function FundsInfoCell({
         )}
         {isShowDropDown && (
           <OptionsDropdown
-            className="!border-border-neutral-primary shadow-7xl"
+            className="!border-border-neutral-primary shadow-7xl overflow-y-hidden"
             dropDownStyles={{
+              scrollable: false,
               anchor: 'bottom start',
               size: 'md',
               bg: 'primary',
@@ -370,6 +371,8 @@ function TableRowInner<T extends FundRow>({
     }
   };
 
+  console.log(row.getVisibleCells()[7].getValue());
+
   return (
     <tr
       onMouseEnter={() => setShowMark(true)}
@@ -434,7 +437,9 @@ function TableRowInner<T extends FundRow>({
             )}
             key={item.id}
           >
-            {flexRender(item.column.columnDef.cell, item.getContext())}{' '}
+            {item.getValue() !== null
+              ? flexRender(item.column.columnDef.cell, item.getContext())
+              : '-'}
           </td>
         );
       })}
