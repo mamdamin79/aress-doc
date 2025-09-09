@@ -84,9 +84,9 @@ export const ChangeComparisonFunds: React.FC<ChangeComparisonFundsProps> = ({
     ];
 
     const items: OptionItem[] = data.map((fund) => ({
-      id: String(fund.identifier), // 👈 تبدیل به string
+      id: String(fund.identifier),
       title: fund.name,
-      categoryId: fund.fundType.identifier, // 👈 تبدیل به string
+      categoryId: fund.fundType.identifier,
       type: fund.fundType.title,
       priceRials: Math.floor(Math.random() * (500000 - 100000) + 100000),
       priceChangePercent: parseFloat((Math.random() * 10 - 5).toFixed(2)),
