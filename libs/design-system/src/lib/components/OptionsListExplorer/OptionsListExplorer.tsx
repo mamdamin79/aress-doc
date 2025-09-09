@@ -180,7 +180,17 @@ export function OptionsListExplorer({
           />
         </div>
       )}
-
+      <div className="text-text-neutral-secondary flex justify-between px-6 text-sm font-normal">
+        <div className="text-text-neutral-secondary flex items-center gap-1">
+          <div>درباره پیشنهادات</div>
+          <Icon name="info" size="sm" />
+        </div>
+        <div className="flex w-[240px] items-center justify-between pl-3">
+          <div>نوع صندوق</div>
+          <div>قیمت</div>
+          <div>بازده روز</div>
+        </div>
+      </div>
       {filteredItems.length ? (
         <div
           ref={parentRef}
