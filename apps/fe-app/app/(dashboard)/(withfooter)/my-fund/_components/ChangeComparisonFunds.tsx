@@ -153,6 +153,19 @@ export const ChangeComparisonFunds: React.FC<ChangeComparisonFundsProps> = ({
                   label: item.title,
                   removable: true,
                 }));
+
+                if (chips.length > 10) {
+                  showToast({
+                    message: 'حداکثر ۱۰ صندوق می‌توانید انتخاب کنید',
+                    type: 'error',
+                  });
+
+                  // ⚡ جلوشو بگیر: به جای رها کردن همون selected از OptionListExplorer،
+                  // state قبلی (selectedChips) رو دوباره ست کن
+                  setSelectedChips((prev) => [...prev]);
+                  return;
+                }
+
                 setSelectedChips(chips);
               }}
             />
@@ -167,7 +180,8 @@ export const ChangeComparisonFunds: React.FC<ChangeComparisonFundsProps> = ({
           <Button
             className="w-[107px] text-nowrap"
             mode="primary"
-            disabled={isLoading}
+            disabled={selectedChips.length === 0}
+            isLoading={isLoading}
             size="sm"
             onClick={() => {
               if (selectedChips.length === 0) {

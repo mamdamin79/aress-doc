@@ -180,7 +180,7 @@ export function OptionsListExplorer({
           />
         </div>
       )}
-      <div className="text-text-neutral-secondary flex justify-between px-6 text-sm font-normal">
+      <div className="text-text-neutral-secondary mt-4 flex justify-between px-6 text-sm font-normal">
         <div className="text-text-neutral-secondary flex items-center gap-1">
           <div>درباره پیشنهادات</div>
           <Icon name="info" size="sm" />

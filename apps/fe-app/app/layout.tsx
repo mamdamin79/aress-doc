@@ -1,3 +1,4 @@
+import { Toaster } from 'react-hot-toast';
 import './global.css';
 import ReactQueryProvider from './providers/ReactQueryProvider';
 
@@ -15,6 +16,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="bg-surface-neutral-background min-w-[768px]">
         <ReactQueryProvider>{children}</ReactQueryProvider>
+        <Toaster />
       </body>
     </html>
   );
