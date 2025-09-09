@@ -12,14 +12,9 @@ import {
   OptionItem,
   useCustomToast,
   Checkbox,
+  ChipItem,
 } from 'design-system';
 import React, { useMemo, useState } from 'react';
-
-interface ChipItem {
-  id: string;
-  label: string;
-  removable?: boolean;
-}
 
 interface ChangeComparisonFundsProps {
   onDataUpdate: React.Dispatch<
@@ -46,7 +41,6 @@ export const ChangeComparisonFunds: React.FC<ChangeComparisonFundsProps> = ({
     useState(false);
   const { data, isLoading } = useFundsServiceGetFunds();
   const { showToast } = useCustomToast();
-  // استیت برای چیپ‌ها
   const [selectedChips, setSelectedChips] = useState<ChipItem[]>(selectedFunds);
 
   const { mutate } =
@@ -74,7 +68,6 @@ export const ChangeComparisonFunds: React.FC<ChangeComparisonFundsProps> = ({
       },
     });
 
-  // مپ کردن دیتا به فرمت OptionsListExplorer
   const mappedItems = useMemo(() => {
     if (!data) return { categories: [], items: [] };
 
@@ -90,10 +83,10 @@ export const ChangeComparisonFunds: React.FC<ChangeComparisonFundsProps> = ({
       })),
     ];
 
-    const items = data.map((fund) => ({
-      id: fund.identifier,
+    const items: OptionItem[] = data.map((fund) => ({
+      id: String(fund.identifier), // 👈 تبدیل به string
       title: fund.name,
-      categoryId: fund.fundType.identifier,
+      categoryId: fund.fundType.identifier, // 👈 تبدیل به string
       type: fund.fundType.title,
       priceRials: Math.floor(Math.random() * (500000 - 100000) + 100000),
       priceChangePercent: parseFloat((Math.random() * 10 - 5).toFixed(2)),
@@ -130,10 +123,12 @@ export const ChangeComparisonFunds: React.FC<ChangeComparisonFundsProps> = ({
             'صندوق‌های دلخواه خود را از لیست زیر انتخاب کنید یا نام آن‌ها را جست‌وجو کنید...'
           ) : (
             <SelectionChips
-              variant="input" // اینجا باید input باشه تا دکمه حذف نشون داده بشه
+              variant="input"
               items={selectedChips}
               onItemRemove={(id) => {
-                setSelectedChips((prev) => prev.filter((c) => c.id !== id));
+                setSelectedChips((prev) =>
+                  prev.filter((c) => c.id !== String(id)),
+                );
               }}
             />
           )}
@@ -154,7 +149,7 @@ export const ChangeComparisonFunds: React.FC<ChangeComparisonFundsProps> = ({
               items={mappedItems}
               onChange={(selected) => {
                 const chips = (selected as OptionItem[]).map((item) => ({
-                  id: item.id,
+                  id: `${item.id}`,
                   label: item.title,
                   removable: true,
                 }));

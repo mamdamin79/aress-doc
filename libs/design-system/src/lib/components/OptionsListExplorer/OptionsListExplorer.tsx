@@ -29,7 +29,7 @@ export interface OptionsListExplorerProps {
   className?: string;
   inputSize?: TextFieldInputSize;
   multiple?: boolean;
-  selectedIds?: (string | number)[];
+  selectedIds?: string[];
 }
 
 export function OptionsListExplorer({
@@ -49,8 +49,8 @@ export function OptionsListExplorer({
   multiple,
   selectedIds,
 }: OptionsListExplorerProps) {
-  const [checkedItem, setCheckedItem] = useState(0);
-  const [checkedItems, setCheckedItems] = useState<(string | number)[]>([]);
+  const [checkedItem, setCheckedItem] = useState<string>('');
+  const [checkedItems, setCheckedItems] = useState<string[]>([]);
 
   useEffect(() => {
     if (multiple && selectedIds) {
@@ -67,8 +67,8 @@ export function OptionsListExplorer({
   const rowVirtualizer = useVirtualizer({
     count: filteredItems.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 60, // هر آیتم حدود 60px ارتفاع
-    overscan: 3, // آیتم‌های اضافه برای روان بودن اسکرول
+    estimateSize: () => 60,
+    overscan: 3,
   });
 
   const handleInputChange = (value: string) => {
@@ -79,10 +79,10 @@ export function OptionsListExplorer({
   useEffect(() => {
     if (selectedItemId) {
       const item = items.items.find(
-        (item: OptionItem) => item.id === selectedItemId,
+        (item: OptionItem) => String(item.id) === String(selectedItemId),
       );
       if (item) {
-        setCheckedItem(+item.id);
+        setCheckedItem(String(item.id));
       }
     }
   }, [items.items, selectedItemId]);
@@ -118,7 +118,7 @@ export function OptionsListExplorer({
 
   const handleTabChange = (tabId: number) => {
     setActiveTab(tabId);
-    setCheckedItem(0);
+    setCheckedItem('');
   };
 
   return (
@@ -210,38 +210,45 @@ export function OptionsListExplorer({
                   onClick={() => {
                     if (multiple) {
                       setCheckedItems((prev) => {
-                        if (prev.includes(item.id)) {
-                          const newList = prev.filter((id) => id !== item.id);
+                        if (prev.includes(String(item.id))) {
+                          const newList = prev.filter(
+                            (id) => id !== String(item.id),
+                          );
+
                           onChange?.(
                             items.items.filter((f) => newList.includes(f.id)),
                           );
                           return newList;
                         } else {
-                          const newList = [...prev, item.id];
+                          const newList = [...prev, String(item.id)];
                           onChange?.(
-                            items.items.filter((f) => newList.includes(f.id)),
+                            items.items.filter((f) =>
+                              newList.includes(String(f.id)),
+                            ),
                           );
                           return newList;
                         }
                       });
                     } else {
-                      setCheckedItem(+item.id);
+                      setCheckedItem(String(item.id));
                       onChange?.(item);
                     }
                   }}
                   className={cn(
                     'border-border-accent-gray-200 flex h-[60px] w-full cursor-pointer justify-between border-b px-4 py-3 last:border-b-0',
                     multiple
-                      ? checkedItems.includes(item.id) && 'bg-surface-brand-100'
-                      : checkedItem === item.id && 'bg-surface-brand-100',
+                      ? checkedItems.includes(String(item.id)) &&
+                          'bg-surface-brand-100'
+                      : checkedItem === String(item.id) &&
+                          'bg-surface-brand-100',
                   )}
                 >
                   <div className="flex items-center gap-1">
                     <div
                       className={cn('text-text-brand-contrast-700 invisible', {
                         visible: multiple
-                          ? checkedItems.includes(item.id)
-                          : checkedItem === item.id,
+                          ? checkedItems.includes(String(item.id))
+                          : checkedItem === String(item.id),
                       })}
                     >
                       <Icon name="check" />

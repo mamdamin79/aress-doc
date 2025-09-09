@@ -54,7 +54,7 @@ export const Return: React.FC<ReturnAnalysisProps> = ({ data }) => {
   ];
 
   const selectedFunds = data.riskReturnAnalysis?.chartItems?.map((item) => ({
-    id: item.fundId,
+    id: `${item.fundId}`,
     label: item.abbreviatedName,
     removable: true,
   }));
