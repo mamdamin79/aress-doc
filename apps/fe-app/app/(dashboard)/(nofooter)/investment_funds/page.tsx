@@ -78,6 +78,15 @@ const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
   const [activeIndexCategoryTab, setActiveIndexCategoryTab] = useState(1);
   const [isShowDatePicker, setIsShowDatePicker] = useState(false);
+  const [customColumnDate, setCustomColumnDate] = useState<{
+    start: string;
+    end: string;
+    groupId: string;
+  }>({
+    start: '',
+    end: '',
+    groupId: '',
+  });
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [isScrollAtStart, setIsScrollAtStart] = useState<boolean>(false);
@@ -146,8 +155,9 @@ const Funds = () => {
       >
         {isDraggingOver && position && (
           <div
-            className={`bg-border-brand-contrast-700 absolute bottom-0 top-1 z-10 h-[90%] w-0.5 ${position === 'right' ? 'left-0' : 'right-0'
-              }`}
+            className={`bg-border-brand-contrast-700 absolute bottom-0 top-1 z-10 h-[90%] w-0.5 ${
+              position === 'right' ? 'left-0' : 'right-0'
+            }`}
           >
             <div className="bg-border-brand-contrast-700 absolute top-0 flex h-2.5 w-2.5 translate-x-1 items-center justify-center rounded-full">
               <div className="bg-surface-neutral-primary h-1.5 w-1.5 rounded-full" />
@@ -158,6 +168,10 @@ const Funds = () => {
       </th>
     );
   };
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+  }, [isShowDatePicker]);
 
   // request to get funds table data
   const query = useFundsServiceGetFundsTable({ tab: activeIndexCategoryTab });
@@ -956,10 +970,10 @@ const Funds = () => {
                                           shadow={false}
                                           type={
                                             header.column.getIsSorted() ===
-                                              'asc'
+                                            'asc'
                                               ? 'active-asc'
                                               : header.column.getIsSorted() ===
-                                                'desc'
+                                                  'desc'
                                                 ? 'inactive'
                                                 : 'inactive'
                                           }
@@ -1001,10 +1015,10 @@ const Funds = () => {
                                           {(Object.entries(selectedFilters)
                                             .length > 0 ||
                                             fundSearchQuery) && (
-                                              <div className="absolute -right-1 -top-1 z-30">
-                                                <FundsTag color="pink" />
-                                              </div>
-                                            )}
+                                            <div className="absolute -right-1 -top-1 z-30">
+                                              <FundsTag color="pink" />
+                                            </div>
+                                          )}
                                           <Icon size="lg" name="filter" />
                                         </div>
                                       </Tooltip>
@@ -1032,7 +1046,7 @@ const Funds = () => {
                                     )}
                                   >
                                     {index >= 2 &&
-                                      header.isPlaceholder ? null : (
+                                    header.isPlaceholder ? null : (
                                       <div
                                         className={cn('w-full', {
                                           'h-[75px] cursor-pointer select-none':
@@ -1063,10 +1077,10 @@ const Funds = () => {
                                           size={'large'}
                                           type={
                                             header.column.getIsSorted() ===
-                                              'asc'
+                                            'asc'
                                               ? 'active-desc'
                                               : header.column.getIsSorted() ===
-                                                'desc'
+                                                  'desc'
                                                 ? 'active-asc'
                                                 : 'inactive'
                                           }
@@ -1216,7 +1230,7 @@ const Funds = () => {
                       <span>تعداد سطر در جدول: </span>
                       {formatNumber(
                         table.getState().pagination.pageSize *
-                        (table.getState().pagination.pageIndex + 1),
+                          (table.getState().pagination.pageIndex + 1),
                         { commaSeparated: true },
                       )}
                     </div>
@@ -1238,8 +1252,8 @@ const Funds = () => {
                     {
                       'pb-2':
                         table.getState().pagination.pageSize *
-                        (table.getState().pagination.pageIndex + 1) *
-                        table.getPageCount() ===
+                          (table.getState().pagination.pageIndex + 1) *
+                          table.getPageCount() ===
                         +prop.text,
                     },
                   )}
@@ -1262,7 +1276,7 @@ const Funds = () => {
               <div>
                 {formatNumber(
                   table.getState().pagination.pageSize *
-                  (table.getState().pagination.pageIndex + 1),
+                    (table.getState().pagination.pageIndex + 1),
                   { commaSeparated: true },
                 )}
                 -
@@ -1362,38 +1376,69 @@ const Funds = () => {
                     .filter((column) => column.columnGroupId === col.identifier)
                     .map((column) => (
                       <div
-                        className={cn(
-                          'hover:bg-surface-brand-100 w-full cursor-pointer rounded-lg',
-                          {
-                            'col-span-2': column.nameInGroup === 'بازه دلخواه',
-                          },
-                        )}
+                        className={cn('w-full rounded-lg', {
+                          'col-span-2': column.nameInGroup === 'بازه دلخواه',
+                          'hover:bg-surface-brand-100 cursor-pointer':
+                            column.nameInGroup !== 'بازه دلخواه' &&
+                            !customColumnDate.start,
+                        })}
                         key={column.key}
                       >
-                        <Checkbox
-                          className="px-2 py-3"
-                          checked={column.visible}
-                          onChange={() => {
-                            if (column.nameInGroup === 'بازه دلخواه') {
-                              setIsShowDatePicker(true);
+                        {column.nameInGroup === 'بازه دلخواه' &&
+                        customColumnDate.start &&
+                        customColumnDate.groupId === column.key ? (
+                          <Checkbox
+                            className="px-2 py-3"
+                            checked={!!customColumnDate.start}
+                            onChange={() => {}}
+                            reactContent={
+                              <div className="flex items-center gap-4">
+                                <p className="text-text-neutral-primary text-sm">
+                                  بازه دلخواه: {customColumnDate.start}-
+                                  {customColumnDate.end}
+                                </p>
+                                <button
+                                  onClick={() => setIsShowDatePicker(true)}
+                                  className="text-button-brand-label-plain-default font-medium"
+                                >
+                                  تغیر بازه
+                                </button>
+                              </div>
                             }
-                            if (column.visible) {
-                              handlerChangeVisibilityColumns({
-                                columnKey: column.key,
-                                visible: column.visible,
-                              });
-                            } else if (
-                              table.getAllLeafColumns().length - 1 <
-                              25
-                            ) {
-                              handlerChangeVisibilityColumns({
-                                columnKey: column.key,
-                                visible: column.visible,
-                              });
+                          />
+                        ) : (
+                          <Checkbox
+                            className="px-2 py-3"
+                            checked={column.visible}
+                            onChange={() => {
+                              if (column.nameInGroup === 'بازه دلخواه') {
+                                setIsShowDatePicker(true);
+                                setCustomColumnDate({
+                                  start: '',
+                                  end: '',
+                                  groupId: column.key,
+                                });
+                              }
+                              if (column.visible) {
+                                handlerChangeVisibilityColumns({
+                                  columnKey: column.key,
+                                  visible: column.visible,
+                                });
+                              } else if (
+                                table.getAllLeafColumns().length - 1 <
+                                25
+                              ) {
+                                handlerChangeVisibilityColumns({
+                                  columnKey: column.key,
+                                  visible: column.visible,
+                                });
+                              }
+                            }}
+                            reactContent={
+                              column.nameInGroup ?? column.upperTitle
                             }
-                          }}
-                          reactContent={column.nameInGroup ?? column.upperTitle}
-                        />
+                          />
+                        )}
                       </div>
                     ))}
                 </div>
@@ -1432,17 +1477,30 @@ const Funds = () => {
         ></DatePicker>
       </Dialog>
       <Toaster position="bottom-center" />
-      {
-        isShowDatePicker &&
-        <Dialog onClose={() => setIsShowDatePicker(false)}
+      {isShowDatePicker && (
+        <Dialog
+          onClose={() => setIsShowDatePicker(false)}
           isOpen={isShowDatePicker}
         >
           <PersianDatePicker
             onClose={() => setIsShowDatePicker(false)}
-            onChange={(e) => console.log(e.end, e.start)}
-            mode="range" min="1380/01/01" max="1404/06/03" />
+            defaultValue={{
+              end: customColumnDate.end,
+              start: customColumnDate.start,
+            }}
+            onChange={(e) =>
+              setCustomColumnDate((prev) => ({
+                start: e.start ?? '',
+                end: e.end ?? '',
+                groupId: prev.groupId,
+              }))
+            }
+            mode="range"
+            min="1380/01/01"
+            max="1404/06/03"
+          />
         </Dialog>
-      }
+      )}
     </>
   );
 };
