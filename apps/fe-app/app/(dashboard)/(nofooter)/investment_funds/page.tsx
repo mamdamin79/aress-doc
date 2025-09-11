@@ -26,7 +26,6 @@ import {
   cn,
   Icon,
   Tabs,
-  DatePicker,
   Tooltip,
   formatNumber,
   OptionsDropdown,
@@ -59,6 +58,7 @@ import {
   useDragIndicator,
   useTableDragSensors,
 } from './utils/investmentFunds.utils';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import {
   FundsService,
   FundsTableItemApiModel,
@@ -120,11 +120,21 @@ const Funds = () => {
     Record<string, string[]>
   >({});
 
-  const [customColl, setCustomColl] = useState<{
+  const [customColl] = useState<{
     active: boolean;
     date: string;
   }>({ active: false, date: '' });
 
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const setActiveTab = (tabId: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('tab', tabId);
+
+    // Use pathname + search params
+    router.push(`${pathname}?${params.toString()}`);
+  };
   const DraggableTableHeader = ({
     header,
     children,
@@ -488,24 +498,28 @@ const Funds = () => {
 
     return () => observer.disconnect();
   }, [table?.getState().pagination.pageSize]);
-
-  const isChanged = useMemo(() => {
-    if (!table) return false;
-
-    const defaultVisibleKeys = query.data?.defaultColumns
+  
+  console.log(query.data?.defaultColumns
       .filter((col) => col.visible)
-      .map((col) => col.key);
+      .map((col) => col.key), columnOrder);
+  
 
-    const currentVisibleKeys = Object.entries(table.getState().columnVisibility)
-      .filter(([value]) => value)
-      .map(([key]) => key);
+const isChanged = useMemo(() => {
+  if (!table) return false;
 
-    if (defaultVisibleKeys?.length !== currentVisibleKeys.length) {
-      return true;
-    }
+  const defaultVisibleKeys =
+    query.data?.defaultColumns.filter((col) => col.visible).map((col) => col.key) ?? [];
 
-    return !defaultVisibleKeys.every((key) => currentVisibleKeys.includes(key));
-  }, [table]);
+  if (defaultVisibleKeys.length !== columnOrder.length) {
+    return false;
+  }
+
+  return !defaultVisibleKeys.every((key, i) => key === columnOrder[i]);
+}, [columnOrder]);
+
+console.log(isChanged);
+
+
 
   useEffect(() => {
     const node = headerRefs?.current[activeSortIndex];
@@ -715,7 +729,7 @@ const Funds = () => {
   });
 
   // get function for change column visibility
-  const changeVisibilityColumns = useFundsServicePostFundsTableTabByTabColumn();
+  const updateColumn = useFundsServicePostFundsTableTabByTabColumn();
 
   // request for change column visibility
   const handlerChangeVisibilityColumns = async ({
@@ -736,7 +750,7 @@ const Funds = () => {
       ),
     );
     try {
-      await changeVisibilityColumns.mutateAsync({
+      await updateColumn.mutateAsync({
         tab: activeIndexCategoryTab,
         requestBody: {
           column: {
@@ -813,6 +827,12 @@ const Funds = () => {
     }
   };
 
+  useEffect(() => {
+    const tabFromUrl = searchParams.get('tab');
+    if (tabFromUrl) {
+      setActiveIndexCategoryTab(+tabFromUrl);
+    }
+  }, [searchParams]);
   return (
     <>
       <div
@@ -829,9 +849,10 @@ const Funds = () => {
           tabs.tabs && (
             <Tabs
               variant="shaped-color"
-              onClickTab={(e) =>
-                setActiveIndexCategoryTab(tabs.tabs[e].identifier)
-              }
+              onClickTab={(e) => {
+                setActiveTab(String(tabs.tabs[e].identifier));
+                setActiveIndexCategoryTab(tabs.tabs[e].identifier);
+              }}
               activeTab={activeIndexCategoryTab}
               tabs={tabs.tabs?.map((tab) => ({
                 id: String(tab.identifier),
@@ -1033,7 +1054,7 @@ const Funds = () => {
                                           }}
                                           className="bg-button-brand-surface-default text-button-brand-label-onsurface relative cursor-pointer rounded-md p-1"
                                         >
-                                          {isChanged && (
+                                          {!isChanged && (
                                             <div className="absolute -right-1 -top-1">
                                               <FundsTag color="pink" />
                                             </div>
@@ -1048,7 +1069,7 @@ const Funds = () => {
                                           }}
                                           className="bg-button-brand-surface-default text-button-brand-label-onsurface relative cursor-pointer rounded-md p-1"
                                         >
-                                          {(filterOptions ||
+                                          {(filterOptions.length ||
                                             fundSearchQuery) && (
                                             <div className="absolute -right-1 -top-1 z-30">
                                               <FundsTag color="pink" />
@@ -1340,7 +1361,6 @@ const Funds = () => {
                 {
                   'text-icon-neutral-disable cursor-default':
                     table.getState().pagination.pageIndex + 1 === 1,
-                  hidden: hasHorizontalScroll,
                 },
               )}
               onClick={() => table.previousPage()}
@@ -1354,7 +1374,6 @@ const Funds = () => {
                 {
                   'text-text-icon-neutral-disable cursor-default':
                     !table.getCanNextPage(),
-                  hidden: hasHorizontalScroll,
                 },
               )}
               onClick={() => table.nextPage()}
@@ -1387,7 +1406,7 @@ const Funds = () => {
               </span>
             </span>
           </div>
-          {isChanged && (
+          {!isChanged && (
             <span
               className="text-button-error-label-plain-default m-6 cursor-pointer text-base font-medium"
               onClick={handlerResetColumns}
@@ -1419,34 +1438,44 @@ const Funds = () => {
                 <div className="mt-4 grid grid-cols-2">
                   {localColumns
                     .filter((column) => column.columnGroupId === col.identifier)
+                    .sort((a, b) => {
+                      if (a.nameInGroup === 'بازه دلخواه') return 1;
+                      if (b.nameInGroup === 'بازه دلخواه') return -1;
+                      return 0;
+                    })
                     .map((column) => (
                       <div
                         className={cn('w-full rounded-lg', {
                           'col-span-2 w-1/2':
                             column.nameInGroup === 'بازه دلخواه',
+                          'col-span-2 w-full':
+                            column.nameInGroup === 'بازه دلخواه' &&
+                            (customColumnDate.start ||
+                              column.customPeriodStartJdate),
                           'hover:bg-surface-brand-100 cursor-pointer':
                             !customColumnDate.start,
                         })}
                         key={column.key}
                       >
                         {column.nameInGroup === 'بازه دلخواه' &&
-                        customColumnDate.start &&
-                        customColumnDate.groupId === column.key ? (
+                        ((customColumnDate.start &&
+                          customColumnDate.groupId === column.key) ||
+                          column.customPeriodStartJdate) ? (
                           <Checkbox
                             className="px-2 py-3"
-                            checked={!!customColumnDate.start}
+                            checked={column.visible}
                             onChange={() => {}}
                             reactContent={
                               <div className="flex items-center gap-4">
                                 <p className="text-text-neutral-primary text-sm">
-                                  بازه دلخواه: {customColumnDate.start}-
-                                  {customColumnDate.end}
+                                  بازه دلخواه: {column.customPeriodStartJdate ?? customColumnDate.start} -  
+                                  {column.customPeriodStartJdate ?? customColumnDate.end}
                                 </p>
                                 <button
                                   onClick={() => setIsShowDatePicker(true)}
                                   className="text-button-brand-label-plain-default font-medium"
                                 >
-                                  تغیر بازه
+                                  تغییر بازه
                                 </button>
                               </div>
                             }
@@ -1507,20 +1536,6 @@ const Funds = () => {
           />
         </div>
       </Dialog>
-      <Dialog
-        isOpen={customColl.active}
-        className="bg-gray-100 p-0"
-        onClose={() => setCustomColl({ active: false, date: '' })}
-      >
-        <DatePicker
-          dateRange={{ end: '1404-12-12', start: '1300-01-12' }}
-          max="1404-12-12"
-          min="1300-01-12"
-          setDateRange={() => {
-            setCustomColl({ active: false, date: 'date' });
-          }}
-        ></DatePicker>
-      </Dialog>
       <Toaster position="bottom-center" />
       {isShowDatePicker && (
         <Dialog
@@ -1533,12 +1548,33 @@ const Funds = () => {
               end: customColumnDate.end,
               start: customColumnDate.start,
             }}
-            onChange={(e) =>
+            onChange={async(e) => {
+              console.log(String(e.start)?.replace('/', '-').replace('/', '-'));
+              
+              try{
+                await updateColumn.mutateAsync({
+                  requestBody: {
+                    column: {
+                      key: customColumnDate.groupId,
+                      sortDirection: 'NO',
+                      visible: true,
+                      customPeriodEndJdate: e.end?.replace('/', '-').replace('/', '-'),
+                      customPeriodStartJdate: e.start?.replace('/', '-').replace('/', '-'),
+                       selectedColumnFilters: null,
+                    },
+                  },
+                  tab: activeIndexCategoryTab,
+                })
+              }
+              catch (error) {
+                console.log(error);
+              }
               setCustomColumnDate((prev) => ({
                 start: e.start ?? '',
                 end: e.end ?? '',
                 groupId: prev.groupId,
               }))
+            }
             }
             mode="range"
             min="1380/01/01"

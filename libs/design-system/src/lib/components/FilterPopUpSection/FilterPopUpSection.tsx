@@ -58,28 +58,30 @@ export function FilterPopUpSection({
 }: Prop) {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [hasReset, setHasReset] = useState(false);
-  const [initialFilters, setInitialFilters] = useState<Record<string, string[]>>({});
+  const [initialFilters, setInitialFilters] = useState<
+    Record<string, string[]>
+  >({});
   const [tempSelectedFilters, setTempSelectedFilters] = useState<
     Record<string, string[]>
   >({});
 
-useEffect(() => {
-  if (hasReset) return;
-  const init: Record<string, string[]> = {};
-  filterOptions.forEach((filter) => {
-    const selectedOptions = filter.options
-      .filter((opt) => opt.select)
-      .map((opt) => opt.label);
-    if (selectedOptions.length > 0) init[filter.title] = selectedOptions;
-  });
-  setTempSelectedFilters(init);
-  setInitialFilters(init);
-}, [filterOptions]);
+  useEffect(() => {
+    if (hasReset) return;
+    const init: Record<string, string[]> = {};
+    filterOptions.forEach((filter) => {
+      const selectedOptions = filter.options
+        .filter((opt) => opt.select)
+        .map((opt) => opt.label);
+      if (selectedOptions.length > 0) init[filter.title] = selectedOptions;
+    });
+    setTempSelectedFilters(init);
+    setInitialFilters(init);
+  }, [filterOptions]);
 
-const openFilter = (title: string) => {
-  setTempSelectedFilters(initialFilters);
-  setActiveFilter(title);
-};
+  const openFilter = (title: string) => {
+    setTempSelectedFilters(initialFilters);
+    setActiveFilter(title);
+  };
   const toggleFilterOption = (
     category: string,
     option: string,
@@ -108,11 +110,11 @@ const openFilter = (title: string) => {
     });
   };
 
-const handleConfirm = () => {
-  setActiveFilter(null);
-  setInitialFilters(tempSelectedFilters);
-  onFilterChange(tempSelectedFilters);
-};
+  const handleConfirm = () => {
+    setActiveFilter(null);
+    setInitialFilters(tempSelectedFilters);
+    onFilterChange(tempSelectedFilters);
+  };
   const handleClearAll = () => {
     onFilterChange({});
     onSearchChange('');
@@ -120,8 +122,7 @@ const handleConfirm = () => {
     setHasReset(true);
   };
 
-const hasChanged = !areFiltersEqual(tempSelectedFilters, initialFilters);
-
+  const hasChanged = !areFiltersEqual(tempSelectedFilters, initialFilters);
 
   return (
     <div

@@ -371,9 +371,7 @@ function TableRowInner<T extends FundRow>({
       console.log(error);
     }
   };
-
-  console.log(row.getVisibleCells()[0].column.id);
-
+  
   return (
     <tr
       onMouseEnter={() => setShowMark(true)}
