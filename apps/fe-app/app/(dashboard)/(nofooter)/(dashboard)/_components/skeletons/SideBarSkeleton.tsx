@@ -8,9 +8,9 @@ export function SidebarSkeleton({ children }: { children: React.ReactNode }) {
       </div>
       <div className="skeleton-shimmer mt-3 h-0.5 w-full" />
       <div className="mt-2 flex w-full items-center justify-between">
-        <div className="skeleton-shimmer h-[22px] w-[167px] rounded-2xl" />
-        <div className="skeleton-shimmer h-[22px] w-[88px] rounded-2xl" />
-        <div className="skeleton-shimmer h-[22px] w-[88px] rounded-2xl" />
+        <div className="skeleton-shimmer h-[22px] w-[80px] rounded-2xl" />
+        <div className="skeleton-shimmer h-[22px] w-[80px] rounded-2xl" />
+        <div className="skeleton-shimmer h-[22px] w-[80px] rounded-2xl" />
       </div>
       {children}
     </div>

@@ -7,3 +7,4 @@ export * from './ResetPasswordForm';
 export * from './ProfileForm';
 export * from './ReportSelectionPopup';
 export * from './ReturnTable';
+export * from './RiskGauge';

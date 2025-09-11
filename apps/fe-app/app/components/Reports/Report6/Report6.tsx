@@ -96,11 +96,13 @@ export const Report6: FC<ReportProps<Report6CalculationResult>> = ({
     },
     yAxis: [
       {
+        gridLineColor: 'var(--color-border-neutral-secondary)',
         title: { text: '' },
         labels: yAxisLabels,
         plotLines: [{ value: 0, width: 0 }],
       },
       {
+        gridLineColor: 'var(--color-border-neutral-secondary)',
         title: { text: '' },
         opposite: true,
         labels: yAxisLabels,
@@ -114,6 +116,14 @@ export const Report6: FC<ReportProps<Report6CalculationResult>> = ({
         color: 'var(--color-surface-accent-green-600)',
         yAxis: 0,
         unit: data.netFlowUnit + ' ریال ',
+        states: {
+          inactive: {
+            opacity: 1, // prevents other series from dimming
+          },
+          hover: {
+            brightness: 0, // prevents darkening or lightening on hover
+          },
+        },
       },
       {
         name: 'خروج',
@@ -122,6 +132,14 @@ export const Report6: FC<ReportProps<Report6CalculationResult>> = ({
         color: 'var(--color-surface-accent-red-600)',
         yAxis: 0,
         unit: data.netFlowUnit + ' ریال ',
+        states: {
+          inactive: {
+            opacity: 1, // prevents other series from dimming
+          },
+          hover: {
+            brightness: 0, // prevents darkening or lightening on hover
+          },
+        },
       },
       {
         name: 'شاخص کل',
@@ -130,11 +148,21 @@ export const Report6: FC<ReportProps<Report6CalculationResult>> = ({
         color: 'var(--color-border-accent-blue-600)',
         yAxis: 1,
         unit: data.indexUnit + ' واحد ',
+        states: {
+          inactive: {
+            opacity: 1, // prevents other series from dimming
+          },
+          hover: {
+            brightness: 0, // prevents darkening or lightening on hover
+          },
+        },
       },
     ],
     legend: {
       ...baseOptions.legend,
       useHTML: true,
+      symbolRadius: 0, // makes it a perfect square
+
       labelFormatter: function () {
         if (this.name === 'ورود') {
           return `ورود <span style="color: var(--color-text-neutral-secondary); font-size: 11px;">${data.netFlowUnit} ریال</span>`;

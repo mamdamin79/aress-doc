@@ -1249,6 +1249,26 @@ export const $FinancialReportListItemApiModel = {
   title: 'FinancialReportListItemApiModel',
 } as const;
 
+export const $FinancialTermApiModel = {
+  properties: {
+    identifier: {
+      type: 'integer',
+      title: 'Identifier',
+    },
+    title: {
+      type: 'string',
+      title: 'Title',
+    },
+    description: {
+      type: 'string',
+      title: 'Description',
+    },
+  },
+  type: 'object',
+  required: ['identifier', 'title', 'description'],
+  title: 'FinancialTermApiModel',
+} as const;
+
 export const $ForgotPasswordResetByOtpBody = {
   properties: {
     otp: {
@@ -1548,7 +1568,7 @@ export const $FundReturnAnalysisResponseApiModel = {
     returnTrend: {
       anyOf: [
         {
-          $ref: '#/components/schemas/FundReturnAnalysisReturnTrendApiModel',
+          $ref: '#/components/schemas/FundReturnAnalysisReturnTrendSectionApiModel',
         },
         {
           type: 'null',
@@ -1559,7 +1579,7 @@ export const $FundReturnAnalysisResponseApiModel = {
     returnComparison: {
       anyOf: [
         {
-          $ref: '#/components/schemas/FundReturnAnalysisReturnComparisonApiModel',
+          $ref: '#/components/schemas/FundReturnAnalysisReturnComparisonSectionApiModel',
         },
         {
           type: 'null',
@@ -1570,7 +1590,7 @@ export const $FundReturnAnalysisResponseApiModel = {
     returnRank: {
       anyOf: [
         {
-          $ref: '#/components/schemas/FundReturnAnalysisReturnRankApiModel',
+          $ref: '#/components/schemas/FundReturnAnalysisReturnRankSectionApiModel',
         },
         {
           type: 'null',
@@ -1581,7 +1601,7 @@ export const $FundReturnAnalysisResponseApiModel = {
     riskReturnAnalysis: {
       anyOf: [
         {
-          $ref: '#/components/schemas/FundReturnAnalysisRiskReturnAnalysisApiModel',
+          $ref: '#/components/schemas/FundReturnAnalysisRiskReturnAnalysisSectionApiModel',
         },
         {
           type: 'null',
@@ -1592,7 +1612,7 @@ export const $FundReturnAnalysisResponseApiModel = {
     seasonalityEffectAnalysis: {
       anyOf: [
         {
-          $ref: '#/components/schemas/FundReturnAnalysisSeasonalityEffectAnalysisApiModel',
+          $ref: '#/components/schemas/FundReturnAnalysisSeasonalityEffectAnalysisSectionApiModel',
         },
         {
           type: 'null',
@@ -1685,10 +1705,37 @@ export const $FundReturnAnalysisReturnChartHistoryItemApiModel = {
   title: 'FundReturnAnalysisReturnChartHistoryItemApiModel',
 } as const;
 
-export const $FundReturnAnalysisReturnComparisonApiModel = {
+export const $FundReturnAnalysisReturnComparisonBody = {
   properties: {
+    selectedTopLeftFilterOption: {
+      $ref: '#/components/schemas/TopLeftFilterTimeSeparation',
+      description: 'تفکیک زمانی',
+    },
+  },
+  type: 'object',
+  required: ['selectedTopLeftFilterOption'],
+  title: 'FundReturnAnalysisReturnComparisonBody',
+} as const;
+
+export const $FundReturnAnalysisReturnComparisonSectionApiModel = {
+  properties: {
+    financialTerms: {
+      anyOf: [
+        {
+          items: {
+            $ref: '#/components/schemas/FinancialTermApiModel',
+          },
+          type: 'array',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Financialterms',
+      description: 'تعاریف مالی به کار رفته',
+    },
     topLeftFilterOptions: {
-      $ref: '#/components/schemas/TopLeftFilterOptions',
+      $ref: '#/components/schemas/TopLeftFilterOptionsApiModel',
       description: 'تفکیک زمانی',
     },
     tableColumns: {
@@ -1717,25 +1764,14 @@ export const $FundReturnAnalysisReturnComparisonApiModel = {
   },
   type: 'object',
   required: [
+    'financialTerms',
     'topLeftFilterOptions',
     'tableColumns',
     'fundAverageReturnPercent',
     'stockFundsAverageReturnPercent',
     'tedpixAverageReturnPercent',
   ],
-  title: 'FundReturnAnalysisReturnComparisonApiModel',
-} as const;
-
-export const $FundReturnAnalysisReturnComparisonBody = {
-  properties: {
-    selectedTopLeftFilterOption: {
-      $ref: '#/components/schemas/TopLeftFilterTimeSeparation',
-      description: 'تفکیک زمانی',
-    },
-  },
-  type: 'object',
-  required: ['selectedTopLeftFilterOption'],
-  title: 'FundReturnAnalysisReturnComparisonBody',
+  title: 'FundReturnAnalysisReturnComparisonSectionApiModel',
 } as const;
 
 export const $FundReturnAnalysisReturnComparisonTableColumnApiModel = {
@@ -1771,10 +1807,37 @@ export const $FundReturnAnalysisReturnComparisonTableColumnApiModel = {
   title: 'FundReturnAnalysisReturnComparisonTableColumnApiModel',
 } as const;
 
-export const $FundReturnAnalysisReturnRankApiModel = {
+export const $FundReturnAnalysisReturnRankBody = {
   properties: {
+    selectedTopLeftFilterOption: {
+      $ref: '#/components/schemas/TopLeftFilterTimeSeparation',
+      description: 'تفکیک زمانی',
+    },
+  },
+  type: 'object',
+  required: ['selectedTopLeftFilterOption'],
+  title: 'FundReturnAnalysisReturnRankBody',
+} as const;
+
+export const $FundReturnAnalysisReturnRankSectionApiModel = {
+  properties: {
+    financialTerms: {
+      anyOf: [
+        {
+          items: {
+            $ref: '#/components/schemas/FinancialTermApiModel',
+          },
+          type: 'array',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Financialterms',
+      description: 'تعاریف مالی به کار رفته',
+    },
     topLeftFilterOptions: {
-      $ref: '#/components/schemas/TopLeftFilterOptions',
+      $ref: '#/components/schemas/TopLeftFilterOptionsApiModel',
       description: 'تفکیک زمانی',
     },
     tableColumns: {
@@ -1803,25 +1866,14 @@ export const $FundReturnAnalysisReturnRankApiModel = {
   },
   type: 'object',
   required: [
+    'financialTerms',
     'topLeftFilterOptions',
     'tableColumns',
     'quarterAverageReturnRank',
     'percentAverageReturnRank',
     'relativeAverageReturnRank',
   ],
-  title: 'FundReturnAnalysisReturnRankApiModel',
-} as const;
-
-export const $FundReturnAnalysisReturnRankBody = {
-  properties: {
-    selectedTopLeftFilterOption: {
-      $ref: '#/components/schemas/TopLeftFilterTimeSeparation',
-      description: 'تفکیک زمانی',
-    },
-  },
-  type: 'object',
-  required: ['selectedTopLeftFilterOption'],
-  title: 'FundReturnAnalysisReturnRankBody',
+  title: 'FundReturnAnalysisReturnRankSectionApiModel',
 } as const;
 
 export const $FundReturnAnalysisReturnRankTableColumnApiModel = {
@@ -1852,14 +1904,56 @@ export const $FundReturnAnalysisReturnRankTableColumnApiModel = {
   title: 'FundReturnAnalysisReturnRankTableColumnApiModel',
 } as const;
 
-export const $FundReturnAnalysisReturnTrendApiModel = {
+export const $FundReturnAnalysisReturnTrendBody = {
   properties: {
+    selectedTimeRangeFilterOption: {
+      $ref: '#/components/schemas/SelectedFundTimeRangeFilterOption',
+    },
+    selectedTopLeftFilterOption: {
+      $ref: '#/components/schemas/TopLeftFilterBaseCurrency',
+      description: 'ارز مبنای بازده',
+    },
+    comparedFundIds: {
+      items: {
+        type: 'integer',
+      },
+      type: 'array',
+      title: 'Comparedfundids',
+      description: 'شناسه صندوق‌های مقایسه',
+    },
+  },
+  type: 'object',
+  required: [
+    'selectedTimeRangeFilterOption',
+    'selectedTopLeftFilterOption',
+    'comparedFundIds',
+  ],
+  title: 'FundReturnAnalysisReturnTrendBody',
+} as const;
+
+export const $FundReturnAnalysisReturnTrendSectionApiModel = {
+  properties: {
+    financialTerms: {
+      anyOf: [
+        {
+          items: {
+            $ref: '#/components/schemas/FinancialTermApiModel',
+          },
+          type: 'array',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Financialterms',
+      description: 'تعاریف مالی به کار رفته',
+    },
     timeRangeFilterOptions: {
       $ref: '#/components/schemas/FundTimeRangeFilterOptions',
       description: 'بازه زمانی',
     },
     topLeftFilterOptions: {
-      $ref: '#/components/schemas/TopLeftFilterOptions',
+      $ref: '#/components/schemas/TopLeftFilterOptionsApiModel',
       description: 'ارز مبنای بازده',
     },
     fundComparisonOptions: {
@@ -1961,6 +2055,7 @@ export const $FundReturnAnalysisReturnTrendApiModel = {
   },
   type: 'object',
   required: [
+    'financialTerms',
     'timeRangeFilterOptions',
     'topLeftFilterOptions',
     'fundComparisonOptions',
@@ -1973,67 +2068,7 @@ export const $FundReturnAnalysisReturnTrendApiModel = {
     'stockFundsAverageLeveragePercent',
     'returnChart',
   ],
-  title: 'FundReturnAnalysisReturnTrendApiModel',
-} as const;
-
-export const $FundReturnAnalysisReturnTrendBody = {
-  properties: {
-    selectedTimeRangeFilterOption: {
-      $ref: '#/components/schemas/SelectedFundTimeRangeFilterOption',
-    },
-    selectedTopLeftFilterOption: {
-      $ref: '#/components/schemas/TopLeftFilterBaseCurrency',
-      description: 'ارز مبنای بازده',
-    },
-    comparedFundIds: {
-      items: {
-        type: 'integer',
-      },
-      type: 'array',
-      title: 'Comparedfundids',
-      description: 'شناسه صندوق‌های مقایسه',
-    },
-  },
-  type: 'object',
-  required: [
-    'selectedTimeRangeFilterOption',
-    'selectedTopLeftFilterOption',
-    'comparedFundIds',
-  ],
-  title: 'FundReturnAnalysisReturnTrendBody',
-} as const;
-
-export const $FundReturnAnalysisRiskReturnAnalysisApiModel = {
-  properties: {
-    topLeftFilterOptions: {
-      $ref: '#/components/schemas/TopLeftFilterOptions',
-      description: 'معیار ریسک',
-    },
-    timeRangeFilterOptions: {
-      $ref: '#/components/schemas/FundTimeRangeFilterOptions',
-      description: 'بازه زمانی',
-    },
-    fundComparisonOptions: {
-      $ref: '#/components/schemas/FundComparisonOptions',
-      description: 'صندوق‌های مقایسه شده',
-    },
-    chartItems: {
-      items: {
-        $ref: '#/components/schemas/FundReturnAnalysisRiskReturnAnalysisChartItemApiModel',
-      },
-      type: 'array',
-      title: 'Chartitems',
-      description: 'نمودار تحلیل ریسک',
-    },
-  },
-  type: 'object',
-  required: [
-    'topLeftFilterOptions',
-    'timeRangeFilterOptions',
-    'fundComparisonOptions',
-    'chartItems',
-  ],
-  title: 'FundReturnAnalysisRiskReturnAnalysisApiModel',
+  title: 'FundReturnAnalysisReturnTrendSectionApiModel',
 } as const;
 
 export const $FundReturnAnalysisRiskReturnAnalysisBody = {
@@ -2102,10 +2137,86 @@ export const $FundReturnAnalysisRiskReturnAnalysisChartItemApiModel = {
   title: 'FundReturnAnalysisRiskReturnAnalysisChartItemApiModel',
 } as const;
 
-export const $FundReturnAnalysisSeasonalityEffectAnalysisApiModel = {
+export const $FundReturnAnalysisRiskReturnAnalysisSectionApiModel = {
   properties: {
+    financialTerms: {
+      anyOf: [
+        {
+          items: {
+            $ref: '#/components/schemas/FinancialTermApiModel',
+          },
+          type: 'array',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Financialterms',
+      description: 'تعاریف مالی به کار رفته',
+    },
     topLeftFilterOptions: {
-      $ref: '#/components/schemas/TopLeftFilterOptions',
+      $ref: '#/components/schemas/TopLeftFilterOptionsApiModel',
+      description: 'معیار ریسک',
+    },
+    timeRangeFilterOptions: {
+      $ref: '#/components/schemas/FundTimeRangeFilterOptions',
+      description: 'بازه زمانی',
+    },
+    fundComparisonOptions: {
+      $ref: '#/components/schemas/FundComparisonOptions',
+      description: 'صندوق‌های مقایسه شده',
+    },
+    chartItems: {
+      items: {
+        $ref: '#/components/schemas/FundReturnAnalysisRiskReturnAnalysisChartItemApiModel',
+      },
+      type: 'array',
+      title: 'Chartitems',
+      description: 'نمودار تحلیل ریسک',
+    },
+  },
+  type: 'object',
+  required: [
+    'financialTerms',
+    'topLeftFilterOptions',
+    'timeRangeFilterOptions',
+    'fundComparisonOptions',
+    'chartItems',
+  ],
+  title: 'FundReturnAnalysisRiskReturnAnalysisSectionApiModel',
+} as const;
+
+export const $FundReturnAnalysisSeasonalityEffectAnalysisBody = {
+  properties: {
+    selectedTopLeftFilterOption: {
+      $ref: '#/components/schemas/TopLeftFilterSeasonalityEffectTableCriteria',
+      description: 'جدول بر مبنای',
+    },
+  },
+  type: 'object',
+  required: ['selectedTopLeftFilterOption'],
+  title: 'FundReturnAnalysisSeasonalityEffectAnalysisBody',
+} as const;
+
+export const $FundReturnAnalysisSeasonalityEffectAnalysisSectionApiModel = {
+  properties: {
+    financialTerms: {
+      anyOf: [
+        {
+          items: {
+            $ref: '#/components/schemas/FinancialTermApiModel',
+          },
+          type: 'array',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Financialterms',
+      description: 'تعاریف مالی به کار رفته',
+    },
+    topLeftFilterOptions: {
+      $ref: '#/components/schemas/TopLeftFilterOptionsApiModel',
       description: 'جدول بر مبنای',
     },
     rows: {
@@ -2126,20 +2237,14 @@ export const $FundReturnAnalysisSeasonalityEffectAnalysisApiModel = {
     },
   },
   type: 'object',
-  required: ['topLeftFilterOptions', 'rows', 'averageRow', 'standardDeviation'],
-  title: 'FundReturnAnalysisSeasonalityEffectAnalysisApiModel',
-} as const;
-
-export const $FundReturnAnalysisSeasonalityEffectAnalysisBody = {
-  properties: {
-    selectedTopLeftFilterOption: {
-      $ref: '#/components/schemas/TopLeftFilterSeasonalityEffectTableCriteria',
-      description: 'جدول بر مبنای',
-    },
-  },
-  type: 'object',
-  required: ['selectedTopLeftFilterOption'],
-  title: 'FundReturnAnalysisSeasonalityEffectAnalysisBody',
+  required: [
+    'financialTerms',
+    'topLeftFilterOptions',
+    'rows',
+    'averageRow',
+    'standardDeviation',
+  ],
+  title: 'FundReturnAnalysisSeasonalityEffectAnalysisSectionApiModel',
 } as const;
 
 export const $FundReturnAnalysisSeasonalityEffectTableAverageRowApiModel = {
@@ -2746,8 +2851,62 @@ export const $FundSummaryBaseInfoApiModel = {
   title: 'FundSummaryBaseInfoApiModel',
 } as const;
 
-export const $FundSummaryCaseByCaseApiModel = {
+export const $FundSummaryCaseByCaseBody = {
   properties: {
+    selectedTimeRangeFilterOption: {
+      $ref: '#/components/schemas/SelectedFundTimeRangeFilterOption',
+    },
+  },
+  type: 'object',
+  required: ['selectedTimeRangeFilterOption'],
+  title: 'FundSummaryCaseByCaseBody',
+} as const;
+
+export const $FundSummaryCaseByCaseNavHistoryItemApiModel = {
+  properties: {
+    revokeNavRials: {
+      type: 'integer',
+      title: 'Revokenavrials',
+      description: 'nav ابطال',
+    },
+    jdtLabel: {
+      type: 'string',
+      title: 'Jdtlabel',
+      description: 'لیبل تاریخ',
+    },
+    jdt: {
+      type: 'string',
+      title: 'Jdt',
+      description: 'تاریخ شمسی به فرمت YYYY-mm-dd',
+    },
+    dt: {
+      type: 'string',
+      title: 'Dt',
+      description: 'تاریخ میلادی به فرمت YYYY-mm-dd',
+    },
+  },
+  type: 'object',
+  required: ['revokeNavRials', 'jdtLabel', 'jdt', 'dt'],
+  title: 'FundSummaryCaseByCaseNavHistoryItemApiModel',
+} as const;
+
+export const $FundSummaryCaseByCaseSectionApiModel = {
+  properties: {
+    financialTerms: {
+      anyOf: [
+        {
+          items: {
+            $ref: '#/components/schemas/FinancialTermApiModel',
+          },
+          type: 'array',
+        },
+        {
+          type: 'null',
+        },
+      ],
+      title: 'Financialterms',
+      description: 'تعاریف مالی به کار رفته',
+    },
     timeRangeFilterOptions: {
       $ref: '#/components/schemas/FundTimeRangeFilterOptions',
       description: 'بازه زمانی',
@@ -2818,6 +2977,7 @@ export const $FundSummaryCaseByCaseApiModel = {
   },
   type: 'object',
   required: [
+    'financialTerms',
     'timeRangeFilterOptions',
     'navEndOfPeriodRials',
     'returnEndOfPeriodRials',
@@ -2832,46 +2992,7 @@ export const $FundSummaryCaseByCaseApiModel = {
     'averageNavInPeriod',
     'navHistory',
   ],
-  title: 'FundSummaryCaseByCaseApiModel',
-} as const;
-
-export const $FundSummaryCaseByCaseBody = {
-  properties: {
-    selectedTimeRangeFilterOption: {
-      $ref: '#/components/schemas/SelectedFundTimeRangeFilterOption',
-    },
-  },
-  type: 'object',
-  required: ['selectedTimeRangeFilterOption'],
-  title: 'FundSummaryCaseByCaseBody',
-} as const;
-
-export const $FundSummaryCaseByCaseNavHistoryItemApiModel = {
-  properties: {
-    revokeNavRials: {
-      type: 'integer',
-      title: 'Revokenavrials',
-      description: 'nav ابطال',
-    },
-    jdtLabel: {
-      type: 'string',
-      title: 'Jdtlabel',
-      description: 'لیبل تاریخ',
-    },
-    jdt: {
-      type: 'string',
-      title: 'Jdt',
-      description: 'تاریخ شمسی به فرمت YYYY-mm-dd',
-    },
-    dt: {
-      type: 'string',
-      title: 'Dt',
-      description: 'تاریخ میلادی به فرمت YYYY-mm-dd',
-    },
-  },
-  type: 'object',
-  required: ['revokeNavRials', 'jdtLabel', 'jdt', 'dt'],
-  title: 'FundSummaryCaseByCaseNavHistoryItemApiModel',
+  title: 'FundSummaryCaseByCaseSectionApiModel',
 } as const;
 
 export const $FundSummaryResponseApiModel = {
@@ -2894,7 +3015,7 @@ export const $FundSummaryResponseApiModel = {
     fundSummaryCaseByCase: {
       anyOf: [
         {
-          $ref: '#/components/schemas/FundSummaryCaseByCaseApiModel',
+          $ref: '#/components/schemas/FundSummaryCaseByCaseSectionApiModel',
         },
         {
           type: 'null',
@@ -5411,7 +5532,7 @@ export const $TopLeftFilterOption = {
   title: 'TopLeftFilterOption',
 } as const;
 
-export const $TopLeftFilterOptions = {
+export const $TopLeftFilterOptionsApiModel = {
   properties: {
     label: {
       type: 'string',
@@ -5427,7 +5548,7 @@ export const $TopLeftFilterOptions = {
   },
   type: 'object',
   required: ['label', 'options'],
-  title: 'TopLeftFilterOptions',
+  title: 'TopLeftFilterOptionsApiModel',
 } as const;
 
 export const $TopLeftFilterRiskCriteria = {

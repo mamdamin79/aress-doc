@@ -1,13 +1,16 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, NewBadge, Icon, LikeBadge } from 'design-system';
 // import { TextWithIcon } from 'compositions';
 import { Category } from '../_types/api.types';
 import { TextWithIcon } from '../../../../../../compositions/TextWithIcon';
+import { AddToDashboardPopup } from './AddToDashboardPopup';
+import { ReportPlacementPopup } from './ReportPlacementPopup';
 import {
   useReportsServiceDeleteReportsByReportIdFavorite,
   useReportsServicePostReportsByReportIdFavorite,
 } from '@openapi';
+import { Toaster } from 'react-hot-toast';
 export interface ReportOverviewProps {
   title?: string;
   category?: Category;
@@ -24,6 +27,13 @@ export const ReportOverview: React.FC<ReportOverviewProps> = ({
   isNew,
   reportId,
 }) => {
+  const [isAddToDashboardOpen, setIsAddToDashboardOpen] = useState(false);
+  const [isReportPlacementOpen, setIsReportPlacementOpen] = useState(false);
+  const [selectedDashboardId, setSelectedDashboardId] = useState<number | null>(
+    null,
+  );
+  const [selectedDashboardName, setSelectedDashboardName] =
+    useState<string>('');
   const addFavoriteMutation = useReportsServicePostReportsByReportIdFavorite();
   const deleteFavoriteMutation =
     useReportsServiceDeleteReportsByReportIdFavorite();
@@ -58,6 +68,7 @@ export const ReportOverview: React.FC<ReportOverviewProps> = ({
             mode="primary"
             size="sm"
             theme="brand"
+            onClick={() => setIsAddToDashboardOpen(true)}
           >
             <div className="flex w-fit flex-row gap-2">
               <Icon name="plus" size="lg" />
@@ -71,6 +82,30 @@ export const ReportOverview: React.FC<ReportOverviewProps> = ({
       <p className="text-text-neutral-secondary text-sm font-normal">
         {summary}
       </p>
+
+      <AddToDashboardPopup
+        isOpen={isAddToDashboardOpen}
+        onClose={() => setIsAddToDashboardOpen(false)}
+        onSelect={(dashboardId, dashboardName) => {
+          setSelectedDashboardId(dashboardId);
+          setSelectedDashboardName(dashboardName);
+          setIsAddToDashboardOpen(false);
+          setIsReportPlacementOpen(true);
+        }}
+      />
+
+      <ReportPlacementPopup
+        isOpen={isReportPlacementOpen}
+        onClose={() => {
+          setIsReportPlacementOpen(false);
+          setSelectedDashboardId(null);
+          setSelectedDashboardName('');
+        }}
+        dashboardId={selectedDashboardId ?? 0}
+        dashboardName={selectedDashboardName}
+        reportId={reportId ?? ''}
+      />
+      <Toaster position="bottom-center" />
     </div>
   );
 };

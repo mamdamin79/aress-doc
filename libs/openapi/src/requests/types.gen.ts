@@ -334,6 +334,12 @@ export type FinancialReportListItemApiModel = {
   isNew?: boolean;
 };
 
+export type FinancialTermApiModel = {
+  identifier: number;
+  title: string;
+  description: string;
+};
+
 export type ForgotPasswordResetByOtpBody = {
   otp: string;
   newPassword: string;
@@ -468,23 +474,23 @@ export type FundReturnAnalysisResponseApiModel = {
   /**
    * روند بازدهی
    */
-  returnTrend: FundReturnAnalysisReturnTrendApiModel | null;
+  returnTrend: FundReturnAnalysisReturnTrendSectionApiModel | null;
   /**
    * مقایسه بازدهی
    */
-  returnComparison: FundReturnAnalysisReturnComparisonApiModel | null;
+  returnComparison: FundReturnAnalysisReturnComparisonSectionApiModel | null;
   /**
    * رتبه بازدهی
    */
-  returnRank: FundReturnAnalysisReturnRankApiModel | null;
+  returnRank: FundReturnAnalysisReturnRankSectionApiModel | null;
   /**
    * رتبه بازدهی
    */
-  riskReturnAnalysis: FundReturnAnalysisRiskReturnAnalysisApiModel | null;
+  riskReturnAnalysis: FundReturnAnalysisRiskReturnAnalysisSectionApiModel | null;
   /**
    * تحلیل اثر فصلی
    */
-  seasonalityEffectAnalysis: FundReturnAnalysisSeasonalityEffectAnalysisApiModel | null;
+  seasonalityEffectAnalysis: FundReturnAnalysisSeasonalityEffectAnalysisSectionApiModel | null;
 };
 
 export type FundReturnAnalysisReturnChartApiModel = {
@@ -525,11 +531,22 @@ export type FundReturnAnalysisReturnChartHistoryItemApiModel = {
   dt: string;
 };
 
-export type FundReturnAnalysisReturnComparisonApiModel = {
+export type FundReturnAnalysisReturnComparisonBody = {
   /**
    * تفکیک زمانی
    */
-  topLeftFilterOptions: TopLeftFilterOptions;
+  selectedTopLeftFilterOption: TopLeftFilterTimeSeparation;
+};
+
+export type FundReturnAnalysisReturnComparisonSectionApiModel = {
+  /**
+   * تعاریف مالی به کار رفته
+   */
+  financialTerms: Array<FinancialTermApiModel> | null;
+  /**
+   * تفکیک زمانی
+   */
+  topLeftFilterOptions: TopLeftFilterOptionsApiModel;
   /**
    * ستون‌های جدول مقایسه بازدهی
    */
@@ -546,13 +563,6 @@ export type FundReturnAnalysisReturnComparisonApiModel = {
    * متوسط شاخص کل
    */
   tedpixAverageReturnPercent: number;
-};
-
-export type FundReturnAnalysisReturnComparisonBody = {
-  /**
-   * تفکیک زمانی
-   */
-  selectedTopLeftFilterOption: TopLeftFilterTimeSeparation;
 };
 
 export type FundReturnAnalysisReturnComparisonTableColumnApiModel = {
@@ -574,11 +584,22 @@ export type FundReturnAnalysisReturnComparisonTableColumnApiModel = {
   tedpixReturnPercent: number;
 };
 
-export type FundReturnAnalysisReturnRankApiModel = {
+export type FundReturnAnalysisReturnRankBody = {
   /**
    * تفکیک زمانی
    */
-  topLeftFilterOptions: TopLeftFilterOptions;
+  selectedTopLeftFilterOption: TopLeftFilterTimeSeparation;
+};
+
+export type FundReturnAnalysisReturnRankSectionApiModel = {
+  /**
+   * تعاریف مالی به کار رفته
+   */
+  financialTerms: Array<FinancialTermApiModel> | null;
+  /**
+   * تفکیک زمانی
+   */
+  topLeftFilterOptions: TopLeftFilterOptionsApiModel;
   /**
    * ستون‌های جدول رتبه بازدهی
    */
@@ -595,13 +616,6 @@ export type FundReturnAnalysisReturnRankApiModel = {
    * متوسط نسبی
    */
   relativeAverageReturnRank: string;
-};
-
-export type FundReturnAnalysisReturnRankBody = {
-  /**
-   * تفکیک زمانی
-   */
-  selectedTopLeftFilterOption: TopLeftFilterTimeSeparation;
 };
 
 export type FundReturnAnalysisReturnRankTableColumnApiModel = {
@@ -623,7 +637,23 @@ export type FundReturnAnalysisReturnRankTableColumnApiModel = {
   relativeRank: string;
 };
 
-export type FundReturnAnalysisReturnTrendApiModel = {
+export type FundReturnAnalysisReturnTrendBody = {
+  selectedTimeRangeFilterOption: SelectedFundTimeRangeFilterOption;
+  /**
+   * ارز مبنای بازده
+   */
+  selectedTopLeftFilterOption: TopLeftFilterBaseCurrency;
+  /**
+   * شناسه صندوق‌های مقایسه
+   */
+  comparedFundIds: Array<number>;
+};
+
+export type FundReturnAnalysisReturnTrendSectionApiModel = {
+  /**
+   * تعاریف مالی به کار رفته
+   */
+  financialTerms: Array<FinancialTermApiModel> | null;
   /**
    * بازه زمانی
    */
@@ -631,7 +661,7 @@ export type FundReturnAnalysisReturnTrendApiModel = {
   /**
    * ارز مبنای بازده
    */
-  topLeftFilterOptions: TopLeftFilterOptions;
+  topLeftFilterOptions: TopLeftFilterOptionsApiModel;
   /**
    * صندوق‌های مقایسه شده
    */
@@ -670,37 +700,6 @@ export type FundReturnAnalysisReturnTrendApiModel = {
   returnChart: Array<FundReturnAnalysisReturnChartApiModel>;
 };
 
-export type FundReturnAnalysisReturnTrendBody = {
-  selectedTimeRangeFilterOption: SelectedFundTimeRangeFilterOption;
-  /**
-   * ارز مبنای بازده
-   */
-  selectedTopLeftFilterOption: TopLeftFilterBaseCurrency;
-  /**
-   * شناسه صندوق‌های مقایسه
-   */
-  comparedFundIds: Array<number>;
-};
-
-export type FundReturnAnalysisRiskReturnAnalysisApiModel = {
-  /**
-   * معیار ریسک
-   */
-  topLeftFilterOptions: TopLeftFilterOptions;
-  /**
-   * بازه زمانی
-   */
-  timeRangeFilterOptions: FundTimeRangeFilterOptions;
-  /**
-   * صندوق‌های مقایسه شده
-   */
-  fundComparisonOptions: FundComparisonOptions;
-  /**
-   * نمودار تحلیل ریسک
-   */
-  chartItems: Array<FundReturnAnalysisRiskReturnAnalysisChartItemApiModel>;
-};
-
 export type FundReturnAnalysisRiskReturnAnalysisBody = {
   /**
    * معیار ریسک
@@ -722,11 +721,45 @@ export type FundReturnAnalysisRiskReturnAnalysisChartItemApiModel = {
   colorHex: string;
 };
 
-export type FundReturnAnalysisSeasonalityEffectAnalysisApiModel = {
+export type FundReturnAnalysisRiskReturnAnalysisSectionApiModel = {
+  /**
+   * تعاریف مالی به کار رفته
+   */
+  financialTerms: Array<FinancialTermApiModel> | null;
+  /**
+   * معیار ریسک
+   */
+  topLeftFilterOptions: TopLeftFilterOptionsApiModel;
+  /**
+   * بازه زمانی
+   */
+  timeRangeFilterOptions: FundTimeRangeFilterOptions;
+  /**
+   * صندوق‌های مقایسه شده
+   */
+  fundComparisonOptions: FundComparisonOptions;
+  /**
+   * نمودار تحلیل ریسک
+   */
+  chartItems: Array<FundReturnAnalysisRiskReturnAnalysisChartItemApiModel>;
+};
+
+export type FundReturnAnalysisSeasonalityEffectAnalysisBody = {
   /**
    * جدول بر مبنای
    */
-  topLeftFilterOptions: TopLeftFilterOptions;
+  selectedTopLeftFilterOption: TopLeftFilterSeasonalityEffectTableCriteria;
+};
+
+export type FundReturnAnalysisSeasonalityEffectAnalysisSectionApiModel = {
+  /**
+   * تعاریف مالی به کار رفته
+   */
+  financialTerms: Array<FinancialTermApiModel> | null;
+  /**
+   * جدول بر مبنای
+   */
+  topLeftFilterOptions: TopLeftFilterOptionsApiModel;
   /**
    * سال‌ها
    */
@@ -739,13 +772,6 @@ export type FundReturnAnalysisSeasonalityEffectAnalysisApiModel = {
    * انحراف معیار
    */
   standardDeviation: FundReturnAnalysisSeasonalityEffectTableStandardDeviationRowApiModel;
-};
-
-export type FundReturnAnalysisSeasonalityEffectAnalysisBody = {
-  /**
-   * جدول بر مبنای
-   */
-  selectedTopLeftFilterOption: TopLeftFilterSeasonalityEffectTableCriteria;
 };
 
 export type FundReturnAnalysisSeasonalityEffectTableAverageRowApiModel = {
@@ -954,7 +980,34 @@ export type FundSummaryBaseInfoApiModel = {
   timeSinceInitiation: string;
 };
 
-export type FundSummaryCaseByCaseApiModel = {
+export type FundSummaryCaseByCaseBody = {
+  selectedTimeRangeFilterOption: SelectedFundTimeRangeFilterOption;
+};
+
+export type FundSummaryCaseByCaseNavHistoryItemApiModel = {
+  /**
+   * nav ابطال
+   */
+  revokeNavRials: number;
+  /**
+   * لیبل تاریخ
+   */
+  jdtLabel: string;
+  /**
+   * تاریخ شمسی به فرمت YYYY-mm-dd
+   */
+  jdt: string;
+  /**
+   * تاریخ میلادی به فرمت YYYY-mm-dd
+   */
+  dt: string;
+};
+
+export type FundSummaryCaseByCaseSectionApiModel = {
+  /**
+   * تعاریف مالی به کار رفته
+   */
+  financialTerms: Array<FinancialTermApiModel> | null;
   /**
    * بازه زمانی
    */
@@ -1009,29 +1062,6 @@ export type FundSummaryCaseByCaseApiModel = {
   navHistory: Array<FundSummaryCaseByCaseNavHistoryItemApiModel>;
 };
 
-export type FundSummaryCaseByCaseBody = {
-  selectedTimeRangeFilterOption: SelectedFundTimeRangeFilterOption;
-};
-
-export type FundSummaryCaseByCaseNavHistoryItemApiModel = {
-  /**
-   * nav ابطال
-   */
-  revokeNavRials: number;
-  /**
-   * لیبل تاریخ
-   */
-  jdtLabel: string;
-  /**
-   * تاریخ شمسی به فرمت YYYY-mm-dd
-   */
-  jdt: string;
-  /**
-   * تاریخ میلادی به فرمت YYYY-mm-dd
-   */
-  dt: string;
-};
-
 export type FundSummaryResponseApiModel = {
   /**
    * بالای تب ها
@@ -1044,7 +1074,7 @@ export type FundSummaryResponseApiModel = {
   /**
    * خلاصه موردی
    */
-  fundSummaryCaseByCase: FundSummaryCaseByCaseApiModel | null;
+  fundSummaryCaseByCase: FundSummaryCaseByCaseSectionApiModel | null;
   /**
    * فهرست مصاحبه‌های ویدئویی
    */
@@ -1797,7 +1827,7 @@ export type TopLeftFilterOption = {
   selected: boolean;
 };
 
-export type TopLeftFilterOptions = {
+export type TopLeftFilterOptionsApiModel = {
   label: string;
   options: Array<TopLeftFilterOption>;
 };
@@ -2355,7 +2385,7 @@ export type PostFundsStockByFundIdSummaryCaseByCaseData = {
 };
 
 export type PostFundsStockByFundIdSummaryCaseByCaseResponse =
-  FundSummaryCaseByCaseApiModel;
+  FundSummaryCaseByCaseSectionApiModel;
 
 export type GetFundsStockByFundIdReturnAnalysisData = {
   fundId: number;
@@ -2370,7 +2400,7 @@ export type PostFundsStockByFundIdReturnAnalysisReturnTrendData = {
 };
 
 export type PostFundsStockByFundIdReturnAnalysisReturnTrendResponse =
-  FundReturnAnalysisReturnTrendApiModel;
+  FundReturnAnalysisReturnTrendSectionApiModel;
 
 export type PostFundsStockByFundIdReturnAnalysisReturnComparisonData = {
   fundId: number;
@@ -2378,7 +2408,7 @@ export type PostFundsStockByFundIdReturnAnalysisReturnComparisonData = {
 };
 
 export type PostFundsStockByFundIdReturnAnalysisReturnComparisonResponse =
-  FundReturnAnalysisReturnComparisonApiModel;
+  FundReturnAnalysisReturnComparisonSectionApiModel;
 
 export type PostFundsStockByFundIdReturnAnalysisReturnRankData = {
   fundId: number;
@@ -2386,7 +2416,7 @@ export type PostFundsStockByFundIdReturnAnalysisReturnRankData = {
 };
 
 export type PostFundsStockByFundIdReturnAnalysisReturnRankResponse =
-  FundReturnAnalysisReturnRankApiModel;
+  FundReturnAnalysisReturnRankSectionApiModel;
 
 export type PostFundsStockByFundIdReturnAnalysisRiskReturnAnalysisData = {
   fundId: number;
@@ -2394,7 +2424,7 @@ export type PostFundsStockByFundIdReturnAnalysisRiskReturnAnalysisData = {
 };
 
 export type PostFundsStockByFundIdReturnAnalysisRiskReturnAnalysisResponse =
-  FundReturnAnalysisRiskReturnAnalysisApiModel;
+  FundReturnAnalysisRiskReturnAnalysisSectionApiModel;
 
 export type PostFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysisData =
   {
@@ -2403,7 +2433,7 @@ export type PostFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysisData =
   };
 
 export type PostFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysisResponse =
-  FundReturnAnalysisSeasonalityEffectAnalysisApiModel;
+  FundReturnAnalysisSeasonalityEffectAnalysisSectionApiModel;
 
 export type $OpenApiTs = {
   '/health': {
@@ -4127,7 +4157,7 @@ export type $OpenApiTs = {
         /**
          * Successful Response
          */
-        200: FundSummaryCaseByCaseApiModel;
+        200: FundSummaryCaseByCaseSectionApiModel;
         /**
          * Bad Request
          */
@@ -4189,7 +4219,7 @@ export type $OpenApiTs = {
         /**
          * Successful Response
          */
-        200: FundReturnAnalysisReturnTrendApiModel;
+        200: FundReturnAnalysisReturnTrendSectionApiModel;
         /**
          * Bad Request
          */
@@ -4220,7 +4250,7 @@ export type $OpenApiTs = {
         /**
          * Successful Response
          */
-        200: FundReturnAnalysisReturnComparisonApiModel;
+        200: FundReturnAnalysisReturnComparisonSectionApiModel;
         /**
          * Bad Request
          */
@@ -4251,7 +4281,7 @@ export type $OpenApiTs = {
         /**
          * Successful Response
          */
-        200: FundReturnAnalysisReturnRankApiModel;
+        200: FundReturnAnalysisReturnRankSectionApiModel;
         /**
          * Bad Request
          */
@@ -4282,7 +4312,7 @@ export type $OpenApiTs = {
         /**
          * Successful Response
          */
-        200: FundReturnAnalysisRiskReturnAnalysisApiModel;
+        200: FundReturnAnalysisRiskReturnAnalysisSectionApiModel;
         /**
          * Bad Request
          */
@@ -4313,7 +4343,7 @@ export type $OpenApiTs = {
         /**
          * Successful Response
          */
-        200: FundReturnAnalysisSeasonalityEffectAnalysisApiModel;
+        200: FundReturnAnalysisSeasonalityEffectAnalysisSectionApiModel;
         /**
          * Bad Request
          */

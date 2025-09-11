@@ -5212,7 +5212,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FundSummaryCaseByCaseApiModel"
+                  "$ref": "#/components/schemas/FundSummaryCaseByCaseSectionApiModel"
                 }
               }
             }
@@ -5398,7 +5398,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FundReturnAnalysisReturnTrendApiModel"
+                  "$ref": "#/components/schemas/FundReturnAnalysisReturnTrendSectionApiModel"
                 }
               }
             }
@@ -5496,7 +5496,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FundReturnAnalysisReturnComparisonApiModel"
+                  "$ref": "#/components/schemas/FundReturnAnalysisReturnComparisonSectionApiModel"
                 }
               }
             }
@@ -5594,7 +5594,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FundReturnAnalysisReturnRankApiModel"
+                  "$ref": "#/components/schemas/FundReturnAnalysisReturnRankSectionApiModel"
                 }
               }
             }
@@ -5692,7 +5692,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FundReturnAnalysisRiskReturnAnalysisApiModel"
+                  "$ref": "#/components/schemas/FundReturnAnalysisRiskReturnAnalysisSectionApiModel"
                 }
               }
             }
@@ -5790,7 +5790,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FundReturnAnalysisSeasonalityEffectAnalysisApiModel"
+                  "$ref": "#/components/schemas/FundReturnAnalysisSeasonalityEffectAnalysisSectionApiModel"
                 }
               }
             }
@@ -7173,6 +7173,29 @@
         ],
         "title": "FinancialReportListItemApiModel"
       },
+      "FinancialTermApiModel": {
+        "properties": {
+          "identifier": {
+            "type": "integer",
+            "title": "Identifier"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "identifier",
+          "title",
+          "description"
+        ],
+        "title": "FinancialTermApiModel"
+      },
       "ForgotPasswordResetByOtpBody": {
         "properties": {
           "otp": {
@@ -7481,7 +7504,7 @@
           "returnTrend": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/FundReturnAnalysisReturnTrendApiModel"
+                "$ref": "#/components/schemas/FundReturnAnalysisReturnTrendSectionApiModel"
               },
               {
                 "type": "null"
@@ -7492,7 +7515,7 @@
           "returnComparison": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/FundReturnAnalysisReturnComparisonApiModel"
+                "$ref": "#/components/schemas/FundReturnAnalysisReturnComparisonSectionApiModel"
               },
               {
                 "type": "null"
@@ -7503,7 +7526,7 @@
           "returnRank": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/FundReturnAnalysisReturnRankApiModel"
+                "$ref": "#/components/schemas/FundReturnAnalysisReturnRankSectionApiModel"
               },
               {
                 "type": "null"
@@ -7514,7 +7537,7 @@
           "riskReturnAnalysis": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/FundReturnAnalysisRiskReturnAnalysisApiModel"
+                "$ref": "#/components/schemas/FundReturnAnalysisRiskReturnAnalysisSectionApiModel"
               },
               {
                 "type": "null"
@@ -7525,7 +7548,7 @@
           "seasonalityEffectAnalysis": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/FundReturnAnalysisSeasonalityEffectAnalysisApiModel"
+                "$ref": "#/components/schemas/FundReturnAnalysisSeasonalityEffectAnalysisSectionApiModel"
               },
               {
                 "type": "null"
@@ -7625,10 +7648,38 @@
         ],
         "title": "FundReturnAnalysisReturnChartHistoryItemApiModel"
       },
-      "FundReturnAnalysisReturnComparisonApiModel": {
+      "FundReturnAnalysisReturnComparisonBody": {
         "properties": {
+          "selectedTopLeftFilterOption": {
+            "$ref": "#/components/schemas/TopLeftFilterTimeSeparation",
+            "description": "تفکیک زمانی"
+          }
+        },
+        "type": "object",
+        "required": [
+          "selectedTopLeftFilterOption"
+        ],
+        "title": "FundReturnAnalysisReturnComparisonBody"
+      },
+      "FundReturnAnalysisReturnComparisonSectionApiModel": {
+        "properties": {
+          "financialTerms": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FinancialTermApiModel"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Financialterms",
+            "description": "تعاریف مالی به کار رفته"
+          },
           "topLeftFilterOptions": {
-            "$ref": "#/components/schemas/TopLeftFilterOptions",
+            "$ref": "#/components/schemas/TopLeftFilterOptionsApiModel",
             "description": "تفکیک زمانی"
           },
           "tableColumns": {
@@ -7657,26 +7708,14 @@
         },
         "type": "object",
         "required": [
+          "financialTerms",
           "topLeftFilterOptions",
           "tableColumns",
           "fundAverageReturnPercent",
           "stockFundsAverageReturnPercent",
           "tedpixAverageReturnPercent"
         ],
-        "title": "FundReturnAnalysisReturnComparisonApiModel"
-      },
-      "FundReturnAnalysisReturnComparisonBody": {
-        "properties": {
-          "selectedTopLeftFilterOption": {
-            "$ref": "#/components/schemas/TopLeftFilterTimeSeparation",
-            "description": "تفکیک زمانی"
-          }
-        },
-        "type": "object",
-        "required": [
-          "selectedTopLeftFilterOption"
-        ],
-        "title": "FundReturnAnalysisReturnComparisonBody"
+        "title": "FundReturnAnalysisReturnComparisonSectionApiModel"
       },
       "FundReturnAnalysisReturnComparisonTableColumnApiModel": {
         "properties": {
@@ -7710,10 +7749,38 @@
         ],
         "title": "FundReturnAnalysisReturnComparisonTableColumnApiModel"
       },
-      "FundReturnAnalysisReturnRankApiModel": {
+      "FundReturnAnalysisReturnRankBody": {
         "properties": {
+          "selectedTopLeftFilterOption": {
+            "$ref": "#/components/schemas/TopLeftFilterTimeSeparation",
+            "description": "تفکیک زمانی"
+          }
+        },
+        "type": "object",
+        "required": [
+          "selectedTopLeftFilterOption"
+        ],
+        "title": "FundReturnAnalysisReturnRankBody"
+      },
+      "FundReturnAnalysisReturnRankSectionApiModel": {
+        "properties": {
+          "financialTerms": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FinancialTermApiModel"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Financialterms",
+            "description": "تعاریف مالی به کار رفته"
+          },
           "topLeftFilterOptions": {
-            "$ref": "#/components/schemas/TopLeftFilterOptions",
+            "$ref": "#/components/schemas/TopLeftFilterOptionsApiModel",
             "description": "تفکیک زمانی"
           },
           "tableColumns": {
@@ -7742,26 +7809,14 @@
         },
         "type": "object",
         "required": [
+          "financialTerms",
           "topLeftFilterOptions",
           "tableColumns",
           "quarterAverageReturnRank",
           "percentAverageReturnRank",
           "relativeAverageReturnRank"
         ],
-        "title": "FundReturnAnalysisReturnRankApiModel"
-      },
-      "FundReturnAnalysisReturnRankBody": {
-        "properties": {
-          "selectedTopLeftFilterOption": {
-            "$ref": "#/components/schemas/TopLeftFilterTimeSeparation",
-            "description": "تفکیک زمانی"
-          }
-        },
-        "type": "object",
-        "required": [
-          "selectedTopLeftFilterOption"
-        ],
-        "title": "FundReturnAnalysisReturnRankBody"
+        "title": "FundReturnAnalysisReturnRankSectionApiModel"
       },
       "FundReturnAnalysisReturnRankTableColumnApiModel": {
         "properties": {
@@ -7795,14 +7850,55 @@
         ],
         "title": "FundReturnAnalysisReturnRankTableColumnApiModel"
       },
-      "FundReturnAnalysisReturnTrendApiModel": {
+      "FundReturnAnalysisReturnTrendBody": {
         "properties": {
+          "selectedTimeRangeFilterOption": {
+            "$ref": "#/components/schemas/SelectedFundTimeRangeFilterOption"
+          },
+          "selectedTopLeftFilterOption": {
+            "$ref": "#/components/schemas/TopLeftFilterBaseCurrency",
+            "description": "ارز مبنای بازده"
+          },
+          "comparedFundIds": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Comparedfundids",
+            "description": "شناسه صندوق‌های مقایسه"
+          }
+        },
+        "type": "object",
+        "required": [
+          "selectedTimeRangeFilterOption",
+          "selectedTopLeftFilterOption",
+          "comparedFundIds"
+        ],
+        "title": "FundReturnAnalysisReturnTrendBody"
+      },
+      "FundReturnAnalysisReturnTrendSectionApiModel": {
+        "properties": {
+          "financialTerms": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FinancialTermApiModel"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Financialterms",
+            "description": "تعاریف مالی به کار رفته"
+          },
           "timeRangeFilterOptions": {
             "$ref": "#/components/schemas/FundTimeRangeFilterOptions",
             "description": "بازه زمانی"
           },
           "topLeftFilterOptions": {
-            "$ref": "#/components/schemas/TopLeftFilterOptions",
+            "$ref": "#/components/schemas/TopLeftFilterOptionsApiModel",
             "description": "ارز مبنای بازده"
           },
           "fundComparisonOptions": {
@@ -7904,6 +8000,7 @@
         },
         "type": "object",
         "required": [
+          "financialTerms",
           "timeRangeFilterOptions",
           "topLeftFilterOptions",
           "fundComparisonOptions",
@@ -7916,65 +8013,7 @@
           "stockFundsAverageLeveragePercent",
           "returnChart"
         ],
-        "title": "FundReturnAnalysisReturnTrendApiModel"
-      },
-      "FundReturnAnalysisReturnTrendBody": {
-        "properties": {
-          "selectedTimeRangeFilterOption": {
-            "$ref": "#/components/schemas/SelectedFundTimeRangeFilterOption"
-          },
-          "selectedTopLeftFilterOption": {
-            "$ref": "#/components/schemas/TopLeftFilterBaseCurrency",
-            "description": "ارز مبنای بازده"
-          },
-          "comparedFundIds": {
-            "items": {
-              "type": "integer"
-            },
-            "type": "array",
-            "title": "Comparedfundids",
-            "description": "شناسه صندوق‌های مقایسه"
-          }
-        },
-        "type": "object",
-        "required": [
-          "selectedTimeRangeFilterOption",
-          "selectedTopLeftFilterOption",
-          "comparedFundIds"
-        ],
-        "title": "FundReturnAnalysisReturnTrendBody"
-      },
-      "FundReturnAnalysisRiskReturnAnalysisApiModel": {
-        "properties": {
-          "topLeftFilterOptions": {
-            "$ref": "#/components/schemas/TopLeftFilterOptions",
-            "description": "معیار ریسک"
-          },
-          "timeRangeFilterOptions": {
-            "$ref": "#/components/schemas/FundTimeRangeFilterOptions",
-            "description": "بازه زمانی"
-          },
-          "fundComparisonOptions": {
-            "$ref": "#/components/schemas/FundComparisonOptions",
-            "description": "صندوق‌های مقایسه شده"
-          },
-          "chartItems": {
-            "items": {
-              "$ref": "#/components/schemas/FundReturnAnalysisRiskReturnAnalysisChartItemApiModel"
-            },
-            "type": "array",
-            "title": "Chartitems",
-            "description": "نمودار تحلیل ریسک"
-          }
-        },
-        "type": "object",
-        "required": [
-          "topLeftFilterOptions",
-          "timeRangeFilterOptions",
-          "fundComparisonOptions",
-          "chartItems"
-        ],
-        "title": "FundReturnAnalysisRiskReturnAnalysisApiModel"
+        "title": "FundReturnAnalysisReturnTrendSectionApiModel"
       },
       "FundReturnAnalysisRiskReturnAnalysisBody": {
         "properties": {
@@ -8040,10 +8079,86 @@
         ],
         "title": "FundReturnAnalysisRiskReturnAnalysisChartItemApiModel"
       },
-      "FundReturnAnalysisSeasonalityEffectAnalysisApiModel": {
+      "FundReturnAnalysisRiskReturnAnalysisSectionApiModel": {
         "properties": {
+          "financialTerms": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FinancialTermApiModel"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Financialterms",
+            "description": "تعاریف مالی به کار رفته"
+          },
           "topLeftFilterOptions": {
-            "$ref": "#/components/schemas/TopLeftFilterOptions",
+            "$ref": "#/components/schemas/TopLeftFilterOptionsApiModel",
+            "description": "معیار ریسک"
+          },
+          "timeRangeFilterOptions": {
+            "$ref": "#/components/schemas/FundTimeRangeFilterOptions",
+            "description": "بازه زمانی"
+          },
+          "fundComparisonOptions": {
+            "$ref": "#/components/schemas/FundComparisonOptions",
+            "description": "صندوق‌های مقایسه شده"
+          },
+          "chartItems": {
+            "items": {
+              "$ref": "#/components/schemas/FundReturnAnalysisRiskReturnAnalysisChartItemApiModel"
+            },
+            "type": "array",
+            "title": "Chartitems",
+            "description": "نمودار تحلیل ریسک"
+          }
+        },
+        "type": "object",
+        "required": [
+          "financialTerms",
+          "topLeftFilterOptions",
+          "timeRangeFilterOptions",
+          "fundComparisonOptions",
+          "chartItems"
+        ],
+        "title": "FundReturnAnalysisRiskReturnAnalysisSectionApiModel"
+      },
+      "FundReturnAnalysisSeasonalityEffectAnalysisBody": {
+        "properties": {
+          "selectedTopLeftFilterOption": {
+            "$ref": "#/components/schemas/TopLeftFilterSeasonalityEffectTableCriteria",
+            "description": "جدول بر مبنای"
+          }
+        },
+        "type": "object",
+        "required": [
+          "selectedTopLeftFilterOption"
+        ],
+        "title": "FundReturnAnalysisSeasonalityEffectAnalysisBody"
+      },
+      "FundReturnAnalysisSeasonalityEffectAnalysisSectionApiModel": {
+        "properties": {
+          "financialTerms": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FinancialTermApiModel"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Financialterms",
+            "description": "تعاریف مالی به کار رفته"
+          },
+          "topLeftFilterOptions": {
+            "$ref": "#/components/schemas/TopLeftFilterOptionsApiModel",
             "description": "جدول بر مبنای"
           },
           "rows": {
@@ -8065,25 +8180,13 @@
         },
         "type": "object",
         "required": [
+          "financialTerms",
           "topLeftFilterOptions",
           "rows",
           "averageRow",
           "standardDeviation"
         ],
-        "title": "FundReturnAnalysisSeasonalityEffectAnalysisApiModel"
-      },
-      "FundReturnAnalysisSeasonalityEffectAnalysisBody": {
-        "properties": {
-          "selectedTopLeftFilterOption": {
-            "$ref": "#/components/schemas/TopLeftFilterSeasonalityEffectTableCriteria",
-            "description": "جدول بر مبنای"
-          }
-        },
-        "type": "object",
-        "required": [
-          "selectedTopLeftFilterOption"
-        ],
-        "title": "FundReturnAnalysisSeasonalityEffectAnalysisBody"
+        "title": "FundReturnAnalysisSeasonalityEffectAnalysisSectionApiModel"
       },
       "FundReturnAnalysisSeasonalityEffectTableAverageRowApiModel": {
         "properties": {
@@ -8683,8 +8786,67 @@
         ],
         "title": "FundSummaryBaseInfoApiModel"
       },
-      "FundSummaryCaseByCaseApiModel": {
+      "FundSummaryCaseByCaseBody": {
         "properties": {
+          "selectedTimeRangeFilterOption": {
+            "$ref": "#/components/schemas/SelectedFundTimeRangeFilterOption"
+          }
+        },
+        "type": "object",
+        "required": [
+          "selectedTimeRangeFilterOption"
+        ],
+        "title": "FundSummaryCaseByCaseBody"
+      },
+      "FundSummaryCaseByCaseNavHistoryItemApiModel": {
+        "properties": {
+          "revokeNavRials": {
+            "type": "integer",
+            "title": "Revokenavrials",
+            "description": "nav ابطال"
+          },
+          "jdtLabel": {
+            "type": "string",
+            "title": "Jdtlabel",
+            "description": "لیبل تاریخ"
+          },
+          "jdt": {
+            "type": "string",
+            "title": "Jdt",
+            "description": "تاریخ شمسی به فرمت YYYY-mm-dd"
+          },
+          "dt": {
+            "type": "string",
+            "title": "Dt",
+            "description": "تاریخ میلادی به فرمت YYYY-mm-dd"
+          }
+        },
+        "type": "object",
+        "required": [
+          "revokeNavRials",
+          "jdtLabel",
+          "jdt",
+          "dt"
+        ],
+        "title": "FundSummaryCaseByCaseNavHistoryItemApiModel"
+      },
+      "FundSummaryCaseByCaseSectionApiModel": {
+        "properties": {
+          "financialTerms": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FinancialTermApiModel"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Financialterms",
+            "description": "تعاریف مالی به کار رفته"
+          },
           "timeRangeFilterOptions": {
             "$ref": "#/components/schemas/FundTimeRangeFilterOptions",
             "description": "بازه زمانی"
@@ -8755,6 +8917,7 @@
         },
         "type": "object",
         "required": [
+          "financialTerms",
           "timeRangeFilterOptions",
           "navEndOfPeriodRials",
           "returnEndOfPeriodRials",
@@ -8769,51 +8932,7 @@
           "averageNavInPeriod",
           "navHistory"
         ],
-        "title": "FundSummaryCaseByCaseApiModel"
-      },
-      "FundSummaryCaseByCaseBody": {
-        "properties": {
-          "selectedTimeRangeFilterOption": {
-            "$ref": "#/components/schemas/SelectedFundTimeRangeFilterOption"
-          }
-        },
-        "type": "object",
-        "required": [
-          "selectedTimeRangeFilterOption"
-        ],
-        "title": "FundSummaryCaseByCaseBody"
-      },
-      "FundSummaryCaseByCaseNavHistoryItemApiModel": {
-        "properties": {
-          "revokeNavRials": {
-            "type": "integer",
-            "title": "Revokenavrials",
-            "description": "nav ابطال"
-          },
-          "jdtLabel": {
-            "type": "string",
-            "title": "Jdtlabel",
-            "description": "لیبل تاریخ"
-          },
-          "jdt": {
-            "type": "string",
-            "title": "Jdt",
-            "description": "تاریخ شمسی به فرمت YYYY-mm-dd"
-          },
-          "dt": {
-            "type": "string",
-            "title": "Dt",
-            "description": "تاریخ میلادی به فرمت YYYY-mm-dd"
-          }
-        },
-        "type": "object",
-        "required": [
-          "revokeNavRials",
-          "jdtLabel",
-          "jdt",
-          "dt"
-        ],
-        "title": "FundSummaryCaseByCaseNavHistoryItemApiModel"
+        "title": "FundSummaryCaseByCaseSectionApiModel"
       },
       "FundSummaryResponseApiModel": {
         "properties": {
@@ -8835,7 +8954,7 @@
           "fundSummaryCaseByCase": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/FundSummaryCaseByCaseApiModel"
+                "$ref": "#/components/schemas/FundSummaryCaseByCaseSectionApiModel"
               },
               {
                 "type": "null"
@@ -11452,7 +11571,7 @@
         ],
         "title": "TopLeftFilterOption"
       },
-      "TopLeftFilterOptions": {
+      "TopLeftFilterOptionsApiModel": {
         "properties": {
           "label": {
             "type": "string",
@@ -11471,7 +11590,7 @@
           "label",
           "options"
         ],
-        "title": "TopLeftFilterOptions"
+        "title": "TopLeftFilterOptionsApiModel"
       },
       "TopLeftFilterRiskCriteria": {
         "type": "integer",

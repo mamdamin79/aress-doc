@@ -117,6 +117,7 @@ export const Report13_2: FC<ReportProps<Report13Dot2CalculationResult>> = ({
         labels: yAxisLabels,
         gridLineWidth: 1,
         tickPixelInterval: 40,
+        gridLineColor: 'var(--color-border-neutral-secondary)',
       },
     ],
 

@@ -92,6 +92,9 @@ export function Report2({
           textAlign: 'right',
           offset: 15,
           x: 350,
+          style: {
+            color: 'var(--color-text-neutral-secondarycontrast)',
+          },
         },
         labels: yAxisLabels,
       },
@@ -103,6 +106,14 @@ export function Report2({
           type: 'bar',
           data: seriesData,
           borderRadius: 4,
+          states: {
+            inactive: {
+              opacity: 1, // prevents other series from dimming
+            },
+            hover: {
+              brightness: 0, // prevents darkening or lightening on hover
+            },
+          },
         },
       ],
       xAxis: {
@@ -114,6 +125,14 @@ export function Report2({
           reserveSpace: true,
         },
         categories: dataState.data.map((item) => item.sectorTitle),
+        crosshair: {
+          color:
+            filterState[0].selectedOption.identifier === '1'
+              ? 'var(--coloropacity-surface-accent-green-600-10per)'
+              : 'var(--coloropacity-surface-accent-red-600-10per)',
+          width: 40,
+          dashStyle: 'Solid',
+        },
       },
     };
   }, [seriesData, dataState]);

@@ -1661,7 +1661,7 @@ export class FundsService {
    * @param data The data for the request.
    * @param data.fundId
    * @param data.requestBody
-   * @returns FundSummaryCaseByCaseApiModel Successful Response
+   * @returns FundSummaryCaseByCaseSectionApiModel Successful Response
    * @throws ApiError
    */
   public static postFundsStockByFundIdSummaryCaseByCase(
@@ -1718,7 +1718,7 @@ export class FundsService {
    * @param data The data for the request.
    * @param data.fundId
    * @param data.requestBody
-   * @returns FundReturnAnalysisReturnTrendApiModel Successful Response
+   * @returns FundReturnAnalysisReturnTrendSectionApiModel Successful Response
    * @throws ApiError
    */
   public static postFundsStockByFundIdReturnAnalysisReturnTrend(
@@ -1748,7 +1748,7 @@ export class FundsService {
    * @param data The data for the request.
    * @param data.fundId
    * @param data.requestBody
-   * @returns FundReturnAnalysisReturnComparisonApiModel Successful Response
+   * @returns FundReturnAnalysisReturnComparisonSectionApiModel Successful Response
    * @throws ApiError
    */
   public static postFundsStockByFundIdReturnAnalysisReturnComparison(
@@ -1778,7 +1778,7 @@ export class FundsService {
    * @param data The data for the request.
    * @param data.fundId
    * @param data.requestBody
-   * @returns FundReturnAnalysisReturnRankApiModel Successful Response
+   * @returns FundReturnAnalysisReturnRankSectionApiModel Successful Response
    * @throws ApiError
    */
   public static postFundsStockByFundIdReturnAnalysisReturnRank(
@@ -1808,7 +1808,7 @@ export class FundsService {
    * @param data The data for the request.
    * @param data.fundId
    * @param data.requestBody
-   * @returns FundReturnAnalysisRiskReturnAnalysisApiModel Successful Response
+   * @returns FundReturnAnalysisRiskReturnAnalysisSectionApiModel Successful Response
    * @throws ApiError
    */
   public static postFundsStockByFundIdReturnAnalysisRiskReturnAnalysis(
@@ -1838,7 +1838,7 @@ export class FundsService {
    * @param data The data for the request.
    * @param data.fundId
    * @param data.requestBody
-   * @returns FundReturnAnalysisSeasonalityEffectAnalysisApiModel Successful Response
+   * @returns FundReturnAnalysisSeasonalityEffectAnalysisSectionApiModel Successful Response
    * @throws ApiError
    */
   public static postFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysis(
