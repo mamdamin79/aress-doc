@@ -4,10 +4,7 @@ const sharedConfig = require('../../shared/tailwind/tailwind.config.base');
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    join(
-      __dirname,
-      '{src,pages,components,app}/**/*!(*.stories|*.spec).{ts,tsx,html}',
-    ),
+    join(__dirname, '{src,pages,components,app}/**/*.{ts,tsx,html}'),
     ...createGlobPatternsForDependencies(__dirname),
   ],
   ...sharedConfig,

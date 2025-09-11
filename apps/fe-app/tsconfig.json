@@ -26,10 +26,7 @@
     "../../apps/fe-app/.next/types/**/*.ts",
     "../../dist/apps/fe-app/.next/types/**/*.ts",
     "next-env.d.ts",
-    ".next/types/**/*.ts",
-    "../../libs/design-system/src/lib/components/MenuTiles/MenuModalsProvider.tsx",
-    "../../libs/design-system/src/lib/components/MenuTiles/MenuModals.tsx",
-    "svg.d.ts"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
@@ -38,10 +35,5 @@
     "**/*.test.ts",
     "**/*.stories.ts",
     "**/*.stories.js"
-  ],
-  "references": [
-    {
-      "path": "./tsconfig.storybook.json"
-    }
   ]
 }

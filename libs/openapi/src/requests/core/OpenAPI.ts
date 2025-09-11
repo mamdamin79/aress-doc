@@ -40,16 +40,12 @@ export type OpenAPIConfig = {
 };
 
 export const OpenAPI: OpenAPIConfig = {
-  BASE: process.env.NEXT_PUBLIC_API_URL ?? '',
+  BASE: '',
   CREDENTIALS: 'include',
   ENCODE_PATH: undefined,
   HEADERS: undefined,
   PASSWORD: undefined,
-  // Always get token from localStorage for Authorization header
-  TOKEN: async () =>
-    typeof window !== 'undefined'
-      ? localStorage.getItem('access_token') || ''
-      : '',
+  TOKEN: undefined,
   USERNAME: undefined,
   VERSION: '0.0.1',
   WITH_CREDENTIALS: false,
