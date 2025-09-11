@@ -1,8 +1,13 @@
 import { DataList, Icon, Tabs } from 'design-system';
 import React, { useState } from 'react';
 import { BubbleChart } from './BubbleChart';
-import { FundReturnAnalysisResponseApiModel } from '@openapi';
+import {
+  FundReturnAnalysisResponseApiModel,
+  FundReturnAnalysisReturnComparisonApiModel,
+  FundReturnAnalysisReturnRankApiModel,
+} from '@openapi';
 import { ChangeComparisonFunds } from './ChangeComparisonFunds';
+import { ReturnTable, TableData } from '../../../../components/ReturnTable';
 
 type ReturnAnalysisProps = {
   data: FundReturnAnalysisResponseApiModel;
@@ -20,7 +25,7 @@ export const Return: React.FC<ReturnAnalysisProps> = ({ data }) => {
   );
   const [bubbleData, setBubbleData] = useState(initialBubbleData);
 
-  console.log(data.riskReturnAnalysis?.chartItems);
+  console.log(data.returnComparison);
 
   const dataList = [
     {
@@ -52,6 +57,141 @@ export const Return: React.FC<ReturnAnalysisProps> = ({ data }) => {
       value: `${data.returnTrend?.stockFundsAverageLeveragePercent ?? '-'} ٪`,
     },
   ];
+
+  const mapApiToTableData = (
+    apiData:
+      | FundReturnAnalysisReturnComparisonApiModel
+      | FundReturnAnalysisReturnRankApiModel,
+    type: 'comparison' | 'rank',
+  ): TableData => {
+    const { tableColumns } = apiData;
+
+    const columns = [
+      'شاخص',
+      ...tableColumns.map((col) => col.columnLabel),
+      'میانگین',
+    ];
+
+    if (type === 'comparison') {
+      const {
+        fundAverageReturnPercent,
+        stockFundsAverageReturnPercent,
+        tedpixAverageReturnPercent,
+        tableColumns: comparisonColumns,
+      } = apiData as FundReturnAnalysisReturnComparisonApiModel;
+
+      const rows: TableData['rows'] = [
+        {
+          type: 'text',
+          data: {
+            شاخص: 'صندوق',
+            ...comparisonColumns.reduce(
+              (acc, col) => ({
+                ...acc,
+                [col.columnLabel]: col.fundReturnPercent,
+              }),
+              {},
+            ),
+            میانگین: fundAverageReturnPercent,
+          },
+        },
+        {
+          type: 'text',
+          data: {
+            شاخص: 'صندوق های سهامی',
+            ...comparisonColumns.reduce(
+              (acc, col) => ({
+                ...acc,
+                [col.columnLabel]: col.stockFundsReturnPercent,
+              }),
+              {},
+            ),
+            میانگین: stockFundsAverageReturnPercent,
+          },
+        },
+        {
+          type: 'text',
+          data: {
+            شاخص: 'شاخص کل',
+            ...comparisonColumns.reduce(
+              (acc, col) => ({
+                ...acc,
+                [col.columnLabel]: col.tedpixReturnPercent,
+              }),
+              {},
+            ),
+            میانگین: tedpixAverageReturnPercent,
+          },
+        },
+      ];
+      return { columns, rows };
+    }
+
+    if (type === 'rank') {
+      const {
+        quarterAverageReturnRank,
+        percentAverageReturnRank,
+        relativeAverageReturnRank,
+        tableColumns: rankColumns,
+      } = apiData as FundReturnAnalysisReturnRankApiModel;
+
+      const rows: TableData['rows'] = [
+        {
+          type: 'indicator',
+          data: {
+            شاخص: 'رتبه چارکی صندوق',
+            ...rankColumns.reduce(
+              (acc, col) => ({
+                ...acc,
+                [col.columnLabel]: col.quarterRank,
+              }),
+              {},
+            ),
+            میانگین: quarterAverageReturnRank,
+          },
+        },
+        {
+          type: 'text',
+          data: {
+            شاخص: 'رتبه درصدی صندوق',
+            ...rankColumns.reduce(
+              (acc, col) => ({
+                ...acc,
+                [col.columnLabel]: col.percentRank,
+              }),
+              {},
+            ),
+            میانگین: percentAverageReturnRank,
+          },
+        },
+        {
+          type: 'indicator',
+          data: {
+            شاخص: 'رتبه نسبی صندوق',
+            ...rankColumns.reduce(
+              (acc, col) => ({
+                ...acc,
+                [col.columnLabel]: col.relativeRank,
+              }),
+              {},
+            ),
+            میانگین: relativeAverageReturnRank,
+          },
+        },
+      ];
+      return { columns, rows };
+    }
+
+    return { columns: [], rows: [] };
+  };
+
+  const returnComparisonTableData = data.returnComparison
+    ? mapApiToTableData(data.returnComparison, 'comparison')
+    : { columns: [], rows: [] };
+
+  const returnRankTableData = data.returnRank
+    ? mapApiToTableData(data.returnRank, 'rank')
+    : { columns: [], rows: [] };
 
   const selectedFunds = data.riskReturnAnalysis?.chartItems?.map((item) => ({
     id: `${item.fundId}`,
@@ -150,8 +290,9 @@ export const Return: React.FC<ReturnAnalysisProps> = ({ data }) => {
           />
         </div>
       </div>
-      <div className="mb-12 flex h-[280px] w-full items-center justify-center bg-yellow-100">
-        table
+      <div className="mb-12 flex h-[280px] w-full items-center justify-center">
+        {/* return comparison */}
+        <ReturnTable data={returnComparisonTableData} />
       </div>
       <div className="bg-surface-neutral-background mb-12 h-[1px] w-full border border-dashed"></div>
       <div className="mb-8 flex items-start justify-between">
@@ -180,8 +321,9 @@ export const Return: React.FC<ReturnAnalysisProps> = ({ data }) => {
           />
         </div>
       </div>
-      <div className="mb-12 flex h-[280px] w-full items-center justify-center bg-red-100">
-        table
+      <div className="mb-12 flex h-[280px] w-full items-center justify-center">
+        {/* return rank */}
+        <ReturnTable data={returnRankTableData} />
       </div>
       <div className="bg-surface-neutral-background mb-12 h-[1px] w-full border border-dashed"></div>
       <div className="mb-8 flex items-start justify-between">
