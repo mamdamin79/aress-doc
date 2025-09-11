@@ -8,12 +8,15 @@ import {
 } from '@openapi';
 import { ChangeComparisonFunds } from './ChangeComparisonFunds';
 import { ReturnTable, TableData } from '../../../../components/ReturnTable';
+import { MultiLineChart } from '../../../../components/Charts';
 
 type ReturnAnalysisProps = {
   data: FundReturnAnalysisResponseApiModel;
 };
 
 export const Return: React.FC<ReturnAnalysisProps> = ({ data }) => {
+  console.log(data.returnTrend?.returnChart);
+
   const initialBubbleData = data.riskReturnAnalysis?.chartItems?.map(
     (item) => ({
       x: item.risk,
@@ -228,8 +231,8 @@ export const Return: React.FC<ReturnAnalysisProps> = ({ data }) => {
         </div>
       </div>
       <div className="flex items-start justify-center gap-8">
-        <div className="mb-6 flex h-[600px] min-w-[704px] flex-1 items-center justify-center bg-blue-100">
-          multiple line chart
+        <div className="mb-6 flex h-[600px] w-[704px] flex-1 bg-blue-100">
+          <MultiLineChart data={data.returnTrend?.returnChart ?? []} />
         </div>
         <div className="hidden xl:block">
           <DataList

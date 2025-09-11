@@ -2,65 +2,41 @@ import Highcharts from 'highcharts/highstock';
 import jalaali from 'jalaali-js';
 import HighchartsReact from 'highcharts-react-official';
 
-export const MultiLineChart = () => {
-  const days = 30;
-  const baseDate = Date.UTC(2025, 0, 1);
+import { FundReturnAnalysisReturnChartApiModel } from '@openapi';
 
-  const priceData = Array.from({ length: days }, (_, i) => [
-    baseDate + i * 24 * 3600 * 1000,
-    Math.round(
-      (50 + Math.sin(i * 0.8) * 30 + (Math.random() - 0.5) * 20) * 0.6,
-    ),
-  ]);
+type MultiLineChartProps = {
+  data: FundReturnAnalysisReturnChartApiModel[];
+};
 
-  const volumeData = Array.from({ length: days }, (_, i) => [
-    baseDate + i * 24 * 3600 * 1000,
-    Math.round(
-      (50 + Math.cos(i * 0.6) * 25 + (Math.random() - 0.5) * 20) * 0.6,
-    ),
-  ]);
-
-  const indexData = Array.from({ length: days }, (_, i) => [
-    baseDate + i * 24 * 3600 * 1000,
-    Math.round(
-      (50 + Math.sin(i * 1.2) * 30 + (Math.random() - 0.5) * 20) * 0.6,
-    ),
-  ]);
+export const MultiLineChart: React.FC<MultiLineChartProps> = ({ data }) => {
+  const series = data.map((fund) => ({
+    type: 'line' as const,
+    name: fund.title,
+    data: fund.history.map((h) => [
+      new Date(h.dt).getTime(), // تبدیل تاریخ میلادی به timestamp
+      h.returnPercent,
+    ]),
+    marker: { enabled: false },
+    lineWidth: 2,
+  }));
 
   const options: Highcharts.Options = {
-    legend: {
-      labelFormatter: function () {
-        if (this.name === 'صندوق سهم آشنا') {
-          return `صندوق سهم آشنا: <span style="color: ${this.selected ? this.color : null}; font-size: 11px;">%${22}</span>`;
-        } else if (this.name === 'صندوق‌های سهامی') {
-          return `صندوق‌های سهامی: <span style="color: ${this.color};">%${22}</span>`;
-        }
-        return `شاخص کل: <span style="color: ${this.color};">%${22}</span>`;
-      },
-      rtl: true,
-      itemDistance: 14,
-      symbolHeight: 8,
-      symbolWidth: 8,
-    },
-    // legend: {
-    //   itemDistance: 14,
-    //   symbolHeight: 8,
-    //   symbolWidth: 8,
-    //   itemStyle: {
-    //     color: 'var(--color-text-neutral-primary)',
-    //     fontSize: '12px',
-    //     fontWeight: '500',
-    //   },
-    // },
     chart: {
       backgroundColor: 'var(--color-surface-neutral-primary)',
       type: 'line',
-      events: {},
+      height: 600,
     },
     credits: { enabled: false },
     navigator: { enabled: false },
     rangeSelector: { enabled: false },
     scrollbar: { enabled: false },
+    title: { text: '' },
+    legend: {
+      rtl: true,
+      itemDistance: 14,
+      symbolHeight: 8,
+      symbolWidth: 8,
+    },
     tooltip: {
       shared: true,
       useHTML: true,
@@ -118,14 +94,20 @@ export const MultiLineChart = () => {
       `;
       },
     },
-    title: { text: '' },
     yAxis: {
       title: {
         text: '',
       },
       gridLineColor: 'var(--color-border-neutral-secondary)',
-      tickInterval: 10,
-      min: 0,
+      tickInterval: 0.1,
+      min:
+        Math.min(
+          ...data.flatMap((f) => f.history.map((h) => h.returnPercent)),
+        ) - 1,
+      max:
+        Math.max(
+          ...data.flatMap((f) => f.history.map((h) => h.returnPercent)),
+        ) + 1,
       labels: {
         style: {
           fontSize: '12px',
@@ -142,6 +124,31 @@ export const MultiLineChart = () => {
           color: 'var(--color-text-neutral-secondarycontrast)',
           fontFamily: 'Vazirmatn',
         },
+        formatter: function () {
+          const date = new Date(this.value as number);
+          const { jm, jd } = jalaali.toJalaali(
+            date.getFullYear(),
+            date.getMonth() + 1,
+            date.getDate(),
+          );
+
+          const monthShortNames = [
+            'فر', // فروردین
+            'ار', // اردیبهشت
+            'خ', // خرداد
+            'تی', // تیر
+            'مر', // مرداد
+            'شه', // شهریور
+            'مه', // مهر
+            'آب', // آبان
+            'آذ', // آذر
+            'دی', // دی
+            'به', // بهمن
+            'اس', // اسفند
+          ];
+
+          return `${jd} ${monthShortNames[jm - 1]}`;
+        },
       },
       crosshair: {
         color: 'var(--color-border-neutral-highcontrast)',
@@ -150,40 +157,13 @@ export const MultiLineChart = () => {
         zIndex: 5,
       },
     },
-    series: [
-      {
-        type: 'line',
-        name: 'شاخص کل',
-        color: 'var(--color-border-accent-red-600)',
-        data: indexData,
-        marker: {
-          enabled: false,
-          symbol: 'square',
-        },
-        lineWidth: 2,
-      },
-      {
-        type: 'line',
-        name: 'صندوق‌های سهامی',
-        color: 'var(--color-border-accent-yellow-600)',
-        data: volumeData,
-        lineWidth: 2,
-        marker: {
-          enabled: false,
-          symbol: 'triangle',
-        },
-      },
 
-      {
-        type: 'line',
-        name: 'صندوق سهم آشنا',
-        color: 'var(--color-border-accent-blue-600)',
-        data: priceData,
-        marker: { enabled: false, symbol: 'circle' },
-        lineWidth: 2,
-      },
-    ],
+    series,
   };
 
-  return <HighchartsReact highcharts={Highcharts} options={options} />;
+  return (
+    <div className="h-full w-full">
+      <HighchartsReact highcharts={Highcharts} options={options} />
+    </div>
+  );
 };
