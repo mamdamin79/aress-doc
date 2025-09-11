@@ -139,6 +139,19 @@ export const useUsersServiceGetUsersPasswordForgotCaptcha = <
       }) as TData,
     ...options,
   });
+export const useUsersServiceGetUsersProfile = <
+  TData = Common.UsersServiceGetUsersProfileDefaultResponse,
+  TError = unknown,
+  TQueryKey extends Array<unknown> = unknown[],
+>(
+  queryKey?: TQueryKey,
+  options?: Omit<UseQueryOptions<TData, TError>, 'queryKey' | 'queryFn'>,
+) =>
+  useQuery<TData, TError>({
+    queryKey: Common.UseUsersServiceGetUsersProfileKeyFn(queryKey),
+    queryFn: () => UsersService.getUsersProfile() as TData,
+    ...options,
+  });
 export const useUsersServiceGetUsersProfilePasswordChangeOtp = <
   TData = Common.UsersServiceGetUsersProfilePasswordChangeOtpDefaultResponse,
   TError = unknown,
