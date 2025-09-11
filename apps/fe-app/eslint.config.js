@@ -11,7 +11,7 @@ export default tseslint.config(
 
   // 2. Now add app-specific configurations
   {
-    files: ['apps/b2c-app/**/*.{ts,tsx,js,jsx}'],
+    files: ['apps/fe-app/**/*.{ts,tsx,js,jsx}'],
     plugins: {
       '@next/next': nextPlugin,
       storybook: storybookPlugin,
