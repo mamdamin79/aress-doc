@@ -1567,7 +1567,7 @@ input[type='password']::-webkit-password-eye {
     --color-text-brand-contrast-700: var(--color-blue-blue-700-dark);
     --color-text-brand-highcontrast-800: var(--color-blue-blue-800-dark);
     --color-text-neutral-white: var(--color-base-white);
-    --color-text-neutral-oninverse: var(--color-gray-gray-50-dark);
+    --color-text-neutral-oninverse: var(--color-base-white);
     --color-text-message-info-primary-600: var(--color-blue-blue-600-dark);
     --color-text-message-info-contrast-700: var(--color-blue-blue-700-dark);
     --color-text-message-info-highcontrast-800: var(--color-blue-blue-800-dark);

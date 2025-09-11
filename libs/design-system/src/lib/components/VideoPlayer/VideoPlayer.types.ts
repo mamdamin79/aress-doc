@@ -4,7 +4,10 @@ export type Video = {
   date: string;
   poster?: string;
   qualities: { src: string; label: string }[];
-  spriteBaseUrl?: string;
+  spriteBaseUrl?: {
+    image: string;
+    intervalSeconds: number;
+  };
   avatarUrl?: string;
   name?: string;
   jobTitle?: string;

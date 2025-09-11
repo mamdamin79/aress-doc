@@ -108,6 +108,14 @@ export const FundsSidebarWrapper: React.FC = () => {
                   : 'negative',
             },
           }))}
+          sortOptionsList={dashboardData?.fundSortParameters.map((opt) => ({
+            id: opt.identifier,
+            text: opt.title,
+          }))}
+          timePeriodList={dashboardData?.fundSortPeriods.map((opt) => ({
+            id: opt.identifier,
+            text: opt.title,
+          }))}
         />
       )}
     </div>

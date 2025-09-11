@@ -4,7 +4,7 @@ export const NumberSection = ({ value }: { value: number }) => {
   const formattedNumber = Number(
     formatNumber(value, {
       commaSeparated: true,
-      decimals: 2,
+      decimals: 1,
     }),
   );
   return (
@@ -17,7 +17,7 @@ export const NumberSection = ({ value }: { value: number }) => {
         formattedNumber < 0 && 'text-text-accent-red-primary-600',
       )}
     >
-      {formattedNumber > 0 ? '+' : '-'} ٪{Math.abs(formattedNumber)}
+      {formattedNumber > 0 ? '+' : '-'} {Math.abs(formattedNumber)}٪
     </div>
   );
 };

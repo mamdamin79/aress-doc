@@ -1,5 +1,5 @@
 'use client';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import {
   GetReportsCategoriesResponse,
@@ -14,10 +14,12 @@ export function useReportSelection(
 ) {
   const searchParams = useSearchParams();
   const ITEMS_PER_PAGE = 6;
+  const [displayedItemsCount, setDisplayedItemsCount] =
+    useState(ITEMS_PER_PAGE);
+  const [hasMore, setHasMore] = useState(true);
 
   const category = searchParams.get('category') || '';
   const search = searchParams.get('search') || '';
-  const page = parseInt(searchParams.get('page') || '1', 10);
 
   const queryParams: Record<string, boolean> = {};
   if (searchParams.has('onlyFavorite'))
@@ -53,16 +55,25 @@ export function useReportSelection(
     });
   }, [reportsList, category, search]);
 
-  const paginatedReports = useMemo(() => {
-    return filteredReports?.slice(
-      (page - 1) * ITEMS_PER_PAGE,
-      page * ITEMS_PER_PAGE,
+  const displayedReports = useMemo(() => {
+    const reports = filteredReports?.slice(0, displayedItemsCount) || [];
+    setHasMore(
+      filteredReports ? filteredReports.length > displayedItemsCount : false,
     );
-  }, [filteredReports, page]);
+    return reports;
+  }, [filteredReports, displayedItemsCount]);
 
-  const totalPages = filteredReports
-    ? Math.ceil(filteredReports.length / ITEMS_PER_PAGE)
-    : 0;
+  const loadMore = useCallback(() => {
+    if (hasMore && filteredReports) {
+      const newCount = displayedItemsCount + ITEMS_PER_PAGE;
+      setDisplayedItemsCount(newCount);
+    }
+  }, [hasMore, filteredReports, displayedItemsCount, ITEMS_PER_PAGE]);
+
+  // Reset displayed items when filters change
+  useMemo(() => {
+    setDisplayedItemsCount(ITEMS_PER_PAGE);
+  }, [category, search]);
 
   const { data: previewData, refetch: fetchReportPreview } =
     useReportsServiceGetReportsByReportId(
@@ -82,12 +93,12 @@ export function useReportSelection(
   return {
     categories,
     filteredReports,
-    paginatedReports,
-    totalPages,
+    displayedReports,
+    hasMore,
+    loadMore,
     fetchReportPreview,
     previewData,
     openPopup,
     ITEMS_PER_PAGE,
-    currentPage: page,
   };
 }

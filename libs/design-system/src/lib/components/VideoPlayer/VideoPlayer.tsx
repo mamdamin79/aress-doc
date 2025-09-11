@@ -17,7 +17,10 @@ type Props = {
   className?: string;
   title: string;
   src: string;
-  spriteBaseUrl?: string;
+  spriteBaseUrl?: {
+    image: string;
+    intervalSeconds: number;
+  };
   setSelectedVideo: React.Dispatch<React.SetStateAction<Video>>;
   videos: Video[];
   selectedVideo: Video;

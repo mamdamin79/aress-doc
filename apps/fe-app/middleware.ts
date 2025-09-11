@@ -9,6 +9,7 @@ const protectedRoutes = [
   '/profile',
   '/investment_funds',
   '/render',
+  '/my-fund',
 ];
 
 // Define routes that should be hidden from logged-in users (e.g., login/register)

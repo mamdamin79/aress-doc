@@ -4,6 +4,7 @@ import { Icon } from '../Icon';
 import { secondsToHHMMSS } from '../../../utils/time';
 import { cn } from '../../../utils/classNames.utils';
 import { Video } from '../VideoPlayer/VideoPlayer.types';
+import FundLogoFallback from '../../../assets/images/FundLogoFallback.png';
 
 type PlayListPropsType = {
   videos: Video[];
@@ -57,7 +58,7 @@ export const PlayList: React.FC<PlayListPropsType> = ({
           </div>
         </div>
       ) : (
-        <div className="text-text-neutral-primary border-1.5 border-border-neutral-primary h-[459px] w-[520px] overflow-auto rounded-3xl text-lg font-medium">
+        <div className="text-text-neutral-primary border-1.5 border-border-neutral-primary h-[459px] w-full overflow-auto rounded-3xl text-lg font-medium">
           <div className="border-b-1.5 border-border-neutral-primary p-6">
             {playListTitle}
           </div>
@@ -111,6 +112,7 @@ const PlayListCell: React.FC<
   selectedVideo,
   poster,
 }) => {
+  console.log(avatarUrl);
   const [durations, setDurations] = useState<Record<number, string>>({});
   const titleContainer = useRef<HTMLDivElement>(null);
   const handleLoadedMetadata = (
@@ -156,10 +158,10 @@ const PlayListCell: React.FC<
           </span>
         )}
       </span>
-      <div className="relative flex items-center justify-between gap-3">
+      <div className="relative flex w-full items-center justify-between gap-3">
         <video
           poster={poster ? poster : ''}
-          className="rounded-sm"
+          className="h-[56px] w-[100px] rounded-sm object-cover"
           width={100}
           height={56}
           src={src}
@@ -173,12 +175,12 @@ const PlayListCell: React.FC<
             {durations[index]}
           </span>
         )}
-        <div>
+        <div className="w-full">
           <div
             className={cn(
               'text-text-neutral-primary relative w-[306px] overflow-hidden text-ellipsis whitespace-nowrap p-2 pr-1 text-sm font-medium',
               {
-                'text-text-neutral-white': isFullscreen,
+                'text-text-neutral-white max-w-[233px]': isFullscreen,
               },
 
               {
@@ -208,9 +210,9 @@ const PlayListCell: React.FC<
               {title}
             </div>
           </div>
-          <span
+          <div
             className={cn(
-              'text-text-neutral-secondary flex items-start justify-between gap-1 text-xs font-medium',
+              'text-text-neutral-secondary flex w-full items-start justify-between gap-1 text-xs font-medium',
               { 'text-text-neutral-white': isFullscreen },
               {
                 'text-text-neutral-white': selectedVideo.src === src,
@@ -221,18 +223,21 @@ const PlayListCell: React.FC<
             )}
           >
             <div className="flex items-start gap-2">
-              <img
-                className="relative -top-1.5 rounded-xl"
-                src={avatarUrl}
-                width={32}
-                height={26}
-              />
+              {!isFullscreen && (
+                <img
+                  className="relative -top-1.5 rounded-xl"
+                  // @ts-expect-error: it does not get is FundLogoFallback object
+                  src={avatarUrl ? avatarUrl : FundLogoFallback.src}
+                  width={32}
+                  height={26}
+                />
+              )}
               <div>
                 <span>{name}</span> - <span>{jobTitle}</span>
               </div>
             </div>
-            {date}
-          </span>
+            <span>{date}</span>
+          </div>
         </div>
       </div>
     </div>

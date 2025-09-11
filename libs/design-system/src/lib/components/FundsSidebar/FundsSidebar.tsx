@@ -6,6 +6,7 @@ import { NumberSection } from './NumberSection';
 import { SparkLine } from '../SparkLine';
 import { cn } from '../../../utils/classNames.utils';
 import { CustomTriggerWithoutLogo } from './CustomTriggerWithoutLogo';
+import { DropdownCell } from '../OptionsDropdown/OptionsDropdown.types';
 export type FundsSidebarData = {
   title: string;
   chartData: {
@@ -22,6 +23,14 @@ export interface FundsSidebarProps {
   selectedFundTypeId?: number;
   selectedFundSortParameterId?: number;
   selectedFundSortPeriodId?: number;
+  timePeriodList?: {
+    id: number;
+    text: string;
+  }[];
+  sortOptionsList?: {
+    id: number;
+    text: string;
+  }[];
 }
 
 export const FundsSidebar: React.FC<FundsSidebarProps> = ({
@@ -32,6 +41,18 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
   selectedFundSortParameterId = 0,
   selectedFundSortPeriodId = 0,
   selectedFundTypeId = 0,
+  sortOptionsList = [
+    {
+      id: 1,
+      text: 'ماهانه',
+    },
+  ],
+  timePeriodList = [
+    {
+      id: 1,
+      text: 'بیشترین بازدهی',
+    },
+  ],
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState<number>(0);
@@ -94,25 +115,14 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
           <OptionsDropdown
             initialSelectedIndex={selectedFundSortParameterId}
             onChange={(_, selectedID) => onSortOptionChange?.(selectedID ?? 0)}
-            dropDownList={[
-              {
-                text: 'بیشترین بازدهی',
-                icon: { name: 'chart-no-axes-column' },
-                id: 1,
-              },
-              {
-                text: 'بالاترین عملکرد',
-                icon: { name: 'biceps-flexed' },
-                id: 2,
-              },
-              { text: 'بیشترین سود', icon: { name: 'hand-coins' }, id: 3 },
-              { text: 'اهرمی‌ترین', icon: { name: 'weight' }, id: 4 },
-            ]}
+            dropDownList={sortOptionsList as DropdownCell[]}
+            optionClassName="w-full justify-center"
             dropDownStyles={{
               anchor: 'bottom start',
               bg: 'primary',
               emphasize: 'medium',
               size: 'sm',
+              checkSelected: true,
             }}
             customTriggerRender={({ isActive, selectedItem }) => (
               <CustomTriggerWithoutLogo
@@ -126,17 +136,14 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
               initialSelectedIndex={selectedFundSortPeriodId}
               triggerClassName="text-sm font-medium"
               onChange={(_, selectedID) => onTimeframeChange?.(selectedID ?? 0)}
-              dropDownList={[
-                { text: 'هفتگی', id: 1 },
-                { text: 'ماهانه', id: 2 },
-                { text: 'سه ماهه', id: 3 },
-                { text: 'شش ماهه', id: 4 },
-              ]}
+              dropDownList={timePeriodList as DropdownCell[]}
+              optionClassName="w-full justify-center"
               dropDownStyles={{
                 anchor: 'bottom start',
                 bg: 'primary',
                 emphasize: 'medium',
                 size: 'sm',
+                checkSelected: true,
               }}
             />
           </div>
@@ -144,24 +151,24 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
         <div className="w-full px-4">
           <div className="bg-border-neutral-primary h-0.5 w-full rounded-md"></div>
         </div>
-        <div className="text-text-neutral-secondary grid w-full grid-cols-[1fr_68px_40px] gap-4 px-4 py-2 text-xs font-medium">
+        <div className="text-text-neutral-secondary grid w-full grid-cols-[1fr_61px_45px] gap-4 px-4 py-2 text-xs font-medium">
           <div className="text-right">نام صندوق</div>
           <div className="text-center">نمودار</div>
           <div className="text-left">بازده</div>
         </div>
       </div>
       <div
-        className="scrollbar-sm-hidden grid w-full grid-cols-[40px_68px_1fr] gap-4 overflow-x-hidden overflow-y-scroll pl-3 pr-2"
+        className="scrollbar-sm-hidden grid w-full grid-cols-[45px_61px_1fr] gap-4 overflow-x-hidden overflow-y-scroll pl-3 pr-2"
         ref={listContainerRef}
         onScroll={handleScroll}
         dir="ltr"
       >
         {data.map((item, index) => (
           <React.Fragment key={index}>
-            <div className="flex w-[40px] items-center justify-start pt-2">
+            <div className="flex w-[45px] items-center justify-start pt-2">
               <NumberSection value={item.changeValue} />
             </div>
-            <div className="flex w-[68px] items-center justify-center">
+            <div className="flex w-[61px] items-center justify-center">
               <SparkLine
                 data={item.chartData.data}
                 trend={item.chartData.trend}

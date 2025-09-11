@@ -1,8 +1,7 @@
-'use client'
+'use client';
+import { Toaster } from 'react-hot-toast';
 import './global.css';
 import ReactQueryProvider from './providers/ReactQueryProvider';
-
-
 
 export default function RootLayout({
   children,
@@ -13,8 +12,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="">
         <ReactQueryProvider>{children}</ReactQueryProvider>
-          {/* <PersianDatePicker mode="single" min="1380/01/01" max="1404/06/03" /> 
-          <PersianDatePicker mode="range" min="1380/01/01" max="1404/06/03" />  */}
+        <Toaster />
       </body>
     </html>
   );
