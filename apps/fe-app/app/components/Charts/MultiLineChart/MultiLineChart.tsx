@@ -99,15 +99,15 @@ export const MultiLineChart: React.FC<MultiLineChartProps> = ({ data }) => {
         text: '',
       },
       gridLineColor: 'var(--color-border-neutral-secondary)',
-      tickInterval: 0.1,
-      min:
-        Math.min(
-          ...data.flatMap((f) => f.history.map((h) => h.returnPercent)),
-        ) - 1,
-      max:
-        Math.max(
-          ...data.flatMap((f) => f.history.map((h) => h.returnPercent)),
-        ) + 1,
+      // tickInterval: 0.1,
+      // min:
+      //   Math.min(
+      //     ...data.flatMap((f) => f.history.map((h) => h.returnPercent)),
+      //   ) - 1,
+      // max:
+      //   Math.max(
+      //     ...data.flatMap((f) => f.history.map((h) => h.returnPercent)),
+      //   ) + 1,
       labels: {
         style: {
           fontSize: '12px',

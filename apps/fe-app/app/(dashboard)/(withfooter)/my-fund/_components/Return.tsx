@@ -410,7 +410,7 @@ export const Return: React.FC<ReturnAnalysisProps> = ({ data }) => {
           />
         </div>
       </div>
-      <div className="mb-40 flex h-[672px] w-full items-center justify-center overflow-scroll">
+      <div className="mb-40 flex h-full w-full items-center justify-center overflow-x-auto">
         <ColoredAnalysisTable
           schema={schema}
           data={[
