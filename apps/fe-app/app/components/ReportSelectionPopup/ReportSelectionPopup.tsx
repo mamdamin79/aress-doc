@@ -1,13 +1,11 @@
 import { ReportList } from '../../(dashboard)/(withfooter)/reports/_components/ReportsList';
-import { Dialog, Pagination } from 'design-system';
+import { Dialog } from 'design-system';
 import { GetReportsCategoriesResponse, GetReportsResponse } from '@openapi';
 interface ReportSelectionPopupProps {
   reports: GetReportsResponse;
   filteredReports: GetReportsResponse;
-  currentPage: number;
-  pageCount: number;
-  pageSize: number;
-  totalItems: number;
+  hasMore: boolean;
+  onLoadMore: () => void;
   categories: GetReportsCategoriesResponse;
   isOpen?: boolean;
   onClose: () => void;
@@ -15,10 +13,8 @@ interface ReportSelectionPopupProps {
 }
 export const ReportSelectionPopup: React.FC<ReportSelectionPopupProps> = ({
   reports,
-  currentPage,
-  pageCount,
-  pageSize,
-  totalItems,
+  hasMore,
+  onLoadMore,
   categories,
   isOpen,
   onClose,
@@ -41,15 +37,9 @@ export const ReportSelectionPopup: React.FC<ReportSelectionPopupProps> = ({
               onReportClick={onReportClick}
               categories={categories}
               filteredReports={filteredReports}
+              hasMore={hasMore}
+              onLoadMore={onLoadMore}
             />
-            <div className="mt-12">
-              <Pagination
-                currentPage={currentPage}
-                pageCount={pageCount}
-                pageSize={pageSize}
-                totalItems={totalItems}
-              />
-            </div>
           </div>
         </div>
       </div>

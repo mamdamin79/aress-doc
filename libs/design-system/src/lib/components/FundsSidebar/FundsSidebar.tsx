@@ -151,24 +151,24 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
         <div className="w-full px-4">
           <div className="bg-border-neutral-primary h-0.5 w-full rounded-md"></div>
         </div>
-        <div className="text-text-neutral-secondary grid w-full grid-cols-[1fr_68px_40px] gap-4 px-4 py-2 text-xs font-medium">
+        <div className="text-text-neutral-secondary grid w-full grid-cols-[1fr_61px_45px] gap-4 px-4 py-2 text-xs font-medium">
           <div className="text-right">نام صندوق</div>
           <div className="text-center">نمودار</div>
           <div className="text-left">بازده</div>
         </div>
       </div>
       <div
-        className="scrollbar-sm-hidden grid w-full grid-cols-[40px_68px_1fr] gap-4 overflow-x-hidden overflow-y-scroll pl-3 pr-2"
+        className="scrollbar-sm-hidden grid w-full grid-cols-[45px_61px_1fr] gap-4 overflow-x-hidden overflow-y-scroll pl-3 pr-2"
         ref={listContainerRef}
         onScroll={handleScroll}
         dir="ltr"
       >
         {data.map((item, index) => (
           <React.Fragment key={index}>
-            <div className="flex w-[40px] items-center justify-start pt-2">
+            <div className="flex w-[45px] items-center justify-start pt-2">
               <NumberSection value={item.changeValue} />
             </div>
-            <div className="flex w-[68px] items-center justify-center">
+            <div className="flex w-[61px] items-center justify-center">
               <SparkLine
                 data={item.chartData.data}
                 trend={item.chartData.trend}

@@ -4,7 +4,7 @@ export const NumberSection = ({ value }: { value: number }) => {
   const formattedNumber = Number(
     formatNumber(value, {
       commaSeparated: true,
-      decimals: 2,
+      decimals: 1,
     }),
   );
   return (

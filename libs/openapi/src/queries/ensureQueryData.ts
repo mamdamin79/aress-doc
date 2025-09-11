@@ -70,6 +70,13 @@ export const ensureUseUsersServiceGetUsersPasswordForgotCaptchaData = (
         captchaWidth,
       }),
   });
+export const ensureUseUsersServiceGetUsersProfileData = (
+  queryClient: QueryClient,
+) =>
+  queryClient.ensureQueryData({
+    queryKey: Common.UseUsersServiceGetUsersProfileKeyFn(),
+    queryFn: () => UsersService.getUsersProfile(),
+  });
 export const ensureUseUsersServiceGetUsersProfilePasswordChangeOtpData = (
   queryClient: QueryClient,
 ) =>

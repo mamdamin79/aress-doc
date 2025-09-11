@@ -121,13 +121,12 @@ export const SlidersBox: React.FC = () => {
   const {
     previewData: reportsPreviewData,
     openPopup: handleReportSelectionPopupOpen,
-    ITEMS_PER_PAGE,
-    currentPage,
     fetchReportPreview,
     filteredReports,
-    paginatedReports,
+    displayedReports,
     categories,
-    totalPages,
+    hasMore,
+    loadMore,
   } = useReportSelection(selectedReportID, isReportSelectionPopupOpen);
   useEffect(() => {
     const cols = window.matchMedia('(min-width: 1280px)').matches ? 4 : 2;
@@ -312,17 +311,15 @@ export const SlidersBox: React.FC = () => {
         )}
       </div>
 
-      {isReportSelectionPopupOpen && paginatedReports && (
+      {isReportSelectionPopupOpen && displayedReports && (
         <ReportSelectionPopup
           isOpen={isReportSelectionPopupOpen}
           onClose={() => setIsReportSelectionPopupOpen(false)}
           categories={categories ?? []}
-          currentPage={currentPage}
-          pageCount={totalPages}
-          pageSize={ITEMS_PER_PAGE}
-          reports={paginatedReports ?? []}
+          hasMore={hasMore}
+          onLoadMore={loadMore}
+          reports={displayedReports ?? []}
           filteredReports={filteredReports ?? []}
-          totalItems={filteredReports?.length ?? 0}
           onReportClick={(id) => {
             setSelectedReportID(String(id));
             fetchReportPreview();
@@ -396,7 +393,8 @@ export const SlidersBox: React.FC = () => {
           <span>
             آیا مطمئن هستید که می‌خواهید گزارش
             <span className="font-medium">
-              {isRemoveReportOpen.dashboardName}
+              {' '}
+              {isRemoveReportOpen.dashboardName}{' '}
             </span>
             را از این فضا حذف کنید؟
           </span>

@@ -149,14 +149,14 @@ export const Report13_3: React.FC<
       reversed: false,
       type: 'datetime',
       labels: {
+        style: {
+          fontSize: '12px',
+          color: 'var(--color-text-neutral-secondarycontrast)',
+          fontFamily: 'Vazirmatn',
+        },
         formatter: function () {
           const d = new Date(this.value as number);
           return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
-        },
-        style: {
-          fontSize: '12px',
-          color: 'var(--color-text-neutral-secondrycontrast)',
-          fontFamily: 'Vazirmatn',
         },
       },
     },

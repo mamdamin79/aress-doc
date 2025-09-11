@@ -70,6 +70,13 @@ export const prefetchUseUsersServiceGetUsersPasswordForgotCaptcha = (
         captchaWidth,
       }),
   });
+export const prefetchUseUsersServiceGetUsersProfile = (
+  queryClient: QueryClient,
+) =>
+  queryClient.prefetchQuery({
+    queryKey: Common.UseUsersServiceGetUsersProfileKeyFn(),
+    queryFn: () => UsersService.getUsersProfile(),
+  });
 export const prefetchUseUsersServiceGetUsersProfilePasswordChangeOtp = (
   queryClient: QueryClient,
 ) =>
