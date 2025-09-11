@@ -269,7 +269,7 @@ const colors = {
   },
   surface: {
     neutral: {
-      invers: 'var(--color-surface-neutral-invers)',
+      invers: 'var(--color-surface-neutral-inverse)',
       background: 'var(--color-surface-neutral-background)',
       primary: 'var(--color-surface-neutral-primary)',
       secondarycontrast: 'var(--color-surface-neutral-secondarycontrast)',

@@ -31,6 +31,7 @@ export type textFieldPropsType = InputHTMLAttributes<HTMLInputElement> & {
   inputSize?: TextFieldInputSize;
   captchaValue?: string;
   onRefreshCaptcha?: () => void;
+  inputClasses?: string;
 };
 
 export type TextFieldInputSize = 'default' | 'md' | 'sm';

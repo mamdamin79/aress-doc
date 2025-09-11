@@ -6,28 +6,23 @@ type Props = {
   hoverTime: number | null;
   duration: number;
   videoRef: React.RefObject<HTMLVideoElement | null>;
-  spriteBaseUrl?: string;
+  spriteBaseUrl: {
+    intervalSeconds: number;
+    image: string;
+  };
 };
 
 export const PlayerThumbnail: React.FC<Props> = React.memo(
   ({ hoverTime, duration, spriteBaseUrl }) => {
     const thumbnailPreviewRef = useRef<HTMLDivElement>(null);
 
-    const getSpriteSrc = (time: number) => {
-      const spriteIndex = Math.floor(time / 50);
-      return `${spriteBaseUrl}/M${spriteIndex}.jpg`;
-    };
-
     const frameWidth = 160;
     const frameHeight = 90;
-    const totalFrames = 25;
-    const rowFrames = 5;
+    const totalFrames = Math.ceil(duration / spriteBaseUrl?.intervalSeconds);
+    const rowFrames = 10;
 
     const currentFrame = hoverTime
-      ? Math.min(
-          Math.floor(((hoverTime % 50) / 50) * totalFrames),
-          totalFrames - 1,
-        )
+      ? Math.min(Math.floor(hoverTime / 10), totalFrames - 1)
       : null;
 
     return hoverTime !== null && currentFrame !== null ? (
@@ -47,7 +42,7 @@ export const PlayerThumbnail: React.FC<Props> = React.memo(
           style={{
             width: frameWidth,
             height: frameHeight,
-            backgroundImage: `url(${getSpriteSrc(hoverTime)})`,
+            backgroundImage: `url(${spriteBaseUrl.image})`,
             backgroundPosition: `${
               -(currentFrame % rowFrames) * frameWidth
             }px ${-Math.floor(currentFrame / rowFrames) * frameHeight}px`,
