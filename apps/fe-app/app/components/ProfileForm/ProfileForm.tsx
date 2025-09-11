@@ -73,7 +73,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
   const formSchema: FormSchemaType[] = [
     {
       name: 'fnameAndLname',
-      label: 'نام و نام خانوادگی',
+      label: 'نام و نام‌خانوادگی',
       value: fnameAndLname,
       icon: 'user',
     },
@@ -153,6 +153,7 @@ export const ProfileForm: React.FC<ProfileFormProps> = ({
             )}
             {editDialog === 'email' && (
               <ChangeMail
+                currentMail={email ?? ''}
                 onClose={(success) => setEditDialog(success ? 'success' : null)}
               />
             )}

@@ -3,1618 +3,1841 @@
 import type { CancelablePromise } from './core/CancelablePromise';
 import { OpenAPI } from './core/OpenAPI';
 import { request as __request } from './core/request';
-import type { GetHealthResponse, GetUsersLoginCaptchaData, GetUsersLoginCaptchaResponse, PostUsersLoginData, PostUsersLoginResponse, PostUsersTokenData, PostUsersTokenResponse, GetUsersMeResponse, GetUsersPasswordForgotCaptchaData, GetUsersPasswordForgotCaptchaResponse, PostUsersPasswordForgotOtpData, PostUsersPasswordForgotOtpResponse, PostUsersPasswordForgotResetData, PostUsersPasswordForgotResetResponse, GetUsersProfilePasswordChangeOtpResponse, PostUsersProfilePasswordChangeData, PostUsersProfilePasswordChangeResponse, PostUsersProfilePasswordValidateData, PostUsersProfilePasswordValidateResponse, PostUsersProfilePhoneChangeOtpData, PostUsersProfilePhoneChangeOtpResponse, PostUsersProfilePhoneChangeData, PostUsersProfilePhoneChangeResponse, PostUsersProfileEmailChangeOtpData, PostUsersProfileEmailChangeOtpResponse, PostUsersProfileEmailChangeData, PostUsersProfileEmailChangeResponse, PostUsersProfileUsernameChangeData, PostUsersProfileUsernameChangeResponse, PostUsersProfilePictureChangeData, PostUsersProfilePictureChangeResponse, PostUsersLogoutResponse, GetReportsData, GetReportsResponse, GetReportsCategoriesResponse, PostReportsRequestData, PostReportsRequestResponse, GetReportsByReportIdData, GetReportsByReportIdResponse, PostReportsByReportIdData, PostReportsByReportIdResponse, PostReportsByReportIdFavoriteData, PostReportsByReportIdFavoriteResponse, DeleteReportsByReportIdFavoriteData, DeleteReportsByReportIdFavoriteResponse, PostReportsByReportIdScreenshotData, PostReportsByReportIdScreenshotResponse, GetDashboardsResponse, PutDashboardsData, PutDashboardsResponse, GetDashboardsByDashboardIdData, GetDashboardsByDashboardIdResponse, PostDashboardsByDashboardIdData, PostDashboardsByDashboardIdResponse, DeleteDashboardsByDashboardIdData, DeleteDashboardsByDashboardIdResponse, PutDashboardsByDashboardIdData, PutDashboardsByDashboardIdResponse, PostDashboardsByDashboardIdFundsData, PostDashboardsByDashboardIdFundsResponse, PostDashboardsByDashboardIdDuplicateData, PostDashboardsByDashboardIdDuplicateResponse, GetDashboardsByDashboardIdPreviewData, GetDashboardsByDashboardIdPreviewResponse, DeleteDashboardsByDashboardIdItemsByDashboardItemIdData, DeleteDashboardsByDashboardIdItemsByDashboardItemIdResponse, PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceData, PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceResponse, PostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotData, PostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotResponse, PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsData, PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsResponse, PostDashboardsByDashboardIdItemsByDashboardItemIdReorderData, PostDashboardsByDashboardIdItemsByDashboardItemIdReorderResponse, GetFundsResponse, GetFundsTypeByFundTypeData, GetFundsTypeByFundTypeResponse, PutFundsByFundIdWatchlistData, PutFundsByFundIdWatchlistResponse, DeleteFundsByFundIdWatchlistData, DeleteFundsByFundIdWatchlistResponse, GetFundsTableData, GetFundsTableResponse, GetFundsTableTabByTabCsvData, GetFundsTableTabByTabCsvResponse, PostFundsTableTabByTabPinData, PostFundsTableTabByTabPinResponse, PostFundsTableTabByTabUnpinData, PostFundsTableTabByTabUnpinResponse, PostFundsByFundIdMarkData, PostFundsByFundIdMarkResponse, PostFundsByFundIdUnmarkData, PostFundsByFundIdUnmarkResponse, PostFundsTableTabByTabSortData, PostFundsTableTabByTabSortResponse, PostFundsTableTabByTabColumnsData, PostFundsTableTabByTabColumnsResponse, PostFundsTableTabByTabColumnsResetData, PostFundsTableTabByTabColumnsResetResponse, PostFundsTableTabByTabColumnData, PostFundsTableTabByTabColumnResponse, GetFundsStockByFundIdSummaryData, GetFundsStockByFundIdSummaryResponse, PostFundsStockByFundIdSummaryCaseByCaseData, PostFundsStockByFundIdSummaryCaseByCaseResponse, GetFundsStockByFundIdReturnAnalysisData, GetFundsStockByFundIdReturnAnalysisResponse, PostFundsStockByFundIdReturnAnalysisReturnTrendData, PostFundsStockByFundIdReturnAnalysisReturnTrendResponse, PostFundsStockByFundIdReturnAnalysisReturnComparisonData, PostFundsStockByFundIdReturnAnalysisReturnComparisonResponse, PostFundsStockByFundIdReturnAnalysisReturnRankData, PostFundsStockByFundIdReturnAnalysisReturnRankResponse, PostFundsStockByFundIdReturnAnalysisRiskReturnAnalysisData, PostFundsStockByFundIdReturnAnalysisRiskReturnAnalysisResponse, PostFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysisData, PostFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysisResponse } from './types.gen';
+import type {
+  GetHealthResponse,
+  GetUsersLoginCaptchaData,
+  GetUsersLoginCaptchaResponse,
+  PostUsersLoginData,
+  PostUsersLoginResponse,
+  PostUsersTokenData,
+  PostUsersTokenResponse,
+  GetUsersMeResponse,
+  GetUsersPasswordForgotCaptchaData,
+  GetUsersPasswordForgotCaptchaResponse,
+  PostUsersPasswordForgotOtpData,
+  PostUsersPasswordForgotOtpResponse,
+  PostUsersPasswordForgotResetData,
+  PostUsersPasswordForgotResetResponse,
+  GetUsersProfilePasswordChangeOtpResponse,
+  PostUsersProfilePasswordChangeData,
+  PostUsersProfilePasswordChangeResponse,
+  PostUsersProfilePasswordValidateData,
+  PostUsersProfilePasswordValidateResponse,
+  PostUsersProfilePhoneChangeOtpData,
+  PostUsersProfilePhoneChangeOtpResponse,
+  PostUsersProfilePhoneChangeData,
+  PostUsersProfilePhoneChangeResponse,
+  PostUsersProfileEmailChangeOtpData,
+  PostUsersProfileEmailChangeOtpResponse,
+  PostUsersProfileEmailChangeData,
+  PostUsersProfileEmailChangeResponse,
+  PostUsersProfileUsernameChangeData,
+  PostUsersProfileUsernameChangeResponse,
+  PostUsersProfilePictureChangeData,
+  PostUsersProfilePictureChangeResponse,
+  PostUsersLogoutResponse,
+  GetReportsData,
+  GetReportsResponse,
+  GetReportsCategoriesResponse,
+  PostReportsRequestData,
+  PostReportsRequestResponse,
+  GetReportsByReportIdData,
+  GetReportsByReportIdResponse,
+  PostReportsByReportIdData,
+  PostReportsByReportIdResponse,
+  PostReportsByReportIdFavoriteData,
+  PostReportsByReportIdFavoriteResponse,
+  DeleteReportsByReportIdFavoriteData,
+  DeleteReportsByReportIdFavoriteResponse,
+  PostReportsByReportIdScreenshotData,
+  PostReportsByReportIdScreenshotResponse,
+  GetDashboardsResponse,
+  PutDashboardsData,
+  PutDashboardsResponse,
+  GetDashboardsByDashboardIdData,
+  GetDashboardsByDashboardIdResponse,
+  PostDashboardsByDashboardIdData,
+  PostDashboardsByDashboardIdResponse,
+  DeleteDashboardsByDashboardIdData,
+  DeleteDashboardsByDashboardIdResponse,
+  PutDashboardsByDashboardIdData,
+  PutDashboardsByDashboardIdResponse,
+  PostDashboardsByDashboardIdFundsData,
+  PostDashboardsByDashboardIdFundsResponse,
+  PostDashboardsByDashboardIdDuplicateData,
+  PostDashboardsByDashboardIdDuplicateResponse,
+  GetDashboardsByDashboardIdPreviewData,
+  GetDashboardsByDashboardIdPreviewResponse,
+  DeleteDashboardsByDashboardIdItemsByDashboardItemIdData,
+  DeleteDashboardsByDashboardIdItemsByDashboardItemIdResponse,
+  PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceData,
+  PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceResponse,
+  PostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotData,
+  PostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotResponse,
+  PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsData,
+  PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsResponse,
+  PostDashboardsByDashboardIdItemsByDashboardItemIdReorderData,
+  PostDashboardsByDashboardIdItemsByDashboardItemIdReorderResponse,
+  GetFundsResponse,
+  GetFundsTypeByFundTypeData,
+  GetFundsTypeByFundTypeResponse,
+  PutFundsByFundIdWatchlistData,
+  PutFundsByFundIdWatchlistResponse,
+  DeleteFundsByFundIdWatchlistData,
+  DeleteFundsByFundIdWatchlistResponse,
+  GetFundsTableData,
+  GetFundsTableResponse,
+  GetFundsTableTabByTabCsvData,
+  GetFundsTableTabByTabCsvResponse,
+  PostFundsTableTabByTabPinData,
+  PostFundsTableTabByTabPinResponse,
+  PostFundsTableTabByTabUnpinData,
+  PostFundsTableTabByTabUnpinResponse,
+  PostFundsByFundIdMarkData,
+  PostFundsByFundIdMarkResponse,
+  PostFundsByFundIdUnmarkData,
+  PostFundsByFundIdUnmarkResponse,
+  PostFundsTableTabByTabSortData,
+  PostFundsTableTabByTabSortResponse,
+  PostFundsTableTabByTabColumnsData,
+  PostFundsTableTabByTabColumnsResponse,
+  PostFundsTableTabByTabColumnsResetData,
+  PostFundsTableTabByTabColumnsResetResponse,
+  PostFundsTableTabByTabColumnData,
+  PostFundsTableTabByTabColumnResponse,
+  GetFundsStockByFundIdSummaryData,
+  GetFundsStockByFundIdSummaryResponse,
+  PostFundsStockByFundIdSummaryCaseByCaseData,
+  PostFundsStockByFundIdSummaryCaseByCaseResponse,
+  GetFundsStockByFundIdReturnAnalysisData,
+  GetFundsStockByFundIdReturnAnalysisResponse,
+  PostFundsStockByFundIdReturnAnalysisReturnTrendData,
+  PostFundsStockByFundIdReturnAnalysisReturnTrendResponse,
+  PostFundsStockByFundIdReturnAnalysisReturnComparisonData,
+  PostFundsStockByFundIdReturnAnalysisReturnComparisonResponse,
+  PostFundsStockByFundIdReturnAnalysisReturnRankData,
+  PostFundsStockByFundIdReturnAnalysisReturnRankResponse,
+  PostFundsStockByFundIdReturnAnalysisRiskReturnAnalysisData,
+  PostFundsStockByFundIdReturnAnalysisRiskReturnAnalysisResponse,
+  PostFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysisData,
+  PostFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysisResponse,
+} from './types.gen';
 
 export class HealthService {
-    /**
-     * Health
-     * Health check
-     * @returns HealthApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getHealth(): CancelablePromise<GetHealthResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/health',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
+  /**
+   * Health
+   * Health check
+   * @returns HealthApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getHealth(): CancelablePromise<GetHealthResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/health',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
 }
 
 export class UsersService {
-    /**
-     * Captcha For Login
-     * Get captcha for a user. Captcha can be an **_image_** or an **_audio_**, depending on the **captchaType** param. In case of an image, you can also pass **captchaWidth** and **captchaHeight** for customizing the size of generated image.
-     * @param data The data for the request.
-     * @param data.captchaWidth
-     * @param data.captchaHeight
-     * @param data.captchaType
-     * @returns CaptchaApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getUsersLoginCaptcha(data: GetUsersLoginCaptchaData = {}): CancelablePromise<GetUsersLoginCaptchaResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/users/login/captcha',
-            query: {
-                captchaWidth: data.captchaWidth,
-                captchaHeight: data.captchaHeight,
-                captchaType: data.captchaType
-            },
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Login For Access Token
-     * Get access token using credentials for users. You must provide solved captcha value (_captcha_) and unique identifier of catpcha (_captchaUid_), along with user credentials (_username_ and _password_).**Important note**: _username_ can be either username, email, phone number or national code of user.
-     * @param data The data for the request.
-     * @param data.captchaUid
-     * @param data.captcha
-     * @param data.formData
-     * @returns TokenApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersLogin(data: PostUsersLoginData): CancelablePromise<PostUsersLoginResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/login',
-            query: {
-                captchaUid: data.captchaUid,
-                captcha: data.captcha
-            },
-            formData: data.formData,
-            mediaType: 'application/x-www-form-urlencoded',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Test User Access Token
-     * Get access token using credentials for test user. This method only works for **test** user. For login flow of real users, you must use _**login_captcha**_ and _**login**_ endpoints.
-     * @param data The data for the request.
-     * @param data.formData
-     * @returns TokenApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersToken(data: PostUsersTokenData): CancelablePromise<PostUsersTokenResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/token',
-            formData: data.formData,
-            mediaType: 'application/x-www-form-urlencoded',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Get Current User
-     * Get data of current logged in user.
-     * @returns unknown Successful Response
-     * @throws ApiError
-     */
-    public static getUsersMe(): CancelablePromise<GetUsersMeResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/users/me',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Forgot Password Captcha
-     * Get captcha to reset password
-     * @param data The data for the request.
-     * @param data.captchaWidth
-     * @param data.captchaHeight
-     * @param data.captchaType
-     * @returns CaptchaApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getUsersPasswordForgotCaptcha(data: GetUsersPasswordForgotCaptchaData = {}): CancelablePromise<GetUsersPasswordForgotCaptchaResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/users/password/forgot/captcha',
-            query: {
-                captchaWidth: data.captchaWidth,
-                captchaHeight: data.captchaHeight,
-                captchaType: data.captchaType
-            },
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Forgot Password Get Otp
-     * Get OTP to reset password
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns GetOtpForForgotPasswordResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersPasswordForgotOtp(data: PostUsersPasswordForgotOtpData): CancelablePromise<PostUsersPasswordForgotOtpResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/password/forgot/otp',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Forgot Password Reset By Otp
-     * Recover password using otp and new password
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns ResetForgotPasswordByOtpResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersPasswordForgotReset(data: PostUsersPasswordForgotResetData): CancelablePromise<PostUsersPasswordForgotResetResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/password/forgot/reset',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Change Password Get Otp
-     * Get otp to change password in user profile, does not need captcha
-     * @returns GetOtpForChangePasswordResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getUsersProfilePasswordChangeOtp(): CancelablePromise<GetUsersProfilePasswordChangeOtpResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/users/profile/password/change/otp',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Change Password By Otp
-     * Change password using otp and new password
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns ChangePasswordByOtpApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersProfilePasswordChange(data: PostUsersProfilePasswordChangeData): CancelablePromise<PostUsersProfilePasswordChangeResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/profile/password/change',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Validate Password For User
-     * Validate password for user
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns ValidatePasswordForUserResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersProfilePasswordValidate(data: PostUsersProfilePasswordValidateData): CancelablePromise<PostUsersProfilePasswordValidateResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/profile/password/validate',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Change Phone Number Get Otp
-     * get otp to change phone
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns ChangePhoneGetOtpResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersProfilePhoneChangeOtp(data: PostUsersProfilePhoneChangeOtpData): CancelablePromise<PostUsersProfilePhoneChangeOtpResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/profile/phone/change/otp',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Change Phone Number By Otp
-     * Change phone number with otp
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns ChangePhoneByOtpResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersProfilePhoneChange(data: PostUsersProfilePhoneChangeData): CancelablePromise<PostUsersProfilePhoneChangeResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/profile/phone/change',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Change Email Get Otp
-     * get otp to change email
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns ChangeEmailGetOtpResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersProfileEmailChangeOtp(data: PostUsersProfileEmailChangeOtpData): CancelablePromise<PostUsersProfileEmailChangeOtpResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/profile/email/change/otp',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Change Email By Otp
-     * Change email with otp
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns ChangeEmailByOtpResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersProfileEmailChange(data: PostUsersProfileEmailChangeData): CancelablePromise<PostUsersProfileEmailChangeResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/profile/email/change',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Change Username
-     * Change username
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns ChangeUsernameResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersProfileUsernameChange(data: PostUsersProfileUsernameChangeData): CancelablePromise<PostUsersProfileUsernameChangeResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/profile/username/change',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Change Profile Picture
-     * Change profile picture
-     * @param data The data for the request.
-     * @param data.formData
-     * @returns ChangeProfilePictureResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersProfilePictureChange(data: PostUsersProfilePictureChangeData): CancelablePromise<PostUsersProfilePictureChangeResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/profile/picture/change',
-            formData: data.formData,
-            mediaType: 'multipart/form-data',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Logout User
-     * Logout user
-     * @returns LogoutResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postUsersLogout(): CancelablePromise<PostUsersLogoutResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/users/logout',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
+  /**
+   * Captcha For Login
+   * Get captcha for a user. Captcha can be an **_image_** or an **_audio_**, depending on the **captchaType** param. In case of an image, you can also pass **captchaWidth** and **captchaHeight** for customizing the size of generated image.
+   * @param data The data for the request.
+   * @param data.captchaWidth
+   * @param data.captchaHeight
+   * @param data.captchaType
+   * @returns CaptchaApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getUsersLoginCaptcha(
+    data: GetUsersLoginCaptchaData = {},
+  ): CancelablePromise<GetUsersLoginCaptchaResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/users/login/captcha',
+      query: {
+        captchaWidth: data.captchaWidth,
+        captchaHeight: data.captchaHeight,
+        captchaType: data.captchaType,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Login For Access Token
+   * Get access token using credentials for users. You must provide solved captcha value (_captcha_) and unique identifier of catpcha (_captchaUid_), along with user credentials (_username_ and _password_).**Important note**: _username_ can be either username, email, phone number or national code of user.
+   * @param data The data for the request.
+   * @param data.captchaUid
+   * @param data.captcha
+   * @param data.formData
+   * @returns TokenApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersLogin(
+    data: PostUsersLoginData,
+  ): CancelablePromise<PostUsersLoginResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/login',
+      query: {
+        captchaUid: data.captchaUid,
+        captcha: data.captcha,
+      },
+      formData: data.formData,
+      mediaType: 'application/x-www-form-urlencoded',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Test User Access Token
+   * Get access token using credentials for test user. This method only works for **test** user. For login flow of real users, you must use _**login_captcha**_ and _**login**_ endpoints.
+   * @param data The data for the request.
+   * @param data.formData
+   * @returns TokenApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersToken(
+    data: PostUsersTokenData,
+  ): CancelablePromise<PostUsersTokenResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/token',
+      formData: data.formData,
+      mediaType: 'application/x-www-form-urlencoded',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Get Current User
+   * Get data of current logged in user.
+   * @returns unknown Successful Response
+   * @throws ApiError
+   */
+  public static getUsersMe(): CancelablePromise<GetUsersMeResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/users/me',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Forgot Password Captcha
+   * Get captcha to reset password
+   * @param data The data for the request.
+   * @param data.captchaWidth
+   * @param data.captchaHeight
+   * @param data.captchaType
+   * @returns CaptchaApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getUsersPasswordForgotCaptcha(
+    data: GetUsersPasswordForgotCaptchaData = {},
+  ): CancelablePromise<GetUsersPasswordForgotCaptchaResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/users/password/forgot/captcha',
+      query: {
+        captchaWidth: data.captchaWidth,
+        captchaHeight: data.captchaHeight,
+        captchaType: data.captchaType,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Forgot Password Get Otp
+   * Get OTP to reset password
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns GetOtpForForgotPasswordResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersPasswordForgotOtp(
+    data: PostUsersPasswordForgotOtpData,
+  ): CancelablePromise<PostUsersPasswordForgotOtpResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/password/forgot/otp',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Forgot Password Reset By Otp
+   * Recover password using otp and new password
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ResetForgotPasswordByOtpResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersPasswordForgotReset(
+    data: PostUsersPasswordForgotResetData,
+  ): CancelablePromise<PostUsersPasswordForgotResetResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/password/forgot/reset',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Change Password Get Otp
+   * Get otp to change password in user profile, does not need captcha
+   * @returns GetOtpForChangePasswordResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getUsersProfilePasswordChangeOtp(): CancelablePromise<GetUsersProfilePasswordChangeOtpResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/users/profile/password/change/otp',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Change Password By Otp
+   * Change password using otp and new password
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ChangePasswordByOtpApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersProfilePasswordChange(
+    data: PostUsersProfilePasswordChangeData,
+  ): CancelablePromise<PostUsersProfilePasswordChangeResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/profile/password/change',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Validate Password For User
+   * Validate password for user
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ValidatePasswordForUserResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersProfilePasswordValidate(
+    data: PostUsersProfilePasswordValidateData,
+  ): CancelablePromise<PostUsersProfilePasswordValidateResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/profile/password/validate',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Change Phone Number Get Otp
+   * get otp to change phone
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ChangePhoneGetOtpResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersProfilePhoneChangeOtp(
+    data: PostUsersProfilePhoneChangeOtpData,
+  ): CancelablePromise<PostUsersProfilePhoneChangeOtpResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/profile/phone/change/otp',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Change Phone Number By Otp
+   * Change phone number with otp
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ChangePhoneByOtpResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersProfilePhoneChange(
+    data: PostUsersProfilePhoneChangeData,
+  ): CancelablePromise<PostUsersProfilePhoneChangeResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/profile/phone/change',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Change Email Get Otp
+   * get otp to change email
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ChangeEmailGetOtpResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersProfileEmailChangeOtp(
+    data: PostUsersProfileEmailChangeOtpData,
+  ): CancelablePromise<PostUsersProfileEmailChangeOtpResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/profile/email/change/otp',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Change Email By Otp
+   * Change email with otp
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ChangeEmailByOtpResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersProfileEmailChange(
+    data: PostUsersProfileEmailChangeData,
+  ): CancelablePromise<PostUsersProfileEmailChangeResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/profile/email/change',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Change Username
+   * Change username
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ChangeUsernameResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersProfileUsernameChange(
+    data: PostUsersProfileUsernameChangeData,
+  ): CancelablePromise<PostUsersProfileUsernameChangeResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/profile/username/change',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Change Profile Picture
+   * Change profile picture
+   * @param data The data for the request.
+   * @param data.formData
+   * @returns ChangeProfilePictureResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersProfilePictureChange(
+    data: PostUsersProfilePictureChangeData,
+  ): CancelablePromise<PostUsersProfilePictureChangeResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/profile/picture/change',
+      formData: data.formData,
+      mediaType: 'multipart/form-data',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Logout User
+   * Logout user
+   * @returns LogoutResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postUsersLogout(): CancelablePromise<PostUsersLogoutResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/users/logout',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
 }
 
 export class ReportsService {
-    /**
-     * Report List
-     * Get list of reports.
-     * @param data The data for the request.
-     * @param data.onlyFavorite
-     * @param data.onlyNew
-     * @param data.onlyHavingVideo
-     * @returns FinancialReportListItemApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getReports(data: GetReportsData = {}): CancelablePromise<GetReportsResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/reports',
-            query: {
-                onlyFavorite: data.onlyFavorite,
-                onlyNew: data.onlyNew,
-                onlyHavingVideo: data.onlyHavingVideo
-            },
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Report Categories
-     * Get list of report categories.
-     * @returns FinancialReportCategoryApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getReportsCategories(): CancelablePromise<GetReportsCategoriesResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/reports/categories',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Request New Report
-     * Request a new report
-     * @param data The data for the request.
-     * @param data.formData
-     * @returns RequestReportResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postReportsRequest(data: PostReportsRequestData): CancelablePromise<PostReportsRequestResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/reports/request',
-            formData: data.formData,
-            mediaType: 'multipart/form-data',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Report Details
-     * Get details of a report.
-     * @param data The data for the request.
-     * @param data.reportId
-     * @param data.screenshotQueryId
-     * @returns FinancialReportDetailsApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getReportsByReportId(data: GetReportsByReportIdData): CancelablePromise<GetReportsByReportIdResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/reports/{report_id}',
-            path: {
-                report_id: data.reportId
-            },
-            query: {
-                screenshotQueryId: data.screenshotQueryId
-            },
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Get Report Calculations
-     * Get report calculations.
-     * @param data The data for the request.
-     * @param data.reportId
-     * @param data.requestBody
-     * @returns FinancialReportCalculationApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postReportsByReportId(data: PostReportsByReportIdData): CancelablePromise<PostReportsByReportIdResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/reports/{report_id}',
-            path: {
-                report_id: data.reportId
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Add Report To Favorites
-     * Add a report to favorites
-     * @param data The data for the request.
-     * @param data.reportId
-     * @returns UserReportFavoriteStatus Successful Response
-     * @throws ApiError
-     */
-    public static postReportsByReportIdFavorite(data: PostReportsByReportIdFavoriteData): CancelablePromise<PostReportsByReportIdFavoriteResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/reports/{report_id}/favorite',
-            path: {
-                report_id: data.reportId
-            },
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Remove Report From Favorites
-     * Remove a report from favorites
-     * @param data The data for the request.
-     * @param data.reportId
-     * @returns UserReportFavoriteStatus Successful Response
-     * @throws ApiError
-     */
-    public static deleteReportsByReportIdFavorite(data: DeleteReportsByReportIdFavoriteData): CancelablePromise<DeleteReportsByReportIdFavoriteResponse> {
-        return __request(OpenAPI, {
-            method: 'DELETE',
-            url: '/reports/{report_id}/favorite',
-            path: {
-                report_id: data.reportId
-            },
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Save Screenshot
-     * Save report screenshot
-     * @param data The data for the request.
-     * @param data.reportId
-     * @param data.formData
-     * @returns ReportScreenshotResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postReportsByReportIdScreenshot(data: PostReportsByReportIdScreenshotData): CancelablePromise<PostReportsByReportIdScreenshotResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/reports/{report_id}/screenshot',
-            path: {
-                report_id: data.reportId
-            },
-            formData: data.formData,
-            mediaType: 'multipart/form-data',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
+  /**
+   * Report List
+   * Get list of reports.
+   * @param data The data for the request.
+   * @param data.onlyFavorite
+   * @param data.onlyNew
+   * @param data.onlyHavingVideo
+   * @returns FinancialReportListItemApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getReports(
+    data: GetReportsData = {},
+  ): CancelablePromise<GetReportsResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/reports',
+      query: {
+        onlyFavorite: data.onlyFavorite,
+        onlyNew: data.onlyNew,
+        onlyHavingVideo: data.onlyHavingVideo,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Report Categories
+   * Get list of report categories.
+   * @returns FinancialReportCategoryApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getReportsCategories(): CancelablePromise<GetReportsCategoriesResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/reports/categories',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Request New Report
+   * Request a new report
+   * @param data The data for the request.
+   * @param data.formData
+   * @returns RequestReportResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postReportsRequest(
+    data: PostReportsRequestData,
+  ): CancelablePromise<PostReportsRequestResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/reports/request',
+      formData: data.formData,
+      mediaType: 'multipart/form-data',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Report Details
+   * Get details of a report.
+   * @param data The data for the request.
+   * @param data.reportId
+   * @param data.screenshotQueryId
+   * @returns FinancialReportDetailsApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getReportsByReportId(
+    data: GetReportsByReportIdData,
+  ): CancelablePromise<GetReportsByReportIdResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/reports/{report_id}',
+      path: {
+        report_id: data.reportId,
+      },
+      query: {
+        screenshotQueryId: data.screenshotQueryId,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Get Report Calculations
+   * Get report calculations.
+   * @param data The data for the request.
+   * @param data.reportId
+   * @param data.requestBody
+   * @returns FinancialReportCalculationApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postReportsByReportId(
+    data: PostReportsByReportIdData,
+  ): CancelablePromise<PostReportsByReportIdResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/reports/{report_id}',
+      path: {
+        report_id: data.reportId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Add Report To Favorites
+   * Add a report to favorites
+   * @param data The data for the request.
+   * @param data.reportId
+   * @returns UserReportFavoriteStatus Successful Response
+   * @throws ApiError
+   */
+  public static postReportsByReportIdFavorite(
+    data: PostReportsByReportIdFavoriteData,
+  ): CancelablePromise<PostReportsByReportIdFavoriteResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/reports/{report_id}/favorite',
+      path: {
+        report_id: data.reportId,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Remove Report From Favorites
+   * Remove a report from favorites
+   * @param data The data for the request.
+   * @param data.reportId
+   * @returns UserReportFavoriteStatus Successful Response
+   * @throws ApiError
+   */
+  public static deleteReportsByReportIdFavorite(
+    data: DeleteReportsByReportIdFavoriteData,
+  ): CancelablePromise<DeleteReportsByReportIdFavoriteResponse> {
+    return __request(OpenAPI, {
+      method: 'DELETE',
+      url: '/reports/{report_id}/favorite',
+      path: {
+        report_id: data.reportId,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Save Screenshot
+   * Save report screenshot
+   * @param data The data for the request.
+   * @param data.reportId
+   * @param data.formData
+   * @returns ReportScreenshotResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postReportsByReportIdScreenshot(
+    data: PostReportsByReportIdScreenshotData,
+  ): CancelablePromise<PostReportsByReportIdScreenshotResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/reports/{report_id}/screenshot',
+      path: {
+        report_id: data.reportId,
+      },
+      formData: data.formData,
+      mediaType: 'multipart/form-data',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
 }
 
 export class DashboardsService {
-    /**
-     * User Dashboards
-     * Get user dashboards.
-     * @returns DashboardListItemApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getDashboards(): CancelablePromise<GetDashboardsResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/dashboards',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Create Dashboard For User
-     * Add dashboard for user.
-     * @param data The data for the request.
-     * @param data.requestBody
-     * @returns CreateDashboardResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static putDashboards(data: PutDashboardsData): CancelablePromise<PutDashboardsResponse> {
-        return __request(OpenAPI, {
-            method: 'PUT',
-            url: '/dashboards',
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Dashboard Details
-     * Get dashboard details.
-     * @param data The data for the request.
-     * @param data.dashboardId
-     * @returns DashboardDetailsApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getDashboardsByDashboardId(data: GetDashboardsByDashboardIdData): CancelablePromise<GetDashboardsByDashboardIdResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/dashboards/{dashboard_id}',
-            path: {
-                dashboard_id: data.dashboardId
-            },
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Rename Dashboard
-     * Rename dashboard.
-     * @param data The data for the request.
-     * @param data.dashboardId
-     * @param data.requestBody
-     * @returns DashboardListItemApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postDashboardsByDashboardId(data: PostDashboardsByDashboardIdData): CancelablePromise<PostDashboardsByDashboardIdResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/dashboards/{dashboard_id}',
-            path: {
-                dashboard_id: data.dashboardId
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Delete Dashboard
-     * Delete dashboard.
-     * @param data The data for the request.
-     * @param data.dashboardId
-     * @returns DashboardListItemApiModel Successful Response
-     * @throws ApiError
-     */
-    public static deleteDashboardsByDashboardId(data: DeleteDashboardsByDashboardIdData): CancelablePromise<DeleteDashboardsByDashboardIdResponse> {
-        return __request(OpenAPI, {
-            method: 'DELETE',
-            url: '/dashboards/{dashboard_id}',
-            path: {
-                dashboard_id: data.dashboardId
-            },
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Add Report To Dashboard
-     * Add report item to dashboard.
-     * @param data The data for the request.
-     * @param data.dashboardId
-     * @param data.requestBody
-     * @returns DashboardItemApiModel Successful Response
-     * @throws ApiError
-     */
-    public static putDashboardsByDashboardId(data: PutDashboardsByDashboardIdData): CancelablePromise<PutDashboardsByDashboardIdResponse> {
-        return __request(OpenAPI, {
-            method: 'PUT',
-            url: '/dashboards/{dashboard_id}',
-            path: {
-                dashboard_id: data.dashboardId
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Update Dashboard Funds
-     * Update dashboard funds list.
-     * @param data The data for the request.
-     * @param data.dashboardId
-     * @param data.requestBody
-     * @returns UpdateDashboardFundsResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postDashboardsByDashboardIdFunds(data: PostDashboardsByDashboardIdFundsData): CancelablePromise<PostDashboardsByDashboardIdFundsResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/dashboards/{dashboard_id}/funds',
-            path: {
-                dashboard_id: data.dashboardId
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Duplicate Dashboard
-     * Duplicate dashboard
-     * @param data The data for the request.
-     * @param data.dashboardId
-     * @param data.requestBody
-     * @returns DashboardDetailsApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postDashboardsByDashboardIdDuplicate(data: PostDashboardsByDashboardIdDuplicateData): CancelablePromise<PostDashboardsByDashboardIdDuplicateResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/dashboards/{dashboard_id}/duplicate',
-            path: {
-                dashboard_id: data.dashboardId
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Get Dashboard Items For Preview
-     * Get dashboard items for preview in dashboard list.
-     * @param data The data for the request.
-     * @param data.dashboardId
-     * @returns DashboardItemPreviewApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getDashboardsByDashboardIdPreview(data: GetDashboardsByDashboardIdPreviewData): CancelablePromise<GetDashboardsByDashboardIdPreviewResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/dashboards/{dashboard_id}/preview',
-            path: {
-                dashboard_id: data.dashboardId
-            },
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Remove Item From Dashboard
-     * Remove items from dashboard.
-     * @param data The data for the request.
-     * @param data.dashboardId
-     * @param data.dashboardItemId
-     * @returns DeleteDashboardItemResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static deleteDashboardsByDashboardIdItemsByDashboardItemId(data: DeleteDashboardsByDashboardIdItemsByDashboardItemIdData): CancelablePromise<DeleteDashboardsByDashboardIdItemsByDashboardItemIdResponse> {
-        return __request(OpenAPI, {
-            method: 'DELETE',
-            url: '/dashboards/{dashboard_id}/items/{dashboard_item_id}',
-            path: {
-                dashboard_id: data.dashboardId,
-                dashboard_item_id: data.dashboardItemId
-            },
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Replace Dashboard Item
-     * Replace item in dashboard.
-     * @param data The data for the request.
-     * @param data.dashboardId
-     * @param data.dashboardItemId
-     * @param data.requestBody
-     * @returns DashboardItemApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postDashboardsByDashboardIdItemsByDashboardItemIdReplace(data: PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceData): CancelablePromise<PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/dashboards/{dashboard_id}/items/{dashboard_item_id}/replace',
-            path: {
-                dashboard_id: data.dashboardId,
-                dashboard_item_id: data.dashboardItemId
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Save Dashboard Item Screenshot
-     * Replace item in dashboard.
-     * @param data The data for the request.
-     * @param data.dashboardId
-     * @param data.dashboardItemId
-     * @param data.formData
-     * @returns DashboardItemScreenshotResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postDashboardsByDashboardIdItemsByDashboardItemIdScreenshot(data: PostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotData): CancelablePromise<PostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/dashboards/{dashboard_id}/items/{dashboard_item_id}/screenshot',
-            path: {
-                dashboard_id: data.dashboardId,
-                dashboard_item_id: data.dashboardItemId
-            },
-            formData: data.formData,
-            mediaType: 'multipart/form-data',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Get Dashboard Item Calculations
-     * Get dashboard item calculations.
-     * @param data The data for the request.
-     * @param data.dashboardId
-     * @param data.dashboardItemId
-     * @param data.requestBody
-     * @returns DashboardItemApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postDashboardsByDashboardIdItemsByDashboardItemIdCalculations(data: PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsData): CancelablePromise<PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/dashboards/{dashboard_id}/items/{dashboard_item_id}/calculations',
-            path: {
-                dashboard_id: data.dashboardId,
-                dashboard_item_id: data.dashboardItemId
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Change Dashboard Item Sort Order
-     * Change dashboard item sort order.
-     * @param data The data for the request.
-     * @param data.dashboardId
-     * @param data.dashboardItemId
-     * @param data.requestBody
-     * @returns unknown Successful Response
-     * @throws ApiError
-     */
-    public static postDashboardsByDashboardIdItemsByDashboardItemIdReorder(data: PostDashboardsByDashboardIdItemsByDashboardItemIdReorderData): CancelablePromise<PostDashboardsByDashboardIdItemsByDashboardItemIdReorderResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/dashboards/{dashboard_id}/items/{dashboard_item_id}/reorder',
-            path: {
-                dashboard_id: data.dashboardId,
-                dashboard_item_id: data.dashboardItemId
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
+  /**
+   * User Dashboards
+   * Get user dashboards.
+   * @returns DashboardListItemApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getDashboards(): CancelablePromise<GetDashboardsResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/dashboards',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Create Dashboard For User
+   * Add dashboard for user.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns CreateDashboardResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static putDashboards(
+    data: PutDashboardsData,
+  ): CancelablePromise<PutDashboardsResponse> {
+    return __request(OpenAPI, {
+      method: 'PUT',
+      url: '/dashboards',
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Dashboard Details
+   * Get dashboard details.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @returns DashboardDetailsApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getDashboardsByDashboardId(
+    data: GetDashboardsByDashboardIdData,
+  ): CancelablePromise<GetDashboardsByDashboardIdResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/dashboards/{dashboard_id}',
+      path: {
+        dashboard_id: data.dashboardId,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Rename Dashboard
+   * Rename dashboard.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @param data.requestBody
+   * @returns DashboardListItemApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postDashboardsByDashboardId(
+    data: PostDashboardsByDashboardIdData,
+  ): CancelablePromise<PostDashboardsByDashboardIdResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/dashboards/{dashboard_id}',
+      path: {
+        dashboard_id: data.dashboardId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Delete Dashboard
+   * Delete dashboard.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @returns DashboardListItemApiModel Successful Response
+   * @throws ApiError
+   */
+  public static deleteDashboardsByDashboardId(
+    data: DeleteDashboardsByDashboardIdData,
+  ): CancelablePromise<DeleteDashboardsByDashboardIdResponse> {
+    return __request(OpenAPI, {
+      method: 'DELETE',
+      url: '/dashboards/{dashboard_id}',
+      path: {
+        dashboard_id: data.dashboardId,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Add Report To Dashboard
+   * Add report item to dashboard.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @param data.requestBody
+   * @returns DashboardItemApiModel Successful Response
+   * @throws ApiError
+   */
+  public static putDashboardsByDashboardId(
+    data: PutDashboardsByDashboardIdData,
+  ): CancelablePromise<PutDashboardsByDashboardIdResponse> {
+    return __request(OpenAPI, {
+      method: 'PUT',
+      url: '/dashboards/{dashboard_id}',
+      path: {
+        dashboard_id: data.dashboardId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Update Dashboard Funds
+   * Update dashboard funds list.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @param data.requestBody
+   * @returns UpdateDashboardFundsResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postDashboardsByDashboardIdFunds(
+    data: PostDashboardsByDashboardIdFundsData,
+  ): CancelablePromise<PostDashboardsByDashboardIdFundsResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/dashboards/{dashboard_id}/funds',
+      path: {
+        dashboard_id: data.dashboardId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Duplicate Dashboard
+   * Duplicate dashboard
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @param data.requestBody
+   * @returns DashboardDetailsApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postDashboardsByDashboardIdDuplicate(
+    data: PostDashboardsByDashboardIdDuplicateData,
+  ): CancelablePromise<PostDashboardsByDashboardIdDuplicateResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/dashboards/{dashboard_id}/duplicate',
+      path: {
+        dashboard_id: data.dashboardId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Get Dashboard Items For Preview
+   * Get dashboard items for preview in dashboard list.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @returns DashboardItemPreviewApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getDashboardsByDashboardIdPreview(
+    data: GetDashboardsByDashboardIdPreviewData,
+  ): CancelablePromise<GetDashboardsByDashboardIdPreviewResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/dashboards/{dashboard_id}/preview',
+      path: {
+        dashboard_id: data.dashboardId,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Remove Item From Dashboard
+   * Remove items from dashboard.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @param data.dashboardItemId
+   * @returns DeleteDashboardItemResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static deleteDashboardsByDashboardIdItemsByDashboardItemId(
+    data: DeleteDashboardsByDashboardIdItemsByDashboardItemIdData,
+  ): CancelablePromise<DeleteDashboardsByDashboardIdItemsByDashboardItemIdResponse> {
+    return __request(OpenAPI, {
+      method: 'DELETE',
+      url: '/dashboards/{dashboard_id}/items/{dashboard_item_id}',
+      path: {
+        dashboard_id: data.dashboardId,
+        dashboard_item_id: data.dashboardItemId,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Replace Dashboard Item
+   * Replace item in dashboard.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @param data.dashboardItemId
+   * @param data.requestBody
+   * @returns DashboardItemApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postDashboardsByDashboardIdItemsByDashboardItemIdReplace(
+    data: PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceData,
+  ): CancelablePromise<PostDashboardsByDashboardIdItemsByDashboardItemIdReplaceResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/dashboards/{dashboard_id}/items/{dashboard_item_id}/replace',
+      path: {
+        dashboard_id: data.dashboardId,
+        dashboard_item_id: data.dashboardItemId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Save Dashboard Item Screenshot
+   * Replace item in dashboard.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @param data.dashboardItemId
+   * @param data.formData
+   * @returns DashboardItemScreenshotResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postDashboardsByDashboardIdItemsByDashboardItemIdScreenshot(
+    data: PostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotData,
+  ): CancelablePromise<PostDashboardsByDashboardIdItemsByDashboardItemIdScreenshotResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/dashboards/{dashboard_id}/items/{dashboard_item_id}/screenshot',
+      path: {
+        dashboard_id: data.dashboardId,
+        dashboard_item_id: data.dashboardItemId,
+      },
+      formData: data.formData,
+      mediaType: 'multipart/form-data',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Get Dashboard Item Calculations
+   * Get dashboard item calculations.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @param data.dashboardItemId
+   * @param data.requestBody
+   * @returns DashboardItemApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postDashboardsByDashboardIdItemsByDashboardItemIdCalculations(
+    data: PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsData,
+  ): CancelablePromise<PostDashboardsByDashboardIdItemsByDashboardItemIdCalculationsResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/dashboards/{dashboard_id}/items/{dashboard_item_id}/calculations',
+      path: {
+        dashboard_id: data.dashboardId,
+        dashboard_item_id: data.dashboardItemId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Change Dashboard Item Sort Order
+   * Change dashboard item sort order.
+   * @param data The data for the request.
+   * @param data.dashboardId
+   * @param data.dashboardItemId
+   * @param data.requestBody
+   * @returns unknown Successful Response
+   * @throws ApiError
+   */
+  public static postDashboardsByDashboardIdItemsByDashboardItemIdReorder(
+    data: PostDashboardsByDashboardIdItemsByDashboardItemIdReorderData,
+  ): CancelablePromise<PostDashboardsByDashboardIdItemsByDashboardItemIdReorderResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/dashboards/{dashboard_id}/items/{dashboard_item_id}/reorder',
+      path: {
+        dashboard_id: data.dashboardId,
+        dashboard_item_id: data.dashboardItemId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
 }
 
 export class FundsService {
-    /**
-     * All Funds
-     * Get list of all funds
-     * @returns FundListItemApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getFunds(): CancelablePromise<GetFundsResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/funds',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Funds List
-     * Get list of funds of one type.
-     * @param data The data for the request.
-     * @param data.fundType
-     * @returns FundListItemApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getFundsTypeByFundType(data: GetFundsTypeByFundTypeData): CancelablePromise<GetFundsTypeByFundTypeResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/funds/type/{fund_type}',
-            path: {
-                fund_type: data.fundType
-            },
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Add Fund To Watchlist
-     * Add fund to watchlist
-     * @param data The data for the request.
-     * @param data.fundId
-     * @returns AddFundToWatchListResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static putFundsByFundIdWatchlist(data: PutFundsByFundIdWatchlistData): CancelablePromise<PutFundsByFundIdWatchlistResponse> {
-        return __request(OpenAPI, {
-            method: 'PUT',
-            url: '/funds/{fund_id}/watchlist',
-            path: {
-                fund_id: data.fundId
-            },
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Remove Fund From Watchlist
-     * Remove fund from watchlist
-     * @param data The data for the request.
-     * @param data.fundId
-     * @returns RemoveFundFromWatchListResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static deleteFundsByFundIdWatchlist(data: DeleteFundsByFundIdWatchlistData): CancelablePromise<DeleteFundsByFundIdWatchlistResponse> {
-        return __request(OpenAPI, {
-            method: 'DELETE',
-            url: '/funds/{fund_id}/watchlist',
-            path: {
-                fund_id: data.fundId
-            },
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Fund Table Tab
-     * Get a fund type or watchlist tab of fund table for user
-     * @param data The data for the request.
-     * @param data.tab
-     * @returns FundTableResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getFundsTable(data: GetFundsTableData = {}): CancelablePromise<GetFundsTableResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/funds/table',
-            query: {
-                tab: data.tab
-            },
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Fund Table Tab Excel
-     * Get excel output of fund table tab
-     * @param data The data for the request.
-     * @param data.tab
-     * @returns unknown Successful Response
-     * @throws ApiError
-     */
-    public static getFundsTableTabByTabCsv(data: GetFundsTableTabByTabCsvData): CancelablePromise<GetFundsTableTabByTabCsvResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/funds/table/tab/{tab}/csv',
-            path: {
-                tab: data.tab
-            },
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Pin Fund In Table Tab
-     * Pin fund in table tab
-     * @param data The data for the request.
-     * @param data.tab
-     * @param data.requestBody
-     * @returns PinFundInTableTabResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postFundsTableTabByTabPin(data: PostFundsTableTabByTabPinData): CancelablePromise<PostFundsTableTabByTabPinResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/funds/table/tab/{tab}/pin',
-            path: {
-                tab: data.tab
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Unpin Fund In Table Tab
-     * Unpin fund in table tab
-     * @param data The data for the request.
-     * @param data.tab
-     * @param data.requestBody
-     * @returns UnpinFundInTableTabResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postFundsTableTabByTabUnpin(data: PostFundsTableTabByTabUnpinData): CancelablePromise<PostFundsTableTabByTabUnpinResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/funds/table/tab/{tab}/unpin',
-            path: {
-                tab: data.tab
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Mark Fund In
-     * Mark fund in table tab
-     * @param data The data for the request.
-     * @param data.fundId
-     * @param data.requestBody
-     * @returns MarkFundResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postFundsByFundIdMark(data: PostFundsByFundIdMarkData): CancelablePromise<PostFundsByFundIdMarkResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/funds/{fund_id}/mark',
-            path: {
-                fund_id: data.fundId
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Unmark Fund In Table Tab
-     * Unmark fund in table tab
-     * @param data The data for the request.
-     * @param data.fundId
-     * @returns UnmarkFundResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postFundsByFundIdUnmark(data: PostFundsByFundIdUnmarkData): CancelablePromise<PostFundsByFundIdUnmarkResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/funds/{fund_id}/unmark',
-            path: {
-                fund_id: data.fundId
-            },
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Sort Fund Tab
-     * Sort rows of a fund tab
-     * @param data The data for the request.
-     * @param data.tab
-     * @param data.requestBody
-     * @returns SortFundTabResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postFundsTableTabByTabSort(data: PostFundsTableTabByTabSortData): CancelablePromise<PostFundsTableTabByTabSortResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/funds/table/tab/{tab}/sort',
-            path: {
-                tab: data.tab
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Update Fund Tab Columns
-     * Update columns of a fund tab
-     * @param data The data for the request.
-     * @param data.tab
-     * @param data.requestBody
-     * @returns UpdateFundTabColumnsResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postFundsTableTabByTabColumns(data: PostFundsTableTabByTabColumnsData): CancelablePromise<PostFundsTableTabByTabColumnsResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/funds/table/tab/{tab}/columns',
-            path: {
-                tab: data.tab
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Reset Fund Tab Columns
-     * Update columns of a fund tab
-     * @param data The data for the request.
-     * @param data.tab
-     * @returns ResetFundTabColumnsResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postFundsTableTabByTabColumnsReset(data: PostFundsTableTabByTabColumnsResetData): CancelablePromise<PostFundsTableTabByTabColumnsResetResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/funds/table/tab/{tab}/columns/reset',
-            path: {
-                tab: data.tab
-            },
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Update Fund Tab Column
-     * Update a single columns of a fund tab
-     * @param data The data for the request.
-     * @param data.tab
-     * @param data.requestBody
-     * @returns UpdateFundTabSingleColumnResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postFundsTableTabByTabColumn(data: PostFundsTableTabByTabColumnData): CancelablePromise<PostFundsTableTabByTabColumnResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/funds/table/tab/{tab}/column',
-            path: {
-                tab: data.tab
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Fund Summary
-     * Fund Summary Page
-     * @param data The data for the request.
-     * @param data.fundId
-     * @returns FundSummaryResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getFundsStockByFundIdSummary(data: GetFundsStockByFundIdSummaryData): CancelablePromise<GetFundsStockByFundIdSummaryResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/funds/stock/{fund_id}/summary',
-            path: {
-                fund_id: data.fundId
-            },
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Fund Summary Case By Case
-     * Fund Summary Case By Case Section
-     * @param data The data for the request.
-     * @param data.fundId
-     * @param data.requestBody
-     * @returns FundSummaryCaseByCaseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postFundsStockByFundIdSummaryCaseByCase(data: PostFundsStockByFundIdSummaryCaseByCaseData): CancelablePromise<PostFundsStockByFundIdSummaryCaseByCaseResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/funds/stock/{fund_id}/summary/case_by_case',
-            path: {
-                fund_id: data.fundId
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Fund Return Analysis
-     * Fund Return Analysis Page
-     * @param data The data for the request.
-     * @param data.fundId
-     * @returns FundReturnAnalysisResponseApiModel Successful Response
-     * @throws ApiError
-     */
-    public static getFundsStockByFundIdReturnAnalysis(data: GetFundsStockByFundIdReturnAnalysisData): CancelablePromise<GetFundsStockByFundIdReturnAnalysisResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/funds/stock/{fund_id}/return_analysis',
-            path: {
-                fund_id: data.fundId
-            },
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Fund Return Analysis Return Trend Section
-     * Fund Return Analysis Return Trend Section
-     * @param data The data for the request.
-     * @param data.fundId
-     * @param data.requestBody
-     * @returns FundReturnAnalysisReturnTrendApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postFundsStockByFundIdReturnAnalysisReturnTrend(data: PostFundsStockByFundIdReturnAnalysisReturnTrendData): CancelablePromise<PostFundsStockByFundIdReturnAnalysisReturnTrendResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/funds/stock/{fund_id}/return_analysis/return_trend',
-            path: {
-                fund_id: data.fundId
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Fund Return Analysis Return Comparison Section
-     * Fund Return Analysis Return Comparison Section
-     * @param data The data for the request.
-     * @param data.fundId
-     * @param data.requestBody
-     * @returns FundReturnAnalysisReturnComparisonApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postFundsStockByFundIdReturnAnalysisReturnComparison(data: PostFundsStockByFundIdReturnAnalysisReturnComparisonData): CancelablePromise<PostFundsStockByFundIdReturnAnalysisReturnComparisonResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/funds/stock/{fund_id}/return_analysis/return_comparison',
-            path: {
-                fund_id: data.fundId
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Fund Return Analysis Return Rank Section
-     * Fund Return Analysis Return Rank Section
-     * @param data The data for the request.
-     * @param data.fundId
-     * @param data.requestBody
-     * @returns FundReturnAnalysisReturnRankApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postFundsStockByFundIdReturnAnalysisReturnRank(data: PostFundsStockByFundIdReturnAnalysisReturnRankData): CancelablePromise<PostFundsStockByFundIdReturnAnalysisReturnRankResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/funds/stock/{fund_id}/return_analysis/return_rank',
-            path: {
-                fund_id: data.fundId
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Fund Return Analysis Risk Return Analysis Section
-     * Fund Return Analysis Risk Return Analysis Section
-     * @param data The data for the request.
-     * @param data.fundId
-     * @param data.requestBody
-     * @returns FundReturnAnalysisRiskReturnAnalysisApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postFundsStockByFundIdReturnAnalysisRiskReturnAnalysis(data: PostFundsStockByFundIdReturnAnalysisRiskReturnAnalysisData): CancelablePromise<PostFundsStockByFundIdReturnAnalysisRiskReturnAnalysisResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/funds/stock/{fund_id}/return_analysis/risk_return_analysis',
-            path: {
-                fund_id: data.fundId
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
-    /**
-     * Fund Return Analysis Seasonality Effect Section
-     * Fund Return Analysis Seasonality Effect Analysis Section
-     * @param data The data for the request.
-     * @param data.fundId
-     * @param data.requestBody
-     * @returns FundReturnAnalysisSeasonalityEffectAnalysisApiModel Successful Response
-     * @throws ApiError
-     */
-    public static postFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysis(data: PostFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysisData): CancelablePromise<PostFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysisResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/funds/stock/{fund_id}/return_analysis/seasonality_effect_analysis',
-            path: {
-                fund_id: data.fundId
-            },
-            body: data.requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: 'Bad Request',
-                401: 'Unauthorized',
-                403: 'Forbidden',
-                404: 'Not Found',
-                422: 'Unprocessable Entity'
-            }
-        });
-    }
-    
+  /**
+   * All Funds
+   * Get list of all funds
+   * @returns FundListItemApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getFunds(): CancelablePromise<GetFundsResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/funds',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Funds List
+   * Get list of funds of one type.
+   * @param data The data for the request.
+   * @param data.fundType
+   * @returns FundListItemApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getFundsTypeByFundType(
+    data: GetFundsTypeByFundTypeData,
+  ): CancelablePromise<GetFundsTypeByFundTypeResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/funds/type/{fund_type}',
+      path: {
+        fund_type: data.fundType,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Add Fund To Watchlist
+   * Add fund to watchlist
+   * @param data The data for the request.
+   * @param data.fundId
+   * @returns AddFundToWatchListResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static putFundsByFundIdWatchlist(
+    data: PutFundsByFundIdWatchlistData,
+  ): CancelablePromise<PutFundsByFundIdWatchlistResponse> {
+    return __request(OpenAPI, {
+      method: 'PUT',
+      url: '/funds/{fund_id}/watchlist',
+      path: {
+        fund_id: data.fundId,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Remove Fund From Watchlist
+   * Remove fund from watchlist
+   * @param data The data for the request.
+   * @param data.fundId
+   * @returns RemoveFundFromWatchListResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static deleteFundsByFundIdWatchlist(
+    data: DeleteFundsByFundIdWatchlistData,
+  ): CancelablePromise<DeleteFundsByFundIdWatchlistResponse> {
+    return __request(OpenAPI, {
+      method: 'DELETE',
+      url: '/funds/{fund_id}/watchlist',
+      path: {
+        fund_id: data.fundId,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Fund Table Tab
+   * Get a fund type or watchlist tab of fund table for user
+   * @param data The data for the request.
+   * @param data.tab
+   * @returns FundTableResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getFundsTable(
+    data: GetFundsTableData = {},
+  ): CancelablePromise<GetFundsTableResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/funds/table',
+      query: {
+        tab: data.tab,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Fund Table Tab Excel
+   * Get excel output of fund table tab
+   * @param data The data for the request.
+   * @param data.tab
+   * @returns unknown Successful Response
+   * @throws ApiError
+   */
+  public static getFundsTableTabByTabCsv(
+    data: GetFundsTableTabByTabCsvData,
+  ): CancelablePromise<GetFundsTableTabByTabCsvResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/funds/table/tab/{tab}/csv',
+      path: {
+        tab: data.tab,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Pin Fund In Table Tab
+   * Pin fund in table tab
+   * @param data The data for the request.
+   * @param data.tab
+   * @param data.requestBody
+   * @returns PinFundInTableTabResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsTableTabByTabPin(
+    data: PostFundsTableTabByTabPinData,
+  ): CancelablePromise<PostFundsTableTabByTabPinResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/table/tab/{tab}/pin',
+      path: {
+        tab: data.tab,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Unpin Fund In Table Tab
+   * Unpin fund in table tab
+   * @param data The data for the request.
+   * @param data.tab
+   * @param data.requestBody
+   * @returns UnpinFundInTableTabResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsTableTabByTabUnpin(
+    data: PostFundsTableTabByTabUnpinData,
+  ): CancelablePromise<PostFundsTableTabByTabUnpinResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/table/tab/{tab}/unpin',
+      path: {
+        tab: data.tab,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Mark Fund In
+   * Mark fund in table tab
+   * @param data The data for the request.
+   * @param data.fundId
+   * @param data.requestBody
+   * @returns MarkFundResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsByFundIdMark(
+    data: PostFundsByFundIdMarkData,
+  ): CancelablePromise<PostFundsByFundIdMarkResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/{fund_id}/mark',
+      path: {
+        fund_id: data.fundId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Unmark Fund In Table Tab
+   * Unmark fund in table tab
+   * @param data The data for the request.
+   * @param data.fundId
+   * @returns UnmarkFundResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsByFundIdUnmark(
+    data: PostFundsByFundIdUnmarkData,
+  ): CancelablePromise<PostFundsByFundIdUnmarkResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/{fund_id}/unmark',
+      path: {
+        fund_id: data.fundId,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Sort Fund Tab
+   * Sort rows of a fund tab
+   * @param data The data for the request.
+   * @param data.tab
+   * @param data.requestBody
+   * @returns SortFundTabResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsTableTabByTabSort(
+    data: PostFundsTableTabByTabSortData,
+  ): CancelablePromise<PostFundsTableTabByTabSortResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/table/tab/{tab}/sort',
+      path: {
+        tab: data.tab,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Update Fund Tab Columns
+   * Update columns of a fund tab
+   * @param data The data for the request.
+   * @param data.tab
+   * @param data.requestBody
+   * @returns UpdateFundTabColumnsResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsTableTabByTabColumns(
+    data: PostFundsTableTabByTabColumnsData,
+  ): CancelablePromise<PostFundsTableTabByTabColumnsResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/table/tab/{tab}/columns',
+      path: {
+        tab: data.tab,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Reset Fund Tab Columns
+   * Update columns of a fund tab
+   * @param data The data for the request.
+   * @param data.tab
+   * @returns ResetFundTabColumnsResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsTableTabByTabColumnsReset(
+    data: PostFundsTableTabByTabColumnsResetData,
+  ): CancelablePromise<PostFundsTableTabByTabColumnsResetResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/table/tab/{tab}/columns/reset',
+      path: {
+        tab: data.tab,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Update Fund Tab Column
+   * Update a single columns of a fund tab
+   * @param data The data for the request.
+   * @param data.tab
+   * @param data.requestBody
+   * @returns UpdateFundTabSingleColumnResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsTableTabByTabColumn(
+    data: PostFundsTableTabByTabColumnData,
+  ): CancelablePromise<PostFundsTableTabByTabColumnResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/table/tab/{tab}/column',
+      path: {
+        tab: data.tab,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Fund Summary
+   * Fund Summary Page
+   * @param data The data for the request.
+   * @param data.fundId
+   * @returns FundSummaryResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getFundsStockByFundIdSummary(
+    data: GetFundsStockByFundIdSummaryData,
+  ): CancelablePromise<GetFundsStockByFundIdSummaryResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/funds/stock/{fund_id}/summary',
+      path: {
+        fund_id: data.fundId,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Fund Summary Case By Case
+   * Fund Summary Case By Case Section
+   * @param data The data for the request.
+   * @param data.fundId
+   * @param data.requestBody
+   * @returns FundSummaryCaseByCaseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsStockByFundIdSummaryCaseByCase(
+    data: PostFundsStockByFundIdSummaryCaseByCaseData,
+  ): CancelablePromise<PostFundsStockByFundIdSummaryCaseByCaseResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/stock/{fund_id}/summary/case_by_case',
+      path: {
+        fund_id: data.fundId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Fund Return Analysis
+   * Fund Return Analysis Page
+   * @param data The data for the request.
+   * @param data.fundId
+   * @returns FundReturnAnalysisResponseApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getFundsStockByFundIdReturnAnalysis(
+    data: GetFundsStockByFundIdReturnAnalysisData,
+  ): CancelablePromise<GetFundsStockByFundIdReturnAnalysisResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/funds/stock/{fund_id}/return_analysis',
+      path: {
+        fund_id: data.fundId,
+      },
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Fund Return Analysis Return Trend Section
+   * Fund Return Analysis Return Trend Section
+   * @param data The data for the request.
+   * @param data.fundId
+   * @param data.requestBody
+   * @returns FundReturnAnalysisReturnTrendApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsStockByFundIdReturnAnalysisReturnTrend(
+    data: PostFundsStockByFundIdReturnAnalysisReturnTrendData,
+  ): CancelablePromise<PostFundsStockByFundIdReturnAnalysisReturnTrendResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/stock/{fund_id}/return_analysis/return_trend',
+      path: {
+        fund_id: data.fundId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Fund Return Analysis Return Comparison Section
+   * Fund Return Analysis Return Comparison Section
+   * @param data The data for the request.
+   * @param data.fundId
+   * @param data.requestBody
+   * @returns FundReturnAnalysisReturnComparisonApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsStockByFundIdReturnAnalysisReturnComparison(
+    data: PostFundsStockByFundIdReturnAnalysisReturnComparisonData,
+  ): CancelablePromise<PostFundsStockByFundIdReturnAnalysisReturnComparisonResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/stock/{fund_id}/return_analysis/return_comparison',
+      path: {
+        fund_id: data.fundId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Fund Return Analysis Return Rank Section
+   * Fund Return Analysis Return Rank Section
+   * @param data The data for the request.
+   * @param data.fundId
+   * @param data.requestBody
+   * @returns FundReturnAnalysisReturnRankApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsStockByFundIdReturnAnalysisReturnRank(
+    data: PostFundsStockByFundIdReturnAnalysisReturnRankData,
+  ): CancelablePromise<PostFundsStockByFundIdReturnAnalysisReturnRankResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/stock/{fund_id}/return_analysis/return_rank',
+      path: {
+        fund_id: data.fundId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Fund Return Analysis Risk Return Analysis Section
+   * Fund Return Analysis Risk Return Analysis Section
+   * @param data The data for the request.
+   * @param data.fundId
+   * @param data.requestBody
+   * @returns FundReturnAnalysisRiskReturnAnalysisApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsStockByFundIdReturnAnalysisRiskReturnAnalysis(
+    data: PostFundsStockByFundIdReturnAnalysisRiskReturnAnalysisData,
+  ): CancelablePromise<PostFundsStockByFundIdReturnAnalysisRiskReturnAnalysisResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/stock/{fund_id}/return_analysis/risk_return_analysis',
+      path: {
+        fund_id: data.fundId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Fund Return Analysis Seasonality Effect Section
+   * Fund Return Analysis Seasonality Effect Analysis Section
+   * @param data The data for the request.
+   * @param data.fundId
+   * @param data.requestBody
+   * @returns FundReturnAnalysisSeasonalityEffectAnalysisApiModel Successful Response
+   * @throws ApiError
+   */
+  public static postFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysis(
+    data: PostFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysisData,
+  ): CancelablePromise<PostFundsStockByFundIdReturnAnalysisSeasonalityEffectAnalysisResponse> {
+    return __request(OpenAPI, {
+      method: 'POST',
+      url: '/funds/stock/{fund_id}/return_analysis/seasonality_effect_analysis',
+      path: {
+        fund_id: data.fundId,
+      },
+      body: data.requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
 }

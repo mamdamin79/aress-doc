@@ -157,7 +157,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
           value={inputValue}
           disabled={disabled}
           className={cn(
-            'text-md h-12 w-full resize-none rounded-xl border bg-transparent p-2 font-normal outline-none transition-colors duration-150',
+            'text-md h-12 w-full resize-none rounded-xl border bg-transparent p-2 px-4 font-normal outline-none transition-colors duration-150',
             {
               'placeholder:text-text-neutral-disable border-inherit bg-transparent opacity-100':
                 disabled,
@@ -200,7 +200,7 @@ export const TextField: React.FC<textFieldPropsType> = ({
             }
           }}
           className={cn(
-            'text-md w-full rounded-xl border bg-transparent p-2 font-normal outline-none transition-colors duration-150',
+            'text-md w-full rounded-xl border bg-transparent p-2 px-4 font-normal outline-none transition-colors duration-150',
             heightClass,
             {
               'placeholder:text-text-neutral-disable border-inherit bg-transparent opacity-100':

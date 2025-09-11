@@ -16,9 +16,12 @@ export type FundsSidebarData = {
 };
 export interface FundsSidebarProps {
   data: FundsSidebarData[];
-  onCategoryChange?: (category: string) => void;
-  onSortOptionChange?: (selectedSort: string) => void;
-  onTimeframeChange?: (selectedTimeframe: string) => void;
+  onCategoryChange?: (categoryID: number) => void;
+  onSortOptionChange?: (selectedSortID: number) => void;
+  onTimeframeChange?: (selectedTimeframeID: number) => void;
+  selectedFundTypeId?: number;
+  selectedFundSortParameterId?: number;
+  selectedFundSortPeriodId?: number;
 }
 
 export const FundsSidebar: React.FC<FundsSidebarProps> = ({
@@ -26,6 +29,9 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
   onCategoryChange,
   onSortOptionChange,
   onTimeframeChange,
+  selectedFundSortParameterId = 0,
+  selectedFundSortPeriodId = 0,
+  selectedFundTypeId = 0,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState<number>(0);
@@ -66,13 +72,14 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
       >
         <div className="flex w-full justify-center px-4">
           <OptionsDropdown
-            onChange={onCategoryChange}
+            initialSelectedIndex={selectedFundTypeId}
+            onChange={(_, selectedID) => onCategoryChange?.(selectedID ?? 0)}
             triggerClassName="text-md font-medium"
             dropDownList={[
-              { text: 'سهامی', tag: { color: 'green' } },
-              { text: 'کالایی', tag: { color: 'yellow' } },
-              { text: 'مختلط', tag: { color: 'purple' } },
-              { text: 'درآمد ثابت', tag: { color: 'blue' } },
+              { text: 'سهامی', tag: { color: 'green' }, id: 1 },
+              { text: 'مختلط', tag: { color: 'purple' }, id: 2 },
+              { text: 'درآمد ثابت', tag: { color: 'blue' }, id: 3 },
+              { text: 'کالایی', tag: { color: 'yellow' }, id: 4 },
             ]}
             dropDownStyles={{
               anchor: 'bottom',
@@ -85,15 +92,21 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
         </div>
         <div className="flex w-full flex-row items-center justify-between px-4 pb-3 pt-2">
           <OptionsDropdown
-            onChange={onSortOptionChange}
+            initialSelectedIndex={selectedFundSortParameterId}
+            onChange={(_, selectedID) => onSortOptionChange?.(selectedID ?? 0)}
             dropDownList={[
               {
                 text: 'بیشترین بازدهی',
                 icon: { name: 'chart-no-axes-column' },
+                id: 1,
               },
-              { text: 'بالاترین عملکرد', icon: { name: 'biceps-flexed' } },
-              { text: 'بیشترین سود', icon: { name: 'hand-coins' } },
-              { text: 'اهرمی‌ترین', icon: { name: 'weight' } },
+              {
+                text: 'بالاترین عملکرد',
+                icon: { name: 'biceps-flexed' },
+                id: 2,
+              },
+              { text: 'بیشترین سود', icon: { name: 'hand-coins' }, id: 3 },
+              { text: 'اهرمی‌ترین', icon: { name: 'weight' }, id: 4 },
             ]}
             dropDownStyles={{
               anchor: 'bottom start',
@@ -110,13 +123,14 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
           />
           <div className="w-fit">
             <OptionsDropdown
+              initialSelectedIndex={selectedFundSortPeriodId}
               triggerClassName="text-sm font-medium"
-              onChange={onTimeframeChange}
+              onChange={(_, selectedID) => onTimeframeChange?.(selectedID ?? 0)}
               dropDownList={[
-                { text: 'روزانه' },
-                { text: 'هفتگی' },
-                { text: 'ماهانه' },
-                { text: 'سه ماهه' },
+                { text: 'هفتگی', id: 1 },
+                { text: 'ماهانه', id: 2 },
+                { text: 'سه ماهه', id: 3 },
+                { text: 'شش ماهه', id: 4 },
               ]}
               dropDownStyles={{
                 anchor: 'bottom start',

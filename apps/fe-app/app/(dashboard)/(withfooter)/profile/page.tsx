@@ -73,7 +73,7 @@ const ProfilePage = () => {
                   },
                   {
                     key: 'logout',
-                    text: 'خروج',
+                    text: 'خروج از حساب کاربری',
                     icon: { name: 'power' },
                     onClick: () => setIsLogoutModalOpen(true),
                   },

@@ -1,19 +1,31 @@
-version: '3.8'
-# docker compose up -d --build design-system-storybook
-
 services:
-  design-system-storybook:
+  api:
     build:
-      context: .
+      context: ./apps/renderer
       dockerfile: Dockerfile
+    container_name: api
     ports:
-      - "6009:6009"
-    command: ["npx", "http-server", "./libs/design-system/storybook-static", "-p", "6009"]
+      - '4000:4000'
+    networks:
+      - app-network
+    environment:
+      NODE_ENV: production
 
   fe-app:
     build:
       context: .
       dockerfile: Dockerfile.fe-app
     ports:
-      - "3000:3000"
-    command: ["pnpm", "run", "start", "-p", "3000"]
+      - '3000:3000'
+    environment:
+      NEXT_PUBLIC_RENDERER_APP_URL: 'http://api:4000'
+      NODE_ENV: production
+    depends_on:
+      - api
+    networks:
+      - app-network
+    command: ['pnpm', 'run', 'start', '-p', '3000']
+
+networks:
+  app-network:
+    driver: bridge

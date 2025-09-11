@@ -1,8 +1,8 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Highcharts from 'highcharts';
-import 'highcharts/highcharts-more';
 import HighchartsReact from 'highcharts-react-official';
+import 'highcharts/highcharts-more';
 import {
   ReportCardBase,
   GeneralTable,
@@ -12,7 +12,7 @@ import {
   cn,
   OptionItem,
 } from 'design-system';
-import { baseOptions, xAxisLabels, yAxisLabels } from '../Report.config.shared';
+import { baseOptions, xAxisLabels } from '../Report.config.shared';
 import { Report13Dot1CalculationResult } from '@openapi';
 import { toBasicSetting } from '../Report.utils';
 import { financialDefinitionsReport13_1 } from './Report_13_1.constants';
@@ -29,7 +29,6 @@ const categories = [
 export const Report_13_1: React.FC<
   ReportProps<Report13Dot1CalculationResult>
 > = ({ data, filters, onSubmit, title, onRemove, onShare, onReplace }) => {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [switchIndex, setSwitchIndex] = useState<number>(1); // 1 is initialIndex
 
   const [, setDataState] = useState(data);
@@ -41,11 +40,11 @@ export const Report_13_1: React.FC<
   }, [data, filters]);
 
   const chartData = [
-    data.lastDay.totalTrades.toFixed(2),
-    data.lastDay.totalBuyIndividual.toFixed(2),
-    data.lastDay.totalSellIndividual.toFixed(2),
-    data.lastDay.totalBuyCorporate.toFixed(2),
-    data.lastDay.totalSellCorporate.toFixed(2),
+    data.lastDay.totalTrades,
+    data.lastDay.totalBuyIndividual,
+    data.lastDay.totalSellIndividual,
+    data.lastDay.totalBuyCorporate,
+    data.lastDay.totalSellCorporate,
   ];
 
   // Build categoriesWithValues using dynamic chartData
@@ -203,7 +202,7 @@ export const Report_13_1: React.FC<
     chart: {
       ...baseOptions.chart,
       polar: true,
-      type: 'line',
+      type: 'area',
       marginTop: 30,
     },
     tooltip: {
@@ -218,7 +217,7 @@ export const Report_13_1: React.FC<
       labels: {
         useHTML: true,
         formatter: function () {
-          const isActive = this.pos === activeIndex;
+          const isActive = false;
           let labelHtml = categoriesWithValues[this.pos];
           if (isActive) {
             // add active-label class to container div
@@ -239,9 +238,11 @@ export const Report_13_1: React.FC<
       lineWidth: 0,
     },
     yAxis: {
-      ...yAxisLabels,
       gridLineInterpolation: 'polygon',
       lineWidth: 0,
+      labels: {
+        enabled: false,
+      },
     },
     series: [
       {
@@ -250,19 +251,6 @@ export const Report_13_1: React.FC<
         pointPlacement: 'on',
         type: 'line',
         color: '#1976d2',
-        events: {
-          mouseOut: () => setActiveIndex(null),
-        },
-        point: {
-          events: {
-            mouseOver: function () {
-              setActiveIndex(this.index);
-            },
-            mouseOut: function () {
-              setActiveIndex(null);
-            },
-          },
-        },
       },
     ],
     legend: {
