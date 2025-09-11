@@ -64,6 +64,7 @@ import {
   FundsTableItemApiModel,
   FundTableItemInfoApiModel,
   FundTableTabColumnDto,
+  FundTableTabColumnFilterOptionsDto,
   useFundsServiceGetFundsTable,
   useFundsServicePostFundsTableTabByTabColumn,
   useFundsServicePostFundsTableTabByTabColumns,
@@ -498,28 +499,30 @@ const Funds = () => {
 
     return () => observer.disconnect();
   }, [table?.getState().pagination.pageSize]);
-  
-  console.log(query.data?.defaultColumns
+
+  console.log(
+    query.data?.defaultColumns
       .filter((col) => col.visible)
-      .map((col) => col.key), columnOrder);
-  
+      .map((col) => col.key),
+    columnOrder,
+  );
 
-const isChanged = useMemo(() => {
-  if (!table) return false;
+  const isChanged = useMemo(() => {
+    if (!table) return false;
 
-  const defaultVisibleKeys =
-    query.data?.defaultColumns.filter((col) => col.visible).map((col) => col.key) ?? [];
+    const defaultVisibleKeys =
+      query.data?.defaultColumns
+        .filter((col) => col.visible)
+        .map((col) => col.key) ?? [];
 
-  if (defaultVisibleKeys.length !== columnOrder.length) {
-    return false;
-  }
+    if (defaultVisibleKeys.length !== columnOrder.length) {
+      return false;
+    }
 
-  return !defaultVisibleKeys.every((key, i) => key === columnOrder[i]);
-}, [columnOrder]);
+    return !defaultVisibleKeys.every((key, i) => key === columnOrder[i]);
+  }, [columnOrder]);
 
-console.log(isChanged);
-
-
+  console.log(isChanged);
 
   useEffect(() => {
     const node = headerRefs?.current[activeSortIndex];
@@ -797,19 +800,23 @@ console.log(isChanged);
       (col) =>
         col.visible &&
         col.columnFilter &&
+        'options' in col.columnFilter &&
         Array.isArray(col.columnFilter.options) &&
         col.columnFilter.options.length > 0,
     )
-    .map((col) => ({
-      title: col.upperTitle,
-      singleOpen: false,
-      options: col.columnFilter.options.map((opt, index) => ({
-        label: opt.label,
-        select: index === 0,
-        min_amount: opt.min_amount ?? null,
-        max_amount: opt.max_amount ?? null,
-      })),
-    }));
+    .map((col) => {
+      const filter = col.columnFilter as FundTableTabColumnFilterOptionsDto;
+      return {
+        title: col.upperTitle,
+        singleOpen: false,
+        options: filter.options.map((opt, index) => ({
+          label: opt.label,
+          select: index === 0,
+          min_amount: 'min_amount' in opt ? (opt.min_amount ?? null) : null,
+          max_amount: 'max_amount' in opt ? (opt.max_amount ?? null) : null,
+        })),
+      };
+    });
 
   const resetColumns = useFundsServicePostFundsTableTabByTabColumnsReset();
 
@@ -1144,8 +1151,9 @@ console.log(isChanged);
                                             (
                                               header.column.columnDef
                                                 .meta as FundColumnMeta
-                                            )?.columnFilter?.options.length ??
-                                            false
+                                            )?.columnFilter?.options.length
+                                              ? true
+                                              : false
                                           }
                                           subTitle={
                                             (
@@ -1468,8 +1476,12 @@ console.log(isChanged);
                             reactContent={
                               <div className="flex items-center gap-4">
                                 <p className="text-text-neutral-primary text-sm">
-                                  بازه دلخواه: {column.customPeriodStartJdate ?? customColumnDate.start} -  
-                                  {column.customPeriodStartJdate ?? customColumnDate.end}
+                                  بازه دلخواه:{' '}
+                                  {column.customPeriodStartJdate ??
+                                    customColumnDate.start}{' '}
+                                  -
+                                  {column.customPeriodStartJdate ??
+                                    customColumnDate.end}
                                 </p>
                                 <button
                                   onClick={() => setIsShowDatePicker(true)}
@@ -1548,34 +1560,36 @@ console.log(isChanged);
               end: customColumnDate.end,
               start: customColumnDate.start,
             }}
-            onChange={async(e) => {
+            onChange={async (e) => {
               console.log(String(e.start)?.replace('/', '-').replace('/', '-'));
-              
-              try{
+
+              try {
                 await updateColumn.mutateAsync({
                   requestBody: {
                     column: {
                       key: customColumnDate.groupId,
                       sortDirection: 'NO',
                       visible: true,
-                      customPeriodEndJdate: e.end?.replace('/', '-').replace('/', '-'),
-                      customPeriodStartJdate: e.start?.replace('/', '-').replace('/', '-'),
-                       selectedColumnFilters: null,
+                      customPeriodEndJdate: e.end
+                        ?.replace('/', '-')
+                        .replace('/', '-'),
+                      customPeriodStartJdate: e.start
+                        ?.replace('/', '-')
+                        .replace('/', '-'),
+                      selectedColumnFilters: null,
                     },
                   },
                   tab: activeIndexCategoryTab,
-                })
-              }
-              catch (error) {
+                });
+              } catch (error) {
                 console.log(error);
               }
               setCustomColumnDate((prev) => ({
                 start: e.start ?? '',
                 end: e.end ?? '',
                 groupId: prev.groupId,
-              }))
-            }
-            }
+              }));
+            }}
             mode="range"
             min="1380/01/01"
             max="1404/06/03"

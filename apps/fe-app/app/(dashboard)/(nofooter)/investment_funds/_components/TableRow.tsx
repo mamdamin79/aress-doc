@@ -371,7 +371,7 @@ function TableRowInner<T extends FundRow>({
       console.log(error);
     }
   };
-  
+
   return (
     <tr
       onMouseEnter={() => setShowMark(true)}
@@ -439,7 +439,7 @@ function TableRowInner<T extends FundRow>({
             {index !== 0
               ? item.getValue() !== null
                 ? typeof item.getValue() === 'number'
-                  ? formatNumber(item.getValue(), {
+                  ? formatNumber(item.getValue() as number, {
                       commaSeparated: true,
                       decimals: 2,
                     })
