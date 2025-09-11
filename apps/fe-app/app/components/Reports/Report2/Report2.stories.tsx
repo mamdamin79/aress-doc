@@ -42,6 +42,7 @@ export const Default: Story = {
         parentTitle: null,
         title: 'جریان پول',
         searchable: false,
+
         options: [
           {
             identifier: '1',
@@ -52,16 +53,19 @@ export const Default: Story = {
             title: 'خروج',
           },
         ],
+
         selectedOption: {
-          identifier: '1',
-          title: 'ورود',
+          identifier: '2',
+          title: 'خروج',
         },
+
         optionType: 'InflowOutflowFilterOption',
       },
       {
         parentTitle: null,
         title: 'نوع سرمایه‌گذار',
         searchable: false,
+
         options: [
           {
             identifier: '1',
@@ -72,16 +76,19 @@ export const Default: Story = {
             title: 'حقوقی',
           },
         ],
+
         selectedOption: {
           identifier: '1',
           title: 'حقیقی',
         },
+
         optionType: 'ClientTypeFilterOption',
       },
       {
         parentTitle: null,
         title: 'بازه زمانی',
         searchable: false,
+
         options: [
           {
             identifier: '1',
@@ -104,10 +111,12 @@ export const Default: Story = {
             title: 'یک سال اخیر',
           },
         ],
+
         selectedOption: {
           identifier: '1',
           title: 'یک ماه اخیر',
         },
+
         optionType: 'JDateRangeFilterOption',
       },
     ],

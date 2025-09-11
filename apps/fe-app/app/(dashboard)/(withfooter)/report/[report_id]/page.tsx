@@ -11,6 +11,7 @@ import { Metadata } from 'next';
 import { ReactComponent as RightWaveSVG } from '@aress-assets/images/rightwaves.svg';
 import { ReactComponent as LeftWaveSVG } from '@aress-assets/images/leftwaves.svg';
 import { StaticImageData } from 'next/image';
+import { VideoPlayerWrapper } from './_components/VideoPlayerWrapper';
 
 interface ReportPageParams {
   params: Promise<{ report_id: string }>;
@@ -109,7 +110,6 @@ export default async function ReportPage({
   const screenshotQueryId = (await searchParams)?.queryId as string | undefined;
   const REPORT = await getData(id, screenshotQueryId);
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
-  console.log('Search Params:', searchParams);
 
   return (
     <>
@@ -154,7 +154,7 @@ export default async function ReportPage({
         <section className="flex w-full flex-col items-center px-20" id="0">
           <SectionTitle align="center" level={3} title="ویدیو بررسی" />
           <div className="mt-10">
-            {/*   <VideoPlayerWrapper data={REPORT.video} /> */}
+            <VideoPlayerWrapper data={REPORT.video} />
           </div>
         </section>
 

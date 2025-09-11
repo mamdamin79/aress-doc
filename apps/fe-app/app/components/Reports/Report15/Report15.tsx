@@ -163,20 +163,11 @@ export const Report15: FC<ReportProps<Report15CalculationResult>> = ({
       formatter: function (this: any) {
         return `
         <div dir="rtl" style="font-family: vazirmatn, sans-serif; margin-bottom: 0.25rem; border-radius: 10px; background-color: var(--color-surface-neutral-inverse); padding: 0.5rem 1rem; text-align: right; font-size: 0.875rem; font-weight: 500; line-height: 1.5rem; color: var(--color-text-neutral-oninverse); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); backdrop-filter: blur(6px); z-index: 1000;">
-            <div style="font-weight: 500;">${this.tradeDateShamsi}</div>
+            <div style="font-weight: 500;">معادله رگرسیون</div>
               <div style="margin-top: 0.25rem; display: flex; align-items: center; gap: 0.25rem;">
                 <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; width: 100%;">
-                  <span style="font-size: 0.875rem; font-weight: 400;">بازدهی شاخص قیمت (وزنی-ارزشی)</span>
                   <span style="unicode-bidi: plaintext;">
-                    ${this.x < 0 ? '-' + Math.abs(this.x.toFixed(4)) : this.x.toFixed(4)}%${this.point?.unit ? ' ' + this.point.unit : ''}
-                  </span>
-                </div>
-              </div>
-          <div style="margin-top: 0.25rem; display: flex; align-items: center; gap: 0.25rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; width: 100%;">
-                  <span style="font-size: 0.875rem; font-weight: 400;">بازده شاخص پالایشی</span>
-                  <span style="unicode-bidi: plaintext;">
-                    ${this.y < 0 ? '-' + Math.abs(this.y.toFixed(4)) : this.y.toFixed(4)}%${this.point?.unit ? ' ' + this.point.unit : ''}
+                    ${` Y = ${data.beta.toFixed(4)}X + ${data.yIntersect.toFixed(4)}`}
                   </span>
                 </div>
               </div>
@@ -209,6 +200,7 @@ export const Report15: FC<ReportProps<Report15CalculationResult>> = ({
       {
         name: 'داده‌های واقعی',
         type: 'scatter',
+        enableMouseTracking: false, // disables hover and tooltip for the dots
         data: scaledGraphData.map((graphItem) => ({
           x: graphItem.x,
           y: graphItem.y,
@@ -219,6 +211,14 @@ export const Report15: FC<ReportProps<Report15CalculationResult>> = ({
           radius: 5,
           fillColor: 'var(--color-border-accent-purple-600)',
         },
+        states: {
+          inactive: {
+            opacity: 1, // prevents other series from dimming
+          },
+          hover: {
+            brightness: 0, // prevents darkening or lightening on hover
+          },
+        },
       },
       {
         name: 'Y = βX+C',
@@ -226,9 +226,15 @@ export const Report15: FC<ReportProps<Report15CalculationResult>> = ({
         data: chartData.regressionLine.map(([x, y]) => ({ x, y })),
         color: 'var(--color-border-accent-red-600)',
         lineWidth: 2,
-        marker: { enabled: false },
-        enableMouseTracking: false,
-        zIndex: 10,
+        enableMouseTracking: true, // allow tooltip on hover
+        marker: {
+          enabled: false,
+        },
+        zIndex: 50,
+        states: {
+          inactive: { opacity: 1 },
+          hover: { brightness: 0, enabled: false, lineWidthPlus: 0 },
+        },
       },
     ],
   };
@@ -250,20 +256,20 @@ export const Report15: FC<ReportProps<Report15CalculationResult>> = ({
       <div className="flex flex-col gap-1">
         <div className="text-text-neutral-primary flex items-center justify-start gap-6 px-3 pt-1 text-xs font-medium">
           <div className="flex items-center gap-2">
-            <span className="text-surface-accent-purple-600">◆</span>
+            <span className="text-text-accent-purple-primary-600">◆</span>
             <span>داده‌های واقعی</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-surface-accent-blue-600">X</span>
+            <span className="text-text-accent-blue-primary-600">X</span>
             <span>بازدهی شاخص قیمت (وزنی-ارزشی)</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-surface-accent-blue-600">Y</span>
+            <span className="text-text-accent-blue-primary-600">Y</span>
             <span>بازدهی شاخص {filters[1].selectedOption.title}</span>
           </div>
           <div className="flex items-center gap-2">
             <span>Y = βX+C</span>
-            <span className="text-surface-accent-red-600">―</span>
+            <span className="text-text-accent-red-primary-600">―</span>
           </div>
         </div>
 
