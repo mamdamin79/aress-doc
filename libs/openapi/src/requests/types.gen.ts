@@ -249,6 +249,8 @@ export type DashboardItemScreenshotResponseApiModel = {
 export type DashboardListItemApiModel = {
   identifier: number;
   name: string;
+  itemsCount: number;
+  itemsLimit: number;
 };
 
 export type DashboardReportPreviewApiModel = {
@@ -361,15 +363,15 @@ export type FundBaseInfoApiModel = {
   isWatched: boolean;
 };
 
-export type FundCalculationBaseCurrency = 1 | 2;
-
 export type FundCalculationPeriod = 1 | 2 | 3 | 4 | 5 | 6;
 
-export type FundCalculationRiskCriteria = 1 | 2;
-
-export type FundCalculationSeasonalityEffectTableCriteria = 1 | 2;
-
-export type FundCalculationTimeSeparation = 1 | 2 | 3;
+export type FundComparisonOptions = {
+  /**
+   * صندوق‌های مقایسه شده
+   */
+  comparedFunds: Array<FundBaseInfoApiModel>;
+  comparisonEnabled: boolean;
+};
 
 export type FundListItemApiModel = {
   /**
@@ -452,6 +454,14 @@ export type FundListItemApiModel = {
    * تاریخ آغاز فعالیت
    */
   initiationJdate: string;
+  /**
+   * بازده ماهانه
+   */
+  returnLastMonthPercent: number | null;
+  /**
+   * قیمت ابطال (ریال)
+   */
+  redeemNavRials: number;
 };
 
 export type FundReturnAnalysisResponseApiModel = {
@@ -519,7 +529,7 @@ export type FundReturnAnalysisReturnComparisonApiModel = {
   /**
    * تفکیک زمانی
    */
-  timeSeparation: FundCalculationTimeSeparation;
+  topLeftFilterOptions: TopLeftFilterOptions;
   /**
    * ستون‌های جدول مقایسه بازدهی
    */
@@ -542,7 +552,7 @@ export type FundReturnAnalysisReturnComparisonBody = {
   /**
    * تفکیک زمانی
    */
-  timeSeparation: FundCalculationTimeSeparation;
+  selectedTopLeftFilterOption: TopLeftFilterTimeSeparation;
 };
 
 export type FundReturnAnalysisReturnComparisonTableColumnApiModel = {
@@ -568,7 +578,7 @@ export type FundReturnAnalysisReturnRankApiModel = {
   /**
    * تفکیک زمانی
    */
-  timeSeparation: FundCalculationTimeSeparation;
+  topLeftFilterOptions: TopLeftFilterOptions;
   /**
    * ستون‌های جدول رتبه بازدهی
    */
@@ -591,7 +601,7 @@ export type FundReturnAnalysisReturnRankBody = {
   /**
    * تفکیک زمانی
    */
-  timeSeparation: FundCalculationTimeSeparation;
+  selectedTopLeftFilterOption: TopLeftFilterTimeSeparation;
 };
 
 export type FundReturnAnalysisReturnRankTableColumnApiModel = {
@@ -617,23 +627,15 @@ export type FundReturnAnalysisReturnTrendApiModel = {
   /**
    * بازه زمانی
    */
-  calculationPeriod: FundCalculationPeriod;
-  /**
-   * شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd
-   */
-  calculationCustomPeriodStartJdate: string | null;
-  /**
-   * پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd
-   */
-  calculationCustomPeriodEndJdate: string | null;
+  timeRangeFilterOptions: FundTimeRangeFilterOptions;
   /**
    * ارز مبنای بازده
    */
-  returnBaseCurrency: FundCalculationBaseCurrency;
+  topLeftFilterOptions: TopLeftFilterOptions;
   /**
    * صندوق‌های مقایسه شده
    */
-  comparedFunds: Array<FundBaseInfoApiModel>;
+  fundComparisonOptions: FundComparisonOptions;
   /**
    * بازده صندوق
    */
@@ -669,22 +671,11 @@ export type FundReturnAnalysisReturnTrendApiModel = {
 };
 
 export type FundReturnAnalysisReturnTrendBody = {
-  /**
-   * بازه زمانی
-   */
-  calculationPeriod: FundCalculationPeriod;
-  /**
-   * شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd
-   */
-  calculationCustomPeriodStartJdate: string | null;
-  /**
-   * پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd
-   */
-  calculationCustomPeriodEndJdate: string | null;
+  selectedTimeRangeFilterOption: SelectedFundTimeRangeFilterOption;
   /**
    * ارز مبنای بازده
    */
-  returnBaseCurrency: FundCalculationBaseCurrency;
+  selectedTopLeftFilterOption: TopLeftFilterBaseCurrency;
   /**
    * شناسه صندوق‌های مقایسه
    */
@@ -695,19 +686,15 @@ export type FundReturnAnalysisRiskReturnAnalysisApiModel = {
   /**
    * معیار ریسک
    */
-  riskCriteria: FundCalculationRiskCriteria;
+  topLeftFilterOptions: TopLeftFilterOptions;
   /**
    * بازه زمانی
    */
-  calculationPeriod: FundCalculationPeriod;
+  timeRangeFilterOptions: FundTimeRangeFilterOptions;
   /**
-   * شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd
+   * صندوق‌های مقایسه شده
    */
-  calculationCustomPeriodStartJdate: string | null;
-  /**
-   * پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd
-   */
-  calculationCustomPeriodEndJdate: string | null;
+  fundComparisonOptions: FundComparisonOptions;
   /**
    * نمودار تحلیل ریسک
    */
@@ -718,19 +705,8 @@ export type FundReturnAnalysisRiskReturnAnalysisBody = {
   /**
    * معیار ریسک
    */
-  riskCriteria: FundCalculationRiskCriteria;
-  /**
-   * بازه زمانی
-   */
-  calculationPeriod: FundCalculationPeriod;
-  /**
-   * شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd
-   */
-  calculationCustomPeriodStartJdate: string | null;
-  /**
-   * پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd
-   */
-  calculationCustomPeriodEndJdate: string | null;
+  selectedTopLeftFilterOption: TopLeftFilterRiskCriteria;
+  selectedTimeRangeFilterOption: SelectedFundTimeRangeFilterOption;
   /**
    * شناسه صندوق‌های مقایسه
    */
@@ -750,7 +726,7 @@ export type FundReturnAnalysisSeasonalityEffectAnalysisApiModel = {
   /**
    * جدول بر مبنای
    */
-  tableCriteria: FundCalculationSeasonalityEffectTableCriteria;
+  topLeftFilterOptions: TopLeftFilterOptions;
   /**
    * سال‌ها
    */
@@ -769,7 +745,7 @@ export type FundReturnAnalysisSeasonalityEffectAnalysisBody = {
   /**
    * جدول بر مبنای
    */
-  tableCriteria: FundCalculationSeasonalityEffectTableCriteria;
+  selectedTopLeftFilterOption: TopLeftFilterSeasonalityEffectTableCriteria;
 };
 
 export type FundReturnAnalysisSeasonalityEffectTableAverageRowApiModel = {
@@ -982,15 +958,7 @@ export type FundSummaryCaseByCaseApiModel = {
   /**
    * بازه زمانی
    */
-  calculationPeriod: FundCalculationPeriod;
-  /**
-   * شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd
-   */
-  calculationCustomPeriodStartJdate: string | null;
-  /**
-   * پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd
-   */
-  calculationCustomPeriodEndJdate: string | null;
+  timeRangeFilterOptions: FundTimeRangeFilterOptions;
   /**
    * مقدار nav در آخرین روز بازه زمانی
    */
@@ -1042,18 +1010,7 @@ export type FundSummaryCaseByCaseApiModel = {
 };
 
 export type FundSummaryCaseByCaseBody = {
-  /**
-   * بازه زمانی
-   */
-  calculationPeriod: FundCalculationPeriod;
-  /**
-   * شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd
-   */
-  calculationCustomPeriodStartJdate: string | null;
-  /**
-   * پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd
-   */
-  calculationCustomPeriodEndJdate: string | null;
+  selectedTimeRangeFilterOption: SelectedFundTimeRangeFilterOption;
 };
 
 export type FundSummaryCaseByCaseNavHistoryItemApiModel = {
@@ -1546,6 +1503,20 @@ export type FundTableTabColumnGroupDto = {
 
 export type FundTableTabColumnSort = 'NO' | 'ASC' | 'DESC';
 
+export type FundTimeRangeFilterOption = {
+  identifier: string;
+  title: string;
+  isCustomPeriod: boolean;
+  periodStartJdate: string | null;
+  periodEndJdate: string | null;
+  selected: boolean;
+};
+
+export type FundTimeRangeFilterOptions = {
+  options: Array<FundTimeRangeFilterOption>;
+  enableCustomPeriod: boolean;
+};
+
 export type FundTypeApiModel = {
   identifier: number;
   title: string;
@@ -1794,6 +1765,15 @@ export type ResetFundTabColumnsResponseApiModel = {
   columns: Array<FundTableTabColumnDto>;
 };
 
+export type SelectedFundTimeRangeFilterOption = {
+  identifier: FundCalculationPeriod;
+  customPeriodStartJdate?: string | null;
+  /**
+   * پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd
+   */
+  customPeriodEndJdate: string | null;
+};
+
 export type SortFundTabBody = {
   columnKey: string;
   direction: FundTableTabColumnSort;
@@ -1808,6 +1788,25 @@ export type TokenApiModel = {
   access_token: string;
   token_type: string;
 };
+
+export type TopLeftFilterBaseCurrency = 1 | 2;
+
+export type TopLeftFilterOption = {
+  identifier: number;
+  title: string;
+  selected: boolean;
+};
+
+export type TopLeftFilterOptions = {
+  label: string;
+  options: Array<TopLeftFilterOption>;
+};
+
+export type TopLeftFilterRiskCriteria = 1 | 2;
+
+export type TopLeftFilterSeasonalityEffectTableCriteria = 1 | 2;
+
+export type TopLeftFilterTimeSeparation = 1 | 2 | 3;
 
 export type UnmarkFundResponseApiModel = {
   success: boolean;
@@ -1856,6 +1855,17 @@ export type UpdateFundTableTabColumnsBody = {
 
 export type UpdateFundTableTabSingleColumnBody = {
   column: UpdateFundTableTabColumnItem;
+};
+
+export type UserManagedFundApiModel = {
+  fundId: number;
+  fundType: FundTypeApiModel;
+  fundAbbreviatedName: string;
+};
+
+export type UserProfileApiModel = {
+  userInfo: AressApiUser;
+  managedFunds: Array<UserManagedFundApiModel>;
 };
 
 export type UserReportFavoriteStatus = {
@@ -2022,6 +2032,8 @@ export type PostUsersPasswordForgotResetData = {
 
 export type PostUsersPasswordForgotResetResponse =
   ResetForgotPasswordByOtpResponseApiModel;
+
+export type GetUsersProfileResponse = UserProfileApiModel;
 
 export type GetUsersProfilePasswordChangeOtpResponse =
   GetOtpForChangePasswordResponseApiModel;
@@ -2617,6 +2629,36 @@ export type $OpenApiTs = {
          * Successful Response
          */
         200: ResetForgotPasswordByOtpResponseApiModel;
+        /**
+         * Bad Request
+         */
+        400: ApiExceptionResponse;
+        /**
+         * Unauthorized
+         */
+        401: ApiExceptionResponse;
+        /**
+         * Forbidden
+         */
+        403: ApiExceptionResponse;
+        /**
+         * Not Found
+         */
+        404: ApiExceptionResponse;
+        /**
+         * Unprocessable Entity
+         */
+        422: ApiExceptionResponse;
+      };
+    };
+  };
+  '/users/profile': {
+    get: {
+      res: {
+        /**
+         * Successful Response
+         */
+        200: UserProfileApiModel;
         /**
          * Bad Request
          */

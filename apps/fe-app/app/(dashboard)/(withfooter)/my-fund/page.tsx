@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 import { FundTabs } from './_components/FundsTab';
 
 export default async function FundPage() {
-  const fundId = 283;
+  const fundId = 42;
 
   const cookieStore = await cookies();
 

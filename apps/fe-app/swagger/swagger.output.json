@@ -768,6 +768,83 @@
         }
       }
     },
+    "/users/profile": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get Current User Profile",
+        "description": "Get profile of current user.",
+        "operationId": "get_current_user_profile_users_profile_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfileApiModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiExceptionResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiExceptionResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiExceptionResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiExceptionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiExceptionResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/users/profile/password/change/otp": {
       "get": {
         "tags": [
@@ -5012,9 +5089,9 @@
         "tags": [
           "Funds"
         ],
-        "summary": "Fund Summary",
-        "description": "Fund Summary Page",
-        "operationId": "fund_summary_funds_stock__fund_id__summary_get",
+        "summary": "Stock Fund Summary",
+        "description": "Stock Fund Summary Page",
+        "operationId": "stock_fund_summary_funds_stock__fund_id__summary_get",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -5100,9 +5177,9 @@
         "tags": [
           "Funds"
         ],
-        "summary": "Fund Summary Case By Case",
-        "description": "Fund Summary Case By Case Section",
-        "operationId": "fund_summary_case_by_case_funds_stock__fund_id__summary_case_by_case_post",
+        "summary": "Stock Fund Summary Case By Case",
+        "description": "Stock Fund Summary Case By Case Section",
+        "operationId": "stock_fund_summary_case_by_case_funds_stock__fund_id__summary_case_by_case_post",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -5198,9 +5275,9 @@
         "tags": [
           "Funds"
         ],
-        "summary": "Fund Return Analysis",
-        "description": "Fund Return Analysis Page",
-        "operationId": "fund_return_analysis_funds_stock__fund_id__return_analysis_get",
+        "summary": "Stock Fund Return Analysis",
+        "description": "Stock Fund Return Analysis Page",
+        "operationId": "stock_fund_return_analysis_funds_stock__fund_id__return_analysis_get",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -5286,9 +5363,9 @@
         "tags": [
           "Funds"
         ],
-        "summary": "Fund Return Analysis Return Trend Section",
+        "summary": "Stock Fund Return Analysis Return Trend Section",
         "description": "Fund Return Analysis Return Trend Section",
-        "operationId": "fund_return_analysis_return_trend_section_funds_stock__fund_id__return_analysis_return_trend_post",
+        "operationId": "stock_fund_return_analysis_return_trend_section_funds_stock__fund_id__return_analysis_return_trend_post",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -5384,9 +5461,9 @@
         "tags": [
           "Funds"
         ],
-        "summary": "Fund Return Analysis Return Comparison Section",
-        "description": "Fund Return Analysis Return Comparison Section",
-        "operationId": "fund_return_analysis_return_comparison_section_funds_stock__fund_id__return_analysis_return_comparison_post",
+        "summary": "Stock Fund Return Analysis Return Comparison Section",
+        "description": "Stock Fund Return Analysis Return Comparison Section",
+        "operationId": "stock_fund_return_analysis_return_comparison_section_funds_stock__fund_id__return_analysis_return_comparison_post",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -5482,9 +5559,9 @@
         "tags": [
           "Funds"
         ],
-        "summary": "Fund Return Analysis Return Rank Section",
-        "description": "Fund Return Analysis Return Rank Section",
-        "operationId": "fund_return_analysis_return_rank_section_funds_stock__fund_id__return_analysis_return_rank_post",
+        "summary": "Stock Fund Return Analysis Return Rank Section",
+        "description": "Stock Fund Return Analysis Return Rank Section",
+        "operationId": "stock_fund_return_analysis_return_rank_section_funds_stock__fund_id__return_analysis_return_rank_post",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -5580,9 +5657,9 @@
         "tags": [
           "Funds"
         ],
-        "summary": "Fund Return Analysis Risk Return Analysis Section",
-        "description": "Fund Return Analysis Risk Return Analysis Section",
-        "operationId": "fund_return_analysis_risk_return_analysis_section_funds_stock__fund_id__return_analysis_risk_return_analysis_post",
+        "summary": "Stock Fund Return Analysis Risk Return Analysis Section",
+        "description": "Stock Fund Return Analysis Risk Return Analysis Section",
+        "operationId": "stock_fund_return_analysis_risk_return_analysis_section_funds_stock__fund_id__return_analysis_risk_return_analysis_post",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -5678,9 +5755,9 @@
         "tags": [
           "Funds"
         ],
-        "summary": "Fund Return Analysis Seasonality Effect Section",
-        "description": "Fund Return Analysis Seasonality Effect Analysis Section",
-        "operationId": "fund_return_analysis_seasonality_effect_section_funds_stock__fund_id__return_analysis_seasonality_effect_analysis_post",
+        "summary": "Stock Fund Return Analysis Seasonality Effect Section",
+        "description": "Stock Fund Return Analysis Seasonality Effect Analysis Section",
+        "operationId": "stock_fund_return_analysis_seasonality_effect_section_funds_stock__fund_id__return_analysis_seasonality_effect_analysis_post",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -6747,12 +6824,22 @@
           "name": {
             "type": "string",
             "title": "Name"
+          },
+          "itemsCount": {
+            "type": "integer",
+            "title": "Itemscount"
+          },
+          "itemsLimit": {
+            "type": "integer",
+            "title": "Itemslimit"
           }
         },
         "type": "object",
         "required": [
           "identifier",
-          "name"
+          "name",
+          "itemsCount",
+          "itemsLimit"
         ],
         "title": "DashboardListItemApiModel"
       },
@@ -7153,14 +7240,6 @@
         ],
         "title": "FundBaseInfoApiModel"
       },
-      "FundCalculationBaseCurrency": {
-        "type": "integer",
-        "enum": [
-          1,
-          2
-        ],
-        "title": "FundCalculationBaseCurrency"
-      },
       "FundCalculationPeriod": {
         "type": "integer",
         "enum": [
@@ -7173,30 +7252,27 @@
         ],
         "title": "FundCalculationPeriod"
       },
-      "FundCalculationRiskCriteria": {
-        "type": "integer",
-        "enum": [
-          1,
-          2
+      "FundComparisonOptions": {
+        "properties": {
+          "comparedFunds": {
+            "items": {
+              "$ref": "#/components/schemas/FundBaseInfoApiModel"
+            },
+            "type": "array",
+            "title": "Comparedfunds",
+            "description": "صندوق‌های مقایسه شده"
+          },
+          "comparisonEnabled": {
+            "type": "boolean",
+            "title": "Comparisonenabled"
+          }
+        },
+        "type": "object",
+        "required": [
+          "comparedFunds",
+          "comparisonEnabled"
         ],
-        "title": "FundCalculationRiskCriteria"
-      },
-      "FundCalculationSeasonalityEffectTableCriteria": {
-        "type": "integer",
-        "enum": [
-          1,
-          2
-        ],
-        "title": "FundCalculationSeasonalityEffectTableCriteria"
-      },
-      "FundCalculationTimeSeparation": {
-        "type": "integer",
-        "enum": [
-          1,
-          2,
-          3
-        ],
-        "title": "FundCalculationTimeSeparation"
+        "title": "FundComparisonOptions"
       },
       "FundListItemApiModel": {
         "properties": {
@@ -7354,6 +7430,23 @@
             "type": "string",
             "title": "Initiationjdate",
             "description": "تاریخ آغاز فعالیت"
+          },
+          "returnLastMonthPercent": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Returnlastmonthpercent",
+            "description": "بازده ماهانه"
+          },
+          "redeemNavRials": {
+            "type": "integer",
+            "title": "Redeemnavrials",
+            "description": "قیمت ابطال (ریال)"
           }
         },
         "type": "object",
@@ -7377,7 +7470,9 @@
           "liquidityGuarantor",
           "marketMaker",
           "initiationDate",
-          "initiationJdate"
+          "initiationJdate",
+          "returnLastMonthPercent",
+          "redeemNavRials"
         ],
         "title": "FundListItemApiModel"
       },
@@ -7532,8 +7627,8 @@
       },
       "FundReturnAnalysisReturnComparisonApiModel": {
         "properties": {
-          "timeSeparation": {
-            "$ref": "#/components/schemas/FundCalculationTimeSeparation",
+          "topLeftFilterOptions": {
+            "$ref": "#/components/schemas/TopLeftFilterOptions",
             "description": "تفکیک زمانی"
           },
           "tableColumns": {
@@ -7562,7 +7657,7 @@
         },
         "type": "object",
         "required": [
-          "timeSeparation",
+          "topLeftFilterOptions",
           "tableColumns",
           "fundAverageReturnPercent",
           "stockFundsAverageReturnPercent",
@@ -7572,14 +7667,14 @@
       },
       "FundReturnAnalysisReturnComparisonBody": {
         "properties": {
-          "timeSeparation": {
-            "$ref": "#/components/schemas/FundCalculationTimeSeparation",
+          "selectedTopLeftFilterOption": {
+            "$ref": "#/components/schemas/TopLeftFilterTimeSeparation",
             "description": "تفکیک زمانی"
           }
         },
         "type": "object",
         "required": [
-          "timeSeparation"
+          "selectedTopLeftFilterOption"
         ],
         "title": "FundReturnAnalysisReturnComparisonBody"
       },
@@ -7617,8 +7712,8 @@
       },
       "FundReturnAnalysisReturnRankApiModel": {
         "properties": {
-          "timeSeparation": {
-            "$ref": "#/components/schemas/FundCalculationTimeSeparation",
+          "topLeftFilterOptions": {
+            "$ref": "#/components/schemas/TopLeftFilterOptions",
             "description": "تفکیک زمانی"
           },
           "tableColumns": {
@@ -7647,7 +7742,7 @@
         },
         "type": "object",
         "required": [
-          "timeSeparation",
+          "topLeftFilterOptions",
           "tableColumns",
           "quarterAverageReturnRank",
           "percentAverageReturnRank",
@@ -7657,14 +7752,14 @@
       },
       "FundReturnAnalysisReturnRankBody": {
         "properties": {
-          "timeSeparation": {
-            "$ref": "#/components/schemas/FundCalculationTimeSeparation",
+          "selectedTopLeftFilterOption": {
+            "$ref": "#/components/schemas/TopLeftFilterTimeSeparation",
             "description": "تفکیک زمانی"
           }
         },
         "type": "object",
         "required": [
-          "timeSeparation"
+          "selectedTopLeftFilterOption"
         ],
         "title": "FundReturnAnalysisReturnRankBody"
       },
@@ -7702,44 +7797,16 @@
       },
       "FundReturnAnalysisReturnTrendApiModel": {
         "properties": {
-          "calculationPeriod": {
-            "$ref": "#/components/schemas/FundCalculationPeriod",
+          "timeRangeFilterOptions": {
+            "$ref": "#/components/schemas/FundTimeRangeFilterOptions",
             "description": "بازه زمانی"
           },
-          "calculationCustomPeriodStartJdate": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Calculationcustomperiodstartjdate",
-            "description": "شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd"
-          },
-          "calculationCustomPeriodEndJdate": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Calculationcustomperiodendjdate",
-            "description": "پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd"
-          },
-          "returnBaseCurrency": {
-            "$ref": "#/components/schemas/FundCalculationBaseCurrency",
+          "topLeftFilterOptions": {
+            "$ref": "#/components/schemas/TopLeftFilterOptions",
             "description": "ارز مبنای بازده"
           },
-          "comparedFunds": {
-            "items": {
-              "$ref": "#/components/schemas/FundBaseInfoApiModel"
-            },
-            "type": "array",
-            "title": "Comparedfunds",
+          "fundComparisonOptions": {
+            "$ref": "#/components/schemas/FundComparisonOptions",
             "description": "صندوق‌های مقایسه شده"
           },
           "fundReturnInPeriodPercent": {
@@ -7837,11 +7904,9 @@
         },
         "type": "object",
         "required": [
-          "calculationPeriod",
-          "calculationCustomPeriodStartJdate",
-          "calculationCustomPeriodEndJdate",
-          "returnBaseCurrency",
-          "comparedFunds",
+          "timeRangeFilterOptions",
+          "topLeftFilterOptions",
+          "fundComparisonOptions",
           "fundReturnInPeriodPercent",
           "stockFundsReturnInPeriodPercent",
           "tedpixReturnInPeriodPercent",
@@ -7855,36 +7920,11 @@
       },
       "FundReturnAnalysisReturnTrendBody": {
         "properties": {
-          "calculationPeriod": {
-            "$ref": "#/components/schemas/FundCalculationPeriod",
-            "description": "بازه زمانی"
+          "selectedTimeRangeFilterOption": {
+            "$ref": "#/components/schemas/SelectedFundTimeRangeFilterOption"
           },
-          "calculationCustomPeriodStartJdate": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Calculationcustomperiodstartjdate",
-            "description": "شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd"
-          },
-          "calculationCustomPeriodEndJdate": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Calculationcustomperiodendjdate",
-            "description": "پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd"
-          },
-          "returnBaseCurrency": {
-            "$ref": "#/components/schemas/FundCalculationBaseCurrency",
+          "selectedTopLeftFilterOption": {
+            "$ref": "#/components/schemas/TopLeftFilterBaseCurrency",
             "description": "ارز مبنای بازده"
           },
           "comparedFundIds": {
@@ -7898,47 +7938,25 @@
         },
         "type": "object",
         "required": [
-          "calculationPeriod",
-          "calculationCustomPeriodStartJdate",
-          "calculationCustomPeriodEndJdate",
-          "returnBaseCurrency",
+          "selectedTimeRangeFilterOption",
+          "selectedTopLeftFilterOption",
           "comparedFundIds"
         ],
         "title": "FundReturnAnalysisReturnTrendBody"
       },
       "FundReturnAnalysisRiskReturnAnalysisApiModel": {
         "properties": {
-          "riskCriteria": {
-            "$ref": "#/components/schemas/FundCalculationRiskCriteria",
+          "topLeftFilterOptions": {
+            "$ref": "#/components/schemas/TopLeftFilterOptions",
             "description": "معیار ریسک"
           },
-          "calculationPeriod": {
-            "$ref": "#/components/schemas/FundCalculationPeriod",
+          "timeRangeFilterOptions": {
+            "$ref": "#/components/schemas/FundTimeRangeFilterOptions",
             "description": "بازه زمانی"
           },
-          "calculationCustomPeriodStartJdate": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Calculationcustomperiodstartjdate",
-            "description": "شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd"
-          },
-          "calculationCustomPeriodEndJdate": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Calculationcustomperiodendjdate",
-            "description": "پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd"
+          "fundComparisonOptions": {
+            "$ref": "#/components/schemas/FundComparisonOptions",
+            "description": "صندوق‌های مقایسه شده"
           },
           "chartItems": {
             "items": {
@@ -7951,47 +7969,21 @@
         },
         "type": "object",
         "required": [
-          "riskCriteria",
-          "calculationPeriod",
-          "calculationCustomPeriodStartJdate",
-          "calculationCustomPeriodEndJdate",
+          "topLeftFilterOptions",
+          "timeRangeFilterOptions",
+          "fundComparisonOptions",
           "chartItems"
         ],
         "title": "FundReturnAnalysisRiskReturnAnalysisApiModel"
       },
       "FundReturnAnalysisRiskReturnAnalysisBody": {
         "properties": {
-          "riskCriteria": {
-            "$ref": "#/components/schemas/FundCalculationRiskCriteria",
+          "selectedTopLeftFilterOption": {
+            "$ref": "#/components/schemas/TopLeftFilterRiskCriteria",
             "description": "معیار ریسک"
           },
-          "calculationPeriod": {
-            "$ref": "#/components/schemas/FundCalculationPeriod",
-            "description": "بازه زمانی"
-          },
-          "calculationCustomPeriodStartJdate": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Calculationcustomperiodstartjdate",
-            "description": "شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd"
-          },
-          "calculationCustomPeriodEndJdate": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Calculationcustomperiodendjdate",
-            "description": "پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd"
+          "selectedTimeRangeFilterOption": {
+            "$ref": "#/components/schemas/SelectedFundTimeRangeFilterOption"
           },
           "comparedFundIds": {
             "items": {
@@ -8004,10 +7996,8 @@
         },
         "type": "object",
         "required": [
-          "riskCriteria",
-          "calculationPeriod",
-          "calculationCustomPeriodStartJdate",
-          "calculationCustomPeriodEndJdate",
+          "selectedTopLeftFilterOption",
+          "selectedTimeRangeFilterOption",
           "comparedFundIds"
         ],
         "title": "FundReturnAnalysisRiskReturnAnalysisBody"
@@ -8052,8 +8042,8 @@
       },
       "FundReturnAnalysisSeasonalityEffectAnalysisApiModel": {
         "properties": {
-          "tableCriteria": {
-            "$ref": "#/components/schemas/FundCalculationSeasonalityEffectTableCriteria",
+          "topLeftFilterOptions": {
+            "$ref": "#/components/schemas/TopLeftFilterOptions",
             "description": "جدول بر مبنای"
           },
           "rows": {
@@ -8075,7 +8065,7 @@
         },
         "type": "object",
         "required": [
-          "tableCriteria",
+          "topLeftFilterOptions",
           "rows",
           "averageRow",
           "standardDeviation"
@@ -8084,14 +8074,14 @@
       },
       "FundReturnAnalysisSeasonalityEffectAnalysisBody": {
         "properties": {
-          "tableCriteria": {
-            "$ref": "#/components/schemas/FundCalculationSeasonalityEffectTableCriteria",
+          "selectedTopLeftFilterOption": {
+            "$ref": "#/components/schemas/TopLeftFilterSeasonalityEffectTableCriteria",
             "description": "جدول بر مبنای"
           }
         },
         "type": "object",
         "required": [
-          "tableCriteria"
+          "selectedTopLeftFilterOption"
         ],
         "title": "FundReturnAnalysisSeasonalityEffectAnalysisBody"
       },
@@ -8695,33 +8685,9 @@
       },
       "FundSummaryCaseByCaseApiModel": {
         "properties": {
-          "calculationPeriod": {
-            "$ref": "#/components/schemas/FundCalculationPeriod",
+          "timeRangeFilterOptions": {
+            "$ref": "#/components/schemas/FundTimeRangeFilterOptions",
             "description": "بازه زمانی"
-          },
-          "calculationCustomPeriodStartJdate": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Calculationcustomperiodstartjdate",
-            "description": "شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd"
-          },
-          "calculationCustomPeriodEndJdate": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Calculationcustomperiodendjdate",
-            "description": "پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd"
           },
           "navEndOfPeriodRials": {
             "type": "integer",
@@ -8789,9 +8755,7 @@
         },
         "type": "object",
         "required": [
-          "calculationPeriod",
-          "calculationCustomPeriodStartJdate",
-          "calculationCustomPeriodEndJdate",
+          "timeRangeFilterOptions",
           "navEndOfPeriodRials",
           "returnEndOfPeriodRials",
           "returnEndOfPeriodPercent",
@@ -8809,40 +8773,13 @@
       },
       "FundSummaryCaseByCaseBody": {
         "properties": {
-          "calculationPeriod": {
-            "$ref": "#/components/schemas/FundCalculationPeriod",
-            "description": "بازه زمانی"
-          },
-          "calculationCustomPeriodStartJdate": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Calculationcustomperiodstartjdate",
-            "description": "شروع بازه زمانی دلخواه با فرمت YYYY-mm-dd"
-          },
-          "calculationCustomPeriodEndJdate": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Calculationcustomperiodendjdate",
-            "description": "پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd"
+          "selectedTimeRangeFilterOption": {
+            "$ref": "#/components/schemas/SelectedFundTimeRangeFilterOption"
           }
         },
         "type": "object",
         "required": [
-          "calculationPeriod",
-          "calculationCustomPeriodStartJdate",
-          "calculationCustomPeriodEndJdate"
+          "selectedTimeRangeFilterOption"
         ],
         "title": "FundSummaryCaseByCaseBody"
       },
@@ -10380,6 +10317,79 @@
         ],
         "title": "FundTableTabColumnSort"
       },
+      "FundTimeRangeFilterOption": {
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "title": "Identifier"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "isCustomPeriod": {
+            "type": "boolean",
+            "title": "Iscustomperiod"
+          },
+          "periodStartJdate": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Periodstartjdate"
+          },
+          "periodEndJdate": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Periodendjdate"
+          },
+          "selected": {
+            "type": "boolean",
+            "title": "Selected"
+          }
+        },
+        "type": "object",
+        "required": [
+          "identifier",
+          "title",
+          "isCustomPeriod",
+          "periodStartJdate",
+          "periodEndJdate",
+          "selected"
+        ],
+        "title": "FundTimeRangeFilterOption"
+      },
+      "FundTimeRangeFilterOptions": {
+        "properties": {
+          "options": {
+            "items": {
+              "$ref": "#/components/schemas/FundTimeRangeFilterOption"
+            },
+            "type": "array",
+            "title": "Options"
+          },
+          "enableCustomPeriod": {
+            "type": "boolean",
+            "title": "Enablecustomperiod"
+          }
+        },
+        "type": "object",
+        "required": [
+          "options",
+          "enableCustomPeriod"
+        ],
+        "title": "FundTimeRangeFilterOptions"
+      },
       "FundTypeApiModel": {
         "properties": {
           "identifier": {
@@ -11316,6 +11326,42 @@
         ],
         "title": "ResetFundTabColumnsResponseApiModel"
       },
+      "SelectedFundTimeRangeFilterOption": {
+        "properties": {
+          "identifier": {
+            "$ref": "#/components/schemas/FundCalculationPeriod"
+          },
+          "customPeriodStartJdate": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customperiodstartjdate"
+          },
+          "customPeriodEndJdate": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customperiodendjdate",
+            "description": "پایان بازه زمانی دلخواه با فرمت YYYY-mm-dd"
+          }
+        },
+        "type": "object",
+        "required": [
+          "identifier",
+          "customPeriodEndJdate"
+        ],
+        "title": "SelectedFundTimeRangeFilterOption"
+      },
       "SortFundTabBody": {
         "properties": {
           "columnKey": {
@@ -11374,6 +11420,83 @@
           "token_type"
         ],
         "title": "TokenApiModel"
+      },
+      "TopLeftFilterBaseCurrency": {
+        "type": "integer",
+        "enum": [
+          1,
+          2
+        ],
+        "title": "TopLeftFilterBaseCurrency"
+      },
+      "TopLeftFilterOption": {
+        "properties": {
+          "identifier": {
+            "type": "integer",
+            "title": "Identifier"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "selected": {
+            "type": "boolean",
+            "title": "Selected"
+          }
+        },
+        "type": "object",
+        "required": [
+          "identifier",
+          "title",
+          "selected"
+        ],
+        "title": "TopLeftFilterOption"
+      },
+      "TopLeftFilterOptions": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "options": {
+            "items": {
+              "$ref": "#/components/schemas/TopLeftFilterOption"
+            },
+            "type": "array",
+            "title": "Options"
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "options"
+        ],
+        "title": "TopLeftFilterOptions"
+      },
+      "TopLeftFilterRiskCriteria": {
+        "type": "integer",
+        "enum": [
+          1,
+          2
+        ],
+        "title": "TopLeftFilterRiskCriteria"
+      },
+      "TopLeftFilterSeasonalityEffectTableCriteria": {
+        "type": "integer",
+        "enum": [
+          1,
+          2
+        ],
+        "title": "TopLeftFilterSeasonalityEffectTableCriteria"
+      },
+      "TopLeftFilterTimeSeparation": {
+        "type": "integer",
+        "enum": [
+          1,
+          2,
+          3
+        ],
+        "title": "TopLeftFilterTimeSeparation"
       },
       "UnmarkFundResponseApiModel": {
         "properties": {
@@ -11586,6 +11709,48 @@
           "column"
         ],
         "title": "UpdateFundTableTabSingleColumnBody"
+      },
+      "UserManagedFundApiModel": {
+        "properties": {
+          "fundId": {
+            "type": "integer",
+            "title": "Fundid"
+          },
+          "fundType": {
+            "$ref": "#/components/schemas/FundTypeApiModel"
+          },
+          "fundAbbreviatedName": {
+            "type": "string",
+            "title": "Fundabbreviatedname"
+          }
+        },
+        "type": "object",
+        "required": [
+          "fundId",
+          "fundType",
+          "fundAbbreviatedName"
+        ],
+        "title": "UserManagedFundApiModel"
+      },
+      "UserProfileApiModel": {
+        "properties": {
+          "userInfo": {
+            "$ref": "#/components/schemas/AressApiUser"
+          },
+          "managedFunds": {
+            "items": {
+              "$ref": "#/components/schemas/UserManagedFundApiModel"
+            },
+            "type": "array",
+            "title": "Managedfunds"
+          }
+        },
+        "type": "object",
+        "required": [
+          "userInfo",
+          "managedFunds"
+        ],
+        "title": "UserProfileApiModel"
       },
       "UserReportFavoriteStatus": {
         "properties": {

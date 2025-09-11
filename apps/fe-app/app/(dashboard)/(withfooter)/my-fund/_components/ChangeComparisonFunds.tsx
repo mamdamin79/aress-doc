@@ -88,8 +88,8 @@ export const ChangeComparisonFunds: React.FC<ChangeComparisonFundsProps> = ({
       title: fund.name,
       categoryId: fund.fundType.identifier,
       type: fund.fundType.title,
-      priceRials: Math.floor(Math.random() * (500000 - 100000) + 100000),
-      priceChangePercent: parseFloat((Math.random() * 10 - 5).toFixed(2)),
+      priceRials: fund.redeemNavRials,
+      priceChangePercent: fund.returnLastMonthPercent ?? undefined,
     }));
 
     return { categories, items };
@@ -191,12 +191,14 @@ export const ChangeComparisonFunds: React.FC<ChangeComparisonFundsProps> = ({
               );
 
               mutate({
-                fundId: 283,
+                fundId: 42,
                 requestBody: {
-                  riskCriteria: 1,
-                  calculationPeriod: 1,
-                  calculationCustomPeriodStartJdate: null,
-                  calculationCustomPeriodEndJdate: null,
+                  selectedTopLeftFilterOption: 1, // TODO: Add handling for this filter option
+                  selectedTimeRangeFilterOption: {
+                    identifier: 1, // TODO: Add custom period option handling
+                    customPeriodStartJdate: null,
+                    customPeriodEndJdate: null,
+                  },
                   comparedFundIds,
                 },
               });

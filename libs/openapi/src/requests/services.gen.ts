@@ -18,6 +18,7 @@ import type {
   PostUsersPasswordForgotOtpResponse,
   PostUsersPasswordForgotResetData,
   PostUsersPasswordForgotResetResponse,
+  GetUsersProfileResponse,
   GetUsersProfilePasswordChangeOtpResponse,
   PostUsersProfilePasswordChangeData,
   PostUsersProfilePasswordChangeResponse,
@@ -328,6 +329,26 @@ export class UsersService {
       url: '/users/password/forgot/reset',
       body: data.requestBody,
       mediaType: 'application/json',
+      errors: {
+        400: 'Bad Request',
+        401: 'Unauthorized',
+        403: 'Forbidden',
+        404: 'Not Found',
+        422: 'Unprocessable Entity',
+      },
+    });
+  }
+
+  /**
+   * Get Current User Profile
+   * Get profile of current user.
+   * @returns UserProfileApiModel Successful Response
+   * @throws ApiError
+   */
+  public static getUsersProfile(): CancelablePromise<GetUsersProfileResponse> {
+    return __request(OpenAPI, {
+      method: 'GET',
+      url: '/users/profile',
       errors: {
         400: 'Bad Request',
         401: 'Unauthorized',
@@ -1608,8 +1629,8 @@ export class FundsService {
   }
 
   /**
-   * Fund Summary
-   * Fund Summary Page
+   * Stock Fund Summary
+   * Stock Fund Summary Page
    * @param data The data for the request.
    * @param data.fundId
    * @returns FundSummaryResponseApiModel Successful Response
@@ -1635,8 +1656,8 @@ export class FundsService {
   }
 
   /**
-   * Fund Summary Case By Case
-   * Fund Summary Case By Case Section
+   * Stock Fund Summary Case By Case
+   * Stock Fund Summary Case By Case Section
    * @param data The data for the request.
    * @param data.fundId
    * @param data.requestBody
@@ -1665,8 +1686,8 @@ export class FundsService {
   }
 
   /**
-   * Fund Return Analysis
-   * Fund Return Analysis Page
+   * Stock Fund Return Analysis
+   * Stock Fund Return Analysis Page
    * @param data The data for the request.
    * @param data.fundId
    * @returns FundReturnAnalysisResponseApiModel Successful Response
@@ -1692,7 +1713,7 @@ export class FundsService {
   }
 
   /**
-   * Fund Return Analysis Return Trend Section
+   * Stock Fund Return Analysis Return Trend Section
    * Fund Return Analysis Return Trend Section
    * @param data The data for the request.
    * @param data.fundId
@@ -1722,8 +1743,8 @@ export class FundsService {
   }
 
   /**
-   * Fund Return Analysis Return Comparison Section
-   * Fund Return Analysis Return Comparison Section
+   * Stock Fund Return Analysis Return Comparison Section
+   * Stock Fund Return Analysis Return Comparison Section
    * @param data The data for the request.
    * @param data.fundId
    * @param data.requestBody
@@ -1752,8 +1773,8 @@ export class FundsService {
   }
 
   /**
-   * Fund Return Analysis Return Rank Section
-   * Fund Return Analysis Return Rank Section
+   * Stock Fund Return Analysis Return Rank Section
+   * Stock Fund Return Analysis Return Rank Section
    * @param data The data for the request.
    * @param data.fundId
    * @param data.requestBody
@@ -1782,8 +1803,8 @@ export class FundsService {
   }
 
   /**
-   * Fund Return Analysis Risk Return Analysis Section
-   * Fund Return Analysis Risk Return Analysis Section
+   * Stock Fund Return Analysis Risk Return Analysis Section
+   * Stock Fund Return Analysis Risk Return Analysis Section
    * @param data The data for the request.
    * @param data.fundId
    * @param data.requestBody
@@ -1812,8 +1833,8 @@ export class FundsService {
   }
 
   /**
-   * Fund Return Analysis Seasonality Effect Section
-   * Fund Return Analysis Seasonality Effect Analysis Section
+   * Stock Fund Return Analysis Seasonality Effect Section
+   * Stock Fund Return Analysis Seasonality Effect Analysis Section
    * @param data The data for the request.
    * @param data.fundId
    * @param data.requestBody

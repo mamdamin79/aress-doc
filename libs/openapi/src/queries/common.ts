@@ -81,6 +81,17 @@ export const UseUsersServiceGetUsersPasswordForgotCaptchaKeyFn = (
   useUsersServiceGetUsersPasswordForgotCaptchaKey,
   ...(queryKey ?? [{ captchaHeight, captchaType, captchaWidth }]),
 ];
+export type UsersServiceGetUsersProfileDefaultResponse = Awaited<
+  ReturnType<typeof UsersService.getUsersProfile>
+>;
+export type UsersServiceGetUsersProfileQueryResult<
+  TData = UsersServiceGetUsersProfileDefaultResponse,
+  TError = unknown,
+> = UseQueryResult<TData, TError>;
+export const useUsersServiceGetUsersProfileKey = 'UsersServiceGetUsersProfile';
+export const UseUsersServiceGetUsersProfileKeyFn = (
+  queryKey?: Array<unknown>,
+) => [useUsersServiceGetUsersProfileKey, ...(queryKey ?? [])];
 export type UsersServiceGetUsersProfilePasswordChangeOtpDefaultResponse =
   Awaited<ReturnType<typeof UsersService.getUsersProfilePasswordChangeOtp>>;
 export type UsersServiceGetUsersProfilePasswordChangeOtpQueryResult<
