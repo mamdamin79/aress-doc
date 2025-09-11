@@ -155,7 +155,7 @@ export const Report13_3: React.FC<
         },
         style: {
           fontSize: '12px',
-          color: 'var(--color-text-neutral-secondarycontrast)',
+          color: 'var(--color-text-neutral-secondrycontrast)',
           fontFamily: 'Vazirmatn',
         },
       },

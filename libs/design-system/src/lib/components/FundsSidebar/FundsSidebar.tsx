@@ -6,6 +6,7 @@ import { NumberSection } from './NumberSection';
 import { SparkLine } from '../SparkLine';
 import { cn } from '../../../utils/classNames.utils';
 import { CustomTriggerWithoutLogo } from './CustomTriggerWithoutLogo';
+import { DropdownCell } from '../OptionsDropdown/OptionsDropdown.types';
 export type FundsSidebarData = {
   title: string;
   chartData: {
@@ -22,6 +23,14 @@ export interface FundsSidebarProps {
   selectedFundTypeId?: number;
   selectedFundSortParameterId?: number;
   selectedFundSortPeriodId?: number;
+  timePeriodList?: {
+    id: number;
+    text: string;
+  }[];
+  sortOptionsList?: {
+    id: number;
+    text: string;
+  }[];
 }
 
 export const FundsSidebar: React.FC<FundsSidebarProps> = ({
@@ -32,6 +41,18 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
   selectedFundSortParameterId = 0,
   selectedFundSortPeriodId = 0,
   selectedFundTypeId = 0,
+  sortOptionsList = [
+    {
+      id: 1,
+      text: 'ماهانه',
+    },
+  ],
+  timePeriodList = [
+    {
+      id: 1,
+      text: 'بیشترین بازدهی',
+    },
+  ],
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState<number>(0);
@@ -94,25 +115,14 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
           <OptionsDropdown
             initialSelectedIndex={selectedFundSortParameterId}
             onChange={(_, selectedID) => onSortOptionChange?.(selectedID ?? 0)}
-            dropDownList={[
-              {
-                text: 'بیشترین بازدهی',
-                icon: { name: 'chart-no-axes-column' },
-                id: 1,
-              },
-              {
-                text: 'بالاترین عملکرد',
-                icon: { name: 'biceps-flexed' },
-                id: 2,
-              },
-              { text: 'بیشترین سود', icon: { name: 'hand-coins' }, id: 3 },
-              { text: 'اهرمی‌ترین', icon: { name: 'weight' }, id: 4 },
-            ]}
+            dropDownList={sortOptionsList as DropdownCell[]}
+            optionClassName="w-full justify-center"
             dropDownStyles={{
               anchor: 'bottom start',
               bg: 'primary',
               emphasize: 'medium',
               size: 'sm',
+              checkSelected: true,
             }}
             customTriggerRender={({ isActive, selectedItem }) => (
               <CustomTriggerWithoutLogo
@@ -126,17 +136,14 @@ export const FundsSidebar: React.FC<FundsSidebarProps> = ({
               initialSelectedIndex={selectedFundSortPeriodId}
               triggerClassName="text-sm font-medium"
               onChange={(_, selectedID) => onTimeframeChange?.(selectedID ?? 0)}
-              dropDownList={[
-                { text: 'هفتگی', id: 1 },
-                { text: 'ماهانه', id: 2 },
-                { text: 'سه ماهه', id: 3 },
-                { text: 'شش ماهه', id: 4 },
-              ]}
+              dropDownList={timePeriodList as DropdownCell[]}
+              optionClassName="w-full justify-center"
               dropDownStyles={{
                 anchor: 'bottom start',
                 bg: 'primary',
                 emphasize: 'medium',
                 size: 'sm',
+                checkSelected: true,
               }}
             />
           </div>

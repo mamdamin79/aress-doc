@@ -214,7 +214,7 @@ export const SlidersBox: React.FC = () => {
                           key={slotId}
                           slotId={slotId}
                           identifier={String(report.report.identifier)}
-                          title={report.report.title}
+                          title={report.displayName}
                           data={
                             reportDataMap[report.identifier]?.data ??
                             report.report.reportCalculation?.calculation
