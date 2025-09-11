@@ -216,6 +216,7 @@ const Funds = () => {
             visible: col.visible,
             group: col.lowerTitle || null,
             colorFormat: col.colorFormat,
+            columnFilter: col.columnFilter,
           },
           sortingFn: (rowA, rowB, columnId) => {
             if (columnId === 'abbreviated_name') {
@@ -786,7 +787,7 @@ const Funds = () => {
         col.columnFilter.options.length > 0,
     )
     .map((col) => ({
-      title: col.label,
+      title: col.upperTitle,
       singleOpen: false,
       options: col.columnFilter.options.map((opt, index) => ({
         label: opt.label,
@@ -1047,8 +1048,7 @@ const Funds = () => {
                                           }}
                                           className="bg-button-brand-surface-default text-button-brand-label-onsurface relative cursor-pointer rounded-md p-1"
                                         >
-                                          {(Object.entries(selectedFilters)
-                                            .length > 0 ||
+                                          {(filterOptions ||
                                             fundSearchQuery) && (
                                             <div className="absolute -right-1 -top-1 z-30">
                                               <FundsTag color="pink" />
@@ -1119,7 +1119,13 @@ const Funds = () => {
                                                 ? 'active-asc'
                                                 : 'inactive'
                                           }
-                                          filterable={false}
+                                          filterable={
+                                            (
+                                              header.column.columnDef
+                                                .meta as FundColumnMeta
+                                            )?.columnFilter?.options.length ??
+                                            false
+                                          }
                                           subTitle={
                                             (
                                               header.column.columnDef

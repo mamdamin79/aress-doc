@@ -140,4 +140,7 @@ export type FundColumnMeta = {
   visible: boolean;
   group: string | null;
   colorFormat: string;
+  columnFilter: null | {
+    options: [];
+  };
 };

@@ -372,6 +372,8 @@ function TableRowInner<T extends FundRow>({
     }
   };
 
+  console.log(row.getVisibleCells()[0].column.id);
+
   return (
     <tr
       onMouseEnter={() => setShowMark(true)}
@@ -421,7 +423,7 @@ function TableRowInner<T extends FundRow>({
           'group-hover:bg-surface-accent-blue-50': !row.original.pinned,
         })}
       ></td>
-      {row?.getVisibleCells().map((item) => {
+      {row?.getVisibleCells().map((item, index) => {
         return (
           <td
             dir="ltr"
@@ -436,14 +438,16 @@ function TableRowInner<T extends FundRow>({
             )}
             key={item.id}
           >
-            {item.getValue() !== null
-              ? typeof item.getValue() === 'number'
-                ? formatNumber(item.getValue(), {
-                    commaSeparated: true,
-                    decimals: 2,
-                  })
-                : flexRender(item.column.columnDef.cell, item.getContext())
-              : '-'}
+            {index !== 0
+              ? item.getValue() !== null
+                ? typeof item.getValue() === 'number'
+                  ? formatNumber(item.getValue(), {
+                      commaSeparated: true,
+                      decimals: 2,
+                    })
+                  : flexRender(item.column.columnDef.cell, item.getContext())
+                : '-'
+              : ''}
           </td>
         );
       })}
