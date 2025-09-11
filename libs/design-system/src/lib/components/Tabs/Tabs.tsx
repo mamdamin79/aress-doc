@@ -59,7 +59,7 @@ export const Tabs: React.FC<Props> = ({
 
   return (
     <TabGroup
-      selectedIndex={activeTab}
+      selectedIndex={tabs.findIndex((tab) => +tab.id === activeTab)}
       onChange={(index) => {
         onClickTab(index);
       }}

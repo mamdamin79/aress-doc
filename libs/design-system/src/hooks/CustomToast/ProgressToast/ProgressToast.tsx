@@ -22,7 +22,7 @@ export const ProgressToast = ({
       <div className="flex w-full items-center gap-2 px-2">
         {leadingAction && (
           <span
-            className="text-icon-message-warning-oninverse flex h-[32px] items-center justify-center"
+            className="text-icon-message-warning-oninverse flex h-[32px] cursor-pointer items-center justify-center"
             onClick={leadingAction?.onClick}
           >
             <Icon {...leadingAction.iconProps} key={'icon'} />

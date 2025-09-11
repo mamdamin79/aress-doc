@@ -2,17 +2,13 @@ import { cn } from '../../../utils/classNames.utils';
 import React from 'react';
 
 export interface FundsTagProps {
-  color?: 'purple' | 'blue' | 'green' | 'yellow' | 'pink' | 'neutral';
+  color?: 'purple' | 'blue' | 'green' | 'yellow' | 'pink' | 'disabled';
   size?: 'md' | 'lg';
 }
 export const FundsTag: React.FC<FundsTagProps> = ({
   color = 'green',
   size = 'md',
 }) => {
-  const sizeClasses = {
-    md: 'h-2.5 w-2.5',
-    lg: 'h-3 w-3',
-  };
   return (
     <div
       className={cn(

@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import React from 'react';
 import FlipNumbers from 'react-flip-numbers';
 
@@ -20,7 +20,7 @@ export interface SlidingNumberProps {
   quantity: number;
 }
 export const SlidingNumber: React.FC<SlidingNumberProps> = ({ quantity }) => {
-  console.log(quantity)
+  console.log(quantity);
   return (
     <div
       style={{ display: 'flex', gap: 2 }}

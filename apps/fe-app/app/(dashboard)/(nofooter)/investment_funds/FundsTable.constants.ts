@@ -37,47 +37,53 @@ export const columnVisibility: Record<string, boolean> = {
   customRangeInfoRatio: false,
 };
 
-export const filterList = [
-  { title: 'ویدیو بررسی', options: ['دارد', 'ندارد'], singleSelect: true },
+export const filterList = 
+[
   {
-    singleSelect: false,
-    title: 'بازه اضافه یک ساله نسبت به شاخص کل',
+    title: "نوع صندوق",
+    singleOpen: true,
     options: [
-      'بازده منفی',
-      'از صفر تا 5 درصد',
-      'از 5 تا 10 درصد',
-      'از 10 تا 20 درصد',
-      'از 20 تا 50 درصد',
-      'بیشتر از 50 درصد',
+      { label: "درآمد ثابت", select: true, min_amount: null, max_amount: null },
+      { label: "سهامی", select: false, min_amount: null, max_amount: null },
+      { label: "مختلط", select: false, min_amount: null, max_amount: null },
+      { label: "ETF", select: false, min_amount: null, max_amount: null },
     ],
   },
   {
-    singleSelect: false,
-    title: 'بازده یک ساله',
+    title: "ریسک صندوق",
+    singleOpen: false,
     options: [
-      'بازده منفی',
-      'از صفر تا 30 درصد',
-      'از 30 تا 50 درصد',
-      'از 50 تا 100 درصد',
-      'از 100 تا 200 درصد',
-      'بیشتر از 200 درصد',
+      { label: "کم‌ریسک", select: false, min_amount: null, max_amount: null },
+      { label: "متوسط", select: false, min_amount: null, max_amount: null },
+      { label: "پرریسک", select: true, min_amount: null, max_amount: null },
     ],
   },
   {
-    title: 'شیوه‌ سرمایه‌گذاری',
-    options: ['قابل معامله (ETF)', 'صدور و ابطال'],
-    singleSelect: true,
+    title: "حداقل سرمایه‌گذاری",
+    singleOpen: false,
+    options: [
+      { label: "کمتر از ۱ میلیون", select: false, min_amount: 0, max_amount: 1000000 },
+      { label: "۱ تا ۵ میلیون", select: false, min_amount: 1000000, max_amount: 5000000 },
+      { label: "۵ تا ۱۰ میلیون", select: false, min_amount: 5000000, max_amount: 10000000 },
+      { label: "بیشتر از ۱۰ میلیون", select: false, min_amount: 10000000, max_amount: null },
+    ],
   },
   {
-    singleSelect: false,
-    title: 'ارزش خالص دارایی‌ها',
+    title: "بازدهی سالانه",
+    singleOpen: false,
     options: [
-      'بازده منفی',
-      'از صفر تا 30 درصد',
-      'از 30 تا 50 درصد',
-      'از 50 تا 100 درصد',
-      'از 100 تا 200 درصد',
-      'بیشتر از 200 درصد',
+      { label: "کمتر از ۱۰٪", select: false, min_amount: 0, max_amount: 10 },
+      { label: "۱۰٪ تا ۲۰٪", select: false, min_amount: 10, max_amount: 20 },
+      { label: "۲۰٪ تا ۳۰٪", select: false, min_amount: 20, max_amount: 30 },
+      { label: "بیشتر از ۳۰٪", select: false, min_amount: 30, max_amount: null },
+    ],
+  },
+  {
+    title: "امکان صدور/ابطال آنلاین",
+    singleOpen: true,
+    options: [
+      { label: "دارد", select: false, min_amount: null, max_amount: null },
+      { label: "ندارد", select: false, min_amount: null, max_amount: null },
     ],
   },
 ];

@@ -1,7 +1,9 @@
+import { FundTableItemInfoApiModel, FundTableResponseApiModel } from '@openapi';
 import { Row } from '@tanstack/react-table';
 import type { RefObject } from 'react';
 
 export type DragPosition = 'left' | 'right';
+type tabs = FundTableResponseApiModel['tabs'];
 export type Person = {
   nameFund: string;
   unitCount: number;
@@ -43,6 +45,10 @@ export interface FundRow {
   pinned: boolean;
   id: number;
   mark: string;
+  fundType: {
+    title: string;
+    identifier: number;
+  };
 }
 
 export interface TableBodyProps {
@@ -53,13 +59,18 @@ export interface TableBodyProps {
   activeIndexCategoryTab: number;
   handlerPinned: (id: number) => void;
   handlerUnPinned: (id: number) => void;
+  handlerDeleteWatchList: (id: number) => void;
   handlerMarkFund: (id: number, color: string) => void;
   rowMarks: { id: number; color: string }[];
+  handlerAddToWatchList: (fund: number) => void;
+  tabs: tabs;
 }
 
 export interface TableRowProps<T extends FundRow> {
   row: Row<T>;
+  tabs: tabs;
   logo: string;
+  handlerDeleteWatchList: (id: number) => void;
   handlerMarkFund: (id: number, color: string) => void;
   isMainTab: boolean;
   handlerPinned: (e: number) => void;
@@ -67,14 +78,20 @@ export interface TableRowProps<T extends FundRow> {
   activeIndexCategoryTab: number;
   rowMarks: { id: number; color: string }[];
   handleColorChange: (id: string, color: string) => void;
+  handlerAddToWatchList: (fund: number) => void;
   isScrollAtStart: boolean;
 }
 
 export interface FundsInfoCellProps {
+  fundType: {
+    identifier: number;
+    title: string;
+  };
   isEtf: boolean;
   name: string;
   logo: string;
   pined: boolean;
+  isWatchList: boolean;
   selected: boolean;
   isTradable: boolean;
   isScrolled: boolean;
@@ -82,7 +99,48 @@ export interface FundsInfoCellProps {
   investmentMethod: 'T' | 'I&C';
   pinedFunction: () => void;
   unPinedFunction: () => void;
+  addToWatchlist: () => void;
+  deleteToWatchlist: () => void;
   canPin: boolean;
   tag: boolean;
   isRowHovered: boolean;
+  tabs: tabs;
 }
+export type ApiColumn = {
+  label: string;
+  upperTitle: string | null;
+  lowerTitle: string | null;
+  key: keyof FundTableItemInfoApiModel;
+  visible: boolean;
+  sort: 'ASC' | 'DESC' | 'NO';
+  colorFormat?: 'COLORED' | 'NONE';
+  columnGroupId?: number;
+  customPeriodStartJdate?: string | null;
+  customPeriodEndJdate?: string | null;
+};
+
+export type SimplifiedFund = {
+  fundType: {
+    title: string;
+    identifier: number;
+  };
+  logo: string;
+  id: number;
+  pinned: boolean;
+  investmentFundsMethod: string;
+  nameFund: string;
+  dailyAlpha: number | null;
+  weeklyAlpha: number | null;
+  monthlyAlpha: number | null;
+  isTradable: boolean;
+};
+
+export type FundColumnMeta = {
+  sort: string;
+  visible: boolean;
+  group: string | null;
+  colorFormat: string;
+  columnFilter: null | {
+    options: [];
+  };
+};

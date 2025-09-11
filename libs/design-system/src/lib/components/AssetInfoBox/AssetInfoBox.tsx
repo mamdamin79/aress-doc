@@ -1,7 +1,9 @@
 'use client';
 import React, { useRef, useEffect, useState } from 'react';
 import { SlidingNumber } from '../SlidingNumber';
-import { Badge, cn, formatNumber, Icon } from 'design-system';
+import { Icon } from '../Icon';
+import { cn, formatNumber } from '../../../utils';
+import { Badge } from '../Badge';
 
 export interface AssetInfoBoxProps {
   hiddenContent: boolean;

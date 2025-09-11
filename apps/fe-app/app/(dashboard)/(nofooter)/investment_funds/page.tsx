@@ -8,7 +8,7 @@ import React, {
   useState,
 } from 'react';
 import { Toaster } from 'react-hot-toast';
-import { useHeaderVisibility } from '@shared';
+import { PersianDatePicker, useHeaderVisibility } from '@shared';
 // needed for table body level scope DnD setup
 import {
   DndContext,
@@ -26,7 +26,6 @@ import {
   cn,
   Icon,
   Tabs,
-  DatePicker,
   Tooltip,
   formatNumber,
   OptionsDropdown,
@@ -50,39 +49,60 @@ import {
 } from '@tanstack/react-table';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useSortable } from '@dnd-kit/sortable';
-import { columnVisibility, filterList } from './FundsTable.constants';
+import { columnVisibility } from './FundsTable.constants';
 import { ExportExcel } from './_components/ExportExcel';
 import { useSmartTableScroll } from '@shared';
 import { TableBody } from './_components/TableBody';
-import { Person } from './types';
+import { FundColumnMeta, Person, SimplifiedFund } from './types';
 import {
   useDragIndicator,
   useTableDragSensors,
 } from './utils/investmentFunds.utils';
-import { useFundsServiceGetFundsTable } from '@openapi';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import {
+  FundsService,
+  FundsTableItemApiModel,
+  FundTableItemInfoApiModel,
+  FundTableTabColumnDto,
+  FundTableTabColumnFilterOptionsDto,
+  useFundsServiceGetFundsTable,
+  useFundsServicePostFundsTableTabByTabColumn,
+  useFundsServicePostFundsTableTabByTabColumns,
+  useFundsServicePostFundsTableTabByTabColumnsReset,
+  useFundsServicePostFundsTableTabByTabSort,
+} from '@openapi';
 import { TabsSkeleton } from './_components/skeletons/TabsSkeleton';
 import { RowSkeleton } from './_components/skeletons/RowSkeleton';
 import { HeaderTableSkeleton } from './_components/skeletons/HeaderTableSkeleton';
 import { ExcelSkeleton } from './_components/skeletons/ExcelSkeleton';
+import { useMutation } from '@tanstack/react-query';
 const Funds = () => {
   const { isHeaderVisible } = useHeaderVisibility();
   const [activeIndexCategoryTab, setActiveIndexCategoryTab] = useState(1);
+  const [isShowDatePicker, setIsShowDatePicker] = useState(false);
+  const [customColumnDate, setCustomColumnDate] = useState<{
+    start: string;
+    end: string;
+    groupId: string;
+  }>({
+    start: '',
+    end: '',
+    groupId: '',
+  });
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const [isScrollAtStart, setIsScrollAtStart] = useState<boolean>(false);
   const [isScrollAtEnd, setIsScrollAtEnd] = useState<boolean>(true);
+  const [localColumns, setLocalColumns] = useState<FundTableTabColumnDto[]>([]);
   const [fundSearchQuery, setFundSearchQuery] = useState<string>('');
   const tableRef = useRef<HTMLDivElement>(null);
   const [pinnedList, setPinnedList] = useState<number[]>([]);
   const [rowsMark, setRowsMark] = useState<{ color: string; id: number }[]>([]);
-  const [sorting, setSorting] = useState<SortingState>([
-    {
-      id: 'nameFund',
-      desc: false,
-    },
-  ]);
-
-  const [activeSortIndex, setActiveSortIndex] = useState(0);
+  const [watchList, setWatchList] = useState<FundsTableItemApiModel[]>([]);
+  const [hasVerticalScroll, setHasVerticalScroll] = useState(false);
+  const [hasHorizontalScroll, setHasHorizontalScroll] = useState(false);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [activeSortIndex, setActiveSortIndex] = useState<number>(0);
   const headerRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [sortIndicatorPosition, setSortIndicatorPosition] = useState({
     right: headerRefs.current[0]?.offsetLeft,
@@ -95,169 +115,27 @@ const Funds = () => {
     tableRef as RefObject<HTMLDivElement>,
   );
 
-  const columns = React.useMemo<ColumnDef<(typeof sortedFunds)[0]>[]>(
-    () => [
-      {
-        accessorKey: 'nameFund',
-        header: 'Fund Name',
-        id: 'nameFund',
-        sortingFn: (rowA, rowB, columnId) => {
-          const pinnedA = rowA.original.pinned;
-          const pinnedB = rowB.original.pinned;
-
-          if (pinnedA !== pinnedB) {
-            return pinnedA ? -1 : 1;
-          }
-          const a = rowA.getValue(columnId);
-          const b = rowB.getValue(columnId);
-          return String(a).localeCompare(String(b), 'fa', {
-            sensitivity: 'base',
-          });
-        },
-      },
-      {
-        accessorKey: 'unitCount',
-        header: 'Unit Count',
-        id: 'unitCount',
-        size: 100,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'profitPerUnit',
-        header: 'Profit/Unit',
-        id: 'profitPerUnit',
-        size: 130,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'netAssetValue',
-        header: 'Net Asset Value',
-        id: 'netAssetValue',
-        size: 160,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'monstatisticalPriceth',
-        header: 'Statistical Price',
-        id: 'monstatisticalPriceth',
-        size: 160,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'cancellationPrice',
-        header: 'Cancellation Price',
-        id: 'cancellationPrice',
-        size: 150,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'issuancePrice',
-        header: 'Issuance Price',
-        id: 'issuancePrice',
-        size: 130,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'dailyAlpha',
-        header: 'Daily Alpha',
-        id: 'dailyAlpha',
-        size: 120,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'weeklyAlpha',
-        header: 'Weekly Alpha',
-        id: 'weeklyAlpha',
-        size: 120,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'monthlyAlpha',
-        header: 'Monthly Alpha',
-        id: 'monthlyAlpha',
-        size: 130,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'quarterlyAlpha',
-        header: 'Quarterly Alpha',
-        id: 'quarterlyAlpha',
-        size: 140,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'dailyReturn',
-        header: 'Daily Return',
-        id: 'dailyReturn',
-        size: 120,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'weeklyReturn',
-        header: 'Weekly Return',
-        id: 'weeklyReturn',
-        size: 130,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'monthlyReturn',
-        header: 'Monthly Return',
-        id: 'monthlyReturn',
-        size: 130,
-        enableSorting: true,
-        meta: { group: '' },
-      },
-      {
-        accessorKey: 'quarterlyReturn',
-        header: 'Quarterly Return',
-        id: 'quarterlyReturn',
-        size: 140,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'yearlyReturn',
-        header: 'Yearly Return',
-        id: 'yearlyReturn',
-        size: 130,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'progress',
-        header: 'Progress',
-        id: 'progress',
-        size: 120,
-        enableSorting: true,
-      },
-      {
-        accessorKey: 'startDate',
-        header: 'Start Date',
-        id: 'startDate',
-        size: 160,
-        enableSorting: true,
-        cell: (info) => new Date(info.getValue<number>()).toLocaleDateString(),
-      },
-      {
-        accessorKey: 'investmentMethod',
-        header: 'Investment Method',
-        id: 'investmentMethod',
-        size: 150,
-        enableSorting: true,
-      },
-    ],
-    [],
-  );
+  const updateColumns = useFundsServicePostFundsTableTabByTabColumns();
 
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string[]>
   >({});
-  const [columnOrder, setColumnOrder] = React.useState<string[]>(() =>
-    columns.map((c) => c.id!),
-  );
-  const [customColl, setCustomColl] = useState<{
+
+  const [customColl] = useState<{
     active: boolean;
     date: string;
   }>({ active: false, date: '' });
 
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const setActiveTab = (tabId: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('tab', tabId);
+
+    // Use pathname + search params
+    router.push(`${pathname}?${params.toString()}`);
+  };
   const DraggableTableHeader = ({
     header,
     children,
@@ -285,18 +163,7 @@ const Funds = () => {
         }}
         className={cn(
           'bg-surface-brand-100 relative m-0 h-[64px] p-0 text-sm font-medium',
-          {
-            'w-[144px]': !(
-              String(
-                flexRender(header.column.columnDef.header, header.getContext()),
-              ).length > 10
-            ),
-            'w-[200px]':
-              String(
-                flexRender(header.column.columnDef.header, header.getContext()),
-              ).length > 10,
-          },
-          '6xl:w-full',
+          columnClass,
         )}
       >
         {isDraggingOver && position && (
@@ -315,21 +182,115 @@ const Funds = () => {
     );
   };
 
-  // reorder columns after drag & drop
-  function handleDragEnd(event: DragEndEvent) {
-    setIsRotating(false);
-    const { active, over } = event;
-    if (active && over && active.id !== over.id) {
-      setColumnOrder((columnOrder) => {
-        const oldIndex = columnOrder.indexOf(active.id as string);
-        const newIndex = columnOrder.indexOf(over.id as string);
-        return arrayMove(columnOrder, oldIndex, newIndex); //this is just a splice util
-      });
-    }
-  }
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+  }, [isShowDatePicker]);
 
   // request to get funds table data
   const query = useFundsServiceGetFundsTable({ tab: activeIndexCategoryTab });
+
+  useEffect(() => {
+    if (query.data?.columns) {
+      setLocalColumns(query.data.columns);
+    }
+  }, [query.data?.columns]);
+
+  useEffect(() => {
+    if (!query.data?.columns) return;
+
+    const serverSorting: SortingState = query.data.columns
+      // only include columns that have sorting enabled
+      .filter((col) => col.sort !== 'NO')
+      .map((col) => ({
+        // column key for react-table
+        id: col.key as keyof FundTableItemInfoApiModel,
+        // convert API sort direction to boolean
+        desc: col.sort === 'DESC',
+      }));
+
+    // set initial sorting state
+    setSorting(serverSorting);
+  }, [query.data?.columns]);
+
+  const columns = React.useMemo<ColumnDef<SimplifiedFund>[]>(() => {
+    return localColumns
+      .filter((col) => col.visible)
+      .map((col) => {
+        const key = col.key as keyof FundTableItemInfoApiModel;
+        return {
+          accessorKey: key,
+          id: key,
+          header: col.upperTitle,
+          enableSorting: true,
+          meta: {
+            sort: col.sort,
+            visible: col.visible,
+            group: col.lowerTitle || null,
+            colorFormat: col.colorFormat,
+            columnFilter: col.columnFilter,
+          },
+          sortingFn: (rowA, rowB, columnId) => {
+            if (columnId === 'abbreviated_name') {
+              const pinnedA = rowA.original.pinned;
+              const pinnedB = rowB.original.pinned;
+              if (pinnedA !== pinnedB) {
+                return pinnedA ? -1 : 1;
+              }
+              const a = rowA.getValue(columnId);
+              const b = rowB.getValue(columnId);
+              return String(a).localeCompare(String(b), 'fa', {
+                sensitivity: 'base',
+              });
+            }
+            return 0;
+          },
+          cell: (info) => {
+            const value = info.getValue();
+            if (col.colorFormat === 'COLORED') {
+              return (
+                <span
+                  style={{
+                    color:
+                      typeof value === 'number' && value < 0 ? 'red' : 'green',
+                  }}
+                >
+                  {value as React.ReactNode}
+                </span>
+              );
+            }
+            return value as React.ReactNode;
+          },
+        };
+      });
+  }, [localColumns]);
+
+  const [columnOrder, setColumnOrder] = React.useState<string[]>(() =>
+    columns.map((c) => c.id!),
+  );
+
+  const [columnClass, setColumnClass] = useState('w-[200px]');
+
+  useEffect(() => {
+    if (!columns || !columns.length) return;
+
+    const visibleColumns = columns.filter(
+      (col) => (col.meta as FundColumnMeta)?.visible,
+    );
+    if (visibleColumns.length) {
+      visibleColumns.find((col, index) => {
+        if ((col.meta as FundColumnMeta).sort !== 'NO')
+          setActiveSortIndex(index);
+      });
+    }
+
+    const containerWidth = tableRef?.current?.clientWidth;
+    const neededWidth = columns.length * 200;
+    if (containerWidth && containerWidth >= neededWidth + 200) {
+      setColumnClass('w-full');
+    } else {
+      setColumnClass(`w-[220px]`);
+    }
+  }, [columns]);
 
   const { data: tabs } = useFundsServiceGetFundsTable({ tab: 1 });
 
@@ -344,57 +305,120 @@ const Funds = () => {
 
     const initialPinnedList = query.data.selectedTabFunds
       .filter((fund) => fund.pinned)
-      .map((fund) => fund.fund.identifier);
+      .map((fund) => fund.info.identifier);
 
     const initialMarkedList = query.data.selectedTabFunds
       .filter((fund) => fund.mark)
       .map((fund) => {
         return {
-          id: fund.fund.identifier,
+          id: fund.info.identifier,
           color: fund.mark || '',
         };
       });
+
+    if (activeIndexCategoryTab === 1000) {
+      setWatchList(query.data.selectedTabFunds);
+    } else {
+      setWatchList([]);
+    }
 
     setRowsMark(initialMarkedList);
 
     setPinnedList(initialPinnedList);
   }, [query.isLoading, query.isFetching, query.data?.selectedTabFunds]);
 
-  const simplifiedFunds = useMemo(() => {
+  // reorder columns after drag & drop
+  async function handleDragEnd(event: DragEndEvent) {
+    setIsRotating(false);
+
+    const { active, over } = event;
+    if (active && over && active.id !== over.id) {
+      setColumnOrder((prevOrder) => {
+        const oldIndex = prevOrder.indexOf(active.id as string);
+        const newIndex = prevOrder.indexOf(over.id as string);
+        const newOrder = arrayMove(prevOrder, oldIndex, newIndex);
+
+        newOrder.find((order, index) => {
+          if (order === sorting[0].id) {
+            setActiveSortIndex(index);
+          }
+        });
+        updateColumns.mutateAsync({
+          tab: activeIndexCategoryTab,
+          requestBody: {
+            columns: [
+              ...newOrder.map((colId) => {
+                const col = localColumns.find((c) => c.key === colId);
+                return {
+                  customPeriodEndJdate: null,
+                  customPeriodStartJdate: null,
+                  key: colId,
+                  sortDirection: col?.sort ?? 'NO',
+                  visible: col?.visible ?? true,
+                  selectedFilter: null,
+                };
+              }),
+              ...localColumns
+                .filter((c) => !newOrder.includes(c.key))
+                .map((col) => ({
+                  customPeriodEndJdate: null,
+                  customPeriodStartJdate: null,
+                  key: col.key,
+                  sortDirection: col?.sort ?? 'NO',
+                  visible: false,
+                  selectedFilter: null,
+                })),
+            ],
+          },
+        });
+
+        return newOrder;
+      });
+    }
+  }
+
+  const simplifiedFunds: SimplifiedFund[] = useMemo(() => {
     if (!query.data?.selectedTabFunds) return [];
 
-    const funds = query.data.selectedTabFunds.map(({ fund }) => {
-      const id = fund.identifier;
+    const sourceFunds = query.data.selectedTabFunds;
+    const listToMap = activeIndexCategoryTab === 1000 ? watchList : sourceFunds;
+
+    const funds = listToMap.map((item) => {
+      const info: FundsTableItemApiModel['info'] =
+        'info' in item ? item.info : item;
+      const id = info.identifier;
+
       return {
-        logo: fund.logoMedium || '',
+        logo: info.logoMedium || '',
         id,
         pinned: pinnedList.includes(id),
-        investemntFundsMethod: 'T',
-        nameFund: fund.name || fund.abbreviatedName,
-        dailyAlpha: fund.alphaLastDay,
-        weeklyAlpha: fund.alphaLastWeek,
-        monthlyAlpha: fund.alphaLastMonth,
-        quarterlyAlpha: fund.alphaLast3Months,
-        weeklyReturn: fund.returnLastWeekPercent,
-        monthlyReturn: fund.returnLastMonthPercent,
-        quarterlyReturn: fund.returnLast3MonthsPercent,
-        yearlyReturn: fund.returnLastYearPercent,
-        profitPerUnit: fund.redeemNavRials,
-        issuancePrice: fund.issueNavRials,
-        cancellationPrice: fund.redeemNavRials,
-        netAssetValue: fund.statisticalNavRials,
-        unitCount: fund.numberOfUnits,
-        startDate: fund.initiationDate,
-        fundType: fund.fundType?.title,
+        investmentFundsMethod: 'T',
+        nameFund: info.name || info.abbreviatedName,
+        dailyAlpha: info.alphaLastDay,
+        weeklyAlpha: info.alphaLastWeek,
+        monthlyAlpha: info.alphaLastMonth,
+        quarterlyAlpha: info.alphaLast3Months,
+        weeklyReturn: info.returnLastWeekPercent,
+        monthlyReturn: info.returnLastMonthPercent,
+        quarterlyReturn: info.returnLast3MonthsPercent,
+        yearlyReturn: info.returnLastYearPercent,
+        profitPerUnit: info.redeemNavRials,
+        issuancePrice: info.issueNavRials,
+        cancellationPrice: info.redeemNavRials,
+        netAssetValue: info.statisticalNavRials,
+        unitCount: info.numberOfUnits,
+        startDate: info.initiationDate,
         investmentMethod: 'T' as const,
-        mark: '',
-        isEtf: false,
+        mark: 'mark' in item ? item.mark || '' : '',
         isTradable: true,
+        someOtherField1: null,
+        someOtherField2: '',
+        ...info,
       };
     });
 
     return funds.sort((a, b) => Number(b.pinned) - Number(a.pinned));
-  }, [query.data?.selectedTabFunds, pinnedList]);
+  }, [query.data?.selectedTabFunds, pinnedList, watchList]);
 
   const sortedFunds = useMemo(() => {
     if (!simplifiedFunds) return [];
@@ -423,7 +447,9 @@ const Funds = () => {
     return [...pinned, ...sortedUnpinned];
   }, [simplifiedFunds, sorting]);
 
-  const table = useReactTable({
+  const fundSortFromApi = useFundsServicePostFundsTableTabByTabSort();
+
+  const table = useReactTable<SimplifiedFund>({
     data: sortedFunds,
     columns,
     state: { columnOrder, sorting },
@@ -431,24 +457,72 @@ const Funds = () => {
       columnVisibility,
       sorting,
     },
-    onSortingChange: (updater) => {
+    onSortingChange: async (updater) => {
       const newSorting =
         typeof updater === 'function' ? updater(sorting) : updater;
       setSorting(newSorting);
+      try {
+        await Promise.all(
+          newSorting.map((sortItem) =>
+            fundSortFromApi.mutateAsync({
+              requestBody: {
+                columnKey: sortItem.id,
+                direction: sortItem.desc ? 'DESC' : 'ASC',
+              },
+              tab: activeIndexCategoryTab,
+            }),
+          ),
+        );
+      } catch (error) {
+        console.log(error);
+      }
     },
     onColumnOrderChange: setColumnOrder,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    manualSorting: true,
+    enableMultiSort: true,
   });
 
+  useEffect(() => {
+    const el = tableRef.current;
+    if (!el) return;
+
+    const checkScroll = () => {
+      setHasVerticalScroll(el.scrollHeight > el.clientHeight);
+    };
+    checkScroll();
+
+    const observer = new ResizeObserver(checkScroll);
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, [table?.getState().pagination.pageSize]);
+
+  console.log(
+    query.data?.defaultColumns
+      .filter((col) => col.visible)
+      .map((col) => col.key),
+    columnOrder,
+  );
+
   const isChanged = useMemo(() => {
-    return !Object.entries(table.getState().columnVisibility).every(
-      ([key, value]) => columnVisibility[key] === value,
-    );
-  }, [table]);
+    if (!table) return false;
+
+    const defaultVisibleKeys =
+      query.data?.defaultColumns
+        .filter((col) => col.visible)
+        .map((col) => col.key) ?? [];
+
+    if (defaultVisibleKeys.length !== columnOrder.length) {
+      return false;
+    }
+
+    return !defaultVisibleKeys.every((key, i) => key === columnOrder[i]);
+  }, [columnOrder]);
+
+  console.log(isChanged);
 
   useEffect(() => {
     const node = headerRefs?.current[activeSortIndex];
@@ -534,20 +608,6 @@ const Funds = () => {
     };
   }, []);
 
-  useEffect(() => {
-    columnOrder.findIndex((id, index) => {
-      if (id === sorting[0]?.id && activeSortIndex !== 0) {
-        setTimeout(() => {
-          if (index === 1) {
-            setActiveSortIndex(1);
-          } else {
-            setActiveSortIndex(index - 1);
-          }
-        }, 300);
-      }
-    });
-  }, [activeSortIndex, columnOrder, sorting]);
-
   const { rows } = table.getRowModel();
 
   // Scroll lock handler factory
@@ -603,6 +663,34 @@ const Funds = () => {
       return updated;
     });
   };
+  const handlerDeleteWatchList = (id: number) => {
+    setWatchList((prev) => prev.filter((item) => item.info.identifier !== id));
+  };
+
+  const handlerAddToWatchList = (fundId: number) => {
+    if (activeIndexCategoryTab !== 1000) return;
+
+    const itemToAdd = query.data?.selectedTabFunds.find(
+      (item) => item.info.identifier === fundId,
+    );
+
+    if (!itemToAdd) return; // Make sure the item was found
+
+    setWatchList((currentWatchList) => {
+      // Check for duplicates against the MOST RECENT state
+      const isAlreadyInList = currentWatchList.some(
+        (item) => item.info.identifier === fundId,
+      );
+
+      if (isAlreadyInList) {
+        // If it's already there, return the current state without changes
+        return currentWatchList;
+      } else {
+        // Otherwise, return the new state with the added item
+        return [...currentWatchList, itemToAdd];
+      }
+    });
+  };
 
   const handlerMarkFund = (id: number, color: string) => {
     setRowsMark((prev) => {
@@ -619,6 +707,139 @@ const Funds = () => {
     });
   };
 
+  // Mutation to handle CSV export for the selected funds tab
+  // - Calls the FundsService to get CSV data
+  // - Converts the CSV string into a Blob
+  // - Creates a temporary download link and triggers the file download
+  // - Cleans up the temporary link and object URL after download
+  const mutation = useMutation<string, Error>({
+    mutationFn: async (): Promise<string> => {
+      return FundsService.getFundsTableTabByTabCsv({
+        tab: activeIndexCategoryTab,
+      }) as Promise<string>;
+    },
+    onSuccess: (csvData) => {
+      const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `funds_tab_${activeIndexCategoryTab}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    },
+  });
+
+  // get function for change column visibility
+  const updateColumn = useFundsServicePostFundsTableTabByTabColumn();
+
+  // request for change column visibility
+  const handlerChangeVisibilityColumns = async ({
+    columnKey,
+    visible,
+  }: {
+    columnKey: string;
+    visible: boolean;
+  }) => {
+    if (tableRef.current) {
+      setHasHorizontalScroll(
+        tableRef.current.scrollWidth > tableRef.current.clientWidth,
+      );
+    }
+    setLocalColumns((prev) =>
+      prev.map((col) =>
+        col.key === columnKey ? { ...col, visible: !visible } : col,
+      ),
+    );
+    try {
+      await updateColumn.mutateAsync({
+        tab: activeIndexCategoryTab,
+        requestBody: {
+          column: {
+            customPeriodEndJdate: null,
+            customPeriodStartJdate: null,
+            key: columnKey,
+            sortDirection: 'NO',
+            visible: !visible,
+            selectedColumnFilters: null,
+          },
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      setLocalColumns((prev) =>
+        prev.map((col) => (col.key === columnKey ? { ...col, visible } : col)),
+      );
+    }
+  };
+
+  useEffect(() => {
+    setColumnOrder(
+      columns.map((col) => col.id).filter((id): id is string => !!id),
+    );
+    if (tableRef.current) {
+      setHasHorizontalScroll(
+        tableRef.current.scrollWidth > tableRef.current.clientWidth,
+      );
+    }
+  }, [columns]);
+
+  const columnMap = useMemo(() => {
+    const map: Record<string, string> = {};
+    columns.forEach((col) => {
+      if (col.id) {
+        map[col.id] = col.header as string;
+      }
+    });
+    return map;
+  }, [columns]);
+
+  const filterOptions = localColumns
+    .filter(
+      (col) =>
+        col.visible &&
+        col.columnFilter &&
+        'options' in col.columnFilter &&
+        Array.isArray(col.columnFilter.options) &&
+        col.columnFilter.options.length > 0,
+    )
+    .map((col) => {
+      const filter = col.columnFilter as FundTableTabColumnFilterOptionsDto;
+      return {
+        title: col.upperTitle,
+        singleOpen: false,
+        options: filter.options.map((opt, index) => ({
+          label: opt.label,
+          select: index === 0,
+          min_amount: 'min_amount' in opt ? (opt.min_amount ?? null) : null,
+          max_amount: 'max_amount' in opt ? (opt.max_amount ?? null) : null,
+        })),
+      };
+    });
+
+  const resetColumns = useFundsServicePostFundsTableTabByTabColumnsReset();
+
+  const handlerResetColumns = async () => {
+    try {
+      await resetColumns.mutateAsync({
+        tab: activeIndexCategoryTab,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    query.refetch();
+    if (query.data?.columns) {
+      setLocalColumns(query.data?.columns);
+    }
+  };
+
+  useEffect(() => {
+    const tabFromUrl = searchParams.get('tab');
+    if (tabFromUrl) {
+      setActiveIndexCategoryTab(+tabFromUrl);
+    }
+  }, [searchParams]);
   return (
     <>
       <div
@@ -635,10 +856,11 @@ const Funds = () => {
           tabs.tabs && (
             <Tabs
               variant="shaped-color"
-              onClickTab={(e) =>
-                setActiveIndexCategoryTab(tabs.tabs[e].identifier)
-              }
-              activeTab={activeIndexCategoryTab - 1}
+              onClickTab={(e) => {
+                setActiveTab(String(tabs.tabs[e].identifier));
+                setActiveIndexCategoryTab(tabs.tabs[e].identifier);
+              }}
+              activeTab={activeIndexCategoryTab}
               tabs={tabs.tabs?.map((tab) => ({
                 id: String(tab.identifier),
                 title: tab.title,
@@ -647,14 +869,17 @@ const Funds = () => {
             />
           )
         )}
-        {rows.length ? (
+        {query.isLoading || query.error ? (
+          <ExcelSkeleton />
+        ) : (
           <Tooltip title="خروجی اکسل">
-            <div className="border-button-border-default cursor-pointer rounded-md border p-1.5">
+            <div
+              onClick={() => mutation.mutate()}
+              className="border-button-border-default cursor-pointer rounded-md border p-1.5"
+            >
               <ExportExcel />
             </div>
           </Tooltip>
-        ) : (
-          <ExcelSkeleton />
         )}
       </div>
 
@@ -665,13 +890,20 @@ const Funds = () => {
             rows.length,
         })}
       >
-        <div className="bg-border-brand-soft-200 absolute right-2 top-[75px] z-50 h-0.5 w-full" />
+        <div
+          className={cn(
+            'bg-border-brand-soft-200 absolute top-[75px] z-50 h-0.5 w-full',
+            {
+              'right-2': hasVerticalScroll,
+            },
+          )}
+        />
         <div
           ref={tableRef}
           className={cn(
             'table-scroll group/table bg-surface-neutral-primary scrollbar-lg w-screen overflow-auto scroll-smooth',
             {
-              'h-[calc(100vh-180px)]': isHeaderVisible,
+              'h-[calc(100vh-173px)]': isHeaderVisible,
               'overflow-hidden': !rows.length,
             },
           )}
@@ -680,7 +912,7 @@ const Funds = () => {
             dir="rtl"
             className="w-full table-fixed rounded-xl text-center"
           >
-            {!rows.length ? (
+            {query.isLoading || query.error ? (
               <thead>
                 <tr>
                   <HeaderTableSkeleton />
@@ -704,7 +936,7 @@ const Funds = () => {
                   onDragOver={() => setIsRotating(true)}
                   onDragCancel={() => setIsRotating(false)}
                 >
-                  <tr>
+                  <tr className="w-full">
                     <th
                       style={{
                         transform:
@@ -721,14 +953,14 @@ const Funds = () => {
                           activeSortIndex !== 0,
                         'group-hover/table:-right-0':
                           activeSortIndex !== 0 && isScrollAtStart,
-                        'fixed right-[208px] top-[240px] z-10 w-fit':
+                        'fixed right-[203px] top-[240px] z-10 w-fit':
                           activeSortIndex === 0,
                         'top-[157px]':
                           activeSortIndex === 0 && !isHeaderVisible,
-                        '': sorting[0].id === 'nameFund',
+                        hidden: !query.data,
                       })}
                     >
-                      <div className="bg-surface-brand-600-primary mx-auto h-1.5 w-16 rounded-t-[10px]"></div>
+                      <div className="bg-surface-brand-600-primary mx-auto h-1.5 w-16 rounded-t-[10px]" />
                     </th>
                     <th className="sticky right-[340px] z-30 mt-5 p-0">
                       {isScrollAtStart && (
@@ -759,24 +991,37 @@ const Funds = () => {
                               {index === 0 && (
                                 <th
                                   key={index}
-                                  className="bg-surface-brand-100 sticky right-0 top-0 z-20 m-0 h-[64px] w-[385px] py-0"
+                                  className={cn(
+                                    'bg-surface-brand-100 sticky right-0 top-0 z-20 m-0 h-[64px] w-[385px] py-0',
+                                    {
+                                      'w-full max-w-full':
+                                        table.getAllLeafColumns().length - 1 ===
+                                        0,
+                                    },
+                                  )}
                                 >
                                   <div
                                     className={cn({
-                                      'bg-surface-brand-100 h-[75px] w-[384px] select-none':
+                                      'bg-surface-brand-100 h-[75px] select-none':
                                         header.column.getCanSort(),
                                       'shadow-[-4px_0px_6px_0px_rgba(0,11,23,0.05)]':
                                         isScrollAtStart,
+                                      'w-full min-w-[385px] max-w-full':
+                                        table.getAllLeafColumns().length - 1 ===
+                                        0,
+                                      'w-[384px]':
+                                        table.getAllLeafColumns().length - 1 >
+                                        0,
                                     })}
                                   >
                                     <div className="bg-surface-brand-100 mr-[75px] flex">
                                       <div className="mr-24">
                                         <FundsColumnHeader
-                                          activeSorticon={
-                                            sorting[0]?.id === 'nameFund'
+                                          activeSortIcon={
+                                            sorting[0]?.id === 'abbreviatedName'
                                           }
                                           active={!isRotating}
-                                          clickFilterd={() => {
+                                          clickFiltered={() => {
                                             setActiveSortIndex(0);
                                             header.column.toggleSorting(
                                               header.column.getIsSorted() ===
@@ -816,7 +1061,7 @@ const Funds = () => {
                                           }}
                                           className="bg-button-brand-surface-default text-button-brand-label-onsurface relative cursor-pointer rounded-md p-1"
                                         >
-                                          {isChanged && (
+                                          {!isChanged && (
                                             <div className="absolute -right-1 -top-1">
                                               <FundsTag color="pink" />
                                             </div>
@@ -831,8 +1076,7 @@ const Funds = () => {
                                           }}
                                           className="bg-button-brand-surface-default text-button-brand-label-onsurface relative cursor-pointer rounded-md p-1"
                                         >
-                                          {(Object.entries(selectedFilters)
-                                            .length > 0 ||
+                                          {(filterOptions.length ||
                                             fundSearchQuery) && (
                                             <div className="absolute -right-1 -top-1 z-30">
                                               <FundsTag color="pink" />
@@ -860,25 +1104,17 @@ const Funds = () => {
                                     }}
                                     key={index}
                                     className={cn(
-                                      'bg-surface-brand-100 m-0 h-full w-full text-nowrap p-0 text-sm font-medium',
-                                      String(
-                                        flexRender(
-                                          header.column.columnDef.header,
-                                          header.getContext(),
-                                        ),
-                                      ).length > 10
-                                        ? 'w-[200px]'
-                                        : 'w-[144px]',
+                                      'm-0 h-full text-nowrap p-0 text-sm font-medium',
+                                      columnClass,
                                     )}
                                   >
                                     {index >= 2 &&
                                     header.isPlaceholder ? null : (
                                       <div
-                                        {...{
-                                          className: header.column.getCanSort()
-                                            ? 'cursor-pointer h-[75px] select-none'
-                                            : '',
-                                        }}
+                                        className={cn('w-full', {
+                                          'h-[75px] cursor-pointer select-none':
+                                            header.column.getIsSorted(),
+                                        })}
                                       >
                                         <FundsColumnHeader
                                           active={!isRotating}
@@ -890,27 +1126,18 @@ const Funds = () => {
                                             setActiveSortIndex(0);
                                             setSorting([
                                               {
-                                                id: 'nameFund',
+                                                id: 'abbreviated_name',
                                                 desc: false,
                                               },
                                             ]);
                                           }}
-                                          clickFilterd={() => {
+                                          clickFiltered={() => {
                                             setActiveSortIndex(index);
                                             header.column.getToggleSortingHandler()?.(
                                               new Event('click'),
                                             );
                                           }}
-                                          size={
-                                            String(
-                                              flexRender(
-                                                header.column.columnDef.header,
-                                                header.getContext(),
-                                              ),
-                                            ).length > 10
-                                              ? 'large'
-                                              : 'medium'
-                                          }
+                                          size={'large'}
                                           type={
                                             header.column.getIsSorted() ===
                                             'asc'
@@ -920,8 +1147,20 @@ const Funds = () => {
                                                 ? 'active-asc'
                                                 : 'inactive'
                                           }
-                                          filterable={false}
-                                          subTitle={header.column.parent?.id}
+                                          filterable={
+                                            (
+                                              header.column.columnDef
+                                                .meta as FundColumnMeta
+                                            )?.columnFilter?.options.length
+                                              ? true
+                                              : false
+                                          }
+                                          subTitle={
+                                            (
+                                              header.column.columnDef
+                                                .meta as FundColumnMeta
+                                            )?.group ?? ''
+                                          }
                                           title={String(
                                             flexRender(
                                               header.column.columnDef.header,
@@ -971,7 +1210,7 @@ const Funds = () => {
                           >
                             {activeId && (
                               <div className="text-text-neutral-primary bg-surface-brand-200 flex h-20 w-full items-center justify-center">
-                                {activeId}
+                                {columnMap[activeId] || activeId}
                               </div>
                             )}
                           </th>
@@ -985,7 +1224,9 @@ const Funds = () => {
                         <div
                           onMouseDown={startScrollRight}
                           onMouseLeave={stopScroll}
-                          className={cn('hidden group-hover:block')}
+                          className={cn('hidden', {
+                            'group-hover:block': hasHorizontalScroll,
+                          })}
                         >
                           <Tooltip title="پیمایش به چپ (A)">
                             <button
@@ -1003,25 +1244,35 @@ const Funds = () => {
                 </DndContext>
               </thead>
             )}
-            {rows.length ? (
-              <TableBody
-                handlerMarkFund={handlerMarkFund}
-                allRows={sortedFunds.length}
-                rowMarks={rowsMark}
-                tableRef={tableRef as RefObject<HTMLDivElement>}
-                isScrollAtStart={isScrollAtStart}
-                handlerPinned={handlerPinned}
-                handlerUnPinned={handlerUnPinned}
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                rows={rows as any}
-                activeIndexCategoryTab={activeIndexCategoryTab}
-              />
-            ) : (
+            {query.isLoading || query.error ? (
               <tbody className="overflow-y-hidden">
                 {Array.from({ length: 10 }).map((_, i) => (
                   <RowSkeleton key={i} />
                 ))}
               </tbody>
+            ) : (
+              <TableBody
+                handlerMarkFund={handlerMarkFund}
+                allRows={sortedFunds.length}
+                rowMarks={rowsMark}
+                tableRef={tableRef as RefObject<HTMLDivElement>}
+                tabs={tabs?.tabs || []}
+                isScrollAtStart={isScrollAtStart}
+                handlerPinned={handlerPinned}
+                handlerUnPinned={handlerUnPinned}
+                handlerDeleteWatchList={handlerDeleteWatchList}
+                handlerAddToWatchList={handlerAddToWatchList}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                rows={rows as any}
+                activeIndexCategoryTab={activeIndexCategoryTab}
+              />
+            )}
+            {!rows.length && !query.isLoading && !query.error && (
+              <div className="sticky right-0 -mt-10 w-screen whitespace-nowrap text-sm text-gray-600">
+                {activeIndexCategoryTab !== 1000
+                  ? 'صندوقی وجود ندارد.'
+                  : 'صندوقی در دیده‌بان وجود ندارد.'}
+              </div>
             )}
           </table>
         </div>
@@ -1151,96 +1402,132 @@ const Funds = () => {
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center justify-between">
-            <span
-              className={cn(
-                'text-text-neutral-primary p-6 text-xl font-medium',
-                {
-                  'text-red-600':
-                    table
-                      .getAllLeafColumns()
-                      .filter((col) => col.getIsVisible()).length === 25,
-                },
-              )}
-            >
-              انتخاب ستون‌ها (
-              {
-                table.getAllLeafColumns().filter((col) => col.getIsVisible())
-                  .length
-              }
+            <span className="text-text-neutral-primary p-6 text-xl font-medium">
+              انتخاب ستون‌ها
               <span
-                className={cn({
+                className={cn('mr-0.5', {
                   'text-text-message-error-primary-600':
-                    table
-                      .getAllLeafColumns()
-                      .filter((col) => col.getIsVisible()).length === 25,
+                    table.getAllLeafColumns().length - 1 === 25,
                 })}
               >
-                /25)
+                ({table.getAllLeafColumns().length - 1}/25)
               </span>
             </span>
           </div>
-          {isChanged && (
+          {!isChanged && (
             <span
               className="text-button-error-label-plain-default m-6 cursor-pointer text-base font-medium"
-              onClick={() => table.resetColumnVisibility()}
+              onClick={handlerResetColumns}
             >
               بازنشانی به پیشفرض
             </span>
           )}
         </div>
 
-        <div className="bg-border-neutral-primary h-[2px] w-full"></div>
+        <div className="bg-border-neutral-primary h-[2px] w-full" />
         <div
           dir="rtl"
           className="scrollbar-md mb-6 h-[550px] overflow-x-hidden overflow-y-scroll"
         >
-          {table.getAllColumns().map((item, index) => {
-            if (index === 0) return null;
+          {query.data?.columnGroups.map((col, index) => {
             return (
-              <div className="my-6 text-right" key={index}>
-                <span className="mb-4 mr-4 text-right text-base font-semibold">
-                  {/* {item.columnDef.meta?.group} */}
-                </span>
-                <div className="grid grid-cols-2 px-4 pb-6">
-                  <div
-                    className="hover:bg-brand-100 rounded-md p-3"
-                    key={index}
-                  >
-                    {item && (
-                      <Checkbox
-                        onChange={() => {
-                          if (
-                            item.columnDef.header?.toString() === 'بازه دلخواه'
-                          ) {
-                            setCustomColl({ active: true, date: '' });
-                          }
-                          if (
-                            table
-                              .getAllLeafColumns()
-                              .filter((col) => col.getIsVisible()).length === 25
-                          ) {
-                            if (item.getIsVisible())
-                              item.toggleVisibility(!item.getIsVisible());
-                          } else if (
-                            table
-                              .getAllLeafColumns()
-                              .filter((col) => col.getIsVisible()).length === 7
-                          ) {
-                            if (!item.getIsVisible())
-                              item.toggleVisibility(!item.getIsVisible());
-                          } else {
-                            item.toggleVisibility(!item.getIsVisible());
-                          }
-                        }}
-                        content={item.columnDef.header?.toString()}
-                        checked={item.getIsVisible()}
-                      />
-                    )}
-                  </div>
-                </div>
-                {index + 1 < table.getAllColumns().length && (
-                  <hr className="border-border-neutral-primary" />
+              <div
+                key={col.identifier}
+                className={cn(
+                  'border-border-neutral-secondary px-4 py-6 text-right',
+                  {
+                    'border-b': index !== query.data.columnGroups.length - 1,
+                  },
                 )}
+              >
+                <span className="text-text-neutral-primary text-base font-semibold">
+                  {col.label}
+                </span>
+                <div className="mt-4 grid grid-cols-2">
+                  {localColumns
+                    .filter((column) => column.columnGroupId === col.identifier)
+                    .sort((a, b) => {
+                      if (a.nameInGroup === 'بازه دلخواه') return 1;
+                      if (b.nameInGroup === 'بازه دلخواه') return -1;
+                      return 0;
+                    })
+                    .map((column) => (
+                      <div
+                        className={cn('w-full rounded-lg', {
+                          'col-span-2 w-1/2':
+                            column.nameInGroup === 'بازه دلخواه',
+                          'col-span-2 w-full':
+                            column.nameInGroup === 'بازه دلخواه' &&
+                            (customColumnDate.start ||
+                              column.customPeriodStartJdate),
+                          'hover:bg-surface-brand-100 cursor-pointer':
+                            !customColumnDate.start,
+                        })}
+                        key={column.key}
+                      >
+                        {column.nameInGroup === 'بازه دلخواه' &&
+                        ((customColumnDate.start &&
+                          customColumnDate.groupId === column.key) ||
+                          column.customPeriodStartJdate) ? (
+                          <Checkbox
+                            className="px-2 py-3"
+                            checked={column.visible}
+                            onChange={() => {}}
+                            reactContent={
+                              <div className="flex items-center gap-4">
+                                <p className="text-text-neutral-primary text-sm">
+                                  بازه دلخواه:{' '}
+                                  {column.customPeriodStartJdate ??
+                                    customColumnDate.start}{' '}
+                                  -
+                                  {column.customPeriodStartJdate ??
+                                    customColumnDate.end}
+                                </p>
+                                <button
+                                  onClick={() => setIsShowDatePicker(true)}
+                                  className="text-button-brand-label-plain-default font-medium"
+                                >
+                                  تغییر بازه
+                                </button>
+                              </div>
+                            }
+                          />
+                        ) : (
+                          <Checkbox
+                            className="px-2 py-3"
+                            checked={column.visible}
+                            onChange={() => {
+                              if (column.nameInGroup === 'بازه دلخواه') {
+                                setIsShowDatePicker(true);
+                                setCustomColumnDate({
+                                  start: '',
+                                  end: '',
+                                  groupId: column.key,
+                                });
+                              }
+                              if (column.visible) {
+                                handlerChangeVisibilityColumns({
+                                  columnKey: column.key,
+                                  visible: column.visible,
+                                });
+                              } else if (
+                                table.getAllLeafColumns().length - 1 <
+                                25
+                              ) {
+                                handlerChangeVisibilityColumns({
+                                  columnKey: column.key,
+                                  visible: column.visible,
+                                });
+                              }
+                            }}
+                            reactContent={
+                              column.nameInGroup ?? column.upperTitle
+                            }
+                          />
+                        )}
+                      </div>
+                    ))}
+                </div>
               </div>
             );
           })}
@@ -1255,27 +1542,60 @@ const Funds = () => {
           <FilterPopUpSection
             searchValue={fundSearchQuery}
             onSearchChange={setFundSearchQuery}
-            filterOptions={filterList}
+            filterOptions={filterOptions}
             selectedFilters={selectedFilters}
             onFilterChange={setSelectedFilters}
           />
         </div>
       </Dialog>
-      <Dialog
-        isOpen={customColl.active}
-        className="bg-gray-100 p-0"
-        onClose={() => setCustomColl({ active: false, date: '' })}
-      >
-        <DatePicker
-          dateRange={{ end: '1404-12-12', start: '1300-01-12' }}
-          max="1404-12-12"
-          min="1300-01-12"
-          setDateRange={() => {
-            setCustomColl({ active: false, date: 'date' });
-          }}
-        ></DatePicker>
-      </Dialog>
       <Toaster position="bottom-center" />
+      {isShowDatePicker && (
+        <Dialog
+          onClose={() => setIsShowDatePicker(false)}
+          isOpen={isShowDatePicker}
+        >
+          <PersianDatePicker
+            onClose={() => setIsShowDatePicker(false)}
+            defaultValue={{
+              end: customColumnDate.end,
+              start: customColumnDate.start,
+            }}
+            onChange={async (e) => {
+              console.log(String(e.start)?.replace('/', '-').replace('/', '-'));
+
+              try {
+                await updateColumn.mutateAsync({
+                  requestBody: {
+                    column: {
+                      key: customColumnDate.groupId,
+                      sortDirection: 'NO',
+                      visible: true,
+                      customPeriodEndJdate: e.end
+                        ?.replace('/', '-')
+                        .replace('/', '-'),
+                      customPeriodStartJdate: e.start
+                        ?.replace('/', '-')
+                        .replace('/', '-'),
+                      selectedColumnFilters: null,
+                    },
+                  },
+                  tab: activeIndexCategoryTab,
+                });
+              } catch (error) {
+                console.log(error);
+              }
+              setCustomColumnDate((prev) => ({
+                start: e.start ?? '',
+                end: e.end ?? '',
+                groupId: prev.groupId,
+              }));
+            }}
+            mode="range"
+            min="1380/01/01"
+            max="1404/06/03"
+          />
+        </Dialog>
+      )}
     </>
   );
 };

@@ -2,7 +2,7 @@ import { cn } from '../../../utils';
 import { Icon, IconProps } from '../Icon';
 
 export interface BadgeProps {
-  theme: 'disabled' | 'green' | 'blue' | 'purple' | 'yellow' | 'red';
+  theme: 'disabled' | 'green' | 'blue' | 'purple' | 'yellow' | 'red' | 'pink';
   icon?: IconProps;
   title: string;
 }

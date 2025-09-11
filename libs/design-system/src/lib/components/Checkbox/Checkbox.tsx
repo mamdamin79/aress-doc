@@ -10,7 +10,7 @@ import { Check } from 'lucide-react';
 
 interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onChange: () => void;
-  reactcontent?: string | ReactNode;
+  reactContent?: string | ReactNode;
   className?: string;
 }
 
@@ -18,7 +18,7 @@ export function Checkbox(props: CheckboxProps) {
   const unikId = useId();
 
   return (
-    <Field className="flex w-full items-center gap-2">
+    <Field className={cn('flex w-full items-center gap-2', props.className)}>
       <CheckboxHeadlessUIProps
         aria-roledescription="checkbox"
         {...props}
@@ -45,10 +45,9 @@ export function Checkbox(props: CheckboxProps) {
               props.checked && !props.disabled,
           },
           'text-sm',
-          props.className,
         )}
       >
-        {props.reactcontent ? props.reactcontent : props.content}
+        {props.reactContent ?? ''}
       </Label>
     </Field>
   );

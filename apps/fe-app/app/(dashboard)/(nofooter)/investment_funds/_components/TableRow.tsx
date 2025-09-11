@@ -7,21 +7,39 @@ import {
   cn,
   Bookmark,
   useCustomToast,
+  FundsTag,
+  Badge,
+  formatNumber,
 } from 'design-system';
 import {
   useFundsServicePostFundsTableTabByTabPin,
   useFundsServicePostFundsTableTabByTabUnpin,
-  useFundsServicePostFundsTableTabByTabMark,
-  useFundsServicePostFundsTableTabByTabUnmark,
+  useFundsServicePostFundsByFundIdUnmark,
+  useFundsServicePostFundsByFundIdMark,
+  useFundsServicePutFundsByFundIdWatchlist,
+  useFundsServiceDeleteFundsByFundIdWatchlist,
 } from '@openapi';
 import { FundRow, FundsInfoCellProps, TableRowProps } from '../types';
+import Link from 'next/link';
+import { flexRender } from '@tanstack/react-table';
+
+// Define the allowed colors as a type for easier use
+type FundsTagColor =
+  | 'purple'
+  | 'blue'
+  | 'green'
+  | 'yellow'
+  | 'pink'
+  | 'disabled';
 
 function FundsInfoCell({
+  tabs,
   name,
   isEtf,
-  tag,
   unPinedFunction,
   pinedFunction,
+  addToWatchlist,
+  deleteToWatchlist,
   logo,
   canPin,
   pined,
@@ -29,8 +47,9 @@ function FundsInfoCell({
   isScrolled,
   className,
   isTradable,
+  isWatchList,
+  fundType,
 }: FundsInfoCellProps) {
-  const { showProgressToast } = useCustomToast();
   const [isShowDropDown, setIsShowDropDown] = useState(false);
 
   return (
@@ -48,31 +67,34 @@ function FundsInfoCell({
       )}
     >
       <div className="relative flex h-full items-center gap-2 pl-2 pr-6">
-        <span
-          className={cn(
-            'border-border-accent-vividgreen-200 text-text-onaccent-colored-onvividgreen-on200_100_50 bg-surface-accent-vividgreen-100 h-[25px] w-fit select-none rounded-sm border px-2 pt-0.5 text-xs font-medium',
-            {
-              'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]': !isEtf,
-            },
-          )}
-        >
-          ETF
-        </span>
-        <span
-          className={cn(
-            'border-border-accent-vividgreen-200 text-text-onaccent-colored-onvividgreen-on200_100_50 bg-surface-accent-vividgreen-100 h-[25px] w-fit select-none whitespace-nowrap rounded-sm border px-2 text-xs font-medium',
-            {
-              'border-[#B3B6BD] bg-[#F3F4F6] text-[#74777C]': !isTradable,
-            },
-          )}
-        >
-          قابل خرید
-        </span>
-        <div
-          className={cn('invisible box-content h-2.5 w-2.5 rounded-full', {
-            visible: tag,
-          })}
-        ></div>
+        <Badge
+          theme={
+            isEtf
+              ? (tabs?.find((tab) => tab.identifier === fundType.identifier)
+                  ?.color as FundsTagColor)
+              : 'disabled'
+          }
+          title="ETF"
+        />
+        <Badge
+          theme={
+            isTradable
+              ? (tabs?.find((tab) => tab.identifier === fundType.identifier)
+                  ?.color as FundsTagColor)
+              : 'disabled'
+          }
+          title="قابل خرید"
+        />
+        {isWatchList ? (
+          <FundsTag
+            color={
+              tabs?.find((tab) => tab.identifier === fundType.identifier)
+                ?.color as FundsTagColor
+            }
+          />
+        ) : (
+          <div className="h-2.5 w-2.5" />
+        )}
         <div className="group/img relative">
           <FundsLogo
             size="sm"
@@ -82,16 +104,22 @@ function FundsInfoCell({
             src={`http://185.236.36.153:8000${logo}`}
           />
         </div>
-        {name.length > 21 ? (
+        {name.length > 19 ? (
           <Tooltip offset={2} position="left" title={name}>
-            <p className="text-gray-1000 hover:text-text-brand-contrast-700 w-[130px] truncate text-right text-sm font-medium">
+            <Link
+              href={`/my-fund`}
+              className="text-gray-1000 hover:text-text-brand-contrast-700 w-[130px] cursor-pointer truncate text-right text-sm font-medium"
+            >
               {name}
-            </p>
+            </Link>
           </Tooltip>
         ) : (
-          <p className="text-gray-1000 hover:text-text-brand-contrast-700 w-[130px] truncate text-right text-sm font-medium">
+          <Link
+            href={`/my-fund`}
+            className="text-gray-1000 hover:text-text-brand-contrast-700 w-[130px] cursor-pointer truncate text-right text-sm font-medium"
+          >
             {name}
-          </p>
+          </Link>
         )}
         {!isShowDropDown && (
           <div
@@ -111,8 +139,9 @@ function FundsInfoCell({
         )}
         {isShowDropDown && (
           <OptionsDropdown
-            className="!border-border-neutral-primary shadow-7xl"
+            className="!border-border-neutral-primary shadow-7xl overflow-y-hidden"
             dropDownStyles={{
+              scrollable: false,
               anchor: 'bottom start',
               size: 'md',
               bg: 'primary',
@@ -120,22 +149,14 @@ function FundsInfoCell({
             }}
             dropDownList={[
               { text: 'مشاهده صندوق', icon: { name: 'eye', size: 'md' } },
-              { text: 'مشاهده ویدیو', icon: { name: 'video', size: 'md' } },
               {
                 text: pined ? 'برداشتن پین' : 'پین کردن',
                 icon: { name: pined ? 'pin-off' : 'pin', size: 'md' },
               },
-              // {
-              //   text:
-              //     category === 'stocks'
-              //       ? 'افزودن به دیده‌بان'
-              //       : 'حذف از دیده‌بان',
-              //   icon: {
-              //     name: category === 'stocks' ? 'plus' : 'minus',
-              //     size: 'md',
-              //   },
-              // },
-              { text: 'افزودن به دیده بان' },
+              {
+                text: isWatchList ? 'حذف از دیده‌بان' : 'افزودن به دیده‌بان',
+                icon: { name: isWatchList ? 'minus' : 'plus' },
+              },
             ]}
             customTriggerRender={(prop) => {
               return (
@@ -162,22 +183,10 @@ function FundsInfoCell({
                   onClick={() => {
                     if (prop.text === 'پین کردن' && canPin) pinedFunction();
                     if (prop.text === 'برداشتن پین') unPinedFunction();
-                    if (prop.text === 'افزودن به دیده‌بان') {
-                      showProgressToast({
-                        title: 'صندوق مورد نظر به دیده بان اضافه شد.',
-                        timeout: 3000,
-                      });
-                    }
-                    if (prop.text === 'حذف از دیده‌بان') {
-                      showProgressToast({
-                        title: 'صندوق مورد نظر از دیده بان حذف شد.',
-                        timeout: 3000,
-                        leadingAction: {
-                          iconProps: { name: 'undo-2', size: 'sm' },
-                          onClick: () => void 0,
-                        },
-                      });
-                    }
+                    if (prop.text === 'افزودن به دیده‌بان') addToWatchlist();
+                    if (prop.text === 'حذف از دیده‌بان') deleteToWatchlist();
+                    if (prop.text === 'مشاهده صندوق')
+                      window.location.href = '/my-fund';
                   }}
                   className={cn(
                     'text-text-neutral-primary hover:text-text-brand-contrast-700 bg-surface-neutral-primary flex w-[168px] cursor-pointer items-center gap-2 py-2 pr-2 text-sm font-medium',
@@ -218,14 +227,19 @@ function TableRowInner<T extends FundRow>({
   handlerUnPinned,
   handlerMarkFund,
   rowMarks,
+  handlerDeleteWatchList,
+  handlerAddToWatchList,
+  tabs,
 }: TableRowProps<T>) {
   const { showProgressToast, showToast } = useCustomToast();
 
   const [showMark, setShowMark] = useState(false);
   const pinFundMutation = useFundsServicePostFundsTableTabByTabPin();
   const unPinFundMutation = useFundsServicePostFundsTableTabByTabUnpin();
-  const markFundMutation = useFundsServicePostFundsTableTabByTabMark();
-  const unMarkFundMutation = useFundsServicePostFundsTableTabByTabUnmark();
+  const markFundMutation = useFundsServicePostFundsByFundIdMark();
+  const unMarkFundMutation = useFundsServicePostFundsByFundIdUnmark();
+  const addToWathcList = useFundsServicePutFundsByFundIdWatchlist();
+  const deleteToWatchList = useFundsServiceDeleteFundsByFundIdWatchlist();
 
   const handlePinFund = async (fundId: number, isShowToast: boolean) => {
     try {
@@ -290,16 +304,17 @@ function TableRowInner<T extends FundRow>({
       if (existingMark && existingMark.color === color) {
         // Call unmark API
         await unMarkFundMutation.mutateAsync({
-          tab: activeIndexCategoryTab,
-          requestBody: { fund: fundId },
+          fundId: fundId,
         });
         // Update local state
         handlerMarkFund(fundId, color); // This will remove the mark as per your handler
       } else {
         // Call mark API
         await markFundMutation.mutateAsync({
-          tab: activeIndexCategoryTab,
-          requestBody: { fund: fundId, color },
+          fundId: fundId,
+          requestBody: {
+            color: color,
+          },
         });
         // Update local state
         handlerMarkFund(fundId, color);
@@ -309,13 +324,61 @@ function TableRowInner<T extends FundRow>({
     }
   };
 
+  const handlerAddWatchList = async (showToast?: boolean) => {
+    handlerAddToWatchList(row.original.id);
+    try {
+      await addToWathcList.mutateAsync({
+        fundId: row.original.id,
+      });
+      if (showToast) {
+        showProgressToast({
+          timeout: 5000,
+          title: 'صندوق مورد نظر به دیده‌بان اضافه شد.',
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handlerDeleteInWatchList = async () => {
+    try {
+      await deleteToWatchList.mutateAsync({
+        fundId: row.original.id,
+      });
+      handlerDeleteWatchList(row.original.id);
+
+      // A flag to ensure undo is only called once
+      let hasBeenUndone = false;
+
+      showProgressToast({
+        timeout: 5000,
+        title: 'صندوق مورد نظر از دیده‌بان حذف شد.',
+        leadingAction: {
+          iconProps: { name: 'undo-2', size: 'sm' },
+          onClick: () => {
+            // If it has already been undone, do nothing.
+            if (hasBeenUndone) {
+              return;
+            }
+            // Set the flag to true and then add the item back.
+            hasBeenUndone = true;
+            handlerAddWatchList(false);
+          },
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <tr
       onMouseEnter={() => setShowMark(true)}
       key={row.id}
       className="border-border-neutral-secondary group h-[46px] border-b"
     >
-      <td className="sticky right-0 top-0 z-40 m-0 flex items-center py-0">
+      <td className="sticky right-0 top-0 z-40 m-0 flex w-full items-center py-0">
         <div className="absolute z-50 pr-0">
           {(showMark ||
             rowMarks.find((item) => item.id === row.original.id)) && (
@@ -330,6 +393,7 @@ function TableRowInner<T extends FundRow>({
         </div>
         <div>
           <FundsInfoCell
+            tabs={tabs}
             isRowHovered={true}
             tag={!isMainTab}
             canPin={true}
@@ -339,31 +403,52 @@ function TableRowInner<T extends FundRow>({
             isEtf={!!row.original?.isEtf}
             isTradable={row.original?.isTradable}
             name={row.original?.nameFund}
+            isWatchList={activeIndexCategoryTab === 1000 ? true : false}
             pined={row.original.pinned}
+            fundType={row.original.fundType}
             selected={false}
+            addToWatchlist={() => handlerAddWatchList(true)}
+            deleteToWatchlist={handlerDeleteInWatchList}
             logo={row.original?.logo}
             investmentMethod={row.original?.investmentMethod}
           />
         </div>
       </td>
-      <td></td>
-      {row?.getVisibleCells().map((item) => (
-        <td
-          dir="ltr"
-          className={cn(
-            'bg-surface-neutral-primary text-text-neutral-primary group-hover:bg-surface-accent-blue-50',
-            {
-              'text-text-accent-red-contrast-700':
-                (item.getValue() as number) < 0,
-              'bg-surface-accent-blue-50 group-hover:surface-accent-blue-100':
-                row.original.pinned,
-            },
-          )}
-          key={item.id}
-        >
-          {item.getValue() as string}
-        </td>
-      ))}
+      <td
+        className={cn('w-full', {
+          'bg-surface-accent-blue-50 group-hover:surface-accent-blue-100':
+            row.original.pinned,
+          'group-hover:bg-surface-accent-blue-50': !row.original.pinned,
+        })}
+      ></td>
+      {row?.getVisibleCells().map((item, index) => {
+        return (
+          <td
+            dir="ltr"
+            className={cn(
+              'bg-surface-neutral-primary text-text-neutral-primary group-hover:bg-surface-accent-blue-50',
+              {
+                'text-text-accent-red-contrast-700':
+                  (item.getValue() as number) < 0,
+                'bg-surface-accent-blue-50 group-hover:surface-accent-blue-100':
+                  row.original.pinned,
+              },
+            )}
+            key={item.id}
+          >
+            {index !== 0
+              ? item.getValue() !== null
+                ? typeof item.getValue() === 'number'
+                  ? formatNumber(item.getValue() as number, {
+                      commaSeparated: true,
+                      decimals: 2,
+                    })
+                  : flexRender(item.column.columnDef.cell, item.getContext())
+                : '-'
+              : ''}
+          </td>
+        );
+      })}
     </tr>
   );
 }

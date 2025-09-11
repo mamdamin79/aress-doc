@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Icon } from '../Icon';
 import { RemovableLabel } from '../RemovableLabel';
 import { Checkbox } from '../Checkbox';
@@ -7,10 +7,17 @@ import { cn } from '../../../utils';
 import { TextField } from '../TextField';
 import { Button } from '../Button';
 
+interface FilterOptionItem {
+  label: string;
+  select: boolean;
+  min_amount: number | null;
+  max_amount: number | null;
+}
+
 interface FilterOption {
   title: string;
-  options: string[];
-  singleSelect: boolean;
+  singleOpen: boolean;
+  options: FilterOptionItem[];
 }
 
 interface Prop {
@@ -50,26 +57,42 @@ export function FilterPopUpSection({
   onSearchChange,
 }: Prop) {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const [hasReset, setHasReset] = useState(false);
+  const [initialFilters, setInitialFilters] = useState<
+    Record<string, string[]>
+  >({});
   const [tempSelectedFilters, setTempSelectedFilters] = useState<
     Record<string, string[]>
   >({});
 
-  const openFilter = (title: string) => {
-    setActiveFilter(title);
-    setTempSelectedFilters(selectedFilters);
-  };
+  useEffect(() => {
+    if (hasReset) return;
+    const init: Record<string, string[]> = {};
+    filterOptions.forEach((filter) => {
+      const selectedOptions = filter.options
+        .filter((opt) => opt.select)
+        .map((opt) => opt.label);
+      if (selectedOptions.length > 0) init[filter.title] = selectedOptions;
+    });
+    setTempSelectedFilters(init);
+    setInitialFilters(init);
+  }, [filterOptions]);
 
+  const openFilter = (title: string) => {
+    setTempSelectedFilters(initialFilters);
+    setActiveFilter(title);
+  };
   const toggleFilterOption = (
     category: string,
     option: string,
-    singleSelect: boolean,
+    singleOpen: boolean,
   ) => {
     setTempSelectedFilters((prev) => {
       const currentOptions = prev[category] || [];
 
-      if (singleSelect) {
+      if (singleOpen) {
         if (currentOptions.includes(option)) {
-          const { ...rest } = prev;
+          const { [category]: _, ...rest } = prev;
           return rest;
         }
         return { ...prev, [category]: [option] };
@@ -79,7 +102,7 @@ export function FilterPopUpSection({
           : [...currentOptions, option];
 
         if (updatedOptions.length === 0) {
-          const { ...rest } = prev;
+          const { [category]: _, ...rest } = prev;
           return rest;
         }
         return { ...prev, [category]: updatedOptions };
@@ -88,16 +111,18 @@ export function FilterPopUpSection({
   };
 
   const handleConfirm = () => {
-    onFilterChange(tempSelectedFilters);
     setActiveFilter(null);
+    setInitialFilters(tempSelectedFilters);
+    onFilterChange(tempSelectedFilters);
   };
-
   const handleClearAll = () => {
     onFilterChange({});
     onSearchChange('');
+    setTempSelectedFilters({});
+    setHasReset(true);
   };
 
-  const hasChanged = !areFiltersEqual(tempSelectedFilters, selectedFilters);
+  const hasChanged = !areFiltersEqual(tempSelectedFilters, initialFilters);
 
   return (
     <div
@@ -108,7 +133,7 @@ export function FilterPopUpSection({
       {/* Header */}
       <div className="flex items-center justify-between px-6 pb-4 pt-6 text-xl font-medium">
         <span className="text-text-neutral-primary">فیلتر صندوق‌ها</span>
-        {(Object.keys(selectedFilters).length > 0 || searchValue) && (
+        {(Object.keys(tempSelectedFilters).length > 0 || searchValue) && (
           <span
             onClick={handleClearAll}
             className="text-button-error-label-plain-default cursor-pointer text-base font-medium"
@@ -145,27 +170,28 @@ export function FilterPopUpSection({
                   <Icon name="chevron-left" size="lg" />
                 </div>
 
-                {selectedFilters[item.title] && (
+                {tempSelectedFilters[item.title] && (
                   <div className="pt-2" onClick={(e) => e.stopPropagation()}>
                     <div className="bg-border-neutral-primary h-[2px] w-full" />
                     <div className="flex flex-wrap gap-2 pt-2">
-                      {selectedFilters[item.title]?.map((option, i) => (
+                      {tempSelectedFilters[item.title]?.map((option, i) => (
                         <RemovableLabel
                           key={i}
                           item=""
                           label={option}
                           onClose={() => {
                             const currentOptions =
-                              selectedFilters[item.title] || [];
+                              tempSelectedFilters[item.title] || [];
                             const updatedOptions = currentOptions.filter(
                               (o) => o !== option,
                             );
                             if (updatedOptions.length === 0) {
-                              const { ...rest } = selectedFilters;
-                              onFilterChange(rest);
+                              const { [item.title]: _, ...rest } =
+                                tempSelectedFilters;
+                              setTempSelectedFilters(rest);
                             } else {
-                              onFilterChange({
-                                ...selectedFilters,
+                              setTempSelectedFilters({
+                                ...tempSelectedFilters,
                                 [item.title]: updatedOptions,
                               });
                             }
@@ -204,11 +230,12 @@ export function FilterPopUpSection({
               ?.options.map((option, index) => (
                 <div key={index} className="flex items-center gap-2 py-3 pr-6">
                   <Checkbox
-                    content={option}
+                    reactContent={option.label}
                     disabled={false}
                     checked={
-                      tempSelectedFilters[activeFilter]?.includes(option) ||
-                      false
+                      tempSelectedFilters[activeFilter]?.includes(
+                        option.label,
+                      ) || false
                     }
                     onChange={() => {
                       const filter = filterOptions.find(
@@ -216,8 +243,8 @@ export function FilterPopUpSection({
                       );
                       toggleFilterOption(
                         activeFilter,
-                        option,
-                        filter?.singleSelect || false,
+                        option.label,
+                        filter?.singleOpen || false,
                       );
                     }}
                   />
