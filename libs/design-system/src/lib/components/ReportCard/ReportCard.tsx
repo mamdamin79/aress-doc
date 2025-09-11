@@ -50,7 +50,7 @@ export const ReportCard: React.FC<ReportCardProps> = ({
       <div className="mt-3 w-full px-3">
         <div
           className={cn(
-            `bg-surface-neutral-primary flex w-full items-center justify-center overflow-hidden rounded-xl shadow-md`,
+            `flex w-full items-center justify-center overflow-hidden rounded-xl bg-white shadow-md`,
             fixedBrief ? 'mx-auto h-[192px]' : 'h-[184px]',
           )}
         >

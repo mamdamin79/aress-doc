@@ -1,14 +1,22 @@
-import { Button, TextField } from 'design-system';
+import { Button, TextField, useCustomToast } from 'design-system';
 import React, { useState } from 'react';
 import { InputPasswordForm } from '../ChangeNumber';
 import { Controller, useForm } from 'react-hook-form';
 import { OTPForm } from '../../OTPForm';
+import {
+  useUsersServicePostUsersProfileEmailChange,
+  useUsersServicePostUsersProfileEmailChangeOtp,
+} from '@openapi';
 
 const SectionHeader = ({ title }: { title: string }) => (
   <span className="text-md text-text-neutral-primary text-center font-medium">
     {title}
   </span>
 );
+const genericErrorText = 'خطایی رخ داد.';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const extractErrorMessage = (error: any) =>
+  error?.body?.message || error?.message || genericErrorText;
 interface NewMailFormValues {
   email: string;
 }
@@ -31,7 +39,6 @@ const NewMailForm = ({
 
   const onSaveData = async (data: NewMailFormValues) => {
     await new Promise((r) => setTimeout(r, 2000));
-    console.log(data);
     onSubmit?.(data);
   };
   return (
@@ -107,41 +114,92 @@ enum ChangeMailStage {
 
 export const ChangeMail = ({
   onClose,
+  currentMail,
 }: {
   onClose?: (success?: boolean) => void;
+  currentMail: string;
 }) => {
   const [stage, setStage] = useState<ChangeMailStage | null>(0);
   const [newMail, setNewMail] = useState<string | null>(null);
+  const [passwordVerificationToken, setPasswordVerificationToken] =
+    useState('');
+  const [retrySeconds, setRetrySeconds] = useState(120);
+
+  const { showToast } = useCustomToast();
+
+  const { mutate, isPending } = useUsersServicePostUsersProfileEmailChange();
+
+  const verifyOtp = async (otp: string) => {
+    mutate(
+      { requestBody: { otp } },
+      {
+        onSuccess: () => {
+          onClose?.(true);
+        },
+        onError: (error) =>
+          showToast({ message: extractErrorMessage(error), type: 'error' }),
+      },
+    );
+  };
+
+  const { mutate: otpMutate } = useUsersServicePostUsersProfileEmailChangeOtp();
+
+  // accepts optional email param
+  const resendOTP = async (emailParam?: string) => {
+    const emailToUse = emailParam || newMail;
+    if (!emailToUse || !passwordVerificationToken) return;
+
+    otpMutate(
+      {
+        requestBody: {
+          newEmail: emailToUse,
+          passwordVerificationToken,
+        },
+      },
+      {
+        onError: (error) =>
+          showToast({ message: extractErrorMessage(error), type: 'error' }),
+        onSuccess(response) {
+          setRetrySeconds(response.retrySeconds);
+        },
+      },
+    );
+  };
 
   return (
     <>
       {stage === ChangeMailStage.PASSWORD && (
         <InputPasswordForm
-          onSubmit={() => setStage(ChangeMailStage.NEW_MAIL)}
+          onSubmit={(token) => {
+            setPasswordVerificationToken(token);
+            setStage(ChangeMailStage.NEW_MAIL);
+          }}
           title="ایمیل جدید"
-          subTitle="جهت تغییر ایمیل، ابتدا رمز فعلی خود را وارد کنید.
-          
-"
+          subTitle="جهت تغییر ایمیل، ابتدا رمز فعلی خود را وارد کنید."
         />
       )}
+
       {stage === ChangeMailStage.NEW_MAIL && (
         <NewMailForm
-          email="sinapir2@gmail.com"
+          email={currentMail}
           onSubmit={(data) => {
             setNewMail(data.email);
+            resendOTP(data.email);
             setStage(ChangeMailStage.OTP);
           }}
         />
       )}
+
       {stage === ChangeMailStage.OTP && (
         <OTPForm
           description={`کد تایید ارسال شده به ${newMail} را وارد کنید.`}
           backBtnLabel="ویرایش ایمیل"
           onBackBtn={() => setStage(ChangeMailStage.NEW_MAIL)}
           title="ایمیل جدید"
-          onSubmit={() => {
-            onClose?.(true);
-          }}
+          onSubmit={verifyOtp}
+          onResendCode={resendOTP}
+          isLoading={isPending}
+          countdownSeconds={retrySeconds}
         />
       )}
     </>

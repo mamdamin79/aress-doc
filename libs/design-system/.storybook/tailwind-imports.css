@@ -72,12 +72,12 @@ input[type='password']::-webkit-password-eye {
 
 .custom-scrollbar::-webkit-scrollbar {
   width: 4px;
-  background-color: #d8dbe1;
+  background-color: var(--color-border-neutral-highcontrast);
   border-radius: 8px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #8c9096;
+  background-color: var(--color-border-neutral-highcontrast);
   position: sticky;
   border-radius: 8px;
 }
@@ -106,7 +106,7 @@ input[type='password']::-webkit-password-eye {
 .scrollbar-sm::-webkit-scrollbar-thumb,
 .scrollbar-md::-webkit-scrollbar-thumb,
 .scrollbar-lg::-webkit-scrollbar-thumb {
-  background-color: #8c9096;
+  background-color: var(--color-border-neutral-highcontrast);
   position: sticky;
   border-radius: 8px;
 }
@@ -114,7 +114,7 @@ input[type='password']::-webkit-password-eye {
 .scrollbar-sm::-webkit-scrollbar-track,
 .scrollbar-md::-webkit-scrollbar-track,
 .scrollbar-lg::-webkit-scrollbar-track {
-  background-color: #d8dbe1;
+  background-color: var(--color-border-neutral-highcontrast);
   border-radius: 8px;
 }
 
@@ -140,7 +140,7 @@ input[type='password']::-webkit-password-eye {
 .scrollbar-sm-hidden:hover::-webkit-scrollbar-thumb,
 .scrollbar-md-hidden:hover::-webkit-scrollbar-thumb,
 .scrollbar-lg-hidden:hover::-webkit-scrollbar-thumb {
-  background-color: #8c9096;
+  background-color: var(--color-border-neutral-highcontrast);
   position: sticky;
   border-radius: 8px;
 }
@@ -148,7 +148,7 @@ input[type='password']::-webkit-password-eye {
 .scrollbar-sm-hidden:hover::-webkit-scrollbar-track,
 .scrollbar-md-hidden:hover::-webkit-scrollbar-track,
 .scrollbar-lg-hidden:hover::-webkit-scrollbar-track {
-  background-color: #d8dbe1;
+  background-color: var(--color-border-neutral-primary);
   border-radius: 8px;
 }
 
