@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { BubbleChart } from './BubbleChart';
 import {
   FundReturnAnalysisResponseApiModel,
-  FundReturnAnalysisReturnComparisonApiModel,
-  FundReturnAnalysisReturnRankApiModel,
+  FundReturnAnalysisReturnComparisonSectionApiModel,
+  FundReturnAnalysisReturnRankSectionApiModel,
 } from '@openapi';
 import { ChangeComparisonFunds } from './ChangeComparisonFunds';
 import { ReturnTable, TableData } from '../../../../components/ReturnTable';
@@ -65,8 +65,8 @@ export const Return: React.FC<ReturnAnalysisProps> = ({ data }) => {
 
   const mapApiToTableData = (
     apiData:
-      | FundReturnAnalysisReturnComparisonApiModel
-      | FundReturnAnalysisReturnRankApiModel,
+      | FundReturnAnalysisReturnComparisonSectionApiModel
+      | FundReturnAnalysisReturnRankSectionApiModel,
     type: 'comparison' | 'rank',
   ): TableData => {
     const { tableColumns } = apiData;
@@ -83,7 +83,7 @@ export const Return: React.FC<ReturnAnalysisProps> = ({ data }) => {
         stockFundsAverageReturnPercent,
         tedpixAverageReturnPercent,
         tableColumns: comparisonColumns,
-      } = apiData as FundReturnAnalysisReturnComparisonApiModel;
+      } = apiData as FundReturnAnalysisReturnComparisonSectionApiModel;
 
       const rows: TableData['rows'] = [
         {
@@ -138,7 +138,7 @@ export const Return: React.FC<ReturnAnalysisProps> = ({ data }) => {
         percentAverageReturnRank,
         relativeAverageReturnRank,
         tableColumns: rankColumns,
-      } = apiData as FundReturnAnalysisReturnRankApiModel;
+      } = apiData as FundReturnAnalysisReturnRankSectionApiModel;
 
       const rows: TableData['rows'] = [
         {

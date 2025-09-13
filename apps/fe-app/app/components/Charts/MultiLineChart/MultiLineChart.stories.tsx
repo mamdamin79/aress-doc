@@ -12,5 +12,5 @@ export default meta;
 type Story = StoryObj<typeof MultiLineChart>;
 
 export const Default: Story = {
-  render: () => <MultiLineChart />,
+  render: () => <MultiLineChart data={[]} />,
 };

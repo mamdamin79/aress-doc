@@ -8,7 +8,7 @@ import { Return } from './Return';
 import {
   FundReturnAnalysisResponseApiModel,
   FundSummaryBaseInfoApiModel,
-  FundSummaryCaseByCaseApiModel,
+  FundSummaryCaseByCaseSectionApiModel,
   FundVideoPlaylistItemApiModel,
 } from '@openapi';
 
@@ -19,7 +19,7 @@ type FundTabsProps = {
     defaultValueChange: number;
     defaultPercentageChange: number;
     fundSummaryBasicInfo: FundSummaryBaseInfoApiModel;
-    fundSummaryCaseByCase: FundSummaryCaseByCaseApiModel;
+    fundSummaryCaseByCase: FundSummaryCaseByCaseSectionApiModel;
     fundVideoPlaylist: Array<FundVideoPlaylistItemApiModel>;
   };
   returnAnalysis: FundReturnAnalysisResponseApiModel;

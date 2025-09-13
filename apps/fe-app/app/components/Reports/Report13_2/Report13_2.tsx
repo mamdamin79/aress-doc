@@ -48,7 +48,7 @@ export const Report13_2: FC<ReportProps<Report13Dot2CalculationResult>> = ({
         filterState.map((filter) => [
           filter.optionType,
           {
-            id: Number(filter.selectedOption.identifier),
+            id: filter.selectedOption.identifier,
             title: filter.selectedOption.title,
           },
         ]),

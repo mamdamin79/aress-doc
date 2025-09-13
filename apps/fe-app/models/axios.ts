@@ -449,7 +449,7 @@ export interface DashboardItemReportApiModel {
    * Identifier
    * Unique identifier of report
    */
-  identifier: number;
+  identifier: string;
   /** Title */
   title: string;
   category: FinancialReportCategoryApiModel;
@@ -479,7 +479,7 @@ export interface DashboardListItemApiModel {
 /** DashboardReportPreviewApiModel */
 export interface DashboardReportPreviewApiModel {
   /** Identifier */
-  identifier: number;
+  identifier: string;
   /** Title */
   title: string;
   /** Image */

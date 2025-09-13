@@ -15,7 +15,7 @@ import React, { useMemo, useState } from 'react';
 import { LineChart } from './LineChart';
 import {
   FundSummaryBaseInfoApiModel,
-  FundSummaryCaseByCaseApiModel,
+  FundSummaryCaseByCaseSectionApiModel,
   FundVideoPlaylistItemApiModel,
 } from '@openapi';
 
@@ -28,7 +28,7 @@ interface SummaryProps {
   defaultValueChange: number;
   defaultPercentageChange: number;
   fundSummaryBasicInfo: FundSummaryBaseInfoApiModel;
-  fundSummaryCaseByCase: FundSummaryCaseByCaseApiModel;
+  fundSummaryCaseByCase: FundSummaryCaseByCaseSectionApiModel;
   fundVideoPlaylist: Array<FundVideoPlaylistItemApiModel>;
 }
 

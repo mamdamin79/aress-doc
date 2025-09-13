@@ -6766,7 +6766,7 @@
       "DashboardItemReportApiModel": {
         "properties": {
           "identifier": {
-            "type": "integer",
+            "type": "string",
             "title": "Identifier",
             "description": "Unique identifier of report"
           },
@@ -6846,7 +6846,7 @@
       "DashboardReportPreviewApiModel": {
         "properties": {
           "identifier": {
-            "type": "integer",
+            "type": "string",
             "title": "Identifier"
           },
           "title": {

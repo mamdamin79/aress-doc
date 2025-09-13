@@ -864,7 +864,7 @@ export const $DashboardItemPreviewApiModel = {
 export const $DashboardItemReportApiModel = {
   properties: {
     identifier: {
-      type: 'integer',
+      type: 'string',
       title: 'Identifier',
       description: 'Unique identifier of report',
     },
@@ -934,7 +934,7 @@ export const $DashboardListItemApiModel = {
 export const $DashboardReportPreviewApiModel = {
   properties: {
     identifier: {
-      type: 'integer',
+      type: 'string',
       title: 'Identifier',
     },
     title: {

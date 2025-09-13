@@ -235,7 +235,7 @@ export type DashboardItemReportApiModel = {
   /**
    * Unique identifier of report
    */
-  identifier: number;
+  identifier: string;
   title: string;
   category: FinancialReportCategoryApiModel;
   reportCalculation: FinancialReportCalculationApiModel | null;
@@ -254,7 +254,7 @@ export type DashboardListItemApiModel = {
 };
 
 export type DashboardReportPreviewApiModel = {
-  identifier: number;
+  identifier: string;
   title: string;
   image: string;
 };
