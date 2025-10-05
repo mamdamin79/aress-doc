@@ -2129,4 +2129,21 @@ This comprehensive charting system provides a robust foundation for financial da
 
 ---
 
+## 🎨 Color System & Variable Management
+
+The Aress Frontend Project implements a sophisticated automated color system that generates Tailwind CSS configurations and CSS variables from design tokens.
+
+**Key Features**: Automated color generation, multi-application support (B2B/B2C), light/dark themes, semantic color mapping, Tailwind integration.
+
+**Script Location**: `scripts/tailwindcss-design-system-color-generator/tailwindcss-design-system-color-generator.ts`
+
+**Usage**: 
+```bash
+ts-node scripts/tailwindcss-design-system-color-generator/tailwindcss-design-system-color-generator.ts
+```
+
+For detailed color system documentation, see: **[📄 COLOR_SYSTEM_DOCUMENTATION.md](./COLOR_SYSTEM_DOCUMENTATION.md)**
+
+---
+
 *This comprehensive documentation provides detailed implementation insights for developers working with the Aress Frontend Project. For the most current information, please refer to the project repository and Storybook documentation.*
