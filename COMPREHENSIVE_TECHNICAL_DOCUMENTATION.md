@@ -1389,94 +1389,477 @@ User profile management with comprehensive settings and preferences.
 - Security settings
 - Account verification status
 
-#### 4. Reports Pages (`/reports`, `/report`)
+#### 4. Reports System - Complete Implementation
 
-**Location**: `apps/fe-app/app/(dashboard)/(withfooter)/reports/` and `/report/`
+**Reports List Page** (`apps/fe-app/app/(dashboard)/(withfooter)/reports/page.tsx`):
 
-Comprehensive reporting system for investment analysis.
+**Advanced Server-Side Architecture**:
 
-##### Report Types
-- Portfolio performance reports
-- Fund analysis reports
-- Risk assessment reports
-- Comparative analysis reports
-- Custom date range reports
-
-##### Export Capabilities
-- PDF generation with custom templates
-- Excel export with multiple sheets
-- Email delivery system
-- Scheduled report generation
-
-### B2C-App (Consumer Application) - Page Analysis
-
-#### 1. My Portfolio Page (`/my-portfolio`)
-
-**Location**: `apps/b2c-app/app/(withfooter)/my-portfolio/page.tsx`
-
-Simplified portfolio overview for retail investors.
-
-##### Implementation
+**Data Fetching Strategy**:
 ```typescript
-const MyPortfolio = () => {
+async function getData(searchParams: GetReportsData) {
+  // Server-side authentication
+  const cookieStore = await cookies();
+  OpenAPI.TOKEN = cookieStore.get('access_token')?.value;
+
+  // Parallel API calls for performance
+  const [reports, categories] = await Promise.all([
+    ReportsService.getReports({ ...searchParams }),
+    ReportsService.getReportsCategories(),
+  ]);
+  return { reports, categories };
+}
+```
+
+**Advanced Filtering System**:
+```typescript
+const filteredReports = reports.filter((report) => {
+  const matchesCategory = resolvedSearchParams.category
+    ? report.category.title === resolvedSearchParams.category
+    : true;
+
+  const matchesSearch = resolvedSearchParams.search
+    ? report.title.includes(resolvedSearchParams.search)
+    : true;
+
+  return matchesCategory && matchesSearch;
+});
+```
+
+**Pagination Implementation**:
+```typescript
+const ITEMS_PER_PAGE = 6;
+const currentPage = resolvedSearchParams.page ? parseInt(resolvedSearchParams.page, 10) : 1;
+const totalPages = Math.ceil(filteredReports.length / ITEMS_PER_PAGE);
+
+const paginatedReports = filteredReports.slice(
+  (currentPage - 1) * ITEMS_PER_PAGE,
+  currentPage * ITEMS_PER_PAGE,
+);
+```
+
+**Component Architecture**:
+- **ReportList**: Main report grid with infinite scroll support
+- **SideBar**: Category navigation and filtering
+- **NewReportDialog**: Report creation modal
+- **SearchBar**: Real-time search functionality
+- **FilterReport**: Advanced filtering options
+
+---
+
+**Individual Report Page** (`apps/fe-app/app/(dashboard)/(withfooter)/report/[report_id]/page.tsx`):
+
+**Comprehensive Report Display System**:
+
+**Advanced Metadata Generation**:
+```typescript
+export async function generateMetadata({ params, searchParams }: ReportPageParams): Promise<Metadata> {
+  const { report_id: id } = await params;
+  const cookieStore = await cookies();
+  OpenAPI.TOKEN = cookieStore.get('access_token')?.value;
+
+  const REPORT = await getData(id, screenshotQueryId);
+  const baseURL = process.env.NEXT_PUBLIC_API_URL;
+
+  const imageUrl = REPORT.screenshotUrl
+    ? `${baseURL}${REPORT.screenshotUrl}`
+    : REPORT.image ? `${baseURL}${REPORT.image}` : null;
+
+  return {
+    title: REPORT.title,
+    description: REPORT.summary,
+    openGraph: {
+      title: REPORT.title,
+      description: REPORT.summary,
+      images: imageUrl ? [{ url: imageUrl, width: 1200, height: 630, alt: REPORT.title }] : [],
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: REPORT.title,
+      description: REPORT.summary,
+      images: imageUrl ? [imageUrl] : [],
+    },
+  };
+}
+```
+
+**Report Structure**:
+
+1. **Breadcrumb Navigation**: Contextual navigation back to reports list
+2. **Report Overview Section**: Title, category, summary, favorite toggle
+3. **Dynamic Report Renderer**: Interactive financial calculations
+4. **Video Analysis Section**: Educational video content
+5. **Markdown Content**: Detailed analysis and insights
+6. **Related Reports Carousel**: Contextual report recommendations
+
+**Dynamic Report Rendering**:
+```typescript
+<ReportWrapper
+  data={REPORT.reportCalculation}
+  title={REPORT.title}
+  identifier={REPORT.identifier}
+/>
+```
+
+**Report Wrapper Implementation** (`ReportWrapper.tsx`):
+```typescript
+export const ReportWrapper: React.FC<ReportWrapperProps> = ({ data, identifier, title }) => {
+  const [reportData, setReportData] = useState<FinancialReportCalculationApiModel | null>(data);
+  const { mutateAsync } = useReportsServicePostReportsByReportId();
+
+  const handleSubmit = async (changedOptions: Record<string, OptionItem>) => {
+    try {
+      const updatedReport = await mutateAsync({
+        reportId: String(identifier),
+        requestBody: {
+          selectedFilters: Object.fromEntries(
+            Object.entries(changedOptions).map(([key, { id }]) => [key, String(id)]),
+          ),
+        },
+      });
+      setReportData(updatedReport);
+      return true;
+    } catch (error) {
+      console.error('Error submitting report update', error);
+      return false;
+    }
+  };
+
   return (
-    <div className="flex w-full justify-center">
-      <MyPortfolioPage
-        points={[
-          { date: '2025-06-28', value: 123456789 },
-          { date: '2025-06-29', value: 234567891 },
-          // ... more data points
-        ]}
-        defaultQuantity={560000000}
-        defaultValueChange={100000}
-        defaultPercentageChange={5.3}
+    reportData && (
+      <DynamicReportRenderer
+        identifier={identifier}
+        data={reportData?.calculation}
+        filters={reportData?.filters}
+        onSubmit={(changed) => handleSubmit(changed)}
+        title={title}
       />
-    </div>
+    )
   );
 };
 ```
 
-##### Features
-- Simplified portfolio visualization
-- Basic performance metrics
-- Mobile-optimized interface
-- Educational tooltips
+**Advanced Features**:
 
-#### 2. Profile Management (`/(profile)`)
+1. **Interactive Calculations**: Real-time report parameter adjustments
+2. **Favorite System**: User can bookmark reports for quick access
+3. **Video Integration**: Educational content with VideoPlayer component
+4. **Markdown Rendering**: Rich text content with proper formatting
+5. **Related Reports**: AI-powered content recommendations
+6. **Social Sharing**: Report sharing capabilities
+7. **Export Options**: PDF and other format exports
 
-**Location**: `apps/b2c-app/app/(withfooter)/(profile)/`
+**Report List Component** (`ReportsList.tsx`):
 
-Consumer-focused profile management with simplified interface.
+**Advanced Features**:
+- **Infinite Scroll**: Automatic loading of more reports
+- **Favorite Management**: Add/remove favorites with optimistic updates
+- **Empty States**: Elegant handling of no results
+- **Responsive Grid**: Adaptive layout for different screen sizes
+- **Image Optimization**: Dynamic image loading with fallbacks
 
-##### Features
-- Basic personal information
-- Investment goals setting
-- Risk tolerance assessment
-- Notification preferences
+**Favorite Management**:
+```typescript
+const addFavoriteMutation = useReportsServicePostReportsByReportIdFavorite();
+const deleteFavoriteMutation = useReportsServiceDeleteReportsByReportIdFavorite();
 
-#### 3. FAQ Page (`/faqs`)
+const handleLike = async (reportId: string, isFavorite: boolean) => {
+  if (isFavorite) {
+    deleteFavoriteMutation.mutate({ reportId });
+  } else {
+    addFavoriteMutation.mutate({ reportId: String(reportId) });
+  }
+};
+```
 
-**Location**: `apps/b2c-app/app/(withfooter)/faqs/`
+**Infinite Scroll Implementation**:
+```typescript
+const handleIntersection = useCallback((entries: IntersectionObserverEntry[]) => {
+  const [entry] = entries;
+  if (entry.isIntersecting && hasMore && onLoadMore) {
+    onLoadMore();
+  }
+}, [hasMore, onLoadMore]);
 
-Comprehensive FAQ system for consumer education.
+useEffect(() => {
+  const observer = new IntersectionObserver(handleIntersection, { threshold: 0.1 });
+  if (loadMoreRef.current) {
+    observer.observe(loadMoreRef.current);
+  }
+  return () => {
+    if (loadMoreRef.current) {
+      observer.unobserve(loadMoreRef.current);
+    }
+  };
+}, [handleIntersection]);
+```
 
-##### Features
-- Searchable FAQ database
-- Categorized questions
-- Interactive help system
-- Contact form integration
+**Report Categories**:
+- **Portfolio Performance**: Comprehensive portfolio analysis
+- **Fund Analysis**: Individual fund deep-dives
+- **Risk Assessment**: Risk metrics and analysis
+- **Market Analysis**: Market trends and insights
+- **Comparative Studies**: Fund and portfolio comparisons
+- **Custom Reports**: User-generated analysis
 
-#### 4. Authentication Pages (`/(auth)`)
+**Export Capabilities**:
+- **PDF Generation**: Professional report formatting
+- **Excel Export**: Data tables and charts
+- **Email Delivery**: Automated report distribution
+- **Scheduled Reports**: Recurring report generation
 
-**Location**: `apps/b2c-app/app/(auth)/`
+### B2C-App (Consumer Application) - Complete Page Analysis
 
-Simplified authentication flow for consumers.
+#### 1. Authentication Flow Pages - Detailed Implementation
 
-##### Features
-- Social login integration
-- Email verification
-- Password recovery
-- Two-factor authentication setup
+**AuthLanding Page** (`apps/b2c-app/app/(auth)/AuthLanding/page.tsx`):
+
+**Purpose**: Consumer onboarding with sophisticated animated carousel showcasing Aress Investor benefits.
+
+**Advanced Features**:
+- **5-Slide Lottie Animation Carousel**: Each slide features professional Lottie animations
+- **Automatic Progression**: 4.5-second intervals with smooth fade transitions
+- **Interactive Indicators**: Clickable dot navigation for manual slide control
+- **Responsive Design**: Optimized for mobile and desktop experiences
+
+**Slide Content Strategy**:
+```typescript
+const slidesData = [
+  {
+    title: 'پردازش اطلاعات مالی آرسس',
+    description: 'با آرسس اینوستور، سرمایه‌گذاری آسان و آینده‌ای روشن در دسترس شماست!',
+    lottieAnimation: SuccessfulMarketerAnimation,
+  },
+  {
+    title: 'زیر نظر سازمان بورس',
+    description: 'ما در آرسس اینوستور بستری امن برای سرمایه‌گذاری آسان شما فراهم کردیم.',
+    lottieAnimation: OnlineBankingAnimation,
+  },
+  // ... 3 more slides
+];
+```
+
+**State Management**:
+```typescript
+const [currentIndex, setCurrentIndex] = useState(0);
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setCurrentIndex((prev) => prev === slidesData.length - 1 ? 0 : prev + 1);
+  }, 4500);
+  return () => clearInterval(interval);
+}, [currentIndex]);
+```
+
+**Navigation Strategy**:
+- **Primary CTA**: "ورود" (Login) - Primary button leading to Signin
+- **Secondary CTA**: "ثبت نام" (Register) - Secondary button leading to Signup
+- **Fund Manager Access**: Underline button for Aress Terminal access
+
+---
+
+**Signin Page** (`apps/b2c-app/app/(auth)/Signin/page.tsx`):
+
+**Multi-Step Authentication Process**:
+
+**Step 1: National ID Verification**
+```typescript
+const NationalIdForm = ({ onSubmit, type }) => {
+  const { control, handleSubmit, formState: { isSubmitting } } = useForm<NationalIdFormValues>({
+    defaultValues: { nationalCode: '' },
+  });
+
+  // National code validation with custom validator
+  rules={{
+    required: { value: true, message: 'این فیلد اجباری است.' },
+    validate: (value) => {
+      if (!validateNationalCode(value)) {
+        return 'لطفا یک کد ملی معتبر وارد کنید.';
+      }
+      return true;
+    },
+  }}
+};
+```
+
+**Step 2: OTP Verification**
+- **SMS Integration**: Connects with Sejam system for OTP delivery
+- **Countdown Timer**: 120-second countdown with resend functionality
+- **Error Handling**: Comprehensive error states and retry mechanisms
+
+**Progress Bar Integration**:
+```typescript
+const PROGRESS_BAR_ITEMS: ProgressBarItemType[] = [
+  { text: 'کد ملی', status: 'success' },
+  { text: 'رمز یک‌‌بار مصرف', status: 'success' },
+  { text: 'ورود', status: 'success' },
+];
+```
+
+---
+
+**Signup Page** (`apps/b2c-app/app/(auth)/Signup/page.tsx`):
+
+**Enhanced Registration Flow**:
+
+**Step 1-2**: Same as Signin (National ID + OTP)
+**Step 3**: Registration Completion with Success Result
+
+**Success Result Component**:
+```typescript
+{currentStep === 0 || currentStep === 1 ? (
+  <AuthForm
+    currentStep={currentStep}
+    onNextStep={handleNextStep}
+    onPrevStep={handlePrevStep}
+    type="signup"
+  />
+) : (
+  <Result type="success" />
+)}
+```
+
+**Terms and Conditions Integration**:
+```typescript
+<Checkbox
+  onChange={() => setConfirmedRules((prev) => !prev)}
+  checked={confirmedRules}
+  reactcontent={
+    <div className="flex flex-row gap-2 font-medium">
+      <span className="text-text-brand-primary-600">قوانین و مقررات</span>
+      <span className="text-text-neutral-primary">آرسس اینوستور را می‌پذیرم</span>
+    </div>
+  }
+/>
+```
+
+#### 2. Portfolio Management - Advanced Implementation
+
+**My Portfolio Page** (`apps/b2c-app/app/(withfooter)/my-portfolio/_components/MyPortfolioPage.tsx`):
+
+**Comprehensive Portfolio Management System**:
+
+**State Management Architecture**:
+```typescript
+// Chart state
+const [hoveredData, setHoveredData] = useState<HoverData | null>(null);
+const [hiddenContent, setHiddenContent] = useState(false);
+
+// Tabs state
+const [chartActiveTab, setChartActiveTab] = useState(0);
+const [fundsActiveTab, setFundsActiveTab] = useState(0);
+
+// Fund selection state
+const [selectedFundType, setSelectedFundType] = useState<number | null>(null);
+const [isDetailView, setIsDetailView] = useState(false);
+const [selectedFund, setSelectedFund] = useState<FundData | null>(null);
+
+// Modal state
+const [showEmptyModal, setShowEmptyModal] = useState(false);
+const [emptyCategory, setEmptyCategory] = useState<number | null>(null);
+
+// Trade popup state
+const [showTradePopup, setShowTradePopup] = useState(false);
+const [tradeMode, setTradeMode] = useState<'buy' | 'sell'>('buy');
+```
+
+**Advanced Features**:
+
+1. **Interactive Chart System**:
+   - **Hover Data Display**: Real-time value updates on chart hover
+   - **Hidden Content Toggle**: Privacy mode for sensitive financial data
+   - **Multi-timeframe Tabs**: 1M, 3M, 6M, 9M, 1Y chart periods
+
+2. **Dynamic Fund Visualization**:
+   - **Category View**: High-level fund type breakdown (سهامی، درآمد ثابت، مختلط، کالایی)
+   - **Detail View**: Individual fund breakdown within categories
+   - **Empty State Handling**: Modal prompts for empty categories
+
+3. **Pie Chart Integration**:
+```typescript
+const currentPieChartData = useMemo(() => {
+  if (isDetailView && selectedFundType !== null) {
+    // Show individual funds in the selected category
+    const categoryFunds = detailedFundsData[selectedFundType] || [];
+    return categoryFunds
+      .filter((fund) => fund.dailyValue > 0)
+      .map((fund) => ({
+        name: fund.name || 'نامشخص',
+        value: fund.dailyValue,
+      }));
+  } else {
+    // Show category-level data
+    return categoryFundsData
+      .filter((fund) => fund.dailyValue > 0)
+      .map((fund) => ({
+        name: categoryNames[fund.typeID] || 'نامشخص',
+        value: fund.dailyValue,
+      }));
+  }
+}, [isDetailView, selectedFundType]);
+```
+
+4. **Trading Interface**:
+   - **Buy/Sell Popup**: Modal interface for fund transactions
+   - **Fund Selection**: Sticky bottom bar for fund selection
+   - **Price Estimation**: Real-time price and unit calculations
+
+5. **Fund Type Management**:
+```typescript
+const fundTypeMaps: Record<number, { title: string; theme: string }> = {
+  0: { title: 'سهامی', theme: 'green' },
+  1: { title: 'درآمد ثابت', theme: 'blue' },
+  2: { title: 'مختلط', theme: 'purple' },
+  3: { title: 'کالایی', theme: 'yellow' },
+};
+```
+
+**Data Flow Architecture**:
+- **Mock Data Integration**: Comprehensive fund data with realistic values
+- **Category Navigation**: Seamless switching between category and detail views
+- **Empty State Management**: Intelligent handling of empty fund categories
+
+#### 3. Profile Management - Complete System
+
+**Profile Layout** (`apps/b2c-app/app/(withfooter)/(profile)/layout.tsx`):
+
+**Sophisticated Navigation System**:
+- **Sidebar Navigation**: Profile, Active Sessions, Login History, Messages
+- **Responsive Design**: Mobile-optimized navigation patterns
+- **Active State Management**: Visual indicators for current page
+
+**Profile Page** (`apps/b2c-app/app/(withfooter)/(profile)/profile/page.tsx`):
+
+**Three-Component Architecture**:
+```typescript
+export default function Profile() {
+  return (
+    <div className="block max-w-[1032px] flex-grow">
+      <ProfileForm />           // Personal information management
+      <AddressForm />          // Address and location data
+      <BankAccountInformation /> // Financial account details
+    </div>
+  );
+}
+```
+
+**Security Pages**:
+- **Active Sessions**: Real-time session monitoring and management
+- **Login History**: Comprehensive audit trail of account access
+- **Messages**: Notification center for account communications
+
+#### 4. Additional B2C Features
+
+**FAQ Page** (`apps/b2c-app/app/(withfooter)/faqs/page.tsx`):
+- **Comprehensive Help System**: Categorized frequently asked questions
+- **Search Functionality**: Quick access to relevant help topics
+- **Interactive Accordion**: Expandable Q&A sections
+
+**Me Page** (`apps/b2c-app/app/(withfooter)/me/page.tsx`):
+- **Personal Dashboard**: Quick access to account overview
+- **Shortcut Navigation**: Fast links to common actions
+- **Account Status**: Real-time account health indicators
 
 ---
 
