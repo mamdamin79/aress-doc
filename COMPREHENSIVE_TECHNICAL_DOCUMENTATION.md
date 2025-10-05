@@ -1,16 +1,20 @@
-# Aress Frontend Project - Comprehensive Technical Documentation
+# Aress Frontend Project - Ultimate Technical Documentation
 
 ## Table of Contents
 1. [Project Overview](#project-overview)
 2. [Architecture & Technology Stack](#architecture--technology-stack)
 3. [Project Structure](#project-structure)
-4. [Design System - Deep Dive](#design-system---deep-dive)
-5. [Complex Components Analysis](#complex-components-analysis)
-6. [Applications - Complete Page Analysis](#applications---complete-page-analysis)
-7. [Development Setup](#development-setup)
-8. [API Integration](#api-integration)
-9. [Testing Strategy](#testing-strategy)
-10. [Deployment](#deployment)
+4. [OpenAPI Library & Authentication Deep Dive](#openapi-library--authentication-deep-dive)
+5. [Rendering Strategies](#rendering-strategies)
+6. [Design System - Complete Component Analysis](#design-system---complete-component-analysis)
+7. [All Components - Detailed Implementation](#all-components---detailed-implementation)
+8. [Applications - Every Page Analysis](#applications---every-page-analysis)
+9. [State Management Patterns](#state-management-patterns)
+10. [Performance Optimization Strategies](#performance-optimization-strategies)
+11. [Development Setup](#development-setup)
+12. [API Integration](#api-integration)
+13. [Testing Strategy](#testing-strategy)
+14. [Deployment](#deployment)
 
 ---
 
@@ -75,7 +79,377 @@ aress-frontend/
 
 ---
 
-## Design System - Deep Dive
+## OpenAPI Library & Authentication Deep Dive
+
+### OpenAPI Architecture
+
+The project uses a sophisticated OpenAPI integration system that automatically generates TypeScript clients and React Query hooks from Swagger specifications.
+
+#### Core OpenAPI Configuration
+
+**Location**: `libs/openapi/src/requests/core/OpenAPI.ts`
+
+```typescript
+export type OpenAPIConfig = {
+  BASE: string;                    // API base URL
+  CREDENTIALS: 'include' | 'omit' | 'same-origin';
+  ENCODE_PATH?: ((path: string) => string) | undefined;
+  HEADERS?: Headers | Resolver<Headers> | undefined;
+  PASSWORD?: string | Resolver<string> | undefined;
+  TOKEN?: string | Resolver<string> | undefined;
+  USERNAME?: string | Resolver<string> | undefined;
+  VERSION: string;
+  WITH_CREDENTIALS: boolean;
+  interceptors: {
+    request: Interceptors<RequestInit>;
+    response: Interceptors<Response>;
+  };
+};
+```
+
+#### Authentication Strategy
+
+**Dual Token Management System**:
+
+1. **Client-Side Token Storage** (localStorage):
+```typescript
+TOKEN: async () =>
+  typeof window !== 'undefined'
+    ? localStorage.getItem('access_token') || ''
+    : '',
+```
+
+2. **Server-Side Token Storage** (HTTP-only cookies):
+```typescript
+// In login API route
+response.cookies.set('access_token', data.access_token, {
+  httpOnly: true,
+  secure: false,
+  sameSite: 'lax',
+  path: '/',
+  maxAge: 60 * 60 * 24 * 7, // 1 week
+});
+```
+
+#### Request/Response Interceptors
+
+**Advanced Interceptor System**:
+```typescript
+export class Interceptors<T> {
+  _fns: Middleware<T>[];
+
+  constructor() {
+    this._fns = [];
+  }
+
+  eject(fn: Middleware<T>): void {
+    const index = this._fns.indexOf(fn);
+    if (index !== -1) {
+      this._fns = [...this._fns.slice(0, index), ...this._fns.slice(index + 1)];
+    }
+  }
+
+  use(fn: Middleware<T>): void {
+    this._fns = [...this._fns, fn];
+  }
+}
+```
+
+**Usage Examples**:
+- **Request Interceptor**: Add authentication headers, logging, request transformation
+- **Response Interceptor**: Handle errors, transform responses, refresh tokens
+
+#### Generated API Structure
+
+**Auto-Generated Files**:
+- `schemas.gen.ts` (130KB) - Complete type definitions
+- `services.gen.ts` (53KB) - Service layer implementations
+- `types.gen.ts` (95KB) - TypeScript interfaces
+- `queries/` - React Query hooks for each endpoint
+
+#### Code Generation Workflow
+
+```bash
+# 1. Merge multiple Swagger files
+pnpm merge:swagger
+
+# 2. Generate TypeScript API client
+pnpm generate:sdk
+
+# 3. Generate React Query hooks
+pnpm generate:query
+
+# 4. Complete workflow
+pnpm output:swagger
+```
+
+### Authentication Methods
+
+#### 1. Login Flow Implementation
+
+**Frontend Login Process** (`apps/fe-app/app/(auth)/login/_components/FormWrapper.tsx`):
+
+```typescript
+const handleLogin = async (values: LoginFormValues) => {
+  try {
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: values.username,
+        password: values.password,
+        captcha: values.captcha ?? '',
+        captchaUid: typeof values.captchaUid === 'number' ? values.captchaUid : 0,
+      }),
+    });
+    
+    const data = await res.json();
+    if (res.ok && data.success) {
+      // Store token in localStorage for OpenAPI client usage
+      if (data.access_token) {
+        localStorage.setItem('access_token', data.access_token);
+      }
+      router.push('/');
+    }
+  } catch (error) {
+    // Error handling with toast notifications
+  }
+};
+```
+
+**Backend Login API** (`apps/fe-app/app/api/login/route.ts`):
+
+```typescript
+export async function POST(req: NextRequest) {
+  const { username, password, captcha, captchaUid } = await req.json();
+  
+  const params = new URLSearchParams({ username, password });
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/users/login?captchaUid=${captchaUid}&captcha=${encodeURIComponent(captcha)}`;
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: params.toString(),
+  });
+
+  const data = await res.json();
+
+  if (res.ok && data.access_token) {
+    const response = NextResponse.json({
+      success: true,
+      access_token: data.access_token,
+    });
+    
+    // Set secure HTTP-only cookie
+    response.cookies.set('access_token', data.access_token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7, // 1 week
+    });
+    
+    return response;
+  }
+}
+```
+
+#### 2. Token Management Strategy
+
+**Client-Side Token Access**:
+- Stored in localStorage for client-side API calls
+- Automatically retrieved by OpenAPI client
+- Used for React Query requests
+
+**Server-Side Token Access**:
+- Stored in HTTP-only cookies for security
+- Used for server-side rendering and API calls
+- Prevents XSS attacks
+
+**Example Server-Side Usage**:
+```typescript
+// In server components
+const cookieStore = await cookies();
+OpenAPI.TOKEN = cookieStore.get('access_token')?.value;
+
+const data = await FundsService.getFundsStockByFundIdSummary({ fundId });
+```
+
+#### 3. Security Features
+
+**CAPTCHA Integration**:
+- Dynamic CAPTCHA generation
+- CAPTCHA validation on login
+- Automatic CAPTCHA refresh on errors
+
+**Session Management**:
+- 7-day token expiration
+- Automatic token refresh (if implemented)
+- Secure cookie configuration
+
+**Error Handling**:
+- Comprehensive error messages
+- Toast notifications for user feedback
+- Automatic CAPTCHA refresh on login failures
+
+---
+
+## Rendering Strategies
+
+### Next.js 15 App Router Architecture
+
+The project leverages Next.js 15's App Router with sophisticated rendering strategies optimized for different use cases.
+
+#### 1. Server-Side Rendering (SSR)
+
+**Implementation Pattern**:
+```typescript
+// Server Component with data fetching
+export default async function FundPage() {
+  const fundId = 42;
+  const cookieStore = await cookies();
+  
+  // Set authentication token for server-side API calls
+  OpenAPI.TOKEN = cookieStore.get('access_token')?.value;
+  
+  // Parallel data fetching
+  const [summaryData, analysisData] = await Promise.all([
+    FundsService.getFundsStockByFundIdSummary({ fundId }),
+    FundsService.getFundsStockByFundIdReturnAnalysis({ fundId }),
+  ]);
+
+  return (
+    <div>
+      <FundTabs summary={summaryData} returnAnalysis={analysisData} />
+    </div>
+  );
+}
+```
+
+**Benefits**:
+- **SEO Optimization**: Full HTML content available to crawlers
+- **Fast Initial Load**: Pre-rendered content
+- **Data Security**: Sensitive API calls on server
+- **Performance**: Reduced client-side JavaScript
+
+#### 2. Client-Side Rendering (CSR)
+
+**Implementation Pattern**:
+```typescript
+'use client';
+// Client Component with React Query
+const InvestmentFundsPage = () => {
+  const {
+    data: fundsTableData,
+    isLoading: isFundsTableLoading,
+    error: fundsTableError,
+  } = useFundsServiceGetFundsTable({
+    tabId: activeIndexCategoryTab,
+    searchQuery: fundSearchQuery,
+  });
+
+  return (
+    <div>
+      {isFundsTableLoading ? <TableSkeleton /> : <FundsTable data={fundsTableData} />}
+    </div>
+  );
+};
+```
+
+**Benefits**:
+- **Interactive Features**: Real-time updates, complex state management
+- **User Experience**: Smooth transitions, optimistic updates
+- **Dynamic Content**: User-specific data, personalization
+
+#### 3. Hybrid Rendering Strategy
+
+**Route-Based Strategy**:
+
+**Server-Rendered Routes**:
+- `/my-fund` - Fund details with pre-loaded data
+- `/profile` - User profile information
+- Static content pages
+
+**Client-Rendered Routes**:
+- `/investment_funds` - Interactive table with filtering/sorting
+- Dashboard pages with real-time updates
+- Complex form interactions
+
+#### 4. Layout-Based Rendering
+
+**Nested Layout Architecture**:
+```
+app/
+├── layout.tsx                    # Root layout (Client)
+├── (auth)/
+│   └── layout.tsx               # Auth layout (Server)
+├── (dashboard)/
+│   ├── layout.tsx               # Dashboard layout (Server)
+│   ├── (withfooter)/
+│   │   └── layout.tsx           # With footer layout
+│   └── (nofooter)/
+│       └── layout.tsx           # No footer layout
+```
+
+**Layout Rendering Strategy**:
+- **Root Layout**: Client-side for global providers (React Query, Toast)
+- **Auth Layout**: Server-side for static authentication UI
+- **Dashboard Layouts**: Server-side for navigation, client-side for interactive elements
+
+#### 5. Data Fetching Strategies
+
+**Server-Side Data Fetching**:
+```typescript
+// Parallel data fetching with Promise.all
+const [data1, data2, data3] = await Promise.all([
+  FundsService.getEndpoint1(),
+  FundsService.getEndpoint2(),
+  FundsService.getEndpoint3(),
+]);
+```
+
+**Client-Side Data Fetching**:
+```typescript
+// React Query with caching and background updates
+const { data, isLoading, error } = useQuery({
+  queryKey: ['funds', fundId],
+  queryFn: () => FundsService.getFund(fundId),
+  staleTime: 5 * 60 * 1000, // 5 minutes
+  gcTime: 0, // No garbage collection time
+});
+```
+
+#### 6. Performance Optimizations
+
+**Code Splitting**:
+```typescript
+// Dynamic imports for heavy components
+const HeavyChart = dynamic(() => import('./HeavyChart'), {
+  loading: () => <ChartSkeleton />,
+  ssr: false, // Client-side only
+});
+```
+
+**Streaming and Suspense**:
+```typescript
+// Streaming server components
+export default function Page() {
+  return (
+    <div>
+      <Suspense fallback={<HeaderSkeleton />}>
+        <Header />
+      </Suspense>
+      <Suspense fallback={<ContentSkeleton />}>
+        <Content />
+      </Suspense>
+    </div>
+  );
+}
+```
+
+---
+
+## Design System - Complete Component Analysis
 
 ### Overview
 The design system is located in `libs/design-system` and provides a comprehensive set of 60+ reusable UI components built with React, TypeScript, and Tailwind CSS.
@@ -91,6 +465,220 @@ ComponentName/
 ├── ComponentName.stories.tsx      # Storybook stories
 ├── ComponentName.test.tsx         # Unit tests
 └── index.ts                       # Exports
+```
+
+---
+
+## All Components - Detailed Implementation
+
+### Complete Component Inventory
+
+The design system contains **71 components** organized into the following categories:
+
+#### 1. Form & Input Components (12 components)
+- **Button** - Multi-variant button with loading states and themes
+- **Checkbox** - Checkbox with indeterminate state support
+- **TextField** - Advanced text input with validation
+- **DateInput** - Date picker with Persian calendar support
+- **DatePicker** - Comprehensive date selection component
+- **DropDown** - Dropdown with search and multi-select
+- **FileUpload** - File upload with drag-and-drop
+- **NumberInput** - Numeric input with formatting
+- **OptionsDropdown** - Advanced dropdown with filtering
+- **Radio** - Radio button groups with custom styling
+- **Switch** - Toggle switch component
+- **TextArea** - Multi-line text input
+
+#### 2. Data Display Components (15 components)
+- **GeneralTable** - Advanced data table with sorting/filtering
+- **DataList** - List component for structured data
+- **FundsLogo** - Fund logo display with theming
+- **FundsTag** - Tag component for fund categorization
+- **AssetInfoBox** - Asset information display
+- **SummaryCell** - Summary data cell component
+- **SummaryCellCarousel** - Carousel of summary cells
+- **SparkLine** - Mini chart for trend visualization
+- **SlidingNumber** - Animated number transitions
+- **Badge** - Status and notification badges
+- **BulletList** - Styled bullet point lists
+- **ReportCard** - Card for report display
+- **ReportCardBase** - Base report card component
+- **PerformanceCard** - Performance metrics card
+- **NewsCard** - News article card component
+
+#### 3. Navigation & Layout Components (8 components)
+- **Breadcrumb** - Navigation breadcrumb trail
+- **Tabs** - Tabbed interface component
+- **Pagination** - Page navigation component
+- **Header** - Application header with navigation
+- **Footer** - Application footer component
+- **Sidebar** - Collapsible sidebar navigation
+- **MobileMenu** - Mobile navigation menu
+- **NavigationBar** - Main navigation bar
+
+#### 4. Feedback & Overlay Components (10 components)
+- **Dialog** - Modal dialog with focus management
+- **ConfirmModal** - Confirmation dialog component
+- **BottomSheet** - Mobile bottom sheet modal
+- **Tooltip** - Hover tooltip component
+- **ToolTipInfo** - Information tooltip variant
+- **Toast** - Toast notification system
+- **Loading** - Loading spinner and states
+- **ProgressBar** - Progress indication component
+- **Skeleton** - Loading skeleton components
+- **ErrorBoundary** - Error handling component
+
+#### 5. Media & Rich Content Components (6 components)
+- **VideoPlayer** - Advanced video player with HLS support
+- **ImageGallery** - Image gallery with lightbox
+- **Icon** - Icon component with Iconify integration
+- **Avatar** - User avatar component
+- **Logo** - Application logo component
+- **QRCode** - QR code generation component
+
+#### 6. Interactive & Utility Components (12 components)
+- **Accordion** - Collapsible content sections
+- **ContextMenu** - Right-click context menu
+- **SharePopUp** - Social sharing popup
+- **FilterPopUpSection** - Advanced filtering interface
+- **CommentSection** - Comment system component
+- **Bookmark** - Bookmark toggle component
+- **AutoRotateSwitch** - Auto-rotation toggle
+- **SelectionChips** - Multi-selection chip interface
+- **ReportsCarousel** - Carousel for reports
+- **AddReportButton** - Report creation button
+- **ReportSettings** - Report configuration component
+- **SquaredButton** - Square-styled button variant
+
+#### 7. Specialized Components (8 components)
+- **FundsColumnHeader** - Table column header for funds
+- **LoginForm** - Complete login form component
+- **CaptchaInput** - CAPTCHA input component
+- **OTPInput** - One-time password input
+- **SearchBox** - Advanced search component
+- **FilterBar** - Filtering interface bar
+- **SectionTitle** - Section heading component
+- **StatusIndicator** - Status display component
+
+### Detailed Component Analysis
+
+#### Button Component - Advanced Implementation
+
+**Location**: `libs/design-system/src/lib/components/Button/Button.tsx`
+
+**Interface**:
+```typescript
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  isLoading?: boolean;
+  iconLeft?: IconProps;
+  iconRight?: IconProps;
+  size?: ButtonSize; // 'sm' | 'md'
+  mode?: ButtonMode; // 'primary' | 'secondary' | 'text' | 'underline'
+  align?: 'center' | 'right';
+  theme?: 'brand' | 'error' | 'success' | 'neutral';
+}
+```
+
+**Advanced Features**:
+
+1. **Multi-Theme Support**: 4 different color themes with consistent state variations
+2. **Loading States**: Built-in loading spinner with disabled interaction
+3. **Icon Integration**: Left and right icon support with proper spacing
+4. **Accessibility**: Full keyboard navigation and ARIA support
+5. **State Management**: Hover, active, disabled, and loading states
+
+**State Variations**:
+```typescript
+// Primary mode with brand theme
+mode === 'primary' && theme === 'brand' && !disabled && !isLoading
+  ? 'bg-button-brand-surface-default hover:bg-button-brand-surface-hover active:bg-button-brand-surface-pressed'
+
+// Secondary mode with error theme
+mode === 'secondary' && theme === 'error' && disabled
+  ? 'border-button-error-border-disable text-button-error-label-plain-disable border'
+
+// Text mode with underline on hover
+mode === 'underline' && !disabled
+  ? 'underline-offset-8 transition-transform group-hover:underline'
+```
+
+**Usage Examples**:
+```tsx
+// Primary button with loading state
+<Button mode="primary" theme="brand" isLoading={isSubmitting}>
+  Submit Form
+</Button>
+
+// Secondary button with icon
+<Button mode="secondary" iconLeft={{ name: 'plus' }}>
+  Add Item
+</Button>
+
+// Text button with underline effect
+<Button mode="underline" theme="neutral">
+  Learn More
+</Button>
+```
+
+#### TextField Component - Comprehensive Input Solution
+
+**Advanced Features**:
+1. **Real-time Validation**: Custom validation rules with immediate feedback
+2. **Debounced Input**: Configurable debounce for performance optimization
+3. **Error State Management**: Visual error states with descriptive messages
+4. **Accessibility**: Full ARIA support with proper labeling
+5. **Custom Styling**: Tailwind-based theming with design tokens
+
+**Validation System**:
+```typescript
+interface TextFieldProps {
+  validation?: {
+    required?: boolean;
+    minLength?: number;
+    maxLength?: number;
+    pattern?: RegExp;
+    custom?: (value: string) => string | null;
+  };
+  debounceMs?: number;
+  onValidationChange?: (isValid: boolean) => void;
+}
+```
+
+#### Checkbox Component - Advanced Selection
+
+**Features**:
+1. **Indeterminate State**: Three-state checkbox (checked, unchecked, indeterminate)
+2. **Group Management**: Checkbox groups with parent-child relationships
+3. **Custom Styling**: Design system integration with proper theming
+4. **Keyboard Navigation**: Full keyboard accessibility
+5. **Form Integration**: Seamless form library integration
+
+**Implementation**:
+```typescript
+const Checkbox = ({ indeterminate, checked, onChange, ...props }) => {
+  const checkboxRef = useRef<HTMLInputElement>(null);
+  
+  useEffect(() => {
+    if (checkboxRef.current) {
+      checkboxRef.current.indeterminate = indeterminate ?? false;
+    }
+  }, [indeterminate]);
+
+  return (
+    <input
+      ref={checkboxRef}
+      type="checkbox"
+      checked={checked}
+      onChange={onChange}
+      className={cn(
+        'form-checkbox',
+        indeterminate && 'indeterminate-state',
+        checked && 'checked-state'
+      )}
+      {...props}
+    />
+  );
+};
 ```
 
 ---
@@ -360,7 +948,263 @@ interface DialogProps {
 
 ---
 
-## Applications - Complete Page Analysis
+## State Management Patterns
+
+### React Query Configuration
+
+**Location**: `apps/fe-app/app/lib/react-query.ts`
+
+```typescript
+export const queryClient = new QueryClient({
+  queryCache: new QueryCache({
+    onError: (error) => {
+      console.log(error);
+    },
+  }),
+  defaultOptions: {
+    queries: {
+      retry: false,                    // No automatic retries
+      refetchOnWindowFocus: false,     // Don't refetch on window focus
+      throwOnError: false,             // Handle errors gracefully
+      gcTime: 0,                       // No garbage collection time
+      staleTime: 5 * 60 * 1000,       // 5 minutes stale time
+    },
+  },
+});
+```
+
+**Provider Setup** (`apps/fe-app/app/providers/ReactQueryProvider.tsx`):
+```typescript
+export default function ReactQueryProvider({ children }: { children: React.ReactNode }) {
+  return (
+    <QueryClientProvider client={queryClient}>
+      {children}
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  );
+}
+```
+
+### State Management Strategies
+
+#### 1. Server State Management (React Query)
+
+**Generated Hooks Usage**:
+```typescript
+// Auto-generated React Query hook
+const {
+  data: fundsTableData,
+  isLoading: isFundsTableLoading,
+  error: fundsTableError,
+  refetch: refetchFundsTable,
+} = useFundsServiceGetFundsTable({
+  tabId: activeIndexCategoryTab,
+  searchQuery: fundSearchQuery,
+});
+
+// Mutation for data updates
+const updateColumnMutation = useFundsServicePostFundsTableTabByTabColumn({
+  onSuccess: () => {
+    queryClient.invalidateQueries(['fundsTable']);
+  },
+  onError: (error) => {
+    showToast({ message: 'Update failed', type: 'error' });
+  },
+});
+```
+
+#### 2. Client State Management (useState + useReducer)
+
+**Complex State with useReducer** (VideoPlayer):
+```typescript
+interface videoState {
+  isPlaying: boolean;
+  currentTime: number;
+  duration: number;
+  isFinished: boolean;
+  progress: number;
+  isVideoLoaded: boolean;
+  isVideoWaited: boolean;
+  bufferedTime: number;
+  playBackRate: number;
+  volume: number;
+  muted: boolean;
+  isFullscreen: boolean;
+  quality: { src: string; label: string; };
+  error: string | null;
+  src: string;
+}
+
+const videoReducer = (state: videoState, action: videoAction): videoState => {
+  switch (action.type) {
+    case 'PLAY':
+      return { ...state, isPlaying: true, isFinished: false, isVideoWaited: false };
+    case 'PAUSE':
+      return { ...state, isPlaying: false };
+    case 'TIME_UPDATE':
+      return { ...state, currentTime: action.currentTime };
+    // ... more cases
+  }
+};
+```
+
+**Page-Level State Management** (Investment Funds):
+```typescript
+const [activeIndexCategoryTab, setActiveIndexCategoryTab] = useState(1);
+const [isShowDatePicker, setIsShowDatePicker] = useState(false);
+const [customColumnDate, setCustomColumnDate] = useState({
+  start: '', end: '', groupId: ''
+});
+const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
+const [localColumns, setLocalColumns] = useState<FundTableTabColumnDto[]>([]);
+const [fundSearchQuery, setFundSearchQuery] = useState<string>('');
+const [pinnedList, setPinnedList] = useState<number[]>([]);
+const [rowsMark, setRowsMark] = useState<{ color: string; id: number }[]>([]);
+```
+
+#### 3. Form State Management
+
+**Login Form State**:
+```typescript
+const FormWrapper = () => {
+  const { showToast } = useCustomToast();
+  const router = useRouter();
+  const refetchCaptchaRef = React.useRef<() => void>(undefined);
+
+  const handleLogin = async (values: LoginFormValues) => {
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: values.username,
+          password: values.password,
+          captcha: values.captcha ?? '',
+          captchaUid: typeof values.captchaUid === 'number' ? values.captchaUid : 0,
+        }),
+      });
+      
+      const data = await res.json();
+      if (res.ok && data.success) {
+        localStorage.setItem('access_token', data.access_token);
+        showToast({ message: 'ورود موفقیت‌آمیز بود!', type: 'success' });
+        router.push('/');
+      }
+    } catch (error) {
+      showToast({ message: 'خطا در ورود', type: 'error' });
+      if (refetchCaptchaRef.current) {
+        refetchCaptchaRef.current();
+      }
+    }
+  };
+};
+```
+
+---
+
+## Performance Optimization Strategies
+
+### 1. Component-Level Optimizations
+
+**React.memo for Expensive Components**:
+```typescript
+const MemoizedTitle = React.memo(({ title, setShowPlayList }) => {
+  return (
+    <div className="flex items-center justify-between">
+      <h3>{title}</h3>
+      <button onClick={() => setShowPlayList(true)}>Show Playlist</button>
+    </div>
+  );
+});
+```
+
+**useMemo for Expensive Calculations**:
+```typescript
+const processedData = useMemo(() => {
+  return fundsTableData?.map(item => ({
+    ...item,
+    formattedValue: formatNumber(item.value),
+    calculatedRisk: calculateRisk(item.riskMetrics),
+  }));
+}, [fundsTableData]);
+```
+
+**useCallback for Event Handlers**:
+```typescript
+const handleColumnReorder = useCallback((result: DragEndEvent) => {
+  if (!result.destination) return;
+  
+  const newColumnOrder = arrayMove(
+    columnOrder,
+    result.source.index,
+    result.destination.index
+  );
+  
+  setColumnOrder(newColumnOrder);
+}, [columnOrder]);
+```
+
+### 2. Data Fetching Optimizations
+
+**Parallel Data Fetching**:
+```typescript
+const [summaryData, analysisData] = await Promise.all([
+  FundsService.getFundsStockByFundIdSummary({ fundId }),
+  FundsService.getFundsStockByFundIdReturnAnalysis({ fundId }),
+]);
+```
+
+**Debounced Search**:
+```typescript
+const [searchQuery, setSearchQuery] = useState('');
+const debouncedSearchQuery = useDebounce(searchQuery, 300);
+
+useEffect(() => {
+  if (debouncedSearchQuery) {
+    refetchFundsTable();
+  }
+}, [debouncedSearchQuery]);
+```
+
+**Virtual Scrolling for Large Tables**:
+```typescript
+const { scrollElementRef, wrapperElementRef } = useVirtualizer({
+  count: tableData.length,
+  getScrollElement: () => scrollElementRef.current,
+  estimateSize: () => 50,
+  overscan: 10,
+});
+```
+
+### 3. Bundle Optimization
+
+**Dynamic Imports**:
+```typescript
+const HeavyChart = dynamic(() => import('./HeavyChart'), {
+  loading: () => <ChartSkeleton />,
+  ssr: false,
+});
+
+const VideoPlayer = dynamic(() => import('design-system').then(mod => ({ default: mod.VideoPlayer })), {
+  loading: () => <div>Loading video player...</div>,
+});
+```
+
+**Code Splitting by Route**:
+```typescript
+// Automatic code splitting with Next.js App Router
+app/
+├── (dashboard)/
+│   ├── investment_funds/page.tsx    # Separate bundle
+│   └── my-fund/page.tsx            # Separate bundle
+└── (auth)/
+    └── login/page.tsx              # Separate bundle
+```
+
+---
+
+## Applications - Every Page Analysis
 
 ### FE-App (B2B Application) - Detailed Page Breakdown
 
@@ -825,4 +1669,3 @@ docker build -f Dockerfile.b2c-app -t aress-b2c-app:latest .
 ---
 
 *This comprehensive documentation provides detailed implementation insights for developers working with the Aress Frontend Project. For the most current information, please refer to the project repository and Storybook documentation.*
-
