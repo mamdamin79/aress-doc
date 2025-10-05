@@ -2051,4 +2051,82 @@ docker build -f Dockerfile.b2c-app -t aress-b2c-app:latest .
 
 ---
 
+---
+
+## 📊 Renderer App & Chart System
+
+### Dynamic Report Renderer System
+
+The Aress Frontend Project features a sophisticated dynamic report rendering system that allows for flexible loading and display of various financial report components.
+
+#### Core Implementation (`DynamicReportRenderer.tsx`)
+
+**Location**: `apps/fe-app/app/(dashboard)/(nofooter)/(dashboard)/_components/DynamicReportRenderer.tsx`
+
+**Purpose**: Dynamically loads and renders different types of financial report components based on report identifiers.
+
+**Key Features**:
+
+1. **Dynamic Component Loading**: Uses Next.js dynamic imports for code splitting
+2. **Flexible Props Interface**: Supports various report types with consistent API
+3. **Error Handling**: Graceful fallback for missing report components
+
+#### Renderer Service (`/render/[chart_id]/[chart_title]/page.tsx`)
+
+**Location**: `apps/fe-app/app/(internal_services)/render/[chart_id]/[chart_title]/page.tsx`
+
+**Purpose**: Server-side rendering service for individual charts/reports with fixed dimensions (616x336px).
+
+### Chart System Architecture
+
+#### A. Shared Chart Configuration (`Chart.config.shared.tsx`)
+
+**Features**:
+- RTL (Right-to-Left) support for Persian/Arabic layouts
+- Consistent styling with CSS variables
+- Custom tooltip formatting with Persian number formatting
+- Responsive label formatting based on available space
+
+#### B. Chart Types
+
+##### 1. Line Chart (`LineChart.tsx`)
+- **Purpose**: Time-series data visualization for portfolio performance tracking
+- **Features**: Interactive hover states, area gradient fill, responsive Y-axis scaling, hidden content mode
+
+##### 2. Pie Chart (`Piechart.tsx`)
+- **Purpose**: Portfolio allocation visualization showing fund distribution
+- **Features**: Custom color palette, interactive segments, empty state handling, Persian number formatting
+
+##### 3. Multi Line Chart (`MultiLineChart.tsx`)
+- **Purpose**: Comparative fund performance visualization with multiple data series
+- **Features**: Jalaali (Persian) calendar integration, custom date formatting, interactive crosshair
+
+#### C. Report-Specific Charts
+
+##### 1. Report6 (Flow Analysis Chart)
+- **Purpose**: Visualizes fund inflow/outflow data with market index overlay
+- **Features**: Dual Y-axis, color-coded flow direction, combined chart types
+
+##### 2. Report15 (Regression Analysis Chart)
+- **Purpose**: Statistical analysis visualization with scatter plot and regression line
+- **Features**: Scatter plot with diamond markers, regression line overlay, statistical information boxes
+
+#### D. Advanced Chart Features
+
+1. **Responsive Design**: Dynamic sizing, adaptive tick intervals, flexible legend placement
+2. **Interactive Elements**: Custom tooltips with RTL support, hover states, crosshair tracking
+3. **Data Processing**: Time series normalization, value scaling, empty state handling
+4. **Styling & Theming**: CSS variable integration, theme consistency, custom fonts
+5. **Performance Optimization**: Memoized calculations, dynamic imports, efficient re-rendering
+
+### Integration Points
+
+1. **Report Card Integration**: All charts wrapped in `ReportCardBase` components
+2. **Data Flow**: API Data → DynamicReportRenderer → Specific Report Component → Chart Component → Highcharts
+3. **State Management**: Local state for filter management, callback props for parent communication
+
+This comprehensive charting system provides a robust foundation for financial data visualization while maintaining consistency across the application through shared configurations and styling.
+
+---
+
 *This comprehensive documentation provides detailed implementation insights for developers working with the Aress Frontend Project. For the most current information, please refer to the project repository and Storybook documentation.*
